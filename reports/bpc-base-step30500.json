@@ -1,0 +1,37 @@
+{
+  "run": "/tmp/trid-base-snap",
+  "weights_sha256": "41c99ad57a83f2109b4d4b095593ad947030478f29ea77eb3e932aff378f3723",
+  "step": 30500,
+  "context_length": 1024,
+  "stride": 512,
+  "limit": 200,
+  "device": "cpu",
+  "files": {
+    "data/korean-foundation-v2/test.jsonl": {
+      "docs": 200,
+      "chars": 747554,
+      "tokens": 400083,
+      "windows": 735,
+      "chars_per_token": 1.8684972868129863,
+      "token_loss": 3.396501609583004,
+      "perplexity": 29.859457074648603,
+      "bpc": 2.6224903097797343,
+      "uniform_baseline_bpc": 6.957462604708155,
+      "seconds": 262.2
+    },
+    "data/law-ko-source/docs.jsonl": {
+      "docs": 200,
+      "chars": 2980575,
+      "tokens": 1811520,
+      "windows": 3455,
+      "chars_per_token": 1.6453447933227345,
+      "token_loss": 3.1793528470738663,
+      "perplexity": 24.031196659526472,
+      "bpc": 2.787766189995148,
+      "uniform_baseline_bpc": 7.90107948969578,
+      "seconds": 996.1
+    }
+  },
+  "evaluated_at": "2026-10-28T04:37:19.009284+00:00",
+  "protocol": "문서마다 BOS+토큰 열을 context_length 창으로 stride만큼 밀며 다음 토큰 NLL을 합산(겹치는 토큰은 가장 긴 문맥에서 한 번만), 비트로 바꿔 텍스트 글자 수(코드포인트)로 나눈다. uniform_baseline_bpc는 어휘 균등분포(log2 vocab × 토큰/글자)이며, 토크나이저가 바뀌면 함께 달라진다."
+}

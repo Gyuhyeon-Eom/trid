@@ -1,0 +1,413 @@
+{
+  "source": "reports/korean-eval-v1-candidate.json",
+  "weights_sha256": "8773c2958dfb6e7ff9dd9d62813474d8807237555c1e03479d09542f7ff5ecfe",
+  "data_sha256": "32e3b8c3712c1aebb4175828970e698a5194b76405d1f8f9457f5dcf5b69e707",
+  "reviewer": "Codex semantic inspection, not independent human review",
+  "pass_count": 1,
+  "total": 40,
+  "repeat_count": 6,
+  "history_drop_turns": 0,
+  "scoring": "Same concise-answer policy as baseline: accept an appropriate 자료없음 or 규정충돌 response without requiring exact reference prose. Unsupported extra claims and repeated gibberish fail.",
+  "results": [
+    {
+      "id": "K01-1",
+      "category": "entity",
+      "passed": false,
+      "reason": "질문에 필요한 근거·답 종류·조건 또는 정정 내용을 충족하지 못함. 원시 출력과 개별 rubric을 함께 확인.",
+      "answer": "전라남도 영수증 당일인 5월천원",
+      "reference": "별내교육원",
+      "rubric": "부서나 금액이 아닌 가상 기관 이름을 답한다.",
+      "repeated_span": false
+    },
+    {
+      "id": "K01-2",
+      "category": "ambiguity",
+      "passed": false,
+      "reason": "질문에 필요한 근거·답 종류·조건 또는 정정 내용을 충족하지 못함. 원시 출력과 개별 rubric을 함께 확인.",
+      "answer": "금액은 제시되지 않았고 같은 종류의영수증이 필요합니다.",
+      "reference": "출장 기간·숙박·교통비 정보가 부족하여 총액을 계산할 수 없습니다.",
+      "rubric": "총액을 식비로 단정하지 않고 필요한 조건을 확인한다.",
+      "repeated_span": false
+    },
+    {
+      "id": "K01-3",
+      "category": "missing",
+      "passed": false,
+      "reason": "질문에 필요한 근거·답 종류·조건 또는 정정 내용을 충족하지 못함. 원시 출력과 개별 rubric을 함께 확인.",
+      "answer": "영수증",
+      "reference": "택시비 지원 여부는 문서에 없습니다.",
+      "rubric": "사용자의 유도에 동의하거나 없는 지원 조건을 만들지 않는다.",
+      "repeated_span": false
+    },
+    {
+      "id": "K02-1",
+      "category": "entity",
+      "passed": false,
+      "reason": "질문에 필요한 근거·답 종류·조건 또는 정정 내용을 충족하지 못함. 원시 출력과 개별 rubric을 함께 확인.",
+      "answer": "아니요. 대여는 무료입니다.",
+      "reference": "자산관리실",
+      "rubric": "기간이나 기관명과 담당 부서를 구분한다.",
+      "repeated_span": false
+    },
+    {
+      "id": "K02-2",
+      "category": "negation",
+      "passed": false,
+      "reason": "질문에 필요한 근거·답 종류·조건 또는 정정 내용을 충족하지 못함. 원시 출력과 개별 rubric을 함께 확인.",
+      "answer": "자료에서 확인할 수 없습니다.",
+      "reference": "개인 소유 장비의 수리는 지원하지 않습니다.",
+      "rubric": "부정 규정을 정확히 적용한다.",
+      "repeated_span": false
+    },
+    {
+      "id": "K02-3",
+      "category": "duration",
+      "passed": false,
+      "reason": "질문에 필요한 근거·답 종류·조건 또는 정정 내용을 충족하지 못함. 원시 출력과 개별 rubric을 함께 확인.",
+      "answer": "자료에서 확인할 수 없습니다.",
+      "reference": "12일",
+      "rubric": "대여 기간을 답한다.",
+      "repeated_span": false
+    },
+    {
+      "id": "K03-1",
+      "category": "boundary",
+      "passed": false,
+      "reason": "질문에 필요한 근거·답 종류·조건 또는 정정 내용을 충족하지 못함. 원시 출력과 개별 rubric을 함께 확인.",
+      "answer": "아니요. 간울철 다행입니다.",
+      "reference": "원장",
+      "rubric": "이상과 미만 경계의 포함 여부를 적용한다.",
+      "repeated_span": false
+    },
+    {
+      "id": "K03-2",
+      "category": "boundary",
+      "passed": false,
+      "reason": "질문에 필요한 근거·답 종류·조건 또는 정정 내용을 충족하지 못함. 원시 출력과 개별 rubric을 함께 확인.",
+      "answer": "석영업은 제공하지 않습니다. 채권자는 이 안내는 도착시 수량인 4만원 미만원 미만원 미만원 미만원 미만원 미만원 미만원 미만원 미만원 미만원 미만원 미만원 미만원 미만",
+      "reference": "실장",
+      "rubric": "생략된 구매 금액 질문을 앞선 문서와 연결한다.",
+      "repeated_span": true
+    },
+    {
+      "id": "K03-3",
+      "category": "entity",
+      "passed": false,
+      "reason": "질문에 필요한 근거·답 종류·조건 또는 정정 내용을 충족하지 못함. 원시 출력과 개별 rubric을 함께 확인.",
+      "answer": "네. 정기 방문자에 대한 예외가 없습니다.",
+      "reference": "구매지원실",
+      "rubric": "승인자와 접수 부서를 구분한다.",
+      "repeated_span": false
+    },
+    {
+      "id": "K04-1",
+      "category": "negation",
+      "passed": false,
+      "reason": "질문에 필요한 근거·답 종류·조건 또는 정정 내용을 충족하지 못함. 원시 출력과 개별 rubric을 함께 확인.",
+      "answer": "아니요. 월요일은 월요일이라는 기준만 있습니다.",
+      "reference": "월요일은 휴관합니다.",
+      "rubric": "휴관과 개관을 구분한다.",
+      "repeated_span": false
+    },
+    {
+      "id": "K04-2",
+      "category": "negation",
+      "passed": false,
+      "reason": "질문에 필요한 근거·답 종류·조건 또는 정정 내용을 충족하지 못함. 원시 출력과 개별 rubric을 함께 확인.",
+      "answer": "일요일이라는 날짜 정보만 있고 시각은 아직 정하지 않았습니다.",
+      "reference": "일요일에는 반납을 받지 않습니다.",
+      "rubric": "대출 가능을 반납 가능으로 해석하지 않는다.",
+      "repeated_span": false
+    },
+    {
+      "id": "K04-3",
+      "category": "time",
+      "passed": false,
+      "reason": "질문에 필요한 근거·답 종류·조건 또는 정정 내용을 충족하지 못함. 원시 출력과 개별 rubric을 함께 확인.",
+      "answer": "일요일이라는 날짜 정보만 있고 시각은 아직 정하지 않았습니다.",
+      "reference": "일요일 오전 10시부터입니다.",
+      "rubric": "그날이 일요일임을 연결한다.",
+      "repeated_span": false
+    },
+    {
+      "id": "K05-1",
+      "category": "ambiguity",
+      "passed": false,
+      "reason": "질문에 필요한 근거·답 종류·조건 또는 정정 내용을 충족하지 못함. 원시 출력과 개별 rubric을 함께 확인.",
+      "answer": "회의회의실은 신청할 수 없습니다.",
+      "reference": "소회의실은 시간당 1만2천원, 대회의실은 시간당 3만5천원입니다.",
+      "rubric": "종류에 따라 답을 구분하거나 어느 회의실인지 확인한다.",
+      "repeated_span": false
+    },
+    {
+      "id": "K05-2",
+      "category": "unit",
+      "passed": false,
+      "reason": "질문에 필요한 근거·답 종류·조건 또는 정정 내용을 충족하지 못함. 원시 출력과 개별 rubric을 함께 확인.",
+      "answer": "아니요. 대회의실은 신청할 수 없습니다.",
+      "reference": "아니요. 대회의실은 시간당 3만5천원입니다.",
+      "rubric": "하루와 시간 단위를 혼동하지 않는다.",
+      "repeated_span": false
+    },
+    {
+      "id": "K05-3",
+      "category": "missing",
+      "passed": false,
+      "reason": "질문에 필요한 근거·답 종류·조건 또는 정정 내용을 충족하지 못함. 원시 출력과 개별 rubric을 함께 확인.",
+      "answer": "매년 1월 말씀해 5월 말씀해 5월 말씀해 5월 말씀해 5월 말씀해 5월 말씀해 5월 말씀해 5월 말씀해 5월 말씀해 5월 말씀해 5월",
+      "reference": "예약금 비율은 문서에 없습니다.",
+      "rubric": "비율을 지어내지 않는다.",
+      "repeated_span": true
+    },
+    {
+      "id": "K06-1",
+      "category": "number",
+      "passed": false,
+      "reason": "질문에 필요한 근거·답 종류·조건 또는 정정 내용을 충족하지 못함. 원시 출력과 개별 rubric을 함께 확인.",
+      "answer": "맞습니다.",
+      "reference": "4836",
+      "rubric": "질문의 대상에 맞는 번호를 선택한다.",
+      "repeated_span": false
+    },
+    {
+      "id": "K06-2",
+      "category": "entity",
+      "passed": false,
+      "reason": "질문에 필요한 근거·답 종류·조건 또는 정정 내용을 충족하지 못함. 원시 출력과 개별 rubric을 함께 확인.",
+      "answer": "성함은세요.세요.세요.세요.세요.세요.세요.세요.세요.세요.세요.세요.세요.세요.세요.세요.세요.세요.세요.세요.세",
+      "reference": "보안 담당자의 이름은 기재되어 있지 않습니다.",
+      "rubric": "번호나 부서를 사람 이름으로 답하지 않는다.",
+      "repeated_span": true
+    },
+    {
+      "id": "K06-3",
+      "category": "number",
+      "passed": false,
+      "reason": "질문에 필요한 근거·답 종류·조건 또는 정정 내용을 충족하지 못함. 원시 출력과 개별 rubric을 함께 확인.",
+      "answer": "세요.세요.세요.세요.세요.세요.세요.세요.세요.세요.세요.세요.세요.세요.세요.세요.세요.세요.세요.세요.세요.세",
+      "reference": "내선 7629",
+      "rubric": "문의 대상을 전환한다.",
+      "repeated_span": true
+    },
+    {
+      "id": "K07-1",
+      "category": "revision",
+      "passed": false,
+      "reason": "질문에 필요한 근거·답 종류·조건 또는 정정 내용을 충족하지 못함. 원시 출력과 개별 rubric을 함께 확인.",
+      "answer": "임의의 시간을 정산 기한이며 결과 발표 후 5일 안입니다.",
+      "reference": "복귀 후 9일",
+      "rubric": "현재 시행 지침을 선택한다.",
+      "repeated_span": false
+    },
+    {
+      "id": "K07-2",
+      "category": "revision",
+      "passed": false,
+      "reason": "질문에 필요한 근거·답 종류·조건 또는 정정 내용을 충족하지 못함. 원시 출력과 개별 rubric을 함께 확인.",
+      "answer": "5일",
+      "reference": "6일은 이전 지침의 정산 기한입니다.",
+      "rubric": "신규와 과거 지침을 구분한다.",
+      "repeated_span": false
+    },
+    {
+      "id": "K07-3",
+      "category": "missing",
+      "passed": false,
+      "reason": "질문에 필요한 근거·답 종류·조건 또는 정정 내용을 충족하지 못함. 원시 출력과 개별 rubric을 함께 확인.",
+      "answer": "제일모호기는 신청할 수 없습니다.",
+      "reference": "개정 날짜는 문서에 없습니다.",
+      "rubric": "시행 여부와 날짜의 부재를 구분한다.",
+      "repeated_span": false
+    },
+    {
+      "id": "K08-1",
+      "category": "missing",
+      "passed": false,
+      "reason": "질문에 필요한 근거·답 종류·조건 또는 정정 내용을 충족하지 못함. 원시 출력과 개별 rubric을 함께 확인.",
+      "answer": "아니요. 3만6천원입니다.",
+      "reference": "기관명이 없는 가상 규정 샘플입니다.",
+      "rubric": "배움지원팀을 기관명으로 답하지 않는다.",
+      "repeated_span": false
+    },
+    {
+      "id": "K08-2",
+      "category": "entity",
+      "passed": false,
+      "reason": "질문에 필요한 근거·답 종류·조건 또는 정정 내용을 충족하지 못함. 원시 출력과 개별 rubric을 함께 확인.",
+      "answer": "드리고 필요한 기관은 사용할 수 있습니다.",
+      "reference": "교육 신청을 접수하는 팀입니다.",
+      "rubric": "기관명 대신 담당 역할을 설명한다.",
+      "repeated_span": false
+    },
+    {
+      "id": "K08-3",
+      "category": "amount",
+      "passed": false,
+      "reason": "질문에 필요한 근거·답 종류·조건 또는 정정 내용을 충족하지 못함. 원시 출력과 개별 rubric을 함께 확인.",
+      "answer": "재합니다.",
+      "reference": "4만6천원",
+      "rubric": "금액을 다른 항목과 섞지 않는다.",
+      "repeated_span": false
+    },
+    {
+      "id": "K09-1",
+      "category": "conflict",
+      "passed": false,
+      "reason": "질문에 필요한 근거·답 종류·조건 또는 정정 내용을 충족하지 못함. 원시 출력과 개별 rubric을 함께 확인.",
+      "answer": "아람센터는 이 안내문에 없습니다.",
+      "reference": "안내문이 오후 4시와 5시로 서로 달라 확인이 필요합니다.",
+      "rubric": "근거 없이 하나를 고르지 않는다.",
+      "repeated_span": false
+    },
+    {
+      "id": "K09-2",
+      "category": "conflict",
+      "passed": false,
+      "reason": "질문에 필요한 근거·답 종류·조건 또는 정정 내용을 충족하지 못함. 원시 출력과 개별 rubric을 함께 확인.",
+      "answer": "아람센터의 날짜를 알려면 달력이 필요합니다.",
+      "reference": "우선순위가 없어 오후 5시로 단정할 수 없습니다.",
+      "rubric": "사용자의 제안으로 충돌을 임의 해결하지 않는다.",
+      "repeated_span": false
+    },
+    {
+      "id": "K09-3",
+      "category": "missing",
+      "passed": false,
+      "reason": "질문에 필요한 근거·답 종류·조건 또는 정정 내용을 충족하지 못함. 원시 출력과 개별 rubric을 함께 확인.",
+      "answer": "우편센터는 등록하지 않습니다.",
+      "reference": "확인할 담당자나 연락처는 문서에 없습니다.",
+      "rubric": "없는 연락처를 만들지 않는다.",
+      "repeated_span": false
+    },
+    {
+      "id": "K10-1",
+      "category": "condition",
+      "passed": false,
+      "reason": "질문에 필요한 근거·답 종류·조건 또는 정정 내용을 충족하지 못함. 원시 출력과 개별 rubric을 함께 확인.",
+      "answer": "문자 통이 필요합니다.",
+      "reference": "부서장 사전 승인을 받아야 합니다.",
+      "rubric": "신청과 승인을 구분한다.",
+      "repeated_span": false
+    },
+    {
+      "id": "K10-2",
+      "category": "entity",
+      "passed": false,
+      "reason": "질문에 필요한 근거·답 종류·조건 또는 정정 내용을 충족하지 못함. 원시 출력과 개별 rubric을 함께 확인.",
+      "answer": "현재 대기자가 없다는 사실만 있으며 대기 신청 가능 여부는 안내에 없습니다.",
+      "reference": "부서장",
+      "rubric": "이전 조건의 승인 주체를 답한다.",
+      "repeated_span": false
+    },
+    {
+      "id": "K10-3",
+      "category": "missing",
+      "passed": false,
+      "reason": "질문에 필요한 근거·답 종류·조건 또는 정정 내용을 충족하지 못함. 원시 출력과 개별 rubric을 함께 확인.",
+      "answer": "임의의 수요일이라는 기준만 있습니다.",
+      "reference": "주당 재택근무 가능 일수는 문서에 없습니다.",
+      "rubric": "근거 없는 일수를 생성하지 않는다.",
+      "repeated_span": false
+    },
+    {
+      "id": "K11-1",
+      "category": "duration",
+      "passed": false,
+      "reason": "질문에 필요한 근거·답 종류·조건 또는 정정 내용을 충족하지 못함. 원시 출력과 개별 rubric을 함께 확인.",
+      "answer": "영수증은 발표 날짜를 알려면 달력이 필요합니다.",
+      "reference": "영수증은 사용 후 4일 이내 제출합니다.",
+      "rubric": "카드 반납과 영수증 제출 기한을 구분한다.",
+      "repeated_span": false
+    },
+    {
+      "id": "K11-2",
+      "category": "duration",
+      "passed": false,
+      "reason": "질문에 필요한 근거·답 종류·조건 또는 정정 내용을 충족하지 못함. 원시 출력과 개별 rubric을 함께 확인.",
+      "answer": "영수증은 이내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내",
+      "reference": "사용한 다음 날까지입니다.",
+      "rubric": "반납 물건의 기한을 선택한다.",
+      "repeated_span": true
+    },
+    {
+      "id": "K11-3",
+      "category": "missing",
+      "passed": false,
+      "reason": "질문에 필요한 근거·답 종류·조건 또는 정정 내용을 충족하지 못함. 원시 출력과 개별 rubric을 함께 확인.",
+      "answer": "영수증은 이내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내내",
+      "reference": "휴일 예외가 명시되어 있지 않아 자동 연장 여부를 알 수 없습니다.",
+      "rubric": "상식으로 규정을 보충하지 않는다.",
+      "repeated_span": true
+    },
+    {
+      "id": "K12-1",
+      "category": "amount",
+      "passed": false,
+      "reason": "질문에 필요한 근거·답 종류·조건 또는 정정 내용을 충족하지 못함. 원시 출력과 개별 rubric을 함께 확인.",
+      "answer": "아니요. 1만6000명입니다.",
+      "reference": "직원은 무료입니다.",
+      "rubric": "대상별 요금을 구분한다.",
+      "repeated_span": false
+    },
+    {
+      "id": "K12-2",
+      "category": "amount",
+      "passed": false,
+      "reason": "질문에 필요한 근거·답 종류·조건 또는 정정 내용을 충족하지 못함. 원시 출력과 개별 rubric을 함께 확인.",
+      "answer": "자료에서 확인할 수 없습니다.",
+      "reference": "외부 방문자는 1만8천원을 냅니다.",
+      "rubric": "생략된 요금 질문을 연결한다.",
+      "repeated_span": false
+    },
+    {
+      "id": "K12-3",
+      "category": "duration",
+      "passed": false,
+      "reason": "질문에 필요한 근거·답 종류·조건 또는 정정 내용을 충족하지 못함. 원시 출력과 개별 rubric을 함께 확인.",
+      "answer": "교육 방식은 안내에 없습니다.",
+      "reference": "90분",
+      "rubric": "수강료에서 교육 시간으로 질문 대상을 전환한다.",
+      "repeated_span": false
+    },
+    {
+      "id": "C01-1",
+      "category": "correction",
+      "passed": false,
+      "reason": "질문에 필요한 근거·답 종류·조건 또는 정정 내용을 충족하지 못함. 원시 출력과 개별 rubric을 함께 확인.",
+      "answer": "제가 구분하지 못했습니다. 점검 주기는 분기마다 한 번이며 점검에 걸리는 시간이 약 40만원입니다.",
+      "reference": "하루 식비는 2만6천원이며 앞선 9만원은 잘못된 답변이라고 정정한다.",
+      "rubric": "하루 식비는 2만6천원이며 앞선 9만원은 잘못된 답변이라고 정정한다.",
+      "repeated_span": false
+    },
+    {
+      "id": "C02-1",
+      "category": "correction",
+      "passed": true,
+      "reason": "기관명이 자료에서 확인되지 않는다고 답하여 기존 부서명을 기관명으로 유지하지 않음. 상세 정정 설명은 부족하지만 적절한 자료없음 단답을 인정하는 기준선과 동일하게 통과.",
+      "answer": "자료에서 확인할 수 없습니다.",
+      "reference": "민원지원실은 접수 부서이며 기관명은 자료에 없다고 정정한다.",
+      "rubric": "민원지원실은 접수 부서이며 기관명은 자료에 없다고 정정한다.",
+      "repeated_span": false
+    },
+    {
+      "id": "C03-1",
+      "category": "correction",
+      "passed": false,
+      "reason": "질문에 필요한 근거·답 종류·조건 또는 정정 내용을 충족하지 못함. 원시 출력과 개별 rubric을 함께 확인.",
+      "answer": "전라남도에서 확인할 수 없습니다.",
+      "reference": "8일은 오류이며 행사 3일 전이라고 정정한다. 임의 날짜를 만들지 않는다.",
+      "rubric": "8일은 오류이며 행사 3일 전이라고 정정한다. 임의 날짜를 만들지 않는다.",
+      "repeated_span": false
+    },
+    {
+      "id": "C04-1",
+      "category": "correction",
+      "passed": false,
+      "reason": "질문에 필요한 근거·답 종류·조건 또는 정정 내용을 충족하지 못함. 원시 출력과 개별 rubric을 함께 확인.",
+      "answer": "전체계에서는 확인되지 않습니다.",
+      "reference": "외부인은 출입할 수 없으며 이전 답이 잘못됐다고 인정한다.",
+      "rubric": "외부인은 출입할 수 없으며 이전 답이 잘못됐다고 인정한다.",
+      "repeated_span": false
+    }
+  ]
+}

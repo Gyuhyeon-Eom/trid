@@ -1,0 +1,11 @@
+{
+  "supervisor_pid": 98273,
+  "expires_at": 1793148686.7135034,
+  "status": "running",
+  "origin_url": "https://formal-brought-tba-practitioner.trycloudflare.com",
+  "backend_pid": 98274,
+  "tunnel_pid": 98275,
+  "connection_status": "ready",
+  "recoveries": 0,
+  "last_health_at": 1793063123.516605
+}

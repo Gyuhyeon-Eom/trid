@@ -1,0 +1,92 @@
+{
+  "weights_sha256": "c18196c0d1fb8b60f58e5d3625c333cea49d8c8390859d238aa070de843dad1f",
+  "reviewer": "development assistant; not independent human evaluation",
+  "test_type": "16 held-out phrasings, same author/topic family; first run after candidate selection",
+  "pass_count": 6,
+  "total": 16,
+  "repeat_count": 0,
+  "eos_count": 16,
+  "conclusion": "Basic conversation generalization goal NOT achieved. Known training phrasings work, unfamiliar phrasing remains unreliable.",
+  "items": [
+    {
+      "id": "greet",
+      "passed": false,
+      "reason": "Replies with task prioritization to a greeting."
+    },
+    {
+      "id": "identity",
+      "passed": true,
+      "reason": "Relevant and coherent."
+    },
+    {
+      "id": "thanks",
+      "passed": true,
+      "reason": "Relevant and coherent."
+    },
+    {
+      "id": "farewell",
+      "passed": false,
+      "reason": "Greets the user instead of saying goodbye."
+    },
+    {
+      "id": "tired",
+      "passed": true,
+      "reason": "Relevant and coherent."
+    },
+    {
+      "id": "happy",
+      "passed": false,
+      "reason": "Replies with fatigue to good news."
+    },
+    {
+      "id": "plan",
+      "passed": true,
+      "reason": "Relevant and coherent."
+    },
+    {
+      "id": "clarify",
+      "passed": false,
+      "reason": "Discusses memory rather than asking for clarification."
+    },
+    {
+      "id": "limit",
+      "passed": true,
+      "reason": "Relevant and coherent."
+    },
+    {
+      "id": "external",
+      "passed": false,
+      "reason": "Discusses training instead of internet access."
+    },
+    {
+      "id": "privacy",
+      "passed": false,
+      "reason": "Discusses AI identity instead of local data handling."
+    },
+    {
+      "id": "food",
+      "passed": false,
+      "reason": "Suggests an umbrella in response to hunger."
+    },
+    {
+      "id": "memory",
+      "passed": false,
+      "reason": "Returns 서준 instead of 서연."
+    },
+    {
+      "id": "followup",
+      "passed": true,
+      "reason": "Relevant and coherent."
+    },
+    {
+      "id": "novel",
+      "passed": false,
+      "reason": "Discusses memory instead of receiving a package."
+    },
+    {
+      "id": "novel2",
+      "passed": false,
+      "reason": "Suggests choosing books in response to spilled coffee."
+    }
+  ]
+}

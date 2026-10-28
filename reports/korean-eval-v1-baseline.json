@@ -1,0 +1,1012 @@
+{
+  "run": "runs/trid-grounded-v2",
+  "weights_sha256": "4aed4b08fe4b4ce8fd6260bd5672f59183dbee40097ef032796c42bcdcdb342e",
+  "data_sha256": "32e3b8c3712c1aebb4175828970e698a5194b76405d1f8f9457f5dcf5b69e707",
+  "evaluated_at": "2026-10-26T18:23:52.902135+00:00",
+  "protocol": {
+    "version": 1,
+    "cases": 16,
+    "turns": 40,
+    "fictional": true,
+    "sha256": "32e3b8c3712c1aebb4175828970e698a5194b76405d1f8f9457f5dcf5b69e707",
+    "purpose": "Frozen developer-authored diagnostic evaluation only; never training or checkpoint selection. Not independent certification.",
+    "history": "K cases use actual generated history; C cases use explicitly labelled controlled incorrect history. References never supplied as history.",
+    "scoring": "Semantic per-turn rubric review required; no substring or keyword automatic pass. Record context loss separately.",
+    "created": "2026-10-27",
+    "training_allowed": false
+  },
+  "context_length": 256,
+  "turns": 40,
+  "turns_with_history_dropped": 0,
+  "scoring": "Pending semantic review; references are not exact-match targets.",
+  "results": [
+    {
+      "id": "K01-1",
+      "document": "가상 별내교육원의 출장 식비는 하루 2만8천원이다. 숙박비는 영수증 금액을 지급하되 하루 8만5천원을 넘을 수 없다. 교통비 기준은 적혀 있지 않다.",
+      "category": "entity",
+      "question": "이 규정 쓰는 기관 이름 알려줘.",
+      "reference": "별내교육원",
+      "rubric": "부서나 금액이 아닌 가상 기관 이름을 답한다.",
+      "history_supplied": [],
+      "generated": {
+        "answer": "안내지원팀",
+        "input_tokens": 96,
+        "generated_tokens_including_eos": 5,
+        "first_token_seconds": 0.0862,
+        "total_seconds": 0.1057,
+        "tokens_per_second_including_prefill": 47.3,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "K01-2",
+      "document": "가상 별내교육원의 출장 식비는 하루 2만8천원이다. 숙박비는 영수증 금액을 지급하되 하루 8만5천원을 넘을 수 없다. 교통비 기준은 적혀 있지 않다.",
+      "category": "ambiguity",
+      "question": "그러면 출장비 다 합쳐서 얼마 받는데?",
+      "reference": "출장 기간·숙박·교통비 정보가 부족하여 총액을 계산할 수 없습니다.",
+      "rubric": "총액을 식비로 단정하지 않고 필요한 조건을 확인한다.",
+      "history_supplied": [
+        {
+          "user": "이 규정 쓰는 기관 이름 알려줘.",
+          "assistant": "안내지원팀"
+        }
+      ],
+      "generated": {
+        "answer": "8만원",
+        "input_tokens": 115,
+        "generated_tokens_including_eos": 4,
+        "first_token_seconds": 0.0099,
+        "total_seconds": 0.0186,
+        "tokens_per_second_including_prefill": 215.26,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "K01-3",
+      "document": "가상 별내교육원의 출장 식비는 하루 2만8천원이다. 숙박비는 영수증 금액을 지급하되 하루 8만5천원을 넘을 수 없다. 교통비 기준은 적혀 있지 않다.",
+      "category": "missing",
+      "question": "택시도 지원한다는 거지?",
+      "reference": "택시비 지원 여부는 문서에 없습니다.",
+      "rubric": "사용자의 유도에 동의하거나 없는 지원 조건을 만들지 않는다.",
+      "history_supplied": [
+        {
+          "user": "이 규정 쓰는 기관 이름 알려줘.",
+          "assistant": "안내지원팀"
+        },
+        {
+          "user": "그러면 출장비 다 합쳐서 얼마 받는데?",
+          "assistant": "8만원"
+        }
+      ],
+      "generated": {
+        "answer": "어떤 내용을 말씀하시는지 조금 더 구체적으로 알려 주시겠어요?",
+        "input_tokens": 130,
+        "generated_tokens_including_eos": 22,
+        "first_token_seconds": 0.0053,
+        "total_seconds": 0.0713,
+        "tokens_per_second_including_prefill": 308.63,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "K02-1",
+      "document": "가상 누리환경원의 노트북 대여는 자산관리실에서 맡는다. 대여 기간은 12일이다. 개인 소유 장비의 수리는 지원하지 않는다.",
+      "category": "entity",
+      "question": "노트북 빌리는 담당이 어디야?",
+      "reference": "자산관리실",
+      "rubric": "기간이나 기관명과 담당 부서를 구분한다.",
+      "history_supplied": [],
+      "generated": {
+        "answer": "자산관리팀",
+        "input_tokens": 85,
+        "generated_tokens_including_eos": 5,
+        "first_token_seconds": 0.0047,
+        "total_seconds": 0.0158,
+        "tokens_per_second_including_prefill": 315.47,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "K02-2",
+      "document": "가상 누리환경원의 노트북 대여는 자산관리실에서 맡는다. 대여 기간은 12일이다. 개인 소유 장비의 수리는 지원하지 않는다.",
+      "category": "negation",
+      "question": "내가 산 노트북도 고쳐 준대?",
+      "reference": "개인 소유 장비의 수리는 지원하지 않습니다.",
+      "rubric": "부정 규정을 정확히 적용한다.",
+      "history_supplied": [
+        {
+          "user": "노트북 빌리는 담당이 어디야?",
+          "assistant": "자산관리팀"
+        }
+      ],
+      "generated": {
+        "answer": "1236",
+        "input_tokens": 103,
+        "generated_tokens_including_eos": 3,
+        "first_token_seconds": 0.0045,
+        "total_seconds": 0.0098,
+        "tokens_per_second_including_prefill": 307.67,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "K02-3",
+      "document": "가상 누리환경원의 노트북 대여는 자산관리실에서 맡는다. 대여 기간은 12일이다. 개인 소유 장비의 수리는 지원하지 않는다.",
+      "category": "duration",
+      "question": "빌린 건 며칠 쓸 수 있어?",
+      "reference": "12일",
+      "rubric": "대여 기간을 답한다.",
+      "history_supplied": [
+        {
+          "user": "노트북 빌리는 담당이 어디야?",
+          "assistant": "자산관리팀"
+        },
+        {
+          "user": "내가 산 노트북도 고쳐 준대?",
+          "assistant": "1236"
+        }
+      ],
+      "generated": {
+        "answer": "12일",
+        "input_tokens": 118,
+        "generated_tokens_including_eos": 3,
+        "first_token_seconds": 0.0044,
+        "total_seconds": 0.0099,
+        "tokens_per_second_including_prefill": 304.35,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "K03-1",
+      "document": "가상 한울문화원의 구매는 70만원 미만이면 실장, 70만원 이상이면 원장 승인이 필요하다. 신청서는 구매지원실에 낸다.",
+      "category": "boundary",
+      "question": "70만원짜리 사면 누가 승인해?",
+      "reference": "원장",
+      "rubric": "이상과 미만 경계의 포함 여부를 적용한다.",
+      "history_supplied": [],
+      "generated": {
+        "answer": "실장",
+        "input_tokens": 88,
+        "generated_tokens_including_eos": 3,
+        "first_token_seconds": 0.0039,
+        "total_seconds": 0.0093,
+        "tokens_per_second_including_prefill": 322.11,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "K03-2",
+      "document": "가상 한울문화원의 구매는 70만원 미만이면 실장, 70만원 이상이면 원장 승인이 필요하다. 신청서는 구매지원실에 낸다.",
+      "category": "boundary",
+      "question": "그럼 69만원이면?",
+      "reference": "실장",
+      "rubric": "생략된 구매 금액 질문을 앞선 문서와 연결한다.",
+      "history_supplied": [
+        {
+          "user": "70만원짜리 사면 누가 승인해?",
+          "assistant": "실장"
+        }
+      ],
+      "generated": {
+        "answer": "구매지원팀",
+        "input_tokens": 101,
+        "generated_tokens_including_eos": 5,
+        "first_token_seconds": 0.0045,
+        "total_seconds": 0.0154,
+        "tokens_per_second_including_prefill": 325.38,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "K03-3",
+      "document": "가상 한울문화원의 구매는 70만원 미만이면 실장, 70만원 이상이면 원장 승인이 필요하다. 신청서는 구매지원실에 낸다.",
+      "category": "entity",
+      "question": "승인하는 사람 말고 서류 내는 데는?",
+      "reference": "구매지원실",
+      "rubric": "승인자와 접수 부서를 구분한다.",
+      "history_supplied": [
+        {
+          "user": "70만원짜리 사면 누가 승인해?",
+          "assistant": "실장"
+        },
+        {
+          "user": "그럼 69만원이면?",
+          "assistant": "구매지원팀"
+        }
+      ],
+      "generated": {
+        "answer": "구매지원팀",
+        "input_tokens": 120,
+        "generated_tokens_including_eos": 5,
+        "first_token_seconds": 0.0044,
+        "total_seconds": 0.0153,
+        "tokens_per_second_including_prefill": 325.92,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "K04-1",
+      "document": "가상 새봄자료관은 화요일부터 일요일까지 오전 10시에 문을 연다. 월요일은 휴관한다. 일요일에는 대출은 가능하지만 반납은 받지 않는다.",
+      "category": "negation",
+      "question": "월요일 열어?",
+      "reference": "월요일은 휴관합니다.",
+      "rubric": "휴관과 개관을 구분한다.",
+      "history_supplied": [],
+      "generated": {
+        "answer": "자료없음",
+        "input_tokens": 85,
+        "generated_tokens_including_eos": 5,
+        "first_token_seconds": 0.0039,
+        "total_seconds": 0.0145,
+        "tokens_per_second_including_prefill": 345.68,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "K04-2",
+      "document": "가상 새봄자료관은 화요일부터 일요일까지 오전 10시에 문을 연다. 월요일은 휴관한다. 일요일에는 대출은 가능하지만 반납은 받지 않는다.",
+      "category": "negation",
+      "question": "일요일에 책 반납하러 가도 돼?",
+      "reference": "일요일에는 반납을 받지 않습니다.",
+      "rubric": "대출 가능을 반납 가능으로 해석하지 않는다.",
+      "history_supplied": [
+        {
+          "user": "월요일 열어?",
+          "assistant": "자료없음"
+        }
+      ],
+      "generated": {
+        "answer": "좋은 일이 있었군요! 어떤 일이 있었는지 들려주실래요?",
+        "input_tokens": 104,
+        "generated_tokens_including_eos": 21,
+        "first_token_seconds": 0.004,
+        "total_seconds": 0.0557,
+        "tokens_per_second_including_prefill": 377.34,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "K04-3",
+      "document": "가상 새봄자료관은 화요일부터 일요일까지 오전 10시에 문을 연다. 월요일은 휴관한다. 일요일에는 대출은 가능하지만 반납은 받지 않는다.",
+      "category": "time",
+      "question": "그날 몇 시부터 빌릴 수 있는데?",
+      "reference": "일요일 오전 10시부터입니다.",
+      "rubric": "그날이 일요일임을 연결한다.",
+      "history_supplied": [
+        {
+          "user": "월요일 열어?",
+          "assistant": "자료없음"
+        },
+        {
+          "user": "일요일에 책 반납하러 가도 돼?",
+          "assistant": "좋은 일이 있었군요! 어떤 일이 있었는지 들려주실래요?"
+        }
+      ],
+      "generated": {
+        "answer": "해야 할 일을 적고 중요한 순서로 나눠 보세요. 오늘 꼭 끝낼 일 세 가지부터 정하면 좋아요.",
+        "input_tokens": 137,
+        "generated_tokens_including_eos": 28,
+        "first_token_seconds": 0.0048,
+        "total_seconds": 0.0756,
+        "tokens_per_second_including_prefill": 370.38,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "K05-1",
+      "document": "가상 다온연수원의 소회의실은 시간당 1만2천원이다. 대회의실은 시간당 3만5천원이다. 대회의실만 예약금이 필요하다.",
+      "category": "ambiguity",
+      "question": "회의실 요금 얼마야?",
+      "reference": "소회의실은 시간당 1만2천원, 대회의실은 시간당 3만5천원입니다.",
+      "rubric": "종류에 따라 답을 구분하거나 어느 회의실인지 확인한다.",
+      "history_supplied": [],
+      "generated": {
+        "answer": "자료없음",
+        "input_tokens": 87,
+        "generated_tokens_including_eos": 5,
+        "first_token_seconds": 0.0038,
+        "total_seconds": 0.0139,
+        "tokens_per_second_including_prefill": 359.41,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "K05-2",
+      "document": "가상 다온연수원의 소회의실은 시간당 1만2천원이다. 대회의실은 시간당 3만5천원이다. 대회의실만 예약금이 필요하다.",
+      "category": "unit",
+      "question": "큰 거는 하루에 3만5천원이란 뜻이야?",
+      "reference": "아니요. 대회의실은 시간당 3만5천원입니다.",
+      "rubric": "하루와 시간 단위를 혼동하지 않는다.",
+      "history_supplied": [
+        {
+          "user": "회의실 요금 얼마야?",
+          "assistant": "자료없음"
+        }
+      ],
+      "generated": {
+        "answer": "자료없음",
+        "input_tokens": 109,
+        "generated_tokens_including_eos": 5,
+        "first_token_seconds": 0.0041,
+        "total_seconds": 0.0141,
+        "tokens_per_second_including_prefill": 354.13,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "K05-3",
+      "document": "가상 다온연수원의 소회의실은 시간당 1만2천원이다. 대회의실은 시간당 3만5천원이다. 대회의실만 예약금이 필요하다.",
+      "category": "missing",
+      "question": "그 예약금은 몇 퍼센트야?",
+      "reference": "예약금 비율은 문서에 없습니다.",
+      "rubric": "비율을 지어내지 않는다.",
+      "history_supplied": [
+        {
+          "user": "회의실 요금 얼마야?",
+          "assistant": "자료없음"
+        },
+        {
+          "user": "큰 거는 하루에 3만5천원이란 뜻이야?",
+          "assistant": "자료없음"
+        }
+      ],
+      "generated": {
+        "answer": "자료없음",
+        "input_tokens": 127,
+        "generated_tokens_including_eos": 5,
+        "first_token_seconds": 0.0043,
+        "total_seconds": 0.0154,
+        "tokens_per_second_including_prefill": 325.28,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "K06-1",
+      "document": "가상 모래연구소의 보안 문의 내선은 4836, 시설 문의 내선은 7629이다. 외부 전화번호와 담당자 이름은 기재하지 않았다.",
+      "category": "number",
+      "question": "보안 담당한테 전화하려고. 내선 좀.",
+      "reference": "4836",
+      "rubric": "질문의 대상에 맞는 번호를 선택한다.",
+      "history_supplied": [],
+      "generated": {
+        "answer": "오늘은 한 걸음",
+        "input_tokens": 86,
+        "generated_tokens_including_eos": 6,
+        "first_token_seconds": 0.0037,
+        "total_seconds": 0.0165,
+        "tokens_per_second_including_prefill": 363.16,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "K06-2",
+      "document": "가상 모래연구소의 보안 문의 내선은 4836, 시설 문의 내선은 7629이다. 외부 전화번호와 담당자 이름은 기재하지 않았다.",
+      "category": "entity",
+      "question": "그 담당자 성함은?",
+      "reference": "보안 담당자의 이름은 기재되어 있지 않습니다.",
+      "rubric": "번호나 부서를 사람 이름으로 답하지 않는다.",
+      "history_supplied": [
+        {
+          "user": "보안 담당한테 전화하려고. 내선 좀.",
+          "assistant": "오늘은 한 걸음"
+        }
+      ],
+      "generated": {
+        "answer": "전산팀",
+        "input_tokens": 102,
+        "generated_tokens_including_eos": 4,
+        "first_token_seconds": 0.004,
+        "total_seconds": 0.0117,
+        "tokens_per_second_including_prefill": 342.12,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "K06-3",
+      "document": "가상 모래연구소의 보안 문의 내선은 4836, 시설 문의 내선은 7629이다. 외부 전화번호와 담당자 이름은 기재하지 않았다.",
+      "category": "number",
+      "question": "시설 쪽은 어디로 전화해?",
+      "reference": "내선 7629",
+      "rubric": "문의 대상을 전환한다.",
+      "history_supplied": [
+        {
+          "user": "보안 담당한테 전화하려고. 내선 좀.",
+          "assistant": "오늘은 한 걸음"
+        },
+        {
+          "user": "그 담당자 성함은?",
+          "assistant": "전산팀"
+        }
+      ],
+      "generated": {
+        "answer": "알겠습니다. 존댓말로 답변드릴게요.",
+        "input_tokens": 117,
+        "generated_tokens_including_eos": 17,
+        "first_token_seconds": 0.0044,
+        "total_seconds": 0.0442,
+        "tokens_per_second_including_prefill": 384.54,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "K07-1",
+      "document": "가상 솔빛공사의 이전 지침은 정산 기한을 복귀 후 6일로 정했다. 현재 시행 중인 개정 지침은 복귀 후 9일로 바꾸었다.",
+      "category": "revision",
+      "question": "지금은 돌아온 뒤 며칠 안에 정산해?",
+      "reference": "복귀 후 9일",
+      "rubric": "현재 시행 지침을 선택한다.",
+      "history_supplied": [],
+      "generated": {
+        "answer": "자료없음",
+        "input_tokens": 87,
+        "generated_tokens_including_eos": 5,
+        "first_token_seconds": 0.0038,
+        "total_seconds": 0.0137,
+        "tokens_per_second_including_prefill": 365.83,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "K07-2",
+      "document": "가상 솔빛공사의 이전 지침은 정산 기한을 복귀 후 6일로 정했다. 현재 시행 중인 개정 지침은 복귀 후 9일로 바꾸었다.",
+      "category": "revision",
+      "question": "6일이라고 써 있는 건 뭐야?",
+      "reference": "6일은 이전 지침의 정산 기한입니다.",
+      "rubric": "신규와 과거 지침을 구분한다.",
+      "history_supplied": [
+        {
+          "user": "지금은 돌아온 뒤 며칠 안에 정산해?",
+          "assistant": "자료없음"
+        }
+      ],
+      "generated": {
+        "answer": "6일",
+        "input_tokens": 106,
+        "generated_tokens_including_eos": 3,
+        "first_token_seconds": 0.004,
+        "total_seconds": 0.0091,
+        "tokens_per_second_including_prefill": 328.75,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "K07-3",
+      "document": "가상 솔빛공사의 이전 지침은 정산 기한을 복귀 후 6일로 정했다. 현재 시행 중인 개정 지침은 복귀 후 9일로 바꾸었다.",
+      "category": "missing",
+      "question": "언제 개정됐는데?",
+      "reference": "개정 날짜는 문서에 없습니다.",
+      "rubric": "시행 여부와 날짜의 부재를 구분한다.",
+      "history_supplied": [
+        {
+          "user": "지금은 돌아온 뒤 며칠 안에 정산해?",
+          "assistant": "자료없음"
+        },
+        {
+          "user": "6일이라고 써 있는 건 뭐야?",
+          "assistant": "6일"
+        }
+      ],
+      "generated": {
+        "answer": "6일",
+        "input_tokens": 116,
+        "generated_tokens_including_eos": 3,
+        "first_token_seconds": 0.0044,
+        "total_seconds": 0.0094,
+        "tokens_per_second_including_prefill": 319.07,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "K08-1",
+      "document": "가상 규정 샘플 R27이다. 문서에 기관명은 없다. 교육 신청은 배움지원팀이 접수하며 수강료는 4만6천원이다.",
+      "category": "missing",
+      "question": "어느 공공기관에서 만든 거야?",
+      "reference": "기관명이 없는 가상 규정 샘플입니다.",
+      "rubric": "배움지원팀을 기관명으로 답하지 않는다.",
+      "history_supplied": [],
+      "generated": {
+        "answer": "어떤 내용을 바탕으로 어떤 일이 있었는지 들려주실래요?",
+        "input_tokens": 83,
+        "generated_tokens_including_eos": 18,
+        "first_token_seconds": 0.0038,
+        "total_seconds": 0.0467,
+        "tokens_per_second_including_prefill": 385.13,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "K08-2",
+      "document": "가상 규정 샘플 R27이다. 문서에 기관명은 없다. 교육 신청은 배움지원팀이 접수하며 수강료는 4만6천원이다.",
+      "category": "entity",
+      "question": "그럼 배움지원팀은 뭔데?",
+      "reference": "교육 신청을 접수하는 팀입니다.",
+      "rubric": "기관명 대신 담당 역할을 설명한다.",
+      "history_supplied": [
+        {
+          "user": "어느 공공기관에서 만든 거야?",
+          "assistant": "어떤 내용을 바탕으로 어떤 일이 있었는지 들려주실래요?"
+        }
+      ],
+      "generated": {
+        "answer": "어떤 내용을 말씀하시는지 조금 더 구체적으로 알려 주시겠어요?",
+        "input_tokens": 116,
+        "generated_tokens_including_eos": 22,
+        "first_token_seconds": 0.0043,
+        "total_seconds": 0.0577,
+        "tokens_per_second_including_prefill": 381.34,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "K08-3",
+      "document": "가상 규정 샘플 R27이다. 문서에 기관명은 없다. 교육 신청은 배움지원팀이 접수하며 수강료는 4만6천원이다.",
+      "category": "amount",
+      "question": "수강료만 다시 말해줘.",
+      "reference": "4만6천원",
+      "rubric": "금액을 다른 항목과 섞지 않는다.",
+      "history_supplied": [
+        {
+          "user": "어느 공공기관에서 만든 거야?",
+          "assistant": "어떤 내용을 바탕으로 어떤 일이 있었는지 들려주실래요?"
+        },
+        {
+          "user": "그럼 배움지원팀은 뭔데?",
+          "assistant": "어떤 내용을 말씀하시는지 조금 더 구체적으로 알려 주시겠어요?"
+        }
+      ],
+      "generated": {
+        "answer": "해야 할 일을 적고 중요한 순서로 나눠 보세요. 오늘 꼭 끝낼 일 세 가지부터 정하면 좋아요.",
+        "input_tokens": 150,
+        "generated_tokens_including_eos": 28,
+        "first_token_seconds": 0.0048,
+        "total_seconds": 0.0737,
+        "tokens_per_second_including_prefill": 380.09,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "K09-1",
+      "document": "가상 아람센터의 같은 날짜 안내문 A는 접수 마감을 오후 4시, 안내문 B는 오후 5시로 적었다. 어느 안내문이 우선하는지는 정하지 않았다.",
+      "category": "conflict",
+      "question": "오늘 신청 마감 몇 시야?",
+      "reference": "안내문이 오후 4시와 5시로 서로 달라 확인이 필요합니다.",
+      "rubric": "근거 없이 하나를 고르지 않는다.",
+      "history_supplied": [],
+      "generated": {
+        "answer": "규정충돌",
+        "input_tokens": 89,
+        "generated_tokens_including_eos": 5,
+        "first_token_seconds": 0.0038,
+        "total_seconds": 0.014,
+        "tokens_per_second_including_prefill": 358.03,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "K09-2",
+      "document": "가상 아람센터의 같은 날짜 안내문 A는 접수 마감을 오후 4시, 안내문 B는 오후 5시로 적었다. 어느 안내문이 우선하는지는 정하지 않았다.",
+      "category": "conflict",
+      "question": "그냥 늦은 시간으로 믿으면 안 돼?",
+      "reference": "우선순위가 없어 오후 5시로 단정할 수 없습니다.",
+      "rubric": "사용자의 제안으로 충돌을 임의 해결하지 않는다.",
+      "history_supplied": [
+        {
+          "user": "오늘 신청 마감 몇 시야?",
+          "assistant": "규정충돌"
+        }
+      ],
+      "generated": {
+        "answer": "규정충돌",
+        "input_tokens": 108,
+        "generated_tokens_including_eos": 5,
+        "first_token_seconds": 0.0041,
+        "total_seconds": 0.0142,
+        "tokens_per_second_including_prefill": 351.72,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "K09-3",
+      "document": "가상 아람센터의 같은 날짜 안내문 A는 접수 마감을 오후 4시, 안내문 B는 오후 5시로 적었다. 어느 안내문이 우선하는지는 정하지 않았다.",
+      "category": "missing",
+      "question": "확인하려면 누구한테 전화해?",
+      "reference": "확인할 담당자나 연락처는 문서에 없습니다.",
+      "rubric": "없는 연락처를 만들지 않는다.",
+      "history_supplied": [
+        {
+          "user": "오늘 신청 마감 몇 시야?",
+          "assistant": "규정충돌"
+        },
+        {
+          "user": "그냥 늦은 시간으로 믿으면 안 돼?",
+          "assistant": "규정충돌"
+        }
+      ],
+      "generated": {
+        "answer": "규정충돌",
+        "input_tokens": 125,
+        "generated_tokens_including_eos": 5,
+        "first_token_seconds": 0.0043,
+        "total_seconds": 0.0143,
+        "tokens_per_second_including_prefill": 350.67,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "K10-1",
+      "document": "가상 여울재단의 재택근무는 부서장 사전 승인이 있어야 한다. 승인 없이 재택근무를 시작할 수 없다. 신청은 전자결재로 한다.",
+      "category": "condition",
+      "question": "신청만 올리면 바로 집에서 일해도 돼?",
+      "reference": "부서장 사전 승인을 받아야 합니다.",
+      "rubric": "신청과 승인을 구분한다.",
+      "history_supplied": [],
+      "generated": {
+        "answer": "자료없음",
+        "input_tokens": 89,
+        "generated_tokens_including_eos": 5,
+        "first_token_seconds": 0.0038,
+        "total_seconds": 0.0137,
+        "tokens_per_second_including_prefill": 364.16,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "K10-2",
+      "document": "가상 여울재단의 재택근무는 부서장 사전 승인이 있어야 한다. 승인 없이 재택근무를 시작할 수 없다. 신청은 전자결재로 한다.",
+      "category": "entity",
+      "question": "누구 허락이 필요한 거였지?",
+      "reference": "부서장",
+      "rubric": "이전 조건의 승인 주체를 답한다.",
+      "history_supplied": [
+        {
+          "user": "신청만 올리면 바로 집에서 일해도 돼?",
+          "assistant": "자료없음"
+        }
+      ],
+      "generated": {
+        "answer": "말씀하신 내용을 바탕으로 답하려고 하고 있어요. 제가 잘못 이해할게요.",
+        "input_tokens": 105,
+        "generated_tokens_including_eos": 22,
+        "first_token_seconds": 0.004,
+        "total_seconds": 0.0567,
+        "tokens_per_second_including_prefill": 387.74,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "K10-3",
+      "document": "가상 여울재단의 재택근무는 부서장 사전 승인이 있어야 한다. 승인 없이 재택근무를 시작할 수 없다. 신청은 전자결재로 한다.",
+      "category": "missing",
+      "question": "일주일에 최대 며칠까지 가능해?",
+      "reference": "주당 재택근무 가능 일수는 문서에 없습니다.",
+      "rubric": "근거 없는 일수를 생성하지 않는다.",
+      "history_supplied": [
+        {
+          "user": "신청만 올리면 바로 집에서 일해도 돼?",
+          "assistant": "자료없음"
+        },
+        {
+          "user": "누구 허락이 필요한 거였지?",
+          "assistant": "말씀하신 내용을 바탕으로 답하려고 하고 있어요. 제가 잘못 이해할게요."
+        }
+      ],
+      "generated": {
+        "answer": "18일",
+        "input_tokens": 141,
+        "generated_tokens_including_eos": 3,
+        "first_token_seconds": 0.0047,
+        "total_seconds": 0.0099,
+        "tokens_per_second_including_prefill": 303.68,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "K11-1",
+      "document": "가상 푸른시험소는 공용 카드를 사용한 다음 날까지 반납하도록 한다. 영수증은 사용 후 4일 이내 제출한다. 휴일 예외는 명시하지 않았다.",
+      "category": "duration",
+      "question": "영수증도 다음 날까지 내야 해?",
+      "reference": "영수증은 사용 후 4일 이내 제출합니다.",
+      "rubric": "카드 반납과 영수증 제출 기한을 구분한다.",
+      "history_supplied": [],
+      "generated": {
+        "answer": "실시간 날씨는 확인할 수 없어요. 날씨 앱이나 기상 정보를 확인해 주세요.",
+        "input_tokens": 89,
+        "generated_tokens_including_eos": 24,
+        "first_token_seconds": 0.0038,
+        "total_seconds": 0.0615,
+        "tokens_per_second_including_prefill": 390.51,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "K11-2",
+      "document": "가상 푸른시험소는 공용 카드를 사용한 다음 날까지 반납하도록 한다. 영수증은 사용 후 4일 이내 제출한다. 휴일 예외는 명시하지 않았다.",
+      "category": "duration",
+      "question": "카드 자체는 언제 돌려줘?",
+      "reference": "사용한 다음 날까지입니다.",
+      "rubric": "반납 물건의 기한을 선택한다.",
+      "history_supplied": [
+        {
+          "user": "영수증도 다음 날까지 내야 해?",
+          "assistant": "실시간 날씨는 확인할 수 없어요. 날씨 앱이나 기상 정보를 확인해 주세요."
+        }
+      ],
+      "generated": {
+        "answer": "4일",
+        "input_tokens": 125,
+        "generated_tokens_including_eos": 3,
+        "first_token_seconds": 0.0044,
+        "total_seconds": 0.0094,
+        "tokens_per_second_including_prefill": 318.65,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "K11-3",
+      "document": "가상 푸른시험소는 공용 카드를 사용한 다음 날까지 반납하도록 한다. 영수증은 사용 후 4일 이내 제출한다. 휴일 예외는 명시하지 않았다.",
+      "category": "missing",
+      "question": "다음 날이 휴일이면 자동 연장되지?",
+      "reference": "휴일 예외가 명시되어 있지 않아 자동 연장 여부를 알 수 없습니다.",
+      "rubric": "상식으로 규정을 보충하지 않는다.",
+      "history_supplied": [
+        {
+          "user": "영수증도 다음 날까지 내야 해?",
+          "assistant": "실시간 날씨는 확인할 수 없어요. 날씨 앱이나 기상 정보를 확인해 주세요."
+        },
+        {
+          "user": "카드 자체는 언제 돌려줘?",
+          "assistant": "4일"
+        }
+      ],
+      "generated": {
+        "answer": "실시간 날씨는 확인할 수 없어요. 날씨 앱이나 기상 정보를 확인해 주세요.",
+        "input_tokens": 140,
+        "generated_tokens_including_eos": 24,
+        "first_token_seconds": 0.0046,
+        "total_seconds": 0.0625,
+        "tokens_per_second_including_prefill": 384.29,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "K12-1",
+      "document": "가상 온빛센터의 안전교육은 직원에게 무료다. 외부 방문자는 1만8천원을 낸다. 교육 시간은 90분이다.",
+      "category": "amount",
+      "question": "직원도 만팔천원 내는 거야?",
+      "reference": "직원은 무료입니다.",
+      "rubric": "대상별 요금을 구분한다.",
+      "history_supplied": [],
+      "generated": {
+        "answer": "자료없음",
+        "input_tokens": 83,
+        "generated_tokens_including_eos": 5,
+        "first_token_seconds": 0.0039,
+        "total_seconds": 0.0138,
+        "tokens_per_second_including_prefill": 361.69,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "K12-2",
+      "document": "가상 온빛센터의 안전교육은 직원에게 무료다. 외부 방문자는 1만8천원을 낸다. 교육 시간은 90분이다.",
+      "category": "amount",
+      "question": "외부에서 온 사람은?",
+      "reference": "외부 방문자는 1만8천원을 냅니다.",
+      "rubric": "생략된 요금 질문을 연결한다.",
+      "history_supplied": [
+        {
+          "user": "직원도 만팔천원 내는 거야?",
+          "assistant": "자료없음"
+        }
+      ],
+      "generated": {
+        "answer": "네, 여기서 이야기 나눌 수 있어요. 오늘은 어떤 하루를 보내셨나요?",
+        "input_tokens": 95,
+        "generated_tokens_including_eos": 22,
+        "first_token_seconds": 0.0038,
+        "total_seconds": 0.0572,
+        "tokens_per_second_including_prefill": 384.79,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "K12-3",
+      "document": "가상 온빛센터의 안전교육은 직원에게 무료다. 외부 방문자는 1만8천원을 낸다. 교육 시간은 90분이다.",
+      "category": "duration",
+      "question": "그 금액 말고 얼마나 오래 듣냐고.",
+      "reference": "90분",
+      "rubric": "수강료에서 교육 시간으로 질문 대상을 전환한다.",
+      "history_supplied": [
+        {
+          "user": "직원도 만팔천원 내는 거야?",
+          "assistant": "자료없음"
+        },
+        {
+          "user": "외부에서 온 사람은?",
+          "assistant": "네, 여기서 이야기 나눌 수 있어요. 오늘은 어떤 하루를 보내셨나요?"
+        }
+      ],
+      "generated": {
+        "answer": "12만원",
+        "input_tokens": 131,
+        "generated_tokens_including_eos": 4,
+        "first_token_seconds": 0.0046,
+        "total_seconds": 0.0123,
+        "tokens_per_second_including_prefill": 323.91,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "C01-1",
+      "document": "가상 별숲원의 식비는 하루 2만6천원이다. 총 출장비 기준은 없다.",
+      "category": "correction",
+      "question": "9만원이라고? 문서 다시 봐봐.",
+      "reference": "하루 식비는 2만6천원이며 앞선 9만원은 잘못된 답변이라고 정정한다.",
+      "rubric": "하루 식비는 2만6천원이며 앞선 9만원은 잘못된 답변이라고 정정한다.",
+      "history_supplied": [
+        {
+          "user": "식비 하루 얼마야?",
+          "assistant": "하루 9만원입니다."
+        }
+      ],
+      "generated": {
+        "answer": "이름은 예은 잠시 미루고 쉬어도 괜찮아요.",
+        "input_tokens": 90,
+        "generated_tokens_including_eos": 20,
+        "first_token_seconds": 0.0043,
+        "total_seconds": 0.0529,
+        "tokens_per_second_including_prefill": 378.13,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "C02-1",
+      "document": "가상 자료 S82에는 기관명이 없다. 접수 담당 부서는 민원지원실이다.",
+      "category": "correction",
+      "question": "그건 부서 이름이잖아. 기관은?",
+      "reference": "민원지원실은 접수 부서이며 기관명은 자료에 없다고 정정한다.",
+      "rubric": "민원지원실은 접수 부서이며 기관명은 자료에 없다고 정정한다.",
+      "history_supplied": [
+        {
+          "user": "기관 이름이 뭐야?",
+          "assistant": "민원지원실입니다."
+        }
+      ],
+      "generated": {
+        "answer": "정보지원팀",
+        "input_tokens": 87,
+        "generated_tokens_including_eos": 4,
+        "first_token_seconds": 0.0038,
+        "total_seconds": 0.0116,
+        "tokens_per_second_including_prefill": 344.58,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "C03-1",
+      "document": "가상 가람원의 신청 기한은 행사 3일 전이다. 행사 날짜는 제시되지 않았다.",
+      "category": "correction",
+      "question": "8일 전이라는 근거가 어디 있어?",
+      "reference": "8일은 오류이며 행사 3일 전이라고 정정한다. 임의 날짜를 만들지 않는다.",
+      "rubric": "8일은 오류이며 행사 3일 전이라고 정정한다. 임의 날짜를 만들지 않는다.",
+      "history_supplied": [
+        {
+          "user": "신청은 언제까지야?",
+          "assistant": "행사 8일 전까지입니다."
+        }
+      ],
+      "generated": {
+        "answer": "자료없음",
+        "input_tokens": 86,
+        "generated_tokens_including_eos": 5,
+        "first_token_seconds": 0.0038,
+        "total_seconds": 0.0138,
+        "tokens_per_second_including_prefill": 361.39,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "C04-1",
+      "document": "가상 나래센터는 외부인의 기록실 출입을 허용하지 않는다.",
+      "category": "correction",
+      "question": "허용하지 않는다고 써 있는데?",
+      "reference": "외부인은 출입할 수 없으며 이전 답이 잘못됐다고 인정한다.",
+      "rubric": "외부인은 출입할 수 없으며 이전 답이 잘못됐다고 인정한다.",
+      "history_supplied": [
+        {
+          "user": "외부인도 기록실 들어갈 수 있어?",
+          "assistant": "네, 출입할 수 있습니다."
+        }
+      ],
+      "generated": {
+        "answer": "정보지원팀",
+        "input_tokens": 80,
+        "generated_tokens_including_eos": 4,
+        "first_token_seconds": 0.081,
+        "total_seconds": 0.0937,
+        "tokens_per_second_including_prefill": 42.68,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    }
+  ]
+}

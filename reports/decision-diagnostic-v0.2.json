@@ -1,0 +1,363 @@
+{
+  "run": "runs/dialogue-dev-snapshot-06",
+  "model_weights_sha256": "46c76f7e9e5b751cf477c10e3fa9b4e943c2a92dfeb7864133b7fec41eb1b8fd",
+  "intent_map_source": "runs/trid-dialogue-v4/training.json",
+  "note": "Training-only auxiliary head, never used for chat responses. Head received no gradient during v5 while backbone changed. Raw softmax is NOT calibrated reliability. Same final prompts already observed, this is a post-hoc diagnostic, not new independent evaluation.",
+  "correct": 6,
+  "in_scope": 14,
+  "out_of_scope": 2,
+  "results": [
+    {
+      "id": "greet",
+      "prompt": "반갑습니다. 잠깐 얘기 나눌 수 있을까요?",
+      "expected_topics": [
+        "greeting"
+      ],
+      "top3": [
+        {
+          "topic": "plan",
+          "uncalibrated_softmax": 0.2594
+        },
+        {
+          "topic": "internet",
+          "uncalibrated_softmax": 0.1571
+        },
+        {
+          "topic": "sleepy",
+          "uncalibrated_softmax": 0.1119
+        }
+      ],
+      "correct": false
+    },
+    {
+      "id": "identity",
+      "prompt": "이 대화 상대의 이름이 궁금해요.",
+      "expected_topics": [
+        "identity"
+      ],
+      "top3": [
+        {
+          "topic": "identity",
+          "uncalibrated_softmax": 0.9966
+        },
+        {
+          "topic": "name_introduction",
+          "uncalibrated_softmax": 0.0005
+        },
+        {
+          "topic": "hungry",
+          "uncalibrated_softmax": 0.0002
+        }
+      ],
+      "correct": true
+    },
+    {
+      "id": "thanks",
+      "prompt": "시간 내서 답해 줘서 감사해요.",
+      "expected_topics": [
+        "thanks"
+      ],
+      "top3": [
+        {
+          "topic": "thanks",
+          "uncalibrated_softmax": 0.9965
+        },
+        {
+          "topic": "followup",
+          "uncalibrated_softmax": 0.0002
+        },
+        {
+          "topic": "music",
+          "uncalibrated_softmax": 0.0002
+        }
+      ],
+      "correct": true
+    },
+    {
+      "id": "farewell",
+      "prompt": "이만 대화를 마치고 나가 볼게요.",
+      "expected_topics": [
+        "farewell"
+      ],
+      "top3": [
+        {
+          "topic": "greeting",
+          "uncalibrated_softmax": 0.7795
+        },
+        {
+          "topic": "farewell",
+          "uncalibrated_softmax": 0.1887
+        },
+        {
+          "topic": "memory",
+          "uncalibrated_softmax": 0.0062
+        }
+      ],
+      "correct": false
+    },
+    {
+      "id": "tired",
+      "prompt": "아침부터 계속 일해서 기운이 하나도 없어.",
+      "expected_topics": [
+        "tired"
+      ],
+      "top3": [
+        {
+          "topic": "tired",
+          "uncalibrated_softmax": 0.9447
+        },
+        {
+          "topic": "repeat",
+          "uncalibrated_softmax": 0.0296
+        },
+        {
+          "topic": "hot",
+          "uncalibrated_softmax": 0.0047
+        }
+      ],
+      "correct": true
+    },
+    {
+      "id": "happy",
+      "prompt": "준비하던 일이 잘 풀려서 정말 기쁘다.",
+      "expected_topics": [
+        "happy",
+        "success"
+      ],
+      "top3": [
+        {
+          "topic": "tired",
+          "uncalibrated_softmax": 0.8105
+        },
+        {
+          "topic": "happy",
+          "uncalibrated_softmax": 0.0254
+        },
+        {
+          "topic": "formal",
+          "uncalibrated_softmax": 0.0158
+        }
+      ],
+      "correct": false
+    },
+    {
+      "id": "plan",
+      "prompt": "해야 할 것들이 잔뜩인데 뭐부터 정리할지 고민이야.",
+      "expected_topics": [
+        "plan",
+        "stress"
+      ],
+      "top3": [
+        {
+          "topic": "plan",
+          "uncalibrated_softmax": 0.9444
+        },
+        {
+          "topic": "hobby",
+          "uncalibrated_softmax": 0.0069
+        },
+        {
+          "topic": "thanks",
+          "uncalibrated_softmax": 0.0054
+        }
+      ],
+      "correct": true
+    },
+    {
+      "id": "clarify",
+      "prompt": "그걸 좀 더 괜찮게 해 줄 수 있니?",
+      "expected_topics": [
+        "clarify"
+      ],
+      "top3": [
+        {
+          "topic": "negative",
+          "uncalibrated_softmax": 0.262
+        },
+        {
+          "topic": "unknown",
+          "uncalibrated_softmax": 0.1468
+        },
+        {
+          "topic": "mood",
+          "uncalibrated_softmax": 0.0808
+        }
+      ],
+      "correct": false
+    },
+    {
+      "id": "limit",
+      "prompt": "네 대답을 확인하지 않고 그대로 써도 될까?",
+      "expected_topics": [
+        "limitations"
+      ],
+      "top3": [
+        {
+          "topic": "clarify",
+          "uncalibrated_softmax": 0.1934
+        },
+        {
+          "topic": "limitations",
+          "uncalibrated_softmax": 0.15
+        },
+        {
+          "topic": "identity",
+          "uncalibrated_softmax": 0.1449
+        }
+      ],
+      "correct": false
+    },
+    {
+      "id": "external",
+      "prompt": "인터넷에서 방금 나온 소식을 가져올래?",
+      "expected_topics": [
+        "internet"
+      ],
+      "top3": [
+        {
+          "topic": "learn",
+          "uncalibrated_softmax": 0.6949
+        },
+        {
+          "topic": "privacy",
+          "uncalibrated_softmax": 0.0602
+        },
+        {
+          "topic": "weather",
+          "uncalibrated_softmax": 0.0512
+        }
+      ],
+      "correct": false
+    },
+    {
+      "id": "privacy",
+      "prompt": "여기 쓴 문장은 외부 컴퓨터로 보내지는 거야?",
+      "expected_topics": [
+        "privacy"
+      ],
+      "top3": [
+        {
+          "topic": "human",
+          "uncalibrated_softmax": 0.8753
+        },
+        {
+          "topic": "privacy",
+          "uncalibrated_softmax": 0.0516
+        },
+        {
+          "topic": "identity",
+          "uncalibrated_softmax": 0.027
+        }
+      ],
+      "correct": false
+    },
+    {
+      "id": "food",
+      "prompt": "아직 식사를 못 해서 속이 비어 있는 느낌이야.",
+      "expected_topics": [
+        "hungry",
+        "lunch"
+      ],
+      "top3": [
+        {
+          "topic": "rain",
+          "uncalibrated_softmax": 0.4836
+        },
+        {
+          "topic": "identity",
+          "uncalibrated_softmax": 0.228
+        },
+        {
+          "topic": "name_introduction",
+          "uncalibrated_softmax": 0.1267
+        }
+      ],
+      "correct": false
+    },
+    {
+      "id": "memory",
+      "prompt": "조금 전에 내 이름을 말했는데 기억나?",
+      "expected_topics": [
+        "name_memory"
+      ],
+      "top3": [
+        {
+          "topic": "name_memory",
+          "uncalibrated_softmax": 0.9989
+        },
+        {
+          "topic": "memory",
+          "uncalibrated_softmax": 0.0001
+        },
+        {
+          "topic": "internet",
+          "uncalibrated_softmax": 0.0001
+        }
+      ],
+      "correct": true
+    },
+    {
+      "id": "followup",
+      "prompt": "좋아, 우선 급한 것부터 해 볼게.",
+      "expected_topics": [
+        "followup",
+        "like"
+      ],
+      "top3": [
+        {
+          "topic": "followup",
+          "uncalibrated_softmax": 0.5253
+        },
+        {
+          "topic": "like",
+          "uncalibrated_softmax": 0.2082
+        },
+        {
+          "topic": "farewell",
+          "uncalibrated_softmax": 0.1387
+        }
+      ],
+      "correct": true
+    },
+    {
+      "id": "novel",
+      "prompt": "택배가 도착해서 문 앞에 가 보려고 해.",
+      "expected_topics": [],
+      "top3": [
+        {
+          "topic": "privacy",
+          "uncalibrated_softmax": 0.1545
+        },
+        {
+          "topic": "unknown",
+          "uncalibrated_softmax": 0.1057
+        },
+        {
+          "topic": "repeat",
+          "uncalibrated_softmax": 0.077
+        }
+      ],
+      "correct": null
+    },
+    {
+      "id": "novel2",
+      "prompt": "커피를 책상에 쏟았어. 좀 당황스럽네.",
+      "expected_topics": [],
+      "top3": [
+        {
+          "topic": "book",
+          "uncalibrated_softmax": 0.2946
+        },
+        {
+          "topic": "name_introduction",
+          "uncalibrated_softmax": 0.1904
+        },
+        {
+          "topic": "greeting",
+          "uncalibrated_softmax": 0.1455
+        }
+      ],
+      "correct": null
+    }
+  ]
+}

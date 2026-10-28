@@ -1,0 +1,104 @@
+test_auxiliary_intent_uses_prompt_without_answer_leakage (test_core.CoreTests.test_auxiliary_intent_uses_prompt_without_answer_leakage) ... ok
+test_cache_matches_full_forward (test_core.CoreTests.test_cache_matches_full_forward) ... ok
+test_causal_no_future_leak (test_core.CoreTests.test_causal_no_future_leak) ... ok
+test_checkpoint_roundtrip (test_core.CoreTests.test_checkpoint_roundtrip) ... ok
+test_context_limit (test_core.CoreTests.test_context_limit) ... ok
+test_history_mask_and_context_budget (test_core.CoreTests.test_history_mask_and_context_budget) ... 
+
+
+ok
+test_tokenizer_roundtrip_and_loss_mask (test_core.CoreTests.test_tokenizer_roundtrip_and_loss_mask) ... 
+
+
+ok
+test_training_has_finite_gradients (test_core.CoreTests.test_training_has_finite_gradients) ... ok
+test_near_duplicate_is_checked_by_actual_shingle_overlap (test_korean_data.KoreanDataTests.test_near_duplicate_is_checked_by_actual_shingle_overlap) ... ok
+test_nfc_shingles_match (test_korean_data.KoreanDataTests.test_nfc_shingles_match) ... ok
+test_decode_order_boundary_and_source_only (test_korean_reader.KoreanReaderTests.test_decode_order_boundary_and_source_only) ... 
+
+
+ok
+test_hidden_only_matches_generation_backbone (test_korean_reader.KoreanReaderTests.test_hidden_only_matches_generation_backbone) ... 
+
+
+ok
+test_labels_do_not_leak_and_question_is_excluded (test_korean_reader.KoreanReaderTests.test_labels_do_not_leak_and_question_is_excluded) ... 
+
+
+ok
+test_loss_gradient_and_batch_invariance (test_korean_reader.KoreanReaderTests.test_loss_gradient_and_batch_invariance) ... 
+
+
+ok
+test_equal_example_weight_despite_answer_length (test_loss_normalization.LossNormalizationTests.test_equal_example_weight_despite_answer_length) ... ok
+test_missing_answer_targets_rejected (test_loss_normalization.LossNormalizationTests.test_missing_answer_targets_rejected) ... ok
+test_validation_invariant_to_uneven_batches_and_padding (test_loss_normalization.LossNormalizationTests.test_validation_invariant_to_uneven_batches_and_padding) ... ok
+test_matches_frozen_reading_training_format (test_mrc_prompt.MrcPromptTests.test_matches_frozen_reading_training_format) ... ok
+test_local_host_token_origin_and_no_cache (test_pdf_app.PdfAppTests.test_local_host_token_origin_and_no_cache) ... ok
+test_upload_clear_and_stale_document (test_pdf_app.PdfAppTests.test_upload_clear_and_stale_document) ... ok
+test_chunks_preserve_page_offsets (test_pdf_documents.PdfDocumentTests.test_chunks_preserve_page_offsets) ... ok
+test_invalid_blank_encrypted_pdf (test_pdf_documents.PdfDocumentTests.test_invalid_blank_encrypted_pdf) ... ok
+test_korean_pdf_pages_and_text (test_pdf_documents.PdfDocumentTests.test_korean_pdf_pages_and_text) ... ok
+test_multiple_candidates_require_review_and_grounding (test_pdf_documents.PdfDocumentTests.test_multiple_candidates_require_review_and_grounding) ... ok
+test_no_filename_institution_inference (test_pdf_documents.PdfDocumentTests.test_no_filename_institution_inference) ... ok
+test_all_tokens_are_next_token_targets (test_pretraining.PretrainingTests.test_all_tokens_are_next_token_targets) ... ok
+test_continuation_preserves_parent_and_resumes_new_schedule (test_pretraining.PretrainingTests.test_continuation_preserves_parent_and_resumes_new_schedule) ... 
+
+
+ok
+test_corpus_reuses_tokenizer_bytes (test_pretraining.PretrainingTests.test_corpus_reuses_tokenizer_bytes) ... 
+
+
+ok
+test_dialogue_training_inherits_own_weights_and_tokenizer (test_pretraining.PretrainingTests.test_dialogue_training_inherits_own_weights_and_tokenizer) ... 
+
+
+ok
+test_document_split_and_duplicate_rejection (test_pretraining.PretrainingTests.test_document_split_and_duplicate_rejection) ... ok
+test_resume_matches_uninterrupted_training (test_pretraining.PretrainingTests.test_resume_matches_uninterrupted_training) ... 
+
+
+ok
+test_sft_keeps_initial_weights_if_validation_worsens_and_extends_context (test_pretraining.PretrainingTests.test_sft_keeps_initial_weights_if_validation_worsens_and_extends_context) ... 
+
+
+ok
+test_gold_does_not_change_inference_inputs_or_candidate_mask (test_reader.ReaderTests.test_gold_does_not_change_inference_inputs_or_candidate_mask) ... 
+
+
+ok
+test_label_does_not_match_inside_a_different_number (test_reader.ReaderTests.test_label_does_not_match_inside_a_different_number) ... 
+
+
+ok
+test_loss_backprop_and_null_examples (test_reader.ReaderTests.test_loss_backprop_and_null_examples) ... 
+
+
+ok
+test_predicted_span_is_inside_evidence (test_reader.ReaderTests.test_predicted_span_is_inside_evidence) ... 
+
+
+ok
+test_continue_both_components_preserves_parent_and_heads (test_short_continuation.ShortContinuationTests.test_continue_both_components_preserves_parent_and_heads) ... 
+
+
+ok
+test_curriculum_split_and_balance (test_short_reader.ShortReaderTests.test_curriculum_split_and_balance) ... 
+
+
+ok
+test_independent_objectives_and_parameters (test_short_reader.ShortReaderTests.test_independent_objectives_and_parameters) ... 
+
+
+ok
+test_pipeline_gate_does_not_change_span (test_short_reader.ShortReaderTests.test_pipeline_gate_does_not_change_span) ... 
+
+
+ok
+test_controls_and_normal_questions (test_terminal_input.TerminalInputTests.test_controls_and_normal_questions) ... ok
+test_pasted_shell_command_never_becomes_model_question (test_terminal_input.TerminalInputTests.test_pasted_shell_command_never_becomes_model_question) ... ok
+
+----------------------------------------------------------------------
+Ran 42 tests in 0.979s
+
+OK

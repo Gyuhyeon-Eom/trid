@@ -1,0 +1,85 @@
+{
+  "platform": "macOS-26.2-arm64-arm-64bit",
+  "torch": "2.14.1",
+  "device": "mps",
+  "measured_at_unix": 1793065656.086076,
+  "scope": "Random-token full precision AdamW sizing, batch=2, two warmup + four timed steps. No useful model weights saved; no semantic capability claimed. Allocator samples are not guaranteed peak memory; not a sustained thermal/load benchmark.",
+  "results": [
+    {
+      "config": {
+        "vocab_size": 8192,
+        "dim": 512,
+        "layers": 12,
+        "heads": 8,
+        "hidden_dim": 1536,
+        "context_length": 512,
+        "rope_theta": 10000.0,
+        "num_intents": 0
+      },
+      "parameters": 45101568,
+      "batch_size": 2,
+      "measured_steps": 4,
+      "seconds_per_step": 0.18377227103337646,
+      "tokens_per_second": 5572.113759284297,
+      "max_observed_mps_allocated_bytes_after_backward": 756769024,
+      "max_observed_driver_bytes_after_backward": 2250997760
+    },
+    {
+      "config": {
+        "vocab_size": 8192,
+        "dim": 512,
+        "layers": 12,
+        "heads": 8,
+        "hidden_dim": 1536,
+        "context_length": 1024,
+        "rope_theta": 10000.0,
+        "num_intents": 0
+      },
+      "parameters": 45101568,
+      "batch_size": 2,
+      "measured_steps": 4,
+      "seconds_per_step": 0.43566178157925606,
+      "tokens_per_second": 4700.894332700206,
+      "max_observed_mps_allocated_bytes_after_backward": 791912704,
+      "max_observed_driver_bytes_after_backward": 3391832064
+    },
+    {
+      "config": {
+        "vocab_size": 8192,
+        "dim": 768,
+        "layers": 12,
+        "heads": 12,
+        "hidden_dim": 2048,
+        "context_length": 512,
+        "rope_theta": 10000.0,
+        "num_intents": 0
+      },
+      "parameters": 91245312,
+      "batch_size": 2,
+      "measured_steps": 4,
+      "seconds_per_step": 0.3234415623592213,
+      "tokens_per_second": 3165.9505739794913,
+      "max_observed_mps_allocated_bytes_after_backward": 1525477632,
+      "max_observed_driver_bytes_after_backward": 3677044736
+    },
+    {
+      "config": {
+        "vocab_size": 8192,
+        "dim": 768,
+        "layers": 12,
+        "heads": 12,
+        "hidden_dim": 2048,
+        "context_length": 1024,
+        "rope_theta": 10000.0,
+        "num_intents": 0
+      },
+      "parameters": 91245312,
+      "batch_size": 2,
+      "measured_steps": 4,
+      "seconds_per_step": 0.7766719164792448,
+      "tokens_per_second": 2636.892047396089,
+      "max_observed_mps_allocated_bytes_after_backward": 1545941248,
+      "max_observed_driver_bytes_after_backward": 5522538496
+    }
+  ]
+}

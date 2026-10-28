@@ -1,0 +1,61 @@
+{
+  "protocol": "Developer-authored independent-question diagnostic. Original T01 plus counterfactual replacements. Not training data, not an independent benchmark. No model selection on these cases.",
+  "cases": [
+    {
+      "id": "T01-original/food",
+      "document": "가상기관 규정: 국내 출장 식비는 하루 3만원이다. 출장비 정산은 복귀 후 7일 이내에 신청한다. 담당 부서는 운영지원팀이다.",
+      "question": "국내 출장 식비는 하루 얼마야?",
+      "answer": "3만원",
+      "is_impossible": false
+    },
+    {
+      "id": "T01-original/deadline",
+      "document": "가상기관 규정: 국내 출장 식비는 하루 3만원이다. 출장비 정산은 복귀 후 7일 이내에 신청한다. 담당 부서는 운영지원팀이다.",
+      "question": "출장비 정산은 복귀 후 며칠 이내에 신청해야 해?",
+      "answer": "7일",
+      "is_impossible": false
+    },
+    {
+      "id": "T01-original/department",
+      "document": "가상기관 규정: 국내 출장 식비는 하루 3만원이다. 출장비 정산은 복귀 후 7일 이내에 신청한다. 담당 부서는 운영지원팀이다.",
+      "question": "담당 부서는 어디야?",
+      "answer": "운영지원팀",
+      "is_impossible": false
+    },
+    {
+      "id": "T01-original/missing-name",
+      "document": "가상기관 규정: 국내 출장 식비는 하루 3만원이다. 출장비 정산은 복귀 후 7일 이내에 신청한다. 담당 부서는 운영지원팀이다.",
+      "question": "공공기관 이름이 뭔데?",
+      "answer": null,
+      "is_impossible": true
+    },
+    {
+      "id": "T01-counterfactual/food",
+      "document": "가상기관 규정: 국내 출장 식비는 하루 5만원이다. 출장비 정산은 복귀 후 12일 이내에 신청한다. 담당 부서는 재무지원팀이다.",
+      "question": "국내 출장 식비는 하루 얼마야?",
+      "answer": "5만원",
+      "is_impossible": false
+    },
+    {
+      "id": "T01-counterfactual/deadline",
+      "document": "가상기관 규정: 국내 출장 식비는 하루 5만원이다. 출장비 정산은 복귀 후 12일 이내에 신청한다. 담당 부서는 재무지원팀이다.",
+      "question": "출장비 정산은 복귀 후 며칠 이내에 신청해야 해?",
+      "answer": "12일",
+      "is_impossible": false
+    },
+    {
+      "id": "T01-counterfactual/department",
+      "document": "가상기관 규정: 국내 출장 식비는 하루 5만원이다. 출장비 정산은 복귀 후 12일 이내에 신청한다. 담당 부서는 재무지원팀이다.",
+      "question": "담당 부서는 어디야?",
+      "answer": "재무지원팀",
+      "is_impossible": false
+    },
+    {
+      "id": "T01-counterfactual/missing-name",
+      "document": "가상기관 규정: 국내 출장 식비는 하루 5만원이다. 출장비 정산은 복귀 후 12일 이내에 신청한다. 담당 부서는 재무지원팀이다.",
+      "question": "공공기관 이름이 뭔데?",
+      "answer": null,
+      "is_impossible": true
+    }
+  ]
+}

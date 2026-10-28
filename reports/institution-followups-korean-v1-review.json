@@ -1,0 +1,9 @@
+{
+  "source": "reports/institution-followups-korean-v1.json",
+  "reviewer": "Codex semantic inspection",
+  "independent_pass": 0,
+  "rolling_history_pass": 0,
+  "turns_per_mode": 5,
+  "reason": "Wrong food amount 2만원, invented organization 삼성전자, mixed roles and amounts, no grounded correction. CLI reproduces the first three outputs.",
+  "cli_smoke": "reports/korean-institution-cli-smoke.txt"
+}

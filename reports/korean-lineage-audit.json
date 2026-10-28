@@ -1,0 +1,13 @@
+{
+  "parent_weights_unchanged": true,
+  "tokenizer_preserved": true,
+  "active_general": {
+    "run": "runs/trid-v0.2",
+    "status": "experimental; 6/16 held-out phrasing semantic passes; not a finished dialogue model"
+  },
+  "active_institution": {
+    "run": "runs/trid-grounded-v2",
+    "status": "experimental generation model; 18/24 familiar-domain demo, 10/480 new-format/value cases; missing-information handling regressed; not ready for customer demonstrations"
+  },
+  "stage": "during foundation training; final candidate evaluated separately"
+}

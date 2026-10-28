@@ -1,0 +1,406 @@
+{
+  "source": "reports/base-dialogue-v1-baseline.json",
+  "source_sha256": "a1a95e705e79a88cbade3014c758638e46ae875e8c8f8d5be17111186d20ef57",
+  "reviewer": "Codex model semantic review; not human or independent evaluation",
+  "rubric": "pass: relevant coherent answer fulfills core request with no unsupported factual assertion; partial: related but misses a material requirement; fail: wrong topic, invented fact, malformed or missing required answer. Only pass counts. Reference text guides semantic judgment, not literal matching.",
+  "counts": {
+    "pass": 11,
+    "partial": 3,
+    "fail": 42,
+    "total": 56
+  },
+  "results": [
+    {
+      "id": "b01-1",
+      "group": "basic",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "질문과 관련 없는 응답 또는 요청한 내용·정보를 제공하지 못함."
+    },
+    {
+      "id": "b02-1",
+      "group": "basic",
+      "verdict": "pass",
+      "semantic_pass": true,
+      "reason": "질문에 맞는 자연스러운 응답."
+    },
+    {
+      "id": "b03-1",
+      "group": "basic",
+      "verdict": "pass",
+      "semantic_pass": true,
+      "reason": "자신의 기본 한국어 대화 기능을 적절히 설명. 공통 업무 기능까지는 설명하지 않음."
+    },
+    {
+      "id": "b04-1",
+      "group": "basic",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "질문과 관련 없는 응답 또는 요청한 내용·정보를 제공하지 못함."
+    },
+    {
+      "id": "b05-1",
+      "group": "basic",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "질문과 관련 없는 응답 또는 요청한 내용·정보를 제공하지 못함."
+    },
+    {
+      "id": "b06-1",
+      "group": "basic",
+      "verdict": "partial",
+      "semantic_pass": false,
+      "reason": "피로에 대한 응답에 가까우며 일 분할과 우선순위 안내가 부족."
+    },
+    {
+      "id": "b07-1",
+      "group": "basic",
+      "verdict": "pass",
+      "semantic_pass": true,
+      "reason": "발표를 잘 마쳤다는 감사에 자연스럽게 응답."
+    },
+    {
+      "id": "b08-1",
+      "group": "basic",
+      "verdict": "pass",
+      "semantic_pass": true,
+      "reason": "질문에 맞는 자연스러운 응답."
+    },
+    {
+      "id": "b09-1",
+      "group": "basic",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "질문과 관련 없는 응답 또는 요청한 내용·정보를 제공하지 못함."
+    },
+    {
+      "id": "b10-1",
+      "group": "basic",
+      "verdict": "pass",
+      "semantic_pass": true,
+      "reason": "질문에 맞는 자연스러운 응답."
+    },
+    {
+      "id": "b11-1",
+      "group": "basic",
+      "verdict": "pass",
+      "semantic_pass": true,
+      "reason": "질문에 맞는 자연스러운 응답."
+    },
+    {
+      "id": "b12-1",
+      "group": "basic",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "질문과 관련 없는 응답 또는 요청한 내용·정보를 제공하지 못함."
+    },
+    {
+      "id": "w01-1",
+      "group": "public_work",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "질문과 관련 없는 응답 또는 요청한 내용·정보를 제공하지 못함."
+    },
+    {
+      "id": "w02-1",
+      "group": "public_work",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "질문과 관련 없는 응답 또는 요청한 내용·정보를 제공하지 못함."
+    },
+    {
+      "id": "w03-1",
+      "group": "public_work",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "질문과 관련 없는 응답 또는 요청한 내용·정보를 제공하지 못함."
+    },
+    {
+      "id": "w04-1",
+      "group": "public_work",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "질문과 관련 없는 응답 또는 요청한 내용·정보를 제공하지 못함."
+    },
+    {
+      "id": "w05-1",
+      "group": "public_work",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "질문과 관련 없는 응답 또는 요청한 내용·정보를 제공하지 못함."
+    },
+    {
+      "id": "w06-1",
+      "group": "public_work",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "질문과 관련 없는 응답 또는 요청한 내용·정보를 제공하지 못함."
+    },
+    {
+      "id": "w07-1",
+      "group": "public_work",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "질문과 관련 없는 응답 또는 요청한 내용·정보를 제공하지 못함."
+    },
+    {
+      "id": "w08-1",
+      "group": "public_work",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "질문과 관련 없는 응답 또는 요청한 내용·정보를 제공하지 못함."
+    },
+    {
+      "id": "w09-1",
+      "group": "public_work",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "질문과 관련 없는 응답 또는 요청한 내용·정보를 제공하지 못함."
+    },
+    {
+      "id": "w10-1",
+      "group": "public_work",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "질문과 관련 없는 응답 또는 요청한 내용·정보를 제공하지 못함."
+    },
+    {
+      "id": "w11-1",
+      "group": "public_work",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "질문과 관련 없는 응답 또는 요청한 내용·정보를 제공하지 못함."
+    },
+    {
+      "id": "w12-1",
+      "group": "public_work",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "질문과 관련 없는 응답 또는 요청한 내용·정보를 제공하지 못함."
+    },
+    {
+      "id": "w13-1",
+      "group": "public_work",
+      "verdict": "partial",
+      "semantic_pass": false,
+      "reason": "중요도 기준은 제공하나 마감이 겹치는 조건을 다루지 못함."
+    },
+    {
+      "id": "w14-1",
+      "group": "public_work",
+      "verdict": "pass",
+      "semantic_pass": true,
+      "reason": "제목·목적·요청 사항이라는 기본 구성을 제공. 기한과 연락처를 빠뜨렸지만 질문의 핵심 요청은 충족."
+    },
+    {
+      "id": "w15-1",
+      "group": "public_work",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "질문과 관련 없는 응답 또는 요청한 내용·정보를 제공하지 못함."
+    },
+    {
+      "id": "w16-1",
+      "group": "public_work",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "질문과 관련 없는 응답 또는 요청한 내용·정보를 제공하지 못함."
+    },
+    {
+      "id": "l01-1",
+      "group": "limits",
+      "verdict": "partial",
+      "semantic_pass": false,
+      "reason": "임의 금액은 만들지 않지만 기관 규정 확인이 필요한 이유와 대상을 설명하지 못함."
+    },
+    {
+      "id": "l02-1",
+      "group": "limits",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "질문과 관련 없는 응답 또는 요청한 내용·정보를 제공하지 못함."
+    },
+    {
+      "id": "l03-1",
+      "group": "limits",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "질문과 관련 없는 응답 또는 요청한 내용·정보를 제공하지 못함."
+    },
+    {
+      "id": "l04-1",
+      "group": "limits",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "질문과 관련 없는 응답 또는 요청한 내용·정보를 제공하지 못함."
+    },
+    {
+      "id": "l05-1",
+      "group": "limits",
+      "verdict": "pass",
+      "semantic_pass": true,
+      "reason": "질문에 맞는 자연스러운 응답."
+    },
+    {
+      "id": "l06-1",
+      "group": "limits",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "질문과 관련 없는 응답 또는 요청한 내용·정보를 제공하지 못함."
+    },
+    {
+      "id": "l07-1",
+      "group": "limits",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "질문과 관련 없는 응답 또는 요청한 내용·정보를 제공하지 못함."
+    },
+    {
+      "id": "l08-1",
+      "group": "limits",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "질문과 관련 없는 응답 또는 요청한 내용·정보를 제공하지 못함."
+    },
+    {
+      "id": "l09-1",
+      "group": "limits",
+      "verdict": "pass",
+      "semantic_pass": true,
+      "reason": "질문에 맞는 자연스러운 응답."
+    },
+    {
+      "id": "l10-1",
+      "group": "limits",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "질문과 관련 없는 응답 또는 요청한 내용·정보를 제공하지 못함."
+    },
+    {
+      "id": "i01-1",
+      "group": "instruction",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "질문과 관련 없는 응답 또는 요청한 내용·정보를 제공하지 못함."
+    },
+    {
+      "id": "i02-1",
+      "group": "instruction",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "질문과 관련 없는 응답 또는 요청한 내용·정보를 제공하지 못함."
+    },
+    {
+      "id": "i03-1",
+      "group": "instruction",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "질문과 관련 없는 응답 또는 요청한 내용·정보를 제공하지 못함."
+    },
+    {
+      "id": "i04-1",
+      "group": "instruction",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "질문과 관련 없는 응답 또는 요청한 내용·정보를 제공하지 못함."
+    },
+    {
+      "id": "i05-1",
+      "group": "instruction",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "질문과 관련 없는 응답 또는 요청한 내용·정보를 제공하지 못함."
+    },
+    {
+      "id": "i06-1",
+      "group": "instruction",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "질문과 관련 없는 응답 또는 요청한 내용·정보를 제공하지 못함."
+    },
+    {
+      "id": "i07-1",
+      "group": "instruction",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "질문과 관련 없는 응답 또는 요청한 내용·정보를 제공하지 못함."
+    },
+    {
+      "id": "i08-1",
+      "group": "instruction",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "질문과 관련 없는 응답 또는 요청한 내용·정보를 제공하지 못함."
+    },
+    {
+      "id": "m01-1",
+      "group": "multi_turn",
+      "verdict": "pass",
+      "semantic_pass": true,
+      "reason": "질문에 맞는 자연스러운 응답."
+    },
+    {
+      "id": "m01-2",
+      "group": "multi_turn",
+      "verdict": "pass",
+      "semantic_pass": true,
+      "reason": "안건과 자료의 사전 공유를 제안하여 후속 질문에 답함. 이전 답 반복은 품질 한계."
+    },
+    {
+      "id": "m02-1",
+      "group": "multi_turn",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "질문과 관련 없는 응답 또는 요청한 내용·정보를 제공하지 못함."
+    },
+    {
+      "id": "m02-2",
+      "group": "multi_turn",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "질문과 관련 없는 응답 또는 요청한 내용·정보를 제공하지 못함."
+    },
+    {
+      "id": "m03-1",
+      "group": "multi_turn",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "질문과 관련 없는 응답 또는 요청한 내용·정보를 제공하지 못함."
+    },
+    {
+      "id": "m03-2",
+      "group": "multi_turn",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "질문과 관련 없는 응답 또는 요청한 내용·정보를 제공하지 못함."
+    },
+    {
+      "id": "m04-1",
+      "group": "multi_turn",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "질문과 관련 없는 응답 또는 요청한 내용·정보를 제공하지 못함."
+    },
+    {
+      "id": "m04-2",
+      "group": "multi_turn",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "질문과 관련 없는 응답 또는 요청한 내용·정보를 제공하지 못함."
+    },
+    {
+      "id": "m05-1",
+      "group": "multi_turn",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "질문과 관련 없는 응답 또는 요청한 내용·정보를 제공하지 못함."
+    },
+    {
+      "id": "m05-2",
+      "group": "multi_turn",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "질문과 관련 없는 응답 또는 요청한 내용·정보를 제공하지 못함."
+    }
+  ]
+}

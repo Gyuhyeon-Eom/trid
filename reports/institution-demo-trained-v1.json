@@ -1,0 +1,3661 @@
+{
+  "evaluated_at": "2026-10-26T07:17:24.933698+00:00",
+  "run": "runs/trid-institution-v1",
+  "device": "mps",
+  "weights_sha256": "327e2f8d74a5c4c3812b0ddedce3ea6dc3664a44a3165c660ee5df05964b8101",
+  "test_sha256": "d9f652e8a0633d0fab285417963fcc66d44f8889e8faffd2652133831651d262",
+  "fictional": true,
+  "protocol": "Oracle evidence supplied directly; no retrieval or access-control evaluation. No training on this set.",
+  "choice_method": "Next-token probabilities restricted to single-token A/B/C labels. Training depends on the evaluated run; no probability calibration; not Jev. All six option orders tested.",
+  "scoring": "Generation exact value match after whitespace/final-punctuation normalization. Semantic review required for non-matches. Gold answers never passed separately to inference.",
+  "cases": 24,
+  "generation_exact": 8,
+  "choice_correct": 10,
+  "all_orders_correct": 5,
+  "order_invariant": 13,
+  "choice_accuracy_across_all_orders": 0.4444444444444444,
+  "counterfactual_pairs": {
+    "food-amount": {
+      "ids": [
+        "travel-food",
+        "counterfactual-food"
+      ],
+      "generation_both_correct": false,
+      "choice_both_correct": false
+    },
+    "retention": {
+      "ids": [
+        "records-years",
+        "counterfactual-record"
+      ],
+      "generation_both_correct": false,
+      "choice_both_correct": false
+    }
+  },
+  "groups": {
+    "direct": {
+      "total": 10,
+      "generation_exact": 2,
+      "choice_correct": 2,
+      "all_orders_correct": 0
+    },
+    "condition": {
+      "total": 2,
+      "generation_exact": 1,
+      "choice_correct": 0,
+      "all_orders_correct": 0
+    },
+    "paraphrase": {
+      "total": 3,
+      "generation_exact": 0,
+      "choice_correct": 2,
+      "all_orders_correct": 0
+    },
+    "missing": {
+      "total": 3,
+      "generation_exact": 3,
+      "choice_correct": 3,
+      "all_orders_correct": 3
+    },
+    "conflict": {
+      "total": 2,
+      "generation_exact": 2,
+      "choice_correct": 2,
+      "all_orders_correct": 2
+    },
+    "revision": {
+      "total": 2,
+      "generation_exact": 0,
+      "choice_correct": 1,
+      "all_orders_correct": 0
+    },
+    "counterfactual": {
+      "total": 2,
+      "generation_exact": 0,
+      "choice_correct": 0,
+      "all_orders_correct": 0
+    }
+  },
+  "results": [
+    {
+      "id": "travel-food",
+      "group": "direct",
+      "question": "국내 출장 식비는 하루 얼마야?",
+      "evidence": [
+        {
+          "id": "T01",
+          "title": "가상 기관 출장비 안내",
+          "text": "가상기관 규정: 국내 출장 식비는 하루 3만원이다. 출장비 정산은 복귀 후 7일 이내에 신청한다. 담당 부서는 운영지원팀이다."
+        }
+      ],
+      "expected": "3만원",
+      "options": [
+        "3만원",
+        "자료없음",
+        "5만원"
+      ],
+      "expected_source_ids": [
+        "T01"
+      ],
+      "rubric": "자료에 근거한 값을 답할 것. 자료없음/규정충돌 사례는 추측하지 말 것.",
+      "counterfactual_pair": "food-amount",
+      "generated": {
+        "answer": "자료없음",
+        "input_tokens": 93,
+        "generated_tokens_including_eos": 5,
+        "first_token_seconds": 0.0844,
+        "total_seconds": 0.0996,
+        "tokens_per_second_including_prefill": 50.21,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "generation_exact": false,
+      "choice": {
+        "options": [
+          "3만원",
+          "자료없음",
+          "5만원"
+        ],
+        "answer": "자료없음",
+        "label": "B",
+        "uncalibrated_label_probabilities": [
+          0.00376465218141675,
+          0.991396963596344,
+          0.004838470369577408
+        ],
+        "input_tokens": 107,
+        "correct": false
+      },
+      "permutations": [
+        {
+          "options": [
+            "3만원",
+            "자료없음",
+            "5만원"
+          ],
+          "answer": "자료없음",
+          "label": "B",
+          "uncalibrated_label_probabilities": [
+            0.00376465218141675,
+            0.991396963596344,
+            0.004838470369577408
+          ],
+          "input_tokens": 107,
+          "correct": false
+        },
+        {
+          "options": [
+            "3만원",
+            "5만원",
+            "자료없음"
+          ],
+          "answer": "자료없음",
+          "label": "C",
+          "uncalibrated_label_probabilities": [
+            0.003750768257305026,
+            0.0016544043319299817,
+            0.9945947527885437
+          ],
+          "input_tokens": 107,
+          "correct": false
+        },
+        {
+          "options": [
+            "자료없음",
+            "3만원",
+            "5만원"
+          ],
+          "answer": "자료없음",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.9957048296928406,
+            0.002513343933969736,
+            0.001781937899067998
+          ],
+          "input_tokens": 107,
+          "correct": false
+        },
+        {
+          "options": [
+            "자료없음",
+            "5만원",
+            "3만원"
+          ],
+          "answer": "자료없음",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.9957481026649475,
+            0.002259559230878949,
+            0.0019923842046409845
+          ],
+          "input_tokens": 107,
+          "correct": false
+        },
+        {
+          "options": [
+            "5만원",
+            "3만원",
+            "자료없음"
+          ],
+          "answer": "자료없음",
+          "label": "C",
+          "uncalibrated_label_probabilities": [
+            0.0036494298838078976,
+            0.0017863091779872775,
+            0.9945641756057739
+          ],
+          "input_tokens": 107,
+          "correct": false
+        },
+        {
+          "options": [
+            "5만원",
+            "자료없음",
+            "3만원"
+          ],
+          "answer": "자료없음",
+          "label": "B",
+          "uncalibrated_label_probabilities": [
+            0.0035008457489311695,
+            0.9897097945213318,
+            0.006789356470108032
+          ],
+          "input_tokens": 107,
+          "correct": false
+        }
+      ],
+      "all_orders_correct": false,
+      "order_invariant": true
+    },
+    {
+      "id": "travel-deadline",
+      "group": "direct",
+      "question": "출장 다녀온 뒤 정산은 며칠 안에 해야 해?",
+      "evidence": [
+        {
+          "id": "T01",
+          "title": "가상 기관 출장비 안내",
+          "text": "가상기관 규정: 국내 출장 식비는 하루 3만원이다. 출장비 정산은 복귀 후 7일 이내에 신청한다. 담당 부서는 운영지원팀이다."
+        }
+      ],
+      "expected": "7일",
+      "options": [
+        "자료없음",
+        "7일",
+        "14일"
+      ],
+      "expected_source_ids": [
+        "T01"
+      ],
+      "rubric": "자료에 근거한 값을 답할 것. 자료없음/규정충돌 사례는 추측하지 말 것.",
+      "generated": {
+        "answer": "자료없음",
+        "input_tokens": 100,
+        "generated_tokens_including_eos": 5,
+        "first_token_seconds": 0.0043,
+        "total_seconds": 0.0153,
+        "tokens_per_second_including_prefill": 326.21,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "generation_exact": false,
+      "choice": {
+        "options": [
+          "자료없음",
+          "7일",
+          "14일"
+        ],
+        "answer": "자료없음",
+        "label": "A",
+        "uncalibrated_label_probabilities": [
+          0.9977471232414246,
+          0.0013498937478289008,
+          0.0009029910434037447
+        ],
+        "input_tokens": 112,
+        "correct": false
+      },
+      "permutations": [
+        {
+          "options": [
+            "자료없음",
+            "7일",
+            "14일"
+          ],
+          "answer": "자료없음",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.9977471232414246,
+            0.0013498937478289008,
+            0.0009029910434037447
+          ],
+          "input_tokens": 112,
+          "correct": false
+        },
+        {
+          "options": [
+            "자료없음",
+            "14일",
+            "7일"
+          ],
+          "answer": "자료없음",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.9976879358291626,
+            0.0014200167497619987,
+            0.0008919856045395136
+          ],
+          "input_tokens": 112,
+          "correct": false
+        },
+        {
+          "options": [
+            "7일",
+            "자료없음",
+            "14일"
+          ],
+          "answer": "자료없음",
+          "label": "B",
+          "uncalibrated_label_probabilities": [
+            0.0018939950969070196,
+            0.9937206506729126,
+            0.0043853227980434895
+          ],
+          "input_tokens": 112,
+          "correct": false
+        },
+        {
+          "options": [
+            "7일",
+            "14일",
+            "자료없음"
+          ],
+          "answer": "자료없음",
+          "label": "C",
+          "uncalibrated_label_probabilities": [
+            0.0014792074216529727,
+            0.0014996242243796587,
+            0.9970211386680603
+          ],
+          "input_tokens": 112,
+          "correct": false
+        },
+        {
+          "options": [
+            "14일",
+            "자료없음",
+            "7일"
+          ],
+          "answer": "자료없음",
+          "label": "B",
+          "uncalibrated_label_probabilities": [
+            0.0018674788298085332,
+            0.9935956597328186,
+            0.004536929074674845
+          ],
+          "input_tokens": 112,
+          "correct": false
+        },
+        {
+          "options": [
+            "14일",
+            "7일",
+            "자료없음"
+          ],
+          "answer": "자료없음",
+          "label": "C",
+          "uncalibrated_label_probabilities": [
+            0.0014234846457839012,
+            0.0016066327225416899,
+            0.996969997882843
+          ],
+          "input_tokens": 112,
+          "correct": false
+        }
+      ],
+      "all_orders_correct": false,
+      "order_invariant": true
+    },
+    {
+      "id": "travel-team",
+      "group": "direct",
+      "question": "출장비 문의는 어느 부서에 해?",
+      "evidence": [
+        {
+          "id": "T01",
+          "title": "가상 기관 출장비 안내",
+          "text": "가상기관 규정: 국내 출장 식비는 하루 3만원이다. 출장비 정산은 복귀 후 7일 이내에 신청한다. 담당 부서는 운영지원팀이다."
+        }
+      ],
+      "expected": "운영지원팀",
+      "options": [
+        "인사팀",
+        "자료없음",
+        "운영지원팀"
+      ],
+      "expected_source_ids": [
+        "T01"
+      ],
+      "rubric": "자료에 근거한 값을 답할 것. 자료없음/규정충돌 사례는 추측하지 말 것.",
+      "generated": {
+        "answer": "A",
+        "input_tokens": 95,
+        "generated_tokens_including_eos": 2,
+        "first_token_seconds": 0.0039,
+        "total_seconds": 0.0065,
+        "tokens_per_second_including_prefill": 307.47,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "generation_exact": false,
+      "choice": {
+        "options": [
+          "인사팀",
+          "자료없음",
+          "운영지원팀"
+        ],
+        "answer": "자료없음",
+        "label": "B",
+        "uncalibrated_label_probabilities": [
+          0.0018027863698080182,
+          0.9936710596084595,
+          0.004526140168309212
+        ],
+        "input_tokens": 108,
+        "correct": false
+      },
+      "permutations": [
+        {
+          "options": [
+            "인사팀",
+            "자료없음",
+            "운영지원팀"
+          ],
+          "answer": "자료없음",
+          "label": "B",
+          "uncalibrated_label_probabilities": [
+            0.0018027863698080182,
+            0.9936710596084595,
+            0.004526140168309212
+          ],
+          "input_tokens": 108,
+          "correct": false
+        },
+        {
+          "options": [
+            "인사팀",
+            "운영지원팀",
+            "자료없음"
+          ],
+          "answer": "자료없음",
+          "label": "C",
+          "uncalibrated_label_probabilities": [
+            0.0009740612586028874,
+            0.0012275453191250563,
+            0.9977983832359314
+          ],
+          "input_tokens": 108,
+          "correct": false
+        },
+        {
+          "options": [
+            "자료없음",
+            "인사팀",
+            "운영지원팀"
+          ],
+          "answer": "자료없음",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.9966901540756226,
+            0.001599049661308527,
+            0.0017107942840084434
+          ],
+          "input_tokens": 108,
+          "correct": false
+        },
+        {
+          "options": [
+            "자료없음",
+            "운영지원팀",
+            "인사팀"
+          ],
+          "answer": "자료없음",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.9966176152229309,
+            0.0019222694681957364,
+            0.0014601836446672678
+          ],
+          "input_tokens": 108,
+          "correct": false
+        },
+        {
+          "options": [
+            "운영지원팀",
+            "인사팀",
+            "자료없음"
+          ],
+          "answer": "자료없음",
+          "label": "C",
+          "uncalibrated_label_probabilities": [
+            0.0010174188064411283,
+            0.0011648888466879725,
+            0.9978177547454834
+          ],
+          "input_tokens": 108,
+          "correct": false
+        },
+        {
+          "options": [
+            "운영지원팀",
+            "자료없음",
+            "인사팀"
+          ],
+          "answer": "자료없음",
+          "label": "B",
+          "uncalibrated_label_probabilities": [
+            0.001781232887879014,
+            0.9934142827987671,
+            0.004804433323442936
+          ],
+          "input_tokens": 108,
+          "correct": false
+        }
+      ],
+      "all_orders_correct": false,
+      "order_invariant": true
+    },
+    {
+      "id": "purchase-team",
+      "group": "direct",
+      "question": "물품 구매 요청은 어디로 보내?",
+      "evidence": [
+        {
+          "id": "P01",
+          "title": "가상 기관 구매 요청 안내",
+          "text": "가상기관 규정: 물품 구매 요청은 구매지원팀에 제출한다. 50만원 미만 구매의 승인자는 팀장이다. 50만원 이상 구매의 승인자는 부서장이다."
+        }
+      ],
+      "expected": "구매지원팀",
+      "options": [
+        "구매지원팀",
+        "정보지원팀",
+        "자료없음"
+      ],
+      "expected_source_ids": [
+        "P01"
+      ],
+      "rubric": "자료에 근거한 값을 답할 것. 자료없음/규정충돌 사례는 추측하지 말 것.",
+      "generated": {
+        "answer": "구매지원팀",
+        "input_tokens": 103,
+        "generated_tokens_including_eos": 5,
+        "first_token_seconds": 0.0041,
+        "total_seconds": 0.0146,
+        "tokens_per_second_including_prefill": 341.38,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "generation_exact": true,
+      "choice": {
+        "options": [
+          "구매지원팀",
+          "정보지원팀",
+          "자료없음"
+        ],
+        "answer": "구매지원팀",
+        "label": "A",
+        "uncalibrated_label_probabilities": [
+          0.611286461353302,
+          0.38298195600509644,
+          0.005731641314923763
+        ],
+        "input_tokens": 118,
+        "correct": true
+      },
+      "permutations": [
+        {
+          "options": [
+            "구매지원팀",
+            "정보지원팀",
+            "자료없음"
+          ],
+          "answer": "구매지원팀",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.611286461353302,
+            0.38298195600509644,
+            0.005731641314923763
+          ],
+          "input_tokens": 118,
+          "correct": true
+        },
+        {
+          "options": [
+            "구매지원팀",
+            "자료없음",
+            "정보지원팀"
+          ],
+          "answer": "구매지원팀",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.5913549661636353,
+            0.005287935491651297,
+            0.4033571183681488
+          ],
+          "input_tokens": 118,
+          "correct": true
+        },
+        {
+          "options": [
+            "정보지원팀",
+            "구매지원팀",
+            "자료없음"
+          ],
+          "answer": "정보지원팀",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.5882797241210938,
+            0.4064911901950836,
+            0.005229085683822632
+          ],
+          "input_tokens": 118,
+          "correct": false
+        },
+        {
+          "options": [
+            "정보지원팀",
+            "자료없음",
+            "구매지원팀"
+          ],
+          "answer": "정보지원팀",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.598884642124176,
+            0.008094613440334797,
+            0.3930208086967468
+          ],
+          "input_tokens": 118,
+          "correct": false
+        },
+        {
+          "options": [
+            "자료없음",
+            "구매지원팀",
+            "정보지원팀"
+          ],
+          "answer": "정보지원팀",
+          "label": "C",
+          "uncalibrated_label_probabilities": [
+            0.006413356866687536,
+            0.4206154942512512,
+            0.5729711651802063
+          ],
+          "input_tokens": 118,
+          "correct": false
+        },
+        {
+          "options": [
+            "자료없음",
+            "정보지원팀",
+            "구매지원팀"
+          ],
+          "answer": "구매지원팀",
+          "label": "C",
+          "uncalibrated_label_probabilities": [
+            0.009585060179233551,
+            0.4310411214828491,
+            0.5593737959861755
+          ],
+          "input_tokens": 118,
+          "correct": true
+        }
+      ],
+      "all_orders_correct": false,
+      "order_invariant": false
+    },
+    {
+      "id": "purchase-low",
+      "group": "condition",
+      "question": "30만원짜리 물품 구매는 누가 승인해?",
+      "evidence": [
+        {
+          "id": "P01",
+          "title": "가상 기관 구매 요청 안내",
+          "text": "가상기관 규정: 물품 구매 요청은 구매지원팀에 제출한다. 50만원 미만 구매의 승인자는 팀장이다. 50만원 이상 구매의 승인자는 부서장이다."
+        }
+      ],
+      "expected": "팀장",
+      "options": [
+        "부서장",
+        "팀장",
+        "자료없음"
+      ],
+      "expected_source_ids": [
+        "P01"
+      ],
+      "rubric": "자료에 근거한 값을 답할 것. 자료없음/규정충돌 사례는 추측하지 말 것.",
+      "generated": {
+        "answer": "부서장",
+        "input_tokens": 108,
+        "generated_tokens_including_eos": 4,
+        "first_token_seconds": 0.0042,
+        "total_seconds": 0.0121,
+        "tokens_per_second_including_prefill": 331.07,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "generation_exact": false,
+      "choice": {
+        "options": [
+          "부서장",
+          "팀장",
+          "자료없음"
+        ],
+        "answer": "부서장",
+        "label": "A",
+        "uncalibrated_label_probabilities": [
+          0.589828372001648,
+          0.4069254994392395,
+          0.003246126463636756
+        ],
+        "input_tokens": 121,
+        "correct": false
+      },
+      "permutations": [
+        {
+          "options": [
+            "부서장",
+            "팀장",
+            "자료없음"
+          ],
+          "answer": "부서장",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.589828372001648,
+            0.4069254994392395,
+            0.003246126463636756
+          ],
+          "input_tokens": 121,
+          "correct": false
+        },
+        {
+          "options": [
+            "부서장",
+            "자료없음",
+            "팀장"
+          ],
+          "answer": "부서장",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.5089807510375977,
+            0.0037165661342442036,
+            0.48730266094207764
+          ],
+          "input_tokens": 121,
+          "correct": false
+        },
+        {
+          "options": [
+            "팀장",
+            "부서장",
+            "자료없음"
+          ],
+          "answer": "팀장",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.594932496547699,
+            0.4012047052383423,
+            0.003862824523821473
+          ],
+          "input_tokens": 121,
+          "correct": true
+        },
+        {
+          "options": [
+            "팀장",
+            "자료없음",
+            "부서장"
+          ],
+          "answer": "부서장",
+          "label": "C",
+          "uncalibrated_label_probabilities": [
+            0.4874405264854431,
+            0.004177149850875139,
+            0.5083823800086975
+          ],
+          "input_tokens": 121,
+          "correct": false
+        },
+        {
+          "options": [
+            "자료없음",
+            "부서장",
+            "팀장"
+          ],
+          "answer": "팀장",
+          "label": "C",
+          "uncalibrated_label_probabilities": [
+            0.002939728321507573,
+            0.4410753548145294,
+            0.5559849143028259
+          ],
+          "input_tokens": 121,
+          "correct": true
+        },
+        {
+          "options": [
+            "자료없음",
+            "팀장",
+            "부서장"
+          ],
+          "answer": "부서장",
+          "label": "C",
+          "uncalibrated_label_probabilities": [
+            0.003552435664460063,
+            0.4321209490299225,
+            0.5643266439437866
+          ],
+          "input_tokens": 121,
+          "correct": false
+        }
+      ],
+      "all_orders_correct": false,
+      "order_invariant": false
+    },
+    {
+      "id": "purchase-boundary",
+      "group": "condition",
+      "question": "정확히 50만원인 물품의 승인자는 누구야?",
+      "evidence": [
+        {
+          "id": "P01",
+          "title": "가상 기관 구매 요청 안내",
+          "text": "가상기관 규정: 물품 구매 요청은 구매지원팀에 제출한다. 50만원 미만 구매의 승인자는 팀장이다. 50만원 이상 구매의 승인자는 부서장이다."
+        }
+      ],
+      "expected": "부서장",
+      "options": [
+        "팀장",
+        "부서장",
+        "자료없음"
+      ],
+      "expected_source_ids": [
+        "P01"
+      ],
+      "rubric": "자료에 근거한 값을 답할 것. 자료없음/규정충돌 사례는 추측하지 말 것.",
+      "generated": {
+        "answer": "부서장",
+        "input_tokens": 107,
+        "generated_tokens_including_eos": 4,
+        "first_token_seconds": 0.0041,
+        "total_seconds": 0.0117,
+        "tokens_per_second_including_prefill": 341.82,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "generation_exact": true,
+      "choice": {
+        "options": [
+          "팀장",
+          "부서장",
+          "자료없음"
+        ],
+        "answer": "팀장",
+        "label": "A",
+        "uncalibrated_label_probabilities": [
+          0.6056211590766907,
+          0.3907265365123749,
+          0.0036522375885397196
+        ],
+        "input_tokens": 120,
+        "correct": false
+      },
+      "permutations": [
+        {
+          "options": [
+            "팀장",
+            "부서장",
+            "자료없음"
+          ],
+          "answer": "팀장",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.6056211590766907,
+            0.3907265365123749,
+            0.0036522375885397196
+          ],
+          "input_tokens": 120,
+          "correct": false
+        },
+        {
+          "options": [
+            "팀장",
+            "자료없음",
+            "부서장"
+          ],
+          "answer": "부서장",
+          "label": "C",
+          "uncalibrated_label_probabilities": [
+            0.49467676877975464,
+            0.004228963516652584,
+            0.5010943412780762
+          ],
+          "input_tokens": 120,
+          "correct": true
+        },
+        {
+          "options": [
+            "부서장",
+            "팀장",
+            "자료없음"
+          ],
+          "answer": "부서장",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.6000403761863708,
+            0.3968771696090698,
+            0.0030824546702206135
+          ],
+          "input_tokens": 120,
+          "correct": true
+        },
+        {
+          "options": [
+            "부서장",
+            "자료없음",
+            "팀장"
+          ],
+          "answer": "부서장",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.5248575806617737,
+            0.0037168313283473253,
+            0.4714255928993225
+          ],
+          "input_tokens": 120,
+          "correct": true
+        },
+        {
+          "options": [
+            "자료없음",
+            "팀장",
+            "부서장"
+          ],
+          "answer": "부서장",
+          "label": "C",
+          "uncalibrated_label_probabilities": [
+            0.0034342659637331963,
+            0.437116801738739,
+            0.5594489574432373
+          ],
+          "input_tokens": 120,
+          "correct": true
+        },
+        {
+          "options": [
+            "자료없음",
+            "부서장",
+            "팀장"
+          ],
+          "answer": "팀장",
+          "label": "C",
+          "uncalibrated_label_probabilities": [
+            0.0028422411996871233,
+            0.4498779773712158,
+            0.5472798347473145
+          ],
+          "input_tokens": 120,
+          "correct": false
+        }
+      ],
+      "all_orders_correct": false,
+      "order_invariant": false
+    },
+    {
+      "id": "leave-approver",
+      "group": "direct",
+      "question": "연차는 누구에게 승인받아야 해?",
+      "evidence": [
+        {
+          "id": "L01",
+          "title": "가상 기관 휴가 신청 안내",
+          "text": "가상기관 규정: 연차 신청의 승인자는 팀장이다. 연차 신청은 인사시스템에서 접수한다. 특별휴가 일수는 이 문서에 정하지 않았다."
+        }
+      ],
+      "expected": "팀장",
+      "options": [
+        "자료없음",
+        "팀장",
+        "기관장"
+      ],
+      "expected_source_ids": [
+        "L01"
+      ],
+      "rubric": "자료에 근거한 값을 답할 것. 자료없음/규정충돌 사례는 추측하지 말 것.",
+      "generated": {
+        "answer": "자료없음",
+        "input_tokens": 94,
+        "generated_tokens_including_eos": 5,
+        "first_token_seconds": 0.0038,
+        "total_seconds": 0.014,
+        "tokens_per_second_including_prefill": 356.61,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "generation_exact": false,
+      "choice": {
+        "options": [
+          "자료없음",
+          "팀장",
+          "기관장"
+        ],
+        "answer": "자료없음",
+        "label": "A",
+        "uncalibrated_label_probabilities": [
+          0.9974372386932373,
+          0.0012468721251934767,
+          0.001315947389230132
+        ],
+        "input_tokens": 106,
+        "correct": false
+      },
+      "permutations": [
+        {
+          "options": [
+            "자료없음",
+            "팀장",
+            "기관장"
+          ],
+          "answer": "자료없음",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.9974372386932373,
+            0.0012468721251934767,
+            0.001315947389230132
+          ],
+          "input_tokens": 106,
+          "correct": false
+        },
+        {
+          "options": [
+            "자료없음",
+            "기관장",
+            "팀장"
+          ],
+          "answer": "자료없음",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.9973961114883423,
+            0.00107251713052392,
+            0.0015313758049160242
+          ],
+          "input_tokens": 106,
+          "correct": false
+        },
+        {
+          "options": [
+            "팀장",
+            "자료없음",
+            "기관장"
+          ],
+          "answer": "자료없음",
+          "label": "B",
+          "uncalibrated_label_probabilities": [
+            0.001629223464988172,
+            0.9964246153831482,
+            0.0019461093470454216
+          ],
+          "input_tokens": 106,
+          "correct": false
+        },
+        {
+          "options": [
+            "팀장",
+            "기관장",
+            "자료없음"
+          ],
+          "answer": "자료없음",
+          "label": "C",
+          "uncalibrated_label_probabilities": [
+            0.0010985680855810642,
+            0.0007369277882389724,
+            0.9981645941734314
+          ],
+          "input_tokens": 106,
+          "correct": false
+        },
+        {
+          "options": [
+            "기관장",
+            "자료없음",
+            "팀장"
+          ],
+          "answer": "자료없음",
+          "label": "B",
+          "uncalibrated_label_probabilities": [
+            0.0012716882629320025,
+            0.9970269799232483,
+            0.0017013936303555965
+          ],
+          "input_tokens": 106,
+          "correct": false
+        },
+        {
+          "options": [
+            "기관장",
+            "팀장",
+            "자료없음"
+          ],
+          "answer": "자료없음",
+          "label": "C",
+          "uncalibrated_label_probabilities": [
+            0.0010275340173393488,
+            0.0007087297854013741,
+            0.9982636570930481
+          ],
+          "input_tokens": 106,
+          "correct": false
+        }
+      ],
+      "all_orders_correct": false,
+      "order_invariant": true
+    },
+    {
+      "id": "leave-channel",
+      "group": "direct",
+      "question": "연차 신청은 어떤 시스템으로 접수해?",
+      "evidence": [
+        {
+          "id": "L01",
+          "title": "가상 기관 휴가 신청 안내",
+          "text": "가상기관 규정: 연차 신청의 승인자는 팀장이다. 연차 신청은 인사시스템에서 접수한다. 특별휴가 일수는 이 문서에 정하지 않았다."
+        }
+      ],
+      "expected": "인사시스템",
+      "options": [
+        "기록관리시스템",
+        "자료없음",
+        "인사시스템"
+      ],
+      "expected_source_ids": [
+        "L01"
+      ],
+      "rubric": "자료에 근거한 값을 답할 것. 자료없음/규정충돌 사례는 추측하지 말 것.",
+      "generated": {
+        "answer": "자료없음",
+        "input_tokens": 95,
+        "generated_tokens_including_eos": 5,
+        "first_token_seconds": 0.0038,
+        "total_seconds": 0.0142,
+        "tokens_per_second_including_prefill": 352.32,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "generation_exact": false,
+      "choice": {
+        "options": [
+          "기록관리시스템",
+          "자료없음",
+          "인사시스템"
+        ],
+        "answer": "자료없음",
+        "label": "B",
+        "uncalibrated_label_probabilities": [
+          0.0012485397746786475,
+          0.9969147443771362,
+          0.0018367088632658124
+        ],
+        "input_tokens": 108,
+        "correct": false
+      },
+      "permutations": [
+        {
+          "options": [
+            "기록관리시스템",
+            "자료없음",
+            "인사시스템"
+          ],
+          "answer": "자료없음",
+          "label": "B",
+          "uncalibrated_label_probabilities": [
+            0.0012485397746786475,
+            0.9969147443771362,
+            0.0018367088632658124
+          ],
+          "input_tokens": 108,
+          "correct": false
+        },
+        {
+          "options": [
+            "기록관리시스템",
+            "인사시스템",
+            "자료없음"
+          ],
+          "answer": "자료없음",
+          "label": "C",
+          "uncalibrated_label_probabilities": [
+            0.000577744038309902,
+            0.0018073354149237275,
+            0.9976149797439575
+          ],
+          "input_tokens": 108,
+          "correct": false
+        },
+        {
+          "options": [
+            "자료없음",
+            "기록관리시스템",
+            "인사시스템"
+          ],
+          "answer": "자료없음",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.9949522018432617,
+            0.0032442931551486254,
+            0.0018035663524642587
+          ],
+          "input_tokens": 108,
+          "correct": false
+        },
+        {
+          "options": [
+            "자료없음",
+            "인사시스템",
+            "기록관리시스템"
+          ],
+          "answer": "자료없음",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.9946659803390503,
+            0.002393354196101427,
+            0.0029406631365418434
+          ],
+          "input_tokens": 108,
+          "correct": false
+        },
+        {
+          "options": [
+            "인사시스템",
+            "기록관리시스템",
+            "자료없음"
+          ],
+          "answer": "자료없음",
+          "label": "C",
+          "uncalibrated_label_probabilities": [
+            0.0005878105293959379,
+            0.0019959434866905212,
+            0.9974161386489868
+          ],
+          "input_tokens": 108,
+          "correct": false
+        },
+        {
+          "options": [
+            "인사시스템",
+            "자료없음",
+            "기록관리시스템"
+          ],
+          "answer": "자료없음",
+          "label": "B",
+          "uncalibrated_label_probabilities": [
+            0.0011717516463249922,
+            0.996275782585144,
+            0.002552440157160163
+          ],
+          "input_tokens": 108,
+          "correct": false
+        }
+      ],
+      "all_orders_correct": false,
+      "order_invariant": true
+    },
+    {
+      "id": "device-team",
+      "group": "direct",
+      "question": "업무용 노트북이 고장 났어. 어디에 신고하지?",
+      "evidence": [
+        {
+          "id": "I01",
+          "title": "가상 기관 장비 장애 안내",
+          "text": "가상기관 안내: 업무용 노트북 고장은 정보지원팀에 신고한다. 내부 문의 번호는 2468이다. 개인 소유 장비의 수리 비용 기준은 정하지 않았다."
+        }
+      ],
+      "expected": "정보지원팀",
+      "options": [
+        "정보지원팀",
+        "구매지원팀",
+        "자료없음"
+      ],
+      "expected_source_ids": [
+        "I01"
+      ],
+      "rubric": "자료에 근거한 값을 답할 것. 자료없음/규정충돌 사례는 추측하지 말 것.",
+      "generated": {
+        "answer": "자료없음",
+        "input_tokens": 106,
+        "generated_tokens_including_eos": 5,
+        "first_token_seconds": 0.0041,
+        "total_seconds": 0.0144,
+        "tokens_per_second_including_prefill": 348.4,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "generation_exact": false,
+      "choice": {
+        "options": [
+          "정보지원팀",
+          "구매지원팀",
+          "자료없음"
+        ],
+        "answer": "정보지원팀",
+        "label": "A",
+        "uncalibrated_label_probabilities": [
+          0.6504533290863037,
+          0.3399372100830078,
+          0.009609382599592209
+        ],
+        "input_tokens": 121,
+        "correct": true
+      },
+      "permutations": [
+        {
+          "options": [
+            "정보지원팀",
+            "구매지원팀",
+            "자료없음"
+          ],
+          "answer": "정보지원팀",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.6504533290863037,
+            0.3399372100830078,
+            0.009609382599592209
+          ],
+          "input_tokens": 121,
+          "correct": true
+        },
+        {
+          "options": [
+            "정보지원팀",
+            "자료없음",
+            "구매지원팀"
+          ],
+          "answer": "정보지원팀",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.5877479314804077,
+            0.01090767327696085,
+            0.4013443887233734
+          ],
+          "input_tokens": 121,
+          "correct": true
+        },
+        {
+          "options": [
+            "구매지원팀",
+            "정보지원팀",
+            "자료없음"
+          ],
+          "answer": "구매지원팀",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.6662042737007141,
+            0.3240506649017334,
+            0.009745054878294468
+          ],
+          "input_tokens": 121,
+          "correct": false
+        },
+        {
+          "options": [
+            "구매지원팀",
+            "자료없음",
+            "정보지원팀"
+          ],
+          "answer": "구매지원팀",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.6515358686447144,
+            0.00838171411305666,
+            0.34008240699768066
+          ],
+          "input_tokens": 121,
+          "correct": false
+        },
+        {
+          "options": [
+            "자료없음",
+            "정보지원팀",
+            "구매지원팀"
+          ],
+          "answer": "구매지원팀",
+          "label": "C",
+          "uncalibrated_label_probabilities": [
+            0.15063075721263885,
+            0.25007379055023193,
+            0.599295437335968
+          ],
+          "input_tokens": 121,
+          "correct": false
+        },
+        {
+          "options": [
+            "자료없음",
+            "구매지원팀",
+            "정보지원팀"
+          ],
+          "answer": "정보지원팀",
+          "label": "C",
+          "uncalibrated_label_probabilities": [
+            0.0811019241809845,
+            0.3622112572193146,
+            0.5566868185997009
+          ],
+          "input_tokens": 121,
+          "correct": true
+        }
+      ],
+      "all_orders_correct": false,
+      "order_invariant": false
+    },
+    {
+      "id": "device-phone",
+      "group": "direct",
+      "question": "장비 고장 문의 내선번호는?",
+      "evidence": [
+        {
+          "id": "I01",
+          "title": "가상 기관 장비 장애 안내",
+          "text": "가상기관 안내: 업무용 노트북 고장은 정보지원팀에 신고한다. 내부 문의 번호는 2468이다. 개인 소유 장비의 수리 비용 기준은 정하지 않았다."
+        }
+      ],
+      "expected": "2468",
+      "options": [
+        "1357",
+        "자료없음",
+        "2468"
+      ],
+      "expected_source_ids": [
+        "I01"
+      ],
+      "rubric": "자료에 근거한 값을 답할 것. 자료없음/규정충돌 사례는 추측하지 말 것.",
+      "generated": {
+        "answer": "자료없음",
+        "input_tokens": 99,
+        "generated_tokens_including_eos": 5,
+        "first_token_seconds": 0.0041,
+        "total_seconds": 0.0141,
+        "tokens_per_second_including_prefill": 354.42,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "generation_exact": false,
+      "choice": {
+        "options": [
+          "1357",
+          "자료없음",
+          "2468"
+        ],
+        "answer": "1357",
+        "label": "A",
+        "uncalibrated_label_probabilities": [
+          0.6182695031166077,
+          0.004476668778806925,
+          0.37725386023521423
+        ],
+        "input_tokens": 111,
+        "correct": false
+      },
+      "permutations": [
+        {
+          "options": [
+            "1357",
+            "자료없음",
+            "2468"
+          ],
+          "answer": "1357",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.6182695031166077,
+            0.004476668778806925,
+            0.37725386023521423
+          ],
+          "input_tokens": 111,
+          "correct": false
+        },
+        {
+          "options": [
+            "1357",
+            "2468",
+            "자료없음"
+          ],
+          "answer": "1357",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.6725584864616394,
+            0.318290650844574,
+            0.00915091298520565
+          ],
+          "input_tokens": 111,
+          "correct": false
+        },
+        {
+          "options": [
+            "자료없음",
+            "1357",
+            "2468"
+          ],
+          "answer": "2468",
+          "label": "C",
+          "uncalibrated_label_probabilities": [
+            0.030836692079901695,
+            0.2830086052417755,
+            0.6861547231674194
+          ],
+          "input_tokens": 111,
+          "correct": true
+        },
+        {
+          "options": [
+            "자료없음",
+            "2468",
+            "1357"
+          ],
+          "answer": "1357",
+          "label": "C",
+          "uncalibrated_label_probabilities": [
+            0.033322181552648544,
+            0.27765795588493347,
+            0.6890199184417725
+          ],
+          "input_tokens": 111,
+          "correct": false
+        },
+        {
+          "options": [
+            "2468",
+            "1357",
+            "자료없음"
+          ],
+          "answer": "2468",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.6711747646331787,
+            0.3196224868297577,
+            0.009202796965837479
+          ],
+          "input_tokens": 111,
+          "correct": true
+        },
+        {
+          "options": [
+            "2468",
+            "자료없음",
+            "1357"
+          ],
+          "answer": "2468",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.6116278767585754,
+            0.004423792008310556,
+            0.38394829630851746
+          ],
+          "input_tokens": 111,
+          "correct": true
+        }
+      ],
+      "all_orders_correct": false,
+      "order_invariant": false
+    },
+    {
+      "id": "records-years",
+      "group": "direct",
+      "question": "회의록은 몇 년 동안 보관해?",
+      "evidence": [
+        {
+          "id": "R01",
+          "title": "가상 기관 기록 관리 안내",
+          "text": "가상기관 규정: 회의록은 기록관리시스템에 등록한다. 회의록 보관 기간은 3년이다. 담당 부서는 기록관리팀이다."
+        }
+      ],
+      "expected": "3년",
+      "options": [
+        "자료없음",
+        "3년",
+        "5년"
+      ],
+      "expected_source_ids": [
+        "R01"
+      ],
+      "rubric": "자료에 근거한 값을 답할 것. 자료없음/규정충돌 사례는 추측하지 말 것.",
+      "counterfactual_pair": "retention",
+      "generated": {
+        "answer": "3년",
+        "input_tokens": 88,
+        "generated_tokens_including_eos": 3,
+        "first_token_seconds": 0.0037,
+        "total_seconds": 0.0089,
+        "tokens_per_second_including_prefill": 337.58,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "generation_exact": true,
+      "choice": {
+        "options": [
+          "자료없음",
+          "3년",
+          "5년"
+        ],
+        "answer": "5년",
+        "label": "C",
+        "uncalibrated_label_probabilities": [
+          0.0017176440451294184,
+          0.38355204463005066,
+          0.6147302389144897
+        ],
+        "input_tokens": 100,
+        "correct": false
+      },
+      "permutations": [
+        {
+          "options": [
+            "자료없음",
+            "3년",
+            "5년"
+          ],
+          "answer": "5년",
+          "label": "C",
+          "uncalibrated_label_probabilities": [
+            0.0017176440451294184,
+            0.38355204463005066,
+            0.6147302389144897
+          ],
+          "input_tokens": 100,
+          "correct": false
+        },
+        {
+          "options": [
+            "자료없음",
+            "5년",
+            "3년"
+          ],
+          "answer": "3년",
+          "label": "C",
+          "uncalibrated_label_probabilities": [
+            0.0016848179511725903,
+            0.3916953504085541,
+            0.6066198348999023
+          ],
+          "input_tokens": 100,
+          "correct": true
+        },
+        {
+          "options": [
+            "3년",
+            "자료없음",
+            "5년"
+          ],
+          "answer": "3년",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.5451630353927612,
+            0.0029766890220344067,
+            0.45186033844947815
+          ],
+          "input_tokens": 100,
+          "correct": true
+        },
+        {
+          "options": [
+            "3년",
+            "5년",
+            "자료없음"
+          ],
+          "answer": "3년",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.6324588656425476,
+            0.3632526099681854,
+            0.004288512747734785
+          ],
+          "input_tokens": 100,
+          "correct": true
+        },
+        {
+          "options": [
+            "5년",
+            "자료없음",
+            "3년"
+          ],
+          "answer": "5년",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.5527566075325012,
+            0.0036306502297520638,
+            0.4436126947402954
+          ],
+          "input_tokens": 100,
+          "correct": false
+        },
+        {
+          "options": [
+            "5년",
+            "3년",
+            "자료없음"
+          ],
+          "answer": "5년",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.6330215930938721,
+            0.36235421895980835,
+            0.0046241264790296555
+          ],
+          "input_tokens": 100,
+          "correct": false
+        }
+      ],
+      "all_orders_correct": false,
+      "order_invariant": false
+    },
+    {
+      "id": "visit-deadline",
+      "group": "direct",
+      "question": "방문 예약은 며칠 전에 신청해야 해?",
+      "evidence": [
+        {
+          "id": "V01",
+          "title": "가상 기관 방문 예약 안내",
+          "text": "가상기관 안내: 방문 예약은 방문일 2일 전까지 신청한다. 방문 예약 담당 부서는 안내지원팀이다. 주말 방문 가능 여부는 이 문서에 없다."
+        }
+      ],
+      "expected": "2일",
+      "options": [
+        "2일",
+        "7일",
+        "자료없음"
+      ],
+      "expected_source_ids": [
+        "V01"
+      ],
+      "rubric": "자료에 근거한 값을 답할 것. 자료없음/규정충돌 사례는 추측하지 말 것.",
+      "generated": {
+        "answer": "안내지원팀",
+        "input_tokens": 99,
+        "generated_tokens_including_eos": 5,
+        "first_token_seconds": 0.004,
+        "total_seconds": 0.0142,
+        "tokens_per_second_including_prefill": 352.08,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "generation_exact": false,
+      "choice": {
+        "options": [
+          "2일",
+          "7일",
+          "자료없음"
+        ],
+        "answer": "자료없음",
+        "label": "C",
+        "uncalibrated_label_probabilities": [
+          0.0007589268498122692,
+          0.0008325607632286847,
+          0.9984086155891418
+        ],
+        "input_tokens": 111,
+        "correct": false
+      },
+      "permutations": [
+        {
+          "options": [
+            "2일",
+            "7일",
+            "자료없음"
+          ],
+          "answer": "자료없음",
+          "label": "C",
+          "uncalibrated_label_probabilities": [
+            0.0007589268498122692,
+            0.0008325607632286847,
+            0.9984086155891418
+          ],
+          "input_tokens": 111,
+          "correct": false
+        },
+        {
+          "options": [
+            "2일",
+            "자료없음",
+            "7일"
+          ],
+          "answer": "자료없음",
+          "label": "B",
+          "uncalibrated_label_probabilities": [
+            0.0009699813090264797,
+            0.994758665561676,
+            0.004271334502846003
+          ],
+          "input_tokens": 111,
+          "correct": false
+        },
+        {
+          "options": [
+            "7일",
+            "2일",
+            "자료없음"
+          ],
+          "answer": "자료없음",
+          "label": "C",
+          "uncalibrated_label_probabilities": [
+            0.0007753827958367765,
+            0.0008002638933248818,
+            0.9984242916107178
+          ],
+          "input_tokens": 111,
+          "correct": false
+        },
+        {
+          "options": [
+            "7일",
+            "자료없음",
+            "2일"
+          ],
+          "answer": "자료없음",
+          "label": "B",
+          "uncalibrated_label_probabilities": [
+            0.0009718759683892131,
+            0.995128870010376,
+            0.003899244824424386
+          ],
+          "input_tokens": 111,
+          "correct": false
+        },
+        {
+          "options": [
+            "자료없음",
+            "2일",
+            "7일"
+          ],
+          "answer": "자료없음",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.9984980821609497,
+            0.0007427913369610906,
+            0.0007592051406390965
+          ],
+          "input_tokens": 111,
+          "correct": false
+        },
+        {
+          "options": [
+            "자료없음",
+            "7일",
+            "2일"
+          ],
+          "answer": "자료없음",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.9985376596450806,
+            0.0007324239704757929,
+            0.0007298990967683494
+          ],
+          "input_tokens": 111,
+          "correct": false
+        }
+      ],
+      "all_orders_correct": false,
+      "order_invariant": true
+    },
+    {
+      "id": "paraphrase-food",
+      "group": "paraphrase",
+      "question": "외근이 국내 출장에 해당할 때 하루 식사비로 정해진 금액을 알려줘.",
+      "evidence": [
+        {
+          "id": "T01",
+          "title": "가상 기관 출장비 안내",
+          "text": "가상기관 규정: 국내 출장 식비는 하루 3만원이다. 출장비 정산은 복귀 후 7일 이내에 신청한다. 담당 부서는 운영지원팀이다."
+        }
+      ],
+      "expected": "3만원",
+      "options": [
+        "3만원",
+        "5만원",
+        "자료없음"
+      ],
+      "expected_source_ids": [
+        "T01"
+      ],
+      "rubric": "자료에 근거한 값을 답할 것. 자료없음/규정충돌 사례는 추측하지 말 것.",
+      "generated": {
+        "answer": "자료없음",
+        "input_tokens": 107,
+        "generated_tokens_including_eos": 5,
+        "first_token_seconds": 0.004,
+        "total_seconds": 0.0142,
+        "tokens_per_second_including_prefill": 352.4,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "generation_exact": false,
+      "choice": {
+        "options": [
+          "3만원",
+          "5만원",
+          "자료없음"
+        ],
+        "answer": "자료없음",
+        "label": "C",
+        "uncalibrated_label_probabilities": [
+          0.0030387144070118666,
+          0.001739941886626184,
+          0.9952213168144226
+        ],
+        "input_tokens": 121,
+        "correct": false
+      },
+      "permutations": [
+        {
+          "options": [
+            "3만원",
+            "5만원",
+            "자료없음"
+          ],
+          "answer": "자료없음",
+          "label": "C",
+          "uncalibrated_label_probabilities": [
+            0.0030387144070118666,
+            0.001739941886626184,
+            0.9952213168144226
+          ],
+          "input_tokens": 121,
+          "correct": false
+        },
+        {
+          "options": [
+            "3만원",
+            "자료없음",
+            "5만원"
+          ],
+          "answer": "자료없음",
+          "label": "B",
+          "uncalibrated_label_probabilities": [
+            0.0033516129478812218,
+            0.9902036190032959,
+            0.006444791331887245
+          ],
+          "input_tokens": 121,
+          "correct": false
+        },
+        {
+          "options": [
+            "5만원",
+            "3만원",
+            "자료없음"
+          ],
+          "answer": "자료없음",
+          "label": "C",
+          "uncalibrated_label_probabilities": [
+            0.003102131187915802,
+            0.0018927950877696276,
+            0.9950050711631775
+          ],
+          "input_tokens": 121,
+          "correct": false
+        },
+        {
+          "options": [
+            "5만원",
+            "자료없음",
+            "3만원"
+          ],
+          "answer": "자료없음",
+          "label": "B",
+          "uncalibrated_label_probabilities": [
+            0.003156157210469246,
+            0.9887945652008057,
+            0.008049237541854382
+          ],
+          "input_tokens": 121,
+          "correct": false
+        },
+        {
+          "options": [
+            "자료없음",
+            "3만원",
+            "5만원"
+          ],
+          "answer": "자료없음",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.9933546781539917,
+            0.0036490538623183966,
+            0.002996327355504036
+          ],
+          "input_tokens": 121,
+          "correct": false
+        },
+        {
+          "options": [
+            "자료없음",
+            "5만원",
+            "3만원"
+          ],
+          "answer": "자료없음",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.9934144020080566,
+            0.003318195231258869,
+            0.0032673028763383627
+          ],
+          "input_tokens": 121,
+          "correct": false
+        }
+      ],
+      "all_orders_correct": false,
+      "order_invariant": true
+    },
+    {
+      "id": "paraphrase-device",
+      "group": "paraphrase",
+      "question": "회사 노트북이 작동하지 않는데 연락할 담당 조직이 궁금해.",
+      "evidence": [
+        {
+          "id": "I01",
+          "title": "가상 기관 장비 장애 안내",
+          "text": "가상기관 안내: 업무용 노트북 고장은 정보지원팀에 신고한다. 내부 문의 번호는 2468이다. 개인 소유 장비의 수리 비용 기준은 정하지 않았다."
+        }
+      ],
+      "expected": "정보지원팀",
+      "options": [
+        "정보지원팀",
+        "구매지원팀",
+        "자료없음"
+      ],
+      "expected_source_ids": [
+        "I01"
+      ],
+      "rubric": "자료에 근거한 값을 답할 것. 자료없음/규정충돌 사례는 추측하지 말 것.",
+      "generated": {
+        "answer": "자료없음",
+        "input_tokens": 108,
+        "generated_tokens_including_eos": 5,
+        "first_token_seconds": 0.0041,
+        "total_seconds": 0.0143,
+        "tokens_per_second_including_prefill": 349.94,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "generation_exact": false,
+      "choice": {
+        "options": [
+          "정보지원팀",
+          "구매지원팀",
+          "자료없음"
+        ],
+        "answer": "정보지원팀",
+        "label": "A",
+        "uncalibrated_label_probabilities": [
+          0.6318974494934082,
+          0.3585277795791626,
+          0.009574792347848415
+        ],
+        "input_tokens": 123,
+        "correct": true
+      },
+      "permutations": [
+        {
+          "options": [
+            "정보지원팀",
+            "구매지원팀",
+            "자료없음"
+          ],
+          "answer": "정보지원팀",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.6318974494934082,
+            0.3585277795791626,
+            0.009574792347848415
+          ],
+          "input_tokens": 123,
+          "correct": true
+        },
+        {
+          "options": [
+            "정보지원팀",
+            "자료없음",
+            "구매지원팀"
+          ],
+          "answer": "정보지원팀",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.594359815120697,
+            0.011278806254267693,
+            0.39436134696006775
+          ],
+          "input_tokens": 123,
+          "correct": true
+        },
+        {
+          "options": [
+            "구매지원팀",
+            "정보지원팀",
+            "자료없음"
+          ],
+          "answer": "구매지원팀",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.6509466767311096,
+            0.33980822563171387,
+            0.009245043620467186
+          ],
+          "input_tokens": 123,
+          "correct": false
+        },
+        {
+          "options": [
+            "구매지원팀",
+            "자료없음",
+            "정보지원팀"
+          ],
+          "answer": "구매지원팀",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.6412245631217957,
+            0.0071753086522221565,
+            0.3516000807285309
+          ],
+          "input_tokens": 123,
+          "correct": false
+        },
+        {
+          "options": [
+            "자료없음",
+            "정보지원팀",
+            "구매지원팀"
+          ],
+          "answer": "구매지원팀",
+          "label": "C",
+          "uncalibrated_label_probabilities": [
+            0.06576434522867203,
+            0.3656267523765564,
+            0.5686088800430298
+          ],
+          "input_tokens": 123,
+          "correct": false
+        },
+        {
+          "options": [
+            "자료없음",
+            "구매지원팀",
+            "정보지원팀"
+          ],
+          "answer": "정보지원팀",
+          "label": "C",
+          "uncalibrated_label_probabilities": [
+            0.03792740777134895,
+            0.39582371711730957,
+            0.5662488341331482
+          ],
+          "input_tokens": 123,
+          "correct": true
+        }
+      ],
+      "all_orders_correct": false,
+      "order_invariant": false
+    },
+    {
+      "id": "paraphrase-record",
+      "group": "paraphrase",
+      "question": "회의를 마치고 남긴 기록은 어느 곳에 올리면 돼?",
+      "evidence": [
+        {
+          "id": "R01",
+          "title": "가상 기관 기록 관리 안내",
+          "text": "가상기관 규정: 회의록은 기록관리시스템에 등록한다. 회의록 보관 기간은 3년이다. 담당 부서는 기록관리팀이다."
+        }
+      ],
+      "expected": "기록관리시스템",
+      "options": [
+        "기록관리시스템",
+        "인사시스템",
+        "자료없음"
+      ],
+      "expected_source_ids": [
+        "R01"
+      ],
+      "rubric": "자료에 근거한 값을 답할 것. 자료없음/규정충돌 사례는 추측하지 말 것.",
+      "generated": {
+        "answer": "장비관리팀",
+        "input_tokens": 92,
+        "generated_tokens_including_eos": 5,
+        "first_token_seconds": 0.0038,
+        "total_seconds": 0.0137,
+        "tokens_per_second_including_prefill": 365.31,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "generation_exact": false,
+      "choice": {
+        "options": [
+          "기록관리시스템",
+          "인사시스템",
+          "자료없음"
+        ],
+        "answer": "기록관리시스템",
+        "label": "A",
+        "uncalibrated_label_probabilities": [
+          0.5947462916374207,
+          0.4020725190639496,
+          0.0031811923254281282
+        ],
+        "input_tokens": 105,
+        "correct": true
+      },
+      "permutations": [
+        {
+          "options": [
+            "기록관리시스템",
+            "인사시스템",
+            "자료없음"
+          ],
+          "answer": "기록관리시스템",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.5947462916374207,
+            0.4020725190639496,
+            0.0031811923254281282
+          ],
+          "input_tokens": 105,
+          "correct": true
+        },
+        {
+          "options": [
+            "기록관리시스템",
+            "자료없음",
+            "인사시스템"
+          ],
+          "answer": "기록관리시스템",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.5836127996444702,
+            0.0033346430864185095,
+            0.413052499294281
+          ],
+          "input_tokens": 105,
+          "correct": true
+        },
+        {
+          "options": [
+            "인사시스템",
+            "기록관리시스템",
+            "자료없음"
+          ],
+          "answer": "인사시스템",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.604276180267334,
+            0.3921887278556824,
+            0.0035350427497178316
+          ],
+          "input_tokens": 105,
+          "correct": false
+        },
+        {
+          "options": [
+            "인사시스템",
+            "자료없음",
+            "기록관리시스템"
+          ],
+          "answer": "기록관리시스템",
+          "label": "C",
+          "uncalibrated_label_probabilities": [
+            0.49718141555786133,
+            0.003997682593762875,
+            0.4988209009170532
+          ],
+          "input_tokens": 105,
+          "correct": true
+        },
+        {
+          "options": [
+            "자료없음",
+            "기록관리시스템",
+            "인사시스템"
+          ],
+          "answer": "인사시스템",
+          "label": "C",
+          "uncalibrated_label_probabilities": [
+            0.004043996799737215,
+            0.3027554452419281,
+            0.6932005286216736
+          ],
+          "input_tokens": 105,
+          "correct": false
+        },
+        {
+          "options": [
+            "자료없음",
+            "인사시스템",
+            "기록관리시스템"
+          ],
+          "answer": "기록관리시스템",
+          "label": "C",
+          "uncalibrated_label_probabilities": [
+            0.0021761725656688213,
+            0.37786561250686646,
+            0.6199581623077393
+          ],
+          "input_tokens": 105,
+          "correct": true
+        }
+      ],
+      "all_orders_correct": false,
+      "order_invariant": false
+    },
+    {
+      "id": "missing-taxi",
+      "group": "missing",
+      "question": "출장 택시비 상한은 얼마야?",
+      "evidence": [
+        {
+          "id": "T01",
+          "title": "가상 기관 출장비 안내",
+          "text": "가상기관 규정: 국내 출장 식비는 하루 3만원이다. 출장비 정산은 복귀 후 7일 이내에 신청한다. 담당 부서는 운영지원팀이다."
+        }
+      ],
+      "expected": "자료없음",
+      "options": [
+        "3만원",
+        "5만원",
+        "자료없음"
+      ],
+      "expected_source_ids": [
+        "T01"
+      ],
+      "rubric": "자료에 근거한 값을 답할 것. 자료없음/규정충돌 사례는 추측하지 말 것.",
+      "generated": {
+        "answer": "자료없음",
+        "input_tokens": 95,
+        "generated_tokens_including_eos": 5,
+        "first_token_seconds": 0.0037,
+        "total_seconds": 0.0137,
+        "tokens_per_second_including_prefill": 363.71,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "generation_exact": true,
+      "choice": {
+        "options": [
+          "3만원",
+          "5만원",
+          "자료없음"
+        ],
+        "answer": "자료없음",
+        "label": "C",
+        "uncalibrated_label_probabilities": [
+          0.00817283894866705,
+          0.0029503952246159315,
+          0.9888767600059509
+        ],
+        "input_tokens": 109,
+        "correct": true
+      },
+      "permutations": [
+        {
+          "options": [
+            "3만원",
+            "5만원",
+            "자료없음"
+          ],
+          "answer": "자료없음",
+          "label": "C",
+          "uncalibrated_label_probabilities": [
+            0.00817283894866705,
+            0.0029503952246159315,
+            0.9888767600059509
+          ],
+          "input_tokens": 109,
+          "correct": true
+        },
+        {
+          "options": [
+            "3만원",
+            "자료없음",
+            "5만원"
+          ],
+          "answer": "자료없음",
+          "label": "B",
+          "uncalibrated_label_probabilities": [
+            0.003594274865463376,
+            0.9894834160804749,
+            0.006922235246747732
+          ],
+          "input_tokens": 109,
+          "correct": true
+        },
+        {
+          "options": [
+            "5만원",
+            "3만원",
+            "자료없음"
+          ],
+          "answer": "자료없음",
+          "label": "C",
+          "uncalibrated_label_probabilities": [
+            0.007557660806924105,
+            0.0032295261044055223,
+            0.9892127513885498
+          ],
+          "input_tokens": 109,
+          "correct": true
+        },
+        {
+          "options": [
+            "5만원",
+            "자료없음",
+            "3만원"
+          ],
+          "answer": "자료없음",
+          "label": "B",
+          "uncalibrated_label_probabilities": [
+            0.0032160028349608183,
+            0.9864091873168945,
+            0.010374791920185089
+          ],
+          "input_tokens": 109,
+          "correct": true
+        },
+        {
+          "options": [
+            "자료없음",
+            "3만원",
+            "5만원"
+          ],
+          "answer": "자료없음",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.995498538017273,
+            0.002265399554744363,
+            0.0022361003793776035
+          ],
+          "input_tokens": 109,
+          "correct": true
+        },
+        {
+          "options": [
+            "자료없음",
+            "5만원",
+            "3만원"
+          ],
+          "answer": "자료없음",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.995474636554718,
+            0.0020276543218642473,
+            0.0024976860731840134
+          ],
+          "input_tokens": 109,
+          "correct": true
+        }
+      ],
+      "all_orders_correct": true,
+      "order_invariant": true
+    },
+    {
+      "id": "missing-leave",
+      "group": "missing",
+      "question": "경조사 특별휴가는 며칠이야?",
+      "evidence": [
+        {
+          "id": "L01",
+          "title": "가상 기관 휴가 신청 안내",
+          "text": "가상기관 규정: 연차 신청의 승인자는 팀장이다. 연차 신청은 인사시스템에서 접수한다. 특별휴가 일수는 이 문서에 정하지 않았다."
+        }
+      ],
+      "expected": "자료없음",
+      "options": [
+        "3일",
+        "5일",
+        "자료없음"
+      ],
+      "expected_source_ids": [
+        "L01"
+      ],
+      "rubric": "자료에 근거한 값을 답할 것. 자료없음/규정충돌 사례는 추측하지 말 것.",
+      "generated": {
+        "answer": "자료없음",
+        "input_tokens": 95,
+        "generated_tokens_including_eos": 5,
+        "first_token_seconds": 0.0037,
+        "total_seconds": 0.0139,
+        "tokens_per_second_including_prefill": 359.1,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "generation_exact": true,
+      "choice": {
+        "options": [
+          "3일",
+          "5일",
+          "자료없음"
+        ],
+        "answer": "자료없음",
+        "label": "C",
+        "uncalibrated_label_probabilities": [
+          0.001197029952891171,
+          0.0007492608856409788,
+          0.9980536699295044
+        ],
+        "input_tokens": 107,
+        "correct": true
+      },
+      "permutations": [
+        {
+          "options": [
+            "3일",
+            "5일",
+            "자료없음"
+          ],
+          "answer": "자료없음",
+          "label": "C",
+          "uncalibrated_label_probabilities": [
+            0.001197029952891171,
+            0.0007492608856409788,
+            0.9980536699295044
+          ],
+          "input_tokens": 107,
+          "correct": true
+        },
+        {
+          "options": [
+            "3일",
+            "자료없음",
+            "5일"
+          ],
+          "answer": "자료없음",
+          "label": "B",
+          "uncalibrated_label_probabilities": [
+            0.0016949819400906563,
+            0.9970393180847168,
+            0.0012657425832003355
+          ],
+          "input_tokens": 107,
+          "correct": true
+        },
+        {
+          "options": [
+            "5일",
+            "3일",
+            "자료없음"
+          ],
+          "answer": "자료없음",
+          "label": "C",
+          "uncalibrated_label_probabilities": [
+            0.0012093171244487166,
+            0.0007831825059838593,
+            0.9980074763298035
+          ],
+          "input_tokens": 107,
+          "correct": true
+        },
+        {
+          "options": [
+            "5일",
+            "자료없음",
+            "3일"
+          ],
+          "answer": "자료없음",
+          "label": "B",
+          "uncalibrated_label_probabilities": [
+            0.001491494127549231,
+            0.9968013763427734,
+            0.0017071468755602837
+          ],
+          "input_tokens": 107,
+          "correct": true
+        },
+        {
+          "options": [
+            "자료없음",
+            "3일",
+            "5일"
+          ],
+          "answer": "자료없음",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.9980490207672119,
+            0.0009899100987240672,
+            0.0009610860724933445
+          ],
+          "input_tokens": 107,
+          "correct": true
+        },
+        {
+          "options": [
+            "자료없음",
+            "5일",
+            "3일"
+          ],
+          "answer": "자료없음",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.9979966282844543,
+            0.0008910944452509284,
+            0.0011122594587504864
+          ],
+          "input_tokens": 107,
+          "correct": true
+        }
+      ],
+      "all_orders_correct": true,
+      "order_invariant": true
+    },
+    {
+      "id": "missing-weekend",
+      "group": "missing",
+      "question": "토요일에도 방문할 수 있어?",
+      "evidence": [
+        {
+          "id": "V01",
+          "title": "가상 기관 방문 예약 안내",
+          "text": "가상기관 안내: 방문 예약은 방문일 2일 전까지 신청한다. 방문 예약 담당 부서는 안내지원팀이다. 주말 방문 가능 여부는 이 문서에 없다."
+        }
+      ],
+      "expected": "자료없음",
+      "options": [
+        "자료없음",
+        "가능",
+        "불가"
+      ],
+      "expected_source_ids": [
+        "V01"
+      ],
+      "rubric": "자료에 근거한 값을 답할 것. 자료없음/규정충돌 사례는 추측하지 말 것.",
+      "generated": {
+        "answer": "자료없음",
+        "input_tokens": 95,
+        "generated_tokens_including_eos": 5,
+        "first_token_seconds": 0.0039,
+        "total_seconds": 0.0146,
+        "tokens_per_second_including_prefill": 343.09,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "generation_exact": true,
+      "choice": {
+        "options": [
+          "자료없음",
+          "가능",
+          "불가"
+        ],
+        "answer": "자료없음",
+        "label": "A",
+        "uncalibrated_label_probabilities": [
+          0.9665798544883728,
+          0.031046725809574127,
+          0.0023733647540211678
+        ],
+        "input_tokens": 105,
+        "correct": true
+      },
+      "permutations": [
+        {
+          "options": [
+            "자료없음",
+            "가능",
+            "불가"
+          ],
+          "answer": "자료없음",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.9665798544883728,
+            0.031046725809574127,
+            0.0023733647540211678
+          ],
+          "input_tokens": 105,
+          "correct": true
+        },
+        {
+          "options": [
+            "자료없음",
+            "불가",
+            "가능"
+          ],
+          "answer": "자료없음",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.9680072069168091,
+            0.028412699699401855,
+            0.0035801243502646685
+          ],
+          "input_tokens": 105,
+          "correct": true
+        },
+        {
+          "options": [
+            "가능",
+            "자료없음",
+            "불가"
+          ],
+          "answer": "자료없음",
+          "label": "B",
+          "uncalibrated_label_probabilities": [
+            0.006837319582700729,
+            0.9901162981987,
+            0.003046361729502678
+          ],
+          "input_tokens": 105,
+          "correct": true
+        },
+        {
+          "options": [
+            "가능",
+            "불가",
+            "자료없음"
+          ],
+          "answer": "자료없음",
+          "label": "C",
+          "uncalibrated_label_probabilities": [
+            0.0019192288164049387,
+            0.0006791986525058746,
+            0.9974015951156616
+          ],
+          "input_tokens": 105,
+          "correct": true
+        },
+        {
+          "options": [
+            "불가",
+            "자료없음",
+            "가능"
+          ],
+          "answer": "자료없음",
+          "label": "B",
+          "uncalibrated_label_probabilities": [
+            0.006774421781301498,
+            0.9887399077415466,
+            0.004485628567636013
+          ],
+          "input_tokens": 105,
+          "correct": true
+        },
+        {
+          "options": [
+            "불가",
+            "가능",
+            "자료없음"
+          ],
+          "answer": "자료없음",
+          "label": "C",
+          "uncalibrated_label_probabilities": [
+            0.0019248629687353969,
+            0.0007783047622069716,
+            0.9972967505455017
+          ],
+          "input_tokens": 105,
+          "correct": true
+        }
+      ],
+      "all_orders_correct": true,
+      "order_invariant": true
+    },
+    {
+      "id": "conflict-food",
+      "group": "conflict",
+      "question": "두 안내를 보고 출장 식비를 알려줘.",
+      "evidence": [
+        {
+          "id": "T01",
+          "title": "가상 기관 출장비 안내",
+          "text": "가상기관 안내 A: 출장 식비는 하루 3만원이다. 안내 B: 출장 식비는 하루 5만원이다. 두 안내의 시행일과 우선순위는 알려지지 않았다."
+        }
+      ],
+      "expected": "규정충돌",
+      "options": [
+        "규정충돌",
+        "3만원",
+        "5만원"
+      ],
+      "expected_source_ids": [
+        "T01"
+      ],
+      "rubric": "자료에 근거한 값을 답할 것. 자료없음/규정충돌 사례는 추측하지 말 것.",
+      "generated": {
+        "answer": "규정충돌",
+        "input_tokens": 103,
+        "generated_tokens_including_eos": 5,
+        "first_token_seconds": 0.0041,
+        "total_seconds": 0.0142,
+        "tokens_per_second_including_prefill": 351.73,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "generation_exact": true,
+      "choice": {
+        "options": [
+          "규정충돌",
+          "3만원",
+          "5만원"
+        ],
+        "answer": "규정충돌",
+        "label": "A",
+        "uncalibrated_label_probabilities": [
+          0.9958557486534119,
+          0.002066165441647172,
+          0.0020781042985618114
+        ],
+        "input_tokens": 117,
+        "correct": true
+      },
+      "permutations": [
+        {
+          "options": [
+            "규정충돌",
+            "3만원",
+            "5만원"
+          ],
+          "answer": "규정충돌",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.9958557486534119,
+            0.002066165441647172,
+            0.0020781042985618114
+          ],
+          "input_tokens": 117,
+          "correct": true
+        },
+        {
+          "options": [
+            "규정충돌",
+            "5만원",
+            "3만원"
+          ],
+          "answer": "규정충돌",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.9958539009094238,
+            0.0019563601817935705,
+            0.0021898215636610985
+          ],
+          "input_tokens": 117,
+          "correct": true
+        },
+        {
+          "options": [
+            "3만원",
+            "규정충돌",
+            "5만원"
+          ],
+          "answer": "규정충돌",
+          "label": "B",
+          "uncalibrated_label_probabilities": [
+            0.0037723432760685682,
+            0.995313286781311,
+            0.000914412725251168
+          ],
+          "input_tokens": 117,
+          "correct": true
+        },
+        {
+          "options": [
+            "3만원",
+            "5만원",
+            "규정충돌"
+          ],
+          "answer": "규정충돌",
+          "label": "C",
+          "uncalibrated_label_probabilities": [
+            0.0032195074018090963,
+            0.0011289501562714577,
+            0.9956515431404114
+          ],
+          "input_tokens": 117,
+          "correct": true
+        },
+        {
+          "options": [
+            "5만원",
+            "규정충돌",
+            "3만원"
+          ],
+          "answer": "규정충돌",
+          "label": "B",
+          "uncalibrated_label_probabilities": [
+            0.0038114478811621666,
+            0.9952561259269714,
+            0.0009324379498139024
+          ],
+          "input_tokens": 117,
+          "correct": true
+        },
+        {
+          "options": [
+            "5만원",
+            "3만원",
+            "규정충돌"
+          ],
+          "answer": "규정충돌",
+          "label": "C",
+          "uncalibrated_label_probabilities": [
+            0.0032175772357732058,
+            0.0011220828164368868,
+            0.9956602454185486
+          ],
+          "input_tokens": 117,
+          "correct": true
+        }
+      ],
+      "all_orders_correct": true,
+      "order_invariant": true
+    },
+    {
+      "id": "conflict-deadline",
+      "group": "conflict",
+      "question": "출장 정산 기한을 확정해 줘.",
+      "evidence": [
+        {
+          "id": "T01",
+          "title": "가상 기관 출장비 안내",
+          "text": "가상기관 안내 A: 복귀 후 7일 이내에 정산한다. 안내 B: 복귀 후 14일 이내에 정산한다. 두 안내의 시행일과 우선순위는 알려지지 않았다."
+        }
+      ],
+      "expected": "규정충돌",
+      "options": [
+        "14일",
+        "7일",
+        "규정충돌"
+      ],
+      "expected_source_ids": [
+        "T01"
+      ],
+      "rubric": "자료에 근거한 값을 답할 것. 자료없음/규정충돌 사례는 추측하지 말 것.",
+      "generated": {
+        "answer": "규정충돌",
+        "input_tokens": 103,
+        "generated_tokens_including_eos": 5,
+        "first_token_seconds": 0.004,
+        "total_seconds": 0.014,
+        "tokens_per_second_including_prefill": 356.35,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "generation_exact": true,
+      "choice": {
+        "options": [
+          "14일",
+          "7일",
+          "규정충돌"
+        ],
+        "answer": "규정충돌",
+        "label": "C",
+        "uncalibrated_label_probabilities": [
+          0.0019324697786942124,
+          0.0008309879340231419,
+          0.9972364902496338
+        ],
+        "input_tokens": 115,
+        "correct": true
+      },
+      "permutations": [
+        {
+          "options": [
+            "14일",
+            "7일",
+            "규정충돌"
+          ],
+          "answer": "규정충돌",
+          "label": "C",
+          "uncalibrated_label_probabilities": [
+            0.0019324697786942124,
+            0.0008309879340231419,
+            0.9972364902496338
+          ],
+          "input_tokens": 115,
+          "correct": true
+        },
+        {
+          "options": [
+            "14일",
+            "규정충돌",
+            "7일"
+          ],
+          "answer": "규정충돌",
+          "label": "B",
+          "uncalibrated_label_probabilities": [
+            0.0007767881616018713,
+            0.998340368270874,
+            0.0008828544523566961
+          ],
+          "input_tokens": 115,
+          "correct": true
+        },
+        {
+          "options": [
+            "7일",
+            "14일",
+            "규정충돌"
+          ],
+          "answer": "규정충돌",
+          "label": "C",
+          "uncalibrated_label_probabilities": [
+            0.001979254186153412,
+            0.0008106742170639336,
+            0.9972100853919983
+          ],
+          "input_tokens": 115,
+          "correct": true
+        },
+        {
+          "options": [
+            "7일",
+            "규정충돌",
+            "14일"
+          ],
+          "answer": "규정충돌",
+          "label": "B",
+          "uncalibrated_label_probabilities": [
+            0.0008015246130526066,
+            0.9983610510826111,
+            0.0008374070166610181
+          ],
+          "input_tokens": 115,
+          "correct": true
+        },
+        {
+          "options": [
+            "규정충돌",
+            "14일",
+            "7일"
+          ],
+          "answer": "규정충돌",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.9975805282592773,
+            0.0012918253196403384,
+            0.0011275520082563162
+          ],
+          "input_tokens": 115,
+          "correct": true
+        },
+        {
+          "options": [
+            "규정충돌",
+            "7일",
+            "14일"
+          ],
+          "answer": "규정충돌",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.9976251721382141,
+            0.0013109189458191395,
+            0.00106393254827708
+          ],
+          "input_tokens": 115,
+          "correct": true
+        }
+      ],
+      "all_orders_correct": true,
+      "order_invariant": true
+    },
+    {
+      "id": "current-food",
+      "group": "revision",
+      "question": "현재 적용할 출장 식비는 얼마야?",
+      "evidence": [
+        {
+          "id": "T01",
+          "title": "가상 기관 출장비 안내",
+          "text": "가상기관 규정: 폐지된 구규정의 출장 식비는 하루 3만원이다. 구규정을 대체하여 현재 시행 중인 규정의 출장 식비는 하루 4만원이다."
+        }
+      ],
+      "expected": "4만원",
+      "options": [
+        "3만원",
+        "4만원",
+        "규정충돌"
+      ],
+      "expected_source_ids": [
+        "T01"
+      ],
+      "rubric": "자료에 근거한 값을 답할 것. 자료없음/규정충돌 사례는 추측하지 말 것.",
+      "generated": {
+        "answer": "3만원",
+        "input_tokens": 97,
+        "generated_tokens_including_eos": 4,
+        "first_token_seconds": 0.004,
+        "total_seconds": 0.0116,
+        "tokens_per_second_including_prefill": 344.37,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "generation_exact": false,
+      "choice": {
+        "options": [
+          "3만원",
+          "4만원",
+          "규정충돌"
+        ],
+        "answer": "4만원",
+        "label": "B",
+        "uncalibrated_label_probabilities": [
+          0.38115328550338745,
+          0.6052814722061157,
+          0.0135652469471097
+        ],
+        "input_tokens": 111,
+        "correct": true
+      },
+      "permutations": [
+        {
+          "options": [
+            "3만원",
+            "4만원",
+            "규정충돌"
+          ],
+          "answer": "4만원",
+          "label": "B",
+          "uncalibrated_label_probabilities": [
+            0.38115328550338745,
+            0.6052814722061157,
+            0.0135652469471097
+          ],
+          "input_tokens": 111,
+          "correct": true
+        },
+        {
+          "options": [
+            "3만원",
+            "규정충돌",
+            "4만원"
+          ],
+          "answer": "3만원",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.6114465594291687,
+            0.011654485017061234,
+            0.37689894437789917
+          ],
+          "input_tokens": 111,
+          "correct": false
+        },
+        {
+          "options": [
+            "4만원",
+            "3만원",
+            "규정충돌"
+          ],
+          "answer": "3만원",
+          "label": "B",
+          "uncalibrated_label_probabilities": [
+            0.3676431179046631,
+            0.6196258664131165,
+            0.012730968184769154
+          ],
+          "input_tokens": 111,
+          "correct": false
+        },
+        {
+          "options": [
+            "4만원",
+            "규정충돌",
+            "3만원"
+          ],
+          "answer": "4만원",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.6115238070487976,
+            0.012035814113914967,
+            0.3764403760433197
+          ],
+          "input_tokens": 111,
+          "correct": true
+        },
+        {
+          "options": [
+            "규정충돌",
+            "3만원",
+            "4만원"
+          ],
+          "answer": "3만원",
+          "label": "B",
+          "uncalibrated_label_probabilities": [
+            0.0032323505729436874,
+            0.546387255191803,
+            0.45038044452667236
+          ],
+          "input_tokens": 111,
+          "correct": false
+        },
+        {
+          "options": [
+            "규정충돌",
+            "4만원",
+            "3만원"
+          ],
+          "answer": "4만원",
+          "label": "B",
+          "uncalibrated_label_probabilities": [
+            0.0026650854852050543,
+            0.5490222573280334,
+            0.4483126103878021
+          ],
+          "input_tokens": 111,
+          "correct": true
+        }
+      ],
+      "all_orders_correct": false,
+      "order_invariant": false
+    },
+    {
+      "id": "current-retention",
+      "group": "revision",
+      "question": "현재 회의록 보관 기간은?",
+      "evidence": [
+        {
+          "id": "R01",
+          "title": "가상 기관 기록 관리 안내",
+          "text": "가상기관 규정: 폐지된 구규정에서 회의록 보관 기간은 3년이었다. 구규정을 대체한 현행 규정의 보관 기간은 5년이다."
+        }
+      ],
+      "expected": "5년",
+      "options": [
+        "3년",
+        "5년",
+        "규정충돌"
+      ],
+      "expected_source_ids": [
+        "R01"
+      ],
+      "rubric": "자료에 근거한 값을 답할 것. 자료없음/규정충돌 사례는 추측하지 말 것.",
+      "generated": {
+        "answer": "10년",
+        "input_tokens": 91,
+        "generated_tokens_including_eos": 3,
+        "first_token_seconds": 0.0039,
+        "total_seconds": 0.0089,
+        "tokens_per_second_including_prefill": 337.05,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "generation_exact": false,
+      "choice": {
+        "options": [
+          "3년",
+          "5년",
+          "규정충돌"
+        ],
+        "answer": "3년",
+        "label": "A",
+        "uncalibrated_label_probabilities": [
+          0.5993825197219849,
+          0.39833012223243713,
+          0.0022873037960380316
+        ],
+        "input_tokens": 103,
+        "correct": false
+      },
+      "permutations": [
+        {
+          "options": [
+            "3년",
+            "5년",
+            "규정충돌"
+          ],
+          "answer": "3년",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.5993825197219849,
+            0.39833012223243713,
+            0.0022873037960380316
+          ],
+          "input_tokens": 103,
+          "correct": false
+        },
+        {
+          "options": [
+            "3년",
+            "규정충돌",
+            "5년"
+          ],
+          "answer": "3년",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.6115284562110901,
+            0.003176930593326688,
+            0.385294646024704
+          ],
+          "input_tokens": 103,
+          "correct": false
+        },
+        {
+          "options": [
+            "5년",
+            "3년",
+            "규정충돌"
+          ],
+          "answer": "5년",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.5997198820114136,
+            0.3979436159133911,
+            0.002336513251066208
+          ],
+          "input_tokens": 103,
+          "correct": true
+        },
+        {
+          "options": [
+            "5년",
+            "규정충돌",
+            "3년"
+          ],
+          "answer": "5년",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.627271294593811,
+            0.0034330026246607304,
+            0.36929574608802795
+          ],
+          "input_tokens": 103,
+          "correct": true
+        },
+        {
+          "options": [
+            "규정충돌",
+            "3년",
+            "5년"
+          ],
+          "answer": "5년",
+          "label": "C",
+          "uncalibrated_label_probabilities": [
+            0.0013934234157204628,
+            0.4406489431858063,
+            0.5579575896263123
+          ],
+          "input_tokens": 103,
+          "correct": true
+        },
+        {
+          "options": [
+            "규정충돌",
+            "5년",
+            "3년"
+          ],
+          "answer": "3년",
+          "label": "C",
+          "uncalibrated_label_probabilities": [
+            0.0013462492497637868,
+            0.44951215386390686,
+            0.5491415858268738
+          ],
+          "input_tokens": 103,
+          "correct": false
+        }
+      ],
+      "all_orders_correct": false,
+      "order_invariant": false
+    },
+    {
+      "id": "counterfactual-food",
+      "group": "counterfactual",
+      "question": "국내 출장 식비는 하루 얼마야?",
+      "evidence": [
+        {
+          "id": "T01",
+          "title": "가상 기관 출장비 안내",
+          "text": "가상기관 규정: 국내 출장 식비는 하루 5만원이다. 출장비 정산은 복귀 후 7일 이내에 신청한다. 담당 부서는 운영지원팀이다."
+        }
+      ],
+      "expected": "5만원",
+      "options": [
+        "자료없음",
+        "3만원",
+        "5만원"
+      ],
+      "expected_source_ids": [
+        "T01"
+      ],
+      "rubric": "자료에 근거한 값을 답할 것. 자료없음/규정충돌 사례는 추측하지 말 것.",
+      "counterfactual_pair": "food-amount",
+      "generated": {
+        "answer": "자료없음",
+        "input_tokens": 93,
+        "generated_tokens_including_eos": 5,
+        "first_token_seconds": 0.0039,
+        "total_seconds": 0.0139,
+        "tokens_per_second_including_prefill": 358.49,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "generation_exact": false,
+      "choice": {
+        "options": [
+          "자료없음",
+          "3만원",
+          "5만원"
+        ],
+        "answer": "자료없음",
+        "label": "A",
+        "uncalibrated_label_probabilities": [
+          0.9957453608512878,
+          0.002476134803146124,
+          0.0017784680239856243
+        ],
+        "input_tokens": 107,
+        "correct": false
+      },
+      "permutations": [
+        {
+          "options": [
+            "자료없음",
+            "3만원",
+            "5만원"
+          ],
+          "answer": "자료없음",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.9957453608512878,
+            0.002476134803146124,
+            0.0017784680239856243
+          ],
+          "input_tokens": 107,
+          "correct": false
+        },
+        {
+          "options": [
+            "자료없음",
+            "5만원",
+            "3만원"
+          ],
+          "answer": "자료없음",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.9957869648933411,
+            0.002229684730991721,
+            0.001983347814530134
+          ],
+          "input_tokens": 107,
+          "correct": false
+        },
+        {
+          "options": [
+            "3만원",
+            "자료없음",
+            "5만원"
+          ],
+          "answer": "자료없음",
+          "label": "B",
+          "uncalibrated_label_probabilities": [
+            0.0036570618394762278,
+            0.9916836023330688,
+            0.004659275524318218
+          ],
+          "input_tokens": 107,
+          "correct": false
+        },
+        {
+          "options": [
+            "3만원",
+            "5만원",
+            "자료없음"
+          ],
+          "answer": "자료없음",
+          "label": "C",
+          "uncalibrated_label_probabilities": [
+            0.003720357082784176,
+            0.0016294133383780718,
+            0.9946503043174744
+          ],
+          "input_tokens": 107,
+          "correct": false
+        },
+        {
+          "options": [
+            "5만원",
+            "자료없음",
+            "3만원"
+          ],
+          "answer": "자료없음",
+          "label": "B",
+          "uncalibrated_label_probabilities": [
+            0.003402962116524577,
+            0.9900234341621399,
+            0.006573615130037069
+          ],
+          "input_tokens": 107,
+          "correct": false
+        },
+        {
+          "options": [
+            "5만원",
+            "3만원",
+            "자료없음"
+          ],
+          "answer": "자료없음",
+          "label": "C",
+          "uncalibrated_label_probabilities": [
+            0.003622612450271845,
+            0.0017599508864805102,
+            0.9946175217628479
+          ],
+          "input_tokens": 107,
+          "correct": false
+        }
+      ],
+      "all_orders_correct": false,
+      "order_invariant": true
+    },
+    {
+      "id": "counterfactual-record",
+      "group": "counterfactual",
+      "question": "회의록은 몇 년 동안 보관해?",
+      "evidence": [
+        {
+          "id": "R01",
+          "title": "가상 기관 기록 관리 안내",
+          "text": "가상기관 규정: 회의록은 기록관리시스템에 등록한다. 회의록 보관 기간은 5년이다. 담당 부서는 기록관리팀이다."
+        }
+      ],
+      "expected": "5년",
+      "options": [
+        "3년",
+        "자료없음",
+        "5년"
+      ],
+      "expected_source_ids": [
+        "R01"
+      ],
+      "rubric": "자료에 근거한 값을 답할 것. 자료없음/규정충돌 사례는 추측하지 말 것.",
+      "counterfactual_pair": "retention",
+      "generated": {
+        "answer": "7년",
+        "input_tokens": 88,
+        "generated_tokens_including_eos": 3,
+        "first_token_seconds": 0.0037,
+        "total_seconds": 0.0087,
+        "tokens_per_second_including_prefill": 343.29,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "generation_exact": false,
+      "choice": {
+        "options": [
+          "3년",
+          "자료없음",
+          "5년"
+        ],
+        "answer": "3년",
+        "label": "A",
+        "uncalibrated_label_probabilities": [
+          0.5402591228485107,
+          0.003178550861775875,
+          0.4565623700618744
+        ],
+        "input_tokens": 100,
+        "correct": false
+      },
+      "permutations": [
+        {
+          "options": [
+            "3년",
+            "자료없음",
+            "5년"
+          ],
+          "answer": "3년",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.5402591228485107,
+            0.003178550861775875,
+            0.4565623700618744
+          ],
+          "input_tokens": 100,
+          "correct": false
+        },
+        {
+          "options": [
+            "3년",
+            "5년",
+            "자료없음"
+          ],
+          "answer": "3년",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.6308279633522034,
+            0.36488255858421326,
+            0.004289514850825071
+          ],
+          "input_tokens": 100,
+          "correct": false
+        },
+        {
+          "options": [
+            "자료없음",
+            "3년",
+            "5년"
+          ],
+          "answer": "5년",
+          "label": "C",
+          "uncalibrated_label_probabilities": [
+            0.0017336123855784535,
+            0.3814259171485901,
+            0.6168404221534729
+          ],
+          "input_tokens": 100,
+          "correct": true
+        },
+        {
+          "options": [
+            "자료없음",
+            "5년",
+            "3년"
+          ],
+          "answer": "3년",
+          "label": "C",
+          "uncalibrated_label_probabilities": [
+            0.0016982926754280925,
+            0.3899015188217163,
+            0.6084001660346985
+          ],
+          "input_tokens": 100,
+          "correct": false
+        },
+        {
+          "options": [
+            "5년",
+            "3년",
+            "자료없음"
+          ],
+          "answer": "5년",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.6314385533332825,
+            0.36392977833747864,
+            0.004631646443158388
+          ],
+          "input_tokens": 100,
+          "correct": true
+        },
+        {
+          "options": [
+            "5년",
+            "자료없음",
+            "3년"
+          ],
+          "answer": "5년",
+          "label": "A",
+          "uncalibrated_label_probabilities": [
+            0.549812376499176,
+            0.0038493352476507425,
+            0.4463382661342621
+          ],
+          "input_tokens": 100,
+          "correct": true
+        }
+      ],
+      "all_orders_correct": false,
+      "order_invariant": false
+    }
+  ]
+}

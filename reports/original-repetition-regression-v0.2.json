@@ -1,0 +1,35 @@
+[
+  {
+    "prompt": "안녕",
+    "answer": "안녕하세요! 저는 trid입니다. 편하게 이야기해 주세요.",
+    "input_tokens": 5,
+    "generated_tokens_including_eos": 22,
+    "first_token_seconds": 0.0027,
+    "total_seconds": 0.0546,
+    "tokens_per_second_including_prefill": 403.08,
+    "history_turns_dropped": 0,
+    "stopped_on_eos": true
+  },
+  {
+    "prompt": "왜 말을 여러번 하는거야?",
+    "answer": "아직 학습이 부족해서 같은 말을 반복할 수 있어요. 어떤 부분을 다시 설명하면 될까요?",
+    "input_tokens": 37,
+    "generated_tokens_including_eos": 25,
+    "first_token_seconds": 0.0164,
+    "total_seconds": 0.0765,
+    "tokens_per_second_including_prefill": 326.72,
+    "history_turns_dropped": 0,
+    "stopped_on_eos": true
+  },
+  {
+    "prompt": "왜 말을 여러번 하냐고",
+    "answer": "아직 학습이 부족해서 같은 말을 반복할 수 있어요. 어떤 부분을 다시 설명하면 될까요?",
+    "input_tokens": 71,
+    "generated_tokens_including_eos": 25,
+    "first_token_seconds": 0.0189,
+    "total_seconds": 0.0891,
+    "tokens_per_second_including_prefill": 280.44,
+    "history_turns_dropped": 0,
+    "stopped_on_eos": true
+  }
+]

@@ -1,0 +1,9026 @@
+{
+ "data": "data/korean-rag-eval-v1",
+ "test_sha256": "5187c9f5946e8dcd52da0e49b25dae1d58656cbca9b737ab635cd4d1c5b37ad4",
+ "evaluated_at_unix": 1793161018.711924,
+ "device": "cpu",
+ "threads": 4,
+ "protocol": "Retrieval bottleneck check on data/korean-rag-eval-v1 (read-only).\n\nCorpus: every distinct evidence passage (by text) across all 310 prompts. Queries: the '질문: ' line of each\nanswerable item (gold non-empty); relevant passages are the texts of that item's `sources`. Retrievers:\nbm25_kiwi (bm25s + kiwipiepy morphemes, tags in KIWI_TAGS), bm25_space (whitespace control), kure (nlpai-lab/KURE-v1\ndense, CPU, development measurement only, never shipped), hybrid (reciprocal rank fusion of bm25_kiwi + kure, k=60).\nMetrics: Recall@1/3/5 (all relevant passages in top k), MRR (first relevant), mean/p50/p90 query latency on CPU.",
+ "kiwi_tags": [
+  "NNB",
+  "NNG",
+  "NNP",
+  "NP",
+  "NR",
+  "SH",
+  "SL",
+  "SN",
+  "VA",
+  "VV"
+ ],
+ "rrf_k": 60,
+ "dense_model": "nlpai-lab/KURE-v1",
+ "dense_usage": "development measurement only; not part of the product",
+ "licences": {
+  "bm25s": "MIT https://github.com/xhluca/bm25s",
+  "kiwipiepy": "Apache-2.0 https://github.com/bab2min/kiwipiepy",
+  "sentence-transformers": "Apache-2.0 https://github.com/UKPLab/sentence-transformers",
+  "KURE-v1": "MIT https://huggingface.co/nlpai-lab/KURE-v1"
+ },
+ "corpus_passages": 421,
+ "queries": 228,
+ "index_seconds": {
+  "bm25_kiwi": 1.58,
+  "bm25_space": 0.02,
+  "kure": 102.89
+ },
+ "latency_per_query": {
+  "bm25_kiwi": {
+   "mean_ms": 0.86,
+   "p50_ms": 0.65,
+   "p90_ms": 1.34
+  },
+  "bm25_space": {
+   "mean_ms": 0.04,
+   "p50_ms": 0.03,
+   "p90_ms": 0.07
+  },
+  "kure": {
+   "mean_ms": 173.26,
+   "p50_ms": 152.7,
+   "p90_ms": 261.31
+  },
+  "hybrid": {
+   "mean_ms": 174.14,
+   "p50_ms": 153.53,
+   "p90_ms": 262.28
+  }
+ },
+ "summary": {
+  "bm25_kiwi": {
+   "all": {
+    "recall@1": 0.7939,
+    "recall@3": 0.9474,
+    "recall@5": 0.9693,
+    "mrr": 0.9057,
+    "total": 228
+   },
+   "authored": {
+    "recall@1": 0.6797,
+    "recall@3": 0.9219,
+    "recall@5": 0.9531,
+    "mrr": 0.8652,
+    "total": 128
+   },
+   "klue_dev": {
+    "recall@1": 0.94,
+    "recall@3": 0.98,
+    "recall@5": 0.99,
+    "mrr": 0.9575,
+    "total": 100
+   },
+   "rag_combine": {
+    "recall@1": 0.0,
+    "recall@3": 0.5833,
+    "recall@5": 0.8333,
+    "mrr": 1.0,
+    "total": 12
+   },
+   "rag_klue": {
+    "recall@1": 0.94,
+    "recall@3": 0.98,
+    "recall@5": 0.99,
+    "mrr": 0.9575,
+    "total": 100
+   },
+   "rag_name": {
+    "recall@1": 0.9167,
+    "recall@3": 0.9167,
+    "recall@5": 0.9167,
+    "mrr": 0.9167,
+    "total": 24
+   },
+   "rag_noise": {
+    "recall@1": 0.6667,
+    "recall@3": 1.0,
+    "recall@5": 1.0,
+    "mrr": 0.8264,
+    "total": 24
+   },
+   "rag_revision": {
+    "recall@1": 0.3125,
+    "recall@3": 0.9375,
+    "recall@5": 0.9375,
+    "mrr": 0.6146,
+    "total": 16
+   },
+   "rag_table": {
+    "recall@1": 0.95,
+    "recall@3": 0.95,
+    "recall@5": 1.0,
+    "mrr": 0.9625,
+    "total": 20
+   },
+   "rag_value": {
+    "recall@1": 0.7812,
+    "recall@3": 0.9688,
+    "recall@5": 0.9688,
+    "mrr": 0.8698,
+    "total": 32
+   }
+  },
+  "bm25_space": {
+   "all": {
+    "recall@1": 0.5175,
+    "recall@3": 0.6535,
+    "recall@5": 0.7018,
+    "mrr": 0.624,
+    "total": 228
+   },
+   "authored": {
+    "recall@1": 0.4062,
+    "recall@3": 0.5938,
+    "recall@5": 0.6484,
+    "mrr": 0.5624,
+    "total": 128
+   },
+   "klue_dev": {
+    "recall@1": 0.66,
+    "recall@3": 0.73,
+    "recall@5": 0.77,
+    "mrr": 0.7028,
+    "total": 100
+   },
+   "rag_combine": {
+    "recall@1": 0.0,
+    "recall@3": 0.3333,
+    "recall@5": 0.5,
+    "mrr": 0.7917,
+    "total": 12
+   },
+   "rag_klue": {
+    "recall@1": 0.66,
+    "recall@3": 0.73,
+    "recall@5": 0.77,
+    "mrr": 0.7028,
+    "total": 100
+   },
+   "rag_name": {
+    "recall@1": 0.5,
+    "recall@3": 0.5833,
+    "recall@5": 0.5833,
+    "mrr": 0.5417,
+    "total": 24
+   },
+   "rag_noise": {
+    "recall@1": 0.375,
+    "recall@3": 0.8333,
+    "recall@5": 0.8333,
+    "mrr": 0.5764,
+    "total": 24
+   },
+   "rag_revision": {
+    "recall@1": 0.3125,
+    "recall@3": 0.625,
+    "recall@5": 0.8125,
+    "mrr": 0.5094,
+    "total": 16
+   },
+   "rag_table": {
+    "recall@1": 0.65,
+    "recall@3": 0.7,
+    "recall@5": 0.75,
+    "mrr": 0.6875,
+    "total": 20
+   },
+   "rag_value": {
+    "recall@1": 0.4062,
+    "recall@3": 0.4375,
+    "recall@5": 0.4688,
+    "mrr": 0.4297,
+    "total": 32
+   }
+  },
+  "kure": {
+   "all": {
+    "recall@1": 0.8509,
+    "recall@3": 0.9737,
+    "recall@5": 0.9737,
+    "mrr": 0.9423,
+    "total": 228
+   },
+   "authored": {
+    "recall@1": 0.7656,
+    "recall@3": 0.9609,
+    "recall@5": 0.9609,
+    "mrr": 0.918,
+    "total": 128
+   },
+   "klue_dev": {
+    "recall@1": 0.96,
+    "recall@3": 0.99,
+    "recall@5": 0.99,
+    "mrr": 0.9733,
+    "total": 100
+   },
+   "rag_combine": {
+    "recall@1": 0.0,
+    "recall@3": 0.75,
+    "recall@5": 0.75,
+    "mrr": 0.9583,
+    "total": 12
+   },
+   "rag_klue": {
+    "recall@1": 0.96,
+    "recall@3": 0.99,
+    "recall@5": 0.99,
+    "mrr": 0.9733,
+    "total": 100
+   },
+   "rag_name": {
+    "recall@1": 0.9583,
+    "recall@3": 1.0,
+    "recall@5": 1.0,
+    "mrr": 0.9792,
+    "total": 24
+   },
+   "rag_noise": {
+    "recall@1": 0.9583,
+    "recall@3": 1.0,
+    "recall@5": 1.0,
+    "mrr": 0.9792,
+    "total": 24
+   },
+   "rag_revision": {
+    "recall@1": 0.5,
+    "recall@3": 1.0,
+    "recall@5": 1.0,
+    "mrr": 0.75,
+    "total": 16
+   },
+   "rag_table": {
+    "recall@1": 0.9,
+    "recall@3": 1.0,
+    "recall@5": 1.0,
+    "mrr": 0.95,
+    "total": 20
+   },
+   "rag_value": {
+    "recall@1": 0.8125,
+    "recall@3": 0.9375,
+    "recall@5": 0.9375,
+    "mrr": 0.875,
+    "total": 32
+   }
+  },
+  "hybrid": {
+   "all": {
+    "recall@1": 0.8333,
+    "recall@3": 0.9737,
+    "recall@5": 0.9868,
+    "mrr": 0.9345,
+    "total": 228
+   },
+   "authored": {
+    "recall@1": 0.7266,
+    "recall@3": 0.9609,
+    "recall@5": 0.9766,
+    "mrr": 0.8974,
+    "total": 128
+   },
+   "klue_dev": {
+    "recall@1": 0.97,
+    "recall@3": 0.99,
+    "recall@5": 1.0,
+    "mrr": 0.982,
+    "total": 100
+   },
+   "rag_combine": {
+    "recall@1": 0.0,
+    "recall@3": 0.75,
+    "recall@5": 0.8333,
+    "mrr": 0.9444,
+    "total": 12
+   },
+   "rag_klue": {
+    "recall@1": 0.97,
+    "recall@3": 0.99,
+    "recall@5": 1.0,
+    "mrr": 0.982,
+    "total": 100
+   },
+   "rag_name": {
+    "recall@1": 0.9167,
+    "recall@3": 1.0,
+    "recall@5": 1.0,
+    "mrr": 0.9583,
+    "total": 24
+   },
+   "rag_noise": {
+    "recall@1": 0.75,
+    "recall@3": 1.0,
+    "recall@5": 1.0,
+    "mrr": 0.875,
+    "total": 24
+   },
+   "rag_revision": {
+    "recall@1": 0.375,
+    "recall@3": 0.9375,
+    "recall@5": 1.0,
+    "mrr": 0.6687,
+    "total": 16
+   },
+   "rag_table": {
+    "recall@1": 0.95,
+    "recall@3": 1.0,
+    "recall@5": 1.0,
+    "mrr": 0.975,
+    "total": 20
+   },
+   "rag_value": {
+    "recall@1": 0.875,
+    "recall@3": 0.9688,
+    "recall@5": 0.9688,
+    "mrr": 0.9167,
+    "total": 32
+   }
+  }
+ },
+ "per_query": [
+  {
+   "id": "A-001",
+   "origin": "authored",
+   "task": "rag_value",
+   "relevant": [
+    0
+   ],
+   "top": {
+    "bm25_kiwi": [
+     0,
+     37,
+     30,
+     102,
+     29
+    ],
+    "bm25_space": [
+     102,
+     5,
+     67,
+     59,
+     97
+    ],
+    "kure": [
+     37,
+     0,
+     29,
+     224,
+     30
+    ],
+    "hybrid": [
+     0,
+     37,
+     30,
+     29,
+     102
+    ]
+   }
+  },
+  {
+   "id": "A-002",
+   "origin": "authored",
+   "task": "rag_value",
+   "relevant": [
+    1
+   ],
+   "top": {
+    "bm25_kiwi": [
+     1,
+     39,
+     6,
+     165,
+     220
+    ],
+    "bm25_space": [
+     165,
+     179,
+     180,
+     1,
+     213
+    ],
+    "kure": [
+     1,
+     39,
+     59,
+     119,
+     180
+    ],
+    "hybrid": [
+     1,
+     39,
+     6,
+     59,
+     165
+    ]
+   }
+  },
+  {
+   "id": "A-003",
+   "origin": "authored",
+   "task": "rag_value",
+   "relevant": [
+    2
+   ],
+   "top": {
+    "bm25_kiwi": [
+     40,
+     2,
+     49,
+     67,
+     22
+    ],
+    "bm25_space": [
+     33,
+     12,
+     273,
+     400,
+     292
+    ],
+    "kure": [
+     2,
+     40,
+     48,
+     20,
+     22
+    ],
+    "hybrid": [
+     40,
+     2,
+     22,
+     49,
+     48
+    ]
+   }
+  },
+  {
+   "id": "A-004",
+   "origin": "authored",
+   "task": "rag_value",
+   "relevant": [
+    3
+   ],
+   "top": {
+    "bm25_kiwi": [
+     3,
+     41,
+     35,
+     238,
+     239
+    ],
+    "bm25_space": [
+     23,
+     238,
+     239,
+     24,
+     55
+    ],
+    "kure": [
+     41,
+     3,
+     239,
+     238,
+     23
+    ],
+    "hybrid": [
+     3,
+     41,
+     239,
+     238,
+     35
+    ]
+   }
+  },
+  {
+   "id": "A-005",
+   "origin": "authored",
+   "task": "rag_value",
+   "relevant": [
+    4
+   ],
+   "top": {
+    "bm25_kiwi": [
+     122,
+     4,
+     354,
+     315,
+     280
+    ],
+    "bm25_space": [
+     122,
+     0,
+     1,
+     2,
+     3
+    ],
+    "kure": [
+     122,
+     4,
+     249,
+     17,
+     18
+    ],
+    "hybrid": [
+     122,
+     4,
+     354,
+     249,
+     315
+    ]
+   }
+  },
+  {
+   "id": "A-006",
+   "origin": "authored",
+   "task": "rag_value",
+   "relevant": [
+    5
+   ],
+   "top": {
+    "bm25_kiwi": [
+     5,
+     8,
+     0,
+     283,
+     59
+    ],
+    "bm25_space": [
+     5,
+     31,
+     30,
+     50,
+     29
+    ],
+    "kure": [
+     5,
+     51,
+     50,
+     102,
+     224
+    ],
+    "hybrid": [
+     5,
+     8,
+     51,
+     0,
+     50
+    ]
+   }
+  },
+  {
+   "id": "A-007",
+   "origin": "authored",
+   "task": "rag_value",
+   "relevant": [
+    6
+   ],
+   "top": {
+    "bm25_kiwi": [
+     6,
+     319,
+     309,
+     1,
+     357
+    ],
+    "bm25_space": [
+     67,
+     315,
+     261,
+     357,
+     253
+    ],
+    "kure": [
+     6,
+     34,
+     28,
+     1,
+     52
+    ],
+    "hybrid": [
+     6,
+     1,
+     319,
+     34,
+     309
+    ]
+   }
+  },
+  {
+   "id": "A-008",
+   "origin": "authored",
+   "task": "rag_value",
+   "relevant": [
+    7
+   ],
+   "top": {
+    "bm25_kiwi": [
+     7,
+     2,
+     40,
+     22,
+     20
+    ],
+    "bm25_space": [
+     179,
+     364,
+     264,
+     391,
+     331
+    ],
+    "kure": [
+     7,
+     22,
+     61,
+     2,
+     21
+    ],
+    "hybrid": [
+     7,
+     2,
+     22,
+     40,
+     61
+    ]
+   }
+  },
+  {
+   "id": "A-009",
+   "origin": "authored",
+   "task": "rag_name",
+   "relevant": [
+    8
+   ],
+   "top": {
+    "bm25_kiwi": [
+     8,
+     35,
+     37,
+     102,
+     30
+    ],
+    "bm25_space": [
+     8,
+     31,
+     30,
+     50,
+     29
+    ],
+    "kure": [
+     8,
+     50,
+     119,
+     51,
+     59
+    ],
+    "hybrid": [
+     8,
+     35,
+     50,
+     37,
+     119
+    ]
+   }
+  },
+  {
+   "id": "A-010",
+   "origin": "authored",
+   "task": "rag_name",
+   "relevant": [
+    9
+   ],
+   "top": {
+    "bm25_kiwi": [
+     9,
+     407,
+     248,
+     62,
+     140
+    ],
+    "bm25_space": [
+     202,
+     9,
+     62,
+     165,
+     36
+    ],
+    "kure": [
+     9,
+     202,
+     62,
+     47,
+     46
+    ],
+    "hybrid": [
+     9,
+     62,
+     407,
+     202,
+     248
+    ]
+   }
+  },
+  {
+   "id": "A-011",
+   "origin": "authored",
+   "task": "rag_name",
+   "relevant": [
+    10
+   ],
+   "top": {
+    "bm25_kiwi": [
+     10,
+     399,
+     293,
+     282,
+     47
+    ],
+    "bm25_space": [
+     10,
+     399,
+     419,
+     292,
+     257
+    ],
+    "kure": [
+     10,
+     375,
+     244,
+     200,
+     36
+    ],
+    "hybrid": [
+     10,
+     399,
+     375,
+     293,
+     244
+    ]
+   }
+  },
+  {
+   "id": "A-012",
+   "origin": "authored",
+   "task": "rag_name",
+   "relevant": [
+    11
+   ],
+   "top": {
+    "bm25_kiwi": [
+     11,
+     41,
+     23,
+     238,
+     239
+    ],
+    "bm25_space": [
+     407,
+     342,
+     355,
+     354,
+     374
+    ],
+    "kure": [
+     11,
+     41,
+     3,
+     239,
+     238
+    ],
+    "hybrid": [
+     11,
+     41,
+     238,
+     239,
+     23
+    ]
+   }
+  },
+  {
+   "id": "A-013",
+   "origin": "authored",
+   "task": "rag_name",
+   "relevant": [
+    12
+   ],
+   "top": {
+    "bm25_kiwi": [
+     12,
+     206,
+     207,
+     354,
+     253
+    ],
+    "bm25_space": [
+     206,
+     207,
+     388,
+     406,
+     384
+    ],
+    "kure": [
+     12,
+     206,
+     207,
+     351,
+     192
+    ],
+    "hybrid": [
+     12,
+     206,
+     207,
+     354,
+     351
+    ]
+   }
+  },
+  {
+   "id": "A-014",
+   "origin": "authored",
+   "task": "rag_name",
+   "relevant": [
+    13
+   ],
+   "top": {
+    "bm25_kiwi": [
+     13,
+     57,
+     56,
+     202,
+     358
+    ],
+    "bm25_space": [
+     13,
+     57,
+     72,
+     71,
+     351
+    ],
+    "kure": [
+     13,
+     196,
+     57,
+     244,
+     83
+    ],
+    "hybrid": [
+     13,
+     57,
+     196,
+     56,
+     202
+    ]
+   }
+  },
+  {
+   "id": "A-015",
+   "origin": "authored",
+   "task": "rag_noise",
+   "relevant": [
+    15
+   ],
+   "top": {
+    "bm25_kiwi": [
+     15,
+     14,
+     16,
+     0,
+     45
+    ],
+    "bm25_space": [
+     0,
+     16,
+     15,
+     66,
+     14
+    ],
+    "kure": [
+     15,
+     14,
+     16,
+     45,
+     0
+    ],
+    "hybrid": [
+     15,
+     14,
+     16,
+     0,
+     45
+    ]
+   }
+  },
+  {
+   "id": "A-016",
+   "origin": "authored",
+   "task": "rag_noise",
+   "relevant": [
+    18
+   ],
+   "top": {
+    "bm25_kiwi": [
+     4,
+     17,
+     18,
+     130,
+     385
+    ],
+    "bm25_space": [
+     407,
+     374,
+     257,
+     0,
+     1
+    ],
+    "kure": [
+     18,
+     46,
+     17,
+     204,
+     47
+    ],
+    "hybrid": [
+     18,
+     17,
+     4,
+     46,
+     130
+    ]
+   }
+  },
+  {
+   "id": "A-017",
+   "origin": "authored",
+   "task": "rag_noise",
+   "relevant": [
+    21
+   ],
+   "top": {
+    "bm25_kiwi": [
+     21,
+     40,
+     22,
+     20,
+     61
+    ],
+    "bm25_space": [
+     21,
+     268,
+     327,
+     358,
+     374
+    ],
+    "kure": [
+     21,
+     20,
+     22,
+     2,
+     61
+    ],
+    "hybrid": [
+     21,
+     20,
+     22,
+     61,
+     40
+    ]
+   }
+  },
+  {
+   "id": "A-018",
+   "origin": "authored",
+   "task": "rag_noise",
+   "relevant": [
+    24
+   ],
+   "top": {
+    "bm25_kiwi": [
+     25,
+     24,
+     23,
+     3,
+     238
+    ],
+    "bm25_space": [
+     25,
+     24,
+     55,
+     41,
+     98
+    ],
+    "kure": [
+     24,
+     25,
+     23,
+     239,
+     238
+    ],
+    "hybrid": [
+     25,
+     24,
+     23,
+     238,
+     3
+    ]
+   }
+  },
+  {
+   "id": "A-019",
+   "origin": "authored",
+   "task": "rag_noise",
+   "relevant": [
+    26
+   ],
+   "top": {
+    "bm25_kiwi": [
+     26,
+     27,
+     323,
+     312,
+     295
+    ],
+    "bm25_space": [
+     67,
+     5,
+     321,
+     196,
+     368
+    ],
+    "kure": [
+     26,
+     28,
+     27,
+     6,
+     220
+    ],
+    "hybrid": [
+     26,
+     27,
+     28,
+     323,
+     312
+    ]
+   }
+  },
+  {
+   "id": "A-020",
+   "origin": "authored",
+   "task": "rag_noise",
+   "relevant": [
+    30
+   ],
+   "top": {
+    "bm25_kiwi": [
+     37,
+     30,
+     29,
+     102,
+     0
+    ],
+    "bm25_space": [
+     30,
+     97,
+     29,
+     37,
+     31
+    ],
+    "kure": [
+     30,
+     29,
+     37,
+     224,
+     102
+    ],
+    "hybrid": [
+     30,
+     37,
+     29,
+     102,
+     224
+    ]
+   }
+  },
+  {
+   "id": "A-021",
+   "origin": "authored",
+   "task": "rag_table",
+   "relevant": [
+    32
+   ],
+   "top": {
+    "bm25_kiwi": [
+     32,
+     30,
+     37,
+     0,
+     29
+    ],
+    "bm25_space": [
+     97,
+     102,
+     5,
+     59,
+     30
+    ],
+    "kure": [
+     32,
+     37,
+     102,
+     0,
+     29
+    ],
+    "hybrid": [
+     32,
+     37,
+     0,
+     29,
+     30
+    ]
+   }
+  },
+  {
+   "id": "A-022",
+   "origin": "authored",
+   "task": "rag_table",
+   "relevant": [
+    33
+   ],
+   "top": {
+    "bm25_kiwi": [
+     33,
+     222,
+     169,
+     40,
+     170
+    ],
+    "bm25_space": [
+     33,
+     222,
+     298,
+     275,
+     402
+    ],
+    "kure": [
+     33,
+     67,
+     113,
+     2,
+     70
+    ],
+    "hybrid": [
+     33,
+     222,
+     67,
+     169,
+     113
+    ]
+   }
+  },
+  {
+   "id": "A-023",
+   "origin": "authored",
+   "task": "rag_table",
+   "relevant": [
+    34
+   ],
+   "top": {
+    "bm25_kiwi": [
+     6,
+     1,
+     306,
+     34,
+     381
+    ],
+    "bm25_space": [
+     27,
+     26,
+     341,
+     34,
+     306
+    ],
+    "kure": [
+     34,
+     6,
+     26,
+     193,
+     53
+    ],
+    "hybrid": [
+     6,
+     34,
+     1,
+     306,
+     26
+    ]
+   }
+  },
+  {
+   "id": "A-024",
+   "origin": "authored",
+   "task": "rag_table",
+   "relevant": [
+    35
+   ],
+   "top": {
+    "bm25_kiwi": [
+     35,
+     3,
+     41,
+     23,
+     238
+    ],
+    "bm25_space": [
+     35,
+     67,
+     3,
+     23,
+     238
+    ],
+    "kure": [
+     35,
+     239,
+     238,
+     23,
+     3
+    ],
+    "hybrid": [
+     35,
+     3,
+     238,
+     23,
+     239
+    ]
+   }
+  },
+  {
+   "id": "A-025",
+   "origin": "authored",
+   "task": "rag_table",
+   "relevant": [
+    36
+   ],
+   "top": {
+    "bm25_kiwi": [
+     36,
+     351,
+     159,
+     216,
+     217
+    ],
+    "bm25_space": [
+     136,
+     36,
+     159,
+     162,
+     364
+    ],
+    "kure": [
+     36,
+     351,
+     204,
+     203,
+     82
+    ],
+    "hybrid": [
+     36,
+     351,
+     159,
+     204,
+     216
+    ]
+   }
+  },
+  {
+   "id": "A-034",
+   "origin": "authored",
+   "task": "rag_revision",
+   "relevant": [
+    51
+   ],
+   "top": {
+    "bm25_kiwi": [
+     50,
+     51,
+     37,
+     102,
+     8
+    ],
+    "bm25_space": [
+     31,
+     30,
+     50,
+     29,
+     51
+    ],
+    "kure": [
+     50,
+     51,
+     224,
+     37,
+     31
+    ],
+    "hybrid": [
+     50,
+     51,
+     37,
+     224,
+     102
+    ]
+   }
+  },
+  {
+   "id": "A-035",
+   "origin": "authored",
+   "task": "rag_revision",
+   "relevant": [
+    53
+   ],
+   "top": {
+    "bm25_kiwi": [
+     52,
+     53,
+     1,
+     385,
+     220
+    ],
+    "bm25_space": [
+     52,
+     67,
+     5,
+     273,
+     12
+    ],
+    "kure": [
+     52,
+     53,
+     34,
+     28,
+     220
+    ],
+    "hybrid": [
+     52,
+     53,
+     220,
+     1,
+     34
+    ]
+   }
+  },
+  {
+   "id": "A-036",
+   "origin": "authored",
+   "task": "rag_revision",
+   "relevant": [
+    55
+   ],
+   "top": {
+    "bm25_kiwi": [
+     41,
+     3,
+     55,
+     54,
+     35
+    ],
+    "bm25_space": [
+     67,
+     394,
+     118,
+     233,
+     117
+    ],
+    "kure": [
+     55,
+     239,
+     54,
+     238,
+     35
+    ],
+    "hybrid": [
+     55,
+     54,
+     35,
+     41,
+     3
+    ]
+   }
+  },
+  {
+   "id": "A-037",
+   "origin": "authored",
+   "task": "rag_revision",
+   "relevant": [
+    57
+   ],
+   "top": {
+    "bm25_kiwi": [
+     57,
+     56,
+     27,
+     26,
+     12
+    ],
+    "bm25_space": [
+     381,
+     12,
+     1,
+     57,
+     13
+    ],
+    "kure": [
+     57,
+     56,
+     196,
+     26,
+     27
+    ],
+    "hybrid": [
+     57,
+     56,
+     27,
+     26,
+     196
+    ]
+   }
+  },
+  {
+   "id": "A-038",
+   "origin": "authored",
+   "task": "rag_combine",
+   "relevant": [
+    58,
+    59
+   ],
+   "top": {
+    "bm25_kiwi": [
+     59,
+     5,
+     67,
+     76,
+     58
+    ],
+    "bm25_space": [
+     59,
+     5,
+     102,
+     94,
+     58
+    ],
+    "kure": [
+     59,
+     8,
+     58,
+     51,
+     50
+    ],
+    "hybrid": [
+     59,
+     58,
+     5,
+     8,
+     67
+    ]
+   }
+  },
+  {
+   "id": "A-039",
+   "origin": "authored",
+   "task": "rag_combine",
+   "relevant": [
+    60,
+    61
+   ],
+   "top": {
+    "bm25_kiwi": [
+     61,
+     60,
+     7,
+     67,
+     22
+    ],
+    "bm25_space": [
+     61,
+     46,
+     47,
+     41,
+     6
+    ],
+    "kure": [
+     61,
+     21,
+     60,
+     22,
+     20
+    ],
+    "hybrid": [
+     61,
+     60,
+     22,
+     21,
+     7
+    ]
+   }
+  },
+  {
+   "id": "A-040",
+   "origin": "authored",
+   "task": "rag_combine",
+   "relevant": [
+    62,
+    63
+   ],
+   "top": {
+    "bm25_kiwi": [
+     62,
+     63,
+     17,
+     18,
+     319
+    ],
+    "bm25_space": [
+     202,
+     76,
+     189,
+     364,
+     264
+    ],
+    "kure": [
+     63,
+     62,
+     34,
+     46,
+     6
+    ],
+    "hybrid": [
+     62,
+     63,
+     17,
+     34,
+     18
+    ]
+   }
+  },
+  {
+   "id": "B-001",
+   "origin": "authored",
+   "task": "rag_value",
+   "relevant": [
+    64
+   ],
+   "top": {
+    "bm25_kiwi": [
+     64,
+     80,
+     78,
+     79,
+     103
+    ],
+    "bm25_space": [
+     64,
+     189,
+     364,
+     264,
+     397
+    ],
+    "kure": [
+     64,
+     80,
+     103,
+     208,
+     99
+    ],
+    "hybrid": [
+     64,
+     80,
+     103,
+     78,
+     79
+    ]
+   }
+  },
+  {
+   "id": "B-002",
+   "origin": "authored",
+   "task": "rag_value",
+   "relevant": [
+    65
+   ],
+   "top": {
+    "bm25_kiwi": [
+     385,
+     65,
+     95,
+     96,
+     335
+    ],
+    "bm25_space": [
+     65,
+     67,
+     5,
+     286,
+     116
+    ],
+    "kure": [
+     65,
+     98,
+     165,
+     73,
+     226
+    ],
+    "hybrid": [
+     65,
+     385,
+     98,
+     95,
+     165
+    ]
+   }
+  },
+  {
+   "id": "B-003",
+   "origin": "authored",
+   "task": "rag_value",
+   "relevant": [
+    66
+   ],
+   "top": {
+    "bm25_kiwi": [
+     110,
+     75,
+     66,
+     1,
+     109
+    ],
+    "bm25_space": [
+     110,
+     66,
+     75,
+     120,
+     109
+    ],
+    "kure": [
+     75,
+     110,
+     120,
+     136,
+     151
+    ],
+    "hybrid": [
+     110,
+     75,
+     66,
+     120,
+     1
+    ]
+   }
+  },
+  {
+   "id": "B-004",
+   "origin": "authored",
+   "task": "rag_value",
+   "relevant": [
+    67
+   ],
+   "top": {
+    "bm25_kiwi": [
+     67,
+     40,
+     316,
+     2,
+     275
+    ],
+    "bm25_space": [
+     67,
+     364,
+     264,
+     379,
+     348
+    ],
+    "kure": [
+     67,
+     25,
+     118,
+     33,
+     97
+    ],
+    "hybrid": [
+     67,
+     40,
+     25,
+     316,
+     118
+    ]
+   }
+  },
+  {
+   "id": "B-005",
+   "origin": "authored",
+   "task": "rag_value",
+   "relevant": [
+    68
+   ],
+   "top": {
+    "bm25_kiwi": [
+     68,
+     222,
+     101,
+     275,
+     124
+    ],
+    "bm25_space": [
+     124,
+     123,
+     112,
+     101,
+     275
+    ],
+    "kure": [
+     68,
+     222,
+     106,
+     88,
+     87
+    ],
+    "hybrid": [
+     68,
+     222,
+     101,
+     106,
+     275
+    ]
+   }
+  },
+  {
+   "id": "B-006",
+   "origin": "authored",
+   "task": "rag_value",
+   "relevant": [
+    69
+   ],
+   "top": {
+    "bm25_kiwi": [
+     130,
+     69,
+     385,
+     323,
+     35
+    ],
+    "bm25_space": [
+     385,
+     0,
+     1,
+     2,
+     3
+    ],
+    "kure": [
+     69,
+     245,
+     106,
+     130,
+     98
+    ],
+    "hybrid": [
+     69,
+     130,
+     245,
+     385,
+     106
+    ]
+   }
+  },
+  {
+   "id": "B-007",
+   "origin": "authored",
+   "task": "rag_value",
+   "relevant": [
+    70
+   ],
+   "top": {
+    "bm25_kiwi": [
+     70,
+     113,
+     114,
+     72,
+     295
+    ],
+    "bm25_space": [
+     70,
+     298,
+     275,
+     402,
+     0
+    ],
+    "kure": [
+     70,
+     114,
+     113,
+     103,
+     241
+    ],
+    "hybrid": [
+     70,
+     113,
+     114,
+     72,
+     103
+    ]
+   }
+  },
+  {
+   "id": "B-008",
+   "origin": "authored",
+   "task": "rag_value",
+   "relevant": [
+    71
+   ],
+   "top": {
+    "bm25_kiwi": [
+     76,
+     71,
+     7,
+     293,
+     125
+    ],
+    "bm25_space": [
+     46,
+     47,
+     41,
+     6,
+     281
+    ],
+    "kure": [
+     71,
+     60,
+     118,
+     117,
+     96
+    ],
+    "hybrid": [
+     71,
+     76,
+     60,
+     7,
+     118
+    ]
+   }
+  },
+  {
+   "id": "B-009",
+   "origin": "authored",
+   "task": "rag_name",
+   "relevant": [
+    72
+   ],
+   "top": {
+    "bm25_kiwi": [
+     72,
+     70,
+     123,
+     369,
+     129
+    ],
+    "bm25_space": [
+     72,
+     129,
+     393,
+     349,
+     0
+    ],
+    "kure": [
+     72,
+     244,
+     123,
+     168,
+     70
+    ],
+    "hybrid": [
+     72,
+     123,
+     70,
+     244,
+     369
+    ]
+   }
+  },
+  {
+   "id": "B-010",
+   "origin": "authored",
+   "task": "rag_name",
+   "relevant": [
+    73
+   ],
+   "top": {
+    "bm25_kiwi": [
+     73,
+     202,
+     335,
+     358,
+     286
+    ],
+    "bm25_space": [
+     0,
+     1,
+     2,
+     3,
+     4
+    ],
+    "kure": [
+     73,
+     65,
+     187,
+     201,
+     165
+    ],
+    "hybrid": [
+     73,
+     202,
+     65,
+     335,
+     187
+    ]
+   }
+  },
+  {
+   "id": "B-011",
+   "origin": "authored",
+   "task": "rag_name",
+   "relevant": [
+    74
+   ],
+   "top": {
+    "bm25_kiwi": [
+     74,
+     202,
+     112,
+     111,
+     358
+    ],
+    "bm25_space": [
+     74,
+     391,
+     318,
+     406,
+     262
+    ],
+    "kure": [
+     74,
+     124,
+     186,
+     111,
+     208
+    ],
+    "hybrid": [
+     74,
+     111,
+     202,
+     124,
+     112
+    ]
+   }
+  },
+  {
+   "id": "B-012",
+   "origin": "authored",
+   "task": "rag_name",
+   "relevant": [
+    75
+   ],
+   "top": {
+    "bm25_kiwi": [
+     75,
+     399,
+     84,
+     85,
+     86
+    ],
+    "bm25_space": [
+     75,
+     394,
+     311,
+     359,
+     0
+    ],
+    "kure": [
+     75,
+     123,
+     274,
+     280,
+     85
+    ],
+    "hybrid": [
+     75,
+     85,
+     399,
+     123,
+     84
+    ]
+   }
+  },
+  {
+   "id": "B-013",
+   "origin": "authored",
+   "task": "rag_name",
+   "relevant": [
+    76
+   ],
+   "top": {
+    "bm25_kiwi": [
+     76,
+     377,
+     248,
+     310,
+     227
+    ],
+    "bm25_space": [
+     76,
+     58,
+     59,
+     5,
+     261
+    ],
+    "kure": [
+     76,
+     215,
+     8,
+     248,
+     227
+    ],
+    "hybrid": [
+     76,
+     248,
+     227,
+     377,
+     215
+    ]
+   }
+  },
+  {
+   "id": "B-014",
+   "origin": "authored",
+   "task": "rag_name",
+   "relevant": [
+    77
+   ],
+   "top": {
+    "bm25_kiwi": [
+     77,
+     248,
+     140,
+     95,
+     96
+    ],
+    "bm25_space": [
+     280,
+     336,
+     335,
+     0,
+     1
+    ],
+    "kure": [
+     77,
+     202,
+     73,
+     98,
+     208
+    ],
+    "hybrid": [
+     77,
+     248,
+     202,
+     140,
+     73
+    ]
+   }
+  },
+  {
+   "id": "B-015",
+   "origin": "authored",
+   "task": "rag_noise",
+   "relevant": [
+    79
+   ],
+   "top": {
+    "bm25_kiwi": [
+     78,
+     79,
+     64,
+     80,
+     67
+    ],
+    "bm25_space": [
+     107,
+     108,
+     79,
+     80,
+     69
+    ],
+    "kure": [
+     78,
+     79,
+     208,
+     99,
+     80
+    ],
+    "hybrid": [
+     78,
+     79,
+     80,
+     64,
+     208
+    ]
+   }
+  },
+  {
+   "id": "B-016",
+   "origin": "authored",
+   "task": "rag_noise",
+   "relevant": [
+    82
+   ],
+   "top": {
+    "bm25_kiwi": [
+     81,
+     82,
+     5,
+     144,
+     145
+    ],
+    "bm25_space": [
+     364,
+     264,
+     348,
+     0,
+     1
+    ],
+    "kure": [
+     82,
+     81,
+     83,
+     144,
+     145
+    ],
+    "hybrid": [
+     81,
+     82,
+     144,
+     145,
+     5
+    ]
+   }
+  },
+  {
+   "id": "B-017",
+   "origin": "authored",
+   "task": "rag_noise",
+   "relevant": [
+    85
+   ],
+   "top": {
+    "bm25_kiwi": [
+     84,
+     85,
+     86,
+     66,
+     67
+    ],
+    "bm25_space": [
+     84,
+     85,
+     413,
+     301,
+     327
+    ],
+    "kure": [
+     85,
+     84,
+     86,
+     171,
+     66
+    ],
+    "hybrid": [
+     84,
+     85,
+     86,
+     66,
+     171
+    ]
+   }
+  },
+  {
+   "id": "B-018",
+   "origin": "authored",
+   "task": "rag_noise",
+   "relevant": [
+    88
+   ],
+   "top": {
+    "bm25_kiwi": [
+     88,
+     87,
+     367,
+     306,
+     301
+    ],
+    "bm25_space": [
+     88,
+     87,
+     298,
+     275,
+     250
+    ],
+    "kure": [
+     88,
+     87,
+     89,
+     90,
+     106
+    ],
+    "hybrid": [
+     88,
+     87,
+     367,
+     89,
+     306
+    ]
+   }
+  },
+  {
+   "id": "B-019",
+   "origin": "authored",
+   "task": "rag_noise",
+   "relevant": [
+    92
+   ],
+   "top": {
+    "bm25_kiwi": [
+     92,
+     91,
+     93,
+     125,
+     76
+    ],
+    "bm25_space": [
+     91,
+     92,
+     93,
+     388,
+     384
+    ],
+    "kure": [
+     92,
+     91,
+     93,
+     125,
+     17
+    ],
+    "hybrid": [
+     92,
+     91,
+     93,
+     125,
+     76
+    ]
+   }
+  },
+  {
+   "id": "B-020",
+   "origin": "authored",
+   "task": "rag_noise",
+   "relevant": [
+    95
+   ],
+   "top": {
+    "bm25_kiwi": [
+     95,
+     96,
+     94,
+     397,
+     130
+    ],
+    "bm25_space": [
+     95,
+     202,
+     407,
+     374,
+     257
+    ],
+    "kure": [
+     95,
+     96,
+     94,
+     249,
+     17
+    ],
+    "hybrid": [
+     95,
+     96,
+     94,
+     397,
+     249
+    ]
+   }
+  },
+  {
+   "id": "B-021",
+   "origin": "authored",
+   "task": "rag_table",
+   "relevant": [
+    97
+   ],
+   "top": {
+    "bm25_kiwi": [
+     97,
+     102,
+     37,
+     0,
+     30
+    ],
+    "bm25_space": [
+     97,
+     102,
+     224,
+     32,
+     0
+    ],
+    "kure": [
+     97,
+     37,
+     102,
+     224,
+     29
+    ],
+    "hybrid": [
+     97,
+     102,
+     37,
+     0,
+     224
+    ]
+   }
+  },
+  {
+   "id": "B-022",
+   "origin": "authored",
+   "task": "rag_table",
+   "relevant": [
+    98
+   ],
+   "top": {
+    "bm25_kiwi": [
+     98,
+     255,
+     94,
+     413,
+     380
+    ],
+    "bm25_space": [
+     98,
+     364,
+     264,
+     327,
+     358
+    ],
+    "kure": [
+     98,
+     65,
+     83,
+     33,
+     24
+    ],
+    "hybrid": [
+     98,
+     255,
+     65,
+     94,
+     83
+    ]
+   }
+  },
+  {
+   "id": "B-023",
+   "origin": "authored",
+   "task": "rag_table",
+   "relevant": [
+    99
+   ],
+   "top": {
+    "bm25_kiwi": [
+     99,
+     407,
+     67,
+     64,
+     80
+    ],
+    "bm25_space": [
+     208,
+     103,
+     12,
+     273,
+     335
+    ],
+    "kure": [
+     99,
+     208,
+     103,
+     160,
+     241
+    ],
+    "hybrid": [
+     99,
+     407,
+     208,
+     67,
+     103
+    ]
+   }
+  },
+  {
+   "id": "B-024",
+   "origin": "authored",
+   "task": "rag_table",
+   "relevant": [
+    100
+   ],
+   "top": {
+    "bm25_kiwi": [
+     100,
+     66,
+     196,
+     258,
+     265
+    ],
+    "bm25_space": [
+     364,
+     264,
+     348,
+     0,
+     1
+    ],
+    "kure": [
+     100,
+     66,
+     83,
+     85,
+     84
+    ],
+    "hybrid": [
+     100,
+     66,
+     196,
+     83,
+     258
+    ]
+   }
+  },
+  {
+   "id": "B-025",
+   "origin": "authored",
+   "task": "rag_table",
+   "relevant": [
+    101
+   ],
+   "top": {
+    "bm25_kiwi": [
+     101,
+     68,
+     124,
+     123,
+     112
+    ],
+    "bm25_space": [
+     101,
+     202,
+     68,
+     120,
+     364
+    ],
+    "kure": [
+     101,
+     68,
+     228,
+     112,
+     124
+    ],
+    "hybrid": [
+     101,
+     68,
+     124,
+     112,
+     228
+    ]
+   }
+  },
+  {
+   "id": "B-034",
+   "origin": "authored",
+   "task": "rag_revision",
+   "relevant": [
+    114
+   ],
+   "top": {
+    "bm25_kiwi": [
+     113,
+     114,
+     70,
+     76,
+     67
+    ],
+    "bm25_space": [
+     113,
+     114,
+     70,
+     76,
+     0
+    ],
+    "kure": [
+     113,
+     114,
+     70,
+     241,
+     99
+    ],
+    "hybrid": [
+     113,
+     114,
+     70,
+     76,
+     241
+    ]
+   }
+  },
+  {
+   "id": "B-035",
+   "origin": "authored",
+   "task": "rag_revision",
+   "relevant": [
+    116
+   ],
+   "top": {
+    "bm25_kiwi": [
+     115,
+     116,
+     65,
+     73,
+     11
+    ],
+    "bm25_space": [
+     115,
+     116,
+     360,
+     268,
+     315
+    ],
+    "kure": [
+     115,
+     116,
+     65,
+     149,
+     148
+    ],
+    "hybrid": [
+     115,
+     116,
+     65,
+     73,
+     149
+    ]
+   }
+  },
+  {
+   "id": "B-036",
+   "origin": "authored",
+   "task": "rag_revision",
+   "relevant": [
+    118
+   ],
+   "top": {
+    "bm25_kiwi": [
+     118,
+     117,
+     55,
+     54,
+     67
+    ],
+    "bm25_space": [
+     54,
+     238,
+     239,
+     24,
+     98
+    ],
+    "kure": [
+     118,
+     117,
+     67,
+     33,
+     20
+    ],
+    "hybrid": [
+     118,
+     117,
+     67,
+     55,
+     54
+    ]
+   }
+  },
+  {
+   "id": "B-037",
+   "origin": "authored",
+   "task": "rag_revision",
+   "relevant": [
+    120
+   ],
+   "top": {
+    "bm25_kiwi": [
+     119,
+     120,
+     173,
+     245,
+     109
+    ],
+    "bm25_space": [
+     120,
+     119,
+     100,
+     182,
+     139
+    ],
+    "kure": [
+     119,
+     120,
+     246,
+     195,
+     212
+    ],
+    "hybrid": [
+     119,
+     120,
+     173,
+     246,
+     245
+    ]
+   }
+  },
+  {
+   "id": "B-038",
+   "origin": "authored",
+   "task": "rag_combine",
+   "relevant": [
+    121,
+    122
+   ],
+   "top": {
+    "bm25_kiwi": [
+     121,
+     122,
+     4,
+     17,
+     18
+    ],
+    "bm25_space": [
+     121,
+     17,
+     18,
+     122,
+     62
+    ],
+    "kure": [
+     122,
+     121,
+     72,
+     103,
+     80
+    ],
+    "hybrid": [
+     121,
+     122,
+     4,
+     72,
+     17
+    ]
+   }
+  },
+  {
+   "id": "B-039",
+   "origin": "authored",
+   "task": "rag_combine",
+   "relevant": [
+    123,
+    124
+   ],
+   "top": {
+    "bm25_kiwi": [
+     124,
+     123,
+     8,
+     1,
+     158
+    ],
+    "bm25_space": [
+     124,
+     123,
+     297,
+     140,
+     112
+    ],
+    "kure": [
+     124,
+     123,
+     136,
+     158,
+     194
+    ],
+    "hybrid": [
+     124,
+     123,
+     158,
+     8,
+     136
+    ]
+   }
+  },
+  {
+   "id": "B-040",
+   "origin": "authored",
+   "task": "rag_combine",
+   "relevant": [
+    125,
+    126
+   ],
+   "top": {
+    "bm25_kiwi": [
+     125,
+     126,
+     76,
+     67,
+     93
+    ],
+    "bm25_space": [
+     126,
+     125,
+     0,
+     1,
+     2
+    ],
+    "kure": [
+     125,
+     126,
+     91,
+     92,
+     67
+    ],
+    "hybrid": [
+     125,
+     126,
+     67,
+     76,
+     91
+    ]
+   }
+  },
+  {
+   "id": "C-001",
+   "origin": "authored",
+   "task": "rag_value",
+   "relevant": [
+    127
+   ],
+   "top": {
+    "bm25_kiwi": [
+     127,
+     158,
+     157,
+     67,
+     337
+    ],
+    "bm25_space": [
+     327,
+     358,
+     374,
+     315,
+     272
+    ],
+    "kure": [
+     127,
+     158,
+     134,
+     163,
+     157
+    ],
+    "hybrid": [
+     127,
+     158,
+     157,
+     134,
+     67
+    ]
+   }
+  },
+  {
+   "id": "C-002",
+   "origin": "authored",
+   "task": "rag_value",
+   "relevant": [
+    128
+   ],
+   "top": {
+    "bm25_kiwi": [
+     128,
+     189,
+     56,
+     364,
+     398
+    ],
+    "bm25_space": [
+     202,
+     189,
+     364,
+     34,
+     63
+    ],
+    "kure": [
+     128,
+     243,
+     103,
+     34,
+     178
+    ],
+    "hybrid": [
+     128,
+     189,
+     243,
+     56,
+     103
+    ]
+   }
+  },
+  {
+   "id": "C-003",
+   "origin": "authored",
+   "task": "rag_value",
+   "relevant": [
+    129
+   ],
+   "top": {
+    "bm25_kiwi": [
+     129,
+     419,
+     143,
+     141,
+     228
+    ],
+    "bm25_space": [
+     129,
+     135,
+     162,
+     304,
+     364
+    ],
+    "kure": [
+     129,
+     143,
+     186,
+     162,
+     356
+    ],
+    "hybrid": [
+     129,
+     143,
+     419,
+     186,
+     141
+    ]
+   }
+  },
+  {
+   "id": "C-004",
+   "origin": "authored",
+   "task": "rag_value",
+   "relevant": [
+    130
+   ],
+   "top": {
+    "bm25_kiwi": [
+     130,
+     104,
+     194,
+     159,
+     165
+    ],
+    "bm25_space": [
+     130,
+     11,
+     70,
+     222,
+     101
+    ],
+    "kure": [
+     130,
+     165,
+     159,
+     86,
+     146
+    ],
+    "hybrid": [
+     130,
+     165,
+     159,
+     104,
+     194
+    ]
+   }
+  },
+  {
+   "id": "C-005",
+   "origin": "authored",
+   "task": "rag_value",
+   "relevant": [
+    131
+   ],
+   "top": {
+    "bm25_kiwi": [
+     119,
+     67,
+     394,
+     262,
+     379
+    ],
+    "bm25_space": [
+     67,
+     119,
+     260,
+     208,
+     52
+    ],
+    "kure": [
+     14,
+     0,
+     146,
+     70,
+     166
+    ],
+    "hybrid": [
+     119,
+     14,
+     67,
+     0,
+     394
+    ]
+   }
+  },
+  {
+   "id": "C-006",
+   "origin": "authored",
+   "task": "rag_value",
+   "relevant": [
+    132
+   ],
+   "top": {
+    "bm25_kiwi": [
+     132,
+     320,
+     313,
+     351,
+     222
+    ],
+    "bm25_space": [
+     132,
+     364,
+     264,
+     348,
+     0
+    ],
+    "kure": [
+     132,
+     103,
+     186,
+     154,
+     162
+    ],
+    "hybrid": [
+     132,
+     320,
+     103,
+     313,
+     186
+    ]
+   }
+  },
+  {
+   "id": "C-007",
+   "origin": "authored",
+   "task": "rag_value",
+   "relevant": [
+    133
+   ],
+   "top": {
+    "bm25_kiwi": [
+     133,
+     202,
+     173,
+     174,
+     141
+    ],
+    "bm25_space": [
+     133,
+     0,
+     1,
+     2,
+     3
+    ],
+    "kure": [
+     133,
+     214,
+     215,
+     79,
+     110
+    ],
+    "hybrid": [
+     133,
+     202,
+     214,
+     173,
+     215
+    ]
+   }
+  },
+  {
+   "id": "C-008",
+   "origin": "authored",
+   "task": "rag_value",
+   "relevant": [
+    134
+   ],
+   "top": {
+    "bm25_kiwi": [
+     134,
+     127,
+     349,
+     10,
+     258
+    ],
+    "bm25_space": [
+     134,
+     10,
+     156,
+     157,
+     158
+    ],
+    "kure": [
+     134,
+     140,
+     41,
+     127,
+     156
+    ],
+    "hybrid": [
+     134,
+     127,
+     140,
+     349,
+     41
+    ]
+   }
+  },
+  {
+   "id": "C-009",
+   "origin": "authored",
+   "task": "rag_name",
+   "relevant": [
+    135
+   ],
+   "top": {
+    "bm25_kiwi": [
+     135,
+     202,
+     358,
+     354,
+     316
+    ],
+    "bm25_space": [
+     360,
+     353,
+     326,
+     340,
+     379
+    ],
+    "kure": [
+     135,
+     340,
+     353,
+     25,
+     76
+    ],
+    "hybrid": [
+     135,
+     202,
+     340,
+     358,
+     353
+    ]
+   }
+  },
+  {
+   "id": "C-010",
+   "origin": "authored",
+   "task": "rag_name",
+   "relevant": [
+    136
+   ],
+   "top": {
+    "bm25_kiwi": [
+     136,
+     76,
+     377,
+     215,
+     162
+    ],
+    "bm25_space": [
+     136,
+     76,
+     162,
+     332,
+     0
+    ],
+    "kure": [
+     136,
+     76,
+     215,
+     118,
+     75
+    ],
+    "hybrid": [
+     136,
+     76,
+     215,
+     377,
+     118
+    ]
+   }
+  },
+  {
+   "id": "C-011",
+   "origin": "authored",
+   "task": "rag_name",
+   "relevant": [
+    137
+   ],
+   "top": {
+    "bm25_kiwi": [
+     137,
+     202,
+     358,
+     187,
+     200
+    ],
+    "bm25_space": [
+     401,
+     402,
+     318,
+     0,
+     1
+    ],
+    "kure": [
+     184,
+     137,
+     406,
+     132,
+     154
+    ],
+    "hybrid": [
+     137,
+     184,
+     202,
+     358,
+     406
+    ]
+   }
+  },
+  {
+   "id": "C-012",
+   "origin": "authored",
+   "task": "rag_name",
+   "relevant": [
+    138
+   ],
+   "top": {
+    "bm25_kiwi": [
+     138,
+     7,
+     253,
+     282,
+     298
+    ],
+    "bm25_space": [
+     138,
+     353,
+     327,
+     268,
+     406
+    ],
+    "kure": [
+     138,
+     198,
+     8,
+     58,
+     7
+    ],
+    "hybrid": [
+     138,
+     7,
+     198,
+     253,
+     8
+    ]
+   }
+  },
+  {
+   "id": "C-013",
+   "origin": "authored",
+   "task": "rag_name",
+   "relevant": [
+    139
+   ],
+   "top": {
+    "bm25_kiwi": [
+     139,
+     335,
+     394,
+     264,
+     202
+    ],
+    "bm25_space": [
+     358,
+     281,
+     0,
+     1,
+     2
+    ],
+    "kure": [
+     139,
+     321,
+     247,
+     150,
+     151
+    ],
+    "hybrid": [
+     139,
+     335,
+     321,
+     394,
+     247
+    ]
+   }
+  },
+  {
+   "id": "C-014",
+   "origin": "authored",
+   "task": "rag_name",
+   "relevant": [
+    140
+   ],
+   "top": {
+    "bm25_kiwi": [
+     140,
+     282,
+     248,
+     127,
+     369
+    ],
+    "bm25_space": [
+     292,
+     140,
+     253,
+     369,
+     290
+    ],
+    "kure": [
+     140,
+     8,
+     156,
+     157,
+     134
+    ],
+    "hybrid": [
+     140,
+     282,
+     8,
+     248,
+     156
+    ]
+   }
+  },
+  {
+   "id": "C-015",
+   "origin": "authored",
+   "task": "rag_noise",
+   "relevant": [
+    142
+   ],
+   "top": {
+    "bm25_kiwi": [
+     142,
+     67,
+     412,
+     376,
+     70
+    ],
+    "bm25_space": [
+     142,
+     67,
+     240,
+     376,
+     273
+    ],
+    "kure": [
+     142,
+     162,
+     186,
+     23,
+     238
+    ],
+    "hybrid": [
+     142,
+     67,
+     162,
+     412,
+     186
+    ]
+   }
+  },
+  {
+   "id": "C-016",
+   "origin": "authored",
+   "task": "rag_noise",
+   "relevant": [
+    145
+   ],
+   "top": {
+    "bm25_kiwi": [
+     144,
+     145,
+     5,
+     81,
+     82
+    ],
+    "bm25_space": [
+     364,
+     264,
+     348,
+     0,
+     1
+    ],
+    "kure": [
+     145,
+     144,
+     81,
+     82,
+     83
+    ],
+    "hybrid": [
+     144,
+     145,
+     81,
+     82,
+     5
+    ]
+   }
+  },
+  {
+   "id": "C-017",
+   "origin": "authored",
+   "task": "rag_noise",
+   "relevant": [
+    149
+   ],
+   "top": {
+    "bm25_kiwi": [
+     149,
+     148,
+     330,
+     147,
+     135
+    ],
+    "bm25_space": [
+     148,
+     149,
+     273,
+     12,
+     241
+    ],
+    "kure": [
+     149,
+     147,
+     148,
+     135,
+     241
+    ],
+    "hybrid": [
+     149,
+     148,
+     147,
+     135,
+     330
+    ]
+   }
+  },
+  {
+   "id": "C-018",
+   "origin": "authored",
+   "task": "rag_noise",
+   "relevant": [
+    151
+   ],
+   "top": {
+    "bm25_kiwi": [
+     151,
+     150,
+     242,
+     243,
+     184
+    ],
+    "bm25_space": [
+     184,
+     247,
+     151,
+     101,
+     140
+    ],
+    "kure": [
+     151,
+     150,
+     247,
+     242,
+     184
+    ],
+    "hybrid": [
+     151,
+     150,
+     242,
+     184,
+     247
+    ]
+   }
+  },
+  {
+   "id": "C-019",
+   "origin": "authored",
+   "task": "rag_noise",
+   "relevant": [
+    154
+   ],
+   "top": {
+    "bm25_kiwi": [
+     154,
+     153,
+     155,
+     68,
+     132
+    ],
+    "bm25_space": [
+     153,
+     154,
+     155,
+     132,
+     101
+    ],
+    "kure": [
+     154,
+     153,
+     155,
+     132,
+     167
+    ],
+    "hybrid": [
+     154,
+     153,
+     155,
+     132,
+     68
+    ]
+   }
+  },
+  {
+   "id": "C-020",
+   "origin": "authored",
+   "task": "rag_noise",
+   "relevant": [
+    157
+   ],
+   "top": {
+    "bm25_kiwi": [
+     157,
+     124,
+     127,
+     8,
+     393
+    ],
+    "bm25_space": [
+     157,
+     124,
+     150,
+     151,
+     223
+    ],
+    "kure": [
+     157,
+     158,
+     194,
+     124,
+     156
+    ],
+    "hybrid": [
+     157,
+     124,
+     158,
+     127,
+     194
+    ]
+   }
+  },
+  {
+   "id": "C-021",
+   "origin": "authored",
+   "task": "rag_table",
+   "relevant": [
+    159
+   ],
+   "top": {
+    "bm25_kiwi": [
+     159,
+     231,
+     67,
+     165,
+     130
+    ],
+    "bm25_space": [
+     159,
+     222,
+     101,
+     258,
+     407
+    ],
+    "kure": [
+     159,
+     130,
+     165,
+     14,
+     166
+    ],
+    "hybrid": [
+     159,
+     130,
+     165,
+     231,
+     67
+    ]
+   }
+  },
+  {
+   "id": "C-022",
+   "origin": "authored",
+   "task": "rag_table",
+   "relevant": [
+    160
+   ],
+   "top": {
+    "bm25_kiwi": [
+     160,
+     349,
+     317,
+     78,
+     79
+    ],
+    "bm25_space": [
+     160,
+     188,
+     133,
+     298,
+     275
+    ],
+    "kure": [
+     188,
+     160,
+     241,
+     99,
+     178
+    ],
+    "hybrid": [
+     160,
+     188,
+     349,
+     317,
+     241
+    ]
+   }
+  },
+  {
+   "id": "C-023",
+   "origin": "authored",
+   "task": "rag_table",
+   "relevant": [
+    161
+   ],
+   "top": {
+    "bm25_kiwi": [
+     161,
+     222,
+     190,
+     27,
+     194
+    ],
+    "bm25_space": [
+     161,
+     182,
+     309,
+     397,
+     336
+    ],
+    "kure": [
+     161,
+     104,
+     152,
+     231,
+     195
+    ],
+    "hybrid": [
+     161,
+     222,
+     104,
+     190,
+     152
+    ]
+   }
+  },
+  {
+   "id": "C-024",
+   "origin": "authored",
+   "task": "rag_table",
+   "relevant": [
+    162
+   ],
+   "top": {
+    "bm25_kiwi": [
+     162,
+     263,
+     223,
+     219,
+     179
+    ],
+    "bm25_space": [
+     162,
+     163,
+     348,
+     364,
+     264
+    ],
+    "kure": [
+     162,
+     191,
+     345,
+     142,
+     254
+    ],
+    "hybrid": [
+     162,
+     263,
+     191,
+     223,
+     345
+    ]
+   }
+  },
+  {
+   "id": "C-025",
+   "origin": "authored",
+   "task": "rag_table",
+   "relevant": [
+    163
+   ],
+   "top": {
+    "bm25_kiwi": [
+     163,
+     168,
+     103,
+     185,
+     186
+    ],
+    "bm25_space": [
+     292,
+     0,
+     1,
+     2,
+     3
+    ],
+    "kure": [
+     163,
+     127,
+     134,
+     33,
+     21
+    ],
+    "hybrid": [
+     163,
+     168,
+     127,
+     103,
+     134
+    ]
+   }
+  },
+  {
+   "id": "C-034",
+   "origin": "authored",
+   "task": "rag_revision",
+   "relevant": [
+    176
+   ],
+   "top": {
+    "bm25_kiwi": [
+     175,
+     176,
+     139,
+     321,
+     5
+    ],
+    "bm25_space": [
+     175,
+     176,
+     171,
+     10,
+     32
+    ],
+    "kure": [
+     176,
+     175,
+     152,
+     131,
+     151
+    ],
+    "hybrid": [
+     175,
+     176,
+     139,
+     152,
+     321
+    ]
+   }
+  },
+  {
+   "id": "C-035",
+   "origin": "authored",
+   "task": "rag_revision",
+   "relevant": [
+    177
+   ],
+   "top": {
+    "bm25_kiwi": [
+     177,
+     128,
+     67,
+     178,
+     232
+    ],
+    "bm25_space": [
+     177,
+     178,
+     383,
+     349,
+     319
+    ],
+    "kure": [
+     178,
+     177,
+     241,
+     128,
+     240
+    ],
+    "hybrid": [
+     177,
+     178,
+     128,
+     67,
+     241
+    ]
+   }
+  },
+  {
+   "id": "C-036",
+   "origin": "authored",
+   "task": "rag_revision",
+   "relevant": [
+    179
+   ],
+   "top": {
+    "bm25_kiwi": [
+     179,
+     180,
+     75,
+     130,
+     119
+    ],
+    "bm25_space": [
+     179,
+     180,
+     130,
+     213,
+     165
+    ],
+    "kure": [
+     180,
+     179,
+     130,
+     165,
+     214
+    ],
+    "hybrid": [
+     179,
+     180,
+     130,
+     75,
+     165
+    ]
+   }
+  },
+  {
+   "id": "C-037",
+   "origin": "authored",
+   "task": "rag_revision",
+   "relevant": [
+    182
+   ],
+   "top": {
+    "bm25_kiwi": [
+     181,
+     182,
+     101,
+     140,
+     134
+    ],
+    "bm25_space": [
+     181,
+     182,
+     137,
+     81,
+     127
+    ],
+    "kure": [
+     181,
+     182,
+     151,
+     104,
+     150
+    ],
+    "hybrid": [
+     181,
+     182,
+     101,
+     151,
+     140
+    ]
+   }
+  },
+  {
+   "id": "C-038",
+   "origin": "authored",
+   "task": "rag_combine",
+   "relevant": [
+    183,
+    184
+   ],
+   "top": {
+    "bm25_kiwi": [
+     184,
+     152,
+     150,
+     151,
+     183
+    ],
+    "bm25_space": [
+     247,
+     184,
+     163,
+     11,
+     70
+    ],
+    "kure": [
+     184,
+     242,
+     152,
+     151,
+     150
+    ],
+    "hybrid": [
+     184,
+     152,
+     150,
+     151,
+     242
+    ]
+   }
+  },
+  {
+   "id": "C-039",
+   "origin": "authored",
+   "task": "rag_combine",
+   "relevant": [
+    185,
+    186
+   ],
+   "top": {
+    "bm25_kiwi": [
+     186,
+     185,
+     168,
+     162,
+     1
+    ],
+    "bm25_space": [
+     185,
+     186,
+     354,
+     140,
+     163
+    ],
+    "kure": [
+     186,
+     185,
+     168,
+     241,
+     240
+    ],
+    "hybrid": [
+     186,
+     185,
+     168,
+     162,
+     241
+    ]
+   }
+  },
+  {
+   "id": "C-040",
+   "origin": "authored",
+   "task": "rag_combine",
+   "relevant": [
+    187,
+    188
+   ],
+   "top": {
+    "bm25_kiwi": [
+     188,
+     187,
+     202,
+     420,
+     67
+    ],
+    "bm25_space": [
+     188,
+     160,
+     187,
+     232,
+     7
+    ],
+    "kure": [
+     188,
+     187,
+     133,
+     160,
+     241
+    ],
+    "hybrid": [
+     188,
+     187,
+     202,
+     133,
+     420
+    ]
+   }
+  },
+  {
+   "id": "D-001",
+   "origin": "authored",
+   "task": "rag_value",
+   "relevant": [
+    189
+   ],
+   "top": {
+    "bm25_kiwi": [
+     189,
+     371,
+     380,
+     296,
+     405
+    ],
+    "bm25_space": [
+     364,
+     264,
+     257,
+     268,
+     348
+    ],
+    "kure": [
+     189,
+     237,
+     236,
+     190,
+     219
+    ],
+    "hybrid": [
+     189,
+     371,
+     237,
+     380,
+     236
+    ]
+   }
+  },
+  {
+   "id": "D-002",
+   "origin": "authored",
+   "task": "rag_value",
+   "relevant": [
+    190
+   ],
+   "top": {
+    "bm25_kiwi": [
+     190,
+     380,
+     371,
+     67,
+     377
+    ],
+    "bm25_space": [
+     190,
+     374,
+     116,
+     345,
+     410
+    ],
+    "kure": [
+     190,
+     189,
+     219,
+     166,
+     41
+    ],
+    "hybrid": [
+     190,
+     380,
+     189,
+     371,
+     219
+    ]
+   }
+  },
+  {
+   "id": "D-003",
+   "origin": "authored",
+   "task": "rag_value",
+   "relevant": [
+    191
+   ],
+   "top": {
+    "bm25_kiwi": [
+     191,
+     350,
+     227,
+     165,
+     248
+    ],
+    "bm25_space": [
+     11,
+     70,
+     355,
+     317,
+     298
+    ],
+    "kure": [
+     191,
+     148,
+     220,
+     149,
+     248
+    ],
+    "hybrid": [
+     191,
+     248,
+     350,
+     148,
+     227
+    ]
+   }
+  },
+  {
+   "id": "D-004",
+   "origin": "authored",
+   "task": "rag_value",
+   "relevant": [
+    192
+   ],
+   "top": {
+    "bm25_kiwi": [
+     192,
+     216,
+     217,
+     218,
+     130
+    ],
+    "bm25_space": [
+     192,
+     216,
+     217,
+     218,
+     165
+    ],
+    "kure": [
+     192,
+     249,
+     227,
+     59,
+     9
+    ],
+    "hybrid": [
+     192,
+     216,
+     249,
+     217,
+     227
+    ]
+   }
+  },
+  {
+   "id": "D-005",
+   "origin": "authored",
+   "task": "rag_value",
+   "relevant": [
+    193
+   ],
+   "top": {
+    "bm25_kiwi": [
+     193,
+     295,
+     2,
+     283,
+     388
+    ],
+    "bm25_space": [
+     193,
+     63,
+     315,
+     381,
+     119
+    ],
+    "kure": [
+     193,
+     52,
+     34,
+     63,
+     100
+    ],
+    "hybrid": [
+     193,
+     295,
+     52,
+     2,
+     34
+    ]
+   }
+  },
+  {
+   "id": "D-006",
+   "origin": "authored",
+   "task": "rag_value",
+   "relevant": [
+    194
+   ],
+   "top": {
+    "bm25_kiwi": [
+     194,
+     11,
+     226,
+     41,
+     3
+    ],
+    "bm25_space": [
+     25,
+     41,
+     342,
+     355,
+     354
+    ],
+    "kure": [
+     11,
+     194,
+     41,
+     226,
+     189
+    ],
+    "hybrid": [
+     194,
+     11,
+     226,
+     41,
+     3
+    ]
+   }
+  },
+  {
+   "id": "D-007",
+   "origin": "authored",
+   "task": "rag_value",
+   "relevant": [
+    195
+   ],
+   "top": {
+    "bm25_kiwi": [
+     195,
+     225,
+     211,
+     212,
+     104
+    ],
+    "bm25_space": [
+     364,
+     264,
+     348,
+     0,
+     1
+    ],
+    "kure": [
+     195,
+     225,
+     230,
+     231,
+     104
+    ],
+    "hybrid": [
+     195,
+     225,
+     104,
+     211,
+     230
+    ]
+   }
+  },
+  {
+   "id": "D-008",
+   "origin": "authored",
+   "task": "rag_value",
+   "relevant": [
+    196
+   ],
+   "top": {
+    "bm25_kiwi": [
+     196,
+     101,
+     2,
+     404,
+     299
+    ],
+    "bm25_space": [
+     364,
+     264,
+     348,
+     0,
+     1
+    ],
+    "kure": [
+     196,
+     83,
+     87,
+     82,
+     13
+    ],
+    "hybrid": [
+     196,
+     101,
+     83,
+     2,
+     87
+    ]
+   }
+  },
+  {
+   "id": "D-009",
+   "origin": "authored",
+   "task": "rag_name",
+   "relevant": [
+    197
+   ],
+   "top": {
+    "bm25_kiwi": [
+     59,
+     123,
+     253,
+     349,
+     419
+    ],
+    "bm25_space": [
+     5,
+     407,
+     374,
+     257,
+     0
+    ],
+    "kure": [
+     197,
+     3,
+     226,
+     136,
+     214
+    ],
+    "hybrid": [
+     59,
+     197,
+     123,
+     3,
+     253
+    ]
+   }
+  },
+  {
+   "id": "D-010",
+   "origin": "authored",
+   "task": "rag_name",
+   "relevant": [
+    198
+   ],
+   "top": {
+    "bm25_kiwi": [
+     198,
+     202,
+     272,
+     358,
+     335
+    ],
+    "bm25_space": [
+     198,
+     0,
+     1,
+     2,
+     3
+    ],
+    "kure": [
+     198,
+     372,
+     254,
+     293,
+     248
+    ],
+    "hybrid": [
+     198,
+     202,
+     372,
+     272,
+     254
+    ]
+   }
+  },
+  {
+   "id": "D-011",
+   "origin": "authored",
+   "task": "rag_name",
+   "relevant": [
+    199
+   ],
+   "top": {
+    "bm25_kiwi": [
+     335,
+     358,
+     387,
+     253,
+     280
+    ],
+    "bm25_space": [
+     202,
+     221,
+     60,
+     150,
+     140
+    ],
+    "kure": [
+     199,
+     120,
+     100,
+     155,
+     81
+    ],
+    "hybrid": [
+     335,
+     199,
+     358,
+     120,
+     387
+    ]
+   }
+  },
+  {
+   "id": "D-012",
+   "origin": "authored",
+   "task": "rag_name",
+   "relevant": [
+    200
+   ],
+   "top": {
+    "bm25_kiwi": [
+     200,
+     335,
+     419,
+     222,
+     375
+    ],
+    "bm25_space": [
+     200,
+     66,
+     107,
+     125,
+     229
+    ],
+    "kure": [
+     200,
+     335,
+     244,
+     229,
+     123
+    ],
+    "hybrid": [
+     200,
+     335,
+     419,
+     244,
+     222
+    ]
+   }
+  },
+  {
+   "id": "D-013",
+   "origin": "authored",
+   "task": "rag_name",
+   "relevant": [
+    201
+   ],
+   "top": {
+    "bm25_kiwi": [
+     201,
+     248,
+     140,
+     349,
+     316
+    ],
+    "bm25_space": [
+     280,
+     336,
+     335,
+     0,
+     1
+    ],
+    "kure": [
+     201,
+     221,
+     134,
+     12,
+     156
+    ],
+    "hybrid": [
+     201,
+     248,
+     221,
+     140,
+     134
+    ]
+   }
+  },
+  {
+   "id": "D-014",
+   "origin": "authored",
+   "task": "rag_name",
+   "relevant": [
+    202
+   ],
+   "top": {
+    "bm25_kiwi": [
+     202,
+     220,
+     271,
+     73,
+     64
+    ],
+    "bm25_space": [
+     202,
+     220,
+     294,
+     285,
+     0
+    ],
+    "kure": [
+     202,
+     248,
+     39,
+     220,
+     22
+    ],
+    "hybrid": [
+     202,
+     220,
+     248,
+     271,
+     39
+    ]
+   }
+  },
+  {
+   "id": "D-015",
+   "origin": "authored",
+   "task": "rag_noise",
+   "relevant": [
+    203
+   ],
+   "top": {
+    "bm25_kiwi": [
+     203,
+     204,
+     354,
+     244,
+     205
+    ],
+    "bm25_space": [
+     244,
+     203,
+     204,
+     46,
+     174
+    ],
+    "kure": [
+     203,
+     204,
+     205,
+     18,
+     19
+    ],
+    "hybrid": [
+     203,
+     204,
+     205,
+     354,
+     244
+    ]
+   }
+  },
+  {
+   "id": "D-016",
+   "origin": "authored",
+   "task": "rag_noise",
+   "relevant": [
+    207
+   ],
+   "top": {
+    "bm25_kiwi": [
+     207,
+     12,
+     206,
+     67,
+     38
+    ],
+    "bm25_space": [
+     12,
+     67,
+     207,
+     38,
+     349
+    ],
+    "kure": [
+     207,
+     206,
+     12,
+     241,
+     148
+    ],
+    "hybrid": [
+     207,
+     12,
+     206,
+     67,
+     241
+    ]
+   }
+  },
+  {
+   "id": "D-017",
+   "origin": "authored",
+   "task": "rag_noise",
+   "relevant": [
+    210
+   ],
+   "top": {
+    "bm25_kiwi": [
+     209,
+     210,
+     194,
+     372,
+     410
+    ],
+    "bm25_space": [
+     209,
+     210,
+     222,
+     73,
+     101
+    ],
+    "kure": [
+     210,
+     209,
+     230,
+     194,
+     231
+    ],
+    "hybrid": [
+     209,
+     210,
+     194,
+     230,
+     372
+    ]
+   }
+  },
+  {
+   "id": "D-018",
+   "origin": "authored",
+   "task": "rag_noise",
+   "relevant": [
+    211
+   ],
+   "top": {
+    "bm25_kiwi": [
+     211,
+     213,
+     212,
+     130,
+     201
+    ],
+    "bm25_space": [
+     211,
+     67,
+     213,
+     5,
+     201
+    ],
+    "kure": [
+     211,
+     213,
+     212,
+     225,
+     246
+    ],
+    "hybrid": [
+     211,
+     213,
+     212,
+     130,
+     225
+    ]
+   }
+  },
+  {
+   "id": "D-019",
+   "origin": "authored",
+   "task": "rag_noise",
+   "relevant": [
+    215
+   ],
+   "top": {
+    "bm25_kiwi": [
+     215,
+     76,
+     214,
+     36,
+     377
+    ],
+    "bm25_space": [
+     215,
+     71,
+     132,
+     214,
+     300
+    ],
+    "kure": [
+     215,
+     214,
+     76,
+     226,
+     142
+    ],
+    "hybrid": [
+     215,
+     76,
+     214,
+     36,
+     226
+    ]
+   }
+  },
+  {
+   "id": "D-020",
+   "origin": "authored",
+   "task": "rag_noise",
+   "relevant": [
+    216
+   ],
+   "top": {
+    "bm25_kiwi": [
+     216,
+     217,
+     218,
+     192,
+     187
+    ],
+    "bm25_space": [
+     216,
+     218,
+     399,
+     419,
+     0
+    ],
+    "kure": [
+     216,
+     217,
+     218,
+     199,
+     236
+    ],
+    "hybrid": [
+     216,
+     217,
+     218,
+     192,
+     199
+    ]
+   }
+  },
+  {
+   "id": "D-021",
+   "origin": "authored",
+   "task": "rag_table",
+   "relevant": [
+    219
+   ],
+   "top": {
+    "bm25_kiwi": [
+     219,
+     189,
+     194,
+     199,
+     67
+    ],
+    "bm25_space": [
+     219,
+     257,
+     0,
+     1,
+     2
+    ],
+    "kure": [
+     189,
+     219,
+     237,
+     234,
+     226
+    ],
+    "hybrid": [
+     219,
+     189,
+     194,
+     237,
+     199
+    ]
+   }
+  },
+  {
+   "id": "D-022",
+   "origin": "authored",
+   "task": "rag_table",
+   "relevant": [
+    220
+   ],
+   "top": {
+    "bm25_kiwi": [
+     220,
+     1,
+     39,
+     52,
+     53
+    ],
+    "bm25_space": [
+     220,
+     38,
+     1,
+     306,
+     0
+    ],
+    "kure": [
+     220,
+     38,
+     39,
+     53,
+     52
+    ],
+    "hybrid": [
+     220,
+     39,
+     52,
+     53,
+     1
+    ]
+   }
+  },
+  {
+   "id": "D-023",
+   "origin": "authored",
+   "task": "rag_table",
+   "relevant": [
+    221
+   ],
+   "top": {
+    "bm25_kiwi": [
+     221,
+     201,
+     199,
+     140,
+     247
+    ],
+    "bm25_space": [
+     364,
+     264,
+     348,
+     0,
+     1
+    ],
+    "kure": [
+     221,
+     247,
+     81,
+     82,
+     201
+    ],
+    "hybrid": [
+     221,
+     201,
+     247,
+     199,
+     81
+    ]
+   }
+  },
+  {
+   "id": "D-024",
+   "origin": "authored",
+   "task": "rag_table",
+   "relevant": [
+    222
+   ],
+   "top": {
+    "bm25_kiwi": [
+     222,
+     68,
+     275,
+     33,
+     304
+    ],
+    "bm25_space": [
+     222,
+     200,
+     33,
+     275,
+     364
+    ],
+    "kure": [
+     222,
+     33,
+     58,
+     36,
+     98
+    ],
+    "hybrid": [
+     222,
+     33,
+     68,
+     275,
+     58
+    ]
+   }
+  },
+  {
+   "id": "D-025",
+   "origin": "authored",
+   "task": "rag_table",
+   "relevant": [
+    223
+   ],
+   "top": {
+    "bm25_kiwi": [
+     223,
+     134,
+     130,
+     106,
+     246
+    ],
+    "bm25_space": [
+     223,
+     136,
+     315,
+     381,
+     268
+    ],
+    "kure": [
+     223,
+     249,
+     59,
+     245,
+     41
+    ],
+    "hybrid": [
+     223,
+     134,
+     249,
+     130,
+     59
+    ]
+   }
+  },
+  {
+   "id": "D-034",
+   "origin": "authored",
+   "task": "rag_revision",
+   "relevant": [
+    237
+   ],
+   "top": {
+    "bm25_kiwi": [
+     236,
+     237,
+     258,
+     195,
+     131
+    ],
+    "bm25_space": [
+     236,
+     237,
+     364,
+     264,
+     288
+    ],
+    "kure": [
+     237,
+     236,
+     189,
+     226,
+     190
+    ],
+    "hybrid": [
+     236,
+     237,
+     258,
+     189,
+     195
+    ]
+   }
+  },
+  {
+   "id": "D-035",
+   "origin": "authored",
+   "task": "rag_revision",
+   "relevant": [
+    239
+   ],
+   "top": {
+    "bm25_kiwi": [
+     41,
+     3,
+     35,
+     23,
+     238
+    ],
+    "bm25_space": [
+     41,
+     67,
+     23,
+     238,
+     239
+    ],
+    "kure": [
+     239,
+     238,
+     23,
+     24,
+     35
+    ],
+    "hybrid": [
+     238,
+     23,
+     35,
+     41,
+     239
+    ]
+   }
+  },
+  {
+   "id": "D-036",
+   "origin": "authored",
+   "task": "rag_revision",
+   "relevant": [
+    241
+   ],
+   "top": {
+    "bm25_kiwi": [
+     240,
+     241,
+     232,
+     141,
+     142
+    ],
+    "bm25_space": [
+     241,
+     232,
+     240,
+     135,
+     133
+    ],
+    "kure": [
+     241,
+     240,
+     16,
+     232,
+     177
+    ],
+    "hybrid": [
+     240,
+     241,
+     232,
+     16,
+     141
+    ]
+   }
+  },
+  {
+   "id": "D-037",
+   "origin": "authored",
+   "task": "rag_revision",
+   "relevant": [
+    243
+   ],
+   "top": {
+    "bm25_kiwi": [
+     243,
+     242,
+     195,
+     309,
+     184
+    ],
+    "bm25_space": [
+     243,
+     242,
+     163,
+     246,
+     211
+    ],
+    "kure": [
+     243,
+     242,
+     151,
+     150,
+     184
+    ],
+    "hybrid": [
+     243,
+     242,
+     184,
+     195,
+     151
+    ]
+   }
+  },
+  {
+   "id": "D-038",
+   "origin": "authored",
+   "task": "rag_combine",
+   "relevant": [
+    244,
+    245
+   ],
+   "top": {
+    "bm25_kiwi": [
+     245,
+     123,
+     203,
+     204,
+     205
+    ],
+    "bm25_space": [
+     245,
+     404,
+     255,
+     139,
+     187
+    ],
+    "kure": [
+     245,
+     70,
+     103,
+     80,
+     72
+    ],
+    "hybrid": [
+     245,
+     123,
+     70,
+     203,
+     103
+    ]
+   }
+  },
+  {
+   "id": "D-039",
+   "origin": "authored",
+   "task": "rag_combine",
+   "relevant": [
+    246,
+    247
+   ],
+   "top": {
+    "bm25_kiwi": [
+     246,
+     150,
+     151,
+     1,
+     358
+    ],
+    "bm25_space": [
+     247,
+     124,
+     358,
+     150,
+     151
+    ],
+    "kure": [
+     139,
+     247,
+     151,
+     150,
+     242
+    ],
+    "hybrid": [
+     150,
+     151,
+     246,
+     139,
+     247
+    ]
+   }
+  },
+  {
+   "id": "D-040",
+   "origin": "authored",
+   "task": "rag_combine",
+   "relevant": [
+    248,
+    249
+   ],
+   "top": {
+    "bm25_kiwi": [
+     248,
+     295,
+     140,
+     249,
+     316
+    ],
+    "bm25_space": [
+     139,
+     394,
+     280,
+     355,
+     336
+    ],
+    "kure": [
+     248,
+     249,
+     227,
+     191,
+     73
+    ],
+    "hybrid": [
+     248,
+     249,
+     295,
+     140,
+     227
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_00030",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    250
+   ],
+   "top": {
+    "bm25_kiwi": [
+     250,
+     380,
+     371,
+     365,
+     355
+    ],
+    "bm25_space": [
+     250,
+     355,
+     288,
+     284,
+     310
+    ],
+    "kure": [
+     250,
+     274,
+     371,
+     380,
+     286
+    ],
+    "hybrid": [
+     250,
+     380,
+     371,
+     274,
+     365
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_02851",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    252
+   ],
+   "top": {
+    "bm25_kiwi": [
+     252,
+     359,
+     281,
+     405,
+     409
+    ],
+    "bm25_space": [
+     252,
+     281,
+     405,
+     364,
+     322
+    ],
+    "kure": [
+     252,
+     405,
+     321,
+     155,
+     370
+    ],
+    "hybrid": [
+     252,
+     405,
+     359,
+     281,
+     321
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_04156",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    253
+   ],
+   "top": {
+    "bm25_kiwi": [
+     253,
+     20,
+     29,
+     412,
+     403
+    ],
+    "bm25_space": [
+     253,
+     343,
+     376,
+     329,
+     336
+    ],
+    "kure": [
+     253,
+     352,
+     380,
+     207,
+     75
+    ],
+    "hybrid": [
+     253,
+     20,
+     352,
+     29,
+     380
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_05711",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    254
+   ],
+   "top": {
+    "bm25_kiwi": [
+     254,
+     380,
+     42,
+     404,
+     344
+    ],
+    "bm25_space": [
+     380,
+     254,
+     42,
+     272,
+     300
+    ],
+    "kure": [
+     254,
+     404,
+     364,
+     323,
+     266
+    ],
+    "hybrid": [
+     254,
+     404,
+     380,
+     42,
+     364
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_04685",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    257
+   ],
+   "top": {
+    "bm25_kiwi": [
+     257,
+     270,
+     280,
+     323,
+     419
+    ],
+    "bm25_space": [
+     375,
+     0,
+     1,
+     2,
+     3
+    ],
+    "kure": [
+     257,
+     270,
+     380,
+     280,
+     264
+    ],
+    "hybrid": [
+     257,
+     270,
+     280,
+     380,
+     323
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_00573",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    258
+   ],
+   "top": {
+    "bm25_kiwi": [
+     258,
+     335,
+     314,
+     398,
+     363
+    ],
+    "bm25_space": [
+     258,
+     0,
+     1,
+     2,
+     3
+    ],
+    "kure": [
+     258,
+     346,
+     389,
+     286,
+     333
+    ],
+    "hybrid": [
+     258,
+     335,
+     346,
+     314,
+     389
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_01238",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    259
+   ],
+   "top": {
+    "bm25_kiwi": [
+     259,
+     264,
+     397,
+     415,
+     53
+    ],
+    "bm25_space": [
+     259,
+     333,
+     305,
+     397,
+     310
+    ],
+    "kure": [
+     259,
+     264,
+     415,
+     348,
+     338
+    ],
+    "hybrid": [
+     259,
+     264,
+     415,
+     397,
+     348
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_03781",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    260
+   ],
+   "top": {
+    "bm25_kiwi": [
+     260,
+     272,
+     191,
+     364,
+     238
+    ],
+    "bm25_space": [
+     260,
+     315,
+     262,
+     385,
+     327
+    ],
+    "kure": [
+     260,
+     31,
+     102,
+     14,
+     29
+    ],
+    "hybrid": [
+     260,
+     272,
+     31,
+     191,
+     102
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_01447",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    262
+   ],
+   "top": {
+    "bm25_kiwi": [
+     262,
+     283,
+     335,
+     314,
+     398
+    ],
+    "bm25_space": [
+     262,
+     397,
+     274,
+     400,
+     327
+    ],
+    "kure": [
+     262,
+     394,
+     286,
+     365,
+     383
+    ],
+    "hybrid": [
+     262,
+     283,
+     394,
+     335,
+     286
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_05312",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    263
+   ],
+   "top": {
+    "bm25_kiwi": [
+     263,
+     404,
+     380,
+     408,
+     228
+    ],
+    "bm25_space": [
+     263,
+     364,
+     264,
+     311,
+     404
+    ],
+    "kure": [
+     263,
+     33,
+     354,
+     235,
+     99
+    ],
+    "hybrid": [
+     263,
+     404,
+     33,
+     380,
+     354
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_01597",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    264
+   ],
+   "top": {
+    "bm25_kiwi": [
+     264,
+     259,
+     319,
+     415,
+     289
+    ],
+    "bm25_space": [
+     264,
+     319,
+     356,
+     416,
+     351
+    ],
+    "kure": [
+     264,
+     415,
+     291,
+     397,
+     259
+    ],
+    "hybrid": [
+     264,
+     415,
+     259,
+     319,
+     291
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_02302",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    265
+   ],
+   "top": {
+    "bm25_kiwi": [
+     265,
+     332,
+     316,
+     251,
+     12
+    ],
+    "bm25_space": [
+     265,
+     340,
+     393,
+     360,
+     0
+    ],
+    "kure": [
+     265,
+     382,
+     251,
+     332,
+     399
+    ],
+    "hybrid": [
+     265,
+     332,
+     251,
+     382,
+     316
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_03881",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    266
+   ],
+   "top": {
+    "bm25_kiwi": [
+     266,
+     386,
+     292,
+     350,
+     48
+    ],
+    "bm25_space": [
+     266,
+     270,
+     292,
+     333,
+     302
+    ],
+    "kure": [
+     266,
+     345,
+     270,
+     344,
+     254
+    ],
+    "hybrid": [
+     266,
+     386,
+     345,
+     292,
+     270
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_04961",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    268
+   ],
+   "top": {
+    "bm25_kiwi": [
+     268,
+     385,
+     253,
+     282,
+     308
+    ],
+    "bm25_space": [
+     268,
+     293,
+     0,
+     1,
+     2
+    ],
+    "kure": [
+     268,
+     375,
+     293,
+     10,
+     303
+    ],
+    "hybrid": [
+     268,
+     385,
+     375,
+     253,
+     293
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_04390",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    271
+   ],
+   "top": {
+    "bm25_kiwi": [
+     271,
+     385,
+     331,
+     403,
+     392
+    ],
+    "bm25_space": [
+     271,
+     364,
+     313,
+     264,
+     348
+    ],
+    "kure": [
+     271,
+     376,
+     371,
+     313,
+     409
+    ],
+    "hybrid": [
+     271,
+     385,
+     376,
+     331,
+     371
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_00045",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    274
+   ],
+   "top": {
+    "bm25_kiwi": [
+     274,
+     43,
+     391,
+     386,
+     253
+    ],
+    "bm25_space": [
+     274,
+     386,
+     276,
+     416,
+     293
+    ],
+    "kure": [
+     274,
+     395,
+     414,
+     321,
+     58
+    ],
+    "hybrid": [
+     274,
+     43,
+     395,
+     391,
+     414
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_04040",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    276
+   ],
+   "top": {
+    "bm25_kiwi": [
+     276,
+     374,
+     273,
+     375,
+     303
+    ],
+    "bm25_space": [
+     276,
+     34,
+     385,
+     196,
+     116
+    ],
+    "kure": [
+     276,
+     393,
+     360,
+     374,
+     304
+    ],
+    "hybrid": [
+     276,
+     374,
+     393,
+     273,
+     360
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_01082",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    278
+   ],
+   "top": {
+    "bm25_kiwi": [
+     278,
+     335,
+     385,
+     280,
+     357
+    ],
+    "bm25_space": [
+     278,
+     392,
+     253,
+     309,
+     335
+    ],
+    "kure": [
+     278,
+     321,
+     261,
+     298,
+     358
+    ],
+    "hybrid": [
+     278,
+     335,
+     321,
+     385,
+     261
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_04242",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    279
+   ],
+   "top": {
+    "bm25_kiwi": [
+     279,
+     371,
+     0,
+     273,
+     167
+    ],
+    "bm25_space": [
+     279,
+     44,
+     65,
+     184,
+     0
+    ],
+    "kure": [
+     279,
+     242,
+     184,
+     161,
+     150
+    ],
+    "hybrid": [
+     279,
+     371,
+     242,
+     0,
+     184
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_05126",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    285
+   ],
+   "top": {
+    "bm25_kiwi": [
+     285,
+     409,
+     261,
+     270,
+     359
+    ],
+    "bm25_space": [
+     289,
+     346,
+     389,
+     351,
+     302
+    ],
+    "kure": [
+     285,
+     243,
+     229,
+     261,
+     409
+    ],
+    "hybrid": [
+     285,
+     409,
+     261,
+     243,
+     229
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_01715",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    286
+   ],
+   "top": {
+    "bm25_kiwi": [
+     286,
+     367,
+     290,
+     397,
+     188
+    ],
+    "bm25_space": [
+     304,
+     413,
+     380,
+     290,
+     367
+    ],
+    "kure": [
+     286,
+     291,
+     305,
+     383,
+     387
+    ],
+    "hybrid": [
+     286,
+     367,
+     291,
+     290,
+     305
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_01733",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    287
+   ],
+   "top": {
+    "bm25_kiwi": [
+     296,
+     385,
+     335,
+     134,
+     70
+    ],
+    "bm25_space": [
+     287,
+     0,
+     1,
+     2,
+     3
+    ],
+    "kure": [
+     287,
+     346,
+     366,
+     383,
+     339
+    ],
+    "hybrid": [
+     296,
+     287,
+     385,
+     346,
+     335
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_00861",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    288
+   ],
+   "top": {
+    "bm25_kiwi": [
+     288,
+     395,
+     319,
+     38,
+     338
+    ],
+    "bm25_space": [
+     288,
+     305,
+     349,
+     0,
+     1
+    ],
+    "kure": [
+     288,
+     417,
+     348,
+     291,
+     298
+    ],
+    "hybrid": [
+     288,
+     395,
+     417,
+     319,
+     348
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_00401",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    291
+   ],
+   "top": {
+    "bm25_kiwi": [
+     264,
+     348,
+     297,
+     291,
+     278
+    ],
+    "bm25_space": [
+     289,
+     397,
+     340,
+     280,
+     0
+    ],
+    "kure": [
+     291,
+     310,
+     297,
+     264,
+     289
+    ],
+    "hybrid": [
+     264,
+     291,
+     297,
+     348,
+     310
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_05213",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    293
+   ],
+   "top": {
+    "bm25_kiwi": [
+     293,
+     308,
+     375,
+     341,
+     416
+    ],
+    "bm25_space": [
+     293,
+     308,
+     268,
+     272,
+     341
+    ],
+    "kure": [
+     293,
+     10,
+     308,
+     303,
+     375
+    ],
+    "hybrid": [
+     293,
+     308,
+     375,
+     10,
+     341
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_03729",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    295
+   ],
+   "top": {
+    "bm25_kiwi": [
+     295,
+     398,
+     397,
+     67,
+     335
+    ],
+    "bm25_space": [
+     295,
+     189,
+     274,
+     397,
+     334
+    ],
+    "kure": [
+     295,
+     34,
+     52,
+     341,
+     193
+    ],
+    "hybrid": [
+     295,
+     398,
+     34,
+     397,
+     52
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_00878",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    297
+   ],
+   "top": {
+    "bm25_kiwi": [
+     297,
+     282,
+     385,
+     326,
+     130
+    ],
+    "bm25_space": [
+     297,
+     340,
+     387,
+     415,
+     0
+    ],
+    "kure": [
+     297,
+     387,
+     291,
+     326,
+     337
+    ],
+    "hybrid": [
+     297,
+     326,
+     282,
+     387,
+     385
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_05429",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    298
+   ],
+   "top": {
+    "bm25_kiwi": [
+     298,
+     132,
+     353,
+     320,
+     391
+    ],
+    "bm25_space": [
+     119,
+     285,
+     347,
+     405,
+     298
+    ],
+    "kure": [
+     298,
+     353,
+     289,
+     401,
+     391
+    ],
+    "hybrid": [
+     298,
+     353,
+     391,
+     132,
+     289
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_01296",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    299
+   ],
+   "top": {
+    "bm25_kiwi": [
+     299,
+     228,
+     255,
+     316,
+     201
+    ],
+    "bm25_space": [
+     365,
+     362,
+     400,
+     419,
+     340
+    ],
+    "kure": [
+     299,
+     284,
+     291,
+     228,
+     290
+    ],
+    "hybrid": [
+     299,
+     228,
+     284,
+     255,
+     291
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_01053",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    301
+   ],
+   "top": {
+    "bm25_kiwi": [
+     301,
+     289,
+     130,
+     414,
+     269
+    ],
+    "bm25_space": [
+     389,
+     309,
+     369,
+     289,
+     346
+    ],
+    "kure": [
+     301,
+     289,
+     387,
+     321,
+     367
+    ],
+    "hybrid": [
+     301,
+     289,
+     130,
+     387,
+     414
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_04174",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    302
+   ],
+   "top": {
+    "bm25_kiwi": [
+     302,
+     338,
+     322,
+     376,
+     404
+    ],
+    "bm25_space": [
+     254,
+     365,
+     362,
+     400,
+     419
+    ],
+    "kure": [
+     302,
+     310,
+     376,
+     409,
+     369
+    ],
+    "hybrid": [
+     302,
+     376,
+     338,
+     310,
+     322
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_05733",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    303
+   ],
+   "top": {
+    "bm25_kiwi": [
+     303,
+     380,
+     347,
+     70,
+     6
+    ],
+    "bm25_space": [
+     303,
+     329,
+     380,
+     322,
+     347
+    ],
+    "kure": [
+     303,
+     340,
+     419,
+     369,
+     379
+    ],
+    "hybrid": [
+     303,
+     380,
+     340,
+     347,
+     419
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_04277",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    304
+   ],
+   "top": {
+    "bm25_kiwi": [
+     304,
+     347,
+     345,
+     267,
+     329
+    ],
+    "bm25_space": [
+     265,
+     267,
+     343,
+     304,
+     329
+    ],
+    "kure": [
+     304,
+     347,
+     419,
+     267,
+     386
+    ],
+    "hybrid": [
+     304,
+     347,
+     267,
+     345,
+     419
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_01761",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    306
+   ],
+   "top": {
+    "bm25_kiwi": [
+     306,
+     373,
+     293,
+     348,
+     252
+    ],
+    "bm25_space": [
+     252,
+     306,
+     0,
+     1,
+     2
+    ],
+    "kure": [
+     306,
+     342,
+     321,
+     261,
+     278
+    ],
+    "hybrid": [
+     306,
+     373,
+     342,
+     293,
+     321
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_01185",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    307
+   ],
+   "top": {
+    "bm25_kiwi": [
+     307,
+     319,
+     288,
+     284,
+     264
+    ],
+    "bm25_space": [
+     307,
+     395,
+     288,
+     384,
+     392
+    ],
+    "kure": [
+     307,
+     319,
+     288,
+     264,
+     284
+    ],
+    "hybrid": [
+     307,
+     319,
+     288,
+     284,
+     264
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_02409",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    308
+   ],
+   "top": {
+    "bm25_kiwi": [
+     308,
+     351,
+     354,
+     272,
+     307
+    ],
+    "bm25_space": [
+     308,
+     396,
+     9,
+     307,
+     315
+    ],
+    "kure": [
+     308,
+     272,
+     400,
+     295,
+     351
+    ],
+    "hybrid": [
+     308,
+     272,
+     351,
+     354,
+     400
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_01014",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    310
+   ],
+   "top": {
+    "bm25_kiwi": [
+     310,
+     397,
+     264,
+     286,
+     343
+    ],
+    "bm25_space": [
+     264,
+     310,
+     322,
+     314,
+     365
+    ],
+    "kure": [
+     310,
+     291,
+     264,
+     397,
+     369
+    ],
+    "hybrid": [
+     310,
+     397,
+     264,
+     291,
+     286
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_04003",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    311
+   ],
+   "top": {
+    "bm25_kiwi": [
+     311,
+     284,
+     247,
+     20,
+     221
+    ],
+    "bm25_space": [
+     284,
+     264,
+     310,
+     278,
+     255
+    ],
+    "kure": [
+     311,
+     297,
+     291,
+     395,
+     289
+    ],
+    "hybrid": [
+     311,
+     284,
+     297,
+     247,
+     291
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_01574",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    312
+   ],
+   "top": {
+    "bm25_kiwi": [
+     312,
+     314,
+     291,
+     175,
+     176
+    ],
+    "bm25_space": [
+     312,
+     2,
+     314,
+     9,
+     398
+    ],
+    "kure": [
+     312,
+     100,
+     290,
+     368,
+     236
+    ],
+    "hybrid": [
+     312,
+     314,
+     100,
+     291,
+     290
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_02609",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    313
+   ],
+   "top": {
+    "bm25_kiwi": [
+     313,
+     76,
+     390,
+     323,
+     270
+    ],
+    "bm25_space": [
+     313,
+     76,
+     272,
+     271,
+     326
+    ],
+    "kure": [
+     214,
+     223,
+     313,
+     11,
+     76
+    ],
+    "hybrid": [
+     313,
+     76,
+     214,
+     223,
+     390
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_01311",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    314
+   ],
+   "top": {
+    "bm25_kiwi": [
+     312,
+     325,
+     314,
+     266,
+     283
+    ],
+    "bm25_space": [
+     314,
+     321,
+     266,
+     377,
+     283
+    ],
+    "kure": [
+     328,
+     274,
+     368,
+     363,
+     312
+    ],
+    "hybrid": [
+     312,
+     328,
+     325,
+     274,
+     314
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_03003",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    315
+   ],
+   "top": {
+    "bm25_kiwi": [
+     315,
+     367,
+     338,
+     355,
+     399
+    ],
+    "bm25_space": [
+     184,
+     104,
+     109,
+     302,
+     103
+    ],
+    "kure": [
+     315,
+     342,
+     291,
+     280,
+     383
+    ],
+    "hybrid": [
+     315,
+     367,
+     342,
+     338,
+     291
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_03842",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    317
+   ],
+   "top": {
+    "bm25_kiwi": [
+     317,
+     420,
+     133,
+     408,
+     329
+    ],
+    "bm25_space": [
+     317,
+     420,
+     364,
+     194,
+     26
+    ],
+    "kure": [
+     317,
+     420,
+     330,
+     186,
+     162
+    ],
+    "hybrid": [
+     317,
+     420,
+     133,
+     330,
+     408
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_01567",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    319
+   ],
+   "top": {
+    "bm25_kiwi": [
+     319,
+     307,
+     190,
+     11,
+     254
+    ],
+    "bm25_space": [
+     319,
+     307,
+     315,
+     381,
+     268
+    ],
+    "kure": [
+     307,
+     319,
+     389,
+     417,
+     365
+    ],
+    "hybrid": [
+     319,
+     307,
+     190,
+     389,
+     11
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_02253",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    320
+   ],
+   "top": {
+    "bm25_kiwi": [
+     320,
+     313,
+     132,
+     41,
+     11
+    ],
+    "bm25_space": [
+     320,
+     357,
+     0,
+     1,
+     2
+    ],
+    "kure": [
+     320,
+     313,
+     153,
+     154,
+     132
+    ],
+    "hybrid": [
+     320,
+     313,
+     132,
+     153,
+     41
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_05518",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    323
+   ],
+   "top": {
+    "bm25_kiwi": [
+     323,
+     272,
+     289,
+     251,
+     270
+    ],
+    "bm25_space": [
+     323,
+     257,
+     418,
+     332,
+     270
+    ],
+    "kure": [
+     323,
+     334,
+     277,
+     270,
+     257
+    ],
+    "hybrid": [
+     323,
+     270,
+     272,
+     334,
+     289
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_01593",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    324
+   ],
+   "top": {
+    "bm25_kiwi": [
+     324,
+     269,
+     333,
+     292,
+     341
+    ],
+    "bm25_space": [
+     324,
+     270,
+     333,
+     359,
+     392
+    ],
+    "kure": [
+     324,
+     305,
+     315,
+     253,
+     291
+    ],
+    "hybrid": [
+     324,
+     269,
+     305,
+     333,
+     315
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_00034",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    326
+   ],
+   "top": {
+    "bm25_kiwi": [
+     326,
+     282,
+     265,
+     379,
+     61
+    ],
+    "bm25_space": [
+     326,
+     325,
+     255,
+     196,
+     416
+    ],
+    "kure": [
+     326,
+     353,
+     241,
+     25,
+     162
+    ],
+    "hybrid": [
+     326,
+     282,
+     353,
+     265,
+     241
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_05254",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    328
+   ],
+   "top": {
+    "bm25_kiwi": [
+     328,
+     378,
+     277,
+     257,
+     29
+    ],
+    "bm25_space": [
+     413,
+     289,
+     400,
+     270,
+     378
+    ],
+    "kure": [
+     328,
+     378,
+     277,
+     270,
+     382
+    ],
+    "hybrid": [
+     328,
+     378,
+     277,
+     257,
+     270
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_02875",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    329
+   ],
+   "top": {
+    "bm25_kiwi": [
+     329,
+     257,
+     277,
+     227,
+     191
+    ],
+    "bm25_space": [
+     329,
+     248,
+     285,
+     277,
+     257
+    ],
+    "kure": [
+     329,
+     257,
+     364,
+     400,
+     269
+    ],
+    "hybrid": [
+     329,
+     257,
+     277,
+     364,
+     227
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_05602",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    330
+   ],
+   "top": {
+    "bm25_kiwi": [
+     330,
+     317,
+     254,
+     331,
+     177
+    ],
+    "bm25_space": [
+     378,
+     330,
+     391,
+     364,
+     264
+    ],
+    "kure": [
+     330,
+     420,
+     148,
+     147,
+     407
+    ],
+    "hybrid": [
+     330,
+     317,
+     420,
+     254,
+     148
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_00916",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    331
+   ],
+   "top": {
+    "bm25_kiwi": [
+     331,
+     320,
+     409,
+     402,
+     0
+    ],
+    "bm25_space": [
+     331,
+     0,
+     1,
+     2,
+     3
+    ],
+    "kure": [
+     331,
+     269,
+     315,
+     257,
+     394
+    ],
+    "hybrid": [
+     331,
+     320,
+     269,
+     409,
+     315
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_02002",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    334
+   ],
+   "top": {
+    "bm25_kiwi": [
+     334,
+     390,
+     272,
+     260,
+     257
+    ],
+    "bm25_space": [
+     334,
+     336,
+     394,
+     286,
+     9
+    ],
+    "kure": [
+     334,
+     390,
+     260,
+     272,
+     350
+    ],
+    "hybrid": [
+     334,
+     390,
+     272,
+     260,
+     257
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_01061",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    337
+   ],
+   "top": {
+    "bm25_kiwi": [
+     337,
+     399,
+     419,
+     343,
+     274
+    ],
+    "bm25_space": [
+     337,
+     272,
+     343,
+     305,
+     340
+    ],
+    "kure": [
+     337,
+     291,
+     315,
+     278,
+     339
+    ],
+    "hybrid": [
+     337,
+     399,
+     291,
+     419,
+     315
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_00722",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    339
+   ],
+   "top": {
+    "bm25_kiwi": [
+     339,
+     280,
+     373,
+     349,
+     385
+    ],
+    "bm25_space": [
+     339,
+     357,
+     288,
+     0,
+     1
+    ],
+    "kure": [
+     339,
+     395,
+     289,
+     296,
+     417
+    ],
+    "hybrid": [
+     339,
+     280,
+     395,
+     373,
+     289
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_04994",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    340
+   ],
+   "top": {
+    "bm25_kiwi": [
+     340,
+     386,
+     257,
+     292,
+     350
+    ],
+    "bm25_space": [
+     340,
+     322,
+     352,
+     292,
+     390
+    ],
+    "kure": [
+     340,
+     334,
+     261,
+     255,
+     416
+    ],
+    "hybrid": [
+     340,
+     386,
+     334,
+     257,
+     261
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_03922",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    341
+   ],
+   "top": {
+    "bm25_kiwi": [
+     283,
+     56,
+     341,
+     116,
+     5
+    ],
+    "bm25_space": [
+     327,
+     260,
+     358,
+     374,
+     315
+    ],
+    "kure": [
+     341,
+     239,
+     238,
+     34,
+     116
+    ],
+    "hybrid": [
+     341,
+     116,
+     283,
+     56,
+     239
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_01395",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    342
+   ],
+   "top": {
+    "bm25_kiwi": [
+     342,
+     77,
+     358,
+     262,
+     398
+    ],
+    "bm25_space": [
+     342,
+     411,
+     337,
+     358,
+     352
+    ],
+    "kure": [
+     342,
+     383,
+     280,
+     375,
+     287
+    ],
+    "hybrid": [
+     342,
+     77,
+     383,
+     358,
+     280
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_04064",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    343
+   ],
+   "top": {
+    "bm25_kiwi": [
+     343,
+     360,
+     272,
+     344,
+     388
+    ],
+    "bm25_space": [
+     0,
+     1,
+     2,
+     3,
+     4
+    ],
+    "kure": [
+     343,
+     140,
+     290,
+     413,
+     337
+    ],
+    "hybrid": [
+     343,
+     360,
+     140,
+     272,
+     290
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_03110",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    344
+   ],
+   "top": {
+    "bm25_kiwi": [
+     344,
+     347,
+     121,
+     107,
+     226
+    ],
+    "bm25_space": [
+     344,
+     91,
+     179,
+     192,
+     34
+    ],
+    "kure": [
+     344,
+     261,
+     347,
+     273,
+     419
+    ],
+    "hybrid": [
+     344,
+     347,
+     261,
+     121,
+     107
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_05501",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    345
+   ],
+   "top": {
+    "bm25_kiwi": [
+     345,
+     341,
+     369,
+     352,
+     294
+    ],
+    "bm25_space": [
+     272,
+     251,
+     267,
+     364,
+     264
+    ],
+    "kure": [
+     345,
+     340,
+     253,
+     352,
+     379
+    ],
+    "hybrid": [
+     345,
+     352,
+     341,
+     340,
+     369
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_00072",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    346
+   ],
+   "top": {
+    "bm25_kiwi": [
+     346,
+     324,
+     330,
+     417,
+     395
+    ],
+    "bm25_space": [
+     346,
+     0,
+     1,
+     2,
+     3
+    ],
+    "kure": [
+     346,
+     395,
+     321,
+     297,
+     300
+    ],
+    "hybrid": [
+     346,
+     395,
+     324,
+     330,
+     321
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_05515",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    347
+   ],
+   "top": {
+    "bm25_kiwi": [
+     419,
+     386,
+     347,
+     360,
+     341
+    ],
+    "bm25_space": [
+     347,
+     167,
+     407,
+     341,
+     285
+    ],
+    "kure": [
+     347,
+     345,
+     251,
+     255,
+     386
+    ],
+    "hybrid": [
+     347,
+     386,
+     419,
+     345,
+     251
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_01608",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    348
+   ],
+   "top": {
+    "bm25_kiwi": [
+     348,
+     324,
+     333,
+     417,
+     395
+    ],
+    "bm25_space": [
+     348,
+     395,
+     289,
+     331,
+     296
+    ],
+    "kure": [
+     348,
+     395,
+     297,
+     305,
+     324
+    ],
+    "hybrid": [
+     348,
+     324,
+     395,
+     333,
+     297
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_04129",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    349
+   ],
+   "top": {
+    "bm25_kiwi": [
+     349,
+     263,
+     127,
+     279,
+     119
+    ],
+    "bm25_space": [
+     263,
+     163,
+     349,
+     359,
+     299
+    ],
+    "kure": [
+     349,
+     163,
+     134,
+     220,
+     6
+    ],
+    "hybrid": [
+     349,
+     263,
+     163,
+     127,
+     134
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_01113",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    350
+   ],
+   "top": {
+    "bm25_kiwi": [
+     350,
+     335,
+     269,
+     388,
+     290
+    ],
+    "bm25_space": [
+     303,
+     338,
+     308,
+     314,
+     398
+    ],
+    "kure": [
+     350,
+     419,
+     56,
+     331,
+     261
+    ],
+    "hybrid": [
+     350,
+     335,
+     419,
+     269,
+     56
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_03511",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    352
+   ],
+   "top": {
+    "bm25_kiwi": [
+     352,
+     349,
+     307,
+     311,
+     379
+    ],
+    "bm25_space": [
+     352,
+     160,
+     52,
+     186,
+     206
+    ],
+    "kure": [
+     352,
+     376,
+     311,
+     274,
+     253
+    ],
+    "hybrid": [
+     352,
+     311,
+     349,
+     376,
+     307
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_03265",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    353
+   ],
+   "top": {
+    "bm25_kiwi": [
+     353,
+     385,
+     271,
+     280,
+     325
+    ],
+    "bm25_space": [
+     253,
+     353,
+     364,
+     264,
+     277
+    ],
+    "kure": [
+     353,
+     20,
+     111,
+     391,
+     401
+    ],
+    "hybrid": [
+     353,
+     385,
+     20,
+     271,
+     111
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_05439",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    354
+   ],
+   "top": {
+    "bm25_kiwi": [
+     354,
+     4,
+     399,
+     122,
+     290
+    ],
+    "bm25_space": [
+     354,
+     384,
+     388,
+     326,
+     386
+    ],
+    "kure": [
+     354,
+     399,
+     4,
+     42,
+     43
+    ],
+    "hybrid": [
+     354,
+     4,
+     399,
+     122,
+     42
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_04443",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    356
+   ],
+   "top": {
+    "bm25_kiwi": [
+     356,
+     255,
+     388,
+     330,
+     234
+    ],
+    "bm25_space": [
+     356,
+     255,
+     0,
+     1,
+     2
+    ],
+    "kure": [
+     356,
+     419,
+     254,
+     255,
+     267
+    ],
+    "hybrid": [
+     356,
+     255,
+     419,
+     388,
+     254
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_00872",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    357
+   ],
+   "top": {
+    "bm25_kiwi": [
+     357,
+     403,
+     180,
+     140,
+     313
+    ],
+    "bm25_space": [
+     357,
+     389,
+     351,
+     272,
+     313
+    ],
+    "kure": [
+     357,
+     345,
+     387,
+     393,
+     380
+    ],
+    "hybrid": [
+     357,
+     403,
+     345,
+     180,
+     387
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_01353",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    358
+   ],
+   "top": {
+    "bm25_kiwi": [
+     358,
+     324,
+     202,
+     77,
+     335
+    ],
+    "bm25_space": [
+     335,
+     0,
+     1,
+     2,
+     3
+    ],
+    "kure": [
+     358,
+     321,
+     287,
+     366,
+     383
+    ],
+    "hybrid": [
+     358,
+     324,
+     321,
+     202,
+     287
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_03886",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    359
+   ],
+   "top": {
+    "bm25_kiwi": [
+     359,
+     76,
+     67,
+     125,
+     332
+    ],
+    "bm25_space": [
+     0,
+     1,
+     2,
+     3,
+     4
+    ],
+    "kure": [
+     359,
+     403,
+     125,
+     265,
+     93
+    ],
+    "hybrid": [
+     359,
+     125,
+     76,
+     403,
+     67
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_03950",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    360
+   ],
+   "top": {
+    "bm25_kiwi": [
+     360,
+     375,
+     384,
+     386,
+     61
+    ],
+    "bm25_space": [
+     389,
+     392,
+     184,
+     104,
+     109
+    ],
+    "kure": [
+     360,
+     148,
+     86,
+     149,
+     115
+    ],
+    "hybrid": [
+     360,
+     375,
+     148,
+     384,
+     86
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_00899",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    361
+   ],
+   "top": {
+    "bm25_kiwi": [
+     361,
+     68,
+     410,
+     278,
+     69
+    ],
+    "bm25_space": [
+     361,
+     320,
+     358,
+     69,
+     383
+    ],
+    "kure": [
+     361,
+     363,
+     259,
+     321,
+     339
+    ],
+    "hybrid": [
+     361,
+     68,
+     363,
+     410,
+     259
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_03359",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    362
+   ],
+   "top": {
+    "bm25_kiwi": [
+     362,
+     386,
+     251,
+     311,
+     408
+    ],
+    "bm25_space": [
+     362,
+     364,
+     264,
+     348,
+     0
+    ],
+    "kure": [
+     362,
+     286,
+     274,
+     335,
+     413
+    ],
+    "hybrid": [
+     362,
+     386,
+     286,
+     251,
+     274
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_00189",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    363
+   ],
+   "top": {
+    "bm25_kiwi": [
+     363,
+     355,
+     202,
+     358,
+     408
+    ],
+    "bm25_space": [
+     363,
+     267,
+     335,
+     367,
+     314
+    ],
+    "kure": [
+     363,
+     355,
+     383,
+     348,
+     339
+    ],
+    "hybrid": [
+     363,
+     355,
+     202,
+     383,
+     358
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_02237",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    364
+   ],
+   "top": {
+    "bm25_kiwi": [
+     364,
+     309,
+     402,
+     250,
+     335
+    ],
+    "bm25_space": [
+     301,
+     302,
+     254,
+     377,
+     406
+    ],
+    "kure": [
+     364,
+     298,
+     333,
+     315,
+     377
+    ],
+    "hybrid": [
+     364,
+     309,
+     298,
+     402,
+     333
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_01116",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    365
+   ],
+   "top": {
+    "bm25_kiwi": [
+     365,
+     224,
+     323,
+     364,
+     419
+    ],
+    "bm25_space": [
+     224,
+     277,
+     102,
+     32,
+     260
+    ],
+    "kure": [
+     365,
+     315,
+     87,
+     367,
+     89
+    ],
+    "hybrid": [
+     365,
+     224,
+     315,
+     323,
+     87
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_02172",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    367
+   ],
+   "top": {
+    "bm25_kiwi": [
+     367,
+     250,
+     322,
+     402,
+     338
+    ],
+    "bm25_space": [
+     367,
+     365,
+     362,
+     400,
+     419
+    ],
+    "kure": [
+     367,
+     90,
+     338,
+     88,
+     280
+    ],
+    "hybrid": [
+     367,
+     338,
+     250,
+     90,
+     322
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_03465",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    370
+   ],
+   "top": {
+    "bm25_kiwi": [
+     370,
+     360,
+     288,
+     0,
+     1
+    ],
+    "bm25_space": [
+     370,
+     0,
+     1,
+     2,
+     3
+    ],
+    "kure": [
+     370,
+     254,
+     352,
+     381,
+     293
+    ],
+    "hybrid": [
+     370,
+     360,
+     254,
+     288,
+     352
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_01559",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    373
+   ],
+   "top": {
+    "bm25_kiwi": [
+     373,
+     393,
+     12,
+     279,
+     166
+    ],
+    "bm25_space": [
+     5,
+     315,
+     393,
+     321,
+     368
+    ],
+    "kure": [
+     373,
+     321,
+     377,
+     318,
+     393
+    ],
+    "hybrid": [
+     373,
+     393,
+     321,
+     12,
+     377
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_02354",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    374
+   ],
+   "top": {
+    "bm25_kiwi": [
+     374,
+     355,
+     415,
+     276,
+     397
+    ],
+    "bm25_space": [
+     46,
+     47,
+     41,
+     374,
+     6
+    ],
+    "kure": [
+     374,
+     34,
+     220,
+     206,
+     207
+    ],
+    "hybrid": [
+     374,
+     355,
+     34,
+     415,
+     220
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_02747",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    375
+   ],
+   "top": {
+    "bm25_kiwi": [
+     375,
+     384,
+     316,
+     360,
+     303
+    ],
+    "bm25_space": [
+     232,
+     189,
+     116,
+     375,
+     293
+    ],
+    "kure": [
+     375,
+     303,
+     360,
+     384,
+     268
+    ],
+    "hybrid": [
+     375,
+     384,
+     303,
+     360,
+     316
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_02683",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    376
+   ],
+   "top": {
+    "bm25_kiwi": [
+     376,
+     379,
+     279,
+     335,
+     302
+    ],
+    "bm25_space": [
+     376,
+     279,
+     263,
+     400,
+     379
+    ],
+    "kure": [
+     376,
+     302,
+     409,
+     310,
+     370
+    ],
+    "hybrid": [
+     376,
+     302,
+     379,
+     279,
+     409
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_02547",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    377
+   ],
+   "top": {
+    "bm25_kiwi": [
+     377,
+     162,
+     276,
+     202,
+     76
+    ],
+    "bm25_space": [
+     377,
+     406,
+     364,
+     369,
+     282
+    ],
+    "kure": [
+     377,
+     217,
+     216,
+     281,
+     199
+    ],
+    "hybrid": [
+     377,
+     162,
+     217,
+     276,
+     216
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_01643",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    383
+   ],
+   "top": {
+    "bm25_kiwi": [
+     383,
+     291,
+     350,
+     287,
+     297
+    ],
+    "bm25_space": [
+     383,
+     384,
+     392,
+     316,
+     399
+    ],
+    "kure": [
+     383,
+     342,
+     291,
+     287,
+     337
+    ],
+    "hybrid": [
+     383,
+     291,
+     287,
+     342,
+     350
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_03598",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    384
+   ],
+   "top": {
+    "bm25_kiwi": [
+     384,
+     360,
+     375,
+     408,
+     135
+    ],
+    "bm25_space": [
+     384,
+     360,
+     316,
+     416,
+     353
+    ],
+    "kure": [
+     384,
+     360,
+     353,
+     408,
+     187
+    ],
+    "hybrid": [
+     384,
+     360,
+     408,
+     375,
+     353
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_01264",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    385
+   ],
+   "top": {
+    "bm25_kiwi": [
+     385,
+     155,
+     154,
+     258,
+     68
+    ],
+    "bm25_space": [
+     272,
+     313,
+     271,
+     401,
+     310
+    ],
+    "kure": [
+     385,
+     155,
+     353,
+     154,
+     262
+    ],
+    "hybrid": [
+     385,
+     155,
+     154,
+     353,
+     258
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_00593",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    387
+   ],
+   "top": {
+    "bm25_kiwi": [
+     387,
+     372,
+     310,
+     334,
+     311
+    ],
+    "bm25_space": [
+     387,
+     395,
+     334,
+     365,
+     262
+    ],
+    "kure": [
+     387,
+     257,
+     278,
+     297,
+     298
+    ],
+    "hybrid": [
+     387,
+     372,
+     257,
+     310,
+     278
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_00950",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    389
+   ],
+   "top": {
+    "bm25_kiwi": [
+     389,
+     132,
+     309,
+     359,
+     333
+    ],
+    "bm25_space": [
+     265,
+     389,
+     309,
+     369,
+     289
+    ],
+    "kure": [
+     389,
+     258,
+     311,
+     365,
+     380
+    ],
+    "hybrid": [
+     389,
+     132,
+     258,
+     309,
+     311
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_02491",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    390
+   ],
+   "top": {
+    "bm25_kiwi": [
+     390,
+     260,
+     392,
+     331,
+     297
+    ],
+    "bm25_space": [
+     390,
+     392,
+     253,
+     309,
+     285
+    ],
+    "kure": [
+     390,
+     400,
+     260,
+     228,
+     317
+    ],
+    "hybrid": [
+     390,
+     260,
+     400,
+     392,
+     331
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_01431",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    395
+   ],
+   "top": {
+    "bm25_kiwi": [
+     395,
+     324,
+     280,
+     385,
+     319
+    ],
+    "bm25_space": [
+     395,
+     357,
+     280,
+     319,
+     296
+    ],
+    "kure": [
+     395,
+     324,
+     297,
+     291,
+     321
+    ],
+    "hybrid": [
+     395,
+     324,
+     280,
+     297,
+     385
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_01540",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    397
+   ],
+   "top": {
+    "bm25_kiwi": [
+     397,
+     310,
+     278,
+     418,
+     415
+    ],
+    "bm25_space": [
+     397,
+     259,
+     297,
+     358,
+     415
+    ],
+    "kure": [
+     397,
+     415,
+     264,
+     331,
+     418
+    ],
+    "hybrid": [
+     397,
+     415,
+     418,
+     310,
+     278
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_04633",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    401
+   ],
+   "top": {
+    "bm25_kiwi": [
+     338,
+     401,
+     282,
+     399,
+     369
+    ],
+    "bm25_space": [
+     401,
+     411,
+     0,
+     1,
+     2
+    ],
+    "kure": [
+     303,
+     401,
+     375,
+     253,
+     386
+    ],
+    "hybrid": [
+     401,
+     338,
+     303,
+     282,
+     375
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_02071",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    402
+   ],
+   "top": {
+    "bm25_kiwi": [
+     402,
+     282,
+     338,
+     265,
+     264
+    ],
+    "bm25_space": [
+     402,
+     282,
+     229,
+     297,
+     271
+    ],
+    "kure": [
+     402,
+     264,
+     335,
+     338,
+     326
+    ],
+    "hybrid": [
+     402,
+     264,
+     338,
+     282,
+     335
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_03079",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    403
+   ],
+   "top": {
+    "bm25_kiwi": [
+     403,
+     404,
+     380,
+     367,
+     314
+    ],
+    "bm25_space": [
+     404,
+     294,
+     348,
+     327,
+     336
+    ],
+    "kure": [
+     403,
+     405,
+     53,
+     109,
+     214
+    ],
+    "hybrid": [
+     403,
+     404,
+     405,
+     380,
+     53
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_03364",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    405
+   ],
+   "top": {
+    "bm25_kiwi": [
+     405,
+     252,
+     385,
+     280,
+     419
+    ],
+    "bm25_space": [
+     252,
+     332,
+     294,
+     274,
+     400
+    ],
+    "kure": [
+     405,
+     252,
+     376,
+     411,
+     377
+    ],
+    "hybrid": [
+     405,
+     252,
+     385,
+     376,
+     280
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_01972",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    406
+   ],
+   "top": {
+    "bm25_kiwi": [
+     406,
+     228,
+     356,
+     253,
+     394
+    ],
+    "bm25_space": [
+     406,
+     287,
+     384,
+     392,
+     274
+    ],
+    "kure": [
+     406,
+     308,
+     293,
+     184,
+     381
+    ],
+    "hybrid": [
+     406,
+     228,
+     308,
+     356,
+     293
+    ]
+   }
+  },
+  {
+   "id": "klue-klue-mrc-v1_dev_03368",
+   "origin": "klue_dev",
+   "task": "rag_klue",
+   "relevant": [
+    407
+   ],
+   "top": {
+    "bm25_kiwi": [
+     407,
+     420,
+     279,
+     273,
+     61
+    ],
+    "bm25_space": [
+     407,
+     167,
+     341,
+     285,
+     267
+    ],
+    "kure": [
+     407,
+     3,
+     54,
+     341,
+     239
+    ],
+    "hybrid": [
+     407,
+     420,
+     3,
+     279,
+     54
+    ]
+   }
+  }
+ ]
+}

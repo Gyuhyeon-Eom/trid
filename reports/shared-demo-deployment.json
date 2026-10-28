@@ -1,0 +1,22 @@
+{
+  "url": "https://test.tridatum.co",
+  "worker": "trid-model-test",
+  "worker_version": "e35e45e1-7a0e-4950-a58e-bbfd917d8e7c",
+  "domain_id": "159436f0d94edd03749e1276a19f58094b58c274",
+  "model": "trid-korean-short-v3-hangul",
+  "expires_at_local": "2026-10-28T09:51:26.612376",
+  "running_status": "running",
+  "verification": {
+    "python_shared_server_tests": 3,
+    "pdf_regression_tests": 7,
+    "worker_tests": 3,
+    "real_sample_questions": 4,
+    "real_pdf_question": 1,
+    "cross_visitor_access": "rejected 409",
+    "direct_tunnel_without_proxy_secret": "rejected 403",
+    "public_https": "passed with authoritative IP override and full TLS certificate validation",
+    "dns_1_1_1_1": "resolved",
+    "dns_8_8_8_8": "resolved",
+    "local_browser": "blocked by existing negative DNS cache; no certificate bypass used"
+  }
+}

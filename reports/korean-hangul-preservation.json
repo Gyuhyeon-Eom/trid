@@ -1,0 +1,18 @@
+{
+  "frozen_backbone_tensors": 58,
+  "backbone_bitwise_equal": true,
+  "v1_parent_preserved": {
+    "span": true,
+    "presence": true
+  },
+  "active_settings_unchanged": {
+    "active-model.json": true,
+    "active-institution-model.json": true
+  },
+  "selected_span_step": 100,
+  "completed_span_steps": 1200,
+  "trainable_span_parameters": 500352,
+  "span_parameters": 17808384,
+  "character_encoding": "hangul_v1",
+  "span_sha256": "0dd63c6d157f81fc67449e440fb74cfda3032f9d84f9296b27015c4f4b28bc00"
+}

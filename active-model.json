@@ -1,0 +1,4 @@
+{
+  "run": "runs/trid-v0.2",
+  "status": "experimental; 6/16 held-out phrasing semantic passes; not a finished dialogue model"
+}

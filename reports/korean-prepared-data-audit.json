@@ -1,0 +1,32 @@
+{
+  "train": {
+    "rows": 5171,
+    "unique_contexts": 3842,
+    "max_tokens": 512,
+    "unanswerable": 1696
+  },
+  "valid": {
+    "rows": 292,
+    "unique_contexts": 218,
+    "max_tokens": 512,
+    "unanswerable": 96
+  },
+  "test": {
+    "rows": 2362,
+    "unique_contexts": 2162,
+    "max_tokens": 512,
+    "unanswerable": 798
+  },
+  "train_valid_context_overlap": 0,
+  "train_test_context_overlap": 0,
+  "valid_test_context_overlap": 0,
+  "frozen_evaluation_sha256": "32e3b8c3712c1aebb4175828970e698a5194b76405d1f8f9457f5dcf5b69e707",
+  "frozen_documents_in_mrc_training": 0,
+  "mrc_source_sha256": {
+    "train": "8be05e1e3ac6511c124f2d97e0827e5f5d8ab0e7fac5fcf8779833fd25d859c0",
+    "valid": "8fad1f01d5d46ae7ef34970f58c1e1db6dddaa343091cb1bbfbaf36d28731b37",
+    "test": "44e180a8f35faa39162ad5cf44ccafdeac0811317d5e8bbdea9c3a743fdff93d"
+  },
+  "foundation_tokenizer_and_holdout_bytes_unchanged": true,
+  "limitations": "Exact MRC document separation verified; near paraphrases and historical pretraining overlap are not ruled out. The frozen suite is developer-authored."
+}

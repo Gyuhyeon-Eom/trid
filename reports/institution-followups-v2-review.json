@@ -1,0 +1,71 @@
+{
+  "report": "reports/institution-followups-v2.json",
+  "reviewer": "assistant semantic inspection; not an independent human review",
+  "judgments": {
+    "independent": [
+      {
+        "question": "출장비가 얼마야?",
+        "answer": "3만원",
+        "verdict": "partial/underspecified",
+        "reason": "하루 식비와 출장비 총액을 구분하지 않음"
+      },
+      {
+        "question": "어느 기관 규정인데?",
+        "answer": "운영지원팀",
+        "verdict": "fail",
+        "reason": "기관명 또는 오류 정정 질문에 관련 없는 부서·기간·금액을 답함"
+      },
+      {
+        "question": "공공기관 이름이 뭔데?",
+        "answer": "10일",
+        "verdict": "fail",
+        "reason": "기관명 또는 오류 정정 질문에 관련 없는 부서·기간·금액을 답함"
+      },
+      {
+        "question": "10일이 뭔말이야?",
+        "answer": "10만원",
+        "verdict": "fail",
+        "reason": "기관명 또는 오류 정정 질문에 관련 없는 부서·기간·금액을 답함"
+      },
+      {
+        "question": "뭐가 10만원이야",
+        "answer": "운영지원팀",
+        "verdict": "fail",
+        "reason": "기관명 또는 오류 정정 질문에 관련 없는 부서·기간·금액을 답함"
+      }
+    ],
+    "rolling_history": [
+      {
+        "question": "출장비가 얼마야?",
+        "answer": "3만원",
+        "verdict": "partial/underspecified",
+        "reason": "하루 식비와 출장비 총액을 구분하지 않음"
+      },
+      {
+        "question": "어느 기관 규정인데?",
+        "answer": "운영지원팀",
+        "verdict": "fail",
+        "reason": "기관명 또는 오류 정정 질문에 관련 없는 부서·기간·금액을 답함"
+      },
+      {
+        "question": "공공기관 이름이 뭔데?",
+        "answer": "운영지원팀",
+        "verdict": "fail",
+        "reason": "기관명 또는 오류 정정 질문에 관련 없는 부서·기간·금액을 답함"
+      },
+      {
+        "question": "10일이 뭔말이야?",
+        "answer": "10만원",
+        "verdict": "fail",
+        "reason": "기관명 또는 오류 정정 질문에 관련 없는 부서·기간·금액을 답함"
+      },
+      {
+        "question": "뭐가 10만원이야",
+        "answer": "운영지원팀",
+        "verdict": "fail",
+        "reason": "기관명 또는 오류 정정 질문에 관련 없는 부서·기간·금액을 답함"
+      }
+    ]
+  },
+  "conclusion": "Providing actual prior turns fixes the missing-input defect but does not repair these semantic failures. No model weights changed."
+}

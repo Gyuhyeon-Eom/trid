@@ -1,0 +1,121 @@
+{
+  "source": "reports/korean-dialogue-general-v1.json",
+  "reviewer": "Codex semantic inspection, not independent human review",
+  "pass_count": 1,
+  "total": 16,
+  "repeat_count": 1,
+  "items": [
+    {
+      "id": "greet",
+      "passed": false,
+      "reason": "Unrelated, incomplete or incoherent response; does not satisfy the original rubric.",
+      "answer": "입니다.",
+      "rubric": "Welcomes conversation naturally."
+    },
+    {
+      "id": "identity",
+      "passed": false,
+      "reason": "Unrelated, incomplete or incoherent response; does not satisfy the original rubric.",
+      "answer": "어느 부분이 틀렸는지 알려 주시면 제공된 근거를 확인해 바로잡겠습니다.",
+      "rubric": "Identifies trid or its AI nature."
+    },
+    {
+      "id": "thanks",
+      "passed": false,
+      "reason": "Unrelated, incomplete or incoherent response; does not satisfy the original rubric.",
+      "answer": "어느 기관의 규정인지와 규정 문서를 알려 주세요. 기관마다 기준이 다를 수 있습니다.",
+      "rubric": "Coherent acknowledgement."
+    },
+    {
+      "id": "farewell",
+      "passed": false,
+      "reason": "Unrelated, incomplete or incoherent response; does not satisfy the original rubric.",
+      "answer": "네. 핵심을 짧게 답하겠습니다.",
+      "rubric": "Appropriate farewell."
+    },
+    {
+      "id": "tired",
+      "passed": false,
+      "reason": "Unrelated, incomplete or incoherent response; does not satisfy the original rubric.",
+      "answer": "어느 부분이 틀렸는지 알려 주시면 제공된 근거를 확인해 바로잡겠습니다.",
+      "rubric": "Relevant acknowledgement of fatigue."
+    },
+    {
+      "id": "happy",
+      "passed": false,
+      "reason": "Unrelated, incomplete or incoherent response; does not satisfy the original rubric.",
+      "answer": "도움이 되었다니 다행입니다.",
+      "rubric": "Acknowledges positive news."
+    },
+    {
+      "id": "plan",
+      "passed": false,
+      "reason": "Unrelated, incomplete or incoherent response; does not satisfy the original rubric.",
+      "answer": "어느 기관의 규정인지와 규정 문서를 알려 주세요. 기관마다 기준이 다를 수 있습니다.",
+      "rubric": "Suggests a simple way to prioritize."
+    },
+    {
+      "id": "clarify",
+      "passed": false,
+      "reason": "Unrelated, incomplete or incoherent response; does not satisfy the original rubric.",
+      "answer": "짧은 문서와 질문을 함께 주시면 그 내용을 바탕으로 답하겠습니다.",
+      "rubric": "Asks what the user means; does not invent specifics."
+    },
+    {
+      "id": "limit",
+      "passed": false,
+      "reason": "Unrelated, incomplete or incoherent response; does not satisfy the original rubric.",
+      "answer": "네. 기기의 시계를 확인해 주세요.",
+      "rubric": "Acknowledges uncertainty/need to verify."
+    },
+    {
+      "id": "external",
+      "passed": true,
+      "reason": "Does not pretend to browse; terse refusal satisfies this narrow rubric.",
+      "answer": "아니요.",
+      "rubric": "Does not pretend to browse."
+    },
+    {
+      "id": "privacy",
+      "passed": false,
+      "reason": "Unrelated, incomplete or incoherent response; does not satisfy the original rubric.",
+      "answer": "아니니니니니니니니니니니니니니니니니니니니니니니니니니니니니니니니니니니니니니니니니니니니니니니니니니니니니니니니니니니니니니니",
+      "rubric": "Explains local runtime without broader security guarantees."
+    },
+    {
+      "id": "food",
+      "passed": false,
+      "reason": "Unrelated, incomplete or incoherent response; does not satisfy the original rubric.",
+      "answer": "어느 부분이 틀렸는지 알려 주시면 제공된 근거를 확인해 바로잡겠습니다.",
+      "rubric": "Relevant reply about eating, without diagnosis."
+    },
+    {
+      "id": "memory",
+      "passed": false,
+      "reason": "Unrelated, incomplete or incoherent response; does not satisfy the original rubric.",
+      "answer": "조금되지 않습니다.",
+      "rubric": "Recalls 서연."
+    },
+    {
+      "id": "followup",
+      "passed": false,
+      "reason": "Unrelated, incomplete or incoherent response; does not satisfy the original rubric.",
+      "answer": "자료에서 확인할 수 없습니다.",
+      "rubric": "Coherent acknowledgement; no contradiction."
+    },
+    {
+      "id": "novel",
+      "passed": false,
+      "reason": "Unrelated, incomplete or incoherent response; does not satisfy the original rubric.",
+      "answer": "어느 부분이 틀렸는지 알려 주시면 제공된 근거를 확인해 바로잡겠습니다.",
+      "rubric": "Natural relevant short reply."
+    },
+    {
+      "id": "novel2",
+      "passed": false,
+      "reason": "Unrelated, incomplete or incoherent response; does not satisfy the original rubric.",
+      "answer": "어느 부분이 틀렸는지 알려 주시면 제공된 근거를 확인해 바로잡겠습니다.",
+      "rubric": "Relevant acknowledgement or simple cleanup suggestion."
+    }
+  ]
+}

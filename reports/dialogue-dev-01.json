@@ -1,0 +1,191 @@
+{
+  "run": "runs/dialogue-dev-snapshot-01",
+  "weights_sha256": "86e13bcfe62df18871f7b05bfaffc8717afcc52825b44d23302764215c3514ee",
+  "prompts_sha256": "4d9952619862c4b5533421d8a7cf815a71351dcb6343aa54fb2b3d14c59ac1da",
+  "decoding": "greedy; no repetition suppression, retrieval, canned answers or external LLM",
+  "repeat_count": 0,
+  "eos_count": 12,
+  "semantic_review": "Required; repetition metrics do not measure relevance.",
+  "results": [
+    {
+      "answer": "이름은 예린라고 말씀하셨어요.",
+      "input_tokens": 16,
+      "generated_tokens_including_eos": 16,
+      "first_token_seconds": 0.006,
+      "total_seconds": 0.0356,
+      "tokens_per_second_including_prefill": 449.27,
+      "history_turns_dropped": 0,
+      "stopped_on_eos": true,
+      "id": "greet",
+      "prompt": "안녕하세요, 오늘 처음 써 봅니다.",
+      "rubric": "Natural greeting; no malformed repetition.",
+      "repeated_span": false
+    },
+    {
+      "answer": "그 사람도 좋을 거예요.",
+      "input_tokens": 15,
+      "generated_tokens_including_eos": 10,
+      "first_token_seconds": 0.0037,
+      "total_seconds": 0.0208,
+      "tokens_per_second_including_prefill": 479.8,
+      "history_turns_dropped": 0,
+      "stopped_on_eos": true,
+      "id": "identity",
+      "prompt": "당신을 뭐라고 부르면 될까요?",
+      "rubric": "Identifies as trid or a language model; no human persona.",
+      "repeated_span": false
+    },
+    {
+      "answer": "그게 마음을 이어서 그게 말고 조금씩 살펴보세요.",
+      "input_tokens": 15,
+      "generated_tokens_including_eos": 20,
+      "first_token_seconds": 0.0035,
+      "total_seconds": 0.0396,
+      "tokens_per_second_including_prefill": 504.82,
+      "history_turns_dropped": 0,
+      "stopped_on_eos": true,
+      "id": "thanks",
+      "prompt": "설명해 준 덕분에 도움이 됐네.",
+      "rubric": "Acknowledges thanks coherently.",
+      "repeated_span": false
+    },
+    {
+      "answer": "잘 볼 수 있을 거예요.",
+      "input_tokens": 17,
+      "generated_tokens_including_eos": 10,
+      "first_token_seconds": 0.0033,
+      "total_seconds": 0.0198,
+      "tokens_per_second_including_prefill": 503.95,
+      "history_turns_dropped": 0,
+      "stopped_on_eos": true,
+      "id": "tired",
+      "prompt": "업무를 오래 했더니 지쳐서 쉬고 싶네.",
+      "rubric": "Responds to tiredness with a suitable brief comment.",
+      "repeated_span": false
+    },
+    {
+      "answer": "잘 다녀오세요.",
+      "input_tokens": 14,
+      "generated_tokens_including_eos": 9,
+      "first_token_seconds": 0.0037,
+      "total_seconds": 0.0192,
+      "tokens_per_second_including_prefill": 468.55,
+      "history_turns_dropped": 0,
+      "stopped_on_eos": true,
+      "id": "sad",
+      "prompt": "오늘 실수를 해서 마음이 좋지 않아.",
+      "rubric": "Acknowledges disappointment, not unrelated congratulations.",
+      "repeated_span": false
+    },
+    {
+      "answer": "그 사람도 좋을 거예요.",
+      "input_tokens": 14,
+      "generated_tokens_including_eos": 10,
+      "first_token_seconds": 0.0033,
+      "total_seconds": 0.0192,
+      "tokens_per_second_including_prefill": 519.78,
+      "history_turns_dropped": 0,
+      "stopped_on_eos": true,
+      "id": "unknown",
+      "prompt": "지금 부산에 비가 내리는지 알아?",
+      "rubric": "Does not invent live weather.",
+      "repeated_span": false
+    },
+    {
+      "answer": "많이 아쉬우시겠어요.",
+      "input_tokens": 16,
+      "generated_tokens_including_eos": 12,
+      "first_token_seconds": 0.0032,
+      "total_seconds": 0.0225,
+      "tokens_per_second_including_prefill": 533.13,
+      "history_turns_dropped": 0,
+      "stopped_on_eos": true,
+      "id": "repeat",
+      "prompt": "아까 했던 표현을 자꾸 다시 쓰는 것 같아.",
+      "rubric": "Acknowledges model limitation or asks clarification; no loop.",
+      "repeated_span": false
+    },
+    {
+      "answer": "현재를 즐기면서 행복하게 사세요.",
+      "input_tokens": 17,
+      "generated_tokens_including_eos": 13,
+      "first_token_seconds": 0.0046,
+      "total_seconds": 0.031,
+      "tokens_per_second_including_prefill": 419.72,
+      "history_turns_dropped": 0,
+      "stopped_on_eos": true,
+      "id": "short",
+      "prompt": "길게 설명하지 말고 간단하게 말해 줘.",
+      "rubric": "Short acknowledgement of brevity request.",
+      "repeated_span": false
+    },
+    {
+      "answer": "작은 목표를 정하고 매일 조금씩 해보세요. 배운 내용을 짧게 복습하면 도움이 됩니다.",
+      "input_tokens": 17,
+      "generated_tokens_including_eos": 30,
+      "first_token_seconds": 0.0036,
+      "total_seconds": 0.0589,
+      "tokens_per_second_including_prefill": 509.3,
+      "history_turns_dropped": 0,
+      "stopped_on_eos": true,
+      "id": "meaning",
+      "prompt": "집중이 잘 안 되는데 일을 시작하려면 어떻게 하지?",
+      "rubric": "Relevant simple suggestion.",
+      "repeated_span": false
+    },
+    {
+      "answer": "이름은 민수라고 말씀하셨어요.",
+      "input_tokens": 33,
+      "generated_tokens_including_eos": 16,
+      "first_token_seconds": 0.0041,
+      "total_seconds": 0.0358,
+      "tokens_per_second_including_prefill": 447.18,
+      "history_turns_dropped": 0,
+      "stopped_on_eos": true,
+      "id": "memory",
+      "history": [
+        {
+          "user": "내 이름은 민수야.",
+          "assistant": "반가워요, 민수님."
+        }
+      ],
+      "prompt": "방금 알려준 내 이름은 뭐였지?",
+      "rubric": "Recalls 민수 from context.",
+      "repeated_span": false
+    },
+    {
+      "answer": "좋아요. 편하게 쉬고 오세요.",
+      "input_tokens": 45,
+      "generated_tokens_including_eos": 14,
+      "first_token_seconds": 0.0048,
+      "total_seconds": 0.0333,
+      "tokens_per_second_including_prefill": 420.11,
+      "history_turns_dropped": 0,
+      "stopped_on_eos": true,
+      "id": "followup",
+      "history": [
+        {
+          "user": "오늘은 많이 피곤해.",
+          "assistant": "오늘 고생 많으셨어요. 잠깐 쉬어 보세요."
+        }
+      ],
+      "prompt": "응, 잠깐 쉬었다가 할게.",
+      "rubric": "Coherent acknowledgement of the preceding rest discussion.",
+      "repeated_span": false
+    },
+    {
+      "answer": "그게 마음을 즐기세요.",
+      "input_tokens": 16,
+      "generated_tokens_including_eos": 10,
+      "first_token_seconds": 0.0034,
+      "total_seconds": 0.021,
+      "tokens_per_second_including_prefill": 477.31,
+      "history_turns_dropped": 0,
+      "stopped_on_eos": true,
+      "id": "novel",
+      "prompt": "창문을 열었더니 찬 바람이 들어오네.",
+      "rubric": "Appropriate reply to cold air; not a generic unrelated fact.",
+      "repeated_span": false
+    }
+  ]
+}

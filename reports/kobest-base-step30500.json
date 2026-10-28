@@ -1,0 +1,128 @@
+{
+  "run": "/tmp/trid-base-snap",
+  "weights_sha256": "41c99ad57a83f2109b4d4b095593ad947030478f29ea77eb3e932aff378f3723",
+  "step": 30500,
+  "dataset": {
+    "repository": "https://huggingface.co/datasets/skt/kobest_v1",
+    "revision": "a5ea15e3ac77ed694b79f6204eb31889a2ba989f",
+    "license": "CC BY-SA 4.0",
+    "split": "test",
+    "sha256": {
+      "boolq/test.jsonl": "14ea3a528672e353867287bc4bc13946cde55b456062f2c1cf30a6fbb8b9ce53",
+      "copa/test.jsonl": "0bb5c1232bc5a175dce2262d2f9150ed683f9be6209516afdfade9237a1340c4",
+      "hellaswag/test.jsonl": "1c43d3322e6f08c86b0e0c041270c2b2672f3a95f62daae670b81d45f311fad2",
+      "sentineg/test.jsonl": "e43dc1377c5fab0722b85e4a11e899a3189bc70d6593e4d939a19027c584be2c",
+      "wic/test.jsonl": "2ab6aec6efc34f6c732d86f40beba9ce467e9ca77da0a4327613bef0d05845fd"
+    }
+  },
+  "prompt_templates": "https://github.com/EleutherAI/lm-evaluation-harness/blob/main/lm_eval/tasks/kobest/",
+  "limit": 200,
+  "device": "cpu",
+  "context_length": 1024,
+  "tasks": {
+    "boolq": {
+      "docs": 200,
+      "choices": 2,
+      "acc": 0.53,
+      "acc_norm": 0.47,
+      "macro_f1": 0.3464052287581699,
+      "random_baseline_acc": 0.5,
+      "majority_baseline_acc": 0.53,
+      "gold_counts": [
+        94,
+        106
+      ],
+      "pred_counts": [
+        0,
+        200
+      ],
+      "truncated_contexts": 0,
+      "seconds": 30.8
+    },
+    "copa": {
+      "docs": 200,
+      "choices": 2,
+      "acc": 0.455,
+      "acc_norm": 0.5,
+      "macro_f1": 0.45433155615629145,
+      "random_baseline_acc": 0.5,
+      "majority_baseline_acc": 0.525,
+      "gold_counts": [
+        105,
+        95
+      ],
+      "pred_counts": [
+        102,
+        98
+      ],
+      "truncated_contexts": 0,
+      "seconds": 7.2
+    },
+    "hellaswag": {
+      "docs": 200,
+      "choices": 4,
+      "acc": 0.26,
+      "acc_norm": 0.41,
+      "macro_f1": 0.25453894843050645,
+      "random_baseline_acc": 0.25,
+      "majority_baseline_acc": 0.285,
+      "gold_counts": [
+        49,
+        57,
+        50,
+        44
+      ],
+      "pred_counts": [
+        45,
+        60,
+        43,
+        52
+      ],
+      "truncated_contexts": 0,
+      "seconds": 34.8
+    },
+    "sentineg": {
+      "docs": 200,
+      "choices": 2,
+      "acc": 0.505,
+      "acc_norm": 0.505,
+      "macro_f1": 0.33554817275747506,
+      "random_baseline_acc": 0.5,
+      "majority_baseline_acc": 0.505,
+      "gold_counts": [
+        101,
+        99
+      ],
+      "pred_counts": [
+        200,
+        0
+      ],
+      "truncated_contexts": 0,
+      "seconds": 6.0
+    },
+    "wic": {
+      "docs": 200,
+      "choices": 2,
+      "acc": 0.475,
+      "acc_norm": 0.525,
+      "macro_f1": 0.3220338983050847,
+      "random_baseline_acc": 0.5,
+      "majority_baseline_acc": 0.525,
+      "gold_counts": [
+        105,
+        95
+      ],
+      "pred_counts": [
+        0,
+        200
+      ],
+      "truncated_contexts": 0,
+      "seconds": 12.8
+    }
+  },
+  "mean_acc": 0.445,
+  "mean_acc_norm": 0.48200000000000004,
+  "mean_random_baseline_acc": 0.45,
+  "evaluated_at": "2026-10-28T04:17:52.498796+00:00",
+  "protocol": "0-shot. 각 선택지를 문맥 뒤에 공백 1개로 이어 붙여 BOS부터 인코딩하고, 선택지 토큰의 조건부 로그우도 합(acc) 또는 바이트 수로 나눈 값(acc_norm)이 가장 큰 선택지를 고른다. 문맥이 context_length를 넘으면 왼쪽을 자른다. 무작위 기준선은 1/선택지 수, 다수 클래스 기준선은 정답 분포의 최빈값 비율이다."
+}

@@ -1,0 +1,206 @@
+{
+  "run": "runs/v4-average",
+  "weights_sha256": "053d1d4efd13abba97a3d008c695e7a6da08d88acb39f514974f49f1e1f6165e",
+  "protocol": "Known curriculum phrasings; actual generated previous answers; diagnostic, not held-out generalization.",
+  "device": "cpu",
+  "conversations": [
+    [
+      {
+        "answer": "안녕하세요! 저는 trid입니다. 편하게 이야기해 주세요.",
+        "input_tokens": 5,
+        "generated_tokens_including_eos": 22,
+        "first_token_seconds": 0.0065,
+        "total_seconds": 0.0533,
+        "tokens_per_second_including_prefill": 412.51,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true,
+        "prompt": "안녕",
+        "repeated_span": false
+      },
+      {
+        "answer": "반가워요, 예은님. 저는 trid입니다.",
+        "input_tokens": 36,
+        "generated_tokens_including_eos": 17,
+        "first_token_seconds": 0.0068,
+        "total_seconds": 0.0412,
+        "tokens_per_second_including_prefill": 412.91,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true,
+        "prompt": "네 이름은 뭐야?",
+        "repeated_span": false
+      },
+      {
+        "answer": "오늘 고생 많으셨어요. 잠깐 쉬면서 숨을 돌려 보세요.",
+        "input_tokens": 61,
+        "generated_tokens_including_eos": 25,
+        "first_token_seconds": 0.0065,
+        "total_seconds": 0.0617,
+        "tokens_per_second_including_prefill": 405.22,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true,
+        "prompt": "오늘 너무 피곤해",
+        "repeated_span": false
+      },
+      {
+        "answer": "좋아요. 편안한 하루 보내시고 또 만나요.",
+        "input_tokens": 93,
+        "generated_tokens_including_eos": 17,
+        "first_token_seconds": 0.0089,
+        "total_seconds": 0.0464,
+        "tokens_per_second_including_prefill": 366.16,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true,
+        "prompt": "응 좀 쉴게",
+        "repeated_span": false
+      },
+      {
+        "answer": "천만에요. 도움이 됐다니 다행이에요.",
+        "input_tokens": 115,
+        "generated_tokens_including_eos": 14,
+        "first_token_seconds": 0.0104,
+        "total_seconds": 0.0389,
+        "tokens_per_second_including_prefill": 359.55,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true,
+        "prompt": "고마워",
+        "repeated_span": false
+      },
+      {
+        "answer": "네, 다음에 또 이야기해요. 좋은 하루 보내세요!",
+        "input_tokens": 134,
+        "generated_tokens_including_eos": 16,
+        "first_token_seconds": 0.011,
+        "total_seconds": 0.0463,
+        "tokens_per_second_including_prefill": 345.37,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true,
+        "prompt": "잘 가",
+        "repeated_span": false
+      }
+    ],
+    [
+      {
+        "answer": "반가워요! 오늘은 어떤 이야기를 나눌까요?",
+        "input_tokens": 8,
+        "generated_tokens_including_eos": 15,
+        "first_token_seconds": 0.004,
+        "total_seconds": 0.0328,
+        "tokens_per_second_including_prefill": 457.95,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true,
+        "prompt": "안녕하세요",
+        "repeated_span": false
+      },
+      {
+        "answer": "반가워요, 민수님. 저는 trid입니다.",
+        "input_tokens": 31,
+        "generated_tokens_including_eos": 17,
+        "first_token_seconds": 0.0045,
+        "total_seconds": 0.0377,
+        "tokens_per_second_including_prefill": 451.23,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true,
+        "prompt": "내 이름은 민수야.",
+        "repeated_span": false
+      },
+      {
+        "answer": "이름은 민수라고 말씀하셨어요.",
+        "input_tokens": 57,
+        "generated_tokens_including_eos": 16,
+        "first_token_seconds": 0.006,
+        "total_seconds": 0.0346,
+        "tokens_per_second_including_prefill": 461.85,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true,
+        "prompt": "내 이름이 뭐야?",
+        "repeated_span": false
+      },
+      {
+        "answer": "가볍게 산책하거나 좋아하는 음악을 들어 보는 건 어떠세요? 어떤 취미를 좋아하세요?",
+        "input_tokens": 80,
+        "generated_tokens_including_eos": 28,
+        "first_token_seconds": 0.0069,
+        "total_seconds": 0.0664,
+        "tokens_per_second_including_prefill": 421.4,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true,
+        "prompt": "오늘 할 일이 많아",
+        "repeated_span": false
+      },
+      {
+        "answer": "좋아요. 편안한 하루 보내시고 또 만나요.",
+        "input_tokens": 115,
+        "generated_tokens_including_eos": 17,
+        "first_token_seconds": 0.0097,
+        "total_seconds": 0.0466,
+        "tokens_per_second_including_prefill": 364.43,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true,
+        "prompt": "하나씩 해 볼게",
+        "repeated_span": false
+      }
+    ],
+    [
+      {
+        "answer": "안녕하세요! 저는 trid입니다. 편하게 이야기해 주세요.",
+        "input_tokens": 5,
+        "generated_tokens_including_eos": 22,
+        "first_token_seconds": 0.0036,
+        "total_seconds": 0.0459,
+        "tokens_per_second_including_prefill": 479.75,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true,
+        "prompt": "안녕",
+        "repeated_span": false
+      },
+      {
+        "answer": "식사할 시간이 되었나 봐요. 간단하게 먹을 수 있는 음식부터 챙겨 보세요.",
+        "input_tokens": 32,
+        "generated_tokens_including_eos": 26,
+        "first_token_seconds": 0.0038,
+        "total_seconds": 0.0557,
+        "tokens_per_second_including_prefill": 467.03,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true,
+        "prompt": "배고파",
+        "repeated_span": false
+      },
+      {
+        "answer": "따뜻한 국밥이나 비빔밥은 어떠세요? 가볍게 먹고 싶다면 샌드위치도 좋아요.",
+        "input_tokens": 68,
+        "generated_tokens_including_eos": 36,
+        "first_token_seconds": 0.0076,
+        "total_seconds": 0.0844,
+        "tokens_per_second_including_prefill": 426.47,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true,
+        "prompt": "점심 뭐 먹지?",
+        "repeated_span": false
+      },
+      {
+        "answer": "좋아요. 맛있게 드세요!",
+        "input_tokens": 114,
+        "generated_tokens_including_eos": 13,
+        "first_token_seconds": 0.01,
+        "total_seconds": 0.0379,
+        "tokens_per_second_including_prefill": 343.19,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true,
+        "prompt": "비빔밥 먹을래",
+        "repeated_span": false
+      },
+      {
+        "answer": "천만에요. 도움이 됐다니 다행이에요.",
+        "input_tokens": 132,
+        "generated_tokens_including_eos": 14,
+        "first_token_seconds": 0.0103,
+        "total_seconds": 0.0409,
+        "tokens_per_second_including_prefill": 341.93,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true,
+        "prompt": "고마워",
+        "repeated_span": false
+      }
+    ]
+  ]
+}

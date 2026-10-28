@@ -1,0 +1,1559 @@
+{
+  "purpose": "Balanced training-split diagnostic only; not held-out accuracy or model selection",
+  "seed": 314,
+  "weights_sha256": "a213d1e8b57576e63b5e2cc3b6c4f3c68b1b156152b8f3911a4a1f166d53adc7",
+  "answerable_exact": 16,
+  "answerable": 32,
+  "unanswerable_correct_abstentions": 0,
+  "unanswerable": 32,
+  "results": [
+    {
+      "guid": "klue-mrc-v1_train_01497",
+      "is_impossible": false,
+      "correct": false,
+      "prediction": {
+        "answer": "프랑스",
+        "abstains": false,
+        "source_character_span": [
+          188,
+          191
+        ],
+        "best_span_if_answerable": "프랑스",
+        "best_span_positions": [
+          188,
+          191
+        ],
+        "raw_absent_softmax": 0.2953134775161743,
+        "input_tokens": 407,
+        "total_seconds": 0.0249,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": [
+        "하이랜더 연대"
+      ]
+    },
+    {
+      "guid": "klue-mrc-v1_train_17622",
+      "is_impossible": false,
+      "correct": false,
+      "prediction": {
+        "answer": "아티스",
+        "abstains": false,
+        "source_character_span": [
+          172,
+          175
+        ],
+        "best_span_if_answerable": "아티스",
+        "best_span_positions": [
+          172,
+          175
+        ],
+        "raw_absent_softmax": 0.27377864718437195,
+        "input_tokens": 370,
+        "total_seconds": 0.0179,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": [
+        "뮤지컬 팬들"
+      ]
+    },
+    {
+      "guid": "klue-mrc-v1_train_12966",
+      "is_impossible": false,
+      "correct": true,
+      "prediction": {
+        "answer": "6년 반",
+        "abstains": false,
+        "source_character_span": [
+          581,
+          585
+        ],
+        "best_span_if_answerable": "6년 반",
+        "best_span_positions": [
+          581,
+          585
+        ],
+        "raw_absent_softmax": 0.23899567127227783,
+        "input_tokens": 446,
+        "total_seconds": 0.0207,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": [
+        "6년 반"
+      ]
+    },
+    {
+      "guid": "klue-mrc-v1_train_03477",
+      "is_impossible": false,
+      "correct": false,
+      "prediction": {
+        "answer": "무죄",
+        "abstains": false,
+        "source_character_span": [
+          300,
+          302
+        ],
+        "best_span_if_answerable": "무죄",
+        "best_span_positions": [
+          300,
+          302
+        ],
+        "raw_absent_softmax": 0.32052522897720337,
+        "input_tokens": 386,
+        "total_seconds": 0.0185,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": [
+        "재단법인 일본선박진흥회(현재의 일본재단)",
+        "재단법인 일본선박진흥회",
+        "일본선박진흥회",
+        "현재의 일본재단",
+        "일본재단"
+      ]
+    },
+    {
+      "guid": "klue-mrc-v1_train_00162",
+      "is_impossible": false,
+      "correct": false,
+      "prediction": {
+        "answer": "울산",
+        "abstains": false,
+        "source_character_span": [
+          446,
+          448
+        ],
+        "best_span_if_answerable": "울산",
+        "best_span_positions": [
+          446,
+          448
+        ],
+        "raw_absent_softmax": 0.2622145414352417,
+        "input_tokens": 284,
+        "total_seconds": 0.015,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": [
+        "수원"
+      ]
+    },
+    {
+      "guid": "klue-mrc-v1_train_09805",
+      "is_impossible": false,
+      "correct": false,
+      "prediction": {
+        "answer": "국민소득 3만4000달러",
+        "abstains": false,
+        "source_character_span": [
+          357,
+          370
+        ],
+        "best_span_if_answerable": "국민소득 3만4000달러",
+        "best_span_positions": [
+          357,
+          370
+        ],
+        "raw_absent_softmax": 0.29272061586380005,
+        "input_tokens": 397,
+        "total_seconds": 0.0185,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": [
+        "규제"
+      ]
+    },
+    {
+      "guid": "klue-mrc-v1_train_03598",
+      "is_impossible": false,
+      "correct": true,
+      "prediction": {
+        "answer": "고려 하대",
+        "abstains": false,
+        "source_character_span": [
+          589,
+          594
+        ],
+        "best_span_if_answerable": "고려 하대",
+        "best_span_positions": [
+          589,
+          594
+        ],
+        "raw_absent_softmax": 0.25951695442199707,
+        "input_tokens": 356,
+        "total_seconds": 0.0177,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": [
+        "고려 하대"
+      ]
+    },
+    {
+      "guid": "klue-mrc-v1_train_06048",
+      "is_impossible": false,
+      "correct": true,
+      "prediction": {
+        "answer": "2월 초",
+        "abstains": false,
+        "source_character_span": [
+          578,
+          582
+        ],
+        "best_span_if_answerable": "2월 초",
+        "best_span_positions": [
+          578,
+          582
+        ],
+        "raw_absent_softmax": 0.25542640686035156,
+        "input_tokens": 464,
+        "total_seconds": 0.0218,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": [
+        "2월 초"
+      ]
+    },
+    {
+      "guid": "klue-mrc-v1_train_04283",
+      "is_impossible": false,
+      "correct": false,
+      "prediction": {
+        "answer": "선산인민위원회",
+        "abstains": false,
+        "source_character_span": [
+          451,
+          458
+        ],
+        "best_span_if_answerable": "선산인민위원회",
+        "best_span_positions": [
+          451,
+          458
+        ],
+        "raw_absent_softmax": 0.30456411838531494,
+        "input_tokens": 375,
+        "total_seconds": 0.0178,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": [
+        "조선공산당"
+      ]
+    },
+    {
+      "guid": "klue-mrc-v1_train_05767",
+      "is_impossible": false,
+      "correct": false,
+      "prediction": {
+        "answer": "이득춘",
+        "abstains": false,
+        "source_character_span": [
+          13,
+          16
+        ],
+        "best_span_if_answerable": "이득춘",
+        "best_span_positions": [
+          13,
+          16
+        ],
+        "raw_absent_softmax": 0.29572001099586487,
+        "input_tokens": 453,
+        "total_seconds": 0.0211,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": [
+        "랜섬 디도스",
+        "랜섬 디도스(RDDoS)",
+        "RDDoS"
+      ]
+    },
+    {
+      "guid": "klue-mrc-v1_train_05659",
+      "is_impossible": false,
+      "correct": true,
+      "prediction": {
+        "answer": "의류매장",
+        "abstains": false,
+        "source_character_span": [
+          335,
+          339
+        ],
+        "best_span_if_answerable": "의류매장",
+        "best_span_positions": [
+          335,
+          339
+        ],
+        "raw_absent_softmax": 0.23386059701442719,
+        "input_tokens": 346,
+        "total_seconds": 0.016,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": [
+        "의류매장"
+      ]
+    },
+    {
+      "guid": "klue-mrc-v1_train_16794",
+      "is_impossible": false,
+      "correct": false,
+      "prediction": {
+        "answer": "27일부터 내달 12일 오후 1시",
+        "abstains": false,
+        "source_character_span": [
+          503,
+          521
+        ],
+        "best_span_if_answerable": "27일부터 내달 12일 오후 1시",
+        "best_span_positions": [
+          503,
+          521
+        ],
+        "raw_absent_softmax": 0.23456990718841553,
+        "input_tokens": 399,
+        "total_seconds": 0.0191,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": [
+        "오후 1시"
+      ]
+    },
+    {
+      "guid": "klue-mrc-v1_train_04939",
+      "is_impossible": false,
+      "correct": true,
+      "prediction": {
+        "answer": "아열대 능선",
+        "abstains": false,
+        "source_character_span": [
+          65,
+          71
+        ],
+        "best_span_if_answerable": "아열대 능선",
+        "best_span_positions": [
+          65,
+          71
+        ],
+        "raw_absent_softmax": 0.2758524715900421,
+        "input_tokens": 430,
+        "total_seconds": 0.0203,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": [
+        "아열대 능선"
+      ]
+    },
+    {
+      "guid": "klue-mrc-v1_train_06356",
+      "is_impossible": false,
+      "correct": true,
+      "prediction": {
+        "answer": "한국 기업의 브랜드 지재권",
+        "abstains": false,
+        "source_character_span": [
+          141,
+          155
+        ],
+        "best_span_if_answerable": "한국 기업의 브랜드 지재권",
+        "best_span_positions": [
+          141,
+          155
+        ],
+        "raw_absent_softmax": 0.2882938086986542,
+        "input_tokens": 407,
+        "total_seconds": 0.0193,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": [
+        "한국 기업의 브랜드 지재권"
+      ]
+    },
+    {
+      "guid": "klue-mrc-v1_train_01041",
+      "is_impossible": false,
+      "correct": true,
+      "prediction": {
+        "answer": "가시",
+        "abstains": false,
+        "source_character_span": [
+          457,
+          459
+        ],
+        "best_span_if_answerable": "가시",
+        "best_span_positions": [
+          457,
+          459
+        ],
+        "raw_absent_softmax": 0.24824078381061554,
+        "input_tokens": 332,
+        "total_seconds": 0.0164,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": [
+        "갈고리 모양의 가시",
+        "가시"
+      ]
+    },
+    {
+      "guid": "klue-mrc-v1_train_12829",
+      "is_impossible": false,
+      "correct": false,
+      "prediction": {
+        "answer": "33회",
+        "abstains": false,
+        "source_character_span": [
+          639,
+          642
+        ],
+        "best_span_if_answerable": "33회",
+        "best_span_positions": [
+          639,
+          642
+        ],
+        "raw_absent_softmax": 0.25571662187576294,
+        "input_tokens": 441,
+        "total_seconds": 0.0205,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": [
+        "52"
+      ]
+    },
+    {
+      "guid": "klue-mrc-v1_train_16367",
+      "is_impossible": false,
+      "correct": true,
+      "prediction": {
+        "answer": "OK저축은행 배구단의 경기 티켓",
+        "abstains": false,
+        "source_character_span": [
+          261,
+          278
+        ],
+        "best_span_if_answerable": "OK저축은행 배구단의 경기 티켓",
+        "best_span_positions": [
+          261,
+          278
+        ],
+        "raw_absent_softmax": 0.20760388672351837,
+        "input_tokens": 443,
+        "total_seconds": 0.0199,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": [
+        "OK저축은행 배구단의 경기 티켓"
+      ]
+    },
+    {
+      "guid": "klue-mrc-v1_train_10864",
+      "is_impossible": false,
+      "correct": true,
+      "prediction": {
+        "answer": "1995년",
+        "abstains": false,
+        "source_character_span": [
+          79,
+          84
+        ],
+        "best_span_if_answerable": "1995년",
+        "best_span_positions": [
+          79,
+          84
+        ],
+        "raw_absent_softmax": 0.26186123490333557,
+        "input_tokens": 466,
+        "total_seconds": 0.0232,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": [
+        "1995년"
+      ]
+    },
+    {
+      "guid": "klue-mrc-v1_train_07707",
+      "is_impossible": false,
+      "correct": false,
+      "prediction": {
+        "answer": "11일",
+        "abstains": false,
+        "source_character_span": [
+          400,
+          403
+        ],
+        "best_span_if_answerable": "11일",
+        "best_span_positions": [
+          400,
+          403
+        ],
+        "raw_absent_softmax": 0.2427762895822525,
+        "input_tokens": 403,
+        "total_seconds": 0.0198,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": [
+        "오는 11일"
+      ]
+    },
+    {
+      "guid": "klue-mrc-v1_train_09925",
+      "is_impossible": false,
+      "correct": true,
+      "prediction": {
+        "answer": "20마력",
+        "abstains": false,
+        "source_character_span": [
+          403,
+          407
+        ],
+        "best_span_if_answerable": "20마력",
+        "best_span_positions": [
+          403,
+          407
+        ],
+        "raw_absent_softmax": 0.26149800419807434,
+        "input_tokens": 435,
+        "total_seconds": 0.0207,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": [
+        "20마력",
+        "20"
+      ]
+    },
+    {
+      "guid": "klue-mrc-v1_train_00059",
+      "is_impossible": false,
+      "correct": false,
+      "prediction": {
+        "answer": "로마",
+        "abstains": false,
+        "source_character_span": [
+          367,
+          369
+        ],
+        "best_span_if_answerable": "로마",
+        "best_span_positions": [
+          367,
+          369
+        ],
+        "raw_absent_softmax": 0.3368556797504425,
+        "input_tokens": 437,
+        "total_seconds": 0.0205,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": [
+        "보헤미아"
+      ]
+    },
+    {
+      "guid": "klue-mrc-v1_train_12805",
+      "is_impossible": false,
+      "correct": false,
+      "prediction": {
+        "answer": "768곳",
+        "abstains": false,
+        "source_character_span": [
+          243,
+          247
+        ],
+        "best_span_if_answerable": "768곳",
+        "best_span_positions": [
+          243,
+          247
+        ],
+        "raw_absent_softmax": 0.23906464874744415,
+        "input_tokens": 294,
+        "total_seconds": 0.0158,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": [
+        "60세 이상"
+      ]
+    },
+    {
+      "guid": "klue-mrc-v1_train_11398",
+      "is_impossible": false,
+      "correct": false,
+      "prediction": {
+        "answer": "한동우 신한금융지주 회장의 연임 또는 후임자를 결정하기 위한 회장후보추천위원회",
+        "abstains": false,
+        "source_character_span": [
+          235,
+          278
+        ],
+        "best_span_if_answerable": "한동우 신한금융지주 회장의 연임 또는 후임자를 결정하기 위한 회장후보추천위원회",
+        "best_span_positions": [
+          235,
+          278
+        ],
+        "raw_absent_softmax": 0.29644182324409485,
+        "input_tokens": 479,
+        "total_seconds": 0.0224,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": [
+        "전무"
+      ]
+    },
+    {
+      "guid": "klue-mrc-v1_train_15492",
+      "is_impossible": false,
+      "correct": true,
+      "prediction": {
+        "answer": "38%",
+        "abstains": false,
+        "source_character_span": [
+          568,
+          571
+        ],
+        "best_span_if_answerable": "38%",
+        "best_span_positions": [
+          568,
+          571
+        ],
+        "raw_absent_softmax": 0.23340357840061188,
+        "input_tokens": 464,
+        "total_seconds": 0.0217,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": [
+        "38%"
+      ]
+    },
+    {
+      "guid": "klue-mrc-v1_train_13566",
+      "is_impossible": false,
+      "correct": true,
+      "prediction": {
+        "answer": "70분",
+        "abstains": false,
+        "source_character_span": [
+          217,
+          220
+        ],
+        "best_span_if_answerable": "70분",
+        "best_span_positions": [
+          217,
+          220
+        ],
+        "raw_absent_softmax": 0.25638827681541443,
+        "input_tokens": 452,
+        "total_seconds": 0.021,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": [
+        "70분"
+      ]
+    },
+    {
+      "guid": "klue-mrc-v1_train_05048",
+      "is_impossible": false,
+      "correct": true,
+      "prediction": {
+        "answer": "기원전 310년",
+        "abstains": false,
+        "source_character_span": [
+          555,
+          563
+        ],
+        "best_span_if_answerable": "기원전 310년",
+        "best_span_positions": [
+          555,
+          563
+        ],
+        "raw_absent_softmax": 0.31996044516563416,
+        "input_tokens": 456,
+        "total_seconds": 0.0227,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": [
+        "기원전 310년",
+        "기원전 310년의 전멸 이후"
+      ]
+    },
+    {
+      "guid": "klue-mrc-v1_train_13987",
+      "is_impossible": false,
+      "correct": false,
+      "prediction": {
+        "answer": "‘동네상권의 사랑방 맥주점’이란 콘셉트로 등장, 2000년대 중반 700개",
+        "abstains": false,
+        "source_character_span": [
+          142,
+          183
+        ],
+        "best_span_if_answerable": "‘동네상권의 사랑방 맥주점’이란 콘셉트로 등장, 2000년대 중반 700개",
+        "best_span_positions": [
+          142,
+          183
+        ],
+        "raw_absent_softmax": 0.26926904916763306,
+        "input_tokens": 388,
+        "total_seconds": 0.0186,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": [
+        "29개",
+        "29"
+      ]
+    },
+    {
+      "guid": "klue-mrc-v1_train_01032",
+      "is_impossible": false,
+      "correct": true,
+      "prediction": {
+        "answer": "공학 대령",
+        "abstains": false,
+        "source_character_span": [
+          252,
+          257
+        ],
+        "best_span_if_answerable": "공학 대령",
+        "best_span_positions": [
+          252,
+          257
+        ],
+        "raw_absent_softmax": 0.31899017095565796,
+        "input_tokens": 338,
+        "total_seconds": 0.0171,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": [
+        "대륙육군의 공학 대령",
+        "공학 대령"
+      ]
+    },
+    {
+      "guid": "klue-mrc-v1_train_00944",
+      "is_impossible": false,
+      "correct": false,
+      "prediction": {
+        "answer": "오직",
+        "abstains": false,
+        "source_character_span": [
+          192,
+          194
+        ],
+        "best_span_if_answerable": "오직",
+        "best_span_positions": [
+          192,
+          194
+        ],
+        "raw_absent_softmax": 0.29031309485435486,
+        "input_tokens": 293,
+        "total_seconds": 0.015,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": [
+        "물"
+      ]
+    },
+    {
+      "guid": "klue-mrc-v1_train_00735",
+      "is_impossible": false,
+      "correct": true,
+      "prediction": {
+        "answer": "캐니언",
+        "abstains": false,
+        "source_character_span": [
+          75,
+          78
+        ],
+        "best_span_if_answerable": "캐니언",
+        "best_span_positions": [
+          75,
+          78
+        ],
+        "raw_absent_softmax": 0.2869552671909332,
+        "input_tokens": 390,
+        "total_seconds": 0.0191,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": [
+        "캐니언"
+      ]
+    },
+    {
+      "guid": "klue-mrc-v1_train_05276",
+      "is_impossible": false,
+      "correct": true,
+      "prediction": {
+        "answer": "'아누스 록'",
+        "abstains": false,
+        "source_character_span": [
+          49,
+          56
+        ],
+        "best_span_if_answerable": "'아누스 록'",
+        "best_span_positions": [
+          49,
+          56
+        ],
+        "raw_absent_softmax": 0.31213822960853577,
+        "input_tokens": 378,
+        "total_seconds": 0.017,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": [
+        "'아누스 록'",
+        "아누스 록"
+      ]
+    },
+    {
+      "guid": "klue-mrc-v1_train_15186",
+      "is_impossible": false,
+      "correct": false,
+      "prediction": {
+        "answer": "30일",
+        "abstains": false,
+        "source_character_span": [
+          251,
+          254
+        ],
+        "best_span_if_answerable": "30일",
+        "best_span_positions": [
+          251,
+          254
+        ],
+        "raw_absent_softmax": 0.29955002665519714,
+        "input_tokens": 348,
+        "total_seconds": 0.0167,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": [
+        "4월 6일"
+      ]
+    },
+    {
+      "guid": "klue-mrc-v1_train_00615",
+      "is_impossible": true,
+      "correct": false,
+      "prediction": {
+        "answer": "후쿠오카시에서 남쪽으로 280km, 구마모토시",
+        "abstains": false,
+        "source_character_span": [
+          15,
+          40
+        ],
+        "best_span_if_answerable": "후쿠오카시에서 남쪽으로 280km, 구마모토시",
+        "best_span_positions": [
+          15,
+          40
+        ],
+        "raw_absent_softmax": 0.31631535291671753,
+        "input_tokens": 283,
+        "total_seconds": 0.0151,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": []
+    },
+    {
+      "guid": "klue-mrc-v1_train_16343",
+      "is_impossible": true,
+      "correct": false,
+      "prediction": {
+        "answer": "스카이커넥션",
+        "abstains": false,
+        "source_character_span": [
+          69,
+          75
+        ],
+        "best_span_if_answerable": "스카이커넥션",
+        "best_span_positions": [
+          69,
+          75
+        ],
+        "raw_absent_softmax": 0.29029348492622375,
+        "input_tokens": 305,
+        "total_seconds": 0.016,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": []
+    },
+    {
+      "guid": "klue-mrc-v1_train_11244",
+      "is_impossible": true,
+      "correct": false,
+      "prediction": {
+        "answer": "5만원 상당의 쿠폰팩도 지급한다. 쿠폰팩은 올해 초부터 11월",
+        "abstains": false,
+        "source_character_span": [
+          276,
+          310
+        ],
+        "best_span_if_answerable": "5만원 상당의 쿠폰팩도 지급한다. 쿠폰팩은 올해 초부터 11월",
+        "best_span_positions": [
+          276,
+          310
+        ],
+        "raw_absent_softmax": 0.2676275372505188,
+        "input_tokens": 384,
+        "total_seconds": 0.0174,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": []
+    },
+    {
+      "guid": "klue-mrc-v1_train_06837",
+      "is_impossible": true,
+      "correct": false,
+      "prediction": {
+        "answer": "생도",
+        "abstains": false,
+        "source_character_span": [
+          334,
+          336
+        ],
+        "best_span_if_answerable": "생도",
+        "best_span_positions": [
+          334,
+          336
+        ],
+        "raw_absent_softmax": 0.30794546008110046,
+        "input_tokens": 402,
+        "total_seconds": 0.0192,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": []
+    },
+    {
+      "guid": "klue-mrc-v1_train_02794",
+      "is_impossible": true,
+      "correct": false,
+      "prediction": {
+        "answer": "테코아쿠",
+        "abstains": false,
+        "source_character_span": [
+          574,
+          578
+        ],
+        "best_span_if_answerable": "테코아쿠",
+        "best_span_positions": [
+          574,
+          578
+        ],
+        "raw_absent_softmax": 0.31607934832572937,
+        "input_tokens": 379,
+        "total_seconds": 0.0171,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": []
+    },
+    {
+      "guid": "klue-mrc-v1_train_09641",
+      "is_impossible": true,
+      "correct": false,
+      "prediction": {
+        "answer": "법인세",
+        "abstains": false,
+        "source_character_span": [
+          97,
+          100
+        ],
+        "best_span_if_answerable": "법인세",
+        "best_span_positions": [
+          97,
+          100
+        ],
+        "raw_absent_softmax": 0.25383132696151733,
+        "input_tokens": 454,
+        "total_seconds": 0.0211,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": []
+    },
+    {
+      "guid": "klue-mrc-v1_train_09301",
+      "is_impossible": true,
+      "correct": false,
+      "prediction": {
+        "answer": "러시아",
+        "abstains": false,
+        "source_character_span": [
+          178,
+          181
+        ],
+        "best_span_if_answerable": "러시아",
+        "best_span_positions": [
+          178,
+          181
+        ],
+        "raw_absent_softmax": 0.3054141402244568,
+        "input_tokens": 389,
+        "total_seconds": 0.0187,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": []
+    },
+    {
+      "guid": "klue-mrc-v1_train_15859",
+      "is_impossible": true,
+      "correct": false,
+      "prediction": {
+        "answer": "가수 싸이",
+        "abstains": false,
+        "source_character_span": [
+          142,
+          147
+        ],
+        "best_span_if_answerable": "가수 싸이",
+        "best_span_positions": [
+          142,
+          147
+        ],
+        "raw_absent_softmax": 0.29803380370140076,
+        "input_tokens": 313,
+        "total_seconds": 0.0154,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": []
+    },
+    {
+      "guid": "klue-mrc-v1_train_14460",
+      "is_impossible": true,
+      "correct": false,
+      "prediction": {
+        "answer": "영자(CEO)",
+        "abstains": false,
+        "source_character_span": [
+          557,
+          564
+        ],
+        "best_span_if_answerable": "영자(CEO)",
+        "best_span_positions": [
+          557,
+          564
+        ],
+        "raw_absent_softmax": 0.28510627150535583,
+        "input_tokens": 467,
+        "total_seconds": 0.0216,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": []
+    },
+    {
+      "guid": "klue-mrc-v1_train_02675",
+      "is_impossible": true,
+      "correct": false,
+      "prediction": {
+        "answer": "향신료",
+        "abstains": false,
+        "source_character_span": [
+          269,
+          272
+        ],
+        "best_span_if_answerable": "향신료",
+        "best_span_positions": [
+          269,
+          272
+        ],
+        "raw_absent_softmax": 0.3020414113998413,
+        "input_tokens": 406,
+        "total_seconds": 0.0183,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": []
+    },
+    {
+      "guid": "klue-mrc-v1_train_03605",
+      "is_impossible": true,
+      "correct": false,
+      "prediction": {
+        "answer": "990년",
+        "abstains": false,
+        "source_character_span": [
+          470,
+          474
+        ],
+        "best_span_if_answerable": "990년",
+        "best_span_positions": [
+          470,
+          474
+        ],
+        "raw_absent_softmax": 0.33218151330947876,
+        "input_tokens": 299,
+        "total_seconds": 0.0154,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": []
+    },
+    {
+      "guid": "klue-mrc-v1_train_00899",
+      "is_impossible": true,
+      "correct": false,
+      "prediction": {
+        "answer": "가독",
+        "abstains": false,
+        "source_character_span": [
+          330,
+          332
+        ],
+        "best_span_if_answerable": "가독",
+        "best_span_positions": [
+          330,
+          332
+        ],
+        "raw_absent_softmax": 0.31654390692710876,
+        "input_tokens": 379,
+        "total_seconds": 0.0195,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": []
+    },
+    {
+      "guid": "klue-mrc-v1_train_00589",
+      "is_impossible": true,
+      "correct": false,
+      "prediction": {
+        "answer": "1983년 1월 25일",
+        "abstains": false,
+        "source_character_span": [
+          601,
+          613
+        ],
+        "best_span_if_answerable": "1983년 1월 25일",
+        "best_span_positions": [
+          601,
+          613
+        ],
+        "raw_absent_softmax": 0.3483925759792328,
+        "input_tokens": 379,
+        "total_seconds": 0.0191,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": []
+    },
+    {
+      "guid": "klue-mrc-v1_train_01365",
+      "is_impossible": true,
+      "correct": false,
+      "prediction": {
+        "answer": "토실유구",
+        "abstains": false,
+        "source_character_span": [
+          464,
+          468
+        ],
+        "best_span_if_answerable": "토실유구",
+        "best_span_positions": [
+          464,
+          468
+        ],
+        "raw_absent_softmax": 0.28118202090263367,
+        "input_tokens": 435,
+        "total_seconds": 0.0209,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": []
+    },
+    {
+      "guid": "klue-mrc-v1_train_04272",
+      "is_impossible": true,
+      "correct": false,
+      "prediction": {
+        "answer": "국립교육기관을 가리킨다.\n\n김제향교는 조선 태종 4년(1404)에 세웠고 정유재란",
+        "abstains": false,
+        "source_character_span": [
+          47,
+          92
+        ],
+        "best_span_if_answerable": "국립교육기관을 가리킨다.\n\n김제향교는 조선 태종 4년(1404)에 세웠고 정유재란",
+        "best_span_positions": [
+          47,
+          92
+        ],
+        "raw_absent_softmax": 0.26364415884017944,
+        "input_tokens": 344,
+        "total_seconds": 0.017,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": []
+    },
+    {
+      "guid": "klue-mrc-v1_train_14271",
+      "is_impossible": true,
+      "correct": false,
+      "prediction": {
+        "answer": "네오플럭스가 재무적투자자(FI)로 참여할 것으로 알려졌다. 매각 대상인 안살도",
+        "abstains": false,
+        "source_character_span": [
+          286,
+          329
+        ],
+        "best_span_if_answerable": "네오플럭스가 재무적투자자(FI)로 참여할 것으로 알려졌다. 매각 대상인 안살도",
+        "best_span_positions": [
+          286,
+          329
+        ],
+        "raw_absent_softmax": 0.2849059998989105,
+        "input_tokens": 463,
+        "total_seconds": 0.0215,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": []
+    },
+    {
+      "guid": "klue-mrc-v1_train_00119",
+      "is_impossible": true,
+      "correct": false,
+      "prediction": {
+        "answer": "고려중기 큰 장마나 전염병 등 마을에 우환을 방멸키 위해 조성된 것으로 화강암",
+        "abstains": false,
+        "source_character_span": [
+          57,
+          100
+        ],
+        "best_span_if_answerable": "고려중기 큰 장마나 전염병 등 마을에 우환을 방멸키 위해 조성된 것으로 화강암",
+        "best_span_positions": [
+          57,
+          100
+        ],
+        "raw_absent_softmax": 0.24420328438282013,
+        "input_tokens": 396,
+        "total_seconds": 0.0192,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": []
+    },
+    {
+      "guid": "klue-mrc-v1_train_09639",
+      "is_impossible": true,
+      "correct": false,
+      "prediction": {
+        "answer": "15㎜",
+        "abstains": false,
+        "source_character_span": [
+          171,
+          174
+        ],
+        "best_span_if_answerable": "15㎜",
+        "best_span_positions": [
+          171,
+          174
+        ],
+        "raw_absent_softmax": 0.2469884157180786,
+        "input_tokens": 376,
+        "total_seconds": 0.018,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": []
+    },
+    {
+      "guid": "klue-mrc-v1_train_15091",
+      "is_impossible": true,
+      "correct": false,
+      "prediction": {
+        "answer": "보안카드번호를 입력하라거나 비밀번호를 입력하라는 식으로 정보를 빼내는 수법이다. 3일 금융위원회",
+        "abstains": false,
+        "source_character_span": [
+          274,
+          327
+        ],
+        "best_span_if_answerable": "보안카드번호를 입력하라거나 비밀번호를 입력하라는 식으로 정보를 빼내는 수법이다. 3일 금융위원회",
+        "best_span_positions": [
+          274,
+          327
+        ],
+        "raw_absent_softmax": 0.2666334807872772,
+        "input_tokens": 451,
+        "total_seconds": 0.0217,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": []
+    },
+    {
+      "guid": "klue-mrc-v1_train_00781",
+      "is_impossible": true,
+      "correct": false,
+      "prediction": {
+        "answer": "33세",
+        "abstains": false,
+        "source_character_span": [
+          186,
+          189
+        ],
+        "best_span_if_answerable": "33세",
+        "best_span_positions": [
+          186,
+          189
+        ],
+        "raw_absent_softmax": 0.2784178555011749,
+        "input_tokens": 371,
+        "total_seconds": 0.0181,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": []
+    },
+    {
+      "guid": "klue-mrc-v1_train_14333",
+      "is_impossible": true,
+      "correct": false,
+      "prediction": {
+        "answer": "008년",
+        "abstains": false,
+        "source_character_span": [
+          374,
+          378
+        ],
+        "best_span_if_answerable": "008년",
+        "best_span_positions": [
+          374,
+          378
+        ],
+        "raw_absent_softmax": 0.2177627682685852,
+        "input_tokens": 359,
+        "total_seconds": 0.0173,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": []
+    },
+    {
+      "guid": "klue-mrc-v1_train_10716",
+      "is_impossible": true,
+      "correct": false,
+      "prediction": {
+        "answer": "2014년",
+        "abstains": false,
+        "source_character_span": [
+          205,
+          210
+        ],
+        "best_span_if_answerable": "2014년",
+        "best_span_positions": [
+          205,
+          210
+        ],
+        "raw_absent_softmax": 0.25866979360580444,
+        "input_tokens": 359,
+        "total_seconds": 0.0175,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": []
+    },
+    {
+      "guid": "klue-mrc-v1_train_02409",
+      "is_impossible": true,
+      "correct": false,
+      "prediction": {
+        "answer": "애비 호프만, 제리 루빈",
+        "abstains": false,
+        "source_character_span": [
+          144,
+          157
+        ],
+        "best_span_if_answerable": "애비 호프만, 제리 루빈",
+        "best_span_positions": [
+          144,
+          157
+        ],
+        "raw_absent_softmax": 0.3415432274341583,
+        "input_tokens": 342,
+        "total_seconds": 0.017,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": []
+    },
+    {
+      "guid": "klue-mrc-v1_train_11173",
+      "is_impossible": true,
+      "correct": false,
+      "prediction": {
+        "answer": "2500만회",
+        "abstains": false,
+        "source_character_span": [
+          350,
+          356
+        ],
+        "best_span_if_answerable": "2500만회",
+        "best_span_positions": [
+          350,
+          356
+        ],
+        "raw_absent_softmax": 0.30033034086227417,
+        "input_tokens": 423,
+        "total_seconds": 0.0194,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": []
+    },
+    {
+      "guid": "klue-mrc-v1_train_03766",
+      "is_impossible": true,
+      "correct": false,
+      "prediction": {
+        "answer": "1921년 2월 12일",
+        "abstains": false,
+        "source_character_span": [
+          205,
+          217
+        ],
+        "best_span_if_answerable": "1921년 2월 12일",
+        "best_span_positions": [
+          205,
+          217
+        ],
+        "raw_absent_softmax": 0.28418391942977905,
+        "input_tokens": 288,
+        "total_seconds": 0.0151,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": []
+    },
+    {
+      "guid": "klue-mrc-v1_train_00739",
+      "is_impossible": true,
+      "correct": false,
+      "prediction": {
+        "answer": "1870년",
+        "abstains": false,
+        "source_character_span": [
+          358,
+          363
+        ],
+        "best_span_if_answerable": "1870년",
+        "best_span_positions": [
+          358,
+          363
+        ],
+        "raw_absent_softmax": 0.32022637128829956,
+        "input_tokens": 413,
+        "total_seconds": 0.0189,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": []
+    },
+    {
+      "guid": "klue-mrc-v1_train_02041",
+      "is_impossible": true,
+      "correct": false,
+      "prediction": {
+        "answer": "이탈리",
+        "abstains": false,
+        "source_character_span": [
+          373,
+          376
+        ],
+        "best_span_if_answerable": "이탈리",
+        "best_span_positions": [
+          373,
+          376
+        ],
+        "raw_absent_softmax": 0.34886637330055237,
+        "input_tokens": 401,
+        "total_seconds": 0.0193,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": []
+    },
+    {
+      "guid": "klue-mrc-v1_train_03728",
+      "is_impossible": true,
+      "correct": false,
+      "prediction": {
+        "answer": "라이프치히",
+        "abstains": false,
+        "source_character_span": [
+          465,
+          470
+        ],
+        "best_span_if_answerable": "라이프치히",
+        "best_span_positions": [
+          465,
+          470
+        ],
+        "raw_absent_softmax": 0.3194464445114136,
+        "input_tokens": 294,
+        "total_seconds": 0.0157,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": []
+    },
+    {
+      "guid": "klue-mrc-v1_train_15381",
+      "is_impossible": true,
+      "correct": false,
+      "prediction": {
+        "answer": "해여서 2017년",
+        "abstains": false,
+        "source_character_span": [
+          359,
+          368
+        ],
+        "best_span_if_answerable": "해여서 2017년",
+        "best_span_positions": [
+          359,
+          368
+        ],
+        "raw_absent_softmax": 0.2930774390697479,
+        "input_tokens": 319,
+        "total_seconds": 0.0154,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": []
+    },
+    {
+      "guid": "klue-mrc-v1_train_17322",
+      "is_impossible": true,
+      "correct": false,
+      "prediction": {
+        "answer": "LG전자",
+        "abstains": false,
+        "source_character_span": [
+          296,
+          300
+        ],
+        "best_span_if_answerable": "LG전자",
+        "best_span_positions": [
+          296,
+          300
+        ],
+        "raw_absent_softmax": 0.2099212408065796,
+        "input_tokens": 438,
+        "total_seconds": 0.0199,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": []
+    },
+    {
+      "guid": "klue-mrc-v1_train_08383",
+      "is_impossible": true,
+      "correct": false,
+      "prediction": {
+        "answer": "‘2014 모바일월드콩그레스(MWC)",
+        "abstains": false,
+        "source_character_span": [
+          488,
+          508
+        ],
+        "best_span_if_answerable": "‘2014 모바일월드콩그레스(MWC)",
+        "best_span_positions": [
+          488,
+          508
+        ],
+        "raw_absent_softmax": 0.2964330017566681,
+        "input_tokens": 360,
+        "total_seconds": 0.0167,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": []
+    },
+    {
+      "guid": "klue-mrc-v1_train_07137",
+      "is_impossible": true,
+      "correct": false,
+      "prediction": {
+        "answer": "20척",
+        "abstains": false,
+        "source_character_span": [
+          543,
+          546
+        ],
+        "best_span_if_answerable": "20척",
+        "best_span_positions": [
+          543,
+          546
+        ],
+        "raw_absent_softmax": 0.2512342035770416,
+        "input_tokens": 431,
+        "total_seconds": 0.0203,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "references": []
+    }
+  ]
+}

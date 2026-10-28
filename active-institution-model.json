@@ -1,0 +1,4 @@
+{
+  "run": "runs/trid-grounded-v2",
+  "status": "experimental generation model; 18/24 familiar-domain demo, 10/480 new-format/value cases; missing-information handling regressed; not ready for customer demonstrations"
+}

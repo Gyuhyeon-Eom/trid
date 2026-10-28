@@ -1,0 +1,1775 @@
+{
+  "run": "runs/trid-korean-rag-curriculum-v1",
+  "split": "valid",
+  "model_sha256": "afcab8b9b6f081a3989473930f7e8101073288ffc5c1216260c76a3fa7e37dab",
+  "test_sha256": "a8b94eb8ba61464734eab619018c3bb7cfd642e2de759da3e577071e843da186",
+  "evaluated_at_unix": 1793065741.1622,
+  "protocol": "Greedy CPU generation; provided evidence only; exact fact+source after whitespace/NFKC normalization. No retriever, external model, answer substitution. Shared synthetic templates; test has held-out RAG values and phrasing. Not independent real-document benchmark.",
+  "summary": {
+    "rag_amount": {
+      "pass": 0,
+      "total": 11
+    },
+    "rag_combine": {
+      "pass": 0,
+      "total": 12
+    },
+    "rag_conflict": {
+      "pass": 12,
+      "total": 12
+    },
+    "rag_missing": {
+      "pass": 11,
+      "total": 11
+    },
+    "rag_name": {
+      "pass": 0,
+      "total": 9
+    },
+    "rag_noise": {
+      "pass": 0,
+      "total": 12
+    },
+    "rag_revision": {
+      "pass": 0,
+      "total": 12
+    },
+    "rag_table": {
+      "pass": 0,
+      "total": 12
+    }
+  },
+  "total_pass": 23,
+  "total": 91,
+  "results": [
+    {
+      "id": "valid-table-0008",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D6] 출장비 표\n항목 | 금액\n국내 숙박비 | 15만원\n국내 식비 | 9만원\n질문: 자료에서 국내 숙박비 금액을 찾아줘.",
+      "answer": "15만원 [D6]",
+      "task": "rag_table",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "2만원 [D5]",
+        "input_tokens": 94,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.0094,
+        "total_seconds": 0.0262,
+        "tokens_per_second_including_prefill": 304.83,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-amount-0000",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D5] 출장 규정: 국내 식비는 3만원이다.\n질문: 자료에서 국내 식비 금액을 찾아줘.",
+      "answer": "3만원 [D5]",
+      "task": "rag_amount",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "확인 불가",
+        "input_tokens": 76,
+        "generated_tokens_including_eos": 4,
+        "first_token_seconds": 0.0079,
+        "total_seconds": 0.0136,
+        "tokens_per_second_including_prefill": 294.63,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-conflict-0005",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D7] 출장 규정: 국내 숙박비는 9만원이다.\n[D3] 출장 규정: 국내 숙박비는 6만원이다.\n질문: 자료에서 국내 숙박비 금액을 찾아줘.",
+      "answer": "근거 충돌",
+      "task": "rag_conflict",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "근거 충돌",
+        "input_tokens": 96,
+        "generated_tokens_including_eos": 4,
+        "first_token_seconds": 0.0111,
+        "total_seconds": 0.0171,
+        "tokens_per_second_including_prefill": 233.99,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": true
+    },
+    {
+      "id": "valid-conflict-0001",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D8] 출장 규정: 국내 식비는 3만원이다.\n[D5] 출장 규정: 국내 식비는 6만원이다.\n질문: 자료에서 국내 식비 금액을 찾아줘.",
+      "answer": "근거 충돌",
+      "task": "rag_conflict",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "근거 충돌",
+        "input_tokens": 93,
+        "generated_tokens_including_eos": 4,
+        "first_token_seconds": 0.0099,
+        "total_seconds": 0.0157,
+        "tokens_per_second_including_prefill": 255.02,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": true
+    },
+    {
+      "id": "valid-name-0000",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D3] 업무 안내: 정산 담당자는 조은서이다.\n질문: 정산을 담당하는 사람은 누구인가요?",
+      "answer": "조은서 [D3]",
+      "task": "rag_name",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "정하린 [D3]",
+        "input_tokens": 74,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.0075,
+        "total_seconds": 0.0331,
+        "tokens_per_second_including_prefill": 241.55,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-conflict-0002",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D8] 출장 규정: 국내 식비는 3만원이다.\n[D6] 출장 규정: 국내 식비는 12만원이다.\n질문: 자료에서 국내 식비 금액을 찾아줘.",
+      "answer": "근거 충돌",
+      "task": "rag_conflict",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "근거 충돌",
+        "input_tokens": 93,
+        "generated_tokens_including_eos": 4,
+        "first_token_seconds": 0.0148,
+        "total_seconds": 0.0211,
+        "tokens_per_second_including_prefill": 189.65,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": true
+    },
+    {
+      "id": "valid-conflict-0009",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D2] 출장 규정: 해외 식비는 3만원이다.\n[D4] 출장 규정: 해외 식비는 12만원이다.\n질문: 자료에서 해외 식비 금액을 찾아줘.",
+      "answer": "근거 충돌",
+      "task": "rag_conflict",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "근거 충돌",
+        "input_tokens": 93,
+        "generated_tokens_including_eos": 4,
+        "first_token_seconds": 0.0098,
+        "total_seconds": 0.0159,
+        "tokens_per_second_including_prefill": 251.3,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": true
+    },
+    {
+      "id": "valid-name-0011",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D5] 업무 안내: 정산 담당자는 임건우이다.\n질문: 정산을 담당하는 사람은 누구인가요?",
+      "answer": "임건우 [D5]",
+      "task": "rag_name",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "정하린 [D3]",
+        "input_tokens": 74,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.0081,
+        "total_seconds": 0.0215,
+        "tokens_per_second_including_prefill": 371.91,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-amount-0005",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D1] 출장 규정: 해외 숙박비는 9만원이다.\n질문: 자료에서 해외 숙박비 금액을 찾아줘.",
+      "answer": "9만원 [D1]",
+      "task": "rag_amount",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "2만원 [D5]",
+        "input_tokens": 78,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.0094,
+        "total_seconds": 0.0228,
+        "tokens_per_second_including_prefill": 350.17,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-combine-0000",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D4] 출장 규정: 해외 식비는 3만원이다.\n[D5] 업무 안내: 정산 담당자는 조은서이다.\n질문: 해외 식비와 정산 담당자를 함께 알려줘.",
+      "answer": "3만원 [D4], 조은서 [D5]",
+      "task": "rag_combine",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "29만원 [D5], 한지우 [D3]",
+        "input_tokens": 95,
+        "generated_tokens_including_eos": 16,
+        "first_token_seconds": 0.011,
+        "total_seconds": 0.0467,
+        "tokens_per_second_including_prefill": 342.86,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-amount-0007",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D7] 출장 규정: 해외 숙박비는 6만원이다.\n질문: 자료에서 해외 숙박비 금액을 찾아줘.",
+      "answer": "6만원 [D7]",
+      "task": "rag_amount",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "2만원 [D5]",
+        "input_tokens": 78,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.0088,
+        "total_seconds": 0.0219,
+        "tokens_per_second_including_prefill": 364.77,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-table-0003",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D8] 출장비 표\n항목 | 금액\n해외 숙박비 | 12만원\n해외 식비 | 9만원\n질문: 자료에서 해외 식비 금액을 찾아줘.",
+      "answer": "9만원 [D8]",
+      "task": "rag_table",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "2만원 [D5]",
+        "input_tokens": 93,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.0111,
+        "total_seconds": 0.0258,
+        "tokens_per_second_including_prefill": 309.83,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-missing-0007",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D7] 출장 규정: 해외 식비는 9만원이다.\n질문: 자료에서 국내 식비 금액을 찾아줘.",
+      "answer": "확인 불가",
+      "task": "rag_missing",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "확인 불가",
+        "input_tokens": 76,
+        "generated_tokens_including_eos": 4,
+        "first_token_seconds": 0.0091,
+        "total_seconds": 0.0148,
+        "tokens_per_second_including_prefill": 270.79,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": true
+    },
+    {
+      "id": "valid-missing-0008",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D4] 출장 규정: 해외 식비는 3만원이다.\n질문: 자료에서 해외 숙박비 금액을 찾아줘.",
+      "answer": "확인 불가",
+      "task": "rag_missing",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "확인 불가",
+        "input_tokens": 77,
+        "generated_tokens_including_eos": 4,
+        "first_token_seconds": 0.0085,
+        "total_seconds": 0.0152,
+        "tokens_per_second_including_prefill": 262.86,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": true
+    },
+    {
+      "id": "valid-amount-0011",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D2] 출장 규정: 국내 식비는 3만원이다.\n질문: 자료에서 국내 식비 금액을 찾아줘.",
+      "answer": "3만원 [D2]",
+      "task": "rag_amount",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "확인 불가",
+        "input_tokens": 76,
+        "generated_tokens_including_eos": 4,
+        "first_token_seconds": 0.008,
+        "total_seconds": 0.0146,
+        "tokens_per_second_including_prefill": 274.79,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-revision-0005",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D1] 현행 규정: 해외 식비는 15만원이다.\n[D6] 폐지된 규정: 해외 식비는 6만원이다.\n질문: 자료에서 해외 식비 금액을 찾아줘.",
+      "answer": "15만원 [D1]",
+      "task": "rag_revision",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "2만원 [D5]",
+        "input_tokens": 93,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.0106,
+        "total_seconds": 0.0282,
+        "tokens_per_second_including_prefill": 283.49,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-combine-0003",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D1] 업무 안내: 정산 담당자는 임건우이다.\n[D6] 출장 규정: 국내 숙박비는 9만원이다.\n질문: 국내 숙박비와 정산 담당자를 함께 알려줘.",
+      "answer": "9만원 [D6], 임건우 [D1]",
+      "task": "rag_combine",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "29만원 [D5], 정하린 [D3]",
+        "input_tokens": 97,
+        "generated_tokens_including_eos": 16,
+        "first_token_seconds": 0.0109,
+        "total_seconds": 0.0453,
+        "tokens_per_second_including_prefill": 353.42,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-table-0006",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D4] 출장비 표\n항목 | 금액\n국내 식비 | 6만원\n국내 숙박비 | 15만원\n질문: 자료에서 국내 숙박비 금액을 찾아줘.",
+      "answer": "15만원 [D4]",
+      "task": "rag_table",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "2만원 [D5]",
+        "input_tokens": 94,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.011,
+        "total_seconds": 0.0281,
+        "tokens_per_second_including_prefill": 284.3,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-noise-0006",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D3] 출장 규정: 해외 식비는 3만원이다.\n[D7] 출장 규정: 국내 식비는 15만원이다.\n[D1] 행사 안내: 접수 기간은 3일이다.\n질문: 자료에서 국내 식비 금액을 찾아줘.",
+      "answer": "15만원 [D7]",
+      "task": "rag_noise",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "2만원 [D5]",
+        "input_tokens": 110,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.0108,
+        "total_seconds": 0.0275,
+        "tokens_per_second_including_prefill": 291.15,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-combine-0006",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D1] 업무 안내: 정산 담당자는 임건우이다.\n[D2] 출장 규정: 해외 식비는 12만원이다.\n질문: 해외 식비와 정산 담당자를 함께 알려줘.",
+      "answer": "12만원 [D2], 임건우 [D1]",
+      "task": "rag_combine",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "2만원 [D5], 정하린 [D3]",
+        "input_tokens": 95,
+        "generated_tokens_including_eos": 16,
+        "first_token_seconds": 0.0089,
+        "total_seconds": 0.0436,
+        "tokens_per_second_including_prefill": 367.06,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-combine-0004",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D6] 업무 안내: 정산 담당자는 조은서이다.\n[D5] 출장 규정: 해외 식비는 6만원이다.\n질문: 해외 식비와 정산 담당자를 함께 알려줘.",
+      "answer": "6만원 [D5], 조은서 [D6]",
+      "task": "rag_combine",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "2만원 [D5], 한지우 [D3]",
+        "input_tokens": 95,
+        "generated_tokens_including_eos": 16,
+        "first_token_seconds": 0.0112,
+        "total_seconds": 0.0474,
+        "tokens_per_second_including_prefill": 337.81,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-noise-0007",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D1] 출장 규정: 해외 숙박비는 6만원이다.\n[D5] 출장 규정: 해외 식비는 9만원이다.\n[D3] 행사 안내: 접수 기간은 6일이다.\n질문: 자료에서 해외 식비 금액을 찾아줘.",
+      "answer": "9만원 [D5]",
+      "task": "rag_noise",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "2만원 [D5]",
+        "input_tokens": 111,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.013,
+        "total_seconds": 0.0303,
+        "tokens_per_second_including_prefill": 264.24,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-noise-0000",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D4] 출장 규정: 해외 식비는 12만원이다.\n[D5] 출장 규정: 국내 식비는 15만원이다.\n[D3] 행사 안내: 접수 기간은 12일이다.\n질문: 자료에서 국내 식비 금액을 찾아줘.",
+      "answer": "15만원 [D5]",
+      "task": "rag_noise",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "2만원 [D5]",
+        "input_tokens": 110,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.0096,
+        "total_seconds": 0.0259,
+        "tokens_per_second_including_prefill": 308.75,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-missing-0011",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D8] 출장 규정: 해외 식비는 9만원이다.\n질문: 자료에서 해외 숙박비 금액을 찾아줘.",
+      "answer": "확인 불가",
+      "task": "rag_missing",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "확인 불가",
+        "input_tokens": 77,
+        "generated_tokens_including_eos": 4,
+        "first_token_seconds": 0.007,
+        "total_seconds": 0.0122,
+        "tokens_per_second_including_prefill": 327.07,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": true
+    },
+    {
+      "id": "valid-name-0005",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D2] 업무 안내: 정산 담당자는 조은서이다.\n질문: 정산을 담당하는 사람은 누구인가요?",
+      "answer": "조은서 [D2]",
+      "task": "rag_name",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "정하린 [D3]",
+        "input_tokens": 74,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.0085,
+        "total_seconds": 0.0216,
+        "tokens_per_second_including_prefill": 370.06,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-combine-0009",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D6] 출장 규정: 국내 숙박비는 15만원이다.\n[D4] 업무 안내: 정산 담당자는 임건우이다.\n질문: 국내 숙박비와 정산 담당자를 함께 알려줘.",
+      "answer": "15만원 [D6], 임건우 [D4]",
+      "task": "rag_combine",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "29만원 [D5], 정하린 [D3]",
+        "input_tokens": 97,
+        "generated_tokens_including_eos": 16,
+        "first_token_seconds": 0.0119,
+        "total_seconds": 0.0441,
+        "tokens_per_second_including_prefill": 362.87,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-revision-0006",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D1] 폐지된 규정: 해외 숙박비는 9만원이다.\n[D6] 현행 규정: 해외 숙박비는 12만원이다.\n질문: 자료에서 해외 숙박비 금액을 찾아줘.",
+      "answer": "12만원 [D6]",
+      "task": "rag_revision",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "5만원 [D5]",
+        "input_tokens": 96,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.0096,
+        "total_seconds": 0.0266,
+        "tokens_per_second_including_prefill": 300.85,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-amount-0008",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D2] 출장 규정: 해외 식비는 6만원이다.\n질문: 자료에서 해외 식비 금액을 찾아줘.",
+      "answer": "6만원 [D2]",
+      "task": "rag_amount",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "확인 불가",
+        "input_tokens": 76,
+        "generated_tokens_including_eos": 4,
+        "first_token_seconds": 0.0087,
+        "total_seconds": 0.0139,
+        "tokens_per_second_including_prefill": 287.51,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-name-0006",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D8] 업무 안내: 정산 담당자는 조은서이다.\n질문: 정산을 담당하는 사람은 누구인가요?",
+      "answer": "조은서 [D8]",
+      "task": "rag_name",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "정하린 [D3]",
+        "input_tokens": 74,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.0072,
+        "total_seconds": 0.0219,
+        "tokens_per_second_including_prefill": 365.11,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-combine-0011",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D4] 업무 안내: 정산 담당자는 조은서이다.\n[D7] 출장 규정: 해외 숙박비는 3만원이다.\n질문: 해외 숙박비와 정산 담당자를 함께 알려줘.",
+      "answer": "3만원 [D7], 조은서 [D4]",
+      "task": "rag_combine",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "29만원 [D5], 한지우 [D3]",
+        "input_tokens": 97,
+        "generated_tokens_including_eos": 16,
+        "first_token_seconds": 0.0112,
+        "total_seconds": 0.0452,
+        "tokens_per_second_including_prefill": 354.06,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-conflict-0010",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D6] 출장 규정: 국내 식비는 3만원이다.\n[D3] 출장 규정: 국내 식비는 15만원이다.\n질문: 자료에서 국내 식비 금액을 찾아줘.",
+      "answer": "근거 충돌",
+      "task": "rag_conflict",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "근거 충돌",
+        "input_tokens": 93,
+        "generated_tokens_including_eos": 4,
+        "first_token_seconds": 0.0087,
+        "total_seconds": 0.0158,
+        "tokens_per_second_including_prefill": 253.6,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": true
+    },
+    {
+      "id": "valid-combine-0010",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D1] 출장 규정: 해외 식비는 12만원이다.\n[D3] 업무 안내: 정산 담당자는 조은서이다.\n질문: 해외 식비와 정산 담당자를 함께 알려줘.",
+      "answer": "12만원 [D1], 조은서 [D3]",
+      "task": "rag_combine",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "29만원 [D5], 한지우 [D3]",
+        "input_tokens": 95,
+        "generated_tokens_including_eos": 16,
+        "first_token_seconds": 0.0107,
+        "total_seconds": 0.0438,
+        "tokens_per_second_including_prefill": 365.6,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-noise-0011",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D5] 행사 안내: 접수 기간은 15일이다.\n[D2] 출장 규정: 해외 숙박비는 12만원이다.\n[D7] 출장 규정: 해외 식비는 15만원이다.\n질문: 자료에서 해외 숙박비 금액을 찾아줘.",
+      "answer": "12만원 [D2]",
+      "task": "rag_noise",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "2만원 [D5]",
+        "input_tokens": 112,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.0103,
+        "total_seconds": 0.0268,
+        "tokens_per_second_including_prefill": 298.14,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-conflict-0006",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D1] 출장 규정: 국내 식비는 3만원이다.\n[D5] 출장 규정: 국내 식비는 15만원이다.\n질문: 자료에서 국내 식비 금액을 찾아줘.",
+      "answer": "근거 충돌",
+      "task": "rag_conflict",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "근거 충돌",
+        "input_tokens": 93,
+        "generated_tokens_including_eos": 4,
+        "first_token_seconds": 0.0105,
+        "total_seconds": 0.017,
+        "tokens_per_second_including_prefill": 234.97,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": true
+    },
+    {
+      "id": "valid-noise-0003",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D6] 출장 규정: 해외 식비는 15만원이다.\n[D2] 행사 안내: 접수 기간은 15일이다.\n[D1] 출장 규정: 국내 식비는 9만원이다.\n질문: 자료에서 국내 식비 금액을 찾아줘.",
+      "answer": "9만원 [D1]",
+      "task": "rag_noise",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "2만원 [D5]",
+        "input_tokens": 110,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.0109,
+        "total_seconds": 0.027,
+        "tokens_per_second_including_prefill": 295.87,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-conflict-0011",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D2] 출장 규정: 해외 식비는 6만원이다.\n[D5] 출장 규정: 해외 식비는 9만원이다.\n질문: 자료에서 해외 식비 금액을 찾아줘.",
+      "answer": "근거 충돌",
+      "task": "rag_conflict",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "근거 충돌",
+        "input_tokens": 93,
+        "generated_tokens_including_eos": 4,
+        "first_token_seconds": 0.0092,
+        "total_seconds": 0.0158,
+        "tokens_per_second_including_prefill": 252.93,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": true
+    },
+    {
+      "id": "valid-noise-0010",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D4] 행사 안내: 접수 기간은 6일이다.\n[D1] 출장 규정: 국내 숙박비는 9만원이다.\n[D3] 출장 규정: 국내 식비는 6만원이다.\n질문: 자료에서 국내 숙박비 금액을 찾아줘.",
+      "answer": "9만원 [D1]",
+      "task": "rag_noise",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "2만원 [D5]",
+        "input_tokens": 112,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.011,
+        "total_seconds": 0.0278,
+        "tokens_per_second_including_prefill": 287.35,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-table-0001",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D3] 출장비 표\n항목 | 금액\n국내 식비 | 15만원\n국내 숙박비 | 9만원\n질문: 자료에서 국내 숙박비 금액을 찾아줘.",
+      "answer": "9만원 [D3]",
+      "task": "rag_table",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "2만원 [D5]",
+        "input_tokens": 94,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.0096,
+        "total_seconds": 0.0245,
+        "tokens_per_second_including_prefill": 326.38,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-table-0002",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D7] 출장비 표\n항목 | 금액\n국내 식비 | 3만원\n해외 식비 | 12만원\n질문: 자료에서 국내 식비 금액을 찾아줘.",
+      "answer": "3만원 [D7]",
+      "task": "rag_table",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "2만원 [D5]",
+        "input_tokens": 92,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.0107,
+        "total_seconds": 0.0252,
+        "tokens_per_second_including_prefill": 317.92,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-amount-0002",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D2] 출장 규정: 해외 숙박비는 6만원이다.\n질문: 자료에서 해외 숙박비 금액을 찾아줘.",
+      "answer": "6만원 [D2]",
+      "task": "rag_amount",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "2만원 [D5]",
+        "input_tokens": 78,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.0086,
+        "total_seconds": 0.0219,
+        "tokens_per_second_including_prefill": 365.63,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-combine-0002",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D5] 업무 안내: 정산 담당자는 임건우이다.\n[D1] 출장 규정: 해외 식비는 6만원이다.\n질문: 해외 식비와 정산 담당자를 함께 알려줘.",
+      "answer": "6만원 [D1], 임건우 [D5]",
+      "task": "rag_combine",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "2만원 [D5], 정하린 [D3]",
+        "input_tokens": 95,
+        "generated_tokens_including_eos": 16,
+        "first_token_seconds": 0.0101,
+        "total_seconds": 0.0435,
+        "tokens_per_second_including_prefill": 367.51,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-name-0008",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D6] 업무 안내: 정산 담당자는 임건우이다.\n질문: 정산을 담당하는 사람은 누구인가요?",
+      "answer": "임건우 [D6]",
+      "task": "rag_name",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "정하린 [D3]",
+        "input_tokens": 74,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.0065,
+        "total_seconds": 0.0212,
+        "tokens_per_second_including_prefill": 376.63,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-noise-0005",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D7] 출장 규정: 해외 숙박비는 15만원이다.\n[D3] 출장 규정: 해외 식비는 9만원이다.\n[D2] 행사 안내: 접수 기간은 9일이다.\n질문: 자료에서 해외 숙박비 금액을 찾아줘.",
+      "answer": "15만원 [D7]",
+      "task": "rag_noise",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "5만원 [D5]",
+        "input_tokens": 112,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.0119,
+        "total_seconds": 0.0265,
+        "tokens_per_second_including_prefill": 302.33,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-amount-0001",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D8] 출장 규정: 국내 식비는 6만원이다.\n질문: 자료에서 국내 식비 금액을 찾아줘.",
+      "answer": "6만원 [D8]",
+      "task": "rag_amount",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "확인 불가",
+        "input_tokens": 76,
+        "generated_tokens_including_eos": 4,
+        "first_token_seconds": 0.0091,
+        "total_seconds": 0.0149,
+        "tokens_per_second_including_prefill": 268.03,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-combine-0007",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D3] 출장 규정: 국내 숙박비는 3만원이다.\n[D8] 업무 안내: 정산 담당자는 조은서이다.\n질문: 국내 숙박비와 정산 담당자를 함께 알려줘.",
+      "answer": "3만원 [D3], 조은서 [D8]",
+      "task": "rag_combine",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "29만원 [D5], 한지우 [D3]",
+        "input_tokens": 97,
+        "generated_tokens_including_eos": 16,
+        "first_token_seconds": 0.0108,
+        "total_seconds": 0.0445,
+        "tokens_per_second_including_prefill": 359.57,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-table-0005",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D5] 출장비 표\n항목 | 금액\n해외 식비 | 15만원\n해외 숙박비 | 3만원\n질문: 자료에서 해외 식비 금액을 찾아줘.",
+      "answer": "15만원 [D5]",
+      "task": "rag_table",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "2만원 [D5]",
+        "input_tokens": 93,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.0091,
+        "total_seconds": 0.0253,
+        "tokens_per_second_including_prefill": 316.12,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-conflict-0000",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D3] 출장 규정: 국내 숙박비는 9만원이다.\n[D4] 출장 규정: 국내 숙박비는 12만원이다.\n질문: 자료에서 국내 숙박비 금액을 찾아줘.",
+      "answer": "근거 충돌",
+      "task": "rag_conflict",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "근거 충돌",
+        "input_tokens": 96,
+        "generated_tokens_including_eos": 4,
+        "first_token_seconds": 0.0103,
+        "total_seconds": 0.0176,
+        "tokens_per_second_including_prefill": 227.4,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": true
+    },
+    {
+      "id": "valid-noise-0002",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D8] 행사 안내: 접수 기간은 9일이다.\n[D2] 출장 규정: 국내 숙박비는 3만원이다.\n[D1] 출장 규정: 국내 식비는 9만원이다.\n질문: 자료에서 국내 숙박비 금액을 찾아줘.",
+      "answer": "3만원 [D2]",
+      "task": "rag_noise",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "2만원 [D5]",
+        "input_tokens": 112,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.0099,
+        "total_seconds": 0.0265,
+        "tokens_per_second_including_prefill": 302.01,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-table-0010",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D1] 출장비 표\n항목 | 금액\n국내 식비 | 9만원\n국내 숙박비 | 15만원\n질문: 자료에서 국내 숙박비 금액을 찾아줘.",
+      "answer": "15만원 [D1]",
+      "task": "rag_table",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "2만원 [D5]",
+        "input_tokens": 94,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.0086,
+        "total_seconds": 0.0237,
+        "tokens_per_second_including_prefill": 337.22,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-table-0009",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D7] 출장비 표\n항목 | 금액\n국내 숙박비 | 12만원\n국내 식비 | 9만원\n질문: 자료에서 국내 숙박비 금액을 찾아줘.",
+      "answer": "12만원 [D7]",
+      "task": "rag_table",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "2만원 [D5]",
+        "input_tokens": 94,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.0094,
+        "total_seconds": 0.0246,
+        "tokens_per_second_including_prefill": 324.94,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-missing-0002",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D1] 출장 규정: 해외 식비는 15만원이다.\n질문: 자료에서 국내 식비 금액을 찾아줘.",
+      "answer": "확인 불가",
+      "task": "rag_missing",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "확인 불가",
+        "input_tokens": 76,
+        "generated_tokens_including_eos": 4,
+        "first_token_seconds": 0.0073,
+        "total_seconds": 0.0138,
+        "tokens_per_second_including_prefill": 290.27,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": true
+    },
+    {
+      "id": "valid-conflict-0004",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D6] 출장 규정: 해외 숙박비는 15만원이다.\n[D1] 출장 규정: 해외 숙박비는 9만원이다.\n질문: 자료에서 해외 숙박비 금액을 찾아줘.",
+      "answer": "근거 충돌",
+      "task": "rag_conflict",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "근거 충돌",
+        "input_tokens": 96,
+        "generated_tokens_including_eos": 4,
+        "first_token_seconds": 0.0095,
+        "total_seconds": 0.0153,
+        "tokens_per_second_including_prefill": 260.94,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": true
+    },
+    {
+      "id": "valid-table-0000",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D3] 출장비 표\n항목 | 금액\n해외 숙박비 | 9만원\n해외 식비 | 12만원\n질문: 자료에서 해외 숙박비 금액을 찾아줘.",
+      "answer": "9만원 [D3]",
+      "task": "rag_table",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "2만원 [D5]",
+        "input_tokens": 94,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.0103,
+        "total_seconds": 0.025,
+        "tokens_per_second_including_prefill": 319.86,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-noise-0008",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D4] 출장 규정: 국내 식비는 3만원이다.\n[D1] 출장 규정: 국내 숙박비는 15만원이다.\n[D8] 행사 안내: 접수 기간은 3일이다.\n질문: 자료에서 국내 숙박비 금액을 찾아줘.",
+      "answer": "15만원 [D1]",
+      "task": "rag_noise",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "5만원 [D5]",
+        "input_tokens": 112,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.0117,
+        "total_seconds": 0.0264,
+        "tokens_per_second_including_prefill": 302.97,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-revision-0007",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D5] 폐지된 규정: 해외 숙박비는 3만원이다.\n[D6] 현행 규정: 해외 숙박비는 6만원이다.\n질문: 자료에서 해외 숙박비 금액을 찾아줘.",
+      "answer": "6만원 [D6]",
+      "task": "rag_revision",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "5만원 [D5]",
+        "input_tokens": 96,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.0087,
+        "total_seconds": 0.0254,
+        "tokens_per_second_including_prefill": 314.71,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-revision-0001",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D1] 현행 규정: 국내 숙박비는 12만원이다.\n[D3] 폐지된 규정: 국내 숙박비는 6만원이다.\n질문: 자료에서 국내 숙박비 금액을 찾아줘.",
+      "answer": "12만원 [D1]",
+      "task": "rag_revision",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "2만원 [D5]",
+        "input_tokens": 96,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.0085,
+        "total_seconds": 0.025,
+        "tokens_per_second_including_prefill": 320.17,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-noise-0009",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D3] 출장 규정: 해외 숙박비는 9만원이다.\n[D5] 행사 안내: 접수 기간은 3일이다.\n[D2] 출장 규정: 해외 식비는 3만원이다.\n질문: 자료에서 해외 숙박비 금액을 찾아줘.",
+      "answer": "9만원 [D3]",
+      "task": "rag_noise",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "2만원 [D5]",
+        "input_tokens": 112,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.0099,
+        "total_seconds": 0.0268,
+        "tokens_per_second_including_prefill": 298.52,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-combine-0008",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D8] 업무 안내: 정산 담당자는 문소율이다.\n[D2] 출장 규정: 해외 식비는 12만원이다.\n질문: 해외 식비와 정산 담당자를 함께 알려줘.",
+      "answer": "12만원 [D2], 문소율 [D8]",
+      "task": "rag_combine",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "2만원 [D5], 한지우 [D3]",
+        "input_tokens": 95,
+        "generated_tokens_including_eos": 16,
+        "first_token_seconds": 0.0095,
+        "total_seconds": 0.0418,
+        "tokens_per_second_including_prefill": 382.38,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-conflict-0003",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D1] 출장 규정: 국내 식비는 6만원이다.\n[D2] 출장 규정: 국내 식비는 9만원이다.\n질문: 자료에서 국내 식비 금액을 찾아줘.",
+      "answer": "근거 충돌",
+      "task": "rag_conflict",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "근거 충돌",
+        "input_tokens": 93,
+        "generated_tokens_including_eos": 4,
+        "first_token_seconds": 0.0101,
+        "total_seconds": 0.0159,
+        "tokens_per_second_including_prefill": 250.99,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": true
+    },
+    {
+      "id": "valid-amount-0010",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D1] 출장 규정: 해외 숙박비는 15만원이다.\n질문: 자료에서 해외 숙박비 금액을 찾아줘.",
+      "answer": "15만원 [D1]",
+      "task": "rag_amount",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "2만원 [D5]",
+        "input_tokens": 78,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.0078,
+        "total_seconds": 0.0227,
+        "tokens_per_second_including_prefill": 352.38,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-missing-0005",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D7] 출장 규정: 해외 식비는 6만원이다.\n질문: 자료에서 국내 식비 금액을 찾아줘.",
+      "answer": "확인 불가",
+      "task": "rag_missing",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "확인 불가",
+        "input_tokens": 76,
+        "generated_tokens_including_eos": 4,
+        "first_token_seconds": 0.0086,
+        "total_seconds": 0.0144,
+        "tokens_per_second_including_prefill": 277.98,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": true
+    },
+    {
+      "id": "valid-missing-0003",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D5] 출장 규정: 국내 식비는 15만원이다.\n질문: 자료에서 국내 숙박비 금액을 찾아줘.",
+      "answer": "확인 불가",
+      "task": "rag_missing",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "확인 불가",
+        "input_tokens": 77,
+        "generated_tokens_including_eos": 4,
+        "first_token_seconds": 0.0067,
+        "total_seconds": 0.0132,
+        "tokens_per_second_including_prefill": 302.77,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": true
+    },
+    {
+      "id": "valid-missing-0010",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D8] 출장 규정: 해외 숙박비는 9만원이다.\n질문: 자료에서 해외 식비 금액을 찾아줘.",
+      "answer": "확인 불가",
+      "task": "rag_missing",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "확인 불가",
+        "input_tokens": 77,
+        "generated_tokens_including_eos": 4,
+        "first_token_seconds": 0.007,
+        "total_seconds": 0.0136,
+        "tokens_per_second_including_prefill": 293.69,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": true
+    },
+    {
+      "id": "valid-revision-0000",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D2] 현행 규정: 국내 숙박비는 3만원이다.\n[D8] 폐지된 규정: 국내 숙박비는 9만원이다.\n질문: 자료에서 국내 숙박비 금액을 찾아줘.",
+      "answer": "3만원 [D2]",
+      "task": "rag_revision",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "2만원 [D5]",
+        "input_tokens": 96,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.0097,
+        "total_seconds": 0.0254,
+        "tokens_per_second_including_prefill": 314.56,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-amount-0006",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D6] 출장 규정: 국내 식비는 9만원이다.\n질문: 자료에서 국내 식비 금액을 찾아줘.",
+      "answer": "9만원 [D6]",
+      "task": "rag_amount",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "확인 불가",
+        "input_tokens": 76,
+        "generated_tokens_including_eos": 4,
+        "first_token_seconds": 0.008,
+        "total_seconds": 0.0137,
+        "tokens_per_second_including_prefill": 292.99,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-conflict-0008",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D2] 출장 규정: 국내 식비는 6만원이다.\n[D7] 출장 규정: 국내 식비는 3만원이다.\n질문: 자료에서 국내 식비 금액을 찾아줘.",
+      "answer": "근거 충돌",
+      "task": "rag_conflict",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "근거 충돌",
+        "input_tokens": 93,
+        "generated_tokens_including_eos": 4,
+        "first_token_seconds": 0.0106,
+        "total_seconds": 0.0165,
+        "tokens_per_second_including_prefill": 243.14,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": true
+    },
+    {
+      "id": "valid-revision-0010",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D1] 폐지된 규정: 국내 숙박비는 15만원이다.\n[D8] 현행 규정: 국내 숙박비는 6만원이다.\n질문: 자료에서 국내 숙박비 금액을 찾아줘.",
+      "answer": "6만원 [D8]",
+      "task": "rag_revision",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "5만원 [D5]",
+        "input_tokens": 96,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.0108,
+        "total_seconds": 0.0249,
+        "tokens_per_second_including_prefill": 321.81,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-conflict-0007",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D3] 출장 규정: 해외 숙박비는 12만원이다.\n[D6] 출장 규정: 해외 숙박비는 6만원이다.\n질문: 자료에서 해외 숙박비 금액을 찾아줘.",
+      "answer": "근거 충돌",
+      "task": "rag_conflict",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "근거 충돌",
+        "input_tokens": 96,
+        "generated_tokens_including_eos": 4,
+        "first_token_seconds": 0.0105,
+        "total_seconds": 0.0167,
+        "tokens_per_second_including_prefill": 240.05,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": true
+    },
+    {
+      "id": "valid-revision-0004",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D8] 폐지된 규정: 국내 숙박비는 3만원이다.\n[D7] 현행 규정: 국내 숙박비는 15만원이다.\n질문: 자료에서 국내 숙박비 금액을 찾아줘.",
+      "answer": "15만원 [D7]",
+      "task": "rag_revision",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "5만원 [D5]",
+        "input_tokens": 96,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.01,
+        "total_seconds": 0.0248,
+        "tokens_per_second_including_prefill": 322.88,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-amount-0009",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D5] 출장 규정: 국내 숙박비는 6만원이다.\n질문: 자료에서 국내 숙박비 금액을 찾아줘.",
+      "answer": "6만원 [D5]",
+      "task": "rag_amount",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "2만원 [D5]",
+        "input_tokens": 78,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.008,
+        "total_seconds": 0.0199,
+        "tokens_per_second_including_prefill": 402.34,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-combine-0001",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D5] 업무 안내: 정산 담당자는 문소율이다.\n[D7] 출장 규정: 국내 식비는 15만원이다.\n질문: 국내 식비와 정산 담당자를 함께 알려줘.",
+      "answer": "15만원 [D7], 문소율 [D5]",
+      "task": "rag_combine",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "2만원 [D5], 한지우 [D3]",
+        "input_tokens": 95,
+        "generated_tokens_including_eos": 16,
+        "first_token_seconds": 0.0106,
+        "total_seconds": 0.0407,
+        "tokens_per_second_including_prefill": 392.85,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-noise-0004",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D8] 출장 규정: 국내 숙박비는 15만원이다.\n[D5] 출장 규정: 국내 식비는 3만원이다.\n[D7] 행사 안내: 접수 기간은 3일이다.\n질문: 자료에서 국내 숙박비 금액을 찾아줘.",
+      "answer": "15만원 [D8]",
+      "task": "rag_noise",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "5만원 [D5]",
+        "input_tokens": 112,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.012,
+        "total_seconds": 0.0269,
+        "tokens_per_second_including_prefill": 297.86,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-table-0011",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D5] 출장비 표\n항목 | 금액\n국내 숙박비 | 15만원\n국내 식비 | 9만원\n질문: 자료에서 국내 숙박비 금액을 찾아줘.",
+      "answer": "15만원 [D5]",
+      "task": "rag_table",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "2만원 [D5]",
+        "input_tokens": 94,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.0101,
+        "total_seconds": 0.0253,
+        "tokens_per_second_including_prefill": 316.37,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-combine-0005",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D6] 출장 규정: 국내 숙박비는 12만원이다.\n[D3] 업무 안내: 정산 담당자는 임건우이다.\n질문: 국내 숙박비와 정산 담당자를 함께 알려줘.",
+      "answer": "12만원 [D6], 임건우 [D3]",
+      "task": "rag_combine",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "29만원 [D5], 정하린 [D3]",
+        "input_tokens": 97,
+        "generated_tokens_including_eos": 16,
+        "first_token_seconds": 0.0119,
+        "total_seconds": 0.0449,
+        "tokens_per_second_including_prefill": 356.1,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-name-0010",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D1] 업무 안내: 정산 담당자는 임건우이다.\n질문: 정산을 담당하는 사람은 누구인가요?",
+      "answer": "임건우 [D1]",
+      "task": "rag_name",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "정하린 [D3]",
+        "input_tokens": 74,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.0082,
+        "total_seconds": 0.0206,
+        "tokens_per_second_including_prefill": 388.96,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-missing-0000",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D3] 출장 규정: 해외 식비는 12만원이다.\n질문: 자료에서 해외 숙박비 금액을 찾아줘.",
+      "answer": "확인 불가",
+      "task": "rag_missing",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "확인 불가",
+        "input_tokens": 77,
+        "generated_tokens_including_eos": 4,
+        "first_token_seconds": 0.0086,
+        "total_seconds": 0.0144,
+        "tokens_per_second_including_prefill": 278.23,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": true
+    },
+    {
+      "id": "valid-amount-0004",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D7] 출장 규정: 해외 숙박비는 9만원이다.\n질문: 자료에서 해외 숙박비 금액을 찾아줘.",
+      "answer": "9만원 [D7]",
+      "task": "rag_amount",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "2만원 [D5]",
+        "input_tokens": 78,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.0065,
+        "total_seconds": 0.0211,
+        "tokens_per_second_including_prefill": 379.54,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-table-0007",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D8] 출장비 표\n항목 | 금액\n국내 식비 | 6만원\n국내 숙박비 | 9만원\n질문: 자료에서 국내 숙박비 금액을 찾아줘.",
+      "answer": "9만원 [D8]",
+      "task": "rag_table",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "2만원 [D5]",
+        "input_tokens": 94,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.0105,
+        "total_seconds": 0.0257,
+        "tokens_per_second_including_prefill": 311.1,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-missing-0004",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D1] 출장 규정: 해외 식비는 12만원이다.\n질문: 자료에서 해외 숙박비 금액을 찾아줘.",
+      "answer": "확인 불가",
+      "task": "rag_missing",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "확인 불가",
+        "input_tokens": 77,
+        "generated_tokens_including_eos": 4,
+        "first_token_seconds": 0.0086,
+        "total_seconds": 0.015,
+        "tokens_per_second_including_prefill": 266.62,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": true
+    },
+    {
+      "id": "valid-revision-0009",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D1] 폐지된 규정: 해외 숙박비는 9만원이다.\n[D4] 현행 규정: 해외 숙박비는 15만원이다.\n질문: 자료에서 해외 숙박비 금액을 찾아줘.",
+      "answer": "15만원 [D4]",
+      "task": "rag_revision",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "5만원 [D5]",
+        "input_tokens": 96,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.0091,
+        "total_seconds": 0.025,
+        "tokens_per_second_including_prefill": 319.62,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-revision-0008",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D4] 폐지된 규정: 해외 식비는 9만원이다.\n[D3] 현행 규정: 해외 식비는 15만원이다.\n질문: 자료에서 해외 식비 금액을 찾아줘.",
+      "answer": "15만원 [D3]",
+      "task": "rag_revision",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "2만원 [D5]",
+        "input_tokens": 93,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.01,
+        "total_seconds": 0.0246,
+        "tokens_per_second_including_prefill": 324.58,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-revision-0003",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D8] 폐지된 규정: 해외 식비는 12만원이다.\n[D1] 현행 규정: 해외 식비는 9만원이다.\n질문: 자료에서 해외 식비 금액을 찾아줘.",
+      "answer": "9만원 [D1]",
+      "task": "rag_revision",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "2만원 [D5]",
+        "input_tokens": 93,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.0102,
+        "total_seconds": 0.0243,
+        "tokens_per_second_including_prefill": 329.42,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-name-0004",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D7] 업무 안내: 정산 담당자는 문소율이다.\n질문: 정산을 담당하는 사람은 누구인가요?",
+      "answer": "문소율 [D7]",
+      "task": "rag_name",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "정하린 [D3]",
+        "input_tokens": 74,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.0091,
+        "total_seconds": 0.0218,
+        "tokens_per_second_including_prefill": 367.0,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-missing-0009",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D6] 출장 규정: 해외 식비는 6만원이다.\n질문: 자료에서 해외 숙박비 금액을 찾아줘.",
+      "answer": "확인 불가",
+      "task": "rag_missing",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "확인 불가",
+        "input_tokens": 77,
+        "generated_tokens_including_eos": 4,
+        "first_token_seconds": 0.008,
+        "total_seconds": 0.0144,
+        "tokens_per_second_including_prefill": 276.92,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": true
+    },
+    {
+      "id": "valid-revision-0002",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D1] 현행 규정: 국내 식비는 15만원이다.\n[D8] 폐지된 규정: 국내 식비는 12만원이다.\n질문: 자료에서 국내 식비 금액을 찾아줘.",
+      "answer": "15만원 [D1]",
+      "task": "rag_revision",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "2만원 [D5]",
+        "input_tokens": 93,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.0084,
+        "total_seconds": 0.024,
+        "tokens_per_second_including_prefill": 332.9,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-table-0004",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D4] 출장비 표\n항목 | 금액\n해외 식비 | 3만원\n국내 식비 | 15만원\n질문: 자료에서 국내 식비 금액을 찾아줘.",
+      "answer": "15만원 [D4]",
+      "task": "rag_table",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "2만원 [D5]",
+        "input_tokens": 92,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.0089,
+        "total_seconds": 0.0257,
+        "tokens_per_second_including_prefill": 311.85,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-name-0001",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D7] 업무 안내: 정산 담당자는 임건우이다.\n질문: 정산을 담당하는 사람은 누구인가요?",
+      "answer": "임건우 [D7]",
+      "task": "rag_name",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "정하린 [D3]",
+        "input_tokens": 74,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.007,
+        "total_seconds": 0.0215,
+        "tokens_per_second_including_prefill": 372.77,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-missing-0006",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D4] 출장 규정: 해외 숙박비는 3만원이다.\n질문: 자료에서 해외 식비 금액을 찾아줘.",
+      "answer": "확인 불가",
+      "task": "rag_missing",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "확인 불가",
+        "input_tokens": 77,
+        "generated_tokens_including_eos": 4,
+        "first_token_seconds": 0.0071,
+        "total_seconds": 0.0132,
+        "tokens_per_second_including_prefill": 303.98,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": true
+    },
+    {
+      "id": "valid-revision-0011",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D4] 폐지된 규정: 해외 식비는 9만원이다.\n[D5] 현행 규정: 해외 식비는 15만원이다.\n질문: 자료에서 해외 식비 금액을 찾아줘.",
+      "answer": "15만원 [D5]",
+      "task": "rag_revision",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "2만원 [D5]",
+        "input_tokens": 93,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.0103,
+        "total_seconds": 0.0252,
+        "tokens_per_second_including_prefill": 317.06,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-noise-0001",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D2] 행사 안내: 접수 기간은 12일이다.\n[D7] 출장 규정: 국내 식비는 12만원이다.\n[D8] 출장 규정: 국내 숙박비는 6만원이다.\n질문: 자료에서 국내 숙박비 금액을 찾아줘.",
+      "answer": "6만원 [D8]",
+      "task": "rag_noise",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "2만원 [D5]",
+        "input_tokens": 112,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.0106,
+        "total_seconds": 0.0255,
+        "tokens_per_second_including_prefill": 313.78,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    },
+    {
+      "id": "valid-name-0009",
+      "prompt": "제공된 근거로만 답하세요. 근거가 없으면 확인 불가, 서로 다르면 근거 충돌이라고 답하세요. 답에 출처 번호를 붙이세요.\n[D6] 업무 안내: 정산 담당자는 조은서이다.\n질문: 정산을 담당하는 사람은 누구인가요?",
+      "answer": "조은서 [D6]",
+      "task": "rag_name",
+      "group": "rag",
+      "source": "authored synthetic evidence; fictional policy and people; not actual institution facts",
+      "generated": {
+        "answer": "정하린 [D3]",
+        "input_tokens": 74,
+        "generated_tokens_including_eos": 8,
+        "first_token_seconds": 0.0082,
+        "total_seconds": 0.0213,
+        "tokens_per_second_including_prefill": 375.96,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "exact_answer_and_source": false
+    }
+  ]
+}

@@ -1,0 +1,116 @@
+{
+  "run": "runs/trid-korean-short-v3-hangul",
+  "parameters": 35117186,
+  "fp32_weight_bytes": 140481216,
+  "fp32_weight_mib": 133.97,
+  "development_regression": {
+    "total": 1120,
+    "answerable": 560,
+    "span_exact_ignoring_presence": 499,
+    "answerable_exact": 456,
+    "false_abstentions": 51,
+    "unanswerable": 560,
+    "correct_abstentions": 542,
+    "presence_correct": 1051,
+    "overall_correct": 998,
+    "answerable_character_f1": 0.8667907185952299
+  },
+  "fresh_synthetic_audit": {
+    "total": 96,
+    "answerable": 48,
+    "span_exact_ignoring_presence": 46,
+    "answerable_exact": 46,
+    "false_abstentions": 0,
+    "unanswerable": 48,
+    "correct_abstentions": 29,
+    "presence_correct": 77,
+    "overall_correct": 75,
+    "answerable_character_f1": 0.9852430555555555
+  },
+  "prior_on_same_fresh_audit": {
+    "total": 96,
+    "answerable": 48,
+    "span_exact_ignoring_presence": 41,
+    "answerable_exact": 35,
+    "false_abstentions": 6,
+    "unanswerable": 48,
+    "correct_abstentions": 24,
+    "presence_correct": 66,
+    "overall_correct": 59,
+    "answerable_character_f1": 0.8342505057578586
+  },
+  "historical_t01": {
+    "total": 8,
+    "answerable": 6,
+    "span_exact_ignoring_presence": 6,
+    "answerable_exact": 6,
+    "false_abstentions": 0,
+    "unanswerable": 2,
+    "correct_abstentions": 2,
+    "presence_correct": 8,
+    "overall_correct": 8,
+    "answerable_character_f1": 1.0
+  },
+  "historical_broad_mrc": {
+    "total": 197,
+    "answerable": 135,
+    "span_exact_ignoring_presence": 1,
+    "answerable_exact": 1,
+    "false_abstentions": 63,
+    "unanswerable": 62,
+    "correct_abstentions": 26,
+    "presence_correct": 98,
+    "overall_correct": 27,
+    "answerable_character_f1": 0.05772393749609684
+  },
+  "remaining_failures": {
+    "fresh_missing_institution": "0/12 correctly abstained (previous refined 5/12); not fixed across wording/format",
+    "fresh_missing_department": "5/12 correctly abstained",
+    "fresh_answerable_department": "10/12 exact, partial-span failures remain",
+    "general_reading": "answerable 1/135 in broad historical diagnostic"
+  },
+  "weights_sha256": {
+    "span": "0dd63c6d157f81fc67449e440fb74cfda3032f9d84f9296b27015c4f4b28bc00",
+    "presence": "8f68207e8b549f29bbe82b68dee99fa9a9b56d751876c14a6f530cb90d99ebfb"
+  },
+  "selection": "validation only, frozen test not used to choose weights",
+  "deployment": "experimental reader only, not promoted to existing chat/institution generation defaults",
+  "pdf_work": "paused per user request; test server stopped",
+  "code_tests": "reports/korean-model-optimization-tests.txt: 46 passed",
+  "training_complete": true,
+  "benchmark": {
+    "hardware": "Apple M5, 32 GiB unified memory",
+    "cpu": {
+      "reference": {
+        "median_ms": 12.912,
+        "p95_ms": 18.118,
+        "requests": 96
+      },
+      "cached": {
+        "median_ms": 11.218,
+        "p95_ms": 16.766,
+        "requests": 96
+      }
+    },
+    "mps": {
+      "reference": {
+        "median_ms": 16.338,
+        "p95_ms": 18.044,
+        "requests": 96
+      },
+      "cached": {
+        "median_ms": 14.452,
+        "p95_ms": 18.233,
+        "requests": 96
+      }
+    },
+    "cpu_mps_different_answers": [],
+    "cached_reference_different_predictions": {
+      "cpu": [],
+      "mps": []
+    },
+    "extra_rotary_buffer_bytes": 2097152
+  },
+  "cli_smoke": "reports/korean-model-cli-smoke.txt",
+  "runtime_note": "V3 full-component worker started before the RoPE cache code edit and used original rotations. Frozen-backbone Hangul head CPU training and final evaluations used cached rotations; roundoff-level runtime differences were measured separately."
+}

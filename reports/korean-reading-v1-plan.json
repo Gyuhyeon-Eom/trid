@@ -1,0 +1,22 @@
+{
+  "purpose": "Separate Korean document answer finding from dialogue training",
+  "run": "runs/trid-korean-reading-v1",
+  "init_run": "runs/trid-korean-base-v1",
+  "data": "data/korean-mrc-v1",
+  "train_answerable": 3475,
+  "train_unanswerable": 1696,
+  "sampling": "All rows weight 1; no conversation rows, no class rebalancing",
+  "loss_normalization": "Mean CE within each answer, then equal mean over examples, including EOS",
+  "steps": 1200,
+  "batch_size": 12,
+  "learning_rate": 0.0001,
+  "seed": 42,
+  "context_length": 512,
+  "validation": "292 internal validation examples, example-mean loss every 200 steps; best loss checkpoint",
+  "generation_evaluation": "Same fixed prompt+64 output-token budget as previous candidate; 135 answerable and 62 unanswerable eligible internal validation questions expected",
+  "primary_metrics": ["answerable_exact", "answerable_false_abstentions", "unanswerable_correct_abstentions", "answerable_mean_character_f1"],
+  "comparison_limit": "Dataset mixture and loss normalization both change; this experiment cannot attribute results to either factor alone. Loss numbers use a different normalization from the mixed run and are not directly comparable.",
+  "activation": "No automatic activation. Inspect actual generation before deciding.",
+  "test_policy": "Official dev test split not used for pilot training, selection or evaluation. Internal validation is diagnostic, not an untouched benchmark.",
+  "lineage": "Own randomly initialized model lineage. No external model weights or generation APIs."
+}

@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="trid-token" content="TOKEN_PLACEHOLDER">
+<title>trid terminal</title>
+<style>
+:root{color-scheme:dark;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace;background:#111;color:#ddd;font-size:14px;line-height:1.7}*{box-sizing:border-box}body{margin:0;padding:22px 24px}main{max-width:1100px}pre{margin:0 0 14px;white-space:pre-wrap;overflow-wrap:anywhere;font:inherit}.muted{color:#999}.error{color:#ff9292}.reply{color:#f4f4f4}form{display:flex;gap:10px;align-items:baseline;margin:12px 0}label{white-space:nowrap}input,textarea,button{font:inherit;color:inherit;background:transparent}input{border:0;outline:0;flex:1;min-width:0;padding:0;border-radius:0}input:disabled{color:#999}textarea{display:block;width:100%;min-height:200px;border:1px solid #777;padding:10px;resize:vertical}button{border:1px solid #777;padding:3px 12px;cursor:pointer}button:focus-visible,textarea:focus-visible{outline:2px solid #ddd;outline-offset:2px}#pending{margin:0}#paste-panel{margin-top:16px}#paste-panel label{display:block;white-space:normal}.paste-actions{display:flex;gap:12px;margin:10px 0}[hidden]{display:none!important}@media(max-width:600px){body{padding:16px 12px}:root{font-size:13px}}
+</style>
+<script defer src="/app.js"></script>
+</head>
+<body><main>
+<pre>trid | v3-hangul | 약 3,512만 parameters | CPU
+한국어 문서 정답 추출 실험 모델 · 일반 대화 모드가 아닙니다.</pre>
+<pre class="muted">/sample 샘플 문서  /pdf PDF 열기  /paste 문서 붙여넣기
+/source 원문 보기  /clear 문서·화면 지우기  /help 도움말
+
+문서와 질문은 Cloudflare를 거쳐 운영자의 Mac에서 처리됩니다.
+문서는 세션별 메모리에만 보관하며 15분 미사용 시 삭제됩니다.
+공개 가능한 자료만 넣어 주세요. 잘못된 답이 나올 수 있으므로 원문을 확인하세요.</pre>
+<div id="output" role="log" aria-live="polite" aria-label="trid 출력"></div>
+<pre id="pending" role="status" class="muted"></pre>
+<form id="command-form" autocomplete="off"><label for="command">나 &gt;</label><input id="command" name="command" aria-label="명령어 또는 문서 질문" autocomplete="off" spellcheck="false" autofocus><button type="submit" aria-label="명령 실행">Enter</button></form>
+<input id="file" type="file" accept=".pdf,application/pdf" hidden aria-label="PDF 선택">
+<section id="paste-panel" hidden><label for="document-text">문서 입력 · 10~5,000자 · Ctrl+Enter 저장 · Esc 취소</label><textarea id="document-text" maxlength="5000" spellcheck="false"></textarea><div class="paste-actions"><button id="save-text" type="button">문서 읽기</button><button id="cancel-text" type="button">취소</button></div></section>
+</main></body></html>

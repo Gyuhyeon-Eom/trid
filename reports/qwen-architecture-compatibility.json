@@ -1,0 +1,49 @@
+{
+  "checked_at_unix": 1793073956.978558,
+  "scope": "Implementation compatibility and theoretical cache storage, not language-quality or speed evaluation",
+  "old_source_sha256": "17d5819eef93a376dd033ccff1da974602bd1af6e4487f490c07605f7473265d",
+  "new_source_sha256": "931f34baf8f2f9aac860a9a2b7a4ed3b9046ed3c2f962f6a707cd985c3c91f20",
+  "real_base_weights_sha256": "fe2ed8751c1288b8ab08f85864ffc5fe19df666e7a2f2f0ac823a93d268db17d",
+  "default_initialization_and_gradients_exact_match": true,
+  "real_checkpoint_full_forward": [
+    {
+      "length": 1,
+      "maximum_logit_difference": 0.0
+    },
+    {
+      "length": 32,
+      "maximum_logit_difference": 0.0
+    },
+    {
+      "length": 128,
+      "maximum_logit_difference": 0.0
+    }
+  ],
+  "real_checkpoint_cached_forward_exact_match": true,
+  "variants": [
+    {
+      "kv_heads": 12,
+      "qk_norm": false,
+      "parameters": 91245312,
+      "kv_cache_bytes_batch1_fp32_context1024": 75497472
+    },
+    {
+      "kv_heads": 12,
+      "qk_norm": true,
+      "parameters": 91246848,
+      "kv_cache_bytes_batch1_fp32_context1024": 75497472
+    },
+    {
+      "kv_heads": 4,
+      "qk_norm": false,
+      "parameters": 81808128,
+      "kv_cache_bytes_batch1_fp32_context1024": 25165824
+    },
+    {
+      "kv_heads": 4,
+      "qk_norm": true,
+      "parameters": 81809664,
+      "kv_cache_bytes_batch1_fp32_context1024": 25165824
+    }
+  ]
+}

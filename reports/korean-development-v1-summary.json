@@ -1,0 +1,54 @@
+{
+  "outcome": "Foundation next-token prediction improved. Dialogue/reading candidate failed and was not promoted. Basic Korean conversation goal not achieved.",
+  "base": {
+    "run": "runs/trid-korean-base-v1",
+    "status": "complete",
+    "lineage_tokens_seen": 30001152,
+    "parameters": 17308032,
+    "full_valid_before": 5.405494829407216,
+    "full_valid_after": 4.119327014433042,
+    "full_validation_target_tokens": 1174066,
+    "weights_sha256": "425998beb208d8806176ffbd8e941be93688549cad99668cb08b8f214652aead"
+  },
+  "candidate": {
+    "run": "runs/trid-korean-dialogue-v1",
+    "training_completed_steps": 1200,
+    "best_step": 1200,
+    "weights_sha256": "8773c2958dfb6e7ff9dd9d62813474d8807237555c1e03479d09542f7ff5ecfe",
+    "context_length": 512,
+    "frozen_dialogue_before": 4,
+    "frozen_dialogue_after": 1,
+    "frozen_dialogue_total": 40,
+    "general_dialogue_before": 6,
+    "general_dialogue_after": 1,
+    "general_dialogue_total": 16,
+    "user_regression_correct": 0,
+    "user_regression_total": 5,
+    "repeated_turns": 6,
+    "accepted": false
+  },
+  "mrc": {
+    "eligible": 197,
+    "excluded_for_generation_budget": 95,
+    "answerable": 135,
+    "answerable_exact": 0,
+    "answerable_false_abstentions": 116,
+    "unanswerable": 62,
+    "unanswerable_correct_abstentions": 53
+  },
+  "diagnosis": "Loss improvement did not transfer to free generation. The model declines 116/135 answerable reading questions and recombines authored phrases. Expected weighted target-token accounting assigns ~58% to only 120 authored dialogue rows and ~22% to 3475 answerable MRC rows. This is a plausible training-balance problem, not a proven sole cause; limited foundation learning and model capacity remain unresolved.",
+  "next_experiment": "Keep the improved base. First test a reading-only curriculum and example-normalized loss, with answerable accuracy and false abstention tracked separately, before restoring multi-turn prose. Do not merely repeat the failed mixed schedule or claim more tokens guarantee success.",
+  "active_general": {
+    "run": "runs/trid-v0.2",
+    "status": "experimental; 6/16 held-out phrasing semantic passes; not a finished dialogue model"
+  },
+  "active_institution": {
+    "run": "runs/trid-grounded-v2",
+    "status": "experimental generation model; 18/24 familiar-domain demo, 10/480 new-format/value cases; missing-information handling regressed; not ready for customer demonstrations"
+  },
+  "tests": {
+    "count": 23,
+    "status": "passed",
+    "report": "reports/korean-code-tests.txt"
+  }
+}

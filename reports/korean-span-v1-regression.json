@@ -1,0 +1,208 @@
+{
+  "protocol": "Developer-authored independent-question diagnostic. Original T01 plus counterfactual replacements. Not training data, not an independent benchmark. No model selection on these cases.",
+  "weights_sha256": "a213d1e8b57576e63b5e2cc3b6c4f3c68b1b156152b8f3911a4a1f166d53adc7",
+  "correct": 3,
+  "total": 8,
+  "results": [
+    {
+      "id": "T01-original/food",
+      "document": "가상기관 규정: 국내 출장 식비는 하루 3만원이다. 출장비 정산은 복귀 후 7일 이내에 신청한다. 담당 부서는 운영지원팀이다.",
+      "question": "국내 출장 식비는 하루 얼마야?",
+      "answer": "3만원",
+      "is_impossible": false,
+      "prediction": {
+        "answer": "7일",
+        "abstains": false,
+        "source_character_span": [
+          42,
+          44
+        ],
+        "best_span_if_answerable": "7일",
+        "best_span_positions": [
+          42,
+          44
+        ],
+        "raw_absent_softmax": 0.2416621446609497,
+        "input_tokens": 57,
+        "total_seconds": 0.0052,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "correct": false
+    },
+    {
+      "id": "T01-original/deadline",
+      "document": "가상기관 규정: 국내 출장 식비는 하루 3만원이다. 출장비 정산은 복귀 후 7일 이내에 신청한다. 담당 부서는 운영지원팀이다.",
+      "question": "출장비 정산은 복귀 후 며칠 이내에 신청해야 해?",
+      "answer": "7일",
+      "is_impossible": false,
+      "prediction": {
+        "answer": "7일",
+        "abstains": false,
+        "source_character_span": [
+          42,
+          44
+        ],
+        "best_span_if_answerable": "7일",
+        "best_span_positions": [
+          42,
+          44
+        ],
+        "raw_absent_softmax": 0.23693513870239258,
+        "input_tokens": 64,
+        "total_seconds": 0.0046,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "correct": true
+    },
+    {
+      "id": "T01-original/department",
+      "document": "가상기관 규정: 국내 출장 식비는 하루 3만원이다. 출장비 정산은 복귀 후 7일 이내에 신청한다. 담당 부서는 운영지원팀이다.",
+      "question": "담당 부서는 어디야?",
+      "answer": "운영지원팀",
+      "is_impossible": false,
+      "prediction": {
+        "answer": "가상기관 규정: 국내 출장 식비는 하루 3만원이다. 출장비 정산",
+        "abstains": false,
+        "source_character_span": [
+          0,
+          35
+        ],
+        "best_span_if_answerable": "가상기관 규정: 국내 출장 식비는 하루 3만원이다. 출장비 정산",
+        "best_span_positions": [
+          0,
+          35
+        ],
+        "raw_absent_softmax": 0.24073652923107147,
+        "input_tokens": 54,
+        "total_seconds": 0.0046,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "correct": false
+    },
+    {
+      "id": "T01-original/missing-name",
+      "document": "가상기관 규정: 국내 출장 식비는 하루 3만원이다. 출장비 정산은 복귀 후 7일 이내에 신청한다. 담당 부서는 운영지원팀이다.",
+      "question": "공공기관 이름이 뭔데?",
+      "answer": null,
+      "is_impossible": true,
+      "prediction": {
+        "answer": "가상기",
+        "abstains": false,
+        "source_character_span": [
+          0,
+          3
+        ],
+        "best_span_if_answerable": "가상기",
+        "best_span_positions": [
+          0,
+          3
+        ],
+        "raw_absent_softmax": 0.23971667885780334,
+        "input_tokens": 56,
+        "total_seconds": 0.0043,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "correct": false
+    },
+    {
+      "id": "T01-counterfactual/food",
+      "document": "가상기관 규정: 국내 출장 식비는 하루 5만원이다. 출장비 정산은 복귀 후 12일 이내에 신청한다. 담당 부서는 재무지원팀이다.",
+      "question": "국내 출장 식비는 하루 얼마야?",
+      "answer": "5만원",
+      "is_impossible": false,
+      "prediction": {
+        "answer": "5만원",
+        "abstains": false,
+        "source_character_span": [
+          22,
+          25
+        ],
+        "best_span_if_answerable": "5만원",
+        "best_span_positions": [
+          22,
+          25
+        ],
+        "raw_absent_softmax": 0.24110671877861023,
+        "input_tokens": 58,
+        "total_seconds": 0.0042,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "correct": true
+    },
+    {
+      "id": "T01-counterfactual/deadline",
+      "document": "가상기관 규정: 국내 출장 식비는 하루 5만원이다. 출장비 정산은 복귀 후 12일 이내에 신청한다. 담당 부서는 재무지원팀이다.",
+      "question": "출장비 정산은 복귀 후 며칠 이내에 신청해야 해?",
+      "answer": "12일",
+      "is_impossible": false,
+      "prediction": {
+        "answer": "12일",
+        "abstains": false,
+        "source_character_span": [
+          42,
+          45
+        ],
+        "best_span_if_answerable": "12일",
+        "best_span_positions": [
+          42,
+          45
+        ],
+        "raw_absent_softmax": 0.23710639774799347,
+        "input_tokens": 65,
+        "total_seconds": 0.0055,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "correct": true
+    },
+    {
+      "id": "T01-counterfactual/department",
+      "document": "가상기관 규정: 국내 출장 식비는 하루 5만원이다. 출장비 정산은 복귀 후 12일 이내에 신청한다. 담당 부서는 재무지원팀이다.",
+      "question": "담당 부서는 어디야?",
+      "answer": "재무지원팀",
+      "is_impossible": false,
+      "prediction": {
+        "answer": "가상기관 규정: 국내 출장 식비는 하루 5만원이다. 출장비 정산",
+        "abstains": false,
+        "source_character_span": [
+          0,
+          35
+        ],
+        "best_span_if_answerable": "가상기관 규정: 국내 출장 식비는 하루 5만원이다. 출장비 정산",
+        "best_span_positions": [
+          0,
+          35
+        ],
+        "raw_absent_softmax": 0.24069854617118835,
+        "input_tokens": 55,
+        "total_seconds": 0.0044,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "correct": false
+    },
+    {
+      "id": "T01-counterfactual/missing-name",
+      "document": "가상기관 규정: 국내 출장 식비는 하루 5만원이다. 출장비 정산은 복귀 후 12일 이내에 신청한다. 담당 부서는 재무지원팀이다.",
+      "question": "공공기관 이름이 뭔데?",
+      "answer": null,
+      "is_impossible": true,
+      "prediction": {
+        "answer": "가상기",
+        "abstains": false,
+        "source_character_span": [
+          0,
+          3
+        ],
+        "best_span_if_answerable": "가상기",
+        "best_span_positions": [
+          0,
+          3
+        ],
+        "raw_absent_softmax": 0.23928691446781158,
+        "input_tokens": 57,
+        "total_seconds": 0.0046,
+        "method": "learned source span or absence; probabilities are not calibrated"
+      },
+      "correct": false
+    }
+  ]
+}

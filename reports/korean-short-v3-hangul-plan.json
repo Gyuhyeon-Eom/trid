@@ -1,0 +1,17 @@
+{
+  "run": "runs/trid-korean-short-v3-hangul",
+  "span_parent": "runs/trid-korean-short-v3/span",
+  "presence_plan": "copy completed v3 presence checkpoint unchanged",
+  "span_data": "data/korean-span-names-v1",
+  "character_change": "12404 entries: collision-free modern Hangul/jamo/ASCII; other Unicode characters retain a 512-bucket fallback. Each new entry inherits its own prior hash embedding before training.",
+  "steps": 1200,
+  "batch_size": 16,
+  "learning_rate": 0.0002,
+  "freeze_backbone": true,
+  "selection": "minimum full span validation loss; no selection on development or frozen audit tests",
+  "test_policy": "v2 1120 and audit 120 are development regression. v3 frozen audit 96 has not been evaluated; compare only after completion.",
+  "frozen_audit_sha256": "68d411f26018d8f352e2aceaa789c696784032128a2a3b32c68a157b5cc70cbf",
+  "causal_limit": "Both name diversity and character representation change; without ablation, improvements cannot be attributed solely to character IDs.",
+  "device": "cpu",
+  "scheduling": "Independent CPU span-head job while the separate presence job uses MPS. Latency benchmarks wait until both finish."
+}

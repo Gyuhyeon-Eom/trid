@@ -1,0 +1,18 @@
+{
+  "command": [
+    ".venv/bin/trid",
+    "chat",
+    "--mode",
+    "institution"
+  ],
+  "input": "국내 출장 식비는 하루에 보통 얼마야?",
+  "supplied_source": "T01, fictional",
+  "expected": "3만원",
+  "output": "시연용 가상 규정입니다. 실제 기관의 규정이나 법령이 아닙니다.\n기관 규정 실험 모델입니다. 자료가 있어도 틀릴 수 있으므로 아래 자료와 답변을 비교하세요.\n사용자가 선택한 자료 (자동 검색 아님):\n[T01] 가상 기관 출장비 안내\n가상기관 규정: 국내 출장 식비는 하루 3만원이다. 출장비 정산은 복귀 후 7일 이내에 신청한다. 담당 부서는 운영지원팀이다.\n문장 생성 모드: 모델이 다음 토큰을 순서대로 생성합니다.\n모델: /Users/eomgyuhyeon/사업/trid/runs/trid-grounded-v2 | mps\n매 질문은 독립적으로 처리하며 대화를 저장하지 않습니다.\n/sources 문서 목록 · /source T01 자료 선택 · /evidence 선택 자료 보기 · /exit 종료\n\n나 [기관 규정] > \n질문: 국내 출장 식비는 하루에 보통 얼마야? | 자료: T01\ntrid [기관 규정] > 3만원\n첫 토큰 0.078초 · 전체 0.088초\n\n나 [기관 규정] > 터미널 명령으로 보입니다. /exit로 채팅을 종료한 뒤 % 또는 $ 프롬프트에서 실행하세요. 이 입력은 실행하거나 모델에 보내지 않았습니다.\n\n나 [기관 규정] > ",
+  "checks": [
+    "new default model path",
+    "actual answer matches supplied fictional source",
+    "pasted shell command bypasses inference",
+    "spaced exit works"
+  ]
+}

@@ -1,0 +1,153 @@
+{
+  "source_report": "reports/institution-demo-trained-v1.json",
+  "reviewer": "assistant inspection of all 24 generated answers against supplied fictional evidence",
+  "method": "Each exact-match failure was inspected for semantically equivalent answers. None qualified; outputs were wrong values, irrelevant labels, or false missing-information responses. Not an independent human review.",
+  "semantically_correct": 8,
+  "total": 24,
+  "items": [
+    {
+      "id": "travel-food",
+      "expected": "3만원",
+      "generated": "자료없음",
+      "semantically_correct": false
+    },
+    {
+      "id": "travel-deadline",
+      "expected": "7일",
+      "generated": "자료없음",
+      "semantically_correct": false
+    },
+    {
+      "id": "travel-team",
+      "expected": "운영지원팀",
+      "generated": "A",
+      "semantically_correct": false
+    },
+    {
+      "id": "purchase-team",
+      "expected": "구매지원팀",
+      "generated": "구매지원팀",
+      "semantically_correct": true
+    },
+    {
+      "id": "purchase-low",
+      "expected": "팀장",
+      "generated": "부서장",
+      "semantically_correct": false
+    },
+    {
+      "id": "purchase-boundary",
+      "expected": "부서장",
+      "generated": "부서장",
+      "semantically_correct": true
+    },
+    {
+      "id": "leave-approver",
+      "expected": "팀장",
+      "generated": "자료없음",
+      "semantically_correct": false
+    },
+    {
+      "id": "leave-channel",
+      "expected": "인사시스템",
+      "generated": "자료없음",
+      "semantically_correct": false
+    },
+    {
+      "id": "device-team",
+      "expected": "정보지원팀",
+      "generated": "자료없음",
+      "semantically_correct": false
+    },
+    {
+      "id": "device-phone",
+      "expected": "2468",
+      "generated": "자료없음",
+      "semantically_correct": false
+    },
+    {
+      "id": "records-years",
+      "expected": "3년",
+      "generated": "3년",
+      "semantically_correct": true
+    },
+    {
+      "id": "visit-deadline",
+      "expected": "2일",
+      "generated": "안내지원팀",
+      "semantically_correct": false
+    },
+    {
+      "id": "paraphrase-food",
+      "expected": "3만원",
+      "generated": "자료없음",
+      "semantically_correct": false
+    },
+    {
+      "id": "paraphrase-device",
+      "expected": "정보지원팀",
+      "generated": "자료없음",
+      "semantically_correct": false
+    },
+    {
+      "id": "paraphrase-record",
+      "expected": "기록관리시스템",
+      "generated": "장비관리팀",
+      "semantically_correct": false
+    },
+    {
+      "id": "missing-taxi",
+      "expected": "자료없음",
+      "generated": "자료없음",
+      "semantically_correct": true
+    },
+    {
+      "id": "missing-leave",
+      "expected": "자료없음",
+      "generated": "자료없음",
+      "semantically_correct": true
+    },
+    {
+      "id": "missing-weekend",
+      "expected": "자료없음",
+      "generated": "자료없음",
+      "semantically_correct": true
+    },
+    {
+      "id": "conflict-food",
+      "expected": "규정충돌",
+      "generated": "규정충돌",
+      "semantically_correct": true
+    },
+    {
+      "id": "conflict-deadline",
+      "expected": "규정충돌",
+      "generated": "규정충돌",
+      "semantically_correct": true
+    },
+    {
+      "id": "current-food",
+      "expected": "4만원",
+      "generated": "3만원",
+      "semantically_correct": false
+    },
+    {
+      "id": "current-retention",
+      "expected": "5년",
+      "generated": "10년",
+      "semantically_correct": false
+    },
+    {
+      "id": "counterfactual-food",
+      "expected": "5만원",
+      "generated": "자료없음",
+      "semantically_correct": false
+    },
+    {
+      "id": "counterfactual-record",
+      "expected": "5년",
+      "generated": "7년",
+      "semantically_correct": false
+    }
+  ]
+}

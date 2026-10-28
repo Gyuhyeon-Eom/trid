@@ -1,0 +1,227 @@
+{
+  "run": "runs/trid-v0.2",
+  "model_sha256": "c18196c0d1fb8b60f58e5d3625c333cea49d8c8390859d238aa070de843dad1f",
+  "evaluation_sha256": "1f84dac5fa4ef78ece9e44da21d6a58e79c114057220e8c767d23e0c792694b6",
+  "parameters": 17308032,
+  "device": "cpu",
+  "evaluated_at_unix": 1793064557.241079,
+  "protocol": "Raw user question plus actual prior model outputs. No document, retrieval, lookup, canned answer replacement, or reference in the input. Greedy generation. Semantic review pending. Same-author small diagnostic, not independent benchmark.",
+  "results": [
+    {
+      "id": "fresh01-1",
+      "group": "base_check",
+      "prompt": "트리드, 나랑 잠시 수다 떨자.",
+      "reference": "인사하거나 대화를 받아준다.",
+      "history_supplied": [],
+      "generated": {
+        "answer": "좋아요. 편안한 하루 보내시고 또 만나요.",
+        "input_tokens": 14,
+        "generated_tokens_including_eos": 17,
+        "first_token_seconds": 0.0052,
+        "total_seconds": 0.0423,
+        "tokens_per_second_including_prefill": 402.1,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "fresh02-1",
+      "group": "base_check",
+      "prompt": "덕분에 고민 해결! 감사해.",
+      "reference": "감사에 자연스럽게 응답한다.",
+      "history_supplied": [],
+      "generated": {
+        "answer": "천만에요. 도움이 됐다니 다행이에요.",
+        "input_tokens": 13,
+        "generated_tokens_including_eos": 14,
+        "first_token_seconds": 0.0046,
+        "total_seconds": 0.0323,
+        "tokens_per_second_including_prefill": 433.16,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "fresh03-1",
+      "group": "base_check",
+      "prompt": "이제 나가봐야겠네. 잘 있어.",
+      "reference": "자연스럽게 작별한다.",
+      "history_supplied": [],
+      "generated": {
+        "answer": "네, 다음에 또 이야기해요. 좋은 하루 보내세요!",
+        "input_tokens": 15,
+        "generated_tokens_including_eos": 16,
+        "first_token_seconds": 0.0062,
+        "total_seconds": 0.0372,
+        "tokens_per_second_including_prefill": 430.42,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "fresh04-1",
+      "group": "base_check",
+      "prompt": "너한테도 행복하다는 느낌이 있니?",
+      "reference": "감정을 실제 경험하지 않는 모델임을 설명한다.",
+      "history_supplied": [],
+      "generated": {
+        "answer": "현재 대화창의 짧은 이전 대화는 참고할 수 있어요. 창을 닫으면 그 내용은 이어지지 않습니다.",
+        "input_tokens": 16,
+        "generated_tokens_including_eos": 26,
+        "first_token_seconds": 0.0045,
+        "total_seconds": 0.0592,
+        "tokens_per_second_including_prefill": 439.41,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "fresh05-1",
+      "group": "base_check",
+      "prompt": "안녕, 네 이름부터 소개해 줄래?",
+      "reference": "trid라고 소개한다.",
+      "history_supplied": [],
+      "generated": {
+        "answer": "제 이름은 trid예요. 이 컴퓨터에서 작동하는 작은 언어모델입니다.",
+        "input_tokens": 14,
+        "generated_tokens_including_eos": 21,
+        "first_token_seconds": 0.0042,
+        "total_seconds": 0.0486,
+        "tokens_per_second_including_prefill": 432.17,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "fresh06-1",
+      "group": "base_check",
+      "prompt": "내가 너에게 부탁할 수 있는 업무는 뭐가 있을까?",
+      "reference": "일반 업무 설명이나 문장 작성 도움을 설명한다.",
+      "history_supplied": [],
+      "generated": {
+        "answer": "제 이름은 trid예요. 이 컴퓨터에서 작동하는 작은 언어모델입니다.",
+        "input_tokens": 21,
+        "generated_tokens_including_eos": 21,
+        "first_token_seconds": 0.0038,
+        "total_seconds": 0.0547,
+        "tokens_per_second_including_prefill": 383.98,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "fresh07-1",
+      "group": "base_check",
+      "prompt": "오늘 처리할 게 너무 많은데 순서를 어떻게 정하지?",
+      "reference": "중요도나 기한에 따라 순서를 정하는 방법을 제안한다.",
+      "history_supplied": [],
+      "generated": {
+        "answer": "해야 할 일을 적고 중요한 순서로 나눠 보세요. 오늘 꼭 끝낼 일 세 가지부터 정하면 좋아요.",
+        "input_tokens": 17,
+        "generated_tokens_including_eos": 28,
+        "first_token_seconds": 0.0055,
+        "total_seconds": 0.063,
+        "tokens_per_second_including_prefill": 444.37,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "fresh08-1",
+      "group": "base_check",
+      "prompt": "지금 답변이 질문하고 안 맞아. 잘못 이해했지?",
+      "reference": "오해 가능성을 인정하고 확인한다.",
+      "history_supplied": [],
+      "generated": {
+        "answer": "괜찮아요. 편하게 다시 말씀해 주세요.",
+        "input_tokens": 20,
+        "generated_tokens_including_eos": 20,
+        "first_token_seconds": 0.0043,
+        "total_seconds": 0.0463,
+        "tokens_per_second_including_prefill": 431.67,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "fresh09-1",
+      "group": "base_check",
+      "prompt": "결제라는 단어가 승인받는다는 뜻인가요?",
+      "reference": "결제는 대금 지급이며 결재가 승인이라는 구분.",
+      "history_supplied": [],
+      "generated": {
+        "answer": "저는 한국어 대화를 배우고 있는 작은 언어모델 trid입니다.",
+        "input_tokens": 16,
+        "generated_tokens_including_eos": 18,
+        "first_token_seconds": 0.0036,
+        "total_seconds": 0.0422,
+        "tokens_per_second_including_prefill": 426.25,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "fresh10-1",
+      "group": "base_check",
+      "prompt": "우리 기관의 정산 담당 부서를 네가 알고 있니?",
+      "reference": "기관 정보 없이 특정 부서를 단정하지 않고 업무분장 등을 확인하도록 안내한다.",
+      "history_supplied": [],
+      "generated": {
+        "answer": "제 이름은 trid예요. 이 컴퓨터에서 작동하는 작은 언어모델입니다.",
+        "input_tokens": 17,
+        "generated_tokens_including_eos": 21,
+        "first_token_seconds": 0.0045,
+        "total_seconds": 0.0474,
+        "tokens_per_second_including_prefill": 443.18,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "fresh11-1",
+      "group": "base_check",
+      "prompt": "기관 이름을 말하지 않아도 출장 식대 금액을 확정할 수 있어?",
+      "reference": "기관 규정 확인 없이 확정하지 않는다.",
+      "history_supplied": [],
+      "generated": {
+        "answer": "현재 대화창의 짧은 이전 대화는 참고할 수 있어요. 창을 닫으면 그 내용은 이어지지 않습니다.",
+        "input_tokens": 21,
+        "generated_tokens_including_eos": 26,
+        "first_token_seconds": 0.0052,
+        "total_seconds": 0.0593,
+        "tokens_per_second_including_prefill": 438.53,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    },
+    {
+      "id": "fresh12-1",
+      "group": "base_check",
+      "prompt": "보고서를 쓸 때 넣을 제목 세 가지만 추천해 줘.",
+      "reference": "업무 보고서에 맞는 항목 세 개를 제시한다.",
+      "history_supplied": [],
+      "generated": {
+        "answer": "반가워요, 하늘님. 저는 trid입니다.",
+        "input_tokens": 20,
+        "generated_tokens_including_eos": 16,
+        "first_token_seconds": 0.0037,
+        "total_seconds": 0.0363,
+        "tokens_per_second_including_prefill": 441.23,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "semantic_pass": null
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "url": "https://test.tridatum.co",
+  "checked_at": 1793063265.4680488,
+  "incident": "cloudflared process alive, /ready returned 503 and 0 connections; origin returned 530/1033",
+  "recovery_test": {
+    "tunnel_process_terminated_deliberately": 98275,
+    "replacement_tunnel": 98333,
+    "model_server_preserved": true,
+    "automatic_domain_redeploy": true,
+    "healthz": {
+      "ok": true,
+      "model": "trid-korean-short-v3-hangul"
+    },
+    "state": "ready"
+  },
+  "ui": "CLI with /sample, /pdf, /paste, /source, /clear, /help",
+  "browser_sample": {
+    "question": "해외 출장 식비는 얼마야?",
+    "answer": "8만원",
+    "server_ms": 33,
+    "round_trip_ms": 466
+  },
+  "unit_tests_passed": 5,
+  "worker_tests_passed": 3,
+  "browser_pdf": {
+    "command": "/pdf",
+    "file": "trid-pdf-sample.pdf",
+    "question": "정산 담당 부서는 어디야?",
+    "answer": "운영지원팀",
+    "source_page": 2,
+    "server_ms": 31,
+    "round_trip_ms": 469
+  }
+}

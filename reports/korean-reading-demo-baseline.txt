@@ -1,0 +1,5 @@
+trid 문서 독해 실험 | runs/trid-korean-dialogue-v1 | 17,308,032 parameters | cpu
+문서: /Users/eomgyuhyeon/사업/trid/data/reading-demo-v1/travel.txt
+각 질문은 독립적입니다. 대화 이력·검색 기능 없이 위 문서만 제공합니다. 오답이 가능한 실험 모델입니다.
+trid > 2만원입니다.
+[첫 토큰 0.013초 · 전체 0.031초]

@@ -1,0 +1,187 @@
+{
+  "run": "/Users/eomgyuhyeon/사업/trid/runs/trid-v0.2",
+  "device": "mps",
+  "load_seconds_excluding_python_imports": 0.22163933282718062,
+  "cold_request": {
+    "answer": "안녕하세요! 저는 trid입니다. 편하게 이야기해 주세요.",
+    "input_tokens": 5,
+    "generated_tokens_including_eos": 22,
+    "first_token_seconds": 0.2444,
+    "total_seconds": 0.3099,
+    "tokens_per_second_including_prefill": 70.99,
+    "history_turns_dropped": 0,
+    "stopped_on_eos": true
+  },
+  "warm_samples": 15,
+  "median_first_token_seconds": 0.0028,
+  "median_total_seconds": 0.0565,
+  "network_probe": "Python socket.connect/create_connection patched to reject connections; not OS isolation.",
+  "scope": "Five known short prompts, three passes, idle local M5. Not Raspberry Pi or broad-conversation performance.",
+  "results": [
+    {
+      "prompt": "안녕",
+      "answer": "안녕하세요! 저는 trid입니다. 편하게 이야기해 주세요.",
+      "input_tokens": 5,
+      "generated_tokens_including_eos": 22,
+      "first_token_seconds": 0.0029,
+      "total_seconds": 0.0565,
+      "tokens_per_second_including_prefill": 389.37,
+      "history_turns_dropped": 0,
+      "stopped_on_eos": true
+    },
+    {
+      "prompt": "네 이름은 뭐야?",
+      "answer": "제 이름은 trid예요. 이 컴퓨터에서 작동하는 작은 언어모델입니다.",
+      "input_tokens": 10,
+      "generated_tokens_including_eos": 21,
+      "first_token_seconds": 0.1209,
+      "total_seconds": 0.1834,
+      "tokens_per_second_including_prefill": 114.49,
+      "history_turns_dropped": 0,
+      "stopped_on_eos": true
+    },
+    {
+      "prompt": "오늘 너무 피곤해",
+      "answer": "오늘 고생 많으셨어요. 잠깐 쉬면서 숨을 돌려 보세요.",
+      "input_tokens": 9,
+      "generated_tokens_including_eos": 25,
+      "first_token_seconds": 0.0983,
+      "total_seconds": 0.1669,
+      "tokens_per_second_including_prefill": 149.77,
+      "history_turns_dropped": 0,
+      "stopped_on_eos": true
+    },
+    {
+      "prompt": "배고파",
+      "answer": "식사할 시간이 되었나 봐요. 간단하게 먹을 수 있는 음식부터 챙겨 보세요.",
+      "input_tokens": 6,
+      "generated_tokens_including_eos": 26,
+      "first_token_seconds": 0.1298,
+      "total_seconds": 0.2031,
+      "tokens_per_second_including_prefill": 128.02,
+      "history_turns_dropped": 0,
+      "stopped_on_eos": true
+    },
+    {
+      "prompt": "고마워",
+      "answer": "천만에요. 도움이 됐다니 다행이에요.",
+      "input_tokens": 6,
+      "generated_tokens_including_eos": 14,
+      "first_token_seconds": 0.0029,
+      "total_seconds": 0.0359,
+      "tokens_per_second_including_prefill": 389.93,
+      "history_turns_dropped": 0,
+      "stopped_on_eos": true
+    },
+    {
+      "prompt": "안녕",
+      "answer": "안녕하세요! 저는 trid입니다. 편하게 이야기해 주세요.",
+      "input_tokens": 5,
+      "generated_tokens_including_eos": 22,
+      "first_token_seconds": 0.0026,
+      "total_seconds": 0.0557,
+      "tokens_per_second_including_prefill": 394.91,
+      "history_turns_dropped": 0,
+      "stopped_on_eos": true
+    },
+    {
+      "prompt": "네 이름은 뭐야?",
+      "answer": "제 이름은 trid예요. 이 컴퓨터에서 작동하는 작은 언어모델입니다.",
+      "input_tokens": 10,
+      "generated_tokens_including_eos": 21,
+      "first_token_seconds": 0.0028,
+      "total_seconds": 0.0524,
+      "tokens_per_second_including_prefill": 400.77,
+      "history_turns_dropped": 0,
+      "stopped_on_eos": true
+    },
+    {
+      "prompt": "오늘 너무 피곤해",
+      "answer": "오늘 고생 많으셨어요. 잠깐 쉬면서 숨을 돌려 보세요.",
+      "input_tokens": 9,
+      "generated_tokens_including_eos": 25,
+      "first_token_seconds": 0.0027,
+      "total_seconds": 0.0627,
+      "tokens_per_second_including_prefill": 399.02,
+      "history_turns_dropped": 0,
+      "stopped_on_eos": true
+    },
+    {
+      "prompt": "배고파",
+      "answer": "식사할 시간이 되었나 봐요. 간단하게 먹을 수 있는 음식부터 챙겨 보세요.",
+      "input_tokens": 6,
+      "generated_tokens_including_eos": 26,
+      "first_token_seconds": 0.0027,
+      "total_seconds": 0.0652,
+      "tokens_per_second_including_prefill": 398.69,
+      "history_turns_dropped": 0,
+      "stopped_on_eos": true
+    },
+    {
+      "prompt": "고마워",
+      "answer": "천만에요. 도움이 됐다니 다행이에요.",
+      "input_tokens": 6,
+      "generated_tokens_including_eos": 14,
+      "first_token_seconds": 0.0027,
+      "total_seconds": 0.0349,
+      "tokens_per_second_including_prefill": 401.64,
+      "history_turns_dropped": 0,
+      "stopped_on_eos": true
+    },
+    {
+      "prompt": "안녕",
+      "answer": "안녕하세요! 저는 trid입니다. 편하게 이야기해 주세요.",
+      "input_tokens": 5,
+      "generated_tokens_including_eos": 22,
+      "first_token_seconds": 0.0027,
+      "total_seconds": 0.0548,
+      "tokens_per_second_including_prefill": 401.57,
+      "history_turns_dropped": 0,
+      "stopped_on_eos": true
+    },
+    {
+      "prompt": "네 이름은 뭐야?",
+      "answer": "제 이름은 trid예요. 이 컴퓨터에서 작동하는 작은 언어모델입니다.",
+      "input_tokens": 10,
+      "generated_tokens_including_eos": 21,
+      "first_token_seconds": 0.0028,
+      "total_seconds": 0.0525,
+      "tokens_per_second_including_prefill": 400.09,
+      "history_turns_dropped": 0,
+      "stopped_on_eos": true
+    },
+    {
+      "prompt": "오늘 너무 피곤해",
+      "answer": "오늘 고생 많으셨어요. 잠깐 쉬면서 숨을 돌려 보세요.",
+      "input_tokens": 9,
+      "generated_tokens_including_eos": 25,
+      "first_token_seconds": 0.0028,
+      "total_seconds": 0.0624,
+      "tokens_per_second_including_prefill": 400.61,
+      "history_turns_dropped": 0,
+      "stopped_on_eos": true
+    },
+    {
+      "prompt": "배고파",
+      "answer": "식사할 시간이 되었나 봐요. 간단하게 먹을 수 있는 음식부터 챙겨 보세요.",
+      "input_tokens": 6,
+      "generated_tokens_including_eos": 26,
+      "first_token_seconds": 0.0027,
+      "total_seconds": 0.0663,
+      "tokens_per_second_including_prefill": 392.24,
+      "history_turns_dropped": 0,
+      "stopped_on_eos": true
+    },
+    {
+      "prompt": "고마워",
+      "answer": "천만에요. 도움이 됐다니 다행이에요.",
+      "input_tokens": 6,
+      "generated_tokens_including_eos": 14,
+      "first_token_seconds": 0.0032,
+      "total_seconds": 0.0359,
+      "tokens_per_second_including_prefill": 389.67,
+      "history_turns_dropped": 0,
+      "stopped_on_eos": true
+    }
+  ]
+}

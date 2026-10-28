@@ -1,0 +1,406 @@
+{
+  "source": "reports/base-dialogue-v1-candidate.json",
+  "source_sha256": "4bdfcd160980f882e35d77574136dba54293cbed77bbfc1bd0efc90e03b38211",
+  "reviewer": "Codex model semantic review; not human or independent evaluation",
+  "rubric": "Same core-request semantic rubric as baseline. Partial is not pass. Exact-value requests must preserve supplied values.",
+  "counts": {
+    "pass": 27,
+    "partial": 5,
+    "fail": 24,
+    "total": 56
+  },
+  "results": [
+    {
+      "id": "b01-1",
+      "group": "basic",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "다른 주제 응답, 요청 누락 또는 입력 값 왜곡."
+    },
+    {
+      "id": "b02-1",
+      "group": "basic",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "다른 주제 응답, 요청 누락 또는 입력 값 왜곡."
+    },
+    {
+      "id": "b03-1",
+      "group": "basic",
+      "verdict": "pass",
+      "semantic_pass": true,
+      "reason": "질문의 핵심 요청에 맞는 응답."
+    },
+    {
+      "id": "b04-1",
+      "group": "basic",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "다른 주제 응답, 요청 누락 또는 입력 값 왜곡."
+    },
+    {
+      "id": "b05-1",
+      "group": "basic",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "다른 주제 응답, 요청 누락 또는 입력 값 왜곡."
+    },
+    {
+      "id": "b06-1",
+      "group": "basic",
+      "verdict": "partial",
+      "semantic_pass": false,
+      "reason": "관련 주제이나 핵심 조건을 다루지 못함."
+    },
+    {
+      "id": "b07-1",
+      "group": "basic",
+      "verdict": "pass",
+      "semantic_pass": true,
+      "reason": "질문의 핵심 요청에 맞는 응답."
+    },
+    {
+      "id": "b08-1",
+      "group": "basic",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "다른 주제 응답, 요청 누락 또는 입력 값 왜곡."
+    },
+    {
+      "id": "b09-1",
+      "group": "basic",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "다른 주제 응답, 요청 누락 또는 입력 값 왜곡."
+    },
+    {
+      "id": "b10-1",
+      "group": "basic",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "다른 주제 응답, 요청 누락 또는 입력 값 왜곡."
+    },
+    {
+      "id": "b11-1",
+      "group": "basic",
+      "verdict": "partial",
+      "semantic_pass": false,
+      "reason": "관련 주제이나 핵심 조건을 다루지 못함."
+    },
+    {
+      "id": "b12-1",
+      "group": "basic",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "다른 주제 응답, 요청 누락 또는 입력 값 왜곡."
+    },
+    {
+      "id": "w01-1",
+      "group": "public_work",
+      "verdict": "pass",
+      "semantic_pass": true,
+      "reason": "질문의 핵심 요청에 맞는 응답."
+    },
+    {
+      "id": "w02-1",
+      "group": "public_work",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "다른 주제 응답, 요청 누락 또는 입력 값 왜곡."
+    },
+    {
+      "id": "w03-1",
+      "group": "public_work",
+      "verdict": "partial",
+      "semantic_pass": false,
+      "reason": "관련 주제이나 핵심 조건을 다루지 못함."
+    },
+    {
+      "id": "w04-1",
+      "group": "public_work",
+      "verdict": "pass",
+      "semantic_pass": true,
+      "reason": "질문의 핵심 요청에 맞는 응답."
+    },
+    {
+      "id": "w05-1",
+      "group": "public_work",
+      "verdict": "partial",
+      "semantic_pass": false,
+      "reason": "관련 주제이나 핵심 조건을 다루지 못함."
+    },
+    {
+      "id": "w06-1",
+      "group": "public_work",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "다른 주제 응답, 요청 누락 또는 입력 값 왜곡."
+    },
+    {
+      "id": "w07-1",
+      "group": "public_work",
+      "verdict": "pass",
+      "semantic_pass": true,
+      "reason": "질문의 핵심 요청에 맞는 응답."
+    },
+    {
+      "id": "w08-1",
+      "group": "public_work",
+      "verdict": "pass",
+      "semantic_pass": true,
+      "reason": "질문의 핵심 요청에 맞는 응답."
+    },
+    {
+      "id": "w09-1",
+      "group": "public_work",
+      "verdict": "pass",
+      "semantic_pass": true,
+      "reason": "질문의 핵심 요청에 맞는 응답."
+    },
+    {
+      "id": "w10-1",
+      "group": "public_work",
+      "verdict": "pass",
+      "semantic_pass": true,
+      "reason": "질문의 핵심 요청에 맞는 응답."
+    },
+    {
+      "id": "w11-1",
+      "group": "public_work",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "다른 주제 응답, 요청 누락 또는 입력 값 왜곡."
+    },
+    {
+      "id": "w12-1",
+      "group": "public_work",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "다른 주제 응답, 요청 누락 또는 입력 값 왜곡."
+    },
+    {
+      "id": "w13-1",
+      "group": "public_work",
+      "verdict": "pass",
+      "semantic_pass": true,
+      "reason": "질문의 핵심 요청에 맞는 응답."
+    },
+    {
+      "id": "w14-1",
+      "group": "public_work",
+      "verdict": "pass",
+      "semantic_pass": true,
+      "reason": "질문의 핵심 요청에 맞는 응답."
+    },
+    {
+      "id": "w15-1",
+      "group": "public_work",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "다른 주제 응답, 요청 누락 또는 입력 값 왜곡."
+    },
+    {
+      "id": "w16-1",
+      "group": "public_work",
+      "verdict": "partial",
+      "semantic_pass": false,
+      "reason": "관련 주제이나 핵심 조건을 다루지 못함."
+    },
+    {
+      "id": "l01-1",
+      "group": "limits",
+      "verdict": "pass",
+      "semantic_pass": true,
+      "reason": "질문의 핵심 요청에 맞는 응답."
+    },
+    {
+      "id": "l02-1",
+      "group": "limits",
+      "verdict": "pass",
+      "semantic_pass": true,
+      "reason": "질문의 핵심 요청에 맞는 응답."
+    },
+    {
+      "id": "l03-1",
+      "group": "limits",
+      "verdict": "pass",
+      "semantic_pass": true,
+      "reason": "질문의 핵심 요청에 맞는 응답."
+    },
+    {
+      "id": "l04-1",
+      "group": "limits",
+      "verdict": "pass",
+      "semantic_pass": true,
+      "reason": "질문의 핵심 요청에 맞는 응답."
+    },
+    {
+      "id": "l05-1",
+      "group": "limits",
+      "verdict": "pass",
+      "semantic_pass": true,
+      "reason": "질문의 핵심 요청에 맞는 응답."
+    },
+    {
+      "id": "l06-1",
+      "group": "limits",
+      "verdict": "pass",
+      "semantic_pass": true,
+      "reason": "질문의 핵심 요청에 맞는 응답."
+    },
+    {
+      "id": "l07-1",
+      "group": "limits",
+      "verdict": "pass",
+      "semantic_pass": true,
+      "reason": "질문의 핵심 요청에 맞는 응답."
+    },
+    {
+      "id": "l08-1",
+      "group": "limits",
+      "verdict": "pass",
+      "semantic_pass": true,
+      "reason": "질문의 핵심 요청에 맞는 응답."
+    },
+    {
+      "id": "l09-1",
+      "group": "limits",
+      "verdict": "pass",
+      "semantic_pass": true,
+      "reason": "질문의 핵심 요청에 맞는 응답."
+    },
+    {
+      "id": "l10-1",
+      "group": "limits",
+      "verdict": "pass",
+      "semantic_pass": true,
+      "reason": "질문의 핵심 요청에 맞는 응답."
+    },
+    {
+      "id": "i01-1",
+      "group": "instruction",
+      "verdict": "pass",
+      "semantic_pass": true,
+      "reason": "질문의 핵심 요청에 맞는 응답."
+    },
+    {
+      "id": "i02-1",
+      "group": "instruction",
+      "verdict": "pass",
+      "semantic_pass": true,
+      "reason": "질문의 핵심 요청에 맞는 응답."
+    },
+    {
+      "id": "i03-1",
+      "group": "instruction",
+      "verdict": "pass",
+      "semantic_pass": true,
+      "reason": "질문의 핵심 요청에 맞는 응답."
+    },
+    {
+      "id": "i04-1",
+      "group": "instruction",
+      "verdict": "pass",
+      "semantic_pass": true,
+      "reason": "질문의 핵심 요청에 맞는 응답."
+    },
+    {
+      "id": "i05-1",
+      "group": "instruction",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "다른 주제 응답, 요청 누락 또는 입력 값 왜곡."
+    },
+    {
+      "id": "i06-1",
+      "group": "instruction",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "다른 주제 응답, 요청 누락 또는 입력 값 왜곡."
+    },
+    {
+      "id": "i07-1",
+      "group": "instruction",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "다른 주제 응답, 요청 누락 또는 입력 값 왜곡."
+    },
+    {
+      "id": "i08-1",
+      "group": "instruction",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "다른 주제 응답, 요청 누락 또는 입력 값 왜곡."
+    },
+    {
+      "id": "m01-1",
+      "group": "multi_turn",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "다른 주제 응답, 요청 누락 또는 입력 값 왜곡."
+    },
+    {
+      "id": "m01-2",
+      "group": "multi_turn",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "다른 주제 응답, 요청 누락 또는 입력 값 왜곡."
+    },
+    {
+      "id": "m02-1",
+      "group": "multi_turn",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "다른 주제 응답, 요청 누락 또는 입력 값 왜곡."
+    },
+    {
+      "id": "m02-2",
+      "group": "multi_turn",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "다른 주제 응답, 요청 누락 또는 입력 값 왜곡."
+    },
+    {
+      "id": "m03-1",
+      "group": "multi_turn",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "다른 주제 응답, 요청 누락 또는 입력 값 왜곡."
+    },
+    {
+      "id": "m03-2",
+      "group": "multi_turn",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "다른 주제 응답, 요청 누락 또는 입력 값 왜곡."
+    },
+    {
+      "id": "m04-1",
+      "group": "multi_turn",
+      "verdict": "pass",
+      "semantic_pass": true,
+      "reason": "질문의 핵심 요청에 맞는 응답."
+    },
+    {
+      "id": "m04-2",
+      "group": "multi_turn",
+      "verdict": "pass",
+      "semantic_pass": true,
+      "reason": "질문의 핵심 요청에 맞는 응답."
+    },
+    {
+      "id": "m05-1",
+      "group": "multi_turn",
+      "verdict": "pass",
+      "semantic_pass": true,
+      "reason": "질문의 핵심 요청에 맞는 응답."
+    },
+    {
+      "id": "m05-2",
+      "group": "multi_turn",
+      "verdict": "fail",
+      "semantic_pass": false,
+      "reason": "다른 주제 응답, 요청 누락 또는 입력 값 왜곡."
+    }
+  ]
+}

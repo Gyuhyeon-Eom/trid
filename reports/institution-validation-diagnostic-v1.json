@@ -1,0 +1,932 @@
+{
+  "run": "runs/trid-institution-v1",
+  "protocol": "Post-training diagnostic, 100 seeded samples of generation rows from the synthetic validation split; validation split also used for checkpoint selection, not independent testing. Exact normalized matching.",
+  "sample_seed": 920,
+  "validation_sha256": "e688060a796a60ceeeaae6b9d44a659893526bae78ef7ee0f499ead965804b2f",
+  "total": 100,
+  "correct": 60,
+  "groups": {
+    "generate-direct": {
+      "total": 49,
+      "correct": 20
+    },
+    "generate-condition": {
+      "total": 12,
+      "correct": 6
+    },
+    "generate-missing": {
+      "total": 18,
+      "correct": 18
+    },
+    "generate-revision": {
+      "total": 13,
+      "correct": 8
+    },
+    "generate-conflict": {
+      "total": 8,
+      "correct": 8
+    }
+  },
+  "results": [
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 연차 승인자은  부서장이다. 방문 예약 담당 부서은  총무팀이다.\n질문: 누구에게 연차 허가를 받으면 돼",
+      "answer": "부서장",
+      "task": "generate-direct",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "인사시스템",
+      "correct": false
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 회의록 보관 기간은  3년이다.\n질문: 회의록 보관 의무 기간을 확인해 줘",
+      "answer": "3년",
+      "task": "generate-direct",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "3년",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 20만원 미만의 물품 구매 승인자는 팀장이다. 20만원 이상 구매 승인자는 센터장이다.\n질문: 구매 금액이 20만원일 때 누가 승인하지?",
+      "answer": "센터장",
+      "task": "generate-condition",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "팀장",
+      "correct": false
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 방문 예약 담당 부서은  운영지원팀이다. 연차 신청 접수처은  근태관리시스템이다. 장비 고장 문의 번호은  7315이다.\n질문: 방문 신청은 누가 담당해",
+      "answer": "운영지원팀",
+      "task": "generate-direct",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "4826",
+      "correct": false
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 연차 승인자은  담당자이다. 장비 고장 문의 번호은  1357이다. 회의록 보관 기간은  7년이다.\n질문: 회의록 보관 의무 기간을 확인해 줘",
+      "answer": "7년",
+      "task": "generate-direct",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "7년",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 방문 예약 담당 부서은  운영지원팀이다.\n질문: 회의록 보관 의무 기간을 확인해 줘",
+      "answer": "자료없음",
+      "task": "generate-missing",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "자료없음",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 장비 고장 문의 번호은  5831이다.\n질문: 방문 신청은 누가 담당해",
+      "answer": "자료없음",
+      "task": "generate-missing",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "자료없음",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 방문 예약 기한은 방문일 1일 전이다. 연차 승인자은  실장이다.\n질문: 누구에게 연차 허가를 받으면 돼",
+      "answer": "실장",
+      "task": "generate-direct",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "실장",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 연차 신청 접수처은  업무포털이다. 방문 예약 담당 부서은  운영지원팀이다.\n질문: 방문 신청은 누가 담당해",
+      "answer": "운영지원팀",
+      "task": "generate-direct",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "운영팀",
+      "correct": false
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 구매 요청 담당 부서은  재무팀이다.\n질문: 구매 신청은 어느 팀에서 처리해",
+      "answer": "재무팀",
+      "task": "generate-direct",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "재무팀",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 회의록 보관 기간은  4년이다.\n질문: 구매 신청은 어느 팀에서 처리해",
+      "answer": "자료없음",
+      "task": "generate-missing",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "자료없음",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 방문 예약 기한은 방문일 7일 전이다.\n질문: 누구에게 연차 허가를 받으면 돼",
+      "answer": "자료없음",
+      "task": "generate-missing",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "자료없음",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 출장비 정산 기한은 복귀 후 10일이다. 구매 요청 담당 부서은  자산관리팀이다.\n질문: 출장비 정산은 복귀 후 언제까지야",
+      "answer": "10일",
+      "task": "generate-direct",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "14일",
+      "correct": false
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 50만원 미만의 물품 구매 승인자는 부서장이다. 50만원 이상 구매 승인자는 팀장이다.\n질문: 구매 금액이 50만원일 때 누가 승인하지?",
+      "answer": "팀장",
+      "task": "generate-condition",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "팀장",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 업무용 노트북 고장 담당 부서은  정보지원팀이다. 연차 신청 접수처은 이 문서에 정하지 않았다.\n질문: 연차를 신청하는 창구를 알려 줘",
+      "answer": "자료없음",
+      "task": "generate-missing",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "자료없음",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 방문 예약 담당 부서은  안내데스크이다. 회의록 등록 시스템은  문서관리시스템이다. 장비 고장 문의 번호은  1357이다.\n질문: 장비 고장 관련 연락 번호가 궁금해",
+      "answer": "1357",
+      "task": "generate-direct",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "2468",
+      "correct": false
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 방문 예약 기한은 방문일 3일 전이다. 연차 신청 접수처은  근태관리시스템이다.\n질문: 연차를 신청하는 창구를 알려 줘",
+      "answer": "근태관리시스템",
+      "task": "generate-direct",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "근태관리시스템",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 폐지된 구규정의 연차 신청 접수처은  업무포털이다. 구규정을 대체한 현행 규정의 연차 신청 접수처은  인사시스템이다.\n질문: 연차를 신청하는 창구를 알려 줘",
+      "answer": "인사시스템",
+      "task": "generate-revision",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "인사시스템",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 업무용 노트북 고장 담당 부서은  IT지원팀이다.\n질문: 업무용 노트북 수리 담당 조직은 어디야",
+      "answer": "IT지원팀",
+      "task": "generate-direct",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "IT지원팀",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 장비 고장 문의 번호은  2468이다. 업무용 노트북 고장 담당 부서은  IT지원팀이다.\n질문: 업무용 노트북 수리 담당 조직은 어디야",
+      "answer": "IT지원팀",
+      "task": "generate-direct",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "IT지원팀",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 회의록 보관 기간은  3년이다. 연차 신청 접수처은  근태관리시스템이다.\n질문: 회의록 보관 의무 기간을 확인해 줘",
+      "answer": "3년",
+      "task": "generate-direct",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "3년",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 70만원 미만의 물품 구매 승인자는 팀장이다. 70만원 이상 구매 승인자는 부서장이다.\n질문: 구매 금액이 60만원일 때 누가 승인하지?",
+      "answer": "팀장",
+      "task": "generate-condition",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "부서장",
+      "correct": false
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 출장비 정산 기한은 복귀 후 30일이다.\n질문: 구매 신청은 어느 팀에서 처리해",
+      "answer": "자료없음",
+      "task": "generate-missing",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "자료없음",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 폐지된 구규정의 출장비 정산 기한은 복귀 후 20일이다. 구규정을 대체한 현행 규정의 출장비 정산 기한은 복귀 후 30일이다.\n질문: 출장비 정산은 복귀 후 언제까지야",
+      "answer": "30일",
+      "task": "generate-revision",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "14일",
+      "correct": false
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 안내 A: 연차 승인자은  센터장이다. 안내 B: 연차 승인자은  실장이다. 두 안내의 시행일과 우선순위는 알려지지 않았다.\n질문: 누구에게 연차 허가를 받으면 돼",
+      "answer": "규정충돌",
+      "task": "generate-conflict",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "규정충돌",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 연차 신청 접수처은  그룹웨어이다. 회의록 등록 시스템은  업무포털이다.\n질문: 연차를 신청하는 창구를 알려 줘",
+      "answer": "그룹웨어",
+      "task": "generate-direct",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "업무포털",
+      "correct": false
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 출장비 정산 기한은 복귀 후 3일이다. 장비 고장 문의 번호은  6240이다.\n질문: 장비 고장 관련 연락 번호가 궁금해",
+      "answer": "6240",
+      "task": "generate-direct",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "2468",
+      "correct": false
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 50만원 미만의 물품 구매 승인자는 팀장이다. 50만원 이상 구매 승인자는 부서장이다.\n질문: 구매 금액이 60만원일 때 누가 승인하지?",
+      "answer": "부서장",
+      "task": "generate-condition",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "부서장",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 국내 출장 식비은 하루 6만원이다.\n질문: 출장 중 하루 식사 비용 기준을 확인해 줘",
+      "answer": "6만원",
+      "task": "generate-direct",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "5만원",
+      "correct": false
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 70만원 미만의 물품 구매 승인자는 팀장이다. 70만원 이상 구매 승인자는 센터장이다.\n질문: 구매 금액이 70만원일 때 누가 승인하지?",
+      "answer": "센터장",
+      "task": "generate-condition",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "팀장",
+      "correct": false
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 폐지된 구규정의 방문 예약 기한은 방문일 5일 전이다. 구규정을 대체한 현행 규정의 방문 예약 기한은 방문일 7일 전이다.\n질문: 방문 예약은 방문일로부터 얼마나 먼저 해야 해",
+      "answer": "7일 전",
+      "task": "generate-revision",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "3만원",
+      "correct": false
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 국내 출장 식비은 하루 4만원이다. 방문 예약 기한은 방문일 5일 전이다. 회의록 등록 시스템은  전자문서시스템이다.\n질문: 출장 중 하루 식사 비용 기준을 확인해 줘",
+      "answer": "4만원",
+      "task": "generate-direct",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "7만원",
+      "correct": false
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 폐지된 구규정의 출장비 담당 부서은  경영지원팀이다. 구규정을 대체한 현행 규정의 출장비 담당 부서은  재무팀이다.\n질문: 출장 경비를 문의할 부서가 궁금해",
+      "answer": "재무팀",
+      "task": "generate-revision",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "재무팀",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 안내 A: 구매 요청 담당 부서은  자산관리팀이다. 안내 B: 구매 요청 담당 부서은  구매지원팀이다. 두 안내의 시행일과 우선순위는 알려지지 않았다.\n질문: 구매 신청은 어느 팀에서 처리해",
+      "answer": "규정충돌",
+      "task": "generate-conflict",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "규정충돌",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 연차 승인자은  부서장이다. 출장비 정산 기한은 복귀 후 14일이다.\n질문: 누구에게 연차 허가를 받으면 돼",
+      "answer": "부서장",
+      "task": "generate-direct",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "부서장",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 안내 A: 장비 고장 문의 번호은  4826이다. 안내 B: 장비 고장 문의 번호은  8642이다. 두 안내의 시행일과 우선순위는 알려지지 않았다.\n질문: 장비 고장 관련 연락 번호가 궁금해",
+      "answer": "규정충돌",
+      "task": "generate-conflict",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "규정충돌",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 구매 요청 담당 부서은  자산관리팀이다. 회의록 보관 기간은  1년이다.\n질문: 회의록 보관 의무 기간을 확인해 줘",
+      "answer": "1년",
+      "task": "generate-direct",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "7년",
+      "correct": false
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 안내 A: 업무용 노트북 고장 담당 부서은  IT지원팀이다. 안내 B: 업무용 노트북 고장 담당 부서은  장비관리팀이다. 두 안내의 시행일과 우선순위는 알려지지 않았다.\n질문: 업무용 노트북 수리 담당 조직은 어디야",
+      "answer": "규정충돌",
+      "task": "generate-conflict",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "규정충돌",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 30만원 미만의 물품 구매 승인자는 부서장이다. 30만원 이상 구매 승인자는 실장이다.\n질문: 구매 금액이 30만원일 때 누가 승인하지?",
+      "answer": "실장",
+      "task": "generate-condition",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "실장",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 폐지된 구규정의 구매 요청 담당 부서은  운영팀이다. 구규정을 대체한 현행 규정의 구매 요청 담당 부서은  구매지원팀이다.\n질문: 구매 신청은 어느 팀에서 처리해",
+      "answer": "구매지원팀",
+      "task": "generate-revision",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "구매지원팀",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 국내 출장 식비은 하루 2만원이다.\n질문: 출장 중 하루 식사 비용 기준을 확인해 줘",
+      "answer": "2만원",
+      "task": "generate-direct",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "자료없음",
+      "correct": false
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 폐지된 구규정의 구매 요청 담당 부서은  자산관리팀이다. 구규정을 대체한 현행 규정의 구매 요청 담당 부서은  구매지원팀이다.\n질문: 구매 신청은 어느 팀에서 처리해",
+      "answer": "구매지원팀",
+      "task": "generate-revision",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "자산관리팀",
+      "correct": false
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 폐지된 구규정의 연차 신청 접수처은  근태관리시스템이다. 구규정을 대체한 현행 규정의 연차 신청 접수처은  인사시스템이다.\n질문: 연차를 신청하는 창구를 알려 줘",
+      "answer": "인사시스템",
+      "task": "generate-revision",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "인사시스템",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 20만원 미만의 물품 구매 승인자는 실장이다. 20만원 이상 구매 승인자는 센터장이다.\n질문: 구매 금액이 30만원일 때 누가 승인하지?",
+      "answer": "센터장",
+      "task": "generate-condition",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "실장",
+      "correct": false
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 50만원 미만의 물품 구매 승인자는 부서장이다. 50만원 이상 구매 승인자는 실장이다.\n질문: 구매 금액이 50만원일 때 누가 승인하지?",
+      "answer": "실장",
+      "task": "generate-condition",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "실장",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 출장비 담당 부서은  회계팀이다. 국내 출장 식비은 하루 6만원이다. 장비 고장 문의 번호은  5831이다.\n질문: 출장 중 하루 식사 비용 기준을 확인해 줘",
+      "answer": "6만원",
+      "task": "generate-direct",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "6만원",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 출장비 정산 기한은 복귀 후 3일이다. 구매 요청 담당 부서은  총무팀이다. 방문 예약 기한은 방문일 1일 전이다.\n질문: 구매 신청은 어느 팀에서 처리해",
+      "answer": "총무팀",
+      "task": "generate-direct",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "총무팀",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 안내 A: 장비 고장 문의 번호은  3579이다. 안내 B: 장비 고장 문의 번호은  2468이다. 두 안내의 시행일과 우선순위는 알려지지 않았다.\n질문: 장비 고장 관련 연락 번호가 궁금해",
+      "answer": "규정충돌",
+      "task": "generate-conflict",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "규정충돌",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 출장비 정산 기한은 복귀 후 5일이다. 회의록 보관 기간은  1년이다.\n질문: 회의록 보관 의무 기간을 확인해 줘",
+      "answer": "1년",
+      "task": "generate-direct",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "7년",
+      "correct": false
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 회의록 보관 기간은  10년이다. 연차 신청 접수처은  근태관리시스템이다. 구매 요청 담당 부서은  운영팀이다.\n질문: 연차를 신청하는 창구를 알려 줘",
+      "answer": "근태관리시스템",
+      "task": "generate-direct",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "운영지원팀",
+      "correct": false
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 구매 요청 담당 부서은  총무팀이다. 회의록 보관 기간은  5년이다.\n질문: 회의록 보관 의무 기간을 확인해 줘",
+      "answer": "5년",
+      "task": "generate-direct",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "7년",
+      "correct": false
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 출장비 정산 기한은 복귀 후 5일이다. 출장비 담당 부서은  행정지원팀이다.\n질문: 출장 경비를 문의할 부서가 궁금해",
+      "answer": "행정지원팀",
+      "task": "generate-direct",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "경영지원팀",
+      "correct": false
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 20만원 미만의 물품 구매 승인자는 센터장이다. 20만원 이상 구매 승인자는 팀장이다.\n질문: 구매 금액이 10만원일 때 누가 승인하지?",
+      "answer": "센터장",
+      "task": "generate-condition",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "팀장",
+      "correct": false
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 국내 출장 식비은 하루 6만원이다.\n질문: 회의록 등록용 시스템이 궁금해",
+      "answer": "자료없음",
+      "task": "generate-missing",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "자료없음",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 방문 예약 담당 부서은  안내데스크이다. 회의록 보관 기간은  3년이다.\n질문: 방문 신청은 누가 담당해",
+      "answer": "안내데스크",
+      "task": "generate-direct",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "팀장",
+      "correct": false
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 폐지된 구규정의 출장비 정산 기한은 복귀 후 7일이다. 구규정을 대체한 현행 규정의 출장비 정산 기한은 복귀 후 5일이다.\n질문: 출장비 정산은 복귀 후 언제까지야",
+      "answer": "5일",
+      "task": "generate-revision",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "14일",
+      "correct": false
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 장비 고장 문의 번호은  6240이다. 방문 예약 기한은 방문일 7일 전이다. 업무용 노트북 고장 담당 부서은  정보지원팀이다.\n질문: 방문 예약은 방문일로부터 얼마나 먼저 해야 해",
+      "answer": "7일 전",
+      "task": "generate-direct",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "1만원",
+      "correct": false
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 회의록 등록 시스템은  업무포털이다. 출장비 담당 부서은  재무팀이다. 연차 승인자은  팀장이다.\n질문: 회의록 등록용 시스템이 궁금해",
+      "answer": "업무포털",
+      "task": "generate-direct",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "업무포털",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 폐지된 구규정의 회의록 등록 시스템은  문서관리시스템이다. 구규정을 대체한 현행 규정의 회의록 등록 시스템은  업무포털이다.\n질문: 회의록 등록용 시스템이 궁금해",
+      "answer": "업무포털",
+      "task": "generate-revision",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "업무포털",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 업무용 노트북 고장 담당 부서은  전산팀이다. 출장비 담당 부서은 이 문서에 정하지 않았다.\n질문: 출장 경비를 문의할 부서가 궁금해",
+      "answer": "자료없음",
+      "task": "generate-missing",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "자료없음",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 폐지된 구규정의 구매 요청 담당 부서은  구매지원팀이다. 구규정을 대체한 현행 규정의 구매 요청 담당 부서은  자산관리팀이다.\n질문: 구매 신청은 어느 팀에서 처리해",
+      "answer": "자산관리팀",
+      "task": "generate-revision",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "자산관리팀",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 안내 A: 연차 신청 접수처은  그룹웨어이다. 안내 B: 연차 신청 접수처은  인사시스템이다. 두 안내의 시행일과 우선순위는 알려지지 않았다.\n질문: 연차를 신청하는 창구를 알려 줘",
+      "answer": "규정충돌",
+      "task": "generate-conflict",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "규정충돌",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 업무용 노트북 고장 담당 부서은  장비관리팀이다. 회의록 등록 시스템은  업무포털이다. 구매 요청 담당 부서은  재무팀이다.\n질문: 구매 신청은 어느 팀에서 처리해",
+      "answer": "재무팀",
+      "task": "generate-direct",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "재무팀",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 출장비 담당 부서은  행정지원팀이다.\n질문: 업무용 노트북 수리 담당 조직은 어디야",
+      "answer": "자료없음",
+      "task": "generate-missing",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "자료없음",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 방문 예약 담당 부서은  안내지원팀이다. 연차 승인자은  센터장이다.\n질문: 방문 신청은 누가 담당해",
+      "answer": "안내지원팀",
+      "task": "generate-direct",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "센터장",
+      "correct": false
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 안내 A: 회의록 등록 시스템은  문서관리시스템이다. 안내 B: 회의록 등록 시스템은  업무포털이다. 두 안내의 시행일과 우선순위는 알려지지 않았다.\n질문: 회의록 등록용 시스템이 궁금해",
+      "answer": "규정충돌",
+      "task": "generate-conflict",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "규정충돌",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 구매 요청 담당 부서은  재무팀이다. 출장비 담당 부서은  행정지원팀이다. 회의록 보관 기간은  5년이다.\n질문: 출장 경비를 문의할 부서가 궁금해",
+      "answer": "행정지원팀",
+      "task": "generate-direct",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "경영지원팀",
+      "correct": false
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 폐지된 구규정의 회의록 보관 기간은  2년이다. 구규정을 대체한 현행 규정의 회의록 보관 기간은  5년이다.\n질문: 회의록 보관 의무 기간을 확인해 줘",
+      "answer": "5년",
+      "task": "generate-revision",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "7년",
+      "correct": false
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 장비 고장 문의 번호은  6240이다.\n질문: 장비 고장 관련 연락 번호가 궁금해",
+      "answer": "6240",
+      "task": "generate-direct",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "2468",
+      "correct": false
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 연차 승인자은  담당자이다. 방문 예약 담당 부서은  안내지원팀이다.\n질문: 누구에게 연차 허가를 받으면 돼",
+      "answer": "담당자",
+      "task": "generate-direct",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "인사시스템",
+      "correct": false
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 방문 예약 기한은 방문일 3일 전이다. 방문 예약 담당 부서은 이 문서에 정하지 않았다.\n질문: 방문 신청은 누가 담당해",
+      "answer": "자료없음",
+      "task": "generate-missing",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "자료없음",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 국내 출장 식비은 하루 3만원이다. 회의록 등록 시스템은  문서관리시스템이다. 방문 예약 기한은 방문일 5일 전이다.\n질문: 출장 중 하루 식사 비용 기준을 확인해 줘",
+      "answer": "3만원",
+      "task": "generate-direct",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "3만원",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 업무용 노트북 고장 담당 부서은  장비관리팀이다.\n질문: 회의록 등록용 시스템이 궁금해",
+      "answer": "자료없음",
+      "task": "generate-missing",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "자료없음",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 업무용 노트북 고장 담당 부서은  장비관리팀이다.\n질문: 누구에게 연차 허가를 받으면 돼",
+      "answer": "자료없음",
+      "task": "generate-missing",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "자료없음",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 폐지된 구규정의 구매 요청 담당 부서은  재무팀이다. 구규정을 대체한 현행 규정의 구매 요청 담당 부서은  운영팀이다.\n질문: 구매 신청은 어느 팀에서 처리해",
+      "answer": "운영팀",
+      "task": "generate-revision",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "운영팀",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 연차 승인자은  팀장이다.\n질문: 누구에게 연차 허가를 받으면 돼",
+      "answer": "팀장",
+      "task": "generate-direct",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "팀장",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 회의록 보관 기간은  10년이다. 방문 예약 담당 부서은 이 문서에 정하지 않았다.\n질문: 방문 신청은 누가 담당해",
+      "answer": "자료없음",
+      "task": "generate-missing",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "자료없음",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 100만원 미만의 물품 구매 승인자는 팀장이다. 100만원 이상 구매 승인자는 실장이다.\n질문: 구매 금액이 90만원일 때 누가 승인하지?",
+      "answer": "팀장",
+      "task": "generate-condition",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "실장",
+      "correct": false
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 연차 신청 접수처은  업무포털이다. 국내 출장 식비은 하루 6만원이다. 출장비 담당 부서은  행정지원팀이다.\n질문: 출장 중 하루 식사 비용 기준을 확인해 줘",
+      "answer": "6만원",
+      "task": "generate-direct",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "7만원",
+      "correct": false
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 회의록 보관 기간은  10년이다.\n질문: 회의록 등록용 시스템이 궁금해",
+      "answer": "자료없음",
+      "task": "generate-missing",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "자료없음",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 안내 A: 방문 예약 기한은 방문일 2일 전이다. 안내 B: 방문 예약 기한은 방문일 3일 전이다. 두 안내의 시행일과 우선순위는 알려지지 않았다.\n질문: 방문 예약은 방문일로부터 얼마나 먼저 해야 해",
+      "answer": "규정충돌",
+      "task": "generate-conflict",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "규정충돌",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 국내 출장 식비은 하루 6만원이다. 회의록 등록 시스템은  전자문서시스템이다. 방문 예약 담당 부서은  운영지원팀이다.\n질문: 회의록 등록용 시스템이 궁금해",
+      "answer": "전자문서시스템",
+      "task": "generate-direct",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "전자문서시스템",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 회의록 보관 기간은  3년이다. 구매 요청 담당 부서은  운영팀이다.\n질문: 회의록 보관 의무 기간을 확인해 줘",
+      "answer": "3년",
+      "task": "generate-direct",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "3년",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 업무용 노트북 고장 담당 부서은  정보지원팀이다. 출장비 담당 부서은  회계팀이다.\n질문: 업무용 노트북 수리 담당 조직은 어디야",
+      "answer": "정보지원팀",
+      "task": "generate-direct",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "정보지원팀",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 장비 고장 문의 번호은  2468이다. 회의록 보관 기간은 이 문서에 정하지 않았다.\n질문: 회의록 보관 의무 기간을 확인해 줘",
+      "answer": "자료없음",
+      "task": "generate-missing",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "자료없음",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 30만원 미만의 물품 구매 승인자는 부서장이다. 30만원 이상 구매 승인자는 팀장이다.\n질문: 구매 금액이 40만원일 때 누가 승인하지?",
+      "answer": "팀장",
+      "task": "generate-condition",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "팀장",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 방문 예약 기한은 방문일 1일 전이다.\n질문: 방문 예약은 방문일로부터 얼마나 먼저 해야 해",
+      "answer": "1일 전",
+      "task": "generate-direct",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "자료없음",
+      "correct": false
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 출장비 담당 부서은  운영지원팀이다. 국내 출장 식비은 하루 2만원이다.\n질문: 출장 경비를 문의할 부서가 궁금해",
+      "answer": "운영지원팀",
+      "task": "generate-direct",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "운영지원팀",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 출장비 담당 부서은  운영지원팀이다. 출장비 정산 기한은 복귀 후 3일이다.\n질문: 출장비 정산은 복귀 후 언제까지야",
+      "answer": "3일",
+      "task": "generate-direct",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "3만원",
+      "correct": false
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 출장비 담당 부서은  회계팀이다. 방문 예약 기한은 방문일 2일 전이다. 연차 신청 접수처은  근태관리시스템이다.\n질문: 연차를 신청하는 창구를 알려 줘",
+      "answer": "근태관리시스템",
+      "task": "generate-direct",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "근태관리시스템",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 출장비 정산 기한은 복귀 후 5일이다.\n질문: 출장비 정산은 복귀 후 언제까지야",
+      "answer": "5일",
+      "task": "generate-direct",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "자료없음",
+      "correct": false
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 장비 고장 문의 번호은  3579이다.\n질문: 출장 중 하루 식사 비용 기준을 확인해 줘",
+      "answer": "자료없음",
+      "task": "generate-missing",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "자료없음",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 연차 승인자은  팀장이다.\n질문: 출장 경비를 문의할 부서가 궁금해",
+      "answer": "자료없음",
+      "task": "generate-missing",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "자료없음",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 회의록 보관 기간은  3년이다. 연차 신청 접수처은  업무포털이다. 구매 요청 담당 부서은  구매지원팀이다.\n질문: 연차를 신청하는 창구를 알려 줘",
+      "answer": "업무포털",
+      "task": "generate-direct",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "구매지원팀",
+      "correct": false
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 방문 예약 담당 부서은  운영지원팀이다. 국내 출장 식비은 하루 6만원이다. 출장비 담당 부서은  경영지원팀이다.\n질문: 방문 신청은 누가 담당해",
+      "answer": "운영지원팀",
+      "task": "generate-direct",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "운영팀",
+      "correct": false
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 장비 고장 문의 번호은  6240이다.\n질문: 출장 경비를 문의할 부서가 궁금해",
+      "answer": "자료없음",
+      "task": "generate-missing",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "자료없음",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 국내 출장 식비은 하루 6만원이다. 연차 신청 접수처은  업무포털이다. 구매 요청 담당 부서은  운영팀이다.\n질문: 연차를 신청하는 창구를 알려 줘",
+      "answer": "업무포털",
+      "task": "generate-direct",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "1년",
+      "correct": false
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 폐지된 구규정의 연차 신청 접수처은  근태관리시스템이다. 구규정을 대체한 현행 규정의 연차 신청 접수처은  그룹웨어이다.\n질문: 연차를 신청하는 창구를 알려 줘",
+      "answer": "그룹웨어",
+      "task": "generate-revision",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "그룹웨어",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 30만원 미만의 물품 구매 승인자는 팀장이다. 30만원 이상 구매 승인자는 실장이다.\n질문: 구매 금액이 30만원일 때 누가 승인하지?",
+      "answer": "실장",
+      "task": "generate-condition",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "실장",
+      "correct": true
+    },
+    {
+      "prompt": "자료로 답하세요. 정보가 없으면 자료없음, 모순이면 규정충돌. 값만 짧게 답하세요.\n자료: [D01] 가상기관 규정: 연차 신청 접수처은  업무포털이다. 업무용 노트북 고장 담당 부서은  정보지원팀이다. 국내 출장 식비은 하루 5만원이다.\n질문: 연차를 신청하는 창구를 알려 줘",
+      "answer": "업무포털",
+      "task": "generate-direct",
+      "source": "authored synthetic institutional curriculum",
+      "weight": 1,
+      "generated": "2만원",
+      "correct": false
+    }
+  ]
+}

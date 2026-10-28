@@ -1,0 +1,25 @@
+{
+  "run": "runs/trid-korean-short-v2",
+  "parent": "runs/trid-korean-short-v1",
+  "parent_weights": {
+    "span": "49a623d95620020d4c4da2da4cb4ba746a5e33851e5fc9fff7a5033b23172992",
+    "presence": "c2d340f09b42f9a3f352ba64d17f4b72ed8c01a4e87af6f505263b04d9671aef"
+  },
+  "data": "data/korean-short-v2",
+  "steps_each": 1200,
+  "batch": 16,
+  "learning_rate": 0.0001,
+  "selection": "component validation loss only",
+  "test_policy": "new v2 test frozen before training; v1/T01 are development regression only",
+  "pdf": "local PDF text extraction, page chunks, lexical retrieval then real two-model inference; no automatic retraining or filename-to-institution inference; no OCR",
+  "active_before": {
+    "active-model.json": {
+      "run": "runs/trid-v0.2",
+      "status": "experimental; 6/16 held-out phrasing semantic passes; not a finished dialogue model"
+    },
+    "active-institution-model.json": {
+      "run": "runs/trid-grounded-v2",
+      "status": "experimental generation model; 18/24 familiar-domain demo, 10/480 new-format/value cases; missing-information handling regressed; not ready for customer demonstrations"
+    }
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "method": "Expected weighted answer token counts; not an exact decomposition of minibatch gradients.",
+  "groups": {
+    "korean_grounded_dialogue": {
+      "rows": 92,
+      "sampling_weight": 1216.9299999999985,
+      "weighted_target_tokens": 19338.605000000007,
+      "target_tokens": 1462,
+      "sampling_mass": 0.23000000000000217,
+      "approx_target_token_mass": 0.3493439244278753
+    },
+    "korean_correction": {
+      "rows": 8,
+      "sampling_weight": 105.82000000000002,
+      "weighted_target_tokens": 3002.6425,
+      "target_tokens": 227,
+      "sampling_mass": 0.020000000000000216,
+      "approx_target_token_mass": 0.05424149852607911
+    },
+    "korean_basic_dialogue": {
+      "rows": 20,
+      "sampling_weight": 529.0999999999999,
+      "weighted_target_tokens": 9682.53,
+      "target_tokens": 366,
+      "sampling_mass": 0.10000000000000105,
+      "approx_target_token_mass": 0.17491091154665162
+    },
+    "korean_mrc_answerable": {
+      "rows": 3475,
+      "sampling_weight": 2311.1673274028026,
+      "weighted_target_tokens": 12053.319561013113,
+      "target_tokens": 18123,
+      "sampling_mass": 0.436811061690196,
+      "approx_target_token_mass": 0.21773824729485888
+    },
+    "korean_mrc_unanswerable": {
+      "rows": 1696,
+      "sampling_weight": 1127.982672597143,
+      "weighted_target_tokens": 11279.826725971498,
+      "target_tokens": 16960,
+      "sampling_mass": 0.2131889383098006,
+      "approx_target_token_mass": 0.2037654182045351
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "verified_at_unix": 1793066222.8936708,
+  "pid": 138,
+  "stage": "pretraining",
+  "checkpoint": "step-00000250",
+  "saved_step": 250,
+  "saved_tokens": 512000,
+  "optimizer_checkpoint_present": true,
+  "plan_tokens": 100001792,
+  "auto_activate": false,
+  "status": "Background bounded pretrain -> mixed SFT -> diagnostics pipeline running; final model quality not established."
+}

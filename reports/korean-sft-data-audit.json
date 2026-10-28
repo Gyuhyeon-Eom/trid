@@ -1,0 +1,16 @@
+{
+  "rows": {
+    "train": 5291,
+    "valid": 324
+  },
+  "max_tokens": {
+    "train": 512,
+    "valid": 512
+  },
+  "data_sha256": {
+    "train": "05e31246cb1104eb64283d119c3bd29229050b047ca71907b4e58cd3dcc458dd",
+    "valid": "27ae28835473b56965dbca85a0137fc05d0ca37485954653f20b9c56418f7c12"
+  },
+  "scenarios": "Thirty original fictional training documents; eight separate validation documents. Eight correction training examples and two validation examples. Basic dialogues use separate names/phrases. No mechanical repetition expansion.",
+  "evaluation": "Frozen 40-turn suite excluded from curriculum. It remains a developer-authored diagnostic, not independent certification."
+}

@@ -1,0 +1,32 @@
+{
+  "experiment": "separate short-document span and presence learning",
+  "run": "runs/trid-korean-short-v1",
+  "init_run": "runs/trid-korean-base-v1",
+  "initial_weights_sha256": "425998beb208d8806176ffbd8e941be93688549cad99668cb08b8f214652aead",
+  "active_models_before": {
+    "active-model.json": {
+      "run": "runs/trid-v0.2",
+      "status": "experimental; 6/16 held-out phrasing semantic passes; not a finished dialogue model"
+    },
+    "active-institution-model.json": {
+      "run": "runs/trid-grounded-v2",
+      "status": "experimental generation model; 18/24 familiar-domain demo, 10/480 new-format/value cases; missing-information handling regressed; not ready for customer demonstrations"
+    }
+  },
+  "data": "data/korean-short-v1",
+  "components": {
+    "span": "1200 positive rows; span objective only",
+    "presence": "2400 rows; per-document 3 positive/3 negative, class CE only"
+  },
+  "schedule": {
+    "steps_each": 800,
+    "batch": 12,
+    "lr": 0.0002,
+    "seed": 42
+  },
+  "selection": "Each component minimum validation loss; test only after training, no threshold tuning",
+  "tests": "600 held-out synthetic rows; changed values and full sentence/question templates; six field meanings shared",
+  "diagnostics": "Historical T01/counterfactual and identical 197-question broad MRC subset reported separately",
+  "size_tradeoff": "Two independent approximately 17M backbones; combined deployment is approximately 35M parameters, not a single 17M model",
+  "activation": "No automatic replacement of default models; assess actual outputs and scope first"
+}

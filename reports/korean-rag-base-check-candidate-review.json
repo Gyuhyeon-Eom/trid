@@ -1,0 +1,57 @@
+{
+  "reviewer": "Codex semantic review; not an independent human benchmark",
+  "pass": 5,
+  "total": 12,
+  "results": [
+    {
+      "id": "fresh01-1",
+      "semantic_pass": false
+    },
+    {
+      "id": "fresh02-1",
+      "semantic_pass": true
+    },
+    {
+      "id": "fresh03-1",
+      "semantic_pass": true
+    },
+    {
+      "id": "fresh04-1",
+      "semantic_pass": true
+    },
+    {
+      "id": "fresh05-1",
+      "semantic_pass": false
+    },
+    {
+      "id": "fresh06-1",
+      "semantic_pass": false
+    },
+    {
+      "id": "fresh07-1",
+      "semantic_pass": false
+    },
+    {
+      "id": "fresh08-1",
+      "semantic_pass": false
+    },
+    {
+      "id": "fresh09-1",
+      "semantic_pass": false
+    },
+    {
+      "id": "fresh10-1",
+      "semantic_pass": true
+    },
+    {
+      "id": "fresh11-1",
+      "semantic_pass": true
+    },
+    {
+      "id": "fresh12-1",
+      "semantic_pass": false
+    }
+  ],
+  "source": "reports/korean-rag-base-check-candidate.json",
+  "source_sha256": "39a2d40519cae9a0c9821b845c7684efbe97c40bd2852a89c81fb7dbc268ccd1"
+}

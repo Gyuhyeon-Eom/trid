@@ -1,0 +1,20 @@
+{
+  "stage": "pretraining pilot, not a conversational release",
+  "parameters": 17308032,
+  "weight_bytes": 69237544,
+  "completed_steps": 200,
+  "planned_steps": 2000,
+  "tokens_seen": 409600,
+  "training_seconds": 35.915,
+  "initial_sampled_validation_loss": 9.060665488243103,
+  "final_sampled_validation_loss": 6.936061263084412,
+  "validation_tokens_per_check": 16384,
+  "mps_resume": "Successfully continued from step 100 to 200 including optimizer and batch RNG state",
+  "unit_tests_passed": 10,
+  "source": "https://huggingface.co/datasets/wikimedia/wikipedia",
+  "source_snapshot": "20231101.ko",
+  "weights_origin": "random initialization, no external pretrained weights",
+  "conversation_finetuning_performed": false,
+  "background_training_running": false,
+  "limitation": "Short next-token pilot only. Does not establish conversational quality or resolve repetition. Old v0.1 chat remains unchanged."
+}

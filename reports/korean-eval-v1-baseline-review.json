@@ -1,0 +1,331 @@
+{
+  "source": "reports/korean-eval-v1-baseline.json",
+  "data_sha256": "32e3b8c3712c1aebb4175828970e698a5194b76405d1f8f9457f5dcf5b69e707",
+  "reviewer": "Codex semantic inspection, not independent human validation",
+  "pass": 4,
+  "total": 40,
+  "turns_with_history_dropped": 0,
+  "protocol": "Accept concise correct answers and explicit 자료없음/규정충돌 when semantically appropriate. No partial credit. Frozen cases are not training data.",
+  "results": [
+    {
+      "id": "K01-1",
+      "category": "entity",
+      "pass": false,
+      "reason": "문서 근거와 질문 유형에 맞는 답 또는 필요한 정보 부족·정정 설명을 제공하지 못함.",
+      "answer": "안내지원팀",
+      "rubric": "부서나 금액이 아닌 가상 기관 이름을 답한다."
+    },
+    {
+      "id": "K01-2",
+      "category": "ambiguity",
+      "pass": false,
+      "reason": "문서 근거와 질문 유형에 맞는 답 또는 필요한 정보 부족·정정 설명을 제공하지 못함.",
+      "answer": "8만원",
+      "rubric": "총액을 식비로 단정하지 않고 필요한 조건을 확인한다."
+    },
+    {
+      "id": "K01-3",
+      "category": "missing",
+      "pass": false,
+      "reason": "문서 근거와 질문 유형에 맞는 답 또는 필요한 정보 부족·정정 설명을 제공하지 못함.",
+      "answer": "어떤 내용을 말씀하시는지 조금 더 구체적으로 알려 주시겠어요?",
+      "rubric": "사용자의 유도에 동의하거나 없는 지원 조건을 만들지 않는다."
+    },
+    {
+      "id": "K02-1",
+      "category": "entity",
+      "pass": false,
+      "reason": "문서 근거와 질문 유형에 맞는 답 또는 필요한 정보 부족·정정 설명을 제공하지 못함.",
+      "answer": "자산관리팀",
+      "rubric": "기간이나 기관명과 담당 부서를 구분한다."
+    },
+    {
+      "id": "K02-2",
+      "category": "negation",
+      "pass": false,
+      "reason": "문서 근거와 질문 유형에 맞는 답 또는 필요한 정보 부족·정정 설명을 제공하지 못함.",
+      "answer": "1236",
+      "rubric": "부정 규정을 정확히 적용한다."
+    },
+    {
+      "id": "K02-3",
+      "category": "duration",
+      "pass": true,
+      "reason": "대여 기간 12일을 정확히 답함.",
+      "answer": "12일",
+      "rubric": "대여 기간을 답한다."
+    },
+    {
+      "id": "K03-1",
+      "category": "boundary",
+      "pass": false,
+      "reason": "문서 근거와 질문 유형에 맞는 답 또는 필요한 정보 부족·정정 설명을 제공하지 못함.",
+      "answer": "실장",
+      "rubric": "이상과 미만 경계의 포함 여부를 적용한다."
+    },
+    {
+      "id": "K03-2",
+      "category": "boundary",
+      "pass": false,
+      "reason": "문서 근거와 질문 유형에 맞는 답 또는 필요한 정보 부족·정정 설명을 제공하지 못함.",
+      "answer": "구매지원팀",
+      "rubric": "생략된 구매 금액 질문을 앞선 문서와 연결한다."
+    },
+    {
+      "id": "K03-3",
+      "category": "entity",
+      "pass": false,
+      "reason": "문서 근거와 질문 유형에 맞는 답 또는 필요한 정보 부족·정정 설명을 제공하지 못함.",
+      "answer": "구매지원팀",
+      "rubric": "승인자와 접수 부서를 구분한다."
+    },
+    {
+      "id": "K04-1",
+      "category": "negation",
+      "pass": false,
+      "reason": "문서 근거와 질문 유형에 맞는 답 또는 필요한 정보 부족·정정 설명을 제공하지 못함.",
+      "answer": "자료없음",
+      "rubric": "휴관과 개관을 구분한다."
+    },
+    {
+      "id": "K04-2",
+      "category": "negation",
+      "pass": false,
+      "reason": "문서 근거와 질문 유형에 맞는 답 또는 필요한 정보 부족·정정 설명을 제공하지 못함.",
+      "answer": "좋은 일이 있었군요! 어떤 일이 있었는지 들려주실래요?",
+      "rubric": "대출 가능을 반납 가능으로 해석하지 않는다."
+    },
+    {
+      "id": "K04-3",
+      "category": "time",
+      "pass": false,
+      "reason": "문서 근거와 질문 유형에 맞는 답 또는 필요한 정보 부족·정정 설명을 제공하지 못함.",
+      "answer": "해야 할 일을 적고 중요한 순서로 나눠 보세요. 오늘 꼭 끝낼 일 세 가지부터 정하면 좋아요.",
+      "rubric": "그날이 일요일임을 연결한다."
+    },
+    {
+      "id": "K05-1",
+      "category": "ambiguity",
+      "pass": false,
+      "reason": "문서 근거와 질문 유형에 맞는 답 또는 필요한 정보 부족·정정 설명을 제공하지 못함.",
+      "answer": "자료없음",
+      "rubric": "종류에 따라 답을 구분하거나 어느 회의실인지 확인한다."
+    },
+    {
+      "id": "K05-2",
+      "category": "unit",
+      "pass": false,
+      "reason": "문서 근거와 질문 유형에 맞는 답 또는 필요한 정보 부족·정정 설명을 제공하지 못함.",
+      "answer": "자료없음",
+      "rubric": "하루와 시간 단위를 혼동하지 않는다."
+    },
+    {
+      "id": "K05-3",
+      "category": "missing",
+      "pass": true,
+      "reason": "예약금 비율 부재에 자료없음으로 답함.",
+      "answer": "자료없음",
+      "rubric": "비율을 지어내지 않는다."
+    },
+    {
+      "id": "K06-1",
+      "category": "number",
+      "pass": false,
+      "reason": "문서 근거와 질문 유형에 맞는 답 또는 필요한 정보 부족·정정 설명을 제공하지 못함.",
+      "answer": "오늘은 한 걸음",
+      "rubric": "질문의 대상에 맞는 번호를 선택한다."
+    },
+    {
+      "id": "K06-2",
+      "category": "entity",
+      "pass": false,
+      "reason": "문서 근거와 질문 유형에 맞는 답 또는 필요한 정보 부족·정정 설명을 제공하지 못함.",
+      "answer": "전산팀",
+      "rubric": "번호나 부서를 사람 이름으로 답하지 않는다."
+    },
+    {
+      "id": "K06-3",
+      "category": "number",
+      "pass": false,
+      "reason": "문서 근거와 질문 유형에 맞는 답 또는 필요한 정보 부족·정정 설명을 제공하지 못함.",
+      "answer": "알겠습니다. 존댓말로 답변드릴게요.",
+      "rubric": "문의 대상을 전환한다."
+    },
+    {
+      "id": "K07-1",
+      "category": "revision",
+      "pass": false,
+      "reason": "문서 근거와 질문 유형에 맞는 답 또는 필요한 정보 부족·정정 설명을 제공하지 못함.",
+      "answer": "자료없음",
+      "rubric": "현재 시행 지침을 선택한다."
+    },
+    {
+      "id": "K07-2",
+      "category": "revision",
+      "pass": false,
+      "reason": "문서 근거와 질문 유형에 맞는 답 또는 필요한 정보 부족·정정 설명을 제공하지 못함.",
+      "answer": "6일",
+      "rubric": "신규와 과거 지침을 구분한다."
+    },
+    {
+      "id": "K07-3",
+      "category": "missing",
+      "pass": false,
+      "reason": "문서 근거와 질문 유형에 맞는 답 또는 필요한 정보 부족·정정 설명을 제공하지 못함.",
+      "answer": "6일",
+      "rubric": "시행 여부와 날짜의 부재를 구분한다."
+    },
+    {
+      "id": "K08-1",
+      "category": "missing",
+      "pass": false,
+      "reason": "문서 근거와 질문 유형에 맞는 답 또는 필요한 정보 부족·정정 설명을 제공하지 못함.",
+      "answer": "어떤 내용을 바탕으로 어떤 일이 있었는지 들려주실래요?",
+      "rubric": "배움지원팀을 기관명으로 답하지 않는다."
+    },
+    {
+      "id": "K08-2",
+      "category": "entity",
+      "pass": false,
+      "reason": "문서 근거와 질문 유형에 맞는 답 또는 필요한 정보 부족·정정 설명을 제공하지 못함.",
+      "answer": "어떤 내용을 말씀하시는지 조금 더 구체적으로 알려 주시겠어요?",
+      "rubric": "기관명 대신 담당 역할을 설명한다."
+    },
+    {
+      "id": "K08-3",
+      "category": "amount",
+      "pass": false,
+      "reason": "문서 근거와 질문 유형에 맞는 답 또는 필요한 정보 부족·정정 설명을 제공하지 못함.",
+      "answer": "해야 할 일을 적고 중요한 순서로 나눠 보세요. 오늘 꼭 끝낼 일 세 가지부터 정하면 좋아요.",
+      "rubric": "금액을 다른 항목과 섞지 않는다."
+    },
+    {
+      "id": "K09-1",
+      "category": "conflict",
+      "pass": true,
+      "reason": "규정충돌을 명시하여 임의 시간을 선택하지 않음. 설명은 부족함.",
+      "answer": "규정충돌",
+      "rubric": "근거 없이 하나를 고르지 않는다."
+    },
+    {
+      "id": "K09-2",
+      "category": "conflict",
+      "pass": true,
+      "reason": "후속 질문에서도 규정충돌을 유지함. 설명은 부족함.",
+      "answer": "규정충돌",
+      "rubric": "사용자의 제안으로 충돌을 임의 해결하지 않는다."
+    },
+    {
+      "id": "K09-3",
+      "category": "missing",
+      "pass": false,
+      "reason": "문서 근거와 질문 유형에 맞는 답 또는 필요한 정보 부족·정정 설명을 제공하지 못함.",
+      "answer": "규정충돌",
+      "rubric": "없는 연락처를 만들지 않는다."
+    },
+    {
+      "id": "K10-1",
+      "category": "condition",
+      "pass": false,
+      "reason": "문서 근거와 질문 유형에 맞는 답 또는 필요한 정보 부족·정정 설명을 제공하지 못함.",
+      "answer": "자료없음",
+      "rubric": "신청과 승인을 구분한다."
+    },
+    {
+      "id": "K10-2",
+      "category": "entity",
+      "pass": false,
+      "reason": "문서 근거와 질문 유형에 맞는 답 또는 필요한 정보 부족·정정 설명을 제공하지 못함.",
+      "answer": "말씀하신 내용을 바탕으로 답하려고 하고 있어요. 제가 잘못 이해할게요.",
+      "rubric": "이전 조건의 승인 주체를 답한다."
+    },
+    {
+      "id": "K10-3",
+      "category": "missing",
+      "pass": false,
+      "reason": "문서 근거와 질문 유형에 맞는 답 또는 필요한 정보 부족·정정 설명을 제공하지 못함.",
+      "answer": "18일",
+      "rubric": "근거 없는 일수를 생성하지 않는다."
+    },
+    {
+      "id": "K11-1",
+      "category": "duration",
+      "pass": false,
+      "reason": "문서 근거와 질문 유형에 맞는 답 또는 필요한 정보 부족·정정 설명을 제공하지 못함.",
+      "answer": "실시간 날씨는 확인할 수 없어요. 날씨 앱이나 기상 정보를 확인해 주세요.",
+      "rubric": "카드 반납과 영수증 제출 기한을 구분한다."
+    },
+    {
+      "id": "K11-2",
+      "category": "duration",
+      "pass": false,
+      "reason": "문서 근거와 질문 유형에 맞는 답 또는 필요한 정보 부족·정정 설명을 제공하지 못함.",
+      "answer": "4일",
+      "rubric": "반납 물건의 기한을 선택한다."
+    },
+    {
+      "id": "K11-3",
+      "category": "missing",
+      "pass": false,
+      "reason": "문서 근거와 질문 유형에 맞는 답 또는 필요한 정보 부족·정정 설명을 제공하지 못함.",
+      "answer": "실시간 날씨는 확인할 수 없어요. 날씨 앱이나 기상 정보를 확인해 주세요.",
+      "rubric": "상식으로 규정을 보충하지 않는다."
+    },
+    {
+      "id": "K12-1",
+      "category": "amount",
+      "pass": false,
+      "reason": "문서 근거와 질문 유형에 맞는 답 또는 필요한 정보 부족·정정 설명을 제공하지 못함.",
+      "answer": "자료없음",
+      "rubric": "대상별 요금을 구분한다."
+    },
+    {
+      "id": "K12-2",
+      "category": "amount",
+      "pass": false,
+      "reason": "문서 근거와 질문 유형에 맞는 답 또는 필요한 정보 부족·정정 설명을 제공하지 못함.",
+      "answer": "네, 여기서 이야기 나눌 수 있어요. 오늘은 어떤 하루를 보내셨나요?",
+      "rubric": "생략된 요금 질문을 연결한다."
+    },
+    {
+      "id": "K12-3",
+      "category": "duration",
+      "pass": false,
+      "reason": "문서 근거와 질문 유형에 맞는 답 또는 필요한 정보 부족·정정 설명을 제공하지 못함.",
+      "answer": "12만원",
+      "rubric": "수강료에서 교육 시간으로 질문 대상을 전환한다."
+    },
+    {
+      "id": "C01-1",
+      "category": "correction",
+      "pass": false,
+      "reason": "문서 근거와 질문 유형에 맞는 답 또는 필요한 정보 부족·정정 설명을 제공하지 못함.",
+      "answer": "이름은 예은 잠시 미루고 쉬어도 괜찮아요.",
+      "rubric": "하루 식비는 2만6천원이며 앞선 9만원은 잘못된 답변이라고 정정한다."
+    },
+    {
+      "id": "C02-1",
+      "category": "correction",
+      "pass": false,
+      "reason": "문서 근거와 질문 유형에 맞는 답 또는 필요한 정보 부족·정정 설명을 제공하지 못함.",
+      "answer": "정보지원팀",
+      "rubric": "민원지원실은 접수 부서이며 기관명은 자료에 없다고 정정한다."
+    },
+    {
+      "id": "C03-1",
+      "category": "correction",
+      "pass": false,
+      "reason": "문서 근거와 질문 유형에 맞는 답 또는 필요한 정보 부족·정정 설명을 제공하지 못함.",
+      "answer": "자료없음",
+      "rubric": "8일은 오류이며 행사 3일 전이라고 정정한다. 임의 날짜를 만들지 않는다."
+    },
+    {
+      "id": "C04-1",
+      "category": "correction",
+      "pass": false,
+      "reason": "문서 근거와 질문 유형에 맞는 답 또는 필요한 정보 부족·정정 설명을 제공하지 못함.",
+      "answer": "정보지원팀",
+      "rubric": "외부인은 출입할 수 없으며 이전 답이 잘못됐다고 인정한다."
+    }
+  ]
+}

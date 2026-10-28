@@ -1,0 +1,133 @@
+{
+  "tokenizer": "runs/trid-v0.2/tokenizer.json",
+  "tokenizer_sha256": "73551e65acfa80834c235602900f31dc353ce230bfb69939ffdf44ca26ebc58d",
+  "vocab_size": 8192,
+  "source": "data/wiki-ko-pilot/train.jsonl",
+  "source_sha256": "6637e5d408aeecf040ef5d6a115dd42a4e894cd9f3d855bef987118f5e06462b",
+  "sampling": "reservoir, seed 75, full documents from existing training split only",
+  "source_documents": 10777,
+  "sample_documents": 256,
+  "counts": {
+    "characters": 692543,
+    "nonspace_characters": 531710,
+    "tokens": 376864,
+    "hangul_characters": 424273
+  },
+  "tokens_per_100_nonspace_characters": 70.87773410317655,
+  "sample_exact_roundtrips": 256,
+  "probes": [
+    {
+      "category": "조사와어미",
+      "text": "기관에 문의했어요.",
+      "nfc_tokens": 8,
+      "nfd_tokens": 59,
+      "roundtrip": true
+    },
+    {
+      "category": "조사와어미",
+      "text": "기관에서 문의했어요.",
+      "nfc_tokens": 8,
+      "nfd_tokens": 65,
+      "roundtrip": true
+    },
+    {
+      "category": "조사와어미",
+      "text": "기관으로 문의했어요.",
+      "nfc_tokens": 8,
+      "nfd_tokens": 65,
+      "roundtrip": true
+    },
+    {
+      "category": "조사와어미",
+      "text": "기관이 문의했어요.",
+      "nfc_tokens": 8,
+      "nfd_tokens": 59,
+      "roundtrip": true
+    },
+    {
+      "category": "조사와어미",
+      "text": "기관에 문의하지 않았어요.",
+      "nfc_tokens": 9,
+      "nfd_tokens": 81,
+      "roundtrip": true
+    },
+    {
+      "category": "띄어쓰기와구어",
+      "text": "출장 식비는 하루 얼마예요?",
+      "nfc_tokens": 8,
+      "nfd_tokens": 85,
+      "roundtrip": true
+    },
+    {
+      "category": "띄어쓰기와구어",
+      "text": "출장식비는 하루 얼마야?",
+      "nfc_tokens": 7,
+      "nfd_tokens": 78,
+      "roundtrip": true
+    },
+    {
+      "category": "띄어쓰기와구어",
+      "text": "하루 밥값 얼마까지 돼?",
+      "nfc_tokens": 9,
+      "nfd_tokens": 67,
+      "roundtrip": true
+    },
+    {
+      "category": "띄어쓰기와구어",
+      "text": "그건 어느 기관 기준인데?",
+      "nfc_tokens": 7,
+      "nfd_tokens": 76,
+      "roundtrip": true
+    },
+    {
+      "category": "단위와식별자",
+      "text": "식비 3만원, 정산 기한 7일, 보관 기간 3년입니다.",
+      "nfc_tokens": 21,
+      "nfd_tokens": 145,
+      "roundtrip": true
+    },
+    {
+      "category": "단위와식별자",
+      "text": "담당 부서는 정보지원팀이고 기관명은 제시되지 않았습니다.",
+      "nfc_tokens": 15,
+      "nfd_tokens": 192,
+      "roundtrip": true
+    },
+    {
+      "category": "단위와식별자",
+      "text": "서울 A기관의 IT지원팀에서 MacBook M5를 점검합니다.",
+      "nfc_tokens": 21,
+      "nfd_tokens": 131,
+      "roundtrip": true
+    },
+    {
+      "category": "단위와식별자",
+      "text": "물품 금액이 50만원 미만인지, 50만원 이상인지 확인하세요.",
+      "nfc_tokens": 22,
+      "nfd_tokens": 182,
+      "roundtrip": true
+    },
+    {
+      "category": "문맥과정정",
+      "text": "그게 무슨 뜻인가요?",
+      "nfc_tokens": 8,
+      "nfd_tokens": 60,
+      "roundtrip": true
+    },
+    {
+      "category": "문맥과정정",
+      "text": "제가 앞서 10일이라고 답한 것은 잘못입니다. 자료에는 7일이라고 되어 있습니다.",
+      "nfc_tokens": 21,
+      "nfd_tokens": 236,
+      "roundtrip": true
+    },
+    {
+      "category": "문맥과정정",
+      "text": "출장비 전체를 말씀하시는 건가요, 하루 식비를 말씀하시는 건가요?",
+      "nfc_tokens": 25,
+      "nfd_tokens": 213,
+      "roundtrip": true
+    }
+  ],
+  "limitations": "Tokenization efficiency and exact text reconstruction only; not Korean comprehension or institutional accuracy. Existing Wikipedia pilot is not a representative Korean language sample. Diagnostic prompts are development probes, not a hidden test set."
+}

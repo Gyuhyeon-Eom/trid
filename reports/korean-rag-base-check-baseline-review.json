@@ -1,0 +1,69 @@
+{
+  "source": "reports/korean-rag-base-check-baseline.json",
+  "source_sha256": "1380fa4932c17a4540fc4b9227c70a55c0b44726594cb7cdf157ae3280650006",
+  "reviewer": "Codex semantic review; same-author small diagnostic; not independent human review",
+  "pass": 4,
+  "total": 12,
+  "results": [
+    {
+      "id": "fresh01-1",
+      "semantic_pass": false,
+      "reason": "다른 주제이거나 요청한 내용에 응답하지 못함."
+    },
+    {
+      "id": "fresh02-1",
+      "semantic_pass": true,
+      "reason": "질문의 핵심 요청에 맞는 응답."
+    },
+    {
+      "id": "fresh03-1",
+      "semantic_pass": true,
+      "reason": "질문의 핵심 요청에 맞는 응답."
+    },
+    {
+      "id": "fresh04-1",
+      "semantic_pass": false,
+      "reason": "다른 주제이거나 요청한 내용에 응답하지 못함."
+    },
+    {
+      "id": "fresh05-1",
+      "semantic_pass": true,
+      "reason": "질문의 핵심 요청에 맞는 응답."
+    },
+    {
+      "id": "fresh06-1",
+      "semantic_pass": false,
+      "reason": "다른 주제이거나 요청한 내용에 응답하지 못함."
+    },
+    {
+      "id": "fresh07-1",
+      "semantic_pass": true,
+      "reason": "질문의 핵심 요청에 맞는 응답."
+    },
+    {
+      "id": "fresh08-1",
+      "semantic_pass": false,
+      "reason": "다른 주제이거나 요청한 내용에 응답하지 못함."
+    },
+    {
+      "id": "fresh09-1",
+      "semantic_pass": false,
+      "reason": "다른 주제이거나 요청한 내용에 응답하지 못함."
+    },
+    {
+      "id": "fresh10-1",
+      "semantic_pass": false,
+      "reason": "다른 주제이거나 요청한 내용에 응답하지 못함."
+    },
+    {
+      "id": "fresh11-1",
+      "semantic_pass": false,
+      "reason": "다른 주제이거나 요청한 내용에 응답하지 못함."
+    },
+    {
+      "id": "fresh12-1",
+      "semantic_pass": false,
+      "reason": "다른 주제이거나 요청한 내용에 응답하지 못함."
+    }
+  ]
+}

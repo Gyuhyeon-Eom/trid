@@ -1,0 +1,23 @@
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+*.log
+*.command
+
+# training outputs and collected data stay local (GBs; see README for licences)
+runs/
+data/*
+!data/korean-rag-eval-v1-source/
+!data/korean-rag-eval-v1-source/*.jsonl
+!data/korean-rag-curriculum-v1-source/
+!data/korean-rag-curriculum-v1-source/*.jsonl
+
+output/
+tmp/
+.shared-demo/
+deploy/shared-demo/.wrangler/
+deploy/shared-demo/wrangler.json
+reports/*.flag
+reports/*-job.json
+reports/*.tmp

@@ -1,0 +1,26 @@
+{
+  "run": "runs/trid-korean-span-v1",
+  "parent": "runs/trid-korean-base-v1",
+  "parent_weights_sha256": "425998beb208d8806176ffbd8e941be93688549cad99668cb08b8f214652aead",
+  "active_models_before": {
+    "active-model.json": {
+      "run": "runs/trid-v0.2",
+      "status": "experimental; 6/16 held-out phrasing semantic passes; not a finished dialogue model"
+    },
+    "active-institution-model.json": {
+      "run": "runs/trid-grounded-v2",
+      "status": "experimental generation model; 18/24 familiar-domain demo, 10/480 new-format/value cases; missing-information handling regressed; not ready for customer demonstrations"
+    }
+  },
+  "data": "data/korean-mrc-v1",
+  "steps": 1200,
+  "batch_size": 12,
+  "lr": 0.0001,
+  "seed": 42,
+  "input": "question before full document; no history; original causal backbone retained",
+  "architecture": "Own 17.3M backbone plus 2-class presence and Unicode start/end source-span heads; 17,428,610 total parameters",
+  "decoding": "Presence argmax; source-only ordered span up to 64 characters; no hand-written answer routing",
+  "selection": "Best 292-row full validation loss, not evaluation accuracy",
+  "evaluation": "All 292 internal validation examples, separately identical 197-question generative baseline subset; no official dev test",
+  "scope": "Separate local experiment. No activation without actual accuracy assessment. No external pretrained weights or API."
+}

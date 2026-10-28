@@ -1,0 +1,211 @@
+{
+  "run": "runs/trid-grounded-v2",
+  "weights_sha256": "4aed4b08fe4b4ce8fd6260bd5672f59183dbee40097ef032796c42bcdcdb342e",
+  "evaluated_at": "2026-10-26T10:23:23.492597+00:00",
+  "source": {
+    "id": "T01",
+    "title": "가상 기관 출장비 안내",
+    "text": "가상기관 규정: 국내 출장 식비는 하루 3만원이다. 출장비 정산은 복귀 후 7일 이내에 신청한다. 담당 부서는 운영지원팀이다."
+  },
+  "protocol": "Actual greedy LM outputs, same weights/prompt, independently versus rolling self-generated history. No gold answers supplied as history. User-reported development regression, not a held-out test. Requires semantic review; no automatic keyword correctness.",
+  "results": {
+    "independent": [
+      {
+        "question": "출장비가 얼마야?",
+        "rubric": "출장비 총액과 하루 식비를 구분해야 함. 총액을 단정하지 말고 확인 질문 또는 식비만 하루 3만원이며 총액은 알 수 없다고 설명.",
+        "history_supplied": [],
+        "generated": {
+          "answer": "3만원",
+          "input_tokens": 90,
+          "generated_tokens_including_eos": 4,
+          "first_token_seconds": 0.0832,
+          "total_seconds": 0.0965,
+          "tokens_per_second_including_prefill": 41.47,
+          "history_turns_dropped": 0,
+          "stopped_on_eos": true
+        }
+      },
+      {
+        "question": "어느 기관 규정인데?",
+        "rubric": "특정 실제 기관명은 주어지지 않았으며 가상 시연 규정이라는 점을 밝혀야 함. 부서명을 기관명으로 제시하면 실패.",
+        "history_supplied": [],
+        "generated": {
+          "answer": "운영지원팀",
+          "input_tokens": 89,
+          "generated_tokens_including_eos": 5,
+          "first_token_seconds": 0.0045,
+          "total_seconds": 0.0148,
+          "tokens_per_second_including_prefill": 337.34,
+          "history_turns_dropped": 0,
+          "stopped_on_eos": true
+        }
+      },
+      {
+        "question": "공공기관 이름이 뭔데?",
+        "rubric": "기관명은 문서에 없음. 금액·기간·부서·실제 기관명을 지어내지 않아야 함.",
+        "history_supplied": [],
+        "generated": {
+          "answer": "10일",
+          "input_tokens": 92,
+          "generated_tokens_including_eos": 3,
+          "first_token_seconds": 0.004,
+          "total_seconds": 0.009,
+          "tokens_per_second_including_prefill": 332.43,
+          "history_turns_dropped": 0,
+          "stopped_on_eos": true
+        }
+      },
+      {
+        "question": "10일이 뭔말이야?",
+        "rubric": "10일은 자료에 근거가 없음. 이전 답에서 이를 말했다면 오류를 인정하고 정정. 문서에 있는 정산 기한은 복귀 후 7일.",
+        "history_supplied": [],
+        "generated": {
+          "answer": "10만원",
+          "input_tokens": 93,
+          "generated_tokens_including_eos": 4,
+          "first_token_seconds": 0.0038,
+          "total_seconds": 0.0116,
+          "tokens_per_second_including_prefill": 346.15,
+          "history_turns_dropped": 0,
+          "stopped_on_eos": true
+        }
+      },
+      {
+        "question": "뭐가 10만원이야",
+        "rubric": "10만원은 자료에서 확인할 수 없음. 이전 답에서 말했다면 정정. 하루 식비 3만원과 출장비 총액을 구분해야 함.",
+        "history_supplied": [],
+        "generated": {
+          "answer": "운영지원팀",
+          "input_tokens": 92,
+          "generated_tokens_including_eos": 5,
+          "first_token_seconds": 0.0039,
+          "total_seconds": 0.0143,
+          "tokens_per_second_including_prefill": 348.71,
+          "history_turns_dropped": 0,
+          "stopped_on_eos": true
+        }
+      }
+    ],
+    "rolling_history": [
+      {
+        "question": "출장비가 얼마야?",
+        "rubric": "출장비 총액과 하루 식비를 구분해야 함. 총액을 단정하지 말고 확인 질문 또는 식비만 하루 3만원이며 총액은 알 수 없다고 설명.",
+        "history_supplied": [],
+        "generated": {
+          "answer": "3만원",
+          "input_tokens": 90,
+          "generated_tokens_including_eos": 4,
+          "first_token_seconds": 0.0038,
+          "total_seconds": 0.0113,
+          "tokens_per_second_including_prefill": 352.79,
+          "history_turns_dropped": 0,
+          "stopped_on_eos": true
+        }
+      },
+      {
+        "question": "어느 기관 규정인데?",
+        "rubric": "특정 실제 기관명은 주어지지 않았으며 가상 시연 규정이라는 점을 밝혀야 함. 부서명을 기관명으로 제시하면 실패.",
+        "history_supplied": [
+          {
+            "user": "출장비가 얼마야?",
+            "assistant": "3만원"
+          }
+        ],
+        "generated": {
+          "answer": "운영지원팀",
+          "input_tokens": 100,
+          "generated_tokens_including_eos": 5,
+          "first_token_seconds": 0.0044,
+          "total_seconds": 0.0145,
+          "tokens_per_second_including_prefill": 344.47,
+          "history_turns_dropped": 0,
+          "stopped_on_eos": true
+        }
+      },
+      {
+        "question": "공공기관 이름이 뭔데?",
+        "rubric": "기관명은 문서에 없음. 금액·기간·부서·실제 기관명을 지어내지 않아야 함.",
+        "history_supplied": [
+          {
+            "user": "출장비가 얼마야?",
+            "assistant": "3만원"
+          },
+          {
+            "user": "어느 기관 규정인데?",
+            "assistant": "운영지원팀"
+          }
+        ],
+        "generated": {
+          "answer": "운영지원팀",
+          "input_tokens": 116,
+          "generated_tokens_including_eos": 5,
+          "first_token_seconds": 0.0046,
+          "total_seconds": 0.0149,
+          "tokens_per_second_including_prefill": 336.43,
+          "history_turns_dropped": 0,
+          "stopped_on_eos": true
+        }
+      },
+      {
+        "question": "10일이 뭔말이야?",
+        "rubric": "10일은 자료에 근거가 없음. 이전 답에서 이를 말했다면 오류를 인정하고 정정. 문서에 있는 정산 기한은 복귀 후 7일.",
+        "history_supplied": [
+          {
+            "user": "출장비가 얼마야?",
+            "assistant": "3만원"
+          },
+          {
+            "user": "어느 기관 규정인데?",
+            "assistant": "운영지원팀"
+          },
+          {
+            "user": "공공기관 이름이 뭔데?",
+            "assistant": "운영지원팀"
+          }
+        ],
+        "generated": {
+          "answer": "10만원",
+          "input_tokens": 133,
+          "generated_tokens_including_eos": 4,
+          "first_token_seconds": 0.0049,
+          "total_seconds": 0.0125,
+          "tokens_per_second_including_prefill": 318.95,
+          "history_turns_dropped": 0,
+          "stopped_on_eos": true
+        }
+      },
+      {
+        "question": "뭐가 10만원이야",
+        "rubric": "10만원은 자료에서 확인할 수 없음. 이전 답에서 말했다면 정정. 하루 식비 3만원과 출장비 총액을 구분해야 함.",
+        "history_supplied": [
+          {
+            "user": "출장비가 얼마야?",
+            "assistant": "3만원"
+          },
+          {
+            "user": "어느 기관 규정인데?",
+            "assistant": "운영지원팀"
+          },
+          {
+            "user": "공공기관 이름이 뭔데?",
+            "assistant": "운영지원팀"
+          },
+          {
+            "user": "10일이 뭔말이야?",
+            "assistant": "10만원"
+          }
+        ],
+        "generated": {
+          "answer": "운영지원팀",
+          "input_tokens": 147,
+          "generated_tokens_including_eos": 5,
+          "first_token_seconds": 0.0048,
+          "total_seconds": 0.0153,
+          "tokens_per_second_including_prefill": 326.52,
+          "history_turns_dropped": 0,
+          "stopped_on_eos": true
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "status": "reading-only pilot complete; not accepted for deployment or default use",
+  "same_197_questions_verified": true,
+  "baseline": {
+    "eligible": 197,
+    "answerable": 135,
+    "answerable_exact": 0,
+    "answerable_false_abstentions": 116,
+    "answerable_mean_character_f1": 0.020647958473776214,
+    "unanswerable": 62,
+    "unanswerable_correct_abstentions": 53
+  },
+  "candidate": {
+    "eligible": 197,
+    "answerable": 135,
+    "answerable_exact": 2,
+    "answerable_false_abstentions": 90,
+    "answerable_mean_character_f1": 0.09295483394233038,
+    "unanswerable": 62,
+    "unanswerable_correct_abstentions": 47
+  },
+  "weights_sha256": "4bb5ea3bbd148a65f1098b3956c02ff197fb06b0bbf2777ad50214a06f6a1355",
+  "best_step": 800,
+  "training_seconds": 667.23,
+  "validation_loss_normalization": "example; not directly comparable to mixed-run token-mean losses",
+  "active_models_unchanged": {
+    "active-model.json": {
+      "run": "runs/trid-v0.2",
+      "status": "experimental; 6/16 held-out phrasing semantic passes; not a finished dialogue model"
+    },
+    "active-institution-model.json": {
+      "run": "runs/trid-grounded-v2",
+      "status": "experimental generation model; 18/24 familiar-domain demo, 10/480 new-format/value cases; missing-information handling regressed; not ready for customer demonstrations"
+    }
+  },
+  "base_weights_and_tokenizer_preserved": true,
+  "tests": {
+    "passed": 27,
+    "report": "reports/korean-reading-v1-code-tests.txt"
+  },
+  "conclusion": "Less false abstention but only 2/135 answerable exact; unanswerable performance regressed. Reading and dialogue are now separated, but accurate document answer finding is not achieved.",
+  "next_experiment": "Isolate answer-span extraction with a learned head and explicit answer-present supervision on this stronger own base; compare to this generative baseline. Earlier weak-base synthetic reader also failed, so this is a hypothesis, not a promised fix."
+}

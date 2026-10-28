@@ -1,0 +1,39 @@
+{
+  "url": "https://test.tridatum.co",
+  "dns_note": "TLS verified with authoritative IP override while local negative DNS cache expires",
+  "checks": [
+    {
+      "question": "해외 출장 식비는 얼마야?",
+      "answer": "8만원",
+      "status": "answer",
+      "ms": 21
+    },
+    {
+      "question": "해외 출장 숙박비는 얼마야?",
+      "answer": "1박 25만원",
+      "status": "answer",
+      "ms": 25
+    },
+    {
+      "question": "정산 담당 부서는 어디야?",
+      "answer": "운영지원팀",
+      "status": "answer",
+      "ms": 21
+    },
+    {
+      "question": "이 문서의 기관 이름은 뭐야?",
+      "answer": "샘물문화재단",
+      "status": "answer",
+      "ms": 32
+    },
+    {
+      "pdf_answer": "운영지원팀",
+      "pages": [
+        2
+      ]
+    },
+    {
+      "other_visitor_document_access": 409
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+test_cache_causality_and_gradients (test_attention_options.AttentionOptionsTests.test_cache_causality_and_gradients) ... ok
+test_experimental_checkpoint_roundtrip_and_size (test_attention_options.AttentionOptionsTests.test_experimental_checkpoint_roundtrip_and_size) ... ok
+test_grouped_attention_matches_explicit_shared_heads (test_attention_options.AttentionOptionsTests.test_grouped_attention_matches_explicit_shared_heads) ... ok
+test_invalid_options (test_attention_options.AttentionOptionsTests.test_invalid_options) ... ok
+test_old_configuration_and_state_keys (test_attention_options.AttentionOptionsTests.test_old_configuration_and_state_keys) ... ok
+test_auxiliary_intent_uses_prompt_without_answer_leakage (test_core.CoreTests.test_auxiliary_intent_uses_prompt_without_answer_leakage) ... ok
+test_cache_matches_full_forward (test_core.CoreTests.test_cache_matches_full_forward) ... ok
+test_causal_no_future_leak (test_core.CoreTests.test_causal_no_future_leak) ... ok
+test_checkpoint_roundtrip (test_core.CoreTests.test_checkpoint_roundtrip) ... ok
+test_context_limit (test_core.CoreTests.test_context_limit) ... ok
+test_history_mask_and_context_budget (test_core.CoreTests.test_history_mask_and_context_budget) ... ok
+test_tokenizer_roundtrip_and_loss_mask (test_core.CoreTests.test_tokenizer_roundtrip_and_loss_mask) ... ok
+test_training_has_finite_gradients (test_core.CoreTests.test_training_has_finite_gradients) ... ok
+test_cached_rotations_match_reference_and_gradients (test_rotary_cache.RotaryCacheTests.test_cached_rotations_match_reference_and_gradients) ... ok
+test_all_tokens_are_next_token_targets (test_pretraining.PretrainingTests.test_all_tokens_are_next_token_targets) ... ok
+test_continuation_preserves_parent_and_resumes_new_schedule (test_pretraining.PretrainingTests.test_continuation_preserves_parent_and_resumes_new_schedule) ... ok
+test_corpus_reuses_tokenizer_bytes (test_pretraining.PretrainingTests.test_corpus_reuses_tokenizer_bytes) ... ok
+test_dialogue_training_inherits_own_weights_and_tokenizer (test_pretraining.PretrainingTests.test_dialogue_training_inherits_own_weights_and_tokenizer) ... ok
+test_document_split_and_duplicate_rejection (test_pretraining.PretrainingTests.test_document_split_and_duplicate_rejection) ... ok
+test_resume_matches_uninterrupted_training (test_pretraining.PretrainingTests.test_resume_matches_uninterrupted_training) ... ok
+test_sft_keeps_initial_weights_if_validation_worsens_and_extends_context (test_pretraining.PretrainingTests.test_sft_keeps_initial_weights_if_validation_worsens_and_extends_context) ... ok
+test_bounded_pipeline_evaluates_without_activating (test_medium_pipeline.MediumPipelineTests.test_bounded_pipeline_evaluates_without_activating) ... ok
+test_resume_preserves_interrupted_sft_attempt (test_medium_pipeline.MediumPipelineTests.test_resume_preserves_interrupted_sft_attempt) ... ok
+test_stop_after_checkpoint_does_not_start_sft (test_medium_pipeline.MediumPipelineTests.test_stop_after_checkpoint_does_not_start_sft) ... ok
+test_equal_example_weight_despite_answer_length (test_loss_normalization.LossNormalizationTests.test_equal_example_weight_despite_answer_length) ... ok
+test_missing_answer_targets_rejected (test_loss_normalization.LossNormalizationTests.test_missing_answer_targets_rejected) ... ok
+test_validation_invariant_to_uneven_batches_and_padding (test_loss_normalization.LossNormalizationTests.test_validation_invariant_to_uneven_batches_and_padding) ... ok
+
+----------------------------------------------------------------------
+Ran 27 tests in 0.908s
+
+OK

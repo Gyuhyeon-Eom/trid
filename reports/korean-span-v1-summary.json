@@ -1,0 +1,59 @@
+{
+  "status": "complete; not accepted for default use",
+  "run": "runs/trid-korean-span-v1",
+  "weights_sha256": "a213d1e8b57576e63b5e2cc3b6c4f3c68b1b156152b8f3911a4a1f166d53adc7",
+  "parameters": 17428610,
+  "best_step": 600,
+  "completed_steps": 1200,
+  "training_seconds": 582.44,
+  "paired_generative_subset": {
+    "eligible": 197,
+    "answerable": 135,
+    "answerable_exact": 11,
+    "answerable_false_abstentions": 0,
+    "answerable_span_exact_ignoring_presence": 11,
+    "answerable_mean_character_f1": 0.22610409711304938,
+    "unanswerable": 62,
+    "unanswerable_correct_abstentions": 0
+  },
+  "all_validation": {
+    "eligible": 292,
+    "answerable": 196,
+    "answerable_exact": 17,
+    "answerable_false_abstentions": 0,
+    "answerable_span_exact_ignoring_presence": 17,
+    "answerable_mean_character_f1": 0.21448128669404598,
+    "unanswerable": 96,
+    "unanswerable_correct_abstentions": 0
+  },
+  "paired_total_correct": 11,
+  "paired_baseline_total_correct": 49,
+  "presence_probability_diagnostic": {
+    "answerable": {
+      "min": 0.20407524704933167,
+      "median": 0.2781103551387787,
+      "max": 0.3751397728919983
+    },
+    "unanswerable": {
+      "min": 0.19726461172103882,
+      "median": 0.2887164354324341,
+      "max": 0.3627164959907532
+    }
+  },
+  "presence_conclusion": "All 292 validation predictions are answer-present. Absent probabilities for answerable and unanswerable inputs strongly overlap. Threshold was not tuned to conceal this failure.",
+  "regression": "3/8 on authored original/counterfactual T01 independent questions; 0/2 missing institution names",
+  "training_probe": "16/32 answerable exact and 0/32 correct abstentions on a balanced training-only sample; not held-out accuracy",
+  "base_and_tokenizer_preserved": true,
+  "active_models_unchanged": {
+    "active-model.json": {
+      "run": "runs/trid-v0.2",
+      "status": "experimental; 6/16 held-out phrasing semantic passes; not a finished dialogue model"
+    },
+    "active-institution-model.json": {
+      "run": "runs/trid-grounded-v2",
+      "status": "experimental generation model; 18/24 familiar-domain demo, 10/480 new-format/value cases; missing-information handling regressed; not ready for customer demonstrations"
+    }
+  },
+  "tests_passed": 31,
+  "next_experiment_hypothesis": "Contrastive supervision on same-document questions with present vs absent answers, separate presence evaluation, and simpler short-document span curriculum. A hypothesis, not implemented or guaranteed."
+}

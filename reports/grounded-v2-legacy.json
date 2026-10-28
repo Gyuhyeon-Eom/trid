@@ -1,0 +1,841 @@
+{
+  "run": "runs/trid-grounded-v2",
+  "engine": "generative_lm",
+  "evaluated_at": "2026-10-26T10:09:25.127641+00:00",
+  "device": "mps",
+  "data_sha256": "d9f652e8a0633d0fab285417963fcc66d44f8889e8faffd2652133831651d262",
+  "weights_sha256": "4aed4b08fe4b4ce8fd6260bd5672f59183dbee40097ef032796c42bcdcdb342e",
+  "protocol": "Exact whitespace/punctuation-normalized value matching. Relevant evidence supplied directly; no retrieval, answer substitution, or external API. Synthetic developer-authored suite; not real institutional competence. Extractive engine returns its predicted source span or learned missing/conflict class, not generated prose.",
+  "count": 24,
+  "correct": 18,
+  "groups": {
+    "direct": {
+      "count": 10,
+      "correct": 9
+    },
+    "condition": {
+      "count": 2,
+      "correct": 0
+    },
+    "paraphrase": {
+      "count": 3,
+      "correct": 2
+    },
+    "missing": {
+      "count": 3,
+      "correct": 1
+    },
+    "conflict": {
+      "count": 2,
+      "correct": 2
+    },
+    "revision": {
+      "count": 2,
+      "correct": 2
+    },
+    "counterfactual": {
+      "count": 2,
+      "correct": 2
+    }
+  },
+  "counterfactual_pairs": 2,
+  "counterfactual_pairs_both_correct": 2,
+  "results": [
+    {
+      "id": "travel-food",
+      "group": "direct",
+      "question": "국내 출장 식비는 하루 얼마야?",
+      "evidence": [
+        {
+          "id": "T01",
+          "title": "가상 기관 출장비 안내",
+          "text": "가상기관 규정: 국내 출장 식비는 하루 3만원이다. 출장비 정산은 복귀 후 7일 이내에 신청한다. 담당 부서는 운영지원팀이다."
+        }
+      ],
+      "expected": "3만원",
+      "options": [
+        "3만원",
+        "자료없음",
+        "5만원"
+      ],
+      "expected_source_ids": [
+        "T01"
+      ],
+      "rubric": "자료에 근거한 값을 답할 것. 자료없음/규정충돌 사례는 추측하지 말 것.",
+      "counterfactual_pair": "food-amount",
+      "generated": {
+        "answer": "3만원",
+        "input_tokens": 93,
+        "generated_tokens_including_eos": 4,
+        "first_token_seconds": 0.0822,
+        "total_seconds": 0.0977,
+        "tokens_per_second_including_prefill": 40.92,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "correct": true
+    },
+    {
+      "id": "travel-deadline",
+      "group": "direct",
+      "question": "출장 다녀온 뒤 정산은 며칠 안에 해야 해?",
+      "evidence": [
+        {
+          "id": "T01",
+          "title": "가상 기관 출장비 안내",
+          "text": "가상기관 규정: 국내 출장 식비는 하루 3만원이다. 출장비 정산은 복귀 후 7일 이내에 신청한다. 담당 부서는 운영지원팀이다."
+        }
+      ],
+      "expected": "7일",
+      "options": [
+        "자료없음",
+        "7일",
+        "14일"
+      ],
+      "expected_source_ids": [
+        "T01"
+      ],
+      "rubric": "자료에 근거한 값을 답할 것. 자료없음/규정충돌 사례는 추측하지 말 것.",
+      "generated": {
+        "answer": "7일",
+        "input_tokens": 100,
+        "generated_tokens_including_eos": 3,
+        "first_token_seconds": 0.0046,
+        "total_seconds": 0.0102,
+        "tokens_per_second_including_prefill": 294.08,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "correct": true
+    },
+    {
+      "id": "travel-team",
+      "group": "direct",
+      "question": "출장비 문의는 어느 부서에 해?",
+      "evidence": [
+        {
+          "id": "T01",
+          "title": "가상 기관 출장비 안내",
+          "text": "가상기관 규정: 국내 출장 식비는 하루 3만원이다. 출장비 정산은 복귀 후 7일 이내에 신청한다. 담당 부서는 운영지원팀이다."
+        }
+      ],
+      "expected": "운영지원팀",
+      "options": [
+        "인사팀",
+        "자료없음",
+        "운영지원팀"
+      ],
+      "expected_source_ids": [
+        "T01"
+      ],
+      "rubric": "자료에 근거한 값을 답할 것. 자료없음/규정충돌 사례는 추측하지 말 것.",
+      "generated": {
+        "answer": "운영지원팀",
+        "input_tokens": 95,
+        "generated_tokens_including_eos": 5,
+        "first_token_seconds": 0.0039,
+        "total_seconds": 0.0145,
+        "tokens_per_second_including_prefill": 344.17,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "correct": true
+    },
+    {
+      "id": "purchase-team",
+      "group": "direct",
+      "question": "물품 구매 요청은 어디로 보내?",
+      "evidence": [
+        {
+          "id": "P01",
+          "title": "가상 기관 구매 요청 안내",
+          "text": "가상기관 규정: 물품 구매 요청은 구매지원팀에 제출한다. 50만원 미만 구매의 승인자는 팀장이다. 50만원 이상 구매의 승인자는 부서장이다."
+        }
+      ],
+      "expected": "구매지원팀",
+      "options": [
+        "구매지원팀",
+        "정보지원팀",
+        "자료없음"
+      ],
+      "expected_source_ids": [
+        "P01"
+      ],
+      "rubric": "자료에 근거한 값을 답할 것. 자료없음/규정충돌 사례는 추측하지 말 것.",
+      "generated": {
+        "answer": "구매지원팀",
+        "input_tokens": 103,
+        "generated_tokens_including_eos": 5,
+        "first_token_seconds": 0.0042,
+        "total_seconds": 0.0144,
+        "tokens_per_second_including_prefill": 347.47,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "correct": true
+    },
+    {
+      "id": "purchase-low",
+      "group": "condition",
+      "question": "30만원짜리 물품 구매는 누가 승인해?",
+      "evidence": [
+        {
+          "id": "P01",
+          "title": "가상 기관 구매 요청 안내",
+          "text": "가상기관 규정: 물품 구매 요청은 구매지원팀에 제출한다. 50만원 미만 구매의 승인자는 팀장이다. 50만원 이상 구매의 승인자는 부서장이다."
+        }
+      ],
+      "expected": "팀장",
+      "options": [
+        "부서장",
+        "팀장",
+        "자료없음"
+      ],
+      "expected_source_ids": [
+        "P01"
+      ],
+      "rubric": "자료에 근거한 값을 답할 것. 자료없음/규정충돌 사례는 추측하지 말 것.",
+      "generated": {
+        "answer": "구매지원팀",
+        "input_tokens": 108,
+        "generated_tokens_including_eos": 5,
+        "first_token_seconds": 0.0043,
+        "total_seconds": 0.0147,
+        "tokens_per_second_including_prefill": 340.13,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "correct": false
+    },
+    {
+      "id": "purchase-boundary",
+      "group": "condition",
+      "question": "정확히 50만원인 물품의 승인자는 누구야?",
+      "evidence": [
+        {
+          "id": "P01",
+          "title": "가상 기관 구매 요청 안내",
+          "text": "가상기관 규정: 물품 구매 요청은 구매지원팀에 제출한다. 50만원 미만 구매의 승인자는 팀장이다. 50만원 이상 구매의 승인자는 부서장이다."
+        }
+      ],
+      "expected": "부서장",
+      "options": [
+        "팀장",
+        "부서장",
+        "자료없음"
+      ],
+      "expected_source_ids": [
+        "P01"
+      ],
+      "rubric": "자료에 근거한 값을 답할 것. 자료없음/규정충돌 사례는 추측하지 말 것.",
+      "generated": {
+        "answer": "구매지원팀",
+        "input_tokens": 107,
+        "generated_tokens_including_eos": 5,
+        "first_token_seconds": 0.0042,
+        "total_seconds": 0.0144,
+        "tokens_per_second_including_prefill": 347.4,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "correct": false
+    },
+    {
+      "id": "leave-approver",
+      "group": "direct",
+      "question": "연차는 누구에게 승인받아야 해?",
+      "evidence": [
+        {
+          "id": "L01",
+          "title": "가상 기관 휴가 신청 안내",
+          "text": "가상기관 규정: 연차 신청의 승인자는 팀장이다. 연차 신청은 인사시스템에서 접수한다. 특별휴가 일수는 이 문서에 정하지 않았다."
+        }
+      ],
+      "expected": "팀장",
+      "options": [
+        "자료없음",
+        "팀장",
+        "기관장"
+      ],
+      "expected_source_ids": [
+        "L01"
+      ],
+      "rubric": "자료에 근거한 값을 답할 것. 자료없음/규정충돌 사례는 추측하지 말 것.",
+      "generated": {
+        "answer": "팀장",
+        "input_tokens": 94,
+        "generated_tokens_including_eos": 3,
+        "first_token_seconds": 0.0038,
+        "total_seconds": 0.009,
+        "tokens_per_second_including_prefill": 332.23,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "correct": true
+    },
+    {
+      "id": "leave-channel",
+      "group": "direct",
+      "question": "연차 신청은 어떤 시스템으로 접수해?",
+      "evidence": [
+        {
+          "id": "L01",
+          "title": "가상 기관 휴가 신청 안내",
+          "text": "가상기관 규정: 연차 신청의 승인자는 팀장이다. 연차 신청은 인사시스템에서 접수한다. 특별휴가 일수는 이 문서에 정하지 않았다."
+        }
+      ],
+      "expected": "인사시스템",
+      "options": [
+        "기록관리시스템",
+        "자료없음",
+        "인사시스템"
+      ],
+      "expected_source_ids": [
+        "L01"
+      ],
+      "rubric": "자료에 근거한 값을 답할 것. 자료없음/규정충돌 사례는 추측하지 말 것.",
+      "generated": {
+        "answer": "인사시스템",
+        "input_tokens": 95,
+        "generated_tokens_including_eos": 4,
+        "first_token_seconds": 0.0038,
+        "total_seconds": 0.0115,
+        "tokens_per_second_including_prefill": 346.72,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "correct": true
+    },
+    {
+      "id": "device-team",
+      "group": "direct",
+      "question": "업무용 노트북이 고장 났어. 어디에 신고하지?",
+      "evidence": [
+        {
+          "id": "I01",
+          "title": "가상 기관 장비 장애 안내",
+          "text": "가상기관 안내: 업무용 노트북 고장은 정보지원팀에 신고한다. 내부 문의 번호는 2468이다. 개인 소유 장비의 수리 비용 기준은 정하지 않았다."
+        }
+      ],
+      "expected": "정보지원팀",
+      "options": [
+        "정보지원팀",
+        "구매지원팀",
+        "자료없음"
+      ],
+      "expected_source_ids": [
+        "I01"
+      ],
+      "rubric": "자료에 근거한 값을 답할 것. 자료없음/규정충돌 사례는 추측하지 말 것.",
+      "generated": {
+        "answer": "정보지원팀",
+        "input_tokens": 106,
+        "generated_tokens_including_eos": 4,
+        "first_token_seconds": 0.0041,
+        "total_seconds": 0.0118,
+        "tokens_per_second_including_prefill": 339.15,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "correct": true
+    },
+    {
+      "id": "device-phone",
+      "group": "direct",
+      "question": "장비 고장 문의 내선번호는?",
+      "evidence": [
+        {
+          "id": "I01",
+          "title": "가상 기관 장비 장애 안내",
+          "text": "가상기관 안내: 업무용 노트북 고장은 정보지원팀에 신고한다. 내부 문의 번호는 2468이다. 개인 소유 장비의 수리 비용 기준은 정하지 않았다."
+        }
+      ],
+      "expected": "2468",
+      "options": [
+        "1357",
+        "자료없음",
+        "2468"
+      ],
+      "expected_source_ids": [
+        "I01"
+      ],
+      "rubric": "자료에 근거한 값을 답할 것. 자료없음/규정충돌 사례는 추측하지 말 것.",
+      "generated": {
+        "answer": "5054",
+        "input_tokens": 99,
+        "generated_tokens_including_eos": 3,
+        "first_token_seconds": 0.004,
+        "total_seconds": 0.0092,
+        "tokens_per_second_including_prefill": 327.28,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "correct": false
+    },
+    {
+      "id": "records-years",
+      "group": "direct",
+      "question": "회의록은 몇 년 동안 보관해?",
+      "evidence": [
+        {
+          "id": "R01",
+          "title": "가상 기관 기록 관리 안내",
+          "text": "가상기관 규정: 회의록은 기록관리시스템에 등록한다. 회의록 보관 기간은 3년이다. 담당 부서는 기록관리팀이다."
+        }
+      ],
+      "expected": "3년",
+      "options": [
+        "자료없음",
+        "3년",
+        "5년"
+      ],
+      "expected_source_ids": [
+        "R01"
+      ],
+      "rubric": "자료에 근거한 값을 답할 것. 자료없음/규정충돌 사례는 추측하지 말 것.",
+      "counterfactual_pair": "retention",
+      "generated": {
+        "answer": "3년",
+        "input_tokens": 88,
+        "generated_tokens_including_eos": 3,
+        "first_token_seconds": 0.0038,
+        "total_seconds": 0.0089,
+        "tokens_per_second_including_prefill": 335.81,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "correct": true
+    },
+    {
+      "id": "visit-deadline",
+      "group": "direct",
+      "question": "방문 예약은 며칠 전에 신청해야 해?",
+      "evidence": [
+        {
+          "id": "V01",
+          "title": "가상 기관 방문 예약 안내",
+          "text": "가상기관 안내: 방문 예약은 방문일 2일 전까지 신청한다. 방문 예약 담당 부서는 안내지원팀이다. 주말 방문 가능 여부는 이 문서에 없다."
+        }
+      ],
+      "expected": "2일",
+      "options": [
+        "2일",
+        "7일",
+        "자료없음"
+      ],
+      "expected_source_ids": [
+        "V01"
+      ],
+      "rubric": "자료에 근거한 값을 답할 것. 자료없음/규정충돌 사례는 추측하지 말 것.",
+      "generated": {
+        "answer": "2일",
+        "input_tokens": 99,
+        "generated_tokens_including_eos": 3,
+        "first_token_seconds": 0.004,
+        "total_seconds": 0.0093,
+        "tokens_per_second_including_prefill": 321.94,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "correct": true
+    },
+    {
+      "id": "paraphrase-food",
+      "group": "paraphrase",
+      "question": "외근이 국내 출장에 해당할 때 하루 식사비로 정해진 금액을 알려줘.",
+      "evidence": [
+        {
+          "id": "T01",
+          "title": "가상 기관 출장비 안내",
+          "text": "가상기관 규정: 국내 출장 식비는 하루 3만원이다. 출장비 정산은 복귀 후 7일 이내에 신청한다. 담당 부서는 운영지원팀이다."
+        }
+      ],
+      "expected": "3만원",
+      "options": [
+        "3만원",
+        "5만원",
+        "자료없음"
+      ],
+      "expected_source_ids": [
+        "T01"
+      ],
+      "rubric": "자료에 근거한 값을 답할 것. 자료없음/규정충돌 사례는 추측하지 말 것.",
+      "generated": {
+        "answer": "3만원",
+        "input_tokens": 107,
+        "generated_tokens_including_eos": 4,
+        "first_token_seconds": 0.0041,
+        "total_seconds": 0.0121,
+        "tokens_per_second_including_prefill": 331.78,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "correct": true
+    },
+    {
+      "id": "paraphrase-device",
+      "group": "paraphrase",
+      "question": "회사 노트북이 작동하지 않는데 연락할 담당 조직이 궁금해.",
+      "evidence": [
+        {
+          "id": "I01",
+          "title": "가상 기관 장비 장애 안내",
+          "text": "가상기관 안내: 업무용 노트북 고장은 정보지원팀에 신고한다. 내부 문의 번호는 2468이다. 개인 소유 장비의 수리 비용 기준은 정하지 않았다."
+        }
+      ],
+      "expected": "정보지원팀",
+      "options": [
+        "정보지원팀",
+        "구매지원팀",
+        "자료없음"
+      ],
+      "expected_source_ids": [
+        "I01"
+      ],
+      "rubric": "자료에 근거한 값을 답할 것. 자료없음/규정충돌 사례는 추측하지 말 것.",
+      "generated": {
+        "answer": "정보지원팀",
+        "input_tokens": 108,
+        "generated_tokens_including_eos": 4,
+        "first_token_seconds": 0.0041,
+        "total_seconds": 0.0119,
+        "tokens_per_second_including_prefill": 337.36,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "correct": true
+    },
+    {
+      "id": "paraphrase-record",
+      "group": "paraphrase",
+      "question": "회의를 마치고 남긴 기록은 어느 곳에 올리면 돼?",
+      "evidence": [
+        {
+          "id": "R01",
+          "title": "가상 기관 기록 관리 안내",
+          "text": "가상기관 규정: 회의록은 기록관리시스템에 등록한다. 회의록 보관 기간은 3년이다. 담당 부서는 기록관리팀이다."
+        }
+      ],
+      "expected": "기록관리시스템",
+      "options": [
+        "기록관리시스템",
+        "인사시스템",
+        "자료없음"
+      ],
+      "expected_source_ids": [
+        "R01"
+      ],
+      "rubric": "자료에 근거한 값을 답할 것. 자료없음/규정충돌 사례는 추측하지 말 것.",
+      "generated": {
+        "answer": "기록관리팀",
+        "input_tokens": 92,
+        "generated_tokens_including_eos": 4,
+        "first_token_seconds": 0.0039,
+        "total_seconds": 0.0115,
+        "tokens_per_second_including_prefill": 346.79,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "correct": false
+    },
+    {
+      "id": "missing-taxi",
+      "group": "missing",
+      "question": "출장 택시비 상한은 얼마야?",
+      "evidence": [
+        {
+          "id": "T01",
+          "title": "가상 기관 출장비 안내",
+          "text": "가상기관 규정: 국내 출장 식비는 하루 3만원이다. 출장비 정산은 복귀 후 7일 이내에 신청한다. 담당 부서는 운영지원팀이다."
+        }
+      ],
+      "expected": "자료없음",
+      "options": [
+        "3만원",
+        "5만원",
+        "자료없음"
+      ],
+      "expected_source_ids": [
+        "T01"
+      ],
+      "rubric": "자료에 근거한 값을 답할 것. 자료없음/규정충돌 사례는 추측하지 말 것.",
+      "generated": {
+        "answer": "7일",
+        "input_tokens": 95,
+        "generated_tokens_including_eos": 3,
+        "first_token_seconds": 0.0039,
+        "total_seconds": 0.009,
+        "tokens_per_second_including_prefill": 334.61,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "correct": false
+    },
+    {
+      "id": "missing-leave",
+      "group": "missing",
+      "question": "경조사 특별휴가는 며칠이야?",
+      "evidence": [
+        {
+          "id": "L01",
+          "title": "가상 기관 휴가 신청 안내",
+          "text": "가상기관 규정: 연차 신청의 승인자는 팀장이다. 연차 신청은 인사시스템에서 접수한다. 특별휴가 일수는 이 문서에 정하지 않았다."
+        }
+      ],
+      "expected": "자료없음",
+      "options": [
+        "3일",
+        "5일",
+        "자료없음"
+      ],
+      "expected_source_ids": [
+        "L01"
+      ],
+      "rubric": "자료에 근거한 값을 답할 것. 자료없음/규정충돌 사례는 추측하지 말 것.",
+      "generated": {
+        "answer": "자료없음",
+        "input_tokens": 95,
+        "generated_tokens_including_eos": 5,
+        "first_token_seconds": 0.0038,
+        "total_seconds": 0.0142,
+        "tokens_per_second_including_prefill": 352.98,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "correct": true
+    },
+    {
+      "id": "missing-weekend",
+      "group": "missing",
+      "question": "토요일에도 방문할 수 있어?",
+      "evidence": [
+        {
+          "id": "V01",
+          "title": "가상 기관 방문 예약 안내",
+          "text": "가상기관 안내: 방문 예약은 방문일 2일 전까지 신청한다. 방문 예약 담당 부서는 안내지원팀이다. 주말 방문 가능 여부는 이 문서에 없다."
+        }
+      ],
+      "expected": "자료없음",
+      "options": [
+        "자료없음",
+        "가능",
+        "불가"
+      ],
+      "expected_source_ids": [
+        "V01"
+      ],
+      "rubric": "자료에 근거한 값을 답할 것. 자료없음/규정충돌 사례는 추측하지 말 것.",
+      "generated": {
+        "answer": "안내지원팀",
+        "input_tokens": 95,
+        "generated_tokens_including_eos": 5,
+        "first_token_seconds": 0.0038,
+        "total_seconds": 0.014,
+        "tokens_per_second_including_prefill": 357.12,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "correct": false
+    },
+    {
+      "id": "conflict-food",
+      "group": "conflict",
+      "question": "두 안내를 보고 출장 식비를 알려줘.",
+      "evidence": [
+        {
+          "id": "T01",
+          "title": "가상 기관 출장비 안내",
+          "text": "가상기관 안내 A: 출장 식비는 하루 3만원이다. 안내 B: 출장 식비는 하루 5만원이다. 두 안내의 시행일과 우선순위는 알려지지 않았다."
+        }
+      ],
+      "expected": "규정충돌",
+      "options": [
+        "규정충돌",
+        "3만원",
+        "5만원"
+      ],
+      "expected_source_ids": [
+        "T01"
+      ],
+      "rubric": "자료에 근거한 값을 답할 것. 자료없음/규정충돌 사례는 추측하지 말 것.",
+      "generated": {
+        "answer": "규정충돌",
+        "input_tokens": 103,
+        "generated_tokens_including_eos": 5,
+        "first_token_seconds": 0.0041,
+        "total_seconds": 0.0143,
+        "tokens_per_second_including_prefill": 348.91,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "correct": true
+    },
+    {
+      "id": "conflict-deadline",
+      "group": "conflict",
+      "question": "출장 정산 기한을 확정해 줘.",
+      "evidence": [
+        {
+          "id": "T01",
+          "title": "가상 기관 출장비 안내",
+          "text": "가상기관 안내 A: 복귀 후 7일 이내에 정산한다. 안내 B: 복귀 후 14일 이내에 정산한다. 두 안내의 시행일과 우선순위는 알려지지 않았다."
+        }
+      ],
+      "expected": "규정충돌",
+      "options": [
+        "14일",
+        "7일",
+        "규정충돌"
+      ],
+      "expected_source_ids": [
+        "T01"
+      ],
+      "rubric": "자료에 근거한 값을 답할 것. 자료없음/규정충돌 사례는 추측하지 말 것.",
+      "generated": {
+        "answer": "규정충돌",
+        "input_tokens": 103,
+        "generated_tokens_including_eos": 5,
+        "first_token_seconds": 0.0041,
+        "total_seconds": 0.0143,
+        "tokens_per_second_including_prefill": 349.66,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "correct": true
+    },
+    {
+      "id": "current-food",
+      "group": "revision",
+      "question": "현재 적용할 출장 식비는 얼마야?",
+      "evidence": [
+        {
+          "id": "T01",
+          "title": "가상 기관 출장비 안내",
+          "text": "가상기관 규정: 폐지된 구규정의 출장 식비는 하루 3만원이다. 구규정을 대체하여 현재 시행 중인 규정의 출장 식비는 하루 4만원이다."
+        }
+      ],
+      "expected": "4만원",
+      "options": [
+        "3만원",
+        "4만원",
+        "규정충돌"
+      ],
+      "expected_source_ids": [
+        "T01"
+      ],
+      "rubric": "자료에 근거한 값을 답할 것. 자료없음/규정충돌 사례는 추측하지 말 것.",
+      "generated": {
+        "answer": "4만원",
+        "input_tokens": 97,
+        "generated_tokens_including_eos": 4,
+        "first_token_seconds": 0.004,
+        "total_seconds": 0.0116,
+        "tokens_per_second_including_prefill": 345.43,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "correct": true
+    },
+    {
+      "id": "current-retention",
+      "group": "revision",
+      "question": "현재 회의록 보관 기간은?",
+      "evidence": [
+        {
+          "id": "R01",
+          "title": "가상 기관 기록 관리 안내",
+          "text": "가상기관 규정: 폐지된 구규정에서 회의록 보관 기간은 3년이었다. 구규정을 대체한 현행 규정의 보관 기간은 5년이다."
+        }
+      ],
+      "expected": "5년",
+      "options": [
+        "3년",
+        "5년",
+        "규정충돌"
+      ],
+      "expected_source_ids": [
+        "R01"
+      ],
+      "rubric": "자료에 근거한 값을 답할 것. 자료없음/규정충돌 사례는 추측하지 말 것.",
+      "generated": {
+        "answer": "5년",
+        "input_tokens": 91,
+        "generated_tokens_including_eos": 3,
+        "first_token_seconds": 0.0038,
+        "total_seconds": 0.009,
+        "tokens_per_second_including_prefill": 334.7,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "correct": true
+    },
+    {
+      "id": "counterfactual-food",
+      "group": "counterfactual",
+      "question": "국내 출장 식비는 하루 얼마야?",
+      "evidence": [
+        {
+          "id": "T01",
+          "title": "가상 기관 출장비 안내",
+          "text": "가상기관 규정: 국내 출장 식비는 하루 5만원이다. 출장비 정산은 복귀 후 7일 이내에 신청한다. 담당 부서는 운영지원팀이다."
+        }
+      ],
+      "expected": "5만원",
+      "options": [
+        "자료없음",
+        "3만원",
+        "5만원"
+      ],
+      "expected_source_ids": [
+        "T01"
+      ],
+      "rubric": "자료에 근거한 값을 답할 것. 자료없음/규정충돌 사례는 추측하지 말 것.",
+      "counterfactual_pair": "food-amount",
+      "generated": {
+        "answer": "5만원",
+        "input_tokens": 93,
+        "generated_tokens_including_eos": 4,
+        "first_token_seconds": 0.0038,
+        "total_seconds": 0.0115,
+        "tokens_per_second_including_prefill": 348.01,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "correct": true
+    },
+    {
+      "id": "counterfactual-record",
+      "group": "counterfactual",
+      "question": "회의록은 몇 년 동안 보관해?",
+      "evidence": [
+        {
+          "id": "R01",
+          "title": "가상 기관 기록 관리 안내",
+          "text": "가상기관 규정: 회의록은 기록관리시스템에 등록한다. 회의록 보관 기간은 5년이다. 담당 부서는 기록관리팀이다."
+        }
+      ],
+      "expected": "5년",
+      "options": [
+        "3년",
+        "자료없음",
+        "5년"
+      ],
+      "expected_source_ids": [
+        "R01"
+      ],
+      "rubric": "자료에 근거한 값을 답할 것. 자료없음/규정충돌 사례는 추측하지 말 것.",
+      "counterfactual_pair": "retention",
+      "generated": {
+        "answer": "5년",
+        "input_tokens": 88,
+        "generated_tokens_including_eos": 3,
+        "first_token_seconds": 0.0038,
+        "total_seconds": 0.0089,
+        "tokens_per_second_including_prefill": 338.04,
+        "history_turns_dropped": 0,
+        "stopped_on_eos": true
+      },
+      "correct": true
+    }
+  ]
+}

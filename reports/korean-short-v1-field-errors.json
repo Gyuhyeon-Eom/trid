@@ -1,0 +1,50 @@
+{
+  "domestic_food": {
+    "positive": 50,
+    "span_exact": 49,
+    "final_exact": 41,
+    "negative": 50,
+    "correct_absence": 50,
+    "false_absence": 9
+  },
+  "overseas_food": {
+    "positive": 50,
+    "span_exact": 0,
+    "final_exact": 0,
+    "negative": 50,
+    "correct_absence": 49,
+    "false_absence": 4
+  },
+  "lodging": {
+    "positive": 50,
+    "span_exact": 34,
+    "final_exact": 0,
+    "negative": 50,
+    "correct_absence": 23,
+    "false_absence": 40
+  },
+  "deadline": {
+    "positive": 50,
+    "span_exact": 28,
+    "final_exact": 17,
+    "negative": 50,
+    "correct_absence": 28,
+    "false_absence": 12
+  },
+  "department": {
+    "positive": 50,
+    "span_exact": 19,
+    "final_exact": 13,
+    "negative": 50,
+    "correct_absence": 40,
+    "false_absence": 19
+  },
+  "institution": {
+    "positive": 50,
+    "span_exact": 50,
+    "final_exact": 50,
+    "negative": 50,
+    "correct_absence": 47,
+    "false_absence": 0
+  }
+}

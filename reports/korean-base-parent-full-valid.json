@@ -1,0 +1,13 @@
+{
+  "run": "runs/trid-pretrain-pilot",
+  "weights_sha256": "b366488c1fe6dd5b28ff9f886ed1fd7dcb3f3416a52a6916156f81cdbe44ed5b",
+  "data_sha256": "c53d0515e62b5b70e3f54fb0d0fe4a38917b4e5c160e1d5e66d018c4150f9197",
+  "split": "valid",
+  "target_tokens": 1174066,
+  "context_length": 256,
+  "loss": 5.405494829407216,
+  "perplexity": 222.62635530001936,
+  "seconds": 42.51837729103863,
+  "evaluated_at": "2026-10-26T18:35:15.213160+00:00",
+  "protocol": "All split next-token positions exactly once; context resets every context_length tokens; no sampling, training, or checkpoint selection. Lower loss is not evidence of dialogue correctness."
+}

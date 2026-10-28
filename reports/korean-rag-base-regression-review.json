@@ -1,0 +1,289 @@
+{
+  "reviewer": "Codex semantic review; previously inspected development/regression questions",
+  "pass": 21,
+  "total": 56,
+  "results": [
+    {
+      "id": "b01-1",
+      "group": "basic",
+      "semantic_pass": false
+    },
+    {
+      "id": "b02-1",
+      "group": "basic",
+      "semantic_pass": false
+    },
+    {
+      "id": "b03-1",
+      "group": "basic",
+      "semantic_pass": true
+    },
+    {
+      "id": "b04-1",
+      "group": "basic",
+      "semantic_pass": true
+    },
+    {
+      "id": "b05-1",
+      "group": "basic",
+      "semantic_pass": true
+    },
+    {
+      "id": "b06-1",
+      "group": "basic",
+      "semantic_pass": false
+    },
+    {
+      "id": "b07-1",
+      "group": "basic",
+      "semantic_pass": true
+    },
+    {
+      "id": "b08-1",
+      "group": "basic",
+      "semantic_pass": true
+    },
+    {
+      "id": "b09-1",
+      "group": "basic",
+      "semantic_pass": false
+    },
+    {
+      "id": "b10-1",
+      "group": "basic",
+      "semantic_pass": true
+    },
+    {
+      "id": "b11-1",
+      "group": "basic",
+      "semantic_pass": true
+    },
+    {
+      "id": "b12-1",
+      "group": "basic",
+      "semantic_pass": false
+    },
+    {
+      "id": "w01-1",
+      "group": "public_work",
+      "semantic_pass": true
+    },
+    {
+      "id": "w02-1",
+      "group": "public_work",
+      "semantic_pass": false
+    },
+    {
+      "id": "w03-1",
+      "group": "public_work",
+      "semantic_pass": false
+    },
+    {
+      "id": "w04-1",
+      "group": "public_work",
+      "semantic_pass": false
+    },
+    {
+      "id": "w05-1",
+      "group": "public_work",
+      "semantic_pass": false
+    },
+    {
+      "id": "w06-1",
+      "group": "public_work",
+      "semantic_pass": false
+    },
+    {
+      "id": "w07-1",
+      "group": "public_work",
+      "semantic_pass": false
+    },
+    {
+      "id": "w08-1",
+      "group": "public_work",
+      "semantic_pass": false
+    },
+    {
+      "id": "w09-1",
+      "group": "public_work",
+      "semantic_pass": false
+    },
+    {
+      "id": "w10-1",
+      "group": "public_work",
+      "semantic_pass": false
+    },
+    {
+      "id": "w11-1",
+      "group": "public_work",
+      "semantic_pass": false
+    },
+    {
+      "id": "w12-1",
+      "group": "public_work",
+      "semantic_pass": true
+    },
+    {
+      "id": "w13-1",
+      "group": "public_work",
+      "semantic_pass": false
+    },
+    {
+      "id": "w14-1",
+      "group": "public_work",
+      "semantic_pass": true
+    },
+    {
+      "id": "w15-1",
+      "group": "public_work",
+      "semantic_pass": false
+    },
+    {
+      "id": "w16-1",
+      "group": "public_work",
+      "semantic_pass": false
+    },
+    {
+      "id": "l01-1",
+      "group": "limits",
+      "semantic_pass": true
+    },
+    {
+      "id": "l02-1",
+      "group": "limits",
+      "semantic_pass": true
+    },
+    {
+      "id": "l03-1",
+      "group": "limits",
+      "semantic_pass": true
+    },
+    {
+      "id": "l04-1",
+      "group": "limits",
+      "semantic_pass": false
+    },
+    {
+      "id": "l05-1",
+      "group": "limits",
+      "semantic_pass": true
+    },
+    {
+      "id": "l06-1",
+      "group": "limits",
+      "semantic_pass": false
+    },
+    {
+      "id": "l07-1",
+      "group": "limits",
+      "semantic_pass": false
+    },
+    {
+      "id": "l08-1",
+      "group": "limits",
+      "semantic_pass": false
+    },
+    {
+      "id": "l09-1",
+      "group": "limits",
+      "semantic_pass": true
+    },
+    {
+      "id": "l10-1",
+      "group": "limits",
+      "semantic_pass": true
+    },
+    {
+      "id": "i01-1",
+      "group": "instruction",
+      "semantic_pass": false
+    },
+    {
+      "id": "i02-1",
+      "group": "instruction",
+      "semantic_pass": false
+    },
+    {
+      "id": "i03-1",
+      "group": "instruction",
+      "semantic_pass": false
+    },
+    {
+      "id": "i04-1",
+      "group": "instruction",
+      "semantic_pass": true
+    },
+    {
+      "id": "i05-1",
+      "group": "instruction",
+      "semantic_pass": false
+    },
+    {
+      "id": "i06-1",
+      "group": "instruction",
+      "semantic_pass": false
+    },
+    {
+      "id": "i07-1",
+      "group": "instruction",
+      "semantic_pass": false
+    },
+    {
+      "id": "i08-1",
+      "group": "instruction",
+      "semantic_pass": false
+    },
+    {
+      "id": "m01-1",
+      "group": "multi_turn",
+      "semantic_pass": false
+    },
+    {
+      "id": "m01-2",
+      "group": "multi_turn",
+      "semantic_pass": false
+    },
+    {
+      "id": "m02-1",
+      "group": "multi_turn",
+      "semantic_pass": false
+    },
+    {
+      "id": "m02-2",
+      "group": "multi_turn",
+      "semantic_pass": false
+    },
+    {
+      "id": "m03-1",
+      "group": "multi_turn",
+      "semantic_pass": false
+    },
+    {
+      "id": "m03-2",
+      "group": "multi_turn",
+      "semantic_pass": false
+    },
+    {
+      "id": "m04-1",
+      "group": "multi_turn",
+      "semantic_pass": true
+    },
+    {
+      "id": "m04-2",
+      "group": "multi_turn",
+      "semantic_pass": true
+    },
+    {
+      "id": "m05-1",
+      "group": "multi_turn",
+      "semantic_pass": true
+    },
+    {
+      "id": "m05-2",
+      "group": "multi_turn",
+      "semantic_pass": true
+    }
+  ],
+  "source": "reports/korean-rag-base-regression.json",
+  "source_sha256": "d36ec4117227dd0e3d161443e047c72df3553e5c08086eee5312b2b31947ae74"
+}

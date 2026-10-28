@@ -1,0 +1,18 @@
+{
+  "run": "runs/trid-korean-short-v3",
+  "parent": "runs/trid-korean-short-v2-refined",
+  "parent_weights": {
+    "span": "b464b45b2ebf41f1a0db14f871dfd42f87070c032c57d0d07b73ddfa3034b31b",
+    "presence": "ff8b4fee26de16f698fb854365ea91fc0340960e13e06d353f85fa08d647739a"
+  },
+  "data": "data/korean-short-v3",
+  "steps_each": 1600,
+  "batch_size": 16,
+  "learning_rate": 5e-05,
+  "selection": {
+    "span": "minimum full validation span loss",
+    "presence": "maximum full balanced validation accuracy, CE tie break"
+  },
+  "test_policy": "1120-question v2 and 120-question audit are observed development regression sets; no checkpoint or threshold selection on them. No real-world benchmark claim.",
+  "scope": "Model training and evaluation only after user instruction to pause PDF UI work."
+}

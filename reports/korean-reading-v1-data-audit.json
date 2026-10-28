@@ -1,0 +1,55 @@
+{
+  "splits": {
+    "train": {
+      "rows": 5171,
+      "tasks": {
+        "korean_mrc_answerable": 3475,
+        "korean_mrc_unanswerable": 1696
+      },
+      "sha256": "8be05e1e3ac6511c124f2d97e0827e5f5d8ab0e7fac5fcf8779833fd25d859c0",
+      "target_tokens": {
+        "korean_mrc_answerable": 18123,
+        "korean_mrc_unanswerable": 16960
+      },
+      "example_objective_mass": {
+        "korean_mrc_answerable": 0.6720170179849159,
+        "korean_mrc_unanswerable": 0.32798298201508413
+      },
+      "token_mean_mass_if_used": {
+        "korean_mrc_answerable": 0.5165749793347205,
+        "korean_mrc_unanswerable": 0.4834250206652795
+      }
+    },
+    "valid": {
+      "rows": 292,
+      "tasks": {
+        "korean_mrc_unanswerable": 96,
+        "korean_mrc_answerable": 196
+      },
+      "sha256": "8fad1f01d5d46ae7ef34970f58c1e1db6dddaa343091cb1bbfbaf36d28731b37"
+    },
+    "test": {
+      "rows": 2362,
+      "tasks": {
+        "korean_mrc_answerable": 1564,
+        "korean_mrc_unanswerable": 798
+      },
+      "sha256": "44e180a8f35faa39162ad5cf44ccafdeac0811317d5e8bbdea9c3a743fdff93d"
+    }
+  },
+  "active_models_before": {
+    "active-model.json": {
+      "run": "runs/trid-v0.2",
+      "status": "experimental; 6/16 held-out phrasing semantic passes; not a finished dialogue model"
+    },
+    "active-institution-model.json": {
+      "run": "runs/trid-grounded-v2",
+      "status": "experimental generation model; 18/24 familiar-domain demo, 10/480 new-format/value cases; missing-information handling regressed; not ready for customer demonstrations"
+    }
+  },
+  "exact_context_overlap": {
+    "train_valid": 0,
+    "train_test": 0,
+    "valid_test": 0
+  }
+}

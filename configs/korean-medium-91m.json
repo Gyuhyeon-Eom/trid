@@ -1,0 +1,9 @@
+{
+  "vocab_size": 8192,
+  "dim": 768,
+  "layers": 12,
+  "heads": 12,
+  "hidden_dim": 2048,
+  "context_length": 1024,
+  "rope_theta": 10000.0
+}

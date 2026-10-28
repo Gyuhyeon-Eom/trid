@@ -1,0 +1,147 @@
+{
+  "status": "separate learning completed; narrow synthetic improvement, not accepted as default",
+  "components": {
+    "span": {
+      "parameters": 17427840,
+      "objective": "span marginal loss on answerable only",
+      "train_rows": 1200,
+      "valid_rows": 240,
+      "best_step": 700,
+      "completed_steps": 800,
+      "initial_validation_loss": 5.293383932113647,
+      "best_validation_loss": 0.23196067232638598,
+      "training_seconds": 80.18,
+      "weight_bytes": 69717728
+    },
+    "presence": {
+      "parameters": 17308802,
+      "objective": "balanced two-class CE only; no span loss",
+      "train_rows": 2400,
+      "valid_rows": 480,
+      "best_step": 700,
+      "completed_steps": 800,
+      "initial_validation_loss": 0.7978668302297592,
+      "best_validation_loss": 0.27394810877740383,
+      "training_seconds": 76.95,
+      "weight_bytes": 69241304
+    }
+  },
+  "combined_parameters": 34736642,
+  "combined_weight_bytes": 138959032,
+  "weights_sha256": {
+    "span": "49a623d95620020d4c4da2da4cb4ba746a5e33851e5fc9fff7a5033b23172992",
+    "presence": "c2d340f09b42f9a3f352ba64d17f4b72ed8c01a4e87af6f505263b04d9671aef"
+  },
+  "short_test": {
+    "total": 600,
+    "answerable": 300,
+    "span_exact_ignoring_presence": 180,
+    "answerable_exact": 121,
+    "false_abstentions": 84,
+    "unanswerable": 300,
+    "correct_abstentions": 237,
+    "presence_correct": 453,
+    "overall_correct": 358,
+    "answerable_character_f1": 0.5453205810420332
+  },
+  "old_joint_same_test": {
+    "total": 600,
+    "answerable": 300,
+    "span_exact_ignoring_presence": 104,
+    "answerable_exact": 104,
+    "false_abstentions": 0,
+    "unanswerable": 300,
+    "correct_abstentions": 0,
+    "presence_correct": 300,
+    "overall_correct": 104,
+    "answerable_character_f1": 0.5846832052776506
+  },
+  "historical_t01": {
+    "total": 8,
+    "answerable": 6,
+    "span_exact_ignoring_presence": 4,
+    "answerable_exact": 4,
+    "false_abstentions": 0,
+    "unanswerable": 2,
+    "correct_abstentions": 0,
+    "presence_correct": 6,
+    "overall_correct": 4,
+    "answerable_character_f1": 0.7489837398373984
+  },
+  "historical_broad_mrc_197": {
+    "total": 197,
+    "answerable": 135,
+    "span_exact_ignoring_presence": 1,
+    "answerable_exact": 1,
+    "false_abstentions": 5,
+    "unanswerable": 62,
+    "correct_abstentions": 4,
+    "presence_correct": 134,
+    "overall_correct": 5,
+    "answerable_character_f1": 0.0821761734874891
+  },
+  "field_diagnostics": {
+    "domestic_food": {
+      "positive": 50,
+      "span_exact": 49,
+      "final_exact": 41,
+      "negative": 50,
+      "correct_absence": 50,
+      "false_absence": 9
+    },
+    "overseas_food": {
+      "positive": 50,
+      "span_exact": 0,
+      "final_exact": 0,
+      "negative": 50,
+      "correct_absence": 49,
+      "false_absence": 4
+    },
+    "lodging": {
+      "positive": 50,
+      "span_exact": 34,
+      "final_exact": 0,
+      "negative": 50,
+      "correct_absence": 23,
+      "false_absence": 40
+    },
+    "deadline": {
+      "positive": 50,
+      "span_exact": 28,
+      "final_exact": 17,
+      "negative": 50,
+      "correct_absence": 28,
+      "false_absence": 12
+    },
+    "department": {
+      "positive": 50,
+      "span_exact": 19,
+      "final_exact": 13,
+      "negative": 50,
+      "correct_absence": 40,
+      "false_absence": 19
+    },
+    "institution": {
+      "positive": 50,
+      "span_exact": 50,
+      "final_exact": 50,
+      "negative": 50,
+      "correct_absence": 47,
+      "false_absence": 0
+    }
+  },
+  "interpretation": "Span selection and presence prediction now learned separately and improve this narrow six-field held-out synthetic test, but combined answerable accuracy is only 121/300. Generalization across wording and broader passages remains poor. No default activation.",
+  "base_and_tokenizers_preserved": true,
+  "active_models_unchanged": {
+    "active-model.json": {
+      "run": "runs/trid-v0.2",
+      "status": "experimental; 6/16 held-out phrasing semantic passes; not a finished dialogue model"
+    },
+    "active-institution-model.json": {
+      "run": "runs/trid-grounded-v2",
+      "status": "experimental generation model; 18/24 familiar-domain demo, 10/480 new-format/value cases; missing-information handling regressed; not ready for customer demonstrations"
+    }
+  },
+  "tests_passed": 34,
+  "next_experiment_hypothesis": "Train diverse domestic/overseas and lodging question pairs with explicit field contrasts; diagnose presence false negatives separately; create a new held-out test before iteration rather than train on these evaluated test cases."
+}
