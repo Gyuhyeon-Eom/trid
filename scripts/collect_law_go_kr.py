@@ -269,7 +269,7 @@ def cached(path, fetch):
         return path.read_bytes(), False
     body = fetch()
     path.parent.mkdir(parents=True, exist_ok=True)
-    part = path.with_name(path.name + ".part")
+    part = path.with_name(f"{path.name}.{threading.get_ident()}.part")  # per-thread: duplicate ids may be fetched concurrently
     part.write_bytes(body)
     os.replace(part, path)
     return body, True
@@ -295,8 +295,13 @@ def select(client, raw, target, limit, seed):
     total, _ = list_page(client, raw, target, 1, display=1)
     pages = max(1, math.ceil(total / DISPLAY))
     if limit is None:
+        seen = set()  # list pages can repeat an item; one fetch per id
         for page in range(1, pages + 1):
-            yield from list_page(client, raw, target, page)[1]
+            for item in list_page(client, raw, target, page)[1]:
+                key = item[TARGETS[target]["id"]]
+                if key not in seen:
+                    seen.add(key)
+                    yield item
         return
     rng = random.Random(f"{seed}:{target}")
     chosen = sorted(rng.sample(range(1, pages + 1), min(pages, max(1, math.ceil(limit / 10)))))

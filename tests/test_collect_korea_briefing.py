@@ -160,3 +160,15 @@ class DoclangTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class EnumerationDedupTest(unittest.TestCase):
+    def test_full_enumeration_yields_each_news_id_once(self):
+        import importlib.util
+        from pathlib import Path
+        spec = importlib.util.spec_from_file_location('ckb', Path(__file__).resolve().parents[1] / 'scripts/collect_korea_briefing.py')
+        m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
+        pages = {1: [('a', '2025.01.02', 'x'), ('b', '2025.01.03', 'x')], 2: [('b', '2025.01.03', 'x'), ('c', '2025.01.04', 'x')]}
+        m.list_page = lambda fetcher, raw, y, mo, page, today: (2 * m.PER_PAGE, pages[page])
+        ids = [r['news_id'] for r in m.full_enumeration(None, None, {'2025-01': 2 * m.PER_PAGE}, None)]
+        self.assertEqual(ids, ['a', 'b', 'c'])

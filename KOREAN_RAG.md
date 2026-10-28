@@ -123,3 +123,12 @@ v1 RAG 자료는 항목 4개, 금액 10개, 이름 8개, 문서당 사실 1개�
 
 ### 구간 단위 점수화 (`trid/span_scoring.py`, 2026-10-28)
 토큰 탐욕 선택 대신 근거의 모든 후보 구간(단어 시작 ~ 임의 문자 끝, 숫자·영문은 쪼개지 않음, 최대 8어절·64자)을 `값 [Dn]`으로 만들어 전체 로그우도로 고른다. 평가셋 단일 값 216문항 중 정답이 후보에 들어오는 비율은 210/216이고, 두 값 결합 12문항은 열거하지 않는다. 17M 후보로 측정하면 strict 22/310이지만 전부 보류 문항이고 답 있는 228문항은 0이다(`reports/rag-eval-v1-baseline-v0.3-candidate-span-{sum,mean}.json`). 보류 후보를 빼고 구간만 고르게 해도 authored 80문항에서 출처는 62/80 맞히고 값은 0/80이다. 이 모델은 어느 문단인지는 알지만 그 안에서 값을 고르지 못한다. 추출 헤드로 가는 근거다(`reports/closed-network-architecture-survey.md` §7–8).
+
+### 추출 헤드 (`trid/extractive.py`, 2026-10-28)
+조사 보고서 §7–8 실험 1의 첫 단계. 입력은 `trid.prompts.rag_prompt` 프롬프트 그대로이고, trid 몸통(전체 가중치 학습) 위에 헤드 둘을 얹는다. (1) 마지막 은닉 상태에서 3-way 존재(답 있음 / 확인 불가 / 근거 충돌), (2) `trid/korean_reader.py`와 같은 방식의 글자 단위 시작·끝 점수(질의는 마지막 은닉, 키는 글자가 속한 토큰 은닉 + 글자 특징 + 토큰 내 오프셋). `[Dn] ` 표지·공백·질문 글자는 점수에서 제외하고, 글자마다 문단 번호를 기록해 출처는 고른 구간이 놓인 문단에서 결정된다(생성하지 않음). 디코딩은 `span_scoring.candidates`와 같은 규칙(같은 문단, 끝 ≥ 시작, ≤64자, 어절 시작에서 시작, 숫자·영문·`,.` 연속을 쪼개지 않음)을 지키는 (시작, 끝) 중 점수 최대를 고르고, 존재 확률과 구간 점수를 함께 내보내 뒤의 보정기(실험 4)에 쓴다. 손실은 CE(존재) + CE(시작) + CE(끝)(답 있는 행만). 두 값 결합 답은 열거하지 않는다.
+
+자료 매핑(`data/korean-rag-curriculum-v2`, 문맥 1024): 학습은 group ∈ {rag, rag_real} 17,200행 중 combine 1,600행 제외, 값이 인용 문단에 없는 1행 제외 → 15,599행(답 있음 10,532 / 확인 불가 3,467 / 근거 충돌 1,600). 검증은 480행 중 combine 40 제외 → 440행(297 / 103 / 40). 답 있음 중 301행(검증 9행)은 정답이 어절 중간에서 시작해(예: `대표변호사`의 `변호사`, 따옴표 뒤) 위 디코딩 규칙으로는 낼 수 없다; 학습에는 쓰되 상한으로 기록한다.
+
+스크립트: `scripts/train_extractive.py`(rag 행만, 검증 손실로 체크포인트 선택, `reader.safetensors`), `scripts/evaluate_extractive.py`(`evaluate_rag_eval.py`의 `score`를 그대로 써 같은 보고서 형식), `scripts/train_medium_extractive.py`(SFT v2 작업 완료 후 medium base에서 2,000단계, batch 16, lr 1e-4, seed 271029, mps; `reports/medium-extractive-v1.json`과 `reports/medium-extractive-job.json`에 기록; 내보내기·활성화 없음). 테스트는 `tests/test_extractive.py`.
+
+CPU 경로 확인(학습 200행 표본, 20단계, batch 4, medium base 30,500단계 스냅샷): 검증 40행 손실 17.55 → 11.78, 존재 정확도 0.10 → 0.70, 구간 일치 1/28. 독립 평가셋 앞 40문항은 strict 2/40, value 2, lenient_value 5, source 22/40, 보류 1(답 없음 8문항은 모두 미보류), `skipped_context` 0(`reports/extractive-smoke-cpu.json`). 거의 무작위 수준이며 경로가 끝까지 도는지만 확인한 것이다.

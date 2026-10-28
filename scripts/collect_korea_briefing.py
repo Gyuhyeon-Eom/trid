@@ -109,7 +109,7 @@ def cached(fetcher, url, path, refresh=False):
         return path.read_bytes()
     body = fetcher.get(url)
     path.parent.mkdir(parents=True, exist_ok=True)
-    part = path.with_name(path.name + ".part")
+    part = path.with_name(f"{path.name}.{threading.get_ident()}.part")  # per-thread: duplicate ids may be fetched concurrently
     part.write_bytes(body)
     os.replace(part, path)
     return body
@@ -407,11 +407,14 @@ def pilot_selection(fetcher, raw, totals, limit, seed, today):
 
 
 def full_enumeration(fetcher, raw, totals, today):
+    seen = set()  # a release can appear on two list pages; one fetch per news_id
     for month, total in totals.items():
         y, m = map(int, month.split("-"))
         for page in range(1, -(-total // PER_PAGE) + 1):
             for news_id, date, ministry in list_page(fetcher, raw, y, m, page, today)[1]:
-                yield {"news_id": news_id, "list_date": date, "list_ministry": ministry, "month": month}
+                if news_id not in seen:
+                    seen.add(news_id)
+                    yield {"news_id": news_id, "list_date": date, "list_ministry": ministry, "month": month}
 
 
 # ----------------------------------------------------------------------------- items
