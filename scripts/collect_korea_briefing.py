@@ -10,14 +10,14 @@ attached document, preferring HWPX, then PDF (pdftotext), then HWP (rhwp export-
 only when no attachment yields usable text. Worker threads share one global request gap (0.1 s); every
 response cached so a re-run skips finished items.
 """
-import argparse, calendar, collections, datetime, hashlib, html, io, json, os, random, re, shutil
-import http.client, subprocess, sys, tempfile, threading, time, unicodedata, urllib.error, urllib.request, urllib.robotparser, zipfile
-import xml.etree.ElementTree as ET
+import argparse, calendar, collections, datetime, hashlib, html, json, os, random, re, shutil
+import http.client, sys, threading, time, unicodedata, urllib.error, urllib.request, urllib.robotparser
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from trid.corpus import sha256, write_json, prefetch
+from trid.service.ingest import TOOLS, PAGE_MARK, flat, hwpx_text, doclang_text, tool_text, join_pdf_lines  # noqa: F401
 
 SITE = "https://www.korea.kr"
 LIST_URL = SITE + "/briefing/pressReleaseList.do?startDate={start}&endDate={end}&pageIndex={page}"
@@ -41,8 +41,8 @@ PER_PAGE = 20
 MIN_CHARS = 200
 MAX_DOWNLOAD = 60 * 1024 * 1024
 FORMATS = ("hwpx", "pdf", "hwp")  # preference order
-TOOLS = {"pdf": "pdftotext", "hwp": "rhwp"}  # rhwp: MIT, https://github.com/edwardkim/rhwp (replaced AGPL hwp5txt)
-HP = "{http://www.hancom.co.kr/hwpml/2011/paragraph}"
+# TOOLS and the attachment text helpers (hwpx_text, doclang_text, tool_text, join_pdf_lines) live in
+# trid.service.ingest, which the product's `trid ingest` shares with this collector.
 
 
 # ----------------------------------------------------------------------------- HTTP
@@ -123,10 +123,6 @@ def strip_tags(fragment):
     return html.unescape(re.sub(r"<[^>]+>", " ", fragment))
 
 
-def flat(text):
-    return re.sub(r"\s+", " ", text).strip()
-
-
 def parse_list(page):
     """(total count, [(newsId, date, ministry)]) from a pressReleaseList.do page."""
     total = re.search(r"총\s*<strong>([\d,]+)</strong>\s*건", page)
@@ -167,145 +163,6 @@ def ministry_of(line):
     return m.group(1).strip() if m else None
 
 
-# ----------------------------------------------------------------------------- attachment text
-
-def _run_text(t):
-    parts = [t.text or ""]
-    for c in t:
-        if c.tag in (HP + "tab", HP + "nbSpace", HP + "fwSpace", HP + "lineBreak"):
-            parts.append(" ")
-        parts.append(c.tail or "")
-    return "".join(parts)
-
-
-def _paragraphs(container):
-    for p in container:
-        if p.tag == HP + "p":
-            yield from _paragraph(p)
-
-
-def _paragraph(p):
-    own, objects = [], []
-    for run in p.findall(HP + "run"):
-        for child in run:
-            if child.tag == HP + "t":
-                own.append(_run_text(child))
-            else:
-                objects.append(child)
-    yield "".join(own)
-    for obj in objects:
-        yield from _objects(obj)
-
-
-def _objects(e):
-    if e.tag == HP + "tbl":
-        for tr in e.findall(HP + "tr"):
-            cells = [" ".join(flat(x) for x in _objects(tc) if flat(x)) for tc in tr.findall(HP + "tc")]
-            cells = [c for c in cells if c]
-            if len(cells) == 1:  # one-cell boxes often hold whole paragraphs; keep their lines
-                yield from (x for tc in tr.findall(HP + "tc") for x in _objects(tc))
-            elif cells:
-                yield " ".join(cells)
-    elif e.tag == HP + "subList":
-        yield from _paragraphs(e)
-    else:
-        for c in e:
-            yield from _objects(c)
-
-
-def hwpx_text(data):
-    with zipfile.ZipFile(io.BytesIO(data)) as z:
-        names = sorted((n for n in z.namelist() if re.fullmatch(r"Contents/section\d+\.xml", n)),
-                       key=lambda n: int(re.search(r"\d+", n.rsplit("/", 1)[1]).group()))
-        lines = []
-        for name in names:
-            if z.getinfo(name).file_size > 200 * 1024 * 1024:
-                raise ValueError("section too large")
-            lines.extend(_paragraphs(ET.fromstring(z.read(name))))
-    return "\n".join(lines)
-
-
-def tool_text(kind, data, timeout=180):
-    with tempfile.TemporaryDirectory() as d:
-        src = Path(d) / f"in.{kind}"
-        src.write_bytes(data)
-        if kind == "pdf":
-            out = subprocess.run(["pdftotext", "-enc", "UTF-8", str(src), "-"], capture_output=True,
-                                 timeout=timeout, check=True).stdout
-            return join_pdf_lines(out.decode("utf-8", "replace"))
-        xml = Path(d) / "out.xml"  # --assets-dir keeps pictures out of the XML (else inlined as base64)
-        subprocess.run(["rhwp", "export-doclang", str(src), "-o", str(xml), "--assets-dir", d],
-                       capture_output=True, timeout=timeout, check=True)
-        return doclang_text(xml.read_bytes())
-
-
-DOCLANG_SKIP = {"page_header", "page_footer", "picture"}
-DOCLANG_CELL = {"fcel", "lcel", "ucel", "ecel", "xcel", "ched"}  # cell starts (first/left-merged/up-merged/empty/...)
-
-
-def doclang_text(xml):
-    """rhwp DocLang v0.6 -> one line per paragraph; table rows joined like hwpx_text (<nl/> ends a row)."""
-    lines = []
-
-    def para(e):
-        return re.sub(r"\s+", " ", "".join(e.itertext())).strip()
-
-    def walk(e):
-        for c in e:
-            if c.tag == "text":
-                lines.append(para(c))
-            elif c.tag == "table":
-                table(c)
-            elif c.tag not in DOCLANG_SKIP:
-                walk(c)
-
-    def table(t):
-        cells = []
-
-        def row():
-            texts = [" ".join(x for x in cell if x) for cell in cells if any(cell)]
-            if len(texts) == 1:  # one-cell boxes often hold whole paragraphs; keep their lines
-                lines.extend(x for cell in cells for x in cell if x)
-            elif texts:
-                lines.append(" ".join(texts))
-            cells.clear()
-
-        for c in t:
-            if c.tag in DOCLANG_CELL:
-                cells.append([])
-            elif c.tag == "nl":
-                row()
-            elif c.tag == "text":
-                if not cells:
-                    cells.append([])
-                cells[-1].append(para(c))
-            elif c.tag == "table":
-                table(c)
-            elif c.tag not in DOCLANG_SKIP:
-                walk(c)
-        row()
-
-    walk(ET.fromstring(xml))
-    return "\n".join(lines)
-
-
-BULLET = re.compile(r"^\s*(?:[□■○●◦◎◇◆▶▷►※*＊\-–·•ㅇ①-⑳<\[【(「]|\d{1,2}[.)]|[가-하][.)]|\(\d+\)|제\s*\d+\s*조)")
-SENTENCE_END = re.compile(r"[.?!。:」』”\")]\s*$|다\s*$")
-
-
-def join_pdf_lines(text):
-    """pdftotext breaks every visual line; rejoin lines that continue a paragraph."""
-    out = []
-    for raw in text.replace("\f", "\n\f\n").splitlines():
-        line = raw.strip()
-        if (out and line and out[-1] and out[-1] != "\f" and not BULLET.match(line)
-                and not SENTENCE_END.search(out[-1]) and not PAGE_MARK.match(line) and not PAGE_MARK.match(out[-1])):
-            out[-1] += " " + line
-        else:
-            out.append(line)
-    return "\n".join(out)
-
-
 def available_tools():
     return {name: shutil.which(name) for name in TOOLS.values()}
 
@@ -314,7 +171,6 @@ def available_tools():
 
 PHONE = re.compile(r"(?<![\d.-])(?:\(?0\d{1,2}\)?[\s.)-]?\d{3,4}[\s.-]\d{4}|1[5-9]\d{2}-\d{4})(?![\d-])")
 EMAIL = re.compile(r"[\w.+-]+@[\w-]+(?:\.[\w-]+)+")
-PAGE_MARK = re.compile(r"^\s*(?:[-–—]\s*\d{1,3}\s*[-–—]|\d{1,3}\s*/\s*\d{1,3}|\f)\s*$")
 HEADER_KEY = re.compile(r"^[\s<\[(【]*(?:보도\s*자료\s*)?(?:보도\s*시점|보도\s*일시|보도\s*시각|배포\s*일시|배포\s*시각|배\s*포|"
                         r"엠바고|담당\s*부서|담당\s*과|담\s*당\s*자|책\s*임\s*자|문\s*의|연\s*락\s*처|자료\s*문의)"
                         r"(?=[\s:：)\]>】]|$)")

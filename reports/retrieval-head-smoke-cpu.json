@@ -1,0 +1,7399 @@
+{
+  "data": "data/korean-rag-eval-v1",
+  "test_sha256": "5187c9f5946e8dcd52da0e49b25dae1d58656cbca9b737ab635cd4d1c5b37ad4",
+  "evaluated_at_unix": 1793166784.614502,
+  "device": "cpu",
+  "threads": 4,
+  "protocol": "Evaluate a trained retrieval head (trid.retrieval_head) with the protocol of scripts/benchmark_retrieval.py.\n\nSame corpus (every distinct evidence passage of data/korean-rag-eval-v1 test.jsonl), same queries (the '질문: ' line\nof every answerable item, relevant = texts of its `sources`), same metrics (Recall@1/3/5, MRR, CPU latency).\nRetrievers: head (MaxSim over pre-encoded fp16 passages), bm25_kiwi (bm25s + kiwipiepy, imported from the benchmark)\nand hybrid (reciprocal rank fusion of both, k=60). Writes reports/retrieval-head-<name>.json via --output.",
+  "run": "runs/retrieval-head-smoke-cpu",
+  "model_sha256": "22655cace458d404c34421bd1b03d18584f8fb55f4fe02b9a325deb6bbe2b8e2",
+  "training": {
+    "stage": "retrieval_head_v1",
+    "initialization": "/tmp/trid-base-snap",
+    "initial_weights_sha256": "41c99ad57a83f2109b4d4b095593ad947030478f29ea77eb3e932aff378f3723",
+    "freeze_backbone": true,
+    "steps_requested": 30,
+    "completed_steps": 30,
+    "best_step": 30,
+    "best_validation": {
+      "recall@1": 0.5703125,
+      "recall@3": 0.734375,
+      "valid_loss": 2.8704463649191894
+    },
+    "batch_size": 8,
+    "train_pairs": 500,
+    "valid_pairs": 128,
+    "train_limit": 500,
+    "pair_counts": {
+      "train": {
+        "rag_noise": 81,
+        "rag_klue": 158,
+        "rag_klue_missing": 80,
+        "rag_table": 52,
+        "rag_revision": 69,
+        "rag_value": 60
+      },
+      "valid": {
+        "rag_klue": 54,
+        "rag_klue_missing": 19,
+        "rag_value": 14,
+        "rag_noise": 15,
+        "rag_table": 14,
+        "rag_revision": 12
+      }
+    },
+    "hard_negatives": {
+      "bm25_top_k": 8,
+      "bm25_tokenizer": "kiwipiepy morphemes NNB NNG NNP NP NR SH SL SN VA VV",
+      "bm25_negatives_total": 4000,
+      "bm25_seconds": 4.07,
+      "prompt_negatives_total": 204,
+      "pairs_without_hard_negative": 0
+    },
+    "status": "complete"
+  },
+  "query_tokens": 64,
+  "passage_tokens": 512,
+  "passages_truncated": 62,
+  "index_bytes_fp16": 55075220,
+  "kiwi_tags": [
+    "NNB",
+    "NNG",
+    "NNP",
+    "NP",
+    "NR",
+    "SH",
+    "SL",
+    "SN",
+    "VA",
+    "VV"
+  ],
+  "rrf_k": 60,
+  "licences": {
+    "bm25s": "MIT https://github.com/xhluca/bm25s",
+    "kiwipiepy": "Apache-2.0 https://github.com/bab2min/kiwipiepy"
+  },
+  "corpus_passages": 421,
+  "queries": 228,
+  "index_seconds": {
+    "bm25_kiwi": 1.82,
+    "head": 21.96
+  },
+  "latency_per_query": {
+    "bm25_kiwi": {
+      "mean_ms": 0.62,
+      "p50_ms": 0.51,
+      "p90_ms": 0.96
+    },
+    "head": {
+      "mean_ms": 37.25,
+      "p50_ms": 31.57,
+      "p90_ms": 56.48
+    },
+    "hybrid": {
+      "mean_ms": 37.91,
+      "p50_ms": 32.12,
+      "p90_ms": 57.14
+    }
+  },
+  "summary": {
+    "bm25_kiwi": {
+      "all": {
+        "recall@1": 0.7939,
+        "recall@3": 0.9474,
+        "recall@5": 0.9693,
+        "mrr": 0.9057,
+        "total": 228
+      },
+      "authored": {
+        "recall@1": 0.6797,
+        "recall@3": 0.9219,
+        "recall@5": 0.9531,
+        "mrr": 0.8652,
+        "total": 128
+      },
+      "klue_dev": {
+        "recall@1": 0.94,
+        "recall@3": 0.98,
+        "recall@5": 0.99,
+        "mrr": 0.9575,
+        "total": 100
+      },
+      "rag_combine": {
+        "recall@1": 0.0,
+        "recall@3": 0.5833,
+        "recall@5": 0.8333,
+        "mrr": 1.0,
+        "total": 12
+      },
+      "rag_klue": {
+        "recall@1": 0.94,
+        "recall@3": 0.98,
+        "recall@5": 0.99,
+        "mrr": 0.9575,
+        "total": 100
+      },
+      "rag_name": {
+        "recall@1": 0.9167,
+        "recall@3": 0.9167,
+        "recall@5": 0.9167,
+        "mrr": 0.9167,
+        "total": 24
+      },
+      "rag_noise": {
+        "recall@1": 0.6667,
+        "recall@3": 1.0,
+        "recall@5": 1.0,
+        "mrr": 0.8264,
+        "total": 24
+      },
+      "rag_revision": {
+        "recall@1": 0.3125,
+        "recall@3": 0.9375,
+        "recall@5": 0.9375,
+        "mrr": 0.6146,
+        "total": 16
+      },
+      "rag_table": {
+        "recall@1": 0.95,
+        "recall@3": 0.95,
+        "recall@5": 1.0,
+        "mrr": 0.9625,
+        "total": 20
+      },
+      "rag_value": {
+        "recall@1": 0.7812,
+        "recall@3": 0.9688,
+        "recall@5": 0.9688,
+        "mrr": 0.8698,
+        "total": 32
+      }
+    },
+    "head": {
+      "all": {
+        "recall@1": 0.4781,
+        "recall@3": 0.5833,
+        "recall@5": 0.636,
+        "mrr": 0.5648,
+        "total": 228
+      },
+      "authored": {
+        "recall@1": 0.2578,
+        "recall@3": 0.3516,
+        "recall@5": 0.4062,
+        "mrr": 0.3642,
+        "total": 128
+      },
+      "klue_dev": {
+        "recall@1": 0.76,
+        "recall@3": 0.88,
+        "recall@5": 0.93,
+        "mrr": 0.8215,
+        "total": 100
+      },
+      "rag_combine": {
+        "recall@1": 0.0,
+        "recall@3": 0.25,
+        "recall@5": 0.3333,
+        "mrr": 0.6667,
+        "total": 12
+      },
+      "rag_klue": {
+        "recall@1": 0.76,
+        "recall@3": 0.88,
+        "recall@5": 0.93,
+        "mrr": 0.8215,
+        "total": 100
+      },
+      "rag_name": {
+        "recall@1": 0.25,
+        "recall@3": 0.25,
+        "recall@5": 0.375,
+        "mrr": 0.2812,
+        "total": 24
+      },
+      "rag_noise": {
+        "recall@1": 0.375,
+        "recall@3": 0.5417,
+        "recall@5": 0.5417,
+        "mrr": 0.4583,
+        "total": 24
+      },
+      "rag_revision": {
+        "recall@1": 0.25,
+        "recall@3": 0.375,
+        "recall@5": 0.375,
+        "mrr": 0.3125,
+        "total": 16
+      },
+      "rag_table": {
+        "recall@1": 0.1,
+        "recall@3": 0.1,
+        "recall@5": 0.1,
+        "mrr": 0.1,
+        "total": 20
+      },
+      "rag_value": {
+        "recall@1": 0.375,
+        "recall@3": 0.4688,
+        "recall@5": 0.5625,
+        "mrr": 0.4333,
+        "total": 32
+      }
+    },
+    "hybrid": {
+      "all": {
+        "recall@1": 0.7368,
+        "recall@3": 0.9342,
+        "recall@5": 0.9518,
+        "mrr": 0.8678,
+        "total": 228
+      },
+      "authored": {
+        "recall@1": 0.5859,
+        "recall@3": 0.8984,
+        "recall@5": 0.9219,
+        "mrr": 0.7993,
+        "total": 128
+      },
+      "klue_dev": {
+        "recall@1": 0.93,
+        "recall@3": 0.98,
+        "recall@5": 0.99,
+        "mrr": 0.9553,
+        "total": 100
+      },
+      "rag_combine": {
+        "recall@1": 0.0,
+        "recall@3": 0.5833,
+        "recall@5": 0.5833,
+        "mrr": 1.0,
+        "total": 12
+      },
+      "rag_klue": {
+        "recall@1": 0.93,
+        "recall@3": 0.98,
+        "recall@5": 0.99,
+        "mrr": 0.9553,
+        "total": 100
+      },
+      "rag_name": {
+        "recall@1": 0.5833,
+        "recall@3": 0.9167,
+        "recall@5": 0.9167,
+        "mrr": 0.7431,
+        "total": 24
+      },
+      "rag_noise": {
+        "recall@1": 0.5833,
+        "recall@3": 0.9583,
+        "recall@5": 1.0,
+        "mrr": 0.7722,
+        "total": 24
+      },
+      "rag_revision": {
+        "recall@1": 0.3125,
+        "recall@3": 0.8125,
+        "recall@5": 0.9375,
+        "mrr": 0.549,
+        "total": 16
+      },
+      "rag_table": {
+        "recall@1": 0.8,
+        "recall@3": 0.95,
+        "recall@5": 0.95,
+        "mrr": 0.875,
+        "total": 20
+      },
+      "rag_value": {
+        "recall@1": 0.8125,
+        "recall@3": 0.9688,
+        "recall@5": 0.9688,
+        "mrr": 0.8646,
+        "total": 32
+      }
+    }
+  },
+  "per_query": [
+    {
+      "id": "A-001",
+      "origin": "authored",
+      "task": "rag_value",
+      "relevant": [
+        0
+      ],
+      "top": {
+        "bm25_kiwi": [
+          0,
+          37,
+          30,
+          102,
+          29
+        ],
+        "head": [
+          406,
+          379,
+          353,
+          330,
+          407
+        ],
+        "hybrid": [
+          0,
+          406,
+          37,
+          379,
+          30
+        ]
+      }
+    },
+    {
+      "id": "A-002",
+      "origin": "authored",
+      "task": "rag_value",
+      "relevant": [
+        1
+      ],
+      "top": {
+        "bm25_kiwi": [
+          1,
+          39,
+          6,
+          165,
+          220
+        ],
+        "head": [
+          1,
+          3,
+          165,
+          59,
+          407
+        ],
+        "hybrid": [
+          1,
+          165,
+          39,
+          3,
+          6
+        ]
+      }
+    },
+    {
+      "id": "A-003",
+      "origin": "authored",
+      "task": "rag_value",
+      "relevant": [
+        2
+      ],
+      "top": {
+        "bm25_kiwi": [
+          40,
+          2,
+          49,
+          67,
+          22
+        ],
+        "head": [
+          268,
+          349,
+          312,
+          283,
+          2
+        ],
+        "hybrid": [
+          2,
+          40,
+          268,
+          349,
+          49
+        ]
+      }
+    },
+    {
+      "id": "A-004",
+      "origin": "authored",
+      "task": "rag_value",
+      "relevant": [
+        3
+      ],
+      "top": {
+        "bm25_kiwi": [
+          3,
+          41,
+          35,
+          238,
+          239
+        ],
+        "head": [
+          3,
+          41,
+          11,
+          9,
+          341
+        ],
+        "hybrid": [
+          3,
+          41,
+          35,
+          11,
+          238
+        ]
+      }
+    },
+    {
+      "id": "A-005",
+      "origin": "authored",
+      "task": "rag_value",
+      "relevant": [
+        4
+      ],
+      "top": {
+        "bm25_kiwi": [
+          122,
+          4,
+          354,
+          315,
+          280
+        ],
+        "head": [
+          335,
+          290,
+          381,
+          368,
+          353
+        ],
+        "hybrid": [
+          122,
+          335,
+          4,
+          290,
+          354
+        ]
+      }
+    },
+    {
+      "id": "A-006",
+      "origin": "authored",
+      "task": "rag_value",
+      "relevant": [
+        5
+      ],
+      "top": {
+        "bm25_kiwi": [
+          5,
+          8,
+          0,
+          283,
+          59
+        ],
+        "head": [
+          5,
+          407,
+          364,
+          341,
+          374
+        ],
+        "hybrid": [
+          5,
+          8,
+          407,
+          0,
+          364
+        ]
+      }
+    },
+    {
+      "id": "A-007",
+      "origin": "authored",
+      "task": "rag_value",
+      "relevant": [
+        6
+      ],
+      "top": {
+        "bm25_kiwi": [
+          6,
+          319,
+          309,
+          1,
+          357
+        ],
+        "head": [
+          407,
+          398,
+          349,
+          373,
+          295
+        ],
+        "hybrid": [
+          6,
+          407,
+          319,
+          398,
+          309
+        ]
+      }
+    },
+    {
+      "id": "A-008",
+      "origin": "authored",
+      "task": "rag_value",
+      "relevant": [
+        7
+      ],
+      "top": {
+        "bm25_kiwi": [
+          7,
+          2,
+          40,
+          22,
+          20
+        ],
+        "head": [
+          2,
+          7,
+          40,
+          390,
+          360
+        ],
+        "hybrid": [
+          7,
+          2,
+          40,
+          22,
+          390
+        ]
+      }
+    },
+    {
+      "id": "A-009",
+      "origin": "authored",
+      "task": "rag_name",
+      "relevant": [
+        8
+      ],
+      "top": {
+        "bm25_kiwi": [
+          8,
+          35,
+          37,
+          102,
+          30
+        ],
+        "head": [
+          398,
+          290,
+          268,
+          373,
+          280
+        ],
+        "hybrid": [
+          8,
+          398,
+          35,
+          290,
+          37
+        ]
+      }
+    },
+    {
+      "id": "A-010",
+      "origin": "authored",
+      "task": "rag_name",
+      "relevant": [
+        9
+      ],
+      "top": {
+        "bm25_kiwi": [
+          9,
+          407,
+          248,
+          62,
+          140
+        ],
+        "head": [
+          407,
+          303,
+          268,
+          9,
+          373
+        ],
+        "hybrid": [
+          407,
+          9,
+          303,
+          248,
+          268
+        ]
+      }
+    },
+    {
+      "id": "A-011",
+      "origin": "authored",
+      "task": "rag_name",
+      "relevant": [
+        10
+      ],
+      "top": {
+        "bm25_kiwi": [
+          10,
+          399,
+          293,
+          282,
+          47
+        ],
+        "head": [
+          399,
+          398,
+          138,
+          303,
+          139
+        ],
+        "hybrid": [
+          399,
+          10,
+          398,
+          293,
+          138
+        ]
+      }
+    },
+    {
+      "id": "A-012",
+      "origin": "authored",
+      "task": "rag_name",
+      "relevant": [
+        11
+      ],
+      "top": {
+        "bm25_kiwi": [
+          11,
+          41,
+          23,
+          238,
+          239
+        ],
+        "head": [
+          349,
+          290,
+          373,
+          268,
+          379
+        ],
+        "hybrid": [
+          11,
+          349,
+          41,
+          290,
+          23
+        ]
+      }
+    },
+    {
+      "id": "A-013",
+      "origin": "authored",
+      "task": "rag_name",
+      "relevant": [
+        12
+      ],
+      "top": {
+        "bm25_kiwi": [
+          12,
+          206,
+          207,
+          354,
+          253
+        ],
+        "head": [
+          318,
+          373,
+          407,
+          398,
+          374
+        ],
+        "hybrid": [
+          12,
+          318,
+          206,
+          373,
+          207
+        ]
+      }
+    },
+    {
+      "id": "A-014",
+      "origin": "authored",
+      "task": "rag_name",
+      "relevant": [
+        13
+      ],
+      "top": {
+        "bm25_kiwi": [
+          13,
+          57,
+          56,
+          202,
+          358
+        ],
+        "head": [
+          13,
+          202,
+          268,
+          325,
+          360
+        ],
+        "hybrid": [
+          13,
+          202,
+          57,
+          56,
+          268
+        ]
+      }
+    },
+    {
+      "id": "A-015",
+      "origin": "authored",
+      "task": "rag_noise",
+      "relevant": [
+        15
+      ],
+      "top": {
+        "bm25_kiwi": [
+          15,
+          14,
+          16,
+          0,
+          45
+        ],
+        "head": [
+          15,
+          14,
+          0,
+          16,
+          57
+        ],
+        "hybrid": [
+          15,
+          14,
+          16,
+          0,
+          45
+        ]
+      }
+    },
+    {
+      "id": "A-016",
+      "origin": "authored",
+      "task": "rag_noise",
+      "relevant": [
+        18
+      ],
+      "top": {
+        "bm25_kiwi": [
+          4,
+          17,
+          18,
+          130,
+          385
+        ],
+        "head": [
+          349,
+          290,
+          407,
+          268,
+          398
+        ],
+        "hybrid": [
+          4,
+          349,
+          17,
+          290,
+          18
+        ]
+      }
+    },
+    {
+      "id": "A-017",
+      "origin": "authored",
+      "task": "rag_noise",
+      "relevant": [
+        21
+      ],
+      "top": {
+        "bm25_kiwi": [
+          21,
+          40,
+          22,
+          20,
+          61
+        ],
+        "head": [
+          268,
+          290,
+          375,
+          40,
+          407
+        ],
+        "hybrid": [
+          40,
+          21,
+          268,
+          290,
+          22
+        ]
+      }
+    },
+    {
+      "id": "A-018",
+      "origin": "authored",
+      "task": "rag_noise",
+      "relevant": [
+        24
+      ],
+      "top": {
+        "bm25_kiwi": [
+          25,
+          24,
+          23,
+          3,
+          238
+        ],
+        "head": [
+          3,
+          24,
+          25,
+          23,
+          55
+        ],
+        "hybrid": [
+          25,
+          24,
+          3,
+          23,
+          238
+        ]
+      }
+    },
+    {
+      "id": "A-019",
+      "origin": "authored",
+      "task": "rag_noise",
+      "relevant": [
+        26
+      ],
+      "top": {
+        "bm25_kiwi": [
+          26,
+          27,
+          323,
+          312,
+          295
+        ],
+        "head": [
+          258,
+          67,
+          5,
+          412,
+          345
+        ],
+        "hybrid": [
+          26,
+          258,
+          27,
+          67,
+          323
+        ]
+      }
+    },
+    {
+      "id": "A-020",
+      "origin": "authored",
+      "task": "rag_noise",
+      "relevant": [
+        30
+      ],
+      "top": {
+        "bm25_kiwi": [
+          37,
+          30,
+          29,
+          102,
+          0
+        ],
+        "head": [
+          30,
+          29,
+          37,
+          0,
+          360
+        ],
+        "hybrid": [
+          30,
+          37,
+          29,
+          0,
+          102
+        ]
+      }
+    },
+    {
+      "id": "A-021",
+      "origin": "authored",
+      "task": "rag_table",
+      "relevant": [
+        32
+      ],
+      "top": {
+        "bm25_kiwi": [
+          32,
+          30,
+          37,
+          0,
+          29
+        ],
+        "head": [
+          290,
+          360,
+          381,
+          407,
+          373
+        ],
+        "hybrid": [
+          32,
+          290,
+          30,
+          360,
+          37
+        ]
+      }
+    },
+    {
+      "id": "A-022",
+      "origin": "authored",
+      "task": "rag_table",
+      "relevant": [
+        33
+      ],
+      "top": {
+        "bm25_kiwi": [
+          33,
+          222,
+          169,
+          40,
+          170
+        ],
+        "head": [
+          67,
+          201,
+          5,
+          139,
+          377
+        ],
+        "hybrid": [
+          33,
+          67,
+          222,
+          201,
+          169
+        ]
+      }
+    },
+    {
+      "id": "A-023",
+      "origin": "authored",
+      "task": "rag_table",
+      "relevant": [
+        34
+      ],
+      "top": {
+        "bm25_kiwi": [
+          6,
+          1,
+          306,
+          34,
+          381
+        ],
+        "head": [
+          341,
+          290,
+          268,
+          379,
+          373
+        ],
+        "hybrid": [
+          6,
+          341,
+          1,
+          290,
+          306
+        ]
+      }
+    },
+    {
+      "id": "A-024",
+      "origin": "authored",
+      "task": "rag_table",
+      "relevant": [
+        35
+      ],
+      "top": {
+        "bm25_kiwi": [
+          35,
+          3,
+          41,
+          23,
+          238
+        ],
+        "head": [
+          295,
+          349,
+          292,
+          393,
+          407
+        ],
+        "hybrid": [
+          35,
+          295,
+          3,
+          349,
+          41
+        ]
+      }
+    },
+    {
+      "id": "A-025",
+      "origin": "authored",
+      "task": "rag_table",
+      "relevant": [
+        36
+      ],
+      "top": {
+        "bm25_kiwi": [
+          36,
+          351,
+          159,
+          216,
+          217
+        ],
+        "head": [
+          393,
+          267,
+          406,
+          335,
+          257
+        ],
+        "hybrid": [
+          36,
+          393,
+          351,
+          267,
+          159
+        ]
+      }
+    },
+    {
+      "id": "A-034",
+      "origin": "authored",
+      "task": "rag_revision",
+      "relevant": [
+        51
+      ],
+      "top": {
+        "bm25_kiwi": [
+          50,
+          51,
+          37,
+          102,
+          8
+        ],
+        "head": [
+          50,
+          51,
+          8,
+          5,
+          341
+        ],
+        "hybrid": [
+          50,
+          51,
+          8,
+          37,
+          102
+        ]
+      }
+    },
+    {
+      "id": "A-035",
+      "origin": "authored",
+      "task": "rag_revision",
+      "relevant": [
+        53
+      ],
+      "top": {
+        "bm25_kiwi": [
+          52,
+          53,
+          1,
+          385,
+          220
+        ],
+        "head": [
+          67,
+          3,
+          273,
+          260,
+          325
+        ],
+        "hybrid": [
+          52,
+          67,
+          53,
+          3,
+          1
+        ]
+      }
+    },
+    {
+      "id": "A-036",
+      "origin": "authored",
+      "task": "rag_revision",
+      "relevant": [
+        55
+      ],
+      "top": {
+        "bm25_kiwi": [
+          41,
+          3,
+          55,
+          54,
+          35
+        ],
+        "head": [
+          381,
+          253,
+          407,
+          3,
+          317
+        ],
+        "hybrid": [
+          3,
+          41,
+          381,
+          253,
+          55
+        ]
+      }
+    },
+    {
+      "id": "A-037",
+      "origin": "authored",
+      "task": "rag_revision",
+      "relevant": [
+        57
+      ],
+      "top": {
+        "bm25_kiwi": [
+          57,
+          56,
+          27,
+          26,
+          12
+        ],
+        "head": [
+          290,
+          393,
+          268,
+          349,
+          318
+        ],
+        "hybrid": [
+          57,
+          290,
+          56,
+          393,
+          27
+        ]
+      }
+    },
+    {
+      "id": "A-038",
+      "origin": "authored",
+      "task": "rag_combine",
+      "relevant": [
+        58,
+        59
+      ],
+      "top": {
+        "bm25_kiwi": [
+          59,
+          5,
+          67,
+          76,
+          58
+        ],
+        "head": [
+          59,
+          349,
+          139,
+          3,
+          76
+        ],
+        "hybrid": [
+          59,
+          76,
+          5,
+          349,
+          67
+        ]
+      }
+    },
+    {
+      "id": "A-039",
+      "origin": "authored",
+      "task": "rag_combine",
+      "relevant": [
+        60,
+        61
+      ],
+      "top": {
+        "bm25_kiwi": [
+          61,
+          60,
+          7,
+          67,
+          22
+        ],
+        "head": [
+          61,
+          303,
+          1,
+          67,
+          134
+        ],
+        "hybrid": [
+          61,
+          67,
+          60,
+          303,
+          7
+        ]
+      }
+    },
+    {
+      "id": "A-040",
+      "origin": "authored",
+      "task": "rag_combine",
+      "relevant": [
+        62,
+        63
+      ],
+      "top": {
+        "bm25_kiwi": [
+          62,
+          63,
+          17,
+          18,
+          319
+        ],
+        "head": [
+          407,
+          354,
+          379,
+          303,
+          278
+        ],
+        "hybrid": [
+          62,
+          407,
+          63,
+          354,
+          17
+        ]
+      }
+    },
+    {
+      "id": "B-001",
+      "origin": "authored",
+      "task": "rag_value",
+      "relevant": [
+        64
+      ],
+      "top": {
+        "bm25_kiwi": [
+          64,
+          80,
+          78,
+          79,
+          103
+        ],
+        "head": [
+          381,
+          303,
+          407,
+          263,
+          349
+        ],
+        "hybrid": [
+          64,
+          381,
+          80,
+          303,
+          78
+        ]
+      }
+    },
+    {
+      "id": "B-002",
+      "origin": "authored",
+      "task": "rag_value",
+      "relevant": [
+        65
+      ],
+      "top": {
+        "bm25_kiwi": [
+          385,
+          65,
+          95,
+          96,
+          335
+        ],
+        "head": [
+          335,
+          268,
+          379,
+          296,
+          402
+        ],
+        "hybrid": [
+          335,
+          385,
+          65,
+          268,
+          95
+        ]
+      }
+    },
+    {
+      "id": "B-003",
+      "origin": "authored",
+      "task": "rag_value",
+      "relevant": [
+        66
+      ],
+      "top": {
+        "bm25_kiwi": [
+          110,
+          75,
+          66,
+          1,
+          109
+        ],
+        "head": [
+          110,
+          70,
+          66,
+          75,
+          1
+        ],
+        "hybrid": [
+          110,
+          75,
+          66,
+          1,
+          70
+        ]
+      }
+    },
+    {
+      "id": "B-004",
+      "origin": "authored",
+      "task": "rag_value",
+      "relevant": [
+        67
+      ],
+      "top": {
+        "bm25_kiwi": [
+          67,
+          40,
+          316,
+          2,
+          275
+        ],
+        "head": [
+          67,
+          275,
+          407,
+          408,
+          418
+        ],
+        "hybrid": [
+          67,
+          275,
+          40,
+          316,
+          407
+        ]
+      }
+    },
+    {
+      "id": "B-005",
+      "origin": "authored",
+      "task": "rag_value",
+      "relevant": [
+        68
+      ],
+      "top": {
+        "bm25_kiwi": [
+          68,
+          222,
+          101,
+          275,
+          124
+        ],
+        "head": [
+          68,
+          381,
+          385,
+          350,
+          367
+        ],
+        "hybrid": [
+          68,
+          222,
+          381,
+          101,
+          385
+        ]
+      }
+    },
+    {
+      "id": "B-006",
+      "origin": "authored",
+      "task": "rag_value",
+      "relevant": [
+        69
+      ],
+      "top": {
+        "bm25_kiwi": [
+          130,
+          69,
+          385,
+          323,
+          35
+        ],
+        "head": [
+          130,
+          385,
+          392,
+          349,
+          268
+        ],
+        "hybrid": [
+          130,
+          385,
+          69,
+          392,
+          323
+        ]
+      }
+    },
+    {
+      "id": "B-007",
+      "origin": "authored",
+      "task": "rag_value",
+      "relevant": [
+        70
+      ],
+      "top": {
+        "bm25_kiwi": [
+          70,
+          113,
+          114,
+          72,
+          295
+        ],
+        "head": [
+          70,
+          373,
+          341,
+          290,
+          318
+        ],
+        "hybrid": [
+          70,
+          113,
+          373,
+          114,
+          341
+        ]
+      }
+    },
+    {
+      "id": "B-008",
+      "origin": "authored",
+      "task": "rag_value",
+      "relevant": [
+        71
+      ],
+      "top": {
+        "bm25_kiwi": [
+          76,
+          71,
+          7,
+          293,
+          125
+        ],
+        "head": [
+          71,
+          268,
+          67,
+          398,
+          349
+        ],
+        "hybrid": [
+          71,
+          76,
+          268,
+          7,
+          67
+        ]
+      }
+    },
+    {
+      "id": "B-009",
+      "origin": "authored",
+      "task": "rag_name",
+      "relevant": [
+        72
+      ],
+      "top": {
+        "bm25_kiwi": [
+          72,
+          70,
+          123,
+          369,
+          129
+        ],
+        "head": [
+          72,
+          303,
+          70,
+          381,
+          290
+        ],
+        "hybrid": [
+          72,
+          70,
+          303,
+          123,
+          369
+        ]
+      }
+    },
+    {
+      "id": "B-010",
+      "origin": "authored",
+      "task": "rag_name",
+      "relevant": [
+        73
+      ],
+      "top": {
+        "bm25_kiwi": [
+          73,
+          202,
+          335,
+          358,
+          286
+        ],
+        "head": [
+          202,
+          139,
+          67,
+          73,
+          5
+        ],
+        "hybrid": [
+          202,
+          73,
+          139,
+          335,
+          67
+        ]
+      }
+    },
+    {
+      "id": "B-011",
+      "origin": "authored",
+      "task": "rag_name",
+      "relevant": [
+        74
+      ],
+      "top": {
+        "bm25_kiwi": [
+          74,
+          202,
+          112,
+          111,
+          358
+        ],
+        "head": [
+          273,
+          251,
+          393,
+          416,
+          391
+        ],
+        "hybrid": [
+          74,
+          273,
+          202,
+          251,
+          112
+        ]
+      }
+    },
+    {
+      "id": "B-012",
+      "origin": "authored",
+      "task": "rag_name",
+      "relevant": [
+        75
+      ],
+      "top": {
+        "bm25_kiwi": [
+          75,
+          399,
+          84,
+          85,
+          86
+        ],
+        "head": [
+          75,
+          268,
+          296,
+          373,
+          349
+        ],
+        "hybrid": [
+          75,
+          399,
+          268,
+          84,
+          296
+        ]
+      }
+    },
+    {
+      "id": "B-013",
+      "origin": "authored",
+      "task": "rag_name",
+      "relevant": [
+        76
+      ],
+      "top": {
+        "bm25_kiwi": [
+          76,
+          377,
+          248,
+          310,
+          227
+        ],
+        "head": [
+          355,
+          312,
+          377,
+          392,
+          381
+        ],
+        "hybrid": [
+          377,
+          76,
+          355,
+          312,
+          248
+        ]
+      }
+    },
+    {
+      "id": "B-014",
+      "origin": "authored",
+      "task": "rag_name",
+      "relevant": [
+        77
+      ],
+      "top": {
+        "bm25_kiwi": [
+          77,
+          248,
+          140,
+          95,
+          96
+        ],
+        "head": [
+          284,
+          280,
+          349,
+          398,
+          379
+        ],
+        "hybrid": [
+          77,
+          284,
+          248,
+          280,
+          140
+        ]
+      }
+    },
+    {
+      "id": "B-015",
+      "origin": "authored",
+      "task": "rag_noise",
+      "relevant": [
+        79
+      ],
+      "top": {
+        "bm25_kiwi": [
+          78,
+          79,
+          64,
+          80,
+          67
+        ],
+        "head": [
+          79,
+          78,
+          263,
+          349,
+          268
+        ],
+        "hybrid": [
+          78,
+          79,
+          64,
+          263,
+          80
+        ]
+      }
+    },
+    {
+      "id": "B-016",
+      "origin": "authored",
+      "task": "rag_noise",
+      "relevant": [
+        82
+      ],
+      "top": {
+        "bm25_kiwi": [
+          81,
+          82,
+          5,
+          144,
+          145
+        ],
+        "head": [
+          82,
+          81,
+          2,
+          71,
+          191
+        ],
+        "hybrid": [
+          81,
+          82,
+          5,
+          2,
+          144
+        ]
+      }
+    },
+    {
+      "id": "B-017",
+      "origin": "authored",
+      "task": "rag_noise",
+      "relevant": [
+        85
+      ],
+      "top": {
+        "bm25_kiwi": [
+          84,
+          85,
+          86,
+          66,
+          67
+        ],
+        "head": [
+          335,
+          379,
+          314,
+          262,
+          349
+        ],
+        "hybrid": [
+          84,
+          335,
+          85,
+          379,
+          86
+        ]
+      }
+    },
+    {
+      "id": "B-018",
+      "origin": "authored",
+      "task": "rag_noise",
+      "relevant": [
+        88
+      ],
+      "top": {
+        "bm25_kiwi": [
+          88,
+          87,
+          367,
+          306,
+          301
+        ],
+        "head": [
+          88,
+          373,
+          134,
+          290,
+          70
+        ],
+        "hybrid": [
+          88,
+          87,
+          373,
+          367,
+          134
+        ]
+      }
+    },
+    {
+      "id": "B-019",
+      "origin": "authored",
+      "task": "rag_noise",
+      "relevant": [
+        92
+      ],
+      "top": {
+        "bm25_kiwi": [
+          92,
+          91,
+          93,
+          125,
+          76
+        ],
+        "head": [
+          91,
+          92,
+          93,
+          401,
+          329
+        ],
+        "hybrid": [
+          92,
+          91,
+          93,
+          125,
+          401
+        ]
+      }
+    },
+    {
+      "id": "B-020",
+      "origin": "authored",
+      "task": "rag_noise",
+      "relevant": [
+        95
+      ],
+      "top": {
+        "bm25_kiwi": [
+          95,
+          96,
+          94,
+          397,
+          130
+        ],
+        "head": [
+          76,
+          263,
+          349,
+          268,
+          202
+        ],
+        "hybrid": [
+          95,
+          76,
+          96,
+          263,
+          94
+        ]
+      }
+    },
+    {
+      "id": "B-021",
+      "origin": "authored",
+      "task": "rag_table",
+      "relevant": [
+        97
+      ],
+      "top": {
+        "bm25_kiwi": [
+          97,
+          102,
+          37,
+          0,
+          30
+        ],
+        "head": [
+          97,
+          0,
+          37,
+          196,
+          263
+        ],
+        "hybrid": [
+          97,
+          0,
+          37,
+          102,
+          196
+        ]
+      }
+    },
+    {
+      "id": "B-022",
+      "origin": "authored",
+      "task": "rag_table",
+      "relevant": [
+        98
+      ],
+      "top": {
+        "bm25_kiwi": [
+          98,
+          255,
+          94,
+          413,
+          380
+        ],
+        "head": [
+          253,
+          375,
+          353,
+          268,
+          325
+        ],
+        "hybrid": [
+          98,
+          253,
+          255,
+          375,
+          94
+        ]
+      }
+    },
+    {
+      "id": "B-023",
+      "origin": "authored",
+      "task": "rag_table",
+      "relevant": [
+        99
+      ],
+      "top": {
+        "bm25_kiwi": [
+          99,
+          407,
+          67,
+          64,
+          80
+        ],
+        "head": [
+          407,
+          295,
+          398,
+          283,
+          419
+        ],
+        "hybrid": [
+          407,
+          99,
+          295,
+          67,
+          398
+        ]
+      }
+    },
+    {
+      "id": "B-024",
+      "origin": "authored",
+      "task": "rag_table",
+      "relevant": [
+        100
+      ],
+      "top": {
+        "bm25_kiwi": [
+          100,
+          66,
+          196,
+          258,
+          265
+        ],
+        "head": [
+          373,
+          280,
+          381,
+          349,
+          402
+        ],
+        "hybrid": [
+          100,
+          373,
+          66,
+          280,
+          196
+        ]
+      }
+    },
+    {
+      "id": "B-025",
+      "origin": "authored",
+      "task": "rag_table",
+      "relevant": [
+        101
+      ],
+      "top": {
+        "bm25_kiwi": [
+          101,
+          68,
+          124,
+          123,
+          112
+        ],
+        "head": [
+          299,
+          349,
+          290,
+          68,
+          354
+        ],
+        "hybrid": [
+          68,
+          101,
+          299,
+          349,
+          124
+        ]
+      }
+    },
+    {
+      "id": "B-034",
+      "origin": "authored",
+      "task": "rag_revision",
+      "relevant": [
+        114
+      ],
+      "top": {
+        "bm25_kiwi": [
+          113,
+          114,
+          70,
+          76,
+          67
+        ],
+        "head": [
+          373,
+          276,
+          70,
+          407,
+          379
+        ],
+        "hybrid": [
+          70,
+          113,
+          373,
+          114,
+          276
+        ]
+      }
+    },
+    {
+      "id": "B-035",
+      "origin": "authored",
+      "task": "rag_revision",
+      "relevant": [
+        116
+      ],
+      "top": {
+        "bm25_kiwi": [
+          115,
+          116,
+          65,
+          73,
+          11
+        ],
+        "head": [
+          335,
+          379,
+          355,
+          381,
+          377
+        ],
+        "hybrid": [
+          115,
+          335,
+          116,
+          379,
+          65
+        ]
+      }
+    },
+    {
+      "id": "B-036",
+      "origin": "authored",
+      "task": "rag_revision",
+      "relevant": [
+        118
+      ],
+      "top": {
+        "bm25_kiwi": [
+          118,
+          117,
+          55,
+          54,
+          67
+        ],
+        "head": [
+          118,
+          54,
+          198,
+          117,
+          67
+        ],
+        "hybrid": [
+          118,
+          117,
+          54,
+          67,
+          55
+        ]
+      }
+    },
+    {
+      "id": "B-037",
+      "origin": "authored",
+      "task": "rag_revision",
+      "relevant": [
+        120
+      ],
+      "top": {
+        "bm25_kiwi": [
+          119,
+          120,
+          173,
+          245,
+          109
+        ],
+        "head": [
+          119,
+          303,
+          373,
+          268,
+          318
+        ],
+        "hybrid": [
+          119,
+          120,
+          303,
+          173,
+          373
+        ]
+      }
+    },
+    {
+      "id": "B-038",
+      "origin": "authored",
+      "task": "rag_combine",
+      "relevant": [
+        121,
+        122
+      ],
+      "top": {
+        "bm25_kiwi": [
+          121,
+          122,
+          4,
+          17,
+          18
+        ],
+        "head": [
+          121,
+          122,
+          312,
+          325,
+          279
+        ],
+        "hybrid": [
+          121,
+          122,
+          4,
+          312,
+          17
+        ]
+      }
+    },
+    {
+      "id": "B-039",
+      "origin": "authored",
+      "task": "rag_combine",
+      "relevant": [
+        123,
+        124
+      ],
+      "top": {
+        "bm25_kiwi": [
+          124,
+          123,
+          8,
+          1,
+          158
+        ],
+        "head": [
+          123,
+          124,
+          290,
+          262,
+          381
+        ],
+        "hybrid": [
+          124,
+          123,
+          8,
+          290,
+          1
+        ]
+      }
+    },
+    {
+      "id": "B-040",
+      "origin": "authored",
+      "task": "rag_combine",
+      "relevant": [
+        125,
+        126
+      ],
+      "top": {
+        "bm25_kiwi": [
+          125,
+          126,
+          76,
+          67,
+          93
+        ],
+        "head": [
+          126,
+          67,
+          412,
+          309,
+          125
+        ],
+        "hybrid": [
+          126,
+          125,
+          67,
+          76,
+          412
+        ]
+      }
+    },
+    {
+      "id": "C-001",
+      "origin": "authored",
+      "task": "rag_value",
+      "relevant": [
+        127
+      ],
+      "top": {
+        "bm25_kiwi": [
+          127,
+          158,
+          157,
+          67,
+          337
+        ],
+        "head": [
+          127,
+          375,
+          392,
+          335,
+          134
+        ],
+        "hybrid": [
+          127,
+          158,
+          375,
+          157,
+          392
+        ]
+      }
+    },
+    {
+      "id": "C-002",
+      "origin": "authored",
+      "task": "rag_value",
+      "relevant": [
+        128
+      ],
+      "top": {
+        "bm25_kiwi": [
+          128,
+          189,
+          56,
+          364,
+          398
+        ],
+        "head": [
+          407,
+          268,
+          128,
+          381,
+          377
+        ],
+        "hybrid": [
+          128,
+          407,
+          189,
+          268,
+          56
+        ]
+      }
+    },
+    {
+      "id": "C-003",
+      "origin": "authored",
+      "task": "rag_value",
+      "relevant": [
+        129
+      ],
+      "top": {
+        "bm25_kiwi": [
+          129,
+          419,
+          143,
+          141,
+          228
+        ],
+        "head": [
+          129,
+          390,
+          407,
+          386,
+          384
+        ],
+        "hybrid": [
+          129,
+          419,
+          390,
+          143,
+          407
+        ]
+      }
+    },
+    {
+      "id": "C-004",
+      "origin": "authored",
+      "task": "rag_value",
+      "relevant": [
+        130
+      ],
+      "top": {
+        "bm25_kiwi": [
+          130,
+          104,
+          194,
+          159,
+          165
+        ],
+        "head": [
+          268,
+          335,
+          353,
+          262,
+          325
+        ],
+        "hybrid": [
+          130,
+          268,
+          104,
+          335,
+          194
+        ]
+      }
+    },
+    {
+      "id": "C-005",
+      "origin": "authored",
+      "task": "rag_value",
+      "relevant": [
+        131
+      ],
+      "top": {
+        "bm25_kiwi": [
+          119,
+          67,
+          394,
+          262,
+          379
+        ],
+        "head": [
+          379,
+          335,
+          406,
+          394,
+          381
+        ],
+        "hybrid": [
+          379,
+          394,
+          119,
+          67,
+          335
+        ]
+      }
+    },
+    {
+      "id": "C-006",
+      "origin": "authored",
+      "task": "rag_value",
+      "relevant": [
+        132
+      ],
+      "top": {
+        "bm25_kiwi": [
+          132,
+          320,
+          313,
+          351,
+          222
+        ],
+        "head": [
+          407,
+          312,
+          317,
+          377,
+          276
+        ],
+        "hybrid": [
+          132,
+          407,
+          320,
+          312,
+          313
+        ]
+      }
+    },
+    {
+      "id": "C-007",
+      "origin": "authored",
+      "task": "rag_value",
+      "relevant": [
+        133
+      ],
+      "top": {
+        "bm25_kiwi": [
+          133,
+          202,
+          173,
+          174,
+          141
+        ],
+        "head": [
+          133,
+          349,
+          268,
+          201,
+          3
+        ],
+        "hybrid": [
+          133,
+          202,
+          349,
+          173,
+          268
+        ]
+      }
+    },
+    {
+      "id": "C-008",
+      "origin": "authored",
+      "task": "rag_value",
+      "relevant": [
+        134
+      ],
+      "top": {
+        "bm25_kiwi": [
+          134,
+          127,
+          349,
+          10,
+          258
+        ],
+        "head": [
+          134,
+          349,
+          360,
+          260,
+          127
+        ],
+        "hybrid": [
+          134,
+          349,
+          127,
+          360,
+          10
+        ]
+      }
+    },
+    {
+      "id": "C-009",
+      "origin": "authored",
+      "task": "rag_name",
+      "relevant": [
+        135
+      ],
+      "top": {
+        "bm25_kiwi": [
+          135,
+          202,
+          358,
+          354,
+          316
+        ],
+        "head": [
+          379,
+          386,
+          407,
+          318,
+          416
+        ],
+        "hybrid": [
+          135,
+          379,
+          202,
+          386,
+          358
+        ]
+      }
+    },
+    {
+      "id": "C-010",
+      "origin": "authored",
+      "task": "rag_name",
+      "relevant": [
+        136
+      ],
+      "top": {
+        "bm25_kiwi": [
+          136,
+          76,
+          377,
+          215,
+          162
+        ],
+        "head": [
+          268,
+          407,
+          290,
+          136,
+          377
+        ],
+        "hybrid": [
+          136,
+          377,
+          268,
+          76,
+          407
+        ]
+      }
+    },
+    {
+      "id": "C-011",
+      "origin": "authored",
+      "task": "rag_name",
+      "relevant": [
+        137
+      ],
+      "top": {
+        "bm25_kiwi": [
+          137,
+          202,
+          358,
+          187,
+          200
+        ],
+        "head": [
+          358,
+          335,
+          362,
+          406,
+          379
+        ],
+        "hybrid": [
+          358,
+          137,
+          202,
+          335,
+          362
+        ]
+      }
+    },
+    {
+      "id": "C-012",
+      "origin": "authored",
+      "task": "rag_name",
+      "relevant": [
+        138
+      ],
+      "top": {
+        "bm25_kiwi": [
+          138,
+          7,
+          253,
+          282,
+          298
+        ],
+        "head": [
+          138,
+          283,
+          398,
+          349,
+          278
+        ],
+        "hybrid": [
+          138,
+          7,
+          283,
+          253,
+          398
+        ]
+      }
+    },
+    {
+      "id": "C-013",
+      "origin": "authored",
+      "task": "rag_name",
+      "relevant": [
+        139
+      ],
+      "top": {
+        "bm25_kiwi": [
+          139,
+          335,
+          394,
+          264,
+          202
+        ],
+        "head": [
+          335,
+          358,
+          379,
+          402,
+          278
+        ],
+        "hybrid": [
+          335,
+          139,
+          358,
+          394,
+          379
+        ]
+      }
+    },
+    {
+      "id": "C-014",
+      "origin": "authored",
+      "task": "rag_name",
+      "relevant": [
+        140
+      ],
+      "top": {
+        "bm25_kiwi": [
+          140,
+          282,
+          248,
+          127,
+          369
+        ],
+        "head": [
+          399,
+          379,
+          292,
+          290,
+          349
+        ],
+        "hybrid": [
+          140,
+          399,
+          282,
+          379,
+          248
+        ]
+      }
+    },
+    {
+      "id": "C-015",
+      "origin": "authored",
+      "task": "rag_noise",
+      "relevant": [
+        142
+      ],
+      "top": {
+        "bm25_kiwi": [
+          142,
+          67,
+          412,
+          376,
+          70
+        ],
+        "head": [
+          393,
+          345,
+          317,
+          273,
+          313
+        ],
+        "hybrid": [
+          142,
+          393,
+          67,
+          345,
+          412
+        ]
+      }
+    },
+    {
+      "id": "C-016",
+      "origin": "authored",
+      "task": "rag_noise",
+      "relevant": [
+        145
+      ],
+      "top": {
+        "bm25_kiwi": [
+          144,
+          145,
+          5,
+          81,
+          82
+        ],
+        "head": [
+          145,
+          406,
+          193,
+          317,
+          377
+        ],
+        "hybrid": [
+          145,
+          144,
+          406,
+          5,
+          193
+        ]
+      }
+    },
+    {
+      "id": "C-017",
+      "origin": "authored",
+      "task": "rag_noise",
+      "relevant": [
+        149
+      ],
+      "top": {
+        "bm25_kiwi": [
+          149,
+          148,
+          330,
+          147,
+          135
+        ],
+        "head": [
+          317,
+          407,
+          268,
+          350,
+          273
+        ],
+        "hybrid": [
+          149,
+          317,
+          148,
+          407,
+          330
+        ]
+      }
+    },
+    {
+      "id": "C-018",
+      "origin": "authored",
+      "task": "rag_noise",
+      "relevant": [
+        151
+      ],
+      "top": {
+        "bm25_kiwi": [
+          151,
+          150,
+          242,
+          243,
+          184
+        ],
+        "head": [
+          407,
+          321,
+          258,
+          373,
+          379
+        ],
+        "hybrid": [
+          151,
+          407,
+          150,
+          321,
+          242
+        ]
+      }
+    },
+    {
+      "id": "C-019",
+      "origin": "authored",
+      "task": "rag_noise",
+      "relevant": [
+        154
+      ],
+      "top": {
+        "bm25_kiwi": [
+          154,
+          153,
+          155,
+          68,
+          132
+        ],
+        "head": [
+          153,
+          154,
+          385,
+          155,
+          406
+        ],
+        "hybrid": [
+          154,
+          153,
+          155,
+          385,
+          68
+        ]
+      }
+    },
+    {
+      "id": "C-020",
+      "origin": "authored",
+      "task": "rag_noise",
+      "relevant": [
+        157
+      ],
+      "top": {
+        "bm25_kiwi": [
+          157,
+          124,
+          127,
+          8,
+          393
+        ],
+        "head": [
+          393,
+          318,
+          290,
+          268,
+          360
+        ],
+        "hybrid": [
+          393,
+          157,
+          124,
+          318,
+          127
+        ]
+      }
+    },
+    {
+      "id": "C-021",
+      "origin": "authored",
+      "task": "rag_table",
+      "relevant": [
+        159
+      ],
+      "top": {
+        "bm25_kiwi": [
+          159,
+          231,
+          67,
+          165,
+          130
+        ],
+        "head": [
+          335,
+          268,
+          253,
+          402,
+          379
+        ],
+        "hybrid": [
+          159,
+          335,
+          231,
+          268,
+          67
+        ]
+      }
+    },
+    {
+      "id": "C-022",
+      "origin": "authored",
+      "task": "rag_table",
+      "relevant": [
+        160
+      ],
+      "top": {
+        "bm25_kiwi": [
+          160,
+          349,
+          317,
+          78,
+          79
+        ],
+        "head": [
+          407,
+          268,
+          5,
+          260,
+          374
+        ],
+        "hybrid": [
+          160,
+          407,
+          349,
+          268,
+          317
+        ]
+      }
+    },
+    {
+      "id": "C-023",
+      "origin": "authored",
+      "task": "rag_table",
+      "relevant": [
+        161
+      ],
+      "top": {
+        "bm25_kiwi": [
+          161,
+          222,
+          190,
+          27,
+          194
+        ],
+        "head": [
+          161,
+          339,
+          345,
+          317,
+          330
+        ],
+        "hybrid": [
+          161,
+          222,
+          339,
+          190,
+          345
+        ]
+      }
+    },
+    {
+      "id": "C-024",
+      "origin": "authored",
+      "task": "rag_table",
+      "relevant": [
+        162
+      ],
+      "top": {
+        "bm25_kiwi": [
+          162,
+          263,
+          223,
+          219,
+          179
+        ],
+        "head": [
+          393,
+          343,
+          403,
+          413,
+          320
+        ],
+        "hybrid": [
+          162,
+          393,
+          263,
+          343,
+          223
+        ]
+      }
+    },
+    {
+      "id": "C-025",
+      "origin": "authored",
+      "task": "rag_table",
+      "relevant": [
+        163
+      ],
+      "top": {
+        "bm25_kiwi": [
+          163,
+          168,
+          103,
+          185,
+          186
+        ],
+        "head": [
+          349,
+          290,
+          407,
+          268,
+          292
+        ],
+        "hybrid": [
+          163,
+          349,
+          168,
+          290,
+          103
+        ]
+      }
+    },
+    {
+      "id": "C-034",
+      "origin": "authored",
+      "task": "rag_revision",
+      "relevant": [
+        176
+      ],
+      "top": {
+        "bm25_kiwi": [
+          175,
+          176,
+          139,
+          321,
+          5
+        ],
+        "head": [
+          176,
+          175,
+          139,
+          407,
+          349
+        ],
+        "hybrid": [
+          175,
+          176,
+          139,
+          321,
+          407
+        ]
+      }
+    },
+    {
+      "id": "C-035",
+      "origin": "authored",
+      "task": "rag_revision",
+      "relevant": [
+        177
+      ],
+      "top": {
+        "bm25_kiwi": [
+          177,
+          128,
+          67,
+          178,
+          232
+        ],
+        "head": [
+          177,
+          178,
+          381,
+          410,
+          330
+        ],
+        "hybrid": [
+          177,
+          178,
+          128,
+          67,
+          381
+        ]
+      }
+    },
+    {
+      "id": "C-036",
+      "origin": "authored",
+      "task": "rag_revision",
+      "relevant": [
+        179
+      ],
+      "top": {
+        "bm25_kiwi": [
+          179,
+          180,
+          75,
+          130,
+          119
+        ],
+        "head": [
+          180,
+          179,
+          3,
+          349,
+          165
+        ],
+        "hybrid": [
+          179,
+          180,
+          75,
+          3,
+          130
+        ]
+      }
+    },
+    {
+      "id": "C-037",
+      "origin": "authored",
+      "task": "rag_revision",
+      "relevant": [
+        182
+      ],
+      "top": {
+        "bm25_kiwi": [
+          181,
+          182,
+          101,
+          140,
+          134
+        ],
+        "head": [
+          181,
+          134,
+          9,
+          419,
+          127
+        ],
+        "hybrid": [
+          181,
+          134,
+          182,
+          101,
+          9
+        ]
+      }
+    },
+    {
+      "id": "C-038",
+      "origin": "authored",
+      "task": "rag_combine",
+      "relevant": [
+        183,
+        184
+      ],
+      "top": {
+        "bm25_kiwi": [
+          184,
+          152,
+          150,
+          151,
+          183
+        ],
+        "head": [
+          184,
+          279,
+          268,
+          276,
+          407
+        ],
+        "hybrid": [
+          184,
+          152,
+          279,
+          150,
+          268
+        ]
+      }
+    },
+    {
+      "id": "C-039",
+      "origin": "authored",
+      "task": "rag_combine",
+      "relevant": [
+        185,
+        186
+      ],
+      "top": {
+        "bm25_kiwi": [
+          186,
+          185,
+          168,
+          162,
+          1
+        ],
+        "head": [
+          186,
+          185,
+          260,
+          393,
+          390
+        ],
+        "hybrid": [
+          186,
+          185,
+          168,
+          260,
+          162
+        ]
+      }
+    },
+    {
+      "id": "C-040",
+      "origin": "authored",
+      "task": "rag_combine",
+      "relevant": [
+        187,
+        188
+      ],
+      "top": {
+        "bm25_kiwi": [
+          188,
+          187,
+          202,
+          420,
+          67
+        ],
+        "head": [
+          188,
+          317,
+          412,
+          420,
+          260
+        ],
+        "hybrid": [
+          188,
+          420,
+          187,
+          317,
+          202
+        ]
+      }
+    },
+    {
+      "id": "D-001",
+      "origin": "authored",
+      "task": "rag_value",
+      "relevant": [
+        189
+      ],
+      "top": {
+        "bm25_kiwi": [
+          189,
+          371,
+          380,
+          296,
+          405
+        ],
+        "head": [
+          335,
+          358,
+          377,
+          268,
+          385
+        ],
+        "hybrid": [
+          189,
+          335,
+          371,
+          358,
+          380
+        ]
+      }
+    },
+    {
+      "id": "D-002",
+      "origin": "authored",
+      "task": "rag_value",
+      "relevant": [
+        190
+      ],
+      "top": {
+        "bm25_kiwi": [
+          190,
+          380,
+          371,
+          67,
+          377
+        ],
+        "head": [
+          377,
+          312,
+          345,
+          335,
+          67
+        ],
+        "hybrid": [
+          377,
+          67,
+          190,
+          380,
+          312
+        ]
+      }
+    },
+    {
+      "id": "D-003",
+      "origin": "authored",
+      "task": "rag_value",
+      "relevant": [
+        191
+      ],
+      "top": {
+        "bm25_kiwi": [
+          191,
+          350,
+          227,
+          165,
+          248
+        ],
+        "head": [
+          407,
+          374,
+          268,
+          191,
+          275
+        ],
+        "hybrid": [
+          191,
+          407,
+          350,
+          374,
+          227
+        ]
+      }
+    },
+    {
+      "id": "D-004",
+      "origin": "authored",
+      "task": "rag_value",
+      "relevant": [
+        192
+      ],
+      "top": {
+        "bm25_kiwi": [
+          192,
+          216,
+          217,
+          218,
+          130
+        ],
+        "head": [
+          263,
+          392,
+          268,
+          349,
+          76
+        ],
+        "hybrid": [
+          192,
+          263,
+          216,
+          392,
+          217
+        ]
+      }
+    },
+    {
+      "id": "D-005",
+      "origin": "authored",
+      "task": "rag_value",
+      "relevant": [
+        193
+      ],
+      "top": {
+        "bm25_kiwi": [
+          193,
+          295,
+          2,
+          283,
+          388
+        ],
+        "head": [
+          381,
+          379,
+          377,
+          269,
+          317
+        ],
+        "hybrid": [
+          193,
+          381,
+          295,
+          379,
+          2
+        ]
+      }
+    },
+    {
+      "id": "D-006",
+      "origin": "authored",
+      "task": "rag_value",
+      "relevant": [
+        194
+      ],
+      "top": {
+        "bm25_kiwi": [
+          194,
+          11,
+          226,
+          41,
+          3
+        ],
+        "head": [
+          312,
+          377,
+          314,
+          389,
+          355
+        ],
+        "hybrid": [
+          194,
+          312,
+          11,
+          377,
+          226
+        ]
+      }
+    },
+    {
+      "id": "D-007",
+      "origin": "authored",
+      "task": "rag_value",
+      "relevant": [
+        195
+      ],
+      "top": {
+        "bm25_kiwi": [
+          195,
+          225,
+          211,
+          212,
+          104
+        ],
+        "head": [
+          407,
+          335,
+          257,
+          195,
+          371
+        ],
+        "hybrid": [
+          195,
+          407,
+          225,
+          335,
+          211
+        ]
+      }
+    },
+    {
+      "id": "D-008",
+      "origin": "authored",
+      "task": "rag_value",
+      "relevant": [
+        196
+      ],
+      "top": {
+        "bm25_kiwi": [
+          196,
+          101,
+          2,
+          404,
+          299
+        ],
+        "head": [
+          196,
+          263,
+          407,
+          412,
+          290
+        ],
+        "hybrid": [
+          196,
+          101,
+          263,
+          2,
+          407
+        ]
+      }
+    },
+    {
+      "id": "D-009",
+      "origin": "authored",
+      "task": "rag_name",
+      "relevant": [
+        197
+      ],
+      "top": {
+        "bm25_kiwi": [
+          59,
+          123,
+          253,
+          349,
+          419
+        ],
+        "head": [
+          349,
+          354,
+          393,
+          303,
+          399
+        ],
+        "hybrid": [
+          349,
+          59,
+          123,
+          354,
+          253
+        ]
+      }
+    },
+    {
+      "id": "D-010",
+      "origin": "authored",
+      "task": "rag_name",
+      "relevant": [
+        198
+      ],
+      "top": {
+        "bm25_kiwi": [
+          198,
+          202,
+          272,
+          358,
+          335
+        ],
+        "head": [
+          335,
+          358,
+          5,
+          379,
+          318
+        ],
+        "hybrid": [
+          335,
+          358,
+          198,
+          202,
+          272
+        ]
+      }
+    },
+    {
+      "id": "D-011",
+      "origin": "authored",
+      "task": "rag_name",
+      "relevant": [
+        199
+      ],
+      "top": {
+        "bm25_kiwi": [
+          335,
+          358,
+          387,
+          253,
+          280
+        ],
+        "head": [
+          306,
+          335,
+          394,
+          373,
+          381
+        ],
+        "hybrid": [
+          335,
+          306,
+          358,
+          387,
+          394
+        ]
+      }
+    },
+    {
+      "id": "D-012",
+      "origin": "authored",
+      "task": "rag_name",
+      "relevant": [
+        200
+      ],
+      "top": {
+        "bm25_kiwi": [
+          200,
+          335,
+          419,
+          222,
+          375
+        ],
+        "head": [
+          200,
+          336,
+          405,
+          257,
+          393
+        ],
+        "hybrid": [
+          200,
+          335,
+          336,
+          419,
+          405
+        ]
+      }
+    },
+    {
+      "id": "D-013",
+      "origin": "authored",
+      "task": "rag_name",
+      "relevant": [
+        201
+      ],
+      "top": {
+        "bm25_kiwi": [
+          201,
+          248,
+          140,
+          349,
+          316
+        ],
+        "head": [
+          335,
+          373,
+          280,
+          349,
+          355
+        ],
+        "hybrid": [
+          349,
+          201,
+          335,
+          248,
+          373
+        ]
+      }
+    },
+    {
+      "id": "D-014",
+      "origin": "authored",
+      "task": "rag_name",
+      "relevant": [
+        202
+      ],
+      "top": {
+        "bm25_kiwi": [
+          202,
+          220,
+          271,
+          73,
+          64
+        ],
+        "head": [
+          202,
+          290,
+          407,
+          268,
+          349
+        ],
+        "hybrid": [
+          202,
+          220,
+          290,
+          271,
+          407
+        ]
+      }
+    },
+    {
+      "id": "D-015",
+      "origin": "authored",
+      "task": "rag_noise",
+      "relevant": [
+        203
+      ],
+      "top": {
+        "bm25_kiwi": [
+          203,
+          204,
+          354,
+          244,
+          205
+        ],
+        "head": [
+          1,
+          255,
+          407,
+          354,
+          12
+        ],
+        "hybrid": [
+          354,
+          203,
+          1,
+          204,
+          255
+        ]
+      }
+    },
+    {
+      "id": "D-016",
+      "origin": "authored",
+      "task": "rag_noise",
+      "relevant": [
+        207
+      ],
+      "top": {
+        "bm25_kiwi": [
+          207,
+          12,
+          206,
+          67,
+          38
+        ],
+        "head": [
+          12,
+          207,
+          349,
+          290,
+          381
+        ],
+        "hybrid": [
+          207,
+          12,
+          206,
+          349,
+          67
+        ]
+      }
+    },
+    {
+      "id": "D-017",
+      "origin": "authored",
+      "task": "rag_noise",
+      "relevant": [
+        210
+      ],
+      "top": {
+        "bm25_kiwi": [
+          209,
+          210,
+          194,
+          372,
+          410
+        ],
+        "head": [
+          210,
+          209,
+          330,
+          290,
+          407
+        ],
+        "hybrid": [
+          209,
+          210,
+          194,
+          330,
+          372
+        ]
+      }
+    },
+    {
+      "id": "D-018",
+      "origin": "authored",
+      "task": "rag_noise",
+      "relevant": [
+        211
+      ],
+      "top": {
+        "bm25_kiwi": [
+          211,
+          213,
+          212,
+          130,
+          201
+        ],
+        "head": [
+          211,
+          349,
+          201,
+          379,
+          325
+        ],
+        "hybrid": [
+          211,
+          201,
+          213,
+          349,
+          212
+        ]
+      }
+    },
+    {
+      "id": "D-019",
+      "origin": "authored",
+      "task": "rag_noise",
+      "relevant": [
+        215
+      ],
+      "top": {
+        "bm25_kiwi": [
+          215,
+          76,
+          214,
+          36,
+          377
+        ],
+        "head": [
+          377,
+          317,
+          256,
+          368,
+          328
+        ],
+        "hybrid": [
+          377,
+          215,
+          76,
+          317,
+          214
+        ]
+      }
+    },
+    {
+      "id": "D-020",
+      "origin": "authored",
+      "task": "rag_noise",
+      "relevant": [
+        216
+      ],
+      "top": {
+        "bm25_kiwi": [
+          216,
+          217,
+          218,
+          192,
+          187
+        ],
+        "head": [
+          216,
+          217,
+          379,
+          202,
+          273
+        ],
+        "hybrid": [
+          216,
+          217,
+          218,
+          379,
+          192
+        ]
+      }
+    },
+    {
+      "id": "D-021",
+      "origin": "authored",
+      "task": "rag_table",
+      "relevant": [
+        219
+      ],
+      "top": {
+        "bm25_kiwi": [
+          219,
+          189,
+          194,
+          199,
+          67
+        ],
+        "head": [
+          189,
+          407,
+          379,
+          349,
+          354
+        ],
+        "hybrid": [
+          189,
+          219,
+          407,
+          194,
+          379
+        ]
+      }
+    },
+    {
+      "id": "D-022",
+      "origin": "authored",
+      "task": "rag_table",
+      "relevant": [
+        220
+      ],
+      "top": {
+        "bm25_kiwi": [
+          220,
+          1,
+          39,
+          52,
+          53
+        ],
+        "head": [
+          381,
+          373,
+          335,
+          385,
+          339
+        ],
+        "hybrid": [
+          220,
+          381,
+          1,
+          373,
+          39
+        ]
+      }
+    },
+    {
+      "id": "D-023",
+      "origin": "authored",
+      "task": "rag_table",
+      "relevant": [
+        221
+      ],
+      "top": {
+        "bm25_kiwi": [
+          221,
+          201,
+          199,
+          140,
+          247
+        ],
+        "head": [
+          258,
+          362,
+          365,
+          385,
+          311
+        ],
+        "hybrid": [
+          221,
+          258,
+          201,
+          362,
+          199
+        ]
+      }
+    },
+    {
+      "id": "D-024",
+      "origin": "authored",
+      "task": "rag_table",
+      "relevant": [
+        222
+      ],
+      "top": {
+        "bm25_kiwi": [
+          222,
+          68,
+          275,
+          33,
+          304
+        ],
+        "head": [
+          263,
+          407,
+          349,
+          73,
+          76
+        ],
+        "hybrid": [
+          222,
+          263,
+          68,
+          407,
+          275
+        ]
+      }
+    },
+    {
+      "id": "D-025",
+      "origin": "authored",
+      "task": "rag_table",
+      "relevant": [
+        223
+      ],
+      "top": {
+        "bm25_kiwi": [
+          223,
+          134,
+          130,
+          106,
+          246
+        ],
+        "head": [
+          379,
+          335,
+          258,
+          355,
+          312
+        ],
+        "hybrid": [
+          223,
+          379,
+          134,
+          335,
+          130
+        ]
+      }
+    },
+    {
+      "id": "D-034",
+      "origin": "authored",
+      "task": "rag_revision",
+      "relevant": [
+        237
+      ],
+      "top": {
+        "bm25_kiwi": [
+          236,
+          237,
+          258,
+          195,
+          131
+        ],
+        "head": [
+          236,
+          312,
+          258,
+          377,
+          385
+        ],
+        "hybrid": [
+          236,
+          258,
+          237,
+          312,
+          195
+        ]
+      }
+    },
+    {
+      "id": "D-035",
+      "origin": "authored",
+      "task": "rag_revision",
+      "relevant": [
+        239
+      ],
+      "top": {
+        "bm25_kiwi": [
+          41,
+          3,
+          35,
+          23,
+          238
+        ],
+        "head": [
+          41,
+          3,
+          11,
+          55,
+          268
+        ],
+        "hybrid": [
+          41,
+          3,
+          35,
+          11,
+          23
+        ]
+      }
+    },
+    {
+      "id": "D-036",
+      "origin": "authored",
+      "task": "rag_revision",
+      "relevant": [
+        241
+      ],
+      "top": {
+        "bm25_kiwi": [
+          240,
+          241,
+          232,
+          141,
+          142
+        ],
+        "head": [
+          240,
+          177,
+          13,
+          178,
+          66
+        ],
+        "hybrid": [
+          240,
+          241,
+          177,
+          232,
+          13
+        ]
+      }
+    },
+    {
+      "id": "D-037",
+      "origin": "authored",
+      "task": "rag_revision",
+      "relevant": [
+        243
+      ],
+      "top": {
+        "bm25_kiwi": [
+          243,
+          242,
+          195,
+          309,
+          184
+        ],
+        "head": [
+          243,
+          201,
+          379,
+          303,
+          407
+        ],
+        "hybrid": [
+          243,
+          242,
+          201,
+          195,
+          379
+        ]
+      }
+    },
+    {
+      "id": "D-038",
+      "origin": "authored",
+      "task": "rag_combine",
+      "relevant": [
+        244,
+        245
+      ],
+      "top": {
+        "bm25_kiwi": [
+          245,
+          123,
+          203,
+          204,
+          205
+        ],
+        "head": [
+          349,
+          341,
+          407,
+          399,
+          290
+        ],
+        "hybrid": [
+          245,
+          349,
+          123,
+          341,
+          203
+        ]
+      }
+    },
+    {
+      "id": "D-039",
+      "origin": "authored",
+      "task": "rag_combine",
+      "relevant": [
+        246,
+        247
+      ],
+      "top": {
+        "bm25_kiwi": [
+          246,
+          150,
+          151,
+          1,
+          358
+        ],
+        "head": [
+          314,
+          335,
+          355,
+          381,
+          379
+        ],
+        "hybrid": [
+          246,
+          314,
+          150,
+          335,
+          151
+        ]
+      }
+    },
+    {
+      "id": "D-040",
+      "origin": "authored",
+      "task": "rag_combine",
+      "relevant": [
+        248,
+        249
+      ],
+      "top": {
+        "bm25_kiwi": [
+          248,
+          295,
+          140,
+          249,
+          316
+        ],
+        "head": [
+          349,
+          407,
+          373,
+          283,
+          318
+        ],
+        "hybrid": [
+          248,
+          349,
+          295,
+          407,
+          140
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_00030",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        250
+      ],
+      "top": {
+        "bm25_kiwi": [
+          250,
+          380,
+          371,
+          365,
+          355
+        ],
+        "head": [
+          250,
+          274,
+          402,
+          320,
+          335
+        ],
+        "hybrid": [
+          250,
+          380,
+          274,
+          371,
+          402
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_02851",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        252
+      ],
+      "top": {
+        "bm25_kiwi": [
+          252,
+          359,
+          281,
+          405,
+          409
+        ],
+        "head": [
+          252,
+          411,
+          405,
+          409,
+          320
+        ],
+        "hybrid": [
+          252,
+          405,
+          409,
+          359,
+          411
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_04156",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        253
+      ],
+      "top": {
+        "bm25_kiwi": [
+          253,
+          20,
+          29,
+          412,
+          403
+        ],
+        "head": [
+          253,
+          263,
+          407,
+          266,
+          403
+        ],
+        "hybrid": [
+          253,
+          403,
+          20,
+          263,
+          29
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_05711",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        254
+      ],
+      "top": {
+        "bm25_kiwi": [
+          254,
+          380,
+          42,
+          404,
+          344
+        ],
+        "head": [
+          254,
+          251,
+          320,
+          271,
+          317
+        ],
+        "hybrid": [
+          254,
+          380,
+          251,
+          42,
+          320
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_04685",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        257
+      ],
+      "top": {
+        "bm25_kiwi": [
+          257,
+          270,
+          280,
+          323,
+          419
+        ],
+        "head": [
+          257,
+          401,
+          303,
+          253,
+          323
+        ],
+        "hybrid": [
+          257,
+          323,
+          270,
+          401,
+          280
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_00573",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        258
+      ],
+      "top": {
+        "bm25_kiwi": [
+          258,
+          335,
+          314,
+          398,
+          363
+        ],
+        "head": [
+          258,
+          358,
+          402,
+          379,
+          136
+        ],
+        "hybrid": [
+          258,
+          335,
+          358,
+          314,
+          402
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_01238",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        259
+      ],
+      "top": {
+        "bm25_kiwi": [
+          259,
+          264,
+          397,
+          415,
+          53
+        ],
+        "head": [
+          259,
+          348,
+          264,
+          415,
+          397
+        ],
+        "hybrid": [
+          259,
+          264,
+          397,
+          415,
+          348
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_03781",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        260
+      ],
+      "top": {
+        "bm25_kiwi": [
+          260,
+          272,
+          191,
+          364,
+          238
+        ],
+        "head": [
+          260,
+          312,
+          317,
+          261,
+          330
+        ],
+        "hybrid": [
+          260,
+          272,
+          312,
+          191,
+          317
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_01447",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        262
+      ],
+      "top": {
+        "bm25_kiwi": [
+          262,
+          283,
+          335,
+          314,
+          398
+        ],
+        "head": [
+          379,
+          358,
+          261,
+          398,
+          402
+        ],
+        "hybrid": [
+          398,
+          262,
+          379,
+          283,
+          358
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_05312",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        263
+      ],
+      "top": {
+        "bm25_kiwi": [
+          263,
+          404,
+          380,
+          408,
+          228
+        ],
+        "head": [
+          263,
+          359,
+          354,
+          189,
+          265
+        ],
+        "hybrid": [
+          263,
+          404,
+          359,
+          380,
+          354
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_01597",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        264
+      ],
+      "top": {
+        "bm25_kiwi": [
+          264,
+          259,
+          319,
+          415,
+          289
+        ],
+        "head": [
+          264,
+          387,
+          319,
+          380,
+          296
+        ],
+        "hybrid": [
+          264,
+          319,
+          259,
+          387,
+          415
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_02302",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        265
+      ],
+      "top": {
+        "bm25_kiwi": [
+          265,
+          332,
+          316,
+          251,
+          12
+        ],
+        "head": [
+          265,
+          382,
+          393,
+          256,
+          266
+        ],
+        "hybrid": [
+          265,
+          332,
+          382,
+          316,
+          393
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_03881",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        266
+      ],
+      "top": {
+        "bm25_kiwi": [
+          266,
+          386,
+          292,
+          350,
+          48
+        ],
+        "head": [
+          278,
+          335,
+          387,
+          292,
+          266
+        ],
+        "hybrid": [
+          266,
+          292,
+          278,
+          386,
+          335
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_04961",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        268
+      ],
+      "top": {
+        "bm25_kiwi": [
+          268,
+          385,
+          253,
+          282,
+          308
+        ],
+        "head": [
+          268,
+          373,
+          381,
+          366,
+          383
+        ],
+        "hybrid": [
+          268,
+          385,
+          373,
+          253,
+          381
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_04390",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        271
+      ],
+      "top": {
+        "bm25_kiwi": [
+          271,
+          385,
+          331,
+          403,
+          392
+        ],
+        "head": [
+          271,
+          313,
+          376,
+          390,
+          356
+        ],
+        "hybrid": [
+          271,
+          385,
+          313,
+          331,
+          376
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_00045",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        274
+      ],
+      "top": {
+        "bm25_kiwi": [
+          274,
+          43,
+          391,
+          386,
+          253
+        ],
+        "head": [
+          274,
+          335,
+          414,
+          250,
+          387
+        ],
+        "hybrid": [
+          274,
+          43,
+          335,
+          391,
+          414
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_04040",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        276
+      ],
+      "top": {
+        "bm25_kiwi": [
+          276,
+          374,
+          273,
+          375,
+          303
+        ],
+        "head": [
+          276,
+          374,
+          407,
+          325,
+          292
+        ],
+        "hybrid": [
+          276,
+          374,
+          273,
+          407,
+          375
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_01082",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        278
+      ],
+      "top": {
+        "bm25_kiwi": [
+          278,
+          335,
+          385,
+          280,
+          357
+        ],
+        "head": [
+          278,
+          314,
+          301,
+          253,
+          267
+        ],
+        "hybrid": [
+          278,
+          335,
+          314,
+          385,
+          301
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_04242",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        279
+      ],
+      "top": {
+        "bm25_kiwi": [
+          279,
+          371,
+          0,
+          273,
+          167
+        ],
+        "head": [
+          279,
+          273,
+          313,
+          393,
+          328
+        ],
+        "hybrid": [
+          279,
+          273,
+          371,
+          0,
+          313
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_05126",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        285
+      ],
+      "top": {
+        "bm25_kiwi": [
+          285,
+          409,
+          261,
+          270,
+          359
+        ],
+        "head": [
+          285,
+          390,
+          260,
+          261,
+          406
+        ],
+        "hybrid": [
+          285,
+          261,
+          409,
+          390,
+          260
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_01715",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        286
+      ],
+      "top": {
+        "bm25_kiwi": [
+          286,
+          367,
+          290,
+          397,
+          188
+        ],
+        "head": [
+          362,
+          366,
+          286,
+          262,
+          394
+        ],
+        "hybrid": [
+          286,
+          362,
+          367,
+          366,
+          290
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_01733",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        287
+      ],
+      "top": {
+        "bm25_kiwi": [
+          296,
+          385,
+          335,
+          134,
+          70
+        ],
+        "head": [
+          287,
+          386,
+          366,
+          392,
+          307
+        ],
+        "hybrid": [
+          296,
+          287,
+          385,
+          386,
+          335
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_00861",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        288
+      ],
+      "top": {
+        "bm25_kiwi": [
+          288,
+          395,
+          319,
+          38,
+          338
+        ],
+        "head": [
+          288,
+          417,
+          319,
+          307,
+          286
+        ],
+        "hybrid": [
+          288,
+          319,
+          395,
+          417,
+          38
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_00401",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        291
+      ],
+      "top": {
+        "bm25_kiwi": [
+          264,
+          348,
+          297,
+          291,
+          278
+        ],
+        "head": [
+          363,
+          278,
+          387,
+          350,
+          311
+        ],
+        "hybrid": [
+          278,
+          264,
+          363,
+          348,
+          297
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_05213",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        293
+      ],
+      "top": {
+        "bm25_kiwi": [
+          293,
+          308,
+          375,
+          341,
+          416
+        ],
+        "head": [
+          293,
+          303,
+          375,
+          398,
+          282
+        ],
+        "hybrid": [
+          293,
+          375,
+          308,
+          303,
+          341
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_03729",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        295
+      ],
+      "top": {
+        "bm25_kiwi": [
+          295,
+          398,
+          397,
+          67,
+          335
+        ],
+        "head": [
+          295,
+          268,
+          303,
+          332,
+          407
+        ],
+        "hybrid": [
+          295,
+          398,
+          268,
+          397,
+          303
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_00878",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        297
+      ],
+      "top": {
+        "bm25_kiwi": [
+          297,
+          282,
+          385,
+          326,
+          130
+        ],
+        "head": [
+          387,
+          268,
+          398,
+          300,
+          379
+        ],
+        "hybrid": [
+          297,
+          387,
+          282,
+          268,
+          385
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_05429",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        298
+      ],
+      "top": {
+        "bm25_kiwi": [
+          298,
+          132,
+          353,
+          320,
+          391
+        ],
+        "head": [
+          353,
+          298,
+          303,
+          326,
+          406
+        ],
+        "hybrid": [
+          298,
+          353,
+          132,
+          303,
+          320
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_01296",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        299
+      ],
+      "top": {
+        "bm25_kiwi": [
+          299,
+          228,
+          255,
+          316,
+          201
+        ],
+        "head": [
+          299,
+          354,
+          275,
+          263,
+          290
+        ],
+        "hybrid": [
+          299,
+          228,
+          354,
+          255,
+          275
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_01053",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        301
+      ],
+      "top": {
+        "bm25_kiwi": [
+          301,
+          289,
+          130,
+          414,
+          269
+        ],
+        "head": [
+          301,
+          335,
+          314,
+          353,
+          414
+        ],
+        "hybrid": [
+          301,
+          414,
+          289,
+          335,
+          130
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_04174",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        302
+      ],
+      "top": {
+        "bm25_kiwi": [
+          302,
+          338,
+          322,
+          376,
+          404
+        ],
+        "head": [
+          302,
+          254,
+          409,
+          372,
+          376
+        ],
+        "hybrid": [
+          302,
+          376,
+          338,
+          254,
+          322
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_05733",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        303
+      ],
+      "top": {
+        "bm25_kiwi": [
+          303,
+          380,
+          347,
+          70,
+          6
+        ],
+        "head": [
+          303,
+          356,
+          253,
+          401,
+          375
+        ],
+        "hybrid": [
+          303,
+          380,
+          356,
+          347,
+          253
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_04277",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        304
+      ],
+      "top": {
+        "bm25_kiwi": [
+          304,
+          347,
+          345,
+          267,
+          329
+        ],
+        "head": [
+          304,
+          347,
+          407,
+          393,
+          356
+        ],
+        "hybrid": [
+          304,
+          347,
+          345,
+          407,
+          267
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_01761",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        306
+      ],
+      "top": {
+        "bm25_kiwi": [
+          306,
+          373,
+          293,
+          348,
+          252
+        ],
+        "head": [
+          306,
+          253,
+          362,
+          296,
+          387
+        ],
+        "hybrid": [
+          306,
+          373,
+          253,
+          293,
+          362
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_01185",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        307
+      ],
+      "top": {
+        "bm25_kiwi": [
+          307,
+          319,
+          288,
+          284,
+          264
+        ],
+        "head": [
+          307,
+          288,
+          319,
+          417,
+          278
+        ],
+        "hybrid": [
+          307,
+          319,
+          288,
+          284,
+          417
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_02409",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        308
+      ],
+      "top": {
+        "bm25_kiwi": [
+          308,
+          351,
+          354,
+          272,
+          307
+        ],
+        "head": [
+          308,
+          400,
+          295,
+          292,
+          341
+        ],
+        "hybrid": [
+          308,
+          351,
+          400,
+          354,
+          295
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_01014",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        310
+      ],
+      "top": {
+        "bm25_kiwi": [
+          310,
+          397,
+          264,
+          286,
+          343
+        ],
+        "head": [
+          314,
+          377,
+          328,
+          310,
+          256
+        ],
+        "hybrid": [
+          310,
+          314,
+          397,
+          377,
+          264
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_04003",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        311
+      ],
+      "top": {
+        "bm25_kiwi": [
+          311,
+          284,
+          247,
+          20,
+          221
+        ],
+        "head": [
+          300,
+          283,
+          311,
+          278,
+          298
+        ],
+        "hybrid": [
+          311,
+          300,
+          284,
+          283,
+          247
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_01574",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        312
+      ],
+      "top": {
+        "bm25_kiwi": [
+          312,
+          314,
+          291,
+          175,
+          176
+        ],
+        "head": [
+          312,
+          412,
+          368,
+          355,
+          359
+        ],
+        "hybrid": [
+          312,
+          314,
+          412,
+          291,
+          368
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_02609",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        313
+      ],
+      "top": {
+        "bm25_kiwi": [
+          313,
+          76,
+          390,
+          323,
+          270
+        ],
+        "head": [
+          313,
+          3,
+          349,
+          407,
+          303
+        ],
+        "hybrid": [
+          313,
+          76,
+          3,
+          390,
+          349
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_01311",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        314
+      ],
+      "top": {
+        "bm25_kiwi": [
+          312,
+          325,
+          314,
+          266,
+          283
+        ],
+        "head": [
+          312,
+          377,
+          314,
+          355,
+          256
+        ],
+        "hybrid": [
+          312,
+          314,
+          325,
+          377,
+          266
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_03003",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        315
+      ],
+      "top": {
+        "bm25_kiwi": [
+          315,
+          367,
+          338,
+          355,
+          399
+        ],
+        "head": [
+          315,
+          262,
+          362,
+          365,
+          306
+        ],
+        "hybrid": [
+          315,
+          367,
+          262,
+          338,
+          362
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_03842",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        317
+      ],
+      "top": {
+        "bm25_kiwi": [
+          317,
+          420,
+          133,
+          408,
+          329
+        ],
+        "head": [
+          317,
+          420,
+          377,
+          329,
+          330
+        ],
+        "hybrid": [
+          317,
+          420,
+          329,
+          133,
+          377
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_01567",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        319
+      ],
+      "top": {
+        "bm25_kiwi": [
+          319,
+          307,
+          190,
+          11,
+          254
+        ],
+        "head": [
+          307,
+          319,
+          335,
+          362,
+          402
+        ],
+        "hybrid": [
+          319,
+          307,
+          190,
+          335,
+          11
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_02253",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        320
+      ],
+      "top": {
+        "bm25_kiwi": [
+          320,
+          313,
+          132,
+          41,
+          11
+        ],
+        "head": [
+          320,
+          313,
+          256,
+          393,
+          370
+        ],
+        "hybrid": [
+          320,
+          313,
+          132,
+          256,
+          41
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_05518",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        323
+      ],
+      "top": {
+        "bm25_kiwi": [
+          323,
+          272,
+          289,
+          251,
+          270
+        ],
+        "head": [
+          323,
+          255,
+          386,
+          400,
+          317
+        ],
+        "hybrid": [
+          323,
+          272,
+          255,
+          289,
+          386
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_01593",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        324
+      ],
+      "top": {
+        "bm25_kiwi": [
+          324,
+          269,
+          333,
+          292,
+          341
+        ],
+        "head": [
+          324,
+          325,
+          359,
+          309,
+          260
+        ],
+        "hybrid": [
+          324,
+          269,
+          325,
+          333,
+          359
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_00034",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        326
+      ],
+      "top": {
+        "bm25_kiwi": [
+          326,
+          282,
+          265,
+          379,
+          61
+        ],
+        "head": [
+          325,
+          326,
+          407,
+          360,
+          349
+        ],
+        "hybrid": [
+          326,
+          325,
+          282,
+          265,
+          407
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_05254",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        328
+      ],
+      "top": {
+        "bm25_kiwi": [
+          328,
+          378,
+          277,
+          257,
+          29
+        ],
+        "head": [
+          328,
+          378,
+          382,
+          256,
+          286
+        ],
+        "hybrid": [
+          328,
+          378,
+          277,
+          382,
+          257
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_02875",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        329
+      ],
+      "top": {
+        "bm25_kiwi": [
+          329,
+          257,
+          277,
+          227,
+          191
+        ],
+        "head": [
+          260,
+          393,
+          3,
+          329,
+          390
+        ],
+        "hybrid": [
+          329,
+          260,
+          257,
+          393,
+          277
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_05602",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        330
+      ],
+      "top": {
+        "bm25_kiwi": [
+          330,
+          317,
+          254,
+          331,
+          177
+        ],
+        "head": [
+          330,
+          420,
+          353,
+          407,
+          402
+        ],
+        "hybrid": [
+          330,
+          317,
+          420,
+          254,
+          353
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_00916",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        331
+      ],
+      "top": {
+        "bm25_kiwi": [
+          331,
+          320,
+          409,
+          402,
+          0
+        ],
+        "head": [
+          331,
+          258,
+          402,
+          417,
+          338
+        ],
+        "hybrid": [
+          331,
+          402,
+          320,
+          258,
+          409
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_02002",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        334
+      ],
+      "top": {
+        "bm25_kiwi": [
+          334,
+          390,
+          272,
+          260,
+          257
+        ],
+        "head": [
+          334,
+          390,
+          401,
+          260,
+          303
+        ],
+        "hybrid": [
+          334,
+          390,
+          260,
+          272,
+          401
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_01061",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        337
+      ],
+      "top": {
+        "bm25_kiwi": [
+          337,
+          399,
+          419,
+          343,
+          274
+        ],
+        "head": [
+          337,
+          298,
+          288,
+          268,
+          398
+        ],
+        "hybrid": [
+          337,
+          399,
+          298,
+          419,
+          288
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_00722",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        339
+      ],
+      "top": {
+        "bm25_kiwi": [
+          339,
+          280,
+          373,
+          349,
+          385
+        ],
+        "head": [
+          339,
+          296,
+          373,
+          321,
+          335
+        ],
+        "hybrid": [
+          339,
+          373,
+          280,
+          296,
+          349
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_04994",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        340
+      ],
+      "top": {
+        "bm25_kiwi": [
+          340,
+          386,
+          257,
+          292,
+          350
+        ],
+        "head": [
+          340,
+          256,
+          328,
+          416,
+          386
+        ],
+        "hybrid": [
+          340,
+          386,
+          256,
+          257,
+          328
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_03922",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        341
+      ],
+      "top": {
+        "bm25_kiwi": [
+          283,
+          56,
+          341,
+          116,
+          5
+        ],
+        "head": [
+          382,
+          377,
+          312,
+          393,
+          408
+        ],
+        "hybrid": [
+          283,
+          382,
+          56,
+          377,
+          341
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_01395",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        342
+      ],
+      "top": {
+        "bm25_kiwi": [
+          342,
+          77,
+          358,
+          262,
+          398
+        ],
+        "head": [
+          381,
+          342,
+          367,
+          280,
+          253
+        ],
+        "hybrid": [
+          342,
+          381,
+          77,
+          358,
+          367
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_04064",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        343
+      ],
+      "top": {
+        "bm25_kiwi": [
+          343,
+          360,
+          272,
+          344,
+          388
+        ],
+        "head": [
+          343,
+          391,
+          401,
+          303,
+          400
+        ],
+        "hybrid": [
+          343,
+          360,
+          391,
+          272,
+          401
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_03110",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        344
+      ],
+      "top": {
+        "bm25_kiwi": [
+          344,
+          347,
+          121,
+          107,
+          226
+        ],
+        "head": [
+          317,
+          344,
+          374,
+          356,
+          364
+        ],
+        "hybrid": [
+          344,
+          317,
+          347,
+          121,
+          374
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_05501",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        345
+      ],
+      "top": {
+        "bm25_kiwi": [
+          345,
+          341,
+          369,
+          352,
+          294
+        ],
+        "head": [
+          353,
+          341,
+          345,
+          407,
+          268
+        ],
+        "hybrid": [
+          345,
+          341,
+          353,
+          369,
+          352
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_00072",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        346
+      ],
+      "top": {
+        "bm25_kiwi": [
+          346,
+          324,
+          330,
+          417,
+          395
+        ],
+        "head": [
+          346,
+          296,
+          348,
+          321,
+          288
+        ],
+        "hybrid": [
+          346,
+          324,
+          296,
+          330,
+          348
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_05515",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        347
+      ],
+      "top": {
+        "bm25_kiwi": [
+          419,
+          386,
+          347,
+          360,
+          341
+        ],
+        "head": [
+          360,
+          407,
+          419,
+          260,
+          347
+        ],
+        "hybrid": [
+          419,
+          360,
+          347,
+          386,
+          407
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_01608",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        348
+      ],
+      "top": {
+        "bm25_kiwi": [
+          348,
+          324,
+          333,
+          417,
+          395
+        ],
+        "head": [
+          348,
+          288,
+          305,
+          286,
+          324
+        ],
+        "hybrid": [
+          348,
+          324,
+          288,
+          333,
+          305
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_04129",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        349
+      ],
+      "top": {
+        "bm25_kiwi": [
+          349,
+          263,
+          127,
+          279,
+          119
+        ],
+        "head": [
+          349,
+          263,
+          393,
+          278,
+          286
+        ],
+        "hybrid": [
+          349,
+          263,
+          127,
+          393,
+          279
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_01113",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        350
+      ],
+      "top": {
+        "bm25_kiwi": [
+          350,
+          335,
+          269,
+          388,
+          290
+        ],
+        "head": [
+          290,
+          373,
+          379,
+          350,
+          360
+        ],
+        "hybrid": [
+          350,
+          290,
+          335,
+          373,
+          269
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_03511",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        352
+      ],
+      "top": {
+        "bm25_kiwi": [
+          352,
+          349,
+          307,
+          311,
+          379
+        ],
+        "head": [
+          352,
+          376,
+          377,
+          261,
+          370
+        ],
+        "hybrid": [
+          352,
+          349,
+          376,
+          307,
+          377
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_03265",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        353
+      ],
+      "top": {
+        "bm25_kiwi": [
+          353,
+          385,
+          271,
+          280,
+          325
+        ],
+        "head": [
+          353,
+          401,
+          391,
+          7,
+          2
+        ],
+        "hybrid": [
+          353,
+          385,
+          401,
+          271,
+          391
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_05439",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        354
+      ],
+      "top": {
+        "bm25_kiwi": [
+          354,
+          4,
+          399,
+          122,
+          290
+        ],
+        "head": [
+          354,
+          290,
+          407,
+          276,
+          260
+        ],
+        "hybrid": [
+          354,
+          290,
+          4,
+          399,
+          407
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_04443",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        356
+      ],
+      "top": {
+        "bm25_kiwi": [
+          356,
+          255,
+          388,
+          330,
+          234
+        ],
+        "head": [
+          356,
+          267,
+          260,
+          407,
+          419
+        ],
+        "hybrid": [
+          356,
+          255,
+          267,
+          388,
+          260
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_00872",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        357
+      ],
+      "top": {
+        "bm25_kiwi": [
+          357,
+          403,
+          180,
+          140,
+          313
+        ],
+        "head": [
+          357,
+          382,
+          320,
+          345,
+          409
+        ],
+        "hybrid": [
+          357,
+          403,
+          382,
+          180,
+          320
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_01353",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        358
+      ],
+      "top": {
+        "bm25_kiwi": [
+          358,
+          324,
+          202,
+          77,
+          335
+        ],
+        "head": [
+          358,
+          335,
+          362,
+          296,
+          274
+        ],
+        "hybrid": [
+          358,
+          335,
+          324,
+          202,
+          362
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_03886",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        359
+      ],
+      "top": {
+        "bm25_kiwi": [
+          359,
+          76,
+          67,
+          125,
+          332
+        ],
+        "head": [
+          359,
+          263,
+          401,
+          391,
+          336
+        ],
+        "hybrid": [
+          359,
+          76,
+          263,
+          67,
+          401
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_03950",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        360
+      ],
+      "top": {
+        "bm25_kiwi": [
+          360,
+          375,
+          384,
+          386,
+          61
+        ],
+        "head": [
+          360,
+          260,
+          387,
+          377,
+          345
+        ],
+        "hybrid": [
+          360,
+          375,
+          260,
+          384,
+          387
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_00899",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        361
+      ],
+      "top": {
+        "bm25_kiwi": [
+          361,
+          68,
+          410,
+          278,
+          69
+        ],
+        "head": [
+          361,
+          296,
+          402,
+          387,
+          321
+        ],
+        "hybrid": [
+          361,
+          68,
+          296,
+          410,
+          402
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_03359",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        362
+      ],
+      "top": {
+        "bm25_kiwi": [
+          362,
+          386,
+          251,
+          311,
+          408
+        ],
+        "head": [
+          362,
+          385,
+          253,
+          367,
+          414
+        ],
+        "hybrid": [
+          362,
+          386,
+          385,
+          251,
+          253
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_00189",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        363
+      ],
+      "top": {
+        "bm25_kiwi": [
+          363,
+          355,
+          202,
+          358,
+          408
+        ],
+        "head": [
+          363,
+          314,
+          394,
+          362,
+          389
+        ],
+        "hybrid": [
+          363,
+          355,
+          314,
+          202,
+          394
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_02237",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        364
+      ],
+      "top": {
+        "bm25_kiwi": [
+          364,
+          309,
+          402,
+          250,
+          335
+        ],
+        "head": [
+          314,
+          312,
+          355,
+          359,
+          368
+        ],
+        "hybrid": [
+          364,
+          314,
+          309,
+          312,
+          402
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_01116",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        365
+      ],
+      "top": {
+        "bm25_kiwi": [
+          365,
+          224,
+          323,
+          364,
+          419
+        ],
+        "head": [
+          341,
+          290,
+          349,
+          260,
+          268
+        ],
+        "hybrid": [
+          365,
+          341,
+          224,
+          290,
+          323
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_02172",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        367
+      ],
+      "top": {
+        "bm25_kiwi": [
+          367,
+          250,
+          322,
+          402,
+          338
+        ],
+        "head": [
+          367,
+          385,
+          253,
+          250,
+          353
+        ],
+        "hybrid": [
+          367,
+          250,
+          385,
+          322,
+          253
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_03465",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        370
+      ],
+      "top": {
+        "bm25_kiwi": [
+          370,
+          360,
+          288,
+          0,
+          1
+        ],
+        "head": [
+          370,
+          314,
+          409,
+          317,
+          311
+        ],
+        "hybrid": [
+          370,
+          360,
+          314,
+          288,
+          409
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_01559",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        373
+      ],
+      "top": {
+        "bm25_kiwi": [
+          373,
+          393,
+          12,
+          279,
+          166
+        ],
+        "head": [
+          373,
+          318,
+          400,
+          5,
+          393
+        ],
+        "hybrid": [
+          373,
+          393,
+          318,
+          12,
+          400
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_02354",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        374
+      ],
+      "top": {
+        "bm25_kiwi": [
+          374,
+          355,
+          415,
+          276,
+          397
+        ],
+        "head": [
+          374,
+          407,
+          276,
+          325,
+          349
+        ],
+        "hybrid": [
+          374,
+          276,
+          355,
+          407,
+          415
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_02747",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        375
+      ],
+      "top": {
+        "bm25_kiwi": [
+          375,
+          384,
+          316,
+          360,
+          303
+        ],
+        "head": [
+          375,
+          282,
+          268,
+          308,
+          384
+        ],
+        "hybrid": [
+          375,
+          384,
+          282,
+          316,
+          268
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_02683",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        376
+      ],
+      "top": {
+        "bm25_kiwi": [
+          376,
+          379,
+          279,
+          335,
+          302
+        ],
+        "head": [
+          376,
+          335,
+          370,
+          320,
+          345
+        ],
+        "hybrid": [
+          376,
+          335,
+          379,
+          279,
+          370
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_02547",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        377
+      ],
+      "top": {
+        "bm25_kiwi": [
+          377,
+          162,
+          276,
+          202,
+          76
+        ],
+        "head": [
+          377,
+          393,
+          321,
+          373,
+          312
+        ],
+        "hybrid": [
+          377,
+          162,
+          393,
+          276,
+          321
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_01643",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        383
+      ],
+      "top": {
+        "bm25_kiwi": [
+          383,
+          291,
+          350,
+          287,
+          297
+        ],
+        "head": [
+          383,
+          262,
+          350,
+          385,
+          353
+        ],
+        "hybrid": [
+          383,
+          350,
+          291,
+          262,
+          287
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_03598",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        384
+      ],
+      "top": {
+        "bm25_kiwi": [
+          384,
+          360,
+          375,
+          408,
+          135
+        ],
+        "head": [
+          384,
+          360,
+          408,
+          353,
+          406
+        ],
+        "hybrid": [
+          384,
+          360,
+          408,
+          375,
+          353
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_01264",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        385
+      ],
+      "top": {
+        "bm25_kiwi": [
+          385,
+          155,
+          154,
+          258,
+          68
+        ],
+        "head": [
+          385,
+          370,
+          362,
+          314,
+          353
+        ],
+        "hybrid": [
+          385,
+          155,
+          370,
+          154,
+          362
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_00593",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        387
+      ],
+      "top": {
+        "bm25_kiwi": [
+          387,
+          372,
+          310,
+          334,
+          311
+        ],
+        "head": [
+          387,
+          257,
+          411,
+          253,
+          345
+        ],
+        "hybrid": [
+          387,
+          372,
+          257,
+          310,
+          411
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_00950",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        389
+      ],
+      "top": {
+        "bm25_kiwi": [
+          389,
+          132,
+          309,
+          359,
+          333
+        ],
+        "head": [
+          389,
+          258,
+          312,
+          327,
+          355
+        ],
+        "hybrid": [
+          389,
+          132,
+          258,
+          309,
+          312
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_02491",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        390
+      ],
+      "top": {
+        "bm25_kiwi": [
+          390,
+          260,
+          392,
+          331,
+          297
+        ],
+        "head": [
+          390,
+          260,
+          343,
+          360,
+          341
+        ],
+        "hybrid": [
+          390,
+          260,
+          392,
+          343,
+          331
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_01431",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        395
+      ],
+      "top": {
+        "bm25_kiwi": [
+          395,
+          324,
+          280,
+          385,
+          319
+        ],
+        "head": [
+          402,
+          335,
+          395,
+          278,
+          307
+        ],
+        "hybrid": [
+          395,
+          402,
+          324,
+          335,
+          280
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_01540",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        397
+      ],
+      "top": {
+        "bm25_kiwi": [
+          397,
+          310,
+          278,
+          418,
+          415
+        ],
+        "head": [
+          397,
+          264,
+          415,
+          259,
+          363
+        ],
+        "hybrid": [
+          397,
+          415,
+          310,
+          264,
+          278
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_04633",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        401
+      ],
+      "top": {
+        "bm25_kiwi": [
+          338,
+          401,
+          282,
+          399,
+          369
+        ],
+        "head": [
+          303,
+          401,
+          268,
+          398,
+          375
+        ],
+        "hybrid": [
+          401,
+          338,
+          303,
+          282,
+          268
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_02071",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        402
+      ],
+      "top": {
+        "bm25_kiwi": [
+          402,
+          282,
+          338,
+          265,
+          264
+        ],
+        "head": [
+          402,
+          322,
+          338,
+          367,
+          274
+        ],
+        "hybrid": [
+          402,
+          338,
+          282,
+          322,
+          265
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_03079",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        403
+      ],
+      "top": {
+        "bm25_kiwi": [
+          403,
+          404,
+          380,
+          367,
+          314
+        ],
+        "head": [
+          403,
+          322,
+          320,
+          345,
+          376
+        ],
+        "hybrid": [
+          403,
+          404,
+          322,
+          380,
+          320
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_03364",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        405
+      ],
+      "top": {
+        "bm25_kiwi": [
+          405,
+          252,
+          385,
+          280,
+          419
+        ],
+        "head": [
+          252,
+          379,
+          405,
+          387,
+          376
+        ],
+        "hybrid": [
+          252,
+          405,
+          379,
+          385,
+          280
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_01972",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        406
+      ],
+      "top": {
+        "bm25_kiwi": [
+          406,
+          228,
+          356,
+          253,
+          394
+        ],
+        "head": [
+          278,
+          335,
+          332,
+          295,
+          328
+        ],
+        "hybrid": [
+          406,
+          278,
+          228,
+          335,
+          356
+        ]
+      }
+    },
+    {
+      "id": "klue-klue-mrc-v1_dev_03368",
+      "origin": "klue_dev",
+      "task": "rag_klue",
+      "relevant": [
+        407
+      ],
+      "top": {
+        "bm25_kiwi": [
+          407,
+          420,
+          279,
+          273,
+          61
+        ],
+        "head": [
+          407,
+          420,
+          292,
+          384,
+          408
+        ],
+        "hybrid": [
+          407,
+          420,
+          279,
+          292,
+          273
+        ]
+      }
+    }
+  ]
+}

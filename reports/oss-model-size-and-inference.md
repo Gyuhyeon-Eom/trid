@@ -106,7 +106,7 @@ MobileLLM이 "32k 어휘·512차원에서 임베딩이 125M의 20% 이상"이라
 | RoPE | `rope.dimension_count = 64`, `rope.freq_base = 10000` | **치환 불필요** (아래) |
 | 토크나이저 | `tokenizer.ggml.model = gpt2`, `pre = gpt-2`, tokens·types·merges, bos 1·eos 4·pad 0 | `tokenizer.json`의 `ByteLevel(use_regex=True)` = GPT-2 정규식 |
 
-RoPE: `model.py:60-61`은 `x[..., 0::2], x[..., 1::2]` 즉 **인접 쌍 회전**이고, llama.cpp는 `LLM_ARCH_LLAMA`에 대해 "normal RoPE, operating on pairs of consecutive head values"(`LLAMA_ROPE_TYPE_NORM`, [src/llama-model.cpp](https://github.com/ggml-org/llama.cpp/blob/master/src/llama-model.cpp))를 쓴다. HF Llama는 rotate-half(NeoX식)라 `convert_hf_to_gguf.py`가 q·k를 치환하지만 trid는 치환 없이 그대로 들어간다. QK-norm을 켠 구성은 `qwen3` 아키텍처(`attn_q_norm`, `attn_k_norm`)로 보내면 된다 `[INFERENCE: 텐서 이름 기준, 미검증]`.
+RoPE: `model.py:60-61`은 `x[..., 0::2], x[..., 1::2]` 즉 **인접 쌍 회전**이고, llama.cpp는 `LLM_ARCH_LLAMA`에 대해 "normal RoPE, operating on pairs of consecutive head values"(`LLAMA_ROPE_TYPE_NORM`, [src/llama-model.cpp](https://github.com/ggml-org/llama.cpp/blob/master/src/llama-model.cpp))를 쓴다. HF Llama는 rotate-half(NeoX식)라 `convert_hf_to_gguf.py`가 q·k를 치환하지만 trid는 치환 없이 그대로 들어간다. QK-norm을 켠 구성은 `qwen3` 아키텍처(`attn_q_norm`, `attn_k_norm`, head 차원 RMSNorm → RoPE 순서가 trid와 같고 묶인 임베딩 허용)로 보낸다. 단 qwen3는 NEOX RoPE라 q·k 투영 행과 q_norm·k_norm 가중치를 head 안에서 `(0,2,4,…,1,3,5,…)`로 치환한다(`scripts/export_gguf.py`). (측정, 2026-10-28) 무작위 작은 qk_norm·GQA 모델을 teacher forcing으로 48위치 비교해 argmax 불일치 0, top-5 logprob 최대 절대차 1.3e-4였다 (`reports/gguf-export-parity.json` `qk_norm_qwen3_tiny_check`).
 
 **검증.** 같은 300토큰 프롬프트를 (a) PyTorch FP32, (b) ollama 0.31.1(내장 llama.cpp, `num_gpu 0`, 4스레드), (c) 직접 빌드한 llama.cpp(commit 8ca4060, 2026-10-28, `GGML_METAL=OFF`, Accelerate BLAS)로 돌렸다. F32·Q8_0의 탐욕 24토큰이 PyTorch와 **같았다**(`…며칠간 진행한다.\n[D4] [복무 안내] …`). "prompt eval count: 300"으로 토크나이저 매핑도 확인됐다.
 
@@ -279,7 +279,7 @@ x86 폐쇄망 서버는 측정하지 못했다. llama.cpp는 AVX2/AVX-512 VNNI i
 
 ## 9. 우선순위 행동 목록
 
-1. **GGUF 내보내기 스크립트 + Q8_0 + 동일성 테스트** (S, 반나절). `scripts/export_gguf.py`(1.4절 매핑), `tests/test_export_gguf.py`(작은 무작위 `Config`로 변환 뒤 `gguf` 리더로 텐서 수·형태·토큰 수 확인), E1·E2. 산출물: `runs/<run>/trid.q8_0.gguf`와 sha256을 `training.json`에 기록.
+1. **GGUF 내보내기 스크립트 + Q8_0 + 동일성 테스트** (완료, 2026-10-28). `scripts/export_gguf.py`(1.4절 매핑, `--quant f32|f16|q8_0`, `--check`), `tests/test_export_gguf.py`, `scripts/gguf_parity.py` → `reports/gguf-export-parity.json`: 91M 체크포인트(/tmp 스냅샷, 30,500 step)를 F32·Q8_0으로 내보내 llama-server(CPU, `temperature=0`, `return_tokens`)로 한국어 프롬프트 3건(평가셋 A-001 포함) 32토큰 greedy를 돌린 결과 **F32·Q8_0 모두 토큰 id 96/96이 PyTorch와 같았다**. 크기 F32 348.4MiB / Q8_0 92.9MiB, 서버 RSS 389 / 248MiB, 생성 63–131 / 487 tok/s(4스레드, 사전학습 동시 부하). 남은 일: `runs/<run>/trid.q8_0.gguf`와 sha256을 `training.json`에 기록, 310문항 E1·E2.
 2. **`constrained.py` 마스크 캐시** (S–M, 1일). 접두 상태별 허용 토큰 비트마스크, E5로 바이트 동일성 고정. llama.cpp 전환과 무관하게 PyTorch 경로에서도 토큰당 3→<1ms.
 3. **llama.cpp 백엔드 생성 경로** (M, 1–2일). `trid/runtime.py`에 `backend="torch"|"llamacpp"`, llama-cpp-python(MIT) logits processor로 2번의 제약기 호출, `evaluate_rag_eval.py --backend`로 E4. 폐쇄망 설치물은 llama.cpp 바이너리 + GGUF + Python 패키지 3개.
 4. **다음 10억 토큰 실행 구조 파일럿 E6** (S, MPS 9시간). `kv_heads=4`는 config 한 줄. 24×576은 config만으로 되지만 MPS 처리량을 먼저 본다.
@@ -298,7 +298,7 @@ x86 폐쇄망 서버는 측정하지 못했다. llama.cpp는 AVX2/AVX-512 VNNI i
 - llama.cpp: `git clone --depth 1` commit 8ca4060(2026-10-28), `cmake -DGGML_METAL=OFF -DLLAMA_CURL=OFF -DCMAKE_BUILD_TYPE=Release`, `llama-quantize`·`llama-bench -t 4 -p 300 -p 1000 -n 32 -r 10`·`llama-perplexity -c 1024 --chunks 12 -t 4`·`llama-completion --temp 0 -n 24`. ollama 0.31.1은 `Modelfile`에 `num_gpu 0`, `num_thread 4`, `temperature 0`.
 - 프롬프트: 평가셋 프롬프트를 이어 붙여 `<|bos|>` 포함 300토큰으로 자름. PPL 텍스트는 평가셋 프롬프트 120건(25,304글자). 둘 다 학습 자료가 아니다.
 - 제약 디코딩 측정: 평가셋 40건, `torch.randn` 점수, `max_tokens=64`, 320회.
-- 변환·측정 스크립트(`/tmp/trid-bench/bench_cpu.py`, `bench_torchao.py`, `to_gguf.py`)는 저장소에 넣지 않았다. 행동 1에서 `to_gguf.py`의 매핑(1.4절 표)을 `scripts/export_gguf.py`로 옮긴다.
+- 변환·측정 스크립트(`/tmp/trid-bench/bench_cpu.py`, `bench_torchao.py`, `to_gguf.py`)는 저장소에 넣지 않았다. `to_gguf.py`의 매핑(1.4절 표)은 `scripts/export_gguf.py`로 옮겼고, 동일성 측정은 `scripts/gguf_parity.py`가 재현한다(llama.cpp는 `-DGGML_METAL=OFF -DLLAMA_USE_PREBUILT_UI=OFF`로 빌드한 `llama-server`).
 
 ## 부록 B. 1차 출처
 

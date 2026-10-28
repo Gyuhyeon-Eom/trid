@@ -11,19 +11,29 @@ pdf = ["pypdf==6.21.2"]
 # scripts/export_gguf.py: gguf (MIT, llama.cpp gguf-py) writes/reads GGUF without a llama.cpp checkout.
 gguf = ["gguf==0.19.0"]
 # build_pretraining_mix.py quality/PII stage (trid/korean_quality.py); --no-quality runs without these.
+# scripts/evaluate_security.py의 ingest 비식별화(trid.korean_quality.redact)도 ko-pii를 쓴다.
 quality = [
     "kiwipiepy==0.24.1",  # Apache-2.0 (Kiwi morpheme analyzer; kiwipiepy_model 0.24.0 also Apache-2.0)
     "ko-pii==1.22.15",    # MIT (Korean PII detection; only structured labels are enabled)
 ]
+# trid/service (trid ingest/serve/ask, 폐쇄망 제품 경로): 표준 라이브러리 + 핵심 의존성 + 아래 둘. 둘 다 모델 파일을
+# 패키지에 내장하므로(kiwipiepy_model) 네트워크 없이 동작한다. .hwp/.pdf는 rhwp/pdftotext CLI(아래)를 subprocess로 부른다.
+service = [
+    "bm25s==0.3.15",      # MIT (https://github.com/xhluca/bm25s)
+    "kiwipiepy==0.24.1",  # Apache-2.0 (kiwipiepy_model 0.24.0 also Apache-2.0)
+    "ko-pii==1.22.15",    # MIT; 색인 시 개인정보 치환(trid.korean_quality.redact), --no-redact면 불필요
+]
 
 # External CLI tools (not pip-installable), invoked by subprocess:
 # - rhwp 0.8.7, MIT (https://github.com/edwardkim/rhwp, release binary at ~/.local/bin/rhwp): HWP 5 text for
-#   scripts/collect_korea_briefing.py; replaced hwp5txt/pyhwp (AGPL-3.0) on 2026-10-28.
-# - pdftotext (poppler): PDF text for the same script.
+#   trid/service/ingest.py (trid ingest) and scripts/collect_korea_briefing.py; replaced hwp5txt/pyhwp (AGPL-3.0) on 2026-10-28.
+# - pdftotext (poppler): PDF text for the same module and script.
 # datasets (Apache-2.0): scripts/evaluate_kobest.py가 skt/kobest_v1(CC BY-SA 4.0)을 고정 revision으로 받을 때만 사용.
 eval = ["datasets==5.1.0"]
 # scripts/benchmark_retrieval.py (개발 측정용). bm25s: MIT, kiwipiepy: Apache-2.0, sentence-transformers: Apache-2.0
 # (KURE-v1 가중치 MIT, 개발 측정 전용·제품 미포함)
+# scripts/train_retrieval_head.py(BM25 hard negative)·evaluate_retrieval_head.py(bm25_kiwi 비교)도 bm25s·kiwipiepy만 사용;
+# trid/retrieval_head.py 제품 경로는 torch·numpy·safetensors·tokenizers만 쓴다.
 retrieval = ["bm25s==0.3.15", "kiwipiepy==0.24.1", "sentence-transformers==6.2.0"]
 
 [project.scripts]

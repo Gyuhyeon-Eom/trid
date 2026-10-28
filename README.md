@@ -76,7 +76,7 @@ GraphRAG·LightRAG는 대형 LLM이 문서에서 개체·관계를 뽑아 그래
 | 항목 | 지금 | 다음 |
 |---|---|---|
 | 데이터 | 위키 1억 토큰 | 위키 + 법령·행정규칙·판례 + 보도자료 약 10억 토큰, FineWeb-2 ko 필터·PII 제거·MinHash |
-| 토크나이저 | 위키로만 학습 | 혼합 말뭉치로 재학습 (법령 문체에서 토큰 6~13% 절감) |
+| 토크나이저 | 위키로만 학습 | 혼합 말뭉치(위키 30 · 법령 45 · 보도자료 25)로 재학습, 숫자 ≤3자리 분할. 실측: 법령 +20%, 보도자료 +10% 압축, 값 경계 일치 89.6%. 어휘는 8k 유지(16k는 압축 +5%지만 조사가 붙어 값 끝 경계가 나빠짐) |
 | step당 토큰 | 2,048 | 262,144 (batch 2 × accumulate 128) |
 | lr / 스케줄 | 3e-4 cosine | 파일럿 {1e-3, 2e-3, 4e-3} 후 선택, WSD 디케이 20% |
 | 정밀도 | FP32 | bf16 autocast + `torch.compile` (실측 +79%) |
@@ -102,23 +102,34 @@ GraphRAG·LightRAG는 대형 LLM이 문서에서 개체·관계를 뽑아 그래
 ## 실행
 
 ```sh
-uv sync --frozen --python 3.12
-.venv/bin/python -m unittest discover -s tests        # 108 tests, CPU
+uv sync --frozen --python 3.12 --extra service
+.venv/bin/python -m unittest discover -s tests        # 174 tests, CPU, ~7초
 
-# 평가 (근거 복사 제한 디코딩)
+# 폐쇄망 서버: 문서 폴더 → 색인 → 질의
+.venv/bin/trid ingest docs/ --index index/            # HWP·HWPX·PDF·txt, 조문 구조 그래프, PII 마스킹
+.venv/bin/trid ask --index index/ --run runs/<run> --user kim '숙박비 상한은 1박당 얼마인가?'
+.venv/bin/trid serve --index index/ --run runs/<run>  # 127.0.0.1 JSON API, 감사 로그
+
+# 평가
 .venv/bin/python scripts/evaluate_rag_eval.py --run runs/<run> --decoding evidence --output reports/<name>.json
+.venv/bin/python scripts/evaluate_security.py --run runs/<run> --decoding span --output reports/<name>.json
+
+# GGUF 내보내기 (llama.cpp CPU, `--extra gguf`; f32·Q8_0 모두 PyTorch와 greedy 출력 동일: reports/gguf-export-parity.json)
+.venv/bin/python scripts/export_gguf.py --run runs/<run> --output trid.q8_0.gguf --quant q8_0
 ```
 
-사전학습·SFT·데이터 수집 방법은 [PRETRAINING.md](PRETRAINING.md), [KOREAN_RAG.md](KOREAN_RAG.md)에 있다.
+서비스 구성과 오프라인 설치는 [docs/SERVICE.md](docs/SERVICE.md), 위협 모델과 보안 검증셋(84건)은 [docs/SECURITY.md](docs/SECURITY.md), 사전학습·SFT·데이터 수집은 [PRETRAINING.md](PRETRAINING.md), [KOREAN_RAG.md](KOREAN_RAG.md).
 
 ## 저장소
 
 ```
-trid/        모델 · 학습 · 추론 · 제한 디코딩 · 품질 필터
-scripts/     수집 · 정제 · 학습 파이프라인 · 평가
-tests/       108 tests
-reports/     실험 결과
-docs/        그림, 이전 README
+trid/            모델 · 학습 · 추론 · 제한 디코딩 · 추출/검색 헤드 · 품질 필터
+trid/service/    수집 · 조문 구조 · 색인 · 권한 · 감사 · 엔진 · 서버 · CLI
+scripts/         수집기 · 정제 · 학습 파이프라인 · 평가 · GGUF
+tests/           174 tests
+data/            자체 작성 평가셋 · 보안 검증셋 (나머지는 git 제외)
+reports/         실험 결과
+docs/            그림 · 서비스 · 보안
 ```
 
 ## 라이선스

@@ -1,0 +1,908 @@
+{
+  "created": "2026-10-28 14:48:44",
+  "seed": 20261028,
+  "mix": {
+    "wiki": 0.3,
+    "law": 0.45,
+    "briefing": 0.25
+  },
+  "chars_budget": 60000000,
+  "sources": {
+    "wiki": {
+      "path": "data/korean-foundation-v2/train.jsonl",
+      "sha256": "eae025c3bec49dce6bb0afcb1bd1f0ce536c9a9ab845c6db8bee945abd36c072",
+      "bytes": 347231764,
+      "docs_scanned": {
+        "docs": 70777,
+        "chars": 143304054,
+        "by_kind": {
+          "wiki": {
+            "docs": 70777,
+            "chars": 143304054
+          }
+        }
+      },
+      "bad_lines": 0
+    },
+    "law": {
+      "path": "/tmp/trid-tok/law.part",
+      "sha256": "c7edf6829f37bf0be82bf18d029cf77066568c2eaef584c0c2577847e45e82c7",
+      "bytes": 450000000,
+      "docs_scanned": {
+        "docs": 14417,
+        "chars": 188574266,
+        "by_kind": {
+          "admrul": {
+            "docs": 8796,
+            "chars": 92111800
+          },
+          "law": {
+            "docs": 5621,
+            "chars": 96462466
+          }
+        }
+      },
+      "bad_lines": 1
+    },
+    "briefing": {
+      "path": "/tmp/trid-tok/briefing.part",
+      "sha256": "7784cc337d04c17734adc77e98afdbdc41e94d241a6ae094690bf9b63c556e70",
+      "bytes": 227380148,
+      "docs_scanned": {
+        "docs": 29426,
+        "chars": 101489823,
+        "by_kind": {
+          "press_release": {
+            "docs": 29426,
+            "chars": 101489823
+          }
+        }
+      },
+      "bad_lines": 0
+    }
+  },
+  "holdout": {
+    "wiki": {
+      "docs": 2000,
+      "chars": 4245970,
+      "by_kind": {
+        "wiki": {
+          "docs": 2000,
+          "chars": 4245970
+        }
+      }
+    },
+    "law": {
+      "docs": 2000,
+      "chars": 25462493,
+      "by_kind": {
+        "admrul": {
+          "docs": 1225,
+          "chars": 12544964
+        },
+        "law": {
+          "docs": 775,
+          "chars": 12917529
+        }
+      }
+    },
+    "briefing": {
+      "docs": 2000,
+      "chars": 6875841,
+      "by_kind": {
+        "press_release": {
+          "docs": 2000,
+          "chars": 6875841
+        }
+      }
+    }
+  },
+  "sample": {
+    "wiki": {
+      "docs": 8873,
+      "chars": 17999819,
+      "by_kind": {
+        "wiki": {
+          "docs": 8873,
+          "chars": 17999819
+        }
+      }
+    },
+    "law": {
+      "docs": 2012,
+      "chars": 26999920,
+      "by_kind": {
+        "admrul": {
+          "docs": 1173,
+          "chars": 13170745
+        },
+        "law": {
+          "docs": 839,
+          "chars": 13829175
+        }
+      }
+    },
+    "briefing": {
+      "docs": 3172,
+      "chars": 14999908,
+      "by_kind": {
+        "press_release": {
+          "docs": 3172,
+          "chars": 14999908
+        }
+      }
+    }
+  },
+  "sample_sha256": "5f078ba9cb8049a4e1a298b0c488712c6a578d18bae9dc8cc9a97d276ac82a9a",
+  "eval": {
+    "path": "data/korean-rag-eval-v1/test.jsonl",
+    "sha256": "5187c9f5946e8dcd52da0e49b25dae1d58656cbca9b737ab635cd4d1c5b37ad4",
+    "rows": 310,
+    "rows_with_gold": 228
+  },
+  "pre_tokenizers": {
+    "bl": {
+      "label": "ByteLevel(GPT-2 regex, 현행)",
+      "pattern": "GPT-2 (tokenizers ByteLevel use_regex=True)"
+    },
+    "l3": {
+      "label": "Llama-3식 regex, 숫자 ≤3자리",
+      "pattern": "[^\\r\\n\\p{L}\\p{N}]?\\p{L}+| ?\\p{N}{1,3}| ?[^\\s\\p{L}\\p{N}]+[\\r\\n]*|\\s*[\\r\\n]+|\\s+(?!\\S)|\\s+"
+    },
+    "ds": {
+      "label": "GPT-2 regex, 숫자만 ≤3자리",
+      "pattern": " ?\\p{L}+| ?\\p{N}{1,3}| ?[^\\s\\p{L}\\p{N}]+|\\s+(?!\\S)|\\s+"
+    }
+  },
+  "non_embedding_params": 84953856,
+  "dim": 768,
+  "tokenizers": {
+    "current-wiki-8192": {
+      "name": "current-wiki-8192",
+      "vocab_size": 8192,
+      "domains": {
+        "wiki": {
+          "docs": 2000,
+          "chars": 4245970,
+          "tokens": 2357196,
+          "chars_per_token": 1.8012799953843466,
+          "byte_fallback_pct": 4.253782884410121,
+          "roundtrip_mismatches": 0
+        },
+        "law": {
+          "docs": 2000,
+          "chars": 25462493,
+          "tokens": 15418079,
+          "chars_per_token": 1.6514698750732826,
+          "byte_fallback_pct": 3.6555721370995697,
+          "roundtrip_mismatches": 0
+        },
+        "briefing": {
+          "docs": 2000,
+          "chars": 6875841,
+          "tokens": 4408964,
+          "chars_per_token": 1.5595139810622178,
+          "byte_fallback_pct": 5.193555674303533,
+          "roundtrip_mismatches": 0
+        }
+      },
+      "eval_prompt_tokens_mean": 365.51935483870966,
+      "eval_prompt_tokens_max": 956,
+      "eval_prompts_over_1024": 0,
+      "gold_boundaries": {
+        "values": 240,
+        "start_aligned_pct": 100.0,
+        "end_aligned_pct": 88.75,
+        "both_aligned_pct": 88.75,
+        "by_task_both_aligned_pct": {
+          "rag_combine": 87.5,
+          "rag_klue": 86.0,
+          "rag_name": 87.5,
+          "rag_noise": 95.83333333333333,
+          "rag_revision": 87.5,
+          "rag_table": 100.0,
+          "rag_value": 87.5
+        },
+        "by_task_values": {
+          "rag_combine": 24,
+          "rag_klue": 100,
+          "rag_name": 24,
+          "rag_noise": 24,
+          "rag_revision": 16,
+          "rag_table": 20,
+          "rag_value": 32
+        }
+      },
+      "partial_char_vocab_entries": 668,
+      "hangul_syllables_in_vocab": 853,
+      "digit_groups_single_token": {
+        "1": 10,
+        "2": 46,
+        "3": 20
+      },
+      "embedding_params": 6291456,
+      "total_params_tied": 91245312,
+      "path": "/tmp/trid-base-snap/tokenizer.json",
+      "sha256": "73551e65acfa80834c235602900f31dc353ce230bfb69939ffdf44ca26ebc58d"
+    },
+    "bl-8192": {
+      "name": "bl-8192",
+      "vocab_size": 8192,
+      "domains": {
+        "wiki": {
+          "docs": 2000,
+          "chars": 4245970,
+          "tokens": 2499346,
+          "chars_per_token": 1.6988324145596487,
+          "byte_fallback_pct": 5.912146617555153,
+          "roundtrip_mismatches": 0
+        },
+        "law": {
+          "docs": 2000,
+          "chars": 25462493,
+          "tokens": 12783417,
+          "chars_per_token": 1.9918377848426598,
+          "byte_fallback_pct": 1.0099959971578805,
+          "roundtrip_mismatches": 0
+        },
+        "briefing": {
+          "docs": 2000,
+          "chars": 6875841,
+          "tokens": 3978243,
+          "chars_per_token": 1.7283612388685157,
+          "byte_fallback_pct": 1.748183808781917,
+          "roundtrip_mismatches": 0
+        }
+      },
+      "eval_prompt_tokens_mean": 366.27096774193546,
+      "eval_prompt_tokens_max": 998,
+      "eval_prompts_over_1024": 0,
+      "gold_boundaries": {
+        "values": 240,
+        "start_aligned_pct": 100.0,
+        "end_aligned_pct": 89.58333333333333,
+        "both_aligned_pct": 89.58333333333333,
+        "by_task_both_aligned_pct": {
+          "rag_combine": 83.33333333333333,
+          "rag_klue": 88.0,
+          "rag_name": 87.5,
+          "rag_noise": 95.83333333333333,
+          "rag_revision": 87.5,
+          "rag_table": 100.0,
+          "rag_value": 90.625
+        },
+        "by_task_values": {
+          "rag_combine": 24,
+          "rag_klue": 100,
+          "rag_name": 24,
+          "rag_noise": 24,
+          "rag_revision": 16,
+          "rag_table": 20,
+          "rag_value": 32
+        }
+      },
+      "partial_char_vocab_entries": 705,
+      "hangul_syllables_in_vocab": 741,
+      "digit_groups_single_token": {
+        "1": 10,
+        "2": 60,
+        "3": 23
+      },
+      "embedding_params": 6291456,
+      "total_params_tied": 91245312,
+      "pre_tokenizer": "bl",
+      "path": "/tmp/trid-tok/tokenizers/bl-8192/tokenizer.json",
+      "sha256": "aeb56fd5927e73510c331b8edd325e3a10ff9ff7468f2217d892510cd8d83a6f"
+    },
+    "bl-12288": {
+      "name": "bl-12288",
+      "vocab_size": 12288,
+      "domains": {
+        "wiki": {
+          "docs": 2000,
+          "chars": 4245970,
+          "tokens": 2351449,
+          "chars_per_token": 1.8056823686161172,
+          "byte_fallback_pct": 4.4435154664209175,
+          "roundtrip_mismatches": 0
+        },
+        "law": {
+          "docs": 2000,
+          "chars": 25462493,
+          "tokens": 12172717,
+          "chars_per_token": 2.091767433679761,
+          "byte_fallback_pct": 0.693698867721972,
+          "roundtrip_mismatches": 0
+        },
+        "briefing": {
+          "docs": 2000,
+          "chars": 6875841,
+          "tokens": 3793776,
+          "chars_per_token": 1.81240036312107,
+          "byte_fallback_pct": 1.1991219302352063,
+          "roundtrip_mismatches": 0
+        }
+      },
+      "eval_prompt_tokens_mean": 344.6290322580645,
+      "eval_prompt_tokens_max": 937,
+      "eval_prompts_over_1024": 0,
+      "gold_boundaries": {
+        "values": 240,
+        "start_aligned_pct": 100.0,
+        "end_aligned_pct": 87.5,
+        "both_aligned_pct": 87.5,
+        "by_task_both_aligned_pct": {
+          "rag_combine": 83.33333333333333,
+          "rag_klue": 86.0,
+          "rag_name": 79.16666666666667,
+          "rag_noise": 95.83333333333333,
+          "rag_revision": 87.5,
+          "rag_table": 100.0,
+          "rag_value": 87.5
+        },
+        "by_task_values": {
+          "rag_combine": 24,
+          "rag_klue": 100,
+          "rag_name": 24,
+          "rag_noise": 24,
+          "rag_revision": 16,
+          "rag_table": 20,
+          "rag_value": 32
+        }
+      },
+      "partial_char_vocab_entries": 853,
+      "hangul_syllables_in_vocab": 845,
+      "digit_groups_single_token": {
+        "1": 10,
+        "2": 91,
+        "3": 40
+      },
+      "embedding_params": 9437184,
+      "total_params_tied": 94391040,
+      "pre_tokenizer": "bl",
+      "path": "/tmp/trid-tok/tokenizers/bl-12288/tokenizer.json",
+      "sha256": "18e67a5443c851a36dc342057d5f9e42b273453205eec4ec42d87323f0baae04"
+    },
+    "bl-16384": {
+      "name": "bl-16384",
+      "vocab_size": 16384,
+      "domains": {
+        "wiki": {
+          "docs": 2000,
+          "chars": 4245970,
+          "tokens": 2256514,
+          "chars_per_token": 1.8816501914014272,
+          "byte_fallback_pct": 3.623952698720238,
+          "roundtrip_mismatches": 0
+        },
+        "law": {
+          "docs": 2000,
+          "chars": 25462493,
+          "tokens": 11815103,
+          "chars_per_token": 2.155080069974845,
+          "byte_fallback_pct": 0.5508881302177391,
+          "roundtrip_mismatches": 0
+        },
+        "briefing": {
+          "docs": 2000,
+          "chars": 6875841,
+          "tokens": 3686336,
+          "chars_per_token": 1.8652236258441988,
+          "byte_fallback_pct": 0.9178761784058751,
+          "roundtrip_mismatches": 0
+        }
+      },
+      "eval_prompt_tokens_mean": 328.2096774193548,
+      "eval_prompt_tokens_max": 890,
+      "eval_prompts_over_1024": 0,
+      "gold_boundaries": {
+        "values": 240,
+        "start_aligned_pct": 100.0,
+        "end_aligned_pct": 86.25,
+        "both_aligned_pct": 86.25,
+        "by_task_both_aligned_pct": {
+          "rag_combine": 83.33333333333333,
+          "rag_klue": 86.0,
+          "rag_name": 75.0,
+          "rag_noise": 91.66666666666667,
+          "rag_revision": 81.25,
+          "rag_table": 100.0,
+          "rag_value": 87.5
+        },
+        "by_task_values": {
+          "rag_combine": 24,
+          "rag_klue": 100,
+          "rag_name": 24,
+          "rag_noise": 24,
+          "rag_revision": 16,
+          "rag_table": 20,
+          "rag_value": 32
+        }
+      },
+      "partial_char_vocab_entries": 958,
+      "hangul_syllables_in_vocab": 915,
+      "digit_groups_single_token": {
+        "1": 10,
+        "2": 93,
+        "3": 56
+      },
+      "embedding_params": 12582912,
+      "total_params_tied": 97536768,
+      "pre_tokenizer": "bl",
+      "path": "/tmp/trid-tok/tokenizers/bl-16384/tokenizer.json",
+      "sha256": "bd2f94bd1a3e8c3eafb4aeb1f33526147c800630f79eca0401a8dfd45bc434e1"
+    },
+    "l3-8192": {
+      "name": "l3-8192",
+      "vocab_size": 8192,
+      "domains": {
+        "wiki": {
+          "docs": 2000,
+          "chars": 4245970,
+          "tokens": 2451057,
+          "chars_per_token": 1.732301615180716,
+          "byte_fallback_pct": 6.4302870149490605,
+          "roundtrip_mismatches": 0
+        },
+        "law": {
+          "docs": 2000,
+          "chars": 25462493,
+          "tokens": 12178293,
+          "chars_per_token": 2.0908096890097814,
+          "byte_fallback_pct": 1.1149263694016887,
+          "roundtrip_mismatches": 0
+        },
+        "briefing": {
+          "docs": 2000,
+          "chars": 6875841,
+          "tokens": 3767159,
+          "chars_per_token": 1.8252059443203752,
+          "byte_fallback_pct": 1.8837537783778173,
+          "roundtrip_mismatches": 0
+        }
+      },
+      "eval_prompt_tokens_mean": 363.55806451612904,
+      "eval_prompt_tokens_max": 993,
+      "eval_prompts_over_1024": 0,
+      "gold_boundaries": {
+        "values": 240,
+        "start_aligned_pct": 100.0,
+        "end_aligned_pct": 87.5,
+        "both_aligned_pct": 87.5,
+        "by_task_both_aligned_pct": {
+          "rag_combine": 83.33333333333333,
+          "rag_klue": 87.0,
+          "rag_name": 87.5,
+          "rag_noise": 95.83333333333333,
+          "rag_revision": 87.5,
+          "rag_table": 100.0,
+          "rag_value": 78.125
+        },
+        "by_task_values": {
+          "rag_combine": 24,
+          "rag_klue": 100,
+          "rag_name": 24,
+          "rag_noise": 24,
+          "rag_revision": 16,
+          "rag_table": 20,
+          "rag_value": 32
+        }
+      },
+      "partial_char_vocab_entries": 690,
+      "hangul_syllables_in_vocab": 739,
+      "digit_groups_single_token": {
+        "1": 10,
+        "2": 57,
+        "3": 39
+      },
+      "embedding_params": 6291456,
+      "total_params_tied": 91245312,
+      "pre_tokenizer": "l3",
+      "path": "/tmp/trid-tok/tokenizers/l3-8192/tokenizer.json",
+      "sha256": "969611ea6270cb9ded6d8331a12466c907c4deb40ecb603d31d11aaf03c85199"
+    },
+    "l3-12288": {
+      "name": "l3-12288",
+      "vocab_size": 12288,
+      "domains": {
+        "wiki": {
+          "docs": 2000,
+          "chars": 4245970,
+          "tokens": 2305690,
+          "chars_per_token": 1.8415181572544443,
+          "byte_fallback_pct": 5.158369078236883,
+          "roundtrip_mismatches": 0
+        },
+        "law": {
+          "docs": 2000,
+          "chars": 25462493,
+          "tokens": 11556753,
+          "chars_per_token": 2.2032566586825904,
+          "byte_fallback_pct": 0.8027860420656218,
+          "roundtrip_mismatches": 0
+        },
+        "briefing": {
+          "docs": 2000,
+          "chars": 6875841,
+          "tokens": 3577035,
+          "chars_per_token": 1.9222179822115244,
+          "byte_fallback_pct": 1.364621816672188,
+          "roundtrip_mismatches": 0
+        }
+      },
+      "eval_prompt_tokens_mean": 341.59354838709675,
+      "eval_prompt_tokens_max": 927,
+      "eval_prompts_over_1024": 0,
+      "gold_boundaries": {
+        "values": 240,
+        "start_aligned_pct": 100.0,
+        "end_aligned_pct": 85.41666666666667,
+        "both_aligned_pct": 85.41666666666667,
+        "by_task_both_aligned_pct": {
+          "rag_combine": 83.33333333333333,
+          "rag_klue": 85.0,
+          "rag_name": 79.16666666666667,
+          "rag_noise": 95.83333333333333,
+          "rag_revision": 87.5,
+          "rag_table": 100.0,
+          "rag_value": 75.0
+        },
+        "by_task_values": {
+          "rag_combine": 24,
+          "rag_klue": 100,
+          "rag_name": 24,
+          "rag_noise": 24,
+          "rag_revision": 16,
+          "rag_table": 20,
+          "rag_value": 32
+        }
+      },
+      "partial_char_vocab_entries": 847,
+      "hangul_syllables_in_vocab": 838,
+      "digit_groups_single_token": {
+        "1": 10,
+        "2": 87,
+        "3": 68
+      },
+      "embedding_params": 9437184,
+      "total_params_tied": 94391040,
+      "pre_tokenizer": "l3",
+      "path": "/tmp/trid-tok/tokenizers/l3-12288/tokenizer.json",
+      "sha256": "dcb1dccaac0c8d964c38ef68db658c0a1035cd9984e67541a8612ebf2167607a"
+    },
+    "l3-16384": {
+      "name": "l3-16384",
+      "vocab_size": 16384,
+      "domains": {
+        "wiki": {
+          "docs": 2000,
+          "chars": 4245970,
+          "tokens": 2207164,
+          "chars_per_token": 1.9237220251870726,
+          "byte_fallback_pct": 4.269823175803882,
+          "roundtrip_mismatches": 0
+        },
+        "law": {
+          "docs": 2000,
+          "chars": 25462493,
+          "tokens": 11180841,
+          "chars_per_token": 2.277332536971056,
+          "byte_fallback_pct": 0.6517309386655261,
+          "roundtrip_mismatches": 0
+        },
+        "briefing": {
+          "docs": 2000,
+          "chars": 6875841,
+          "tokens": 3460625,
+          "chars_per_token": 1.986878381795196,
+          "byte_fallback_pct": 1.0574390464150263,
+          "roundtrip_mismatches": 0
+        }
+      },
+      "eval_prompt_tokens_mean": 324.69354838709677,
+      "eval_prompt_tokens_max": 886,
+      "eval_prompts_over_1024": 0,
+      "gold_boundaries": {
+        "values": 240,
+        "start_aligned_pct": 100.0,
+        "end_aligned_pct": 84.16666666666667,
+        "both_aligned_pct": 84.16666666666667,
+        "by_task_both_aligned_pct": {
+          "rag_combine": 83.33333333333333,
+          "rag_klue": 85.0,
+          "rag_name": 75.0,
+          "rag_noise": 91.66666666666667,
+          "rag_revision": 81.25,
+          "rag_table": 100.0,
+          "rag_value": 75.0
+        },
+        "by_task_values": {
+          "rag_combine": 24,
+          "rag_klue": 100,
+          "rag_name": 24,
+          "rag_noise": 24,
+          "rag_revision": 16,
+          "rag_table": 20,
+          "rag_value": 32
+        }
+      },
+      "partial_char_vocab_entries": 974,
+      "hangul_syllables_in_vocab": 912,
+      "digit_groups_single_token": {
+        "1": 10,
+        "2": 93,
+        "3": 115
+      },
+      "embedding_params": 12582912,
+      "total_params_tied": 97536768,
+      "pre_tokenizer": "l3",
+      "path": "/tmp/trid-tok/tokenizers/l3-16384/tokenizer.json",
+      "sha256": "42161210ff068214189546b5317a52083d979bbb414b3846f8ac3dbebeeab3fb"
+    },
+    "ds-8192": {
+      "name": "ds-8192",
+      "vocab_size": 8192,
+      "domains": {
+        "wiki": {
+          "docs": 2000,
+          "chars": 4245970,
+          "tokens": 2516865,
+          "chars_per_token": 1.6870074477574284,
+          "byte_fallback_pct": 5.853790330430913,
+          "roundtrip_mismatches": 0
+        },
+        "law": {
+          "docs": 2000,
+          "chars": 25462493,
+          "tokens": 12792523,
+          "chars_per_token": 1.9904199507790605,
+          "byte_fallback_pct": 1.0025856510087963,
+          "roundtrip_mismatches": 0
+        },
+        "briefing": {
+          "docs": 2000,
+          "chars": 6875841,
+          "tokens": 3991862,
+          "chars_per_token": 1.7224646042373208,
+          "byte_fallback_pct": 1.7357563963884524,
+          "roundtrip_mismatches": 0
+        }
+      },
+      "eval_prompt_tokens_mean": 366.2193548387097,
+      "eval_prompt_tokens_max": 1000,
+      "eval_prompts_over_1024": 0,
+      "gold_boundaries": {
+        "values": 240,
+        "start_aligned_pct": 100.0,
+        "end_aligned_pct": 89.58333333333333,
+        "both_aligned_pct": 89.58333333333333,
+        "by_task_both_aligned_pct": {
+          "rag_combine": 83.33333333333333,
+          "rag_klue": 88.0,
+          "rag_name": 87.5,
+          "rag_noise": 95.83333333333333,
+          "rag_revision": 87.5,
+          "rag_table": 100.0,
+          "rag_value": 90.625
+        },
+        "by_task_values": {
+          "rag_combine": 24,
+          "rag_klue": 100,
+          "rag_name": 24,
+          "rag_noise": 24,
+          "rag_revision": 16,
+          "rag_table": 20,
+          "rag_value": 32
+        }
+      },
+      "partial_char_vocab_entries": 708,
+      "hangul_syllables_in_vocab": 741,
+      "digit_groups_single_token": {
+        "1": 10,
+        "2": 58,
+        "3": 39
+      },
+      "embedding_params": 6291456,
+      "total_params_tied": 91245312,
+      "pre_tokenizer": "ds",
+      "path": "/tmp/trid-tok/tokenizers/ds-8192/tokenizer.json",
+      "sha256": "d6a985c103414498d3f3aec167f583ab53969c528318cb13da96a7d04bc073dc"
+    },
+    "ds-12288": {
+      "name": "ds-12288",
+      "vocab_size": 12288,
+      "domains": {
+        "wiki": {
+          "docs": 2000,
+          "chars": 4245970,
+          "tokens": 2371443,
+          "chars_per_token": 1.7904583833556194,
+          "byte_fallback_pct": 4.394961211380581,
+          "roundtrip_mismatches": 0
+        },
+        "law": {
+          "docs": 2000,
+          "chars": 25462493,
+          "tokens": 12183592,
+          "chars_per_token": 2.089900334810949,
+          "byte_fallback_pct": 0.6895585472658637,
+          "roundtrip_mismatches": 0
+        },
+        "briefing": {
+          "docs": 2000,
+          "chars": 6875841,
+          "tokens": 3807178,
+          "chars_per_token": 1.806020364690067,
+          "byte_fallback_pct": 1.1893060949606244,
+          "roundtrip_mismatches": 0
+        }
+      },
+      "eval_prompt_tokens_mean": 345.63870967741934,
+      "eval_prompt_tokens_max": 938,
+      "eval_prompts_over_1024": 0,
+      "gold_boundaries": {
+        "values": 240,
+        "start_aligned_pct": 100.0,
+        "end_aligned_pct": 87.5,
+        "both_aligned_pct": 87.5,
+        "by_task_both_aligned_pct": {
+          "rag_combine": 83.33333333333333,
+          "rag_klue": 86.0,
+          "rag_name": 79.16666666666667,
+          "rag_noise": 95.83333333333333,
+          "rag_revision": 87.5,
+          "rag_table": 100.0,
+          "rag_value": 87.5
+        },
+        "by_task_values": {
+          "rag_combine": 24,
+          "rag_klue": 100,
+          "rag_name": 24,
+          "rag_noise": 24,
+          "rag_revision": 16,
+          "rag_table": 20,
+          "rag_value": 32
+        }
+      },
+      "partial_char_vocab_entries": 857,
+      "hangul_syllables_in_vocab": 846,
+      "digit_groups_single_token": {
+        "1": 10,
+        "2": 89,
+        "3": 72
+      },
+      "embedding_params": 9437184,
+      "total_params_tied": 94391040,
+      "pre_tokenizer": "ds",
+      "path": "/tmp/trid-tok/tokenizers/ds-12288/tokenizer.json",
+      "sha256": "53ae0261d5f37e9691e2ba215bf62011cedec1df32dfe03487a88cec5938f695"
+    },
+    "ds-16384": {
+      "name": "ds-16384",
+      "vocab_size": 16384,
+      "domains": {
+        "wiki": {
+          "docs": 2000,
+          "chars": 4245970,
+          "tokens": 2277377,
+          "chars_per_token": 1.8644124358856702,
+          "byte_fallback_pct": 3.58697747452442,
+          "roundtrip_mismatches": 0
+        },
+        "law": {
+          "docs": 2000,
+          "chars": 25462493,
+          "tokens": 11827828,
+          "chars_per_token": 2.1527615213883733,
+          "byte_fallback_pct": 0.5481141592522313,
+          "roundtrip_mismatches": 0
+        },
+        "briefing": {
+          "docs": 2000,
+          "chars": 6875841,
+          "tokens": 3697455,
+          "chars_per_token": 1.8596145186351152,
+          "byte_fallback_pct": 0.9128441049316354,
+          "roundtrip_mismatches": 0
+        }
+      },
+      "eval_prompt_tokens_mean": 329.2967741935484,
+      "eval_prompt_tokens_max": 894,
+      "eval_prompts_over_1024": 0,
+      "gold_boundaries": {
+        "values": 240,
+        "start_aligned_pct": 100.0,
+        "end_aligned_pct": 86.25,
+        "both_aligned_pct": 86.25,
+        "by_task_both_aligned_pct": {
+          "rag_combine": 83.33333333333333,
+          "rag_klue": 86.0,
+          "rag_name": 75.0,
+          "rag_noise": 91.66666666666667,
+          "rag_revision": 81.25,
+          "rag_table": 100.0,
+          "rag_value": 87.5
+        },
+        "by_task_values": {
+          "rag_combine": 24,
+          "rag_klue": 100,
+          "rag_name": 24,
+          "rag_noise": 24,
+          "rag_revision": 16,
+          "rag_table": 20,
+          "rag_value": 32
+        }
+      },
+      "partial_char_vocab_entries": 959,
+      "hangul_syllables_in_vocab": 916,
+      "digit_groups_single_token": {
+        "1": 10,
+        "2": 93,
+        "3": 117
+      },
+      "embedding_params": 12582912,
+      "total_params_tied": 97536768,
+      "pre_tokenizer": "ds",
+      "path": "/tmp/trid-tok/tokenizers/ds-16384/tokenizer.json",
+      "sha256": "c9d7bf3beedcbffa4904355ccf26822368667184683168f59deee3479bc6fd9f"
+    }
+  },
+  "training_seconds": {
+    "bl-8192": 11.010179042816162,
+    "bl-12288": 10.656327962875366,
+    "bl-16384": 10.986923933029175,
+    "l3-8192": 18.764302015304565,
+    "l3-12288": 14.757576942443848,
+    "l3-16384": 15.589969873428345,
+    "ds-8192": 14.559095859527588,
+    "ds-12288": 15.164546012878418,
+    "ds-16384": 14.901770830154419
+  },
+  "tao_2024": {
+    "citation": "Tao et al., Scaling Laws with Vocabulary: Larger Models Deserve Larger Vocabularies, NeurIPS 2024, arXiv:2407.13623",
+    "planned_tokens": 1000000000.0,
+    "compute_flops": 5.47471872e+17,
+    "approach1": {
+      "N_v_opt": 5638219.20115462,
+      "V_opt": 7341.431251503412,
+      "N_nv_opt": 59193073.756986134
+    },
+    "f_korean": {
+      "a": 0.0064,
+      "b": -0.17921004543607824,
+      "c": 1.6213973927325214,
+      "fit_points": {
+        "8192": 0.5264827779694812,
+        "12288": 0.500704947127052,
+        "16384": 0.48539813686219097
+      }
+    },
+    "approach3": {
+      "fixed_chars": {
+        "V_opt": 1579.2238852177313,
+        "loss_at": {
+          "4096": -5.532274755540871,
+          "8192": -5.532270325616022,
+          "12288": -5.532267202080347,
+          "16384": -5.532264846333368,
+          "32768": -5.532258976907178
+        }
+      },
+      "fixed_flops": {
+        "V_opt": 5792.618751480198,
+        "loss_at": {
+          "4096": -5.532270324595309,
+          "8192": -5.532270372427307,
+          "12288": -5.5322685771979545,
+          "16384": -5.532266276749358,
+          "32768": -5.532255964707794
+        }
+      }
+    }
+  },
+  "saved": {
+    "name": "ds-8192",
+    "dir": "runs/tokenizers/trid-ko-mix-v1-ds-8192",
+    "tokenizer_sha256": "d6a985c103414498d3f3aec167f583ab53969c528318cb13da96a7d04bc073dc"
+  }
+}

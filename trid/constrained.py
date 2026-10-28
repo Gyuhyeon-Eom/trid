@@ -106,7 +106,7 @@ class EvidenceConstraint:
         """Cost to finish an answer whose last pair has the unclosed value `value`, or None."""
         if not value:
             return min((n + 3 + len(sid) for sid, n in self.first_char.items()), default=None)
-        if b"[" in value or b"]" in value:
+        if value[:1].isspace() or b"[" in value or b"]" in value:  # a value never starts with whitespace
             return None
         costs = [d + 3 + len(sid) for sid, d in self._holders(value).items()]
         if value.endswith(b" ") and len(value) > 1:  # the space may open the ' [' separator
@@ -121,7 +121,7 @@ class EvidenceConstraint:
             if cut < 0:
                 return self._open_value(rest)
             value, tail = rest[:cut], rest[cut + 2:]
-            if not value or b"[" in value or b"]" in value:
+            if not value.strip() or value[:1].isspace() or b"[" in value or b"]" in value:
                 return None
             closed = [sid for sid, d in self._holders(value).items() if d == 0]
             done = [sid for sid in closed if tail.startswith(sid + b"]")]

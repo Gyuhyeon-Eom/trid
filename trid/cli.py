@@ -71,7 +71,7 @@ def main():
     evaluate.add_argument("--limit", type=int, default=0)
     evaluate.add_argument("--device", choices=["auto", "mps", "cpu"], default="auto")
     for name in ["ask", "chat", "complete"]:
-        p = sub.add_parser(name, help={"ask": "한 번 질문", "chat": "터미널 대화", "complete": "사전학습 모델의 문장 이어쓰기"}[name])
+        p = sub.add_parser(name, help={"ask": "한 번 질문; --index를 주면 색인 문서를 근거로 답하고 감사 로그를 남김", "chat": "터미널 대화", "complete": "사전학습 모델의 문장 이어쓰기"}[name])
         p.add_argument("--run", default=str(PROJECT_ROOT / "runs/trid-pretrain-pilot") if name == "complete" else None)
         p.add_argument("--device", choices=["auto", "mps", "cpu"], default="auto")
         p.add_argument("--max-tokens", type=int, default=48 if name == 'complete' else 96)
@@ -80,6 +80,9 @@ def main():
             p.add_argument('--source',nargs='+',default=['T01'],help='기관 모드에서 제공할 가상 문서 ID')
         if name != "chat":
             p.add_argument("prompt")
+        if name == "ask":
+            from .service.cli import add_parsers as add_service_parsers
+            add_service_parsers(sub, p)
     args = parser.parse_args()
     # Private-by-default permissions for new files made by this process.
     os.umask(0o077)
@@ -106,6 +109,9 @@ def main():
         elif args.command == "evaluate":
             from .evaluation import evaluate as run_evaluation
             run_evaluation(args.run, args.data, args.output, args.device, args.limit)
+        elif args.command in ("ingest", "serve", "token") or (args.command == "ask" and args.index):
+            from .service import cli as service_cli
+            getattr(service_cli, args.command)(args)
         else:
             if args.command == 'chat':
                 mode=args.mode
