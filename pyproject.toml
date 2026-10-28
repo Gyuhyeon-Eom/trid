@@ -8,6 +8,8 @@ dependencies = ["torch==2.14.1", "tokenizers==0.23.3", "safetensors==0.8.0", "nu
 [project.optional-dependencies]
 corpus = ["pyarrow==26.0.0"]
 pdf = ["pypdf==6.21.2"]
+# scripts/export_gguf.py: gguf (MIT, llama.cpp gguf-py) writes/reads GGUF without a llama.cpp checkout.
+gguf = ["gguf==0.19.0"]
 # build_pretraining_mix.py quality/PII stage (trid/korean_quality.py); --no-quality runs without these.
 quality = [
     "kiwipiepy==0.24.1",  # Apache-2.0 (Kiwi morpheme analyzer; kiwipiepy_model 0.24.0 also Apache-2.0)
