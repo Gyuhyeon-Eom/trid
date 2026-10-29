@@ -1,0 +1,16 @@
+{
+  "run": "trid-public-dialogue-gpu-06-mix05-s3000",
+  "change": "data/public-dialogue-mix-05 = mix-04 + teacher-qa-kr-01 (2,611 rows from 2,000 korea.kr KOGL Type 1 briefings; questions drafted by Kanana-1.5-2.1B Q8_0, checked by Qwen3-1.7B Q8_0, answers verbatim source) at 25% sampling mass; mix-04 weights scaled by 0.75; validation unchanged. Same init (pretrained base), 3,000 steps, seed, lr, batch as gpu-05-mix04-s3000. L40S, sharing the GPU with teacher generation.",
+  "teacher_format": "One question per row with random other-document distractors (pre-diagnosis format). Superseded by shared-context assembly (data/teacher-qa-kr-01-shared) after the question-ignoring diagnosis.",
+  "weights_sha256": "7751809b63e649a103b0925cd243829258b4e0b226420eb431d9c76c26874ee0",
+  "best_validation_loss": 0.4473,
+  "rag310_evidence_grounded_mention": {
+    "gpu-05-mix04-s3000": {"answerable": "39/228 (17.1%)", "unanswerable": "42/82", "answerable_abstained": "67/228 (29.4%)"},
+    "gpu-06-mix05-s3000": {"answerable": "34/228 (14.9%)", "unanswerable": "42/82", "answerable_abstained": "76/228 (33.3%)"}
+  },
+  "paired_vs_mix04_s3000_answerable": {"improved": 18, "regressed": 23, "mcnemar_exact_p": 0.5327},
+  "answerable_by_task_mix04_to_mix05": {"rag_value": "5->7/32", "rag_name": "7->3/24", "rag_noise": "8->6/24", "rag_table": "0->1/20", "rag_revision": "5->5/16", "rag_combine": "0->0/12", "rag_klue": "14->12/100"},
+  "heldout_public_qa": {"correct": 0, "total": 8, "notes": "250만원 answered with extra words '상당의 서비스'; others wrong, abstained or self-description."},
+  "decision": "do_not_deploy. No measurable effect from per-row teacher QA at this size; consistent with the question-ignoring diagnosis (one question per context lets context->answer minimize loss). Next: shared-context teacher QA combined with the shared-context KLUE mix.",
+  "review": "Automatic RAG310 scoring; public 8 by assistant review against predeclared facts, not independent human evaluation."
+}
