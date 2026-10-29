@@ -1,0 +1,654 @@
+{
+  "protocol": "Review records for free-text evaluation outputs: export -> blinded packet -> verdict import -> aggregate.\n\nexport     One record per (model, item) from stored raw outputs (scripts/train_public_dialogue.py evaluate,\n           scripts/evaluate_external_chat.py --freeform-prompts), the prompt file and a checklist fixed before\n           generation. Writes records.jsonl (with model/run), a blinded packet.jsonl (random codes, shuffled, no model\n           or run fields) and mapping.json (code -> record, file hashes). Every output id must match the prompt set.\nimport     Verdict rows keyed by packet code. Rejected: unknown code, a packet hash from another export, a reviewer\n           not in the registry or declared with a different type (an AI reviewer can never be recorded as human or\n           expert), and a second verdict by the same reviewer on the same code.\naggregate  Per model: execution status over ALL items, and per reviewer type an item state that does not depend on\n           verdict order (see `item_state`). AI, human and expert verdicts are never pooled or voted across types.\n           Every verdict row is kept verbatim in the report. Only items settled by agreement are counted, once.\n\nAgreement rule (conservative): within one reviewer type, an item is settled only if every verdict on it has the\nsame conclusion, evidence judgement, condition/exception-missing judgement and false-claim presence. Any difference,\nincluding one reviewer saying 불확실, makes the item `disagreement` (re-review needed); no verdict is chosen. An item\nall of whose reviewers say 불확실 is `uncertain`. Unreviewed, uncertain and disagreement items are never scored.\n\nScores: `full_coverage_correct_rate` exists only when every item of the model is settled for that reviewer type;\notherwise it is null (`coverage_status` 미확정). Full coverage by AI verdicts is still not an official score\n(`official_eligible` false for 'ai'); which human/expert coverage makes a score official is fixed by the protocol\nowner. `diagnostic_correct_rate_over_settled` is a partial-review diagnostic over settled items only.\n`correct_rate_range` = [settled correct / all items, (settled correct + unsettled) / all items]: the exact bounds of\nthe full-coverage rate if every unsettled item were later judged wrong or right. Execution failures and\ncontext-limited items stay in every denominator.\n\nObjective checks (cited [Dn] ids exist in the prompt, numbers absent from the prompt) are auxiliary evidence only;\nthey never set a semantic verdict.\n",
+  "export_dir": "reports/coordination/C-005/review-dev30",
+  "packet_sha256": "df35ae2fcc948c5f8e2a78acebe400aa29637c4f38671d503bfdeba99a589625",
+  "verdict_files": [
+    {
+      "path": "reports/coordination/C-005/review-dev30/verdicts-ai.jsonl",
+      "sha256": "83689ef2dba960f7ae8bb143f139c0a033e5a7df540b81a8439cd6bc82e52971"
+    }
+  ],
+  "models": {
+    "kanana-1.5-2.1b-q8": {
+      "items": 10,
+      "execution": {
+        "limit": 3,
+        "eos": 7
+      },
+      "context_limited": 0,
+      "reviews": {
+        "ai": {
+          "items": 10,
+          "settled": 10,
+          "unreviewed": 0,
+          "uncertain": 0,
+          "disagreement": 0,
+          "rereview_needed": [],
+          "verdict_rows": 10,
+          "conclusion": {
+            "정답": 9,
+            "부분": 1
+          },
+          "full_coverage_correct_rate": 0.9,
+          "coverage_status": "전체 판정 완료",
+          "official_eligible": false,
+          "diagnostic_correct_rate_over_settled": 0.9,
+          "correct_rate_range": [
+            0.9,
+            0.9
+          ],
+          "false_added_claim": 3,
+          "condition_or_exception_missing": 1
+        },
+        "human": {
+          "items": 10,
+          "settled": 0,
+          "unreviewed": 10,
+          "uncertain": 0,
+          "disagreement": 0,
+          "rereview_needed": [],
+          "verdict_rows": 0,
+          "conclusion": {},
+          "full_coverage_correct_rate": null,
+          "coverage_status": "미확정",
+          "official_eligible": true,
+          "diagnostic_correct_rate_over_settled": null,
+          "correct_rate_range": [
+            0.0,
+            1.0
+          ],
+          "false_added_claim": 0,
+          "condition_or_exception_missing": 0
+        },
+        "expert": {
+          "items": 10,
+          "settled": 0,
+          "unreviewed": 10,
+          "uncertain": 0,
+          "disagreement": 0,
+          "rereview_needed": [],
+          "verdict_rows": 0,
+          "conclusion": {},
+          "full_coverage_correct_rate": null,
+          "coverage_status": "미확정",
+          "official_eligible": true,
+          "diagnostic_correct_rate_over_settled": null,
+          "correct_rate_range": [
+            0.0,
+            1.0
+          ],
+          "false_added_claim": 0,
+          "condition_or_exception_missing": 0
+        }
+      }
+    },
+    "qwen3-1.7b-q8": {
+      "items": 10,
+      "execution": {
+        "limit": 5,
+        "eos": 5
+      },
+      "context_limited": 0,
+      "reviews": {
+        "ai": {
+          "items": 10,
+          "settled": 10,
+          "unreviewed": 0,
+          "uncertain": 0,
+          "disagreement": 0,
+          "rereview_needed": [],
+          "verdict_rows": 10,
+          "conclusion": {
+            "정답": 8,
+            "부분": 2
+          },
+          "full_coverage_correct_rate": 0.8,
+          "coverage_status": "전체 판정 완료",
+          "official_eligible": false,
+          "diagnostic_correct_rate_over_settled": 0.8,
+          "correct_rate_range": [
+            0.8,
+            0.8
+          ],
+          "false_added_claim": 5,
+          "condition_or_exception_missing": 2
+        },
+        "human": {
+          "items": 10,
+          "settled": 0,
+          "unreviewed": 10,
+          "uncertain": 0,
+          "disagreement": 0,
+          "rereview_needed": [],
+          "verdict_rows": 0,
+          "conclusion": {},
+          "full_coverage_correct_rate": null,
+          "coverage_status": "미확정",
+          "official_eligible": true,
+          "diagnostic_correct_rate_over_settled": null,
+          "correct_rate_range": [
+            0.0,
+            1.0
+          ],
+          "false_added_claim": 0,
+          "condition_or_exception_missing": 0
+        },
+        "expert": {
+          "items": 10,
+          "settled": 0,
+          "unreviewed": 10,
+          "uncertain": 0,
+          "disagreement": 0,
+          "rereview_needed": [],
+          "verdict_rows": 0,
+          "conclusion": {},
+          "full_coverage_correct_rate": null,
+          "coverage_status": "미확정",
+          "official_eligible": true,
+          "diagnostic_correct_rate_over_settled": null,
+          "correct_rate_range": [
+            0.0,
+            1.0
+          ],
+          "false_added_claim": 0,
+          "condition_or_exception_missing": 0
+        }
+      }
+    },
+    "trid": {
+      "items": 10,
+      "execution": {
+        "eos": 10
+      },
+      "context_limited": 3,
+      "reviews": {
+        "ai": {
+          "items": 10,
+          "settled": 10,
+          "unreviewed": 0,
+          "uncertain": 0,
+          "disagreement": 0,
+          "rereview_needed": [],
+          "verdict_rows": 10,
+          "conclusion": {
+            "오답": 6,
+            "부분": 2,
+            "보류": 2
+          },
+          "full_coverage_correct_rate": 0.0,
+          "coverage_status": "전체 판정 완료",
+          "official_eligible": false,
+          "diagnostic_correct_rate_over_settled": 0.0,
+          "correct_rate_range": [
+            0.0,
+            0.0
+          ],
+          "false_added_claim": 0,
+          "condition_or_exception_missing": 5
+        },
+        "human": {
+          "items": 10,
+          "settled": 0,
+          "unreviewed": 10,
+          "uncertain": 0,
+          "disagreement": 0,
+          "rereview_needed": [],
+          "verdict_rows": 0,
+          "conclusion": {},
+          "full_coverage_correct_rate": null,
+          "coverage_status": "미확정",
+          "official_eligible": true,
+          "diagnostic_correct_rate_over_settled": null,
+          "correct_rate_range": [
+            0.0,
+            1.0
+          ],
+          "false_added_claim": 0,
+          "condition_or_exception_missing": 0
+        },
+        "expert": {
+          "items": 10,
+          "settled": 0,
+          "unreviewed": 10,
+          "uncertain": 0,
+          "disagreement": 0,
+          "rereview_needed": [],
+          "verdict_rows": 0,
+          "conclusion": {},
+          "full_coverage_correct_rate": null,
+          "coverage_status": "미확정",
+          "official_eligible": true,
+          "diagnostic_correct_rate_over_settled": null,
+          "correct_rate_range": [
+            0.0,
+            1.0
+          ],
+          "false_added_claim": 0,
+          "condition_or_exception_missing": 0
+        }
+      }
+    }
+  },
+  "verdicts": [
+    {
+      "packet_code": "R671811",
+      "packet_sha256": "df35ae2fcc948c5f8e2a78acebe400aa29637c4f38671d503bfdeba99a589625",
+      "reviewer_id": "ai:assistant-session-01a17c28",
+      "reviewer_type": "ai",
+      "conclusion": "오답",
+      "evidence": "없음",
+      "condition_or_exception_missing": "해당없음",
+      "false_added_claim": null,
+      "truncated_observed": false,
+      "format_mismatch": true,
+      "rationale": "방해 문단의 \"태양광발전설비\" 구간 복사. 설명 없음",
+      "source": "reports/coordination/C-003/judgements.json (AI review, checklist fixed before generation)"
+    },
+    {
+      "packet_code": "R330427",
+      "packet_sha256": "df35ae2fcc948c5f8e2a78acebe400aa29637c4f38671d503bfdeba99a589625",
+      "reviewer_id": "ai:assistant-session-01a17c28",
+      "reviewer_type": "ai",
+      "conclusion": "부분",
+      "evidence": "없음",
+      "condition_or_exception_missing": "해당없음",
+      "false_added_claim": null,
+      "truncated_observed": false,
+      "format_mismatch": true,
+      "rationale": "목적의 일부 명사구만 출력. 설명 없음",
+      "source": "reports/coordination/C-003/judgements.json (AI review, checklist fixed before generation)"
+    },
+    {
+      "packet_code": "R687454",
+      "packet_sha256": "df35ae2fcc948c5f8e2a78acebe400aa29637c4f38671d503bfdeba99a589625",
+      "reviewer_id": "ai:assistant-session-01a17c28",
+      "reviewer_type": "ai",
+      "conclusion": "오답",
+      "evidence": "없음",
+      "condition_or_exception_missing": "예",
+      "false_added_claim": null,
+      "truncated_observed": false,
+      "format_mismatch": true,
+      "rationale": "\"신청서\" 구간. 이유 없음",
+      "source": "reports/coordination/C-003/judgements.json (AI review, checklist fixed before generation)"
+    },
+    {
+      "packet_code": "R449974",
+      "packet_sha256": "df35ae2fcc948c5f8e2a78acebe400aa29637c4f38671d503bfdeba99a589625",
+      "reviewer_id": "ai:assistant-session-01a17c28",
+      "reviewer_type": "ai",
+      "conclusion": "오답",
+      "evidence": "없음",
+      "condition_or_exception_missing": "해당없음",
+      "false_added_claim": null,
+      "truncated_observed": false,
+      "format_mismatch": true,
+      "rationale": "방해 문단 구간 \"산림청\"",
+      "source": "reports/coordination/C-003/judgements.json (AI review, checklist fixed before generation)"
+    },
+    {
+      "packet_code": "R531833",
+      "packet_sha256": "df35ae2fcc948c5f8e2a78acebe400aa29637c4f38671d503bfdeba99a589625",
+      "reviewer_id": "ai:assistant-session-01a17c28",
+      "reviewer_type": "ai",
+      "conclusion": "보류",
+      "evidence": "없음",
+      "condition_or_exception_missing": "해당없음",
+      "false_added_claim": null,
+      "truncated_observed": false,
+      "format_mismatch": true,
+      "rationale": "답 있는 질문에 확인 불가",
+      "source": "reports/coordination/C-003/judgements.json (AI review, checklist fixed before generation)"
+    },
+    {
+      "packet_code": "R139196",
+      "packet_sha256": "df35ae2fcc948c5f8e2a78acebe400aa29637c4f38671d503bfdeba99a589625",
+      "reviewer_id": "ai:assistant-session-01a17c28",
+      "reviewer_type": "ai",
+      "conclusion": "오답",
+      "evidence": "없음",
+      "condition_or_exception_missing": "예",
+      "false_added_claim": null,
+      "truncated_observed": false,
+      "format_mismatch": false,
+      "rationale": "\"보건소\"(제출처)로 신청인 질문에 오답",
+      "source": "reports/coordination/C-003/judgements.json (AI review, checklist fixed before generation)"
+    },
+    {
+      "packet_code": "R869495",
+      "packet_sha256": "df35ae2fcc948c5f8e2a78acebe400aa29637c4f38671d503bfdeba99a589625",
+      "reviewer_id": "ai:assistant-session-01a17c28",
+      "reviewer_type": "ai",
+      "conclusion": "보류",
+      "evidence": "없음",
+      "condition_or_exception_missing": "예",
+      "false_added_claim": null,
+      "truncated_observed": false,
+      "format_mismatch": false,
+      "rationale": "답 있는 질문에 확인 불가",
+      "source": "reports/coordination/C-003/judgements.json (AI review, checklist fixed before generation)"
+    },
+    {
+      "packet_code": "R931788",
+      "packet_sha256": "df35ae2fcc948c5f8e2a78acebe400aa29637c4f38671d503bfdeba99a589625",
+      "reviewer_id": "ai:assistant-session-01a17c28",
+      "reviewer_type": "ai",
+      "conclusion": "오답",
+      "evidence": "없음",
+      "condition_or_exception_missing": "해당없음",
+      "false_added_claim": null,
+      "truncated_observed": false,
+      "format_mismatch": false,
+      "rationale": "\"39%\"(다른 행·열 값)",
+      "source": "reports/coordination/C-003/judgements.json (AI review, checklist fixed before generation)"
+    },
+    {
+      "packet_code": "R642028",
+      "packet_sha256": "df35ae2fcc948c5f8e2a78acebe400aa29637c4f38671d503bfdeba99a589625",
+      "reviewer_id": "ai:assistant-session-01a17c28",
+      "reviewer_type": "ai",
+      "conclusion": "오답",
+      "evidence": "없음",
+      "condition_or_exception_missing": "예",
+      "false_added_claim": null,
+      "truncated_observed": false,
+      "format_mismatch": false,
+      "rationale": "\"10.15일\"(신청 시작일) 한 값만, 두 값 모두 오답",
+      "source": "reports/coordination/C-003/judgements.json (AI review, checklist fixed before generation)"
+    },
+    {
+      "packet_code": "R719863",
+      "packet_sha256": "df35ae2fcc948c5f8e2a78acebe400aa29637c4f38671d503bfdeba99a589625",
+      "reviewer_id": "ai:assistant-session-01a17c28",
+      "reviewer_type": "ai",
+      "conclusion": "부분",
+      "evidence": "지지",
+      "condition_or_exception_missing": "예",
+      "false_added_claim": null,
+      "truncated_observed": false,
+      "format_mismatch": false,
+      "rationale": "변형 문서 값 \"6년\"을 따름(사전지식 \"4년\" 아님), \"이상\" 누락",
+      "source": "reports/coordination/C-003/judgements.json (AI review, checklist fixed before generation)"
+    },
+    {
+      "packet_code": "R987155",
+      "packet_sha256": "df35ae2fcc948c5f8e2a78acebe400aa29637c4f38671d503bfdeba99a589625",
+      "reviewer_id": "ai:assistant-session-01a17c28",
+      "reviewer_type": "ai",
+      "conclusion": "정답",
+      "evidence": "지지",
+      "condition_or_exception_missing": "해당없음",
+      "false_added_claim": "\"2013년부터 시작하여 2023년까지 12개교를 추가로 신설\"(2023년은 원문에 없음, 추가 신설은 6개교)",
+      "truncated_observed": true,
+      "format_mismatch": true,
+      "rationale": "조건 줄 없음",
+      "source": "reports/coordination/C-003/judgements.json (AI review, checklist fixed before generation)"
+    },
+    {
+      "packet_code": "R374677",
+      "packet_sha256": "df35ae2fcc948c5f8e2a78acebe400aa29637c4f38671d503bfdeba99a589625",
+      "reviewer_id": "ai:assistant-session-01a17c28",
+      "reviewer_type": "ai",
+      "conclusion": "정답",
+      "evidence": "지지",
+      "condition_or_exception_missing": "해당없음",
+      "false_added_claim": "\"인구 증가와 경제 활성화를 지원\"(원문에 없음)",
+      "truncated_observed": true,
+      "format_mismatch": true,
+      "rationale": "",
+      "source": "reports/coordination/C-003/judgements.json (AI review, checklist fixed before generation)"
+    },
+    {
+      "packet_code": "R765416",
+      "packet_sha256": "df35ae2fcc948c5f8e2a78acebe400aa29637c4f38671d503bfdeba99a589625",
+      "reviewer_id": "ai:assistant-session-01a17c28",
+      "reviewer_type": "ai",
+      "conclusion": "정답",
+      "evidence": "지지",
+      "condition_or_exception_missing": "예(잘림)",
+      "false_added_claim": "이유를 고시 내용으로 귀속(원문은 국회·피해자 요구)",
+      "truncated_observed": true,
+      "format_mismatch": true,
+      "rationale": "조건(전문가 의견수렴·심의) 항목을 시작했으나 잘림",
+      "source": "reports/coordination/C-003/judgements.json (AI review, checklist fixed before generation)"
+    },
+    {
+      "packet_code": "R383160",
+      "packet_sha256": "df35ae2fcc948c5f8e2a78acebe400aa29637c4f38671d503bfdeba99a589625",
+      "reviewer_id": "ai:assistant-session-01a17c28",
+      "reviewer_type": "ai",
+      "conclusion": "부분",
+      "evidence": "부분",
+      "condition_or_exception_missing": "해당없음",
+      "false_added_claim": "비율 확대 이유를 특화단지 지정 사업의 목적(비용부담 완화)으로 귀속",
+      "truncated_observed": true,
+      "format_mismatch": true,
+      "rationale": "원문의 직접 이유(고도화·첨단화 촉진)는 결과로만 언급",
+      "source": "reports/coordination/C-003/judgements.json (AI review, checklist fixed before generation)"
+    },
+    {
+      "packet_code": "R229439",
+      "packet_sha256": "df35ae2fcc948c5f8e2a78acebe400aa29637c4f38671d503bfdeba99a589625",
+      "reviewer_id": "ai:assistant-session-01a17c28",
+      "reviewer_type": "ai",
+      "conclusion": "정답",
+      "evidence": "지지",
+      "condition_or_exception_missing": "해당없음",
+      "false_added_claim": null,
+      "truncated_observed": true,
+      "format_mismatch": true,
+      "rationale": "인용 표기 \"(다1)\" 형식 오류. 방법 설명 중 잘림",
+      "source": "reports/coordination/C-003/judgements.json (AI review, checklist fixed before generation)"
+    },
+    {
+      "packet_code": "R455777",
+      "packet_sha256": "df35ae2fcc948c5f8e2a78acebe400aa29637c4f38671d503bfdeba99a589625",
+      "reviewer_id": "ai:assistant-session-01a17c28",
+      "reviewer_type": "ai",
+      "conclusion": "정답",
+      "evidence": "지지",
+      "condition_or_exception_missing": "아니오",
+      "false_added_claim": null,
+      "truncated_observed": false,
+      "format_mismatch": true,
+      "rationale": "조건(부득이한 경우) 포함. 서술형",
+      "source": "reports/coordination/C-003/judgements.json (AI review, checklist fixed before generation)"
+    },
+    {
+      "packet_code": "R403061",
+      "packet_sha256": "df35ae2fcc948c5f8e2a78acebe400aa29637c4f38671d503bfdeba99a589625",
+      "reviewer_id": "ai:assistant-session-01a17c28",
+      "reviewer_type": "ai",
+      "conclusion": "정답",
+      "evidence": "지지",
+      "condition_or_exception_missing": "아니오",
+      "false_added_claim": null,
+      "truncated_observed": false,
+      "format_mismatch": true,
+      "rationale": "두 제외 대상 모두",
+      "source": "reports/coordination/C-003/judgements.json (AI review, checklist fixed before generation)"
+    },
+    {
+      "packet_code": "R532568",
+      "packet_sha256": "df35ae2fcc948c5f8e2a78acebe400aa29637c4f38671d503bfdeba99a589625",
+      "reviewer_id": "ai:assistant-session-01a17c28",
+      "reviewer_type": "ai",
+      "conclusion": "정답",
+      "evidence": "지지",
+      "condition_or_exception_missing": "아니오",
+      "false_added_claim": null,
+      "truncated_observed": false,
+      "format_mismatch": true,
+      "rationale": "추가 언급한 ‘10년 B=2,082도 표와 일치",
+      "source": "reports/coordination/C-003/judgements.json (AI review, checklist fixed before generation)"
+    },
+    {
+      "packet_code": "R248724",
+      "packet_sha256": "df35ae2fcc948c5f8e2a78acebe400aa29637c4f38671d503bfdeba99a589625",
+      "reviewer_id": "ai:assistant-session-01a17c28",
+      "reviewer_type": "ai",
+      "conclusion": "부분",
+      "evidence": "부분",
+      "condition_or_exception_missing": "예",
+      "false_added_claim": "\"출생일 기준 신청 기한은 출생 후 1년까지\"(원문의 신청 기한은 출생일로부터 60일 이내)",
+      "truncated_observed": false,
+      "format_mismatch": true,
+      "rationale": "월 최대 75천원만 정답",
+      "source": "reports/coordination/C-003/judgements.json (AI review, checklist fixed before generation)"
+    },
+    {
+      "packet_code": "R790200",
+      "packet_sha256": "df35ae2fcc948c5f8e2a78acebe400aa29637c4f38671d503bfdeba99a589625",
+      "reviewer_id": "ai:assistant-session-01a17c28",
+      "reviewer_type": "ai",
+      "conclusion": "정답",
+      "evidence": "지지",
+      "condition_or_exception_missing": "아니오",
+      "false_added_claim": null,
+      "truncated_observed": false,
+      "format_mismatch": true,
+      "rationale": "변형 문서 값 6년 이상을 인용",
+      "source": "reports/coordination/C-003/judgements.json (AI review, checklist fixed before generation)"
+    },
+    {
+      "packet_code": "R255283",
+      "packet_sha256": "df35ae2fcc948c5f8e2a78acebe400aa29637c4f38671d503bfdeba99a589625",
+      "reviewer_id": "ai:assistant-session-01a17c28",
+      "reviewer_type": "ai",
+      "conclusion": "정답",
+      "evidence": "지지",
+      "condition_or_exception_missing": "해당없음",
+      "false_added_claim": null,
+      "truncated_observed": true,
+      "format_mismatch": true,
+      "rationale": "9.6% 통계도 원문에 있음. 조건 줄 없음",
+      "source": "reports/coordination/C-003/judgements.json (AI review, checklist fixed before generation)"
+    },
+    {
+      "packet_code": "R268188",
+      "packet_sha256": "df35ae2fcc948c5f8e2a78acebe400aa29637c4f38671d503bfdeba99a589625",
+      "reviewer_id": "ai:assistant-session-01a17c28",
+      "reviewer_type": "ai",
+      "conclusion": "정답",
+      "evidence": "지지",
+      "condition_or_exception_missing": "해당없음",
+      "false_added_claim": "\"복지 사각지대를 최소화\"(원문에 없음, 경미)",
+      "truncated_observed": false,
+      "format_mismatch": true,
+      "rationale": "원문 문장 직접 인용",
+      "source": "reports/coordination/C-003/judgements.json (AI review, checklist fixed before generation)"
+    },
+    {
+      "packet_code": "R187012",
+      "packet_sha256": "df35ae2fcc948c5f8e2a78acebe400aa29637c4f38671d503bfdeba99a589625",
+      "reviewer_id": "ai:assistant-session-01a17c28",
+      "reviewer_type": "ai",
+      "conclusion": "정답",
+      "evidence": "지지",
+      "condition_or_exception_missing": "예",
+      "false_added_claim": "\"당초 신청기간(2015년 10월 10일)\"(원문은 \"지난해 10월 10일\", 발표 기준 2014년)",
+      "truncated_observed": false,
+      "format_mismatch": true,
+      "rationale": "절차 조건(전문가 의견수렴·심의, 고시 2월 6일 시행) 누락",
+      "source": "reports/coordination/C-003/judgements.json (AI review, checklist fixed before generation)"
+    },
+    {
+      "packet_code": "R126256",
+      "packet_sha256": "df35ae2fcc948c5f8e2a78acebe400aa29637c4f38671d503bfdeba99a589625",
+      "reviewer_id": "ai:assistant-session-01a17c28",
+      "reviewer_type": "ai",
+      "conclusion": "부분",
+      "evidence": "부분",
+      "condition_or_exception_missing": "해당없음",
+      "false_added_claim": "\"제조업의 근간이 되는 핵심 산업\", \"시너지 효과\"(원문에 없음)",
+      "truncated_observed": true,
+      "format_mismatch": true,
+      "rationale": "직접 이유(고도화·첨단화 촉진)를 비용부담 완화와 섞어 서술",
+      "source": "reports/coordination/C-003/judgements.json (AI review, checklist fixed before generation)"
+    },
+    {
+      "packet_code": "R397991",
+      "packet_sha256": "df35ae2fcc948c5f8e2a78acebe400aa29637c4f38671d503bfdeba99a589625",
+      "reviewer_id": "ai:assistant-session-01a17c28",
+      "reviewer_type": "ai",
+      "conclusion": "정답",
+      "evidence": "지지",
+      "condition_or_exception_missing": "해당없음",
+      "false_added_claim": null,
+      "truncated_observed": true,
+      "format_mismatch": true,
+      "rationale": "미니 클러스터 지원 단계 서술도 원문에 있음",
+      "source": "reports/coordination/C-003/judgements.json (AI review, checklist fixed before generation)"
+    },
+    {
+      "packet_code": "R248066",
+      "packet_sha256": "df35ae2fcc948c5f8e2a78acebe400aa29637c4f38671d503bfdeba99a589625",
+      "reviewer_id": "ai:assistant-session-01a17c28",
+      "reviewer_type": "ai",
+      "conclusion": "정답",
+      "evidence": "지지",
+      "condition_or_exception_missing": "아니오",
+      "false_added_claim": null,
+      "truncated_observed": false,
+      "format_mismatch": true,
+      "rationale": "조건 포함, 60일·보건소도 원문 일치",
+      "source": "reports/coordination/C-003/judgements.json (AI review, checklist fixed before generation)"
+    },
+    {
+      "packet_code": "R806031",
+      "packet_sha256": "df35ae2fcc948c5f8e2a78acebe400aa29637c4f38671d503bfdeba99a589625",
+      "reviewer_id": "ai:assistant-session-01a17c28",
+      "reviewer_type": "ai",
+      "conclusion": "정답",
+      "evidence": "지지",
+      "condition_or_exception_missing": "아니오",
+      "false_added_claim": null,
+      "truncated_observed": false,
+      "format_mismatch": true,
+      "rationale": "원문 구간 그대로 인용",
+      "source": "reports/coordination/C-003/judgements.json (AI review, checklist fixed before generation)"
+    },
+    {
+      "packet_code": "R467392",
+      "packet_sha256": "df35ae2fcc948c5f8e2a78acebe400aa29637c4f38671d503bfdeba99a589625",
+      "reviewer_id": "ai:assistant-session-01a17c28",
+      "reviewer_type": "ai",
+      "conclusion": "정답",
+      "evidence": "지지",
+      "condition_or_exception_missing": "아니오",
+      "false_added_claim": null,
+      "truncated_observed": false,
+      "format_mismatch": true,
+      "rationale": "",
+      "source": "reports/coordination/C-003/judgements.json (AI review, checklist fixed before generation)"
+    },
+    {
+      "packet_code": "R877584",
+      "packet_sha256": "df35ae2fcc948c5f8e2a78acebe400aa29637c4f38671d503bfdeba99a589625",
+      "reviewer_id": "ai:assistant-session-01a17c28",
+      "reviewer_type": "ai",
+      "conclusion": "정답",
+      "evidence": "부분",
+      "condition_or_exception_missing": "아니오",
+      "false_added_claim": null,
+      "truncated_observed": false,
+      "format_mismatch": true,
+      "rationale": "두 값 모두 제시(75천원→75,000원 단위 환산), 출처 번호를 D1/D2에 중복·혼동 표기",
+      "source": "reports/coordination/C-003/judgements.json (AI review, checklist fixed before generation)"
+    },
+    {
+      "packet_code": "R562647",
+      "packet_sha256": "df35ae2fcc948c5f8e2a78acebe400aa29637c4f38671d503bfdeba99a589625",
+      "reviewer_id": "ai:assistant-session-01a17c28",
+      "reviewer_type": "ai",
+      "conclusion": "정답",
+      "evidence": "지지",
+      "condition_or_exception_missing": "아니오",
+      "false_added_claim": null,
+      "truncated_observed": false,
+      "format_mismatch": true,
+      "rationale": "변형 문서 값 6년 이상",
+      "source": "reports/coordination/C-003/judgements.json (AI review, checklist fixed before generation)"
+    }
+  ]
+}

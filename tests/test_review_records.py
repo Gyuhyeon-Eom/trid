@@ -79,7 +79,7 @@ class ReviewRecordTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'duplicate'):
             validate_verdicts([self.verdict(first, code), self.verdict(first, code)], first, {'ai:x': 'ai'})
 
-    def test_unreviewed_and_uncertain_stay_unscored_and_failures_stay_in_denominator(self):
+    def test_partial_review_keeps_unsettled_unscored_and_full_rate_undetermined(self):
         mapping = self.run_export()
         records = read_jsonl(self.tmp / 'exp/records.jsonl')
         code = {(v['model'], v['item_id']): c for c, v in mapping['codes'].items()}
@@ -88,11 +88,56 @@ class ReviewRecordTests(unittest.TestCase):
         validate_verdicts(verdicts, mapping, {'ai:x': 'ai'})
         out = aggregate(records, verdicts, mapping)
         self.assertEqual(out['model-a']['execution'], {'eos': 1, 'exception': 1})
-        self.assertEqual(out['model-a']['items'], 2)
         ai_a, ai_b = out['model-a']['reviews']['ai'], out['model-b']['reviews']['ai']
-        self.assertEqual((ai_a['reviewed'], ai_a['unreviewed'], ai_a['correct_rate_over_reviewed']), (1, 1, 1.0))
-        self.assertEqual((ai_b['reviewed'], ai_b['uncertain'], ai_b['unreviewed'], ai_b['correct_rate_over_reviewed']), (0, 1, 1, None))
+        self.assertEqual((ai_a['settled'], ai_a['unreviewed'], ai_a['diagnostic_correct_rate_over_settled']), (1, 1, 1.0))
+        self.assertEqual((ai_a['full_coverage_correct_rate'], ai_a['coverage_status'], ai_a['official_eligible']),
+                         (None, '미확정', False))
+        self.assertEqual(ai_a['correct_rate_range'], [0.5, 1.0])
+        self.assertEqual((ai_b['settled'], ai_b['uncertain'], ai_b['unreviewed'], ai_b['diagnostic_correct_rate_over_settled']),
+                         (0, 1, 1, None))
         self.assertEqual(out['model-a']['reviews']['human']['unreviewed'], 2)
+
+    def expert_case(self, *conclusions_and_claims):
+        mapping = self.run_export()
+        records = read_jsonl(self.tmp / 'exp/records.jsonl')
+        code = {(v['model'], v['item_id']): c for c, v in mapping['codes'].items()}[('model-a', 'q1')]
+        verdicts = [self.verdict(mapping, code, reviewer_id=f'expert:{n}', reviewer_type='expert', conclusion=c,
+                                 false_added_claim=claim)
+                    for n, (c, claim) in enumerate(conclusions_and_claims)]
+        registry = {f'expert:{n}': 'expert' for n in range(len(verdicts))}
+        validate_verdicts(verdicts, mapping, registry)
+        return mapping, records, verdicts
+
+    def test_conflicting_experts_are_order_independent_and_need_rereview(self):
+        mapping, records, verdicts = self.expert_case(('정답', None), ('오답', None))
+        forward = aggregate(records, verdicts, mapping)['model-a']['reviews']['expert']
+        reverse = aggregate(records, verdicts[::-1], mapping)['model-a']['reviews']['expert']
+        self.assertEqual(forward, reverse)
+        self.assertEqual((forward['disagreement'], forward['settled'], forward['verdict_rows']), (1, 0, 2))
+        self.assertEqual(forward['rereview_needed'], [verdicts[0]['packet_code']])
+        self.assertIsNone(forward['diagnostic_correct_rate_over_settled'])
+        self.assertEqual(forward['correct_rate_range'], [0.0, 1.0])
+
+    def test_identical_independent_verdicts_count_the_item_once(self):
+        mapping, records, verdicts = self.expert_case(('정답', None), ('정답', None))
+        expert = aggregate(records, verdicts, mapping)['model-a']['reviews']['expert']
+        self.assertEqual((expert['settled'], expert['conclusion'], expert['verdict_rows']), (1, {'정답': 1}, 2))
+
+    def test_same_conclusion_but_different_false_claim_judgement_is_a_conflict(self):
+        mapping, records, verdicts = self.expert_case(('정답', None), ('정답', '원문에 없는 연도 추가'))
+        expert = aggregate(records, verdicts, mapping)['model-a']['reviews']['expert']
+        self.assertEqual((expert['disagreement'], expert['settled']), (1, 0))
+
+    def test_ai_and_expert_verdicts_are_not_pooled(self):
+        mapping = self.run_export()
+        records = read_jsonl(self.tmp / 'exp/records.jsonl')
+        code = {(v['model'], v['item_id']): c for c, v in mapping['codes'].items()}[('model-a', 'q1')]
+        verdicts = [self.verdict(mapping, code, conclusion='정답'),
+                    self.verdict(mapping, code, reviewer_id='expert:a', reviewer_type='expert', conclusion='오답')]
+        validate_verdicts(verdicts, mapping, {'ai:x': 'ai', 'expert:a': 'expert'})
+        reviews = aggregate(records, verdicts, mapping)['model-a']['reviews']
+        self.assertEqual((reviews['ai']['conclusion'], reviews['ai']['disagreement']), ({'정답': 1}, 0))
+        self.assertEqual((reviews['expert']['conclusion'], reviews['expert']['disagreement']), ({'오답': 1}, 0))
 
 
 if __name__ == '__main__':

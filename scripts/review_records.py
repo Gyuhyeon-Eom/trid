@@ -7,9 +7,22 @@ export     One record per (model, item) from stored raw outputs (scripts/train_p
 import     Verdict rows keyed by packet code. Rejected: unknown code, a packet hash from another export, a reviewer
            not in the registry or declared with a different type (an AI reviewer can never be recorded as human or
            expert), and a second verdict by the same reviewer on the same code.
-aggregate  Per model: execution status counts over ALL items, and per reviewer type the reviewed/unreviewed/uncertain
-           counts and verdict distribution. Unreviewed and uncertain are never scored as wrong or right; the rate is
-           shown only over reviewed items, next to the coverage.
+aggregate  Per model: execution status over ALL items, and per reviewer type an item state that does not depend on
+           verdict order (see `item_state`). AI, human and expert verdicts are never pooled or voted across types.
+           Every verdict row is kept verbatim in the report. Only items settled by agreement are counted, once.
+
+Agreement rule (conservative): within one reviewer type, an item is settled only if every verdict on it has the
+same conclusion, evidence judgement, condition/exception-missing judgement and false-claim presence. Any difference,
+including one reviewer saying 불확실, makes the item `disagreement` (re-review needed); no verdict is chosen. An item
+all of whose reviewers say 불확실 is `uncertain`. Unreviewed, uncertain and disagreement items are never scored.
+
+Scores: `full_coverage_correct_rate` exists only when every item of the model is settled for that reviewer type;
+otherwise it is null (`coverage_status` 미확정). Full coverage by AI verdicts is still not an official score
+(`official_eligible` false for 'ai'); which human/expert coverage makes a score official is fixed by the protocol
+owner. `diagnostic_correct_rate_over_settled` is a partial-review diagnostic over settled items only.
+`correct_rate_range` = [settled correct / all items, (settled correct + unsettled) / all items]: the exact bounds of
+the full-coverage rate if every unsettled item were later judged wrong or right. Execution failures and
+context-limited items stay in every denominator.
 
 Objective checks (cited [Dn] ids exist in the prompt, numbers absent from the prompt) are auxiliary evidence only;
 they never set a semantic verdict.
@@ -160,6 +173,25 @@ def validate_verdicts(verdicts, mapping, registry):
         raise ValueError('; '.join(errors[:10]) + (f' (+{len(errors) - 10} more)' if len(errors) > 10 else ''))
 
 
+def _condition_missing(value):
+    if value is None or str(value).startswith('해당없음'):
+        return None
+    return str(value).startswith('예')
+
+
+def item_state(verdicts):
+    """Order-independent state of one item for one reviewer type: (state, settled verdict or None)."""
+    if not verdicts:
+        return 'unreviewed', None
+    keys = {(v['conclusion'], v.get('evidence'), _condition_missing(v.get('condition_or_exception_missing')),
+             bool(v.get('false_added_claim'))) for v in verdicts}
+    if len(keys) > 1:
+        return 'disagreement', None
+    if verdicts[0]['conclusion'] == '불확실':
+        return 'uncertain', None
+    return 'settled', verdicts[0]
+
+
 def aggregate(records, verdicts, mapping):
     by_code = defaultdict(list)
     for v in verdicts:
@@ -170,16 +202,25 @@ def aggregate(records, verdicts, mapping):
         result = dict(items=len(rows), execution=dict(Counter(r['finish'] for r in rows)),
                       context_limited=sum(r['context_limited'] for r in rows), reviews={})
         for kind in REVIEWER_TYPES:
-            verdict = {r['packet_code']: next((v for v in by_code[r['packet_code']] if v['reviewer_type'] == kind), None)
-                       for r in rows}
-            done = [v for v in verdict.values() if v and v['conclusion'] != '불확실']
+            states = {r['packet_code']: item_state([v for v in by_code[r['packet_code']] if v['reviewer_type'] == kind])
+                      for r in rows}
+            settled = [v for state, v in states.values() if state == 'settled']
+            count = Counter(state for state, _ in states.values())
+            correct = sum(v['conclusion'] == '정답' for v in settled)
+            unsettled = len(rows) - len(settled)
             result['reviews'][kind] = dict(
-                reviewed=len(done), uncertain=sum(bool(v) and v['conclusion'] == '불확실' for v in verdict.values()),
-                unreviewed=sum(v is None for v in verdict.values()),
-                conclusion=dict(Counter(v['conclusion'] for v in done)),
-                correct_rate_over_reviewed=round(sum(v['conclusion'] == '정답' for v in done) / len(done), 4) if done else None,
-                false_added_claim=sum(bool(v.get('false_added_claim')) for v in done),
-                condition_or_exception_missing=sum(str(v.get('condition_or_exception_missing')).startswith('예') for v in done))
+                items=len(rows), settled=len(settled), unreviewed=count['unreviewed'], uncertain=count['uncertain'],
+                disagreement=count['disagreement'],
+                rereview_needed=sorted(code for code, (state, _) in states.items() if state == 'disagreement'),
+                verdict_rows=sum(v['reviewer_type'] == kind for r in rows for v in by_code[r['packet_code']]),
+                conclusion=dict(Counter(v['conclusion'] for v in settled)),
+                full_coverage_correct_rate=round(correct / len(rows), 4) if rows and not unsettled else None,
+                coverage_status='전체 판정 완료' if rows and not unsettled else '미확정',
+                official_eligible=kind != 'ai',
+                diagnostic_correct_rate_over_settled=round(correct / len(settled), 4) if settled else None,
+                correct_rate_range=[round(correct / len(rows), 4), round((correct + unsettled) / len(rows), 4)] if rows else None,
+                false_added_claim=sum(bool(v.get('false_added_claim')) for v in settled),
+                condition_or_exception_missing=sum(bool(_condition_missing(v.get('condition_or_exception_missing'))) for v in settled))
         out[model] = result
     return out
 
@@ -243,7 +284,7 @@ def main():
         a.report.write_text(json.dumps(dict(protocol=__doc__, export_dir=str(a.export_dir),
                                             packet_sha256=mapping['packet_sha256'],
                                             verdict_files=[dict(path=str(x), sha256=sha256_bytes(x.read_bytes())) for x in a.verdicts],
-                                            models=summary), ensure_ascii=False, indent=2))
+                                            models=summary, verdicts=verdicts), ensure_ascii=False, indent=2))
         print(json.dumps(summary, ensure_ascii=False))
 
 

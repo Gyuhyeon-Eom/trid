@@ -1,0 +1,158 @@
+{
+  "packet_sha256": "df35ae2fcc948c5f8e2a78acebe400aa29637c4f38671d503bfdeba99a589625",
+  "records_sha256": "46ecb29f73d7e644216987d628a77c350d68828f50ea355e4f4f983bd8ca5393",
+  "prompts_sha256": "6ed3ec62f2e3be760b37c02093b98f7e80083f0ea85295540660de1c77dfcd6f",
+  "checklist_sha256": "9c9434fe3c3535231dfe8c2b88c1087c6c0bb3398b651c5638eadf8e4450c52e",
+  "codes": {
+    "R671811": {
+      "record_id": "ba4c4773e462bb53",
+      "model": "trid",
+      "item_id": "pilot-exp-01"
+    },
+    "R330427": {
+      "record_id": "d10ed24881624fbe",
+      "model": "trid",
+      "item_id": "pilot-exp-02"
+    },
+    "R687454": {
+      "record_id": "53e6332388177f22",
+      "model": "trid",
+      "item_id": "pilot-exp-03"
+    },
+    "R449974": {
+      "record_id": "ab9c74d9791b1498",
+      "model": "trid",
+      "item_id": "pilot-exp-04"
+    },
+    "R531833": {
+      "record_id": "4aaf94dacea48a1e",
+      "model": "trid",
+      "item_id": "pilot-exp-05"
+    },
+    "R139196": {
+      "record_id": "5eb7ddb621be291f",
+      "model": "trid",
+      "item_id": "pilot-cond-01"
+    },
+    "R869495": {
+      "record_id": "a223c9ba8b2bdf22",
+      "model": "trid",
+      "item_id": "pilot-exc-01"
+    },
+    "R931788": {
+      "record_id": "54c93de4ae70c29d",
+      "model": "trid",
+      "item_id": "pilot-tab-01"
+    },
+    "R642028": {
+      "record_id": "6f24788bc43b8a00",
+      "model": "trid",
+      "item_id": "pilot-comb-01"
+    },
+    "R719863": {
+      "record_id": "11aa6155c1acc370",
+      "model": "trid",
+      "item_id": "pilot-num-01"
+    },
+    "R987155": {
+      "record_id": "93b85b22a9742bce",
+      "model": "qwen3-1.7b-q8",
+      "item_id": "pilot-exp-01"
+    },
+    "R374677": {
+      "record_id": "118d64cde177d533",
+      "model": "qwen3-1.7b-q8",
+      "item_id": "pilot-exp-02"
+    },
+    "R765416": {
+      "record_id": "2c49e93da6e99083",
+      "model": "qwen3-1.7b-q8",
+      "item_id": "pilot-exp-03"
+    },
+    "R383160": {
+      "record_id": "bd4831d3f6e3243c",
+      "model": "qwen3-1.7b-q8",
+      "item_id": "pilot-exp-04"
+    },
+    "R229439": {
+      "record_id": "c415762e8b643951",
+      "model": "qwen3-1.7b-q8",
+      "item_id": "pilot-exp-05"
+    },
+    "R455777": {
+      "record_id": "341d771131a92683",
+      "model": "qwen3-1.7b-q8",
+      "item_id": "pilot-cond-01"
+    },
+    "R403061": {
+      "record_id": "80b5850b08c2c240",
+      "model": "qwen3-1.7b-q8",
+      "item_id": "pilot-exc-01"
+    },
+    "R532568": {
+      "record_id": "7e458b6e972904e9",
+      "model": "qwen3-1.7b-q8",
+      "item_id": "pilot-tab-01"
+    },
+    "R248724": {
+      "record_id": "c6014323564098db",
+      "model": "qwen3-1.7b-q8",
+      "item_id": "pilot-comb-01"
+    },
+    "R790200": {
+      "record_id": "015e3f975990a9ce",
+      "model": "qwen3-1.7b-q8",
+      "item_id": "pilot-num-01"
+    },
+    "R255283": {
+      "record_id": "a30a542a2d467db5",
+      "model": "kanana-1.5-2.1b-q8",
+      "item_id": "pilot-exp-01"
+    },
+    "R268188": {
+      "record_id": "441beb8663b01f22",
+      "model": "kanana-1.5-2.1b-q8",
+      "item_id": "pilot-exp-02"
+    },
+    "R187012": {
+      "record_id": "ef208e08f20d3401",
+      "model": "kanana-1.5-2.1b-q8",
+      "item_id": "pilot-exp-03"
+    },
+    "R126256": {
+      "record_id": "903c0169f2082544",
+      "model": "kanana-1.5-2.1b-q8",
+      "item_id": "pilot-exp-04"
+    },
+    "R397991": {
+      "record_id": "9c1e57525694a032",
+      "model": "kanana-1.5-2.1b-q8",
+      "item_id": "pilot-exp-05"
+    },
+    "R248066": {
+      "record_id": "8b27771bdc3aa891",
+      "model": "kanana-1.5-2.1b-q8",
+      "item_id": "pilot-cond-01"
+    },
+    "R806031": {
+      "record_id": "e875c8887302a5ff",
+      "model": "kanana-1.5-2.1b-q8",
+      "item_id": "pilot-exc-01"
+    },
+    "R467392": {
+      "record_id": "2c22314ded39d363",
+      "model": "kanana-1.5-2.1b-q8",
+      "item_id": "pilot-tab-01"
+    },
+    "R877584": {
+      "record_id": "0e878daf09430497",
+      "model": "kanana-1.5-2.1b-q8",
+      "item_id": "pilot-comb-01"
+    },
+    "R562647": {
+      "record_id": "1136f3508e0055c4",
+      "model": "kanana-1.5-2.1b-q8",
+      "item_id": "pilot-num-01"
+    }
+  }
+}

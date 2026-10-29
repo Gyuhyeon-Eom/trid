@@ -1,0 +1,49 @@
+{
+ "note": "Synthetic expert verdicts (expert:a, expert:b are test identities, not real reviewers) injected only into an in-memory aggregate of the real 30-response export to reproduce the supervisor case. Not written to any verdict file.",
+ "item": "kanana-1.5-2.1b-q8 / pilot-tab-01",
+ "order_invariant": true,
+ "forward": {
+  "items": 10,
+  "settled": 0,
+  "unreviewed": 9,
+  "uncertain": 0,
+  "disagreement": 1,
+  "rereview_needed": [
+   "R467392"
+  ],
+  "verdict_rows": 2,
+  "conclusion": {},
+  "full_coverage_correct_rate": null,
+  "coverage_status": "미확정",
+  "official_eligible": true,
+  "diagnostic_correct_rate_over_settled": null,
+  "correct_rate_range": [
+   0.0,
+   1.0
+  ],
+  "false_added_claim": 0,
+  "condition_or_exception_missing": 0
+ },
+ "reverse": {
+  "items": 10,
+  "settled": 0,
+  "unreviewed": 9,
+  "uncertain": 0,
+  "disagreement": 1,
+  "rereview_needed": [
+   "R467392"
+  ],
+  "verdict_rows": 2,
+  "conclusion": {},
+  "full_coverage_correct_rate": null,
+  "coverage_status": "미확정",
+  "official_eligible": true,
+  "diagnostic_correct_rate_over_settled": null,
+  "correct_rate_range": [
+   0.0,
+   1.0
+  ],
+  "false_added_claim": 0,
+  "condition_or_exception_missing": 0
+ }
+}
