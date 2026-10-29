@@ -12,6 +12,11 @@ data/*
 !data/korean-rag-eval-v1-source/*.jsonl
 !data/korean-rag-curriculum-v1-source/
 !data/korean-rag-curriculum-v1-source/*.jsonl
+!data/korean-rag-eval-multihop-v1-source/
+!data/korean-rag-eval-multihop-v1-source/*.jsonl
+!data/korean-rag-eval-multihop-v1-source/provenance.json
+!data/public-document-sft-source/
+!data/public-document-sft-source/*.jsonl
 
 output/
 tmp/
