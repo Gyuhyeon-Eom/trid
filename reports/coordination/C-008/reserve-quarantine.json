@@ -1,0 +1,54 @@
+{
+ "status": "quarantined (temporary)",
+ "doc_id": "korea-kr-press-156552370",
+ "reason": "partial word 8-gram overlap with reserved ALIO families below the containment threshold; below-threshold is not treated as safe (C-007 review)",
+ "evidence": [
+  {
+   "corpus_id": "korea-kr-press-156552370",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:12706": {
+     "shared_ngram8": 86,
+     "of_reserved": 9236
+    },
+    "institutions:alio-rule:33636": {
+     "shared_ngram8": 79,
+     "of_reserved": 20721
+    }
+   }
+  }
+ ],
+ "affected_dataset": "data/teacher-qa-kr-02-shared-v2 (on hold, not modified; rows listed here must be excluded by any consumer)",
+ "rows": [
+  {
+   "split": "train",
+   "id": "teacher-korea-kr-press-156552370-12-korea-kr-press-156661894-0-878139c9",
+   "task": "teacher_qa",
+   "source_guid": "korea-kr-press-156552370",
+   "row_sha256": "caf4662acaa9f86652ac73a978d7a4511fc93ac0c60c1554f5f776e2935f87b0"
+  },
+  {
+   "split": "train",
+   "id": "teacher-korea-kr-press-156552370-12-korea-kr-press-156661894-0-bd344c3b",
+   "task": "teacher_qa",
+   "source_guid": "korea-kr-press-156661894",
+   "row_sha256": "8b0f67004ffe6d6a069d9881880b9eaca8f62ab67673f93664b74566b08e95bb"
+  },
+  {
+   "split": "train",
+   "id": "teacher-korea-kr-press-156552370-10-korea-kr-press-156442968-0-fbce99ec",
+   "task": "teacher_qa",
+   "source_guid": "korea-kr-press-156442968",
+   "row_sha256": "9519453088c36cf69d240f2dfc9c65a7616c4fc28555accd6706b5e0125fbdc3"
+  },
+  {
+   "split": "train",
+   "id": "teacher-korea-kr-press-156552370-10-korea-kr-press-156442968-0-98da73bb",
+   "task": "teacher_qa",
+   "source_guid": "korea-kr-press-156552370",
+   "row_sha256": "1a42e86a36e7c83aa226fdad7af109e14f0df3c0f11919b79bb143fac1659815"
+  }
+ ],
+ "new_candidates": "excluded at selection (reports/coordination/C-008/quarantine-docs.txt)",
+ "frozen_A003": "unchanged"
+}
