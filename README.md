@@ -84,6 +84,8 @@
 
 세 번째 조합 `CPT-v1 / head-v1 / curriculum-v4`의 **100/2,000단계 학습과 GPU 사용률 98%**를 확인했다. 이는 마지막 확인 시점의 기록이다. 8조합 완료 후 고정된 조건으로 TyDi·합성 hard negatives·KLUE hard negatives 제거 실험 3개를 순차 실행한다. 완료 가중치와 보고서는 S3에 보존하고 SHA256을 검증한다. 제품 버전은 **0.1**을 유지한다. [실행·복구 기록](PRETRAINING.md#gpu-평가-환경-복구-2026-10-29), [현재 2/8조합 집계](reports/reader-factorial-01-two-complete.json).
 
+**웹 테스트:** [test.tridatum.co](https://test.tridatum.co)에 완료 모델 `reader-factorial-01-cpt-v1-v2-v4`를 연결했다. `/sample` 또는 `/paste` 후 질문할 수 있으며 실제 공개 화면에서 담당 부서 응답과 원문 하이라이트를 확인했다. 기존 샘플의 식비·숙박비 질문에는 보류가 남아 있다. GPU 학습과 별개로 Mac CPU에서 동작하며 **2026-10-30 14:11 KST 자동 종료 예정**이다. Mac 전원·인터넷이 필요하다. 업로드 문서 정확도 보장은 아니며 비공개 자료를 넣으면 안 된다. [배포·사용 안내](SHARING.md).
+
 ### GraphRAG는?
 
 GraphRAG·LightRAG처럼 모델로 개체·관계를 추출하는 방식도 필요한 가중치와 의존성을 내부에 배포하면 폐쇄망에서 쓸 수 있다. 다만 현재 trid 91M의 관계 추출 품질은 검증되지 않았다. 먼저 법령에 명시된 참조만 이용해 다중 근거 검색의 이득을 측정한다.

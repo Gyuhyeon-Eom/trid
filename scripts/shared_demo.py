@@ -4,6 +4,7 @@ from dataclasses import dataclass, field
 from http.cookies import SimpleCookie
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import hmac
+import html
 import json
 from pathlib import Path
 import secrets
@@ -14,13 +15,33 @@ import time
 from urllib.parse import urlsplit, unquote
 
 import torch
-from trid.short_reader import load_pipeline
+from trid.extractive import load_reader, read as read_extractive, passage_spans
+from trid.prompts import rag_prompt
 from trid.pdf_documents import Document, DocumentError, make_chunks, answer_document
 
 ROOT = Path(__file__).resolve().parents[1]
 TTL = 15 * 60
 MAX_BODY = 2 * 1024 * 1024
 MAX_SESSIONS = 32
+
+def read_chunk(model, _presence, tok, text, question, device):
+    """Adapt prompt-relative extractive spans to the document reader's chunk offsets."""
+    prompt = rag_prompt([('D1', text)], question)
+    result = read_extractive(model, tok, prompt, device)
+    abstains = result['presence'] != 0
+    span = None
+    answer = result['answer']
+    if not abstains:
+        sid, lo, hi = passage_spans(prompt)[0]
+        start, end = result['span']
+        if result['source'] != sid or not lo <= start < end <= hi:
+            raise DocumentError('모델의 원문 위치 검증에 실패했습니다.')
+        span = [start - lo, end - lo]
+        answer = result['span_text']
+        if text[span[0]:span[1]] != answer:
+            raise DocumentError('모델의 원문 위치 검증에 실패했습니다.')
+    return {**result, 'answer': answer, 'abstains': abstains, 'source_character_span': span}
+
 
 
 @dataclass
@@ -34,7 +55,10 @@ class Session:
 
 class State:
     def __init__(self, run):
-        self.span, self.presence, self.tok, self.device = load_pipeline(run, device='cpu')
+        metadata = json.loads((Path(run) / 'training.json').read_text())
+        if metadata.get('status') != 'complete':
+            raise ValueError('학습 완료 모델만 공유할 수 있습니다.')
+        self.model, self.tok, self.device = load_reader(run, device='cpu')
         self.sessions = {}
         self.lock = threading.RLock()
         self.work = threading.Lock()
@@ -179,7 +203,9 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
             sid, session = self.session(create=True)
             if session is None:
                 self.respond(503, {'error': '현재 테스트 인원이 많습니다. 잠시 후 다시 접속해 주세요.'}); return
-            page = (assets / 'index.html').read_text().replace('TOKEN_PLACEHOLDER', session.csrf)
+            page = ((assets / 'index.html').read_text()
+                    .replace('TOKEN_PLACEHOLDER', session.csrf)
+                    .replace('MODEL_PLACEHOLDER', html.escape(state.run)))
             self.respond(200, page.encode(), 'text/html; charset=utf-8', cookie=sid)
 
         def do_POST(self):
@@ -238,7 +264,11 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                         if not isinstance(question, str) or len(question) > 500:
                             raise DocumentError('질문은 500자 이하로 입력해 주세요.')
                         started = time.monotonic()
-                        result = answer_document(session.document, question, state.span, state.presence, state.tok, state.device)
+                        result = answer_document(session.document, question, state.model, None, state.tok, state.device,
+                                                 reader=read_chunk)
+                        if any(item['prediction']['presence'] == 2 for item in result['checked']):
+                            result.update(status='review', answer='모델이 근거 충돌로 판단한 구간이 있습니다. /source로 원문을 확인해 주세요.')
+                        result['model'] = state.run
                         result['elapsed_ms'] = round((time.monotonic() - started) * 1000)
                     else:
                         self.respond(404, {'error': '없는 기능입니다.'}); return
@@ -259,7 +289,7 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--run', default=str(ROOT / 'runs/trid-korean-short-v3-hangul'))
+    parser.add_argument('--run', default=str(ROOT / 'runs/reader-factorial-01-cpt-v1-v2-v4'))
     parser.add_argument('--secret-file', required=True)
     parser.add_argument('--port', type=int, default=51873)
     args = parser.parse_args()

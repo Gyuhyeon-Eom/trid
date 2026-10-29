@@ -1,0 +1,28 @@
+{
+  "model": "reader-factorial-01-cpt-v1-v2-v4",
+  "model_sha256": "90ccb60fcb98b839e5d74f0b3cd0781f30609654e88c660c3778167e33c9317c",
+  "url": "https://test.tridatum.co",
+  "expires_at_kst": "2026-10-30T14:11:49.187677+09:00",
+  "worker_version": "eb2bcfcc-999a-46de-b9b8-163771d8461e",
+  "tests_passed": 272,
+  "public_browser_smoke": [
+    {
+      "input": "sample: 담당 부서는 어디야?",
+      "answer": "운영지원팀",
+      "source_highlight_verified": true,
+      "server_ms": 138
+    },
+    {
+      "input": "pasted fictional notice: 신청 담당 부서는 어디인가요?",
+      "answer": "운영지원팀",
+      "source_highlight_verified": true,
+      "server_ms": 51
+    }
+  ],
+  "local_model_smoke": {
+    "sample_overseas_meal": "not_found",
+    "sample_overseas_lodging": "not_found",
+    "sample_department": "운영지원팀"
+  },
+  "limits": "Smoke checks, not accuracy evaluation. Retrieved chunks scored separately, not identical to frozen supplied-evidence probe. GPU experiments unchanged."
+}
