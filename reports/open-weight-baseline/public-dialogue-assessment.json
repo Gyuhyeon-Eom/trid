@@ -1,0 +1,55 @@
+{
+  "protocol": "reports/public-dialogue-01-protocol.json release_gate and heldout_required_facts, applied unchanged to stored raw answers. Each answer was checked against the full source text in data/public-document-sft-source/documents.jsonl.",
+  "review_method": "Assistant comparison with predeclared facts and source text; not independent human review. Borderline judgments are listed separately so readers can apply a looser rule.",
+  "comparability": "Open-weight models never saw this SFT data; for trid these 8 documents were excluded from SFT only. Regression/counterfactual prompts share one document. 8 items: one item = 12.5 percentage points.",
+  "models": {
+    "qwen3-1.7b-q8": {
+      "report": "reports/open-weight-baseline/public-dialogue-qwen3-1.7b-q8.json",
+      "heldout_public_qa": {
+        "correct": 4,
+        "total": 8,
+        "passed_ids": ["korea-kr-press-156613021-1", "korea-kr-press-156613021-2", "korea-kr-press-156612807-1", "korea-kr-press-156612807-2"],
+        "failures": {
+          "korea-kr-press-156612611-1": "Correct 2.5 million KRW, but adds unsupported claim that it is the program's budget basis.",
+          "korea-kr-press-156612611-2": "Lists all four services, then mislabels them as improvement proposals from the policy meeting; hit 256-token limit while re-quoting the document.",
+          "korea-kr-press-156612149-1": "Gyeonggi and 3 billion KRW, but omits that it is disaster-safety special grant tax.",
+          "korea-kr-press-156612149-2": "Answers the use question as 'Gyeonggi Province'; attributes the cities' ongoing levee work to the grant."
+        },
+        "borderline": {"korea-kr-press-156612149-1": "Passes if the grant type is not required: 5/8."}
+      },
+      "user_regressions": {
+        "안녕": {"pass": true, "reason": "Appropriate greeting, EOS."},
+        "너한테 할 수 있는 질문이 뭐야": {"pass": false, "reason": "Invents a question/answer pair instead of describing what it can help with."},
+        "제작비 지원 비율과 최대 한도가 어떻게 돼?": {"pass": true, "reason": "70% and 40 million KRW, no invented conditions."}
+      },
+      "termination": {"pass": false, "reason": "Capability answer 234 tokens and grant answer 129 tokens exceed the 128-token gate."},
+      "counterfactual": {"output": "35%, 20 million KRW", "pass": true}
+    },
+    "kanana-1.5-2.1b-q8": {
+      "report": "reports/open-weight-baseline/public-dialogue-kanana-1.5-2.1b-q8.json",
+      "heldout_public_qa": {
+        "correct": 7,
+        "total": 8,
+        "passed_ids": ["korea-kr-press-156613021-1", "korea-kr-press-156613021-2", "korea-kr-press-156612807-1", "korea-kr-press-156612807-2", "korea-kr-press-156612611-1", "korea-kr-press-156612611-2", "korea-kr-press-156612149-1"],
+        "failures": {
+          "korea-kr-press-156612149-2": "States the required use, then adds unsupported 'polluted-water treatment facility installation' and attributes the cities' levee work to the grant."
+        },
+        "borderline": {
+          "korea-kr-press-156613021-1": "Says the data supports cause and prevention strategies; source says prevention only. Fails under a zero-paraphrase rule: 6/8.",
+          "korea-kr-press-156613021-2": "Appends a self-made citation label '구축 계획(2024-01-30)'; the date is the release date."
+        }
+      },
+      "user_regressions": {
+        "안녕": {"pass": true, "reason": "Appropriate greeting, EOS."},
+        "너한테 할 수 있는 질문이 뭐야": {"pass": true, "reason": "Describes document questions it can answer; no live-lookup claim."},
+        "제작비 지원 비율과 최대 한도가 어떻게 돼?": {"pass": true, "reason": "70% and 40 million KRW, no invented conditions."}
+      },
+      "termination": {"pass": true, "reason": "69, 91 and 67 output tokens, all EOS."},
+      "counterfactual": {"output": "35%, 20 million KRW", "pass": true, "note": "Then continues with a self-generated '질문:' line before EOS."}
+    }
+  },
+  "trid_reference": {
+    "trid-public-dialogue-01": {"heldout_public_qa": "0/8", "counterfactual": "fail (35% -> 30%)", "source": "reports/public-dialogue-01-assessment.json"},
+    "trid-public-dialogue-gpu-01": {"heldout_public_qa": "1/8", "source": "reports/public-dialogue-gpu-01/assessment.json"}
+  }
+}
