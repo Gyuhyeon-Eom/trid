@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 475" width="1000" height="475" font-family="Nanum Pen Script, NanumPen, sans-serif"><rect width="1000" height="475" fill="#ffffff"/><defs><pattern id="hatch0" width="7" height="7" patternUnits="userSpaceOnUse"><path d="M-2,7L7,-2M0,9L9,0" stroke="#2563eb" opacity=".25" stroke-width=".7"/></pattern></defs>
+<text x="35.0" y="40.0" font-size="28" text-anchor="start" font-weight="normal" fill="#111827">데이터를 바꿨을 때 — 자체 91M의 3,000단계 실험</text>
+<text x="35.0" y="70.0" font-size="17" text-anchor="start" font-weight="normal" fill="#6b7280">RAG310 답 있음 228문항 · 엄격 정답률(%) · 같은 단계 수가 모든 학습 조건의 동일성을 뜻하지는 않음</text>
+<text x="35.0" y="137.0" font-size="20" text-anchor="start" font-weight="normal" fill="#111827">실제 QA 확장 / 기준선</text>
+<rect x="340.0" y="115.0" width="290.0" height="30.0" fill="#2563eb" fill-opacity=".06"/><rect x="340.0" y="115.0" width="290.0" height="30.0" fill="url(#hatch0)"/><path d="M340.0,145.0 L340.4,115.0 L630.0,115.3 L629.7,145.0 Z" fill="none" stroke="#2563eb" stroke-width="1.5"/><path d="M340.8,144.5 L339.7,115.7 L629.6,114.6 L630.5,144.3" fill="none" stroke="#2563eb" stroke-width=".7" opacity=".65"/>
+<text x="640.0" y="137.0" font-size="19" text-anchor="start" font-weight="normal" fill="#111827">12.7% · 29/228</text>
+<text x="35.0" y="202.0" font-size="20" text-anchor="start" font-weight="normal" fill="#111827">문서별 teacher QA</text>
+<rect x="340.0" y="180.0" width="290.0" height="30.0" fill="#2563eb" fill-opacity=".06"/><rect x="340.0" y="180.0" width="290.0" height="30.0" fill="url(#hatch0)"/><path d="M340.0,210.0 L340.4,180.0 L630.0,180.3 L629.7,210.0 Z" fill="none" stroke="#2563eb" stroke-width="1.5"/><path d="M340.8,209.5 L339.7,180.7 L629.6,179.6 L630.5,209.3" fill="none" stroke="#2563eb" stroke-width=".7" opacity=".65"/>
+<text x="640.0" y="202.0" font-size="19" text-anchor="start" font-weight="normal" fill="#111827">12.7% · 29/228</text>
+<text x="35.0" y="267.0" font-size="20" text-anchor="start" font-weight="normal" fill="#111827">공유 문맥 QA</text>
+<rect x="340.0" y="245.0" width="170.0" height="30.0" fill="#2563eb" fill-opacity=".06"/><rect x="340.0" y="245.0" width="170.0" height="30.0" fill="url(#hatch0)"/><path d="M340.0,275.0 L340.4,245.0 L510.0,245.3 L509.7,275.0 Z" fill="none" stroke="#2563eb" stroke-width="1.5"/><path d="M340.8,274.5 L339.7,245.7 L509.6,244.6 L510.5,274.3" fill="none" stroke="#2563eb" stroke-width=".7" opacity=".65"/>
+<text x="520.0" y="267.0" font-size="19" text-anchor="start" font-weight="normal" fill="#111827">7.5% · 17/228</text>
+<text x="35.0" y="332.0" font-size="20" text-anchor="start" font-weight="normal" fill="#111827">공유 문맥 + 기관 QA</text>
+<rect x="340.0" y="310.0" width="260.0" height="30.0" fill="#2563eb" fill-opacity=".06"/><rect x="340.0" y="310.0" width="260.0" height="30.0" fill="url(#hatch0)"/><path d="M340.0,340.0 L340.4,310.0 L600.0,310.3 L599.7,340.0 Z" fill="none" stroke="#2563eb" stroke-width="1.5"/><path d="M340.8,339.5 L339.7,310.7 L599.6,309.6 L600.5,339.3" fill="none" stroke="#2563eb" stroke-width=".7" opacity=".65"/>
+<text x="610.0" y="332.0" font-size="19" text-anchor="start" font-weight="normal" fill="#111827">11.4% · 26/228</text>
+<text x="340.0" y="400.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#6b7280">0%</text>
+<text x="454.0" y="400.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#6b7280">5%</text>
+<text x="568.0" y="400.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#6b7280">10%</text>
+<text x="682.0" y="400.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#6b7280">15%</text>
+<text x="796.0" y="400.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#6b7280">20%</text>
+<text x="910.0" y="400.0" font-size="15" text-anchor="middle" font-weight="normal" fill="#6b7280">25%</text>
+<text x="35.0" y="450.0" font-size="16" text-anchor="start" font-weight="normal" fill="#6b7280">이 그림은 엄격 정답입니다. 실험 판정 보고서의 “출처 일치 + 정답 언급” 점수·유의확률과 혼용하지 않습니다.</text>
+</svg>

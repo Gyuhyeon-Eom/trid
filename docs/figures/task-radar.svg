@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 650" width="1000" height="650" font-family="Nanum Pen Script, NanumPen, sans-serif"><rect width="1000" height="650" fill="#ffffff"/><defs></defs>
+<text x="35.0" y="40.0" font-size="28" text-anchor="start" font-weight="normal" fill="#111827">과제별 독해 프로필 — RAG310 안에서 무엇이 어려운가</text>
+<text x="35.0" y="70.0" font-size="18" text-anchor="start" font-weight="normal" fill="#6b7280">각 축은 해당 과제의 엄격 정답률(%) · 같은 근거 제한 조건 · 면적은 종합 점수가 아님</text>
+<polygon points="490.00,263.75 522.70,277.30 536.25,310.00 522.70,342.70 490.00,356.25 457.30,342.70 443.75,310.00 457.30,277.30" fill="none" stroke="#e5e7eb" stroke-width="1"/>
+<text x="496.0" y="268.8" font-size="14" text-anchor="start" font-weight="normal" fill="#6b7280">25</text>
+<polygon points="490.00,217.50 555.41,244.59 582.50,310.00 555.41,375.41 490.00,402.50 424.59,375.41 397.50,310.00 424.59,244.59" fill="none" stroke="#e5e7eb" stroke-width="1"/>
+<text x="496.0" y="222.5" font-size="14" text-anchor="start" font-weight="normal" fill="#6b7280">50</text>
+<polygon points="490.00,171.25 588.11,211.89 628.75,310.00 588.11,408.11 490.00,448.75 391.89,408.11 351.25,310.00 391.89,211.89" fill="none" stroke="#e5e7eb" stroke-width="1"/>
+<text x="496.0" y="176.2" font-size="14" text-anchor="start" font-weight="normal" fill="#6b7280">75</text>
+<polygon points="490.00,125.00 620.81,179.19 675.00,310.00 620.81,440.81 490.00,495.00 359.19,440.81 305.00,310.00 359.19,179.19" fill="none" stroke="#e5e7eb" stroke-width="1"/>
+<text x="496.0" y="130.0" font-size="14" text-anchor="start" font-weight="normal" fill="#6b7280">100</text>
+<path d="M490,310L490.0,125.0" stroke="#e5e7eb"/>
+<text x="490.0" y="88.0" font-size="19" text-anchor="middle" font-weight="normal" fill="#111827">값 찾기 (n=32)</text>
+<path d="M490,310L620.8147545195113,179.18524548048873" stroke="#e5e7eb"/>
+<text x="647.0" y="153.0" font-size="19" text-anchor="middle" font-weight="normal" fill="#111827">이름·기관 (n=24)</text>
+<path d="M490,310L675.0,310.0" stroke="#e5e7eb"/>
+<text x="712.0" y="310.0" font-size="19" text-anchor="middle" font-weight="normal" fill="#111827">방해 근거 (n=24)</text>
+<path d="M490,310L620.8147545195113,440.81475451951127" stroke="#e5e7eb"/>
+<text x="647.0" y="467.0" font-size="19" text-anchor="middle" font-weight="normal" fill="#111827">개정 구분 (n=16)</text>
+<path d="M490,310L490.0,495.0" stroke="#e5e7eb"/>
+<text x="490.0" y="532.0" font-size="19" text-anchor="middle" font-weight="normal" fill="#111827">표 읽기 (n=20)</text>
+<path d="M490,310L359.18524548048873,440.8147545195113" stroke="#e5e7eb"/>
+<text x="333.0" y="467.0" font-size="19" text-anchor="middle" font-weight="normal" fill="#111827">두 근거 결합 (n=12)</text>
+<path d="M490,310L305.0,310.0" stroke="#e5e7eb"/>
+<text x="268.0" y="310.0" font-size="19" text-anchor="middle" font-weight="normal" fill="#111827">근거 충돌 (n=12)</text>
+<path d="M490,310L359.1852454804887,179.18524548048873" stroke="#e5e7eb"/>
+<text x="333.0" y="153.0" font-size="19" text-anchor="middle" font-weight="normal" fill="#111827">KLUE 독해 (n=100)</text>
+<polygon points="490.00,153.91 588.11,211.89 628.75,310.00 563.58,383.58 490.00,476.50 424.59,375.41 382.08,310.00 404.97,224.97" fill="#4b5563" fill-opacity=".04" stroke="#4b5563" stroke-width="2"/>
+<circle cx="490.00" cy="153.91" r="3" fill="#4b5563"/>
+<circle cx="588.11" cy="211.89" r="3" fill="#4b5563"/>
+<circle cx="628.75" cy="310.00" r="3" fill="#4b5563"/>
+<circle cx="563.58" cy="383.58" r="3" fill="#4b5563"/>
+<circle cx="490.00" cy="476.50" r="3" fill="#4b5563"/>
+<circle cx="424.59" cy="375.41" r="3" fill="#4b5563"/>
+<circle cx="382.08" cy="310.00" r="3" fill="#4b5563"/>
+<circle cx="404.97" cy="224.97" r="3" fill="#4b5563"/>
+<polygon points="490.00,171.25 555.41,244.59 621.04,310.00 530.88,350.88 490.00,467.25 413.69,386.31 459.17,310.00 432.44,252.44" fill="#9ca3af" fill-opacity=".04" stroke="#9ca3af" stroke-width="2"/>
+<circle cx="490.00" cy="171.25" r="3" fill="#9ca3af"/>
+<circle cx="555.41" cy="244.59" r="3" fill="#9ca3af"/>
+<circle cx="621.04" cy="310.00" r="3" fill="#9ca3af"/>
+<circle cx="530.88" cy="350.88" r="3" fill="#9ca3af"/>
+<circle cx="490.00" cy="467.25" r="3" fill="#9ca3af"/>
+<circle cx="413.69" cy="386.31" r="3" fill="#9ca3af"/>
+<circle cx="459.17" cy="310.00" r="3" fill="#9ca3af"/>
+<circle cx="432.44" cy="252.44" r="3" fill="#9ca3af"/>
+<polygon points="490.00,281.09 522.70,277.30 520.83,310.00 498.18,318.18 490.00,310.00 490.00,310.00 490.00,310.00 472.99,292.99" fill="#2563eb" fill-opacity=".04" stroke="#2563eb" stroke-width="2"/>
+<circle cx="490.00" cy="281.09" r="3" fill="#2563eb"/>
+<circle cx="522.70" cy="277.30" r="3" fill="#2563eb"/>
+<circle cx="520.83" cy="310.00" r="3" fill="#2563eb"/>
+<circle cx="498.18" cy="318.18" r="3" fill="#2563eb"/>
+<circle cx="490.00" cy="310.00" r="3" fill="#2563eb"/>
+<circle cx="490.00" cy="310.00" r="3" fill="#2563eb"/>
+<circle cx="490.00" cy="310.00" r="3" fill="#2563eb"/>
+<circle cx="472.99" cy="292.99" r="3" fill="#2563eb"/>
+<path d="M110,575h25" stroke="#2563eb" stroke-width="2"/>
+<text x="143.0" y="580.0" font-size="18" text-anchor="start" font-weight="normal" fill="#111827">trid-91M (자체 학습)</text>
+<path d="M410,575h25" stroke="#4b5563" stroke-width="2"/>
+<text x="443.0" y="580.0" font-size="18" text-anchor="start" font-weight="normal" fill="#111827">Kanana-1.5-2.1B + LoRA</text>
+<path d="M710,575h25" stroke="#9ca3af" stroke-width="2"/>
+<text x="743.0" y="580.0" font-size="18" text-anchor="start" font-weight="normal" fill="#111827">Qwen3-1.7B + LoRA</text>
+<text x="35.0" y="625.0" font-size="16" text-anchor="start" font-weight="normal" fill="#6b7280">trid: gpu-05-mix04-s3000 · 공개 LoRA 두 모델은 비교 기준선. 작은 과제 표본과 평가 데이터 노출 차이를 고려해야 합니다.</text>
+</svg>

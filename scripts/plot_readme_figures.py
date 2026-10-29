@@ -10,6 +10,7 @@ training-data: pretraining runs' own metrics and the mix-v3 token composition me
 """
 import json
 import re
+import math
 from html import escape
 from pathlib import Path
 
@@ -168,9 +169,107 @@ def training_data():
     return svg(width, height, body)
 
 
+def summary(path):
+    report = load(path)
+    if 'conditions' in report:
+        return report['conditions']['evidence_constrained']['summary'], 'strict_product'
+    return report['summary'], 'strict'
+
+
+def task_radar():
+    axes = [('rag_value', '값 찾기'), ('rag_name', '이름·기관'),
+            ('rag_noise', '방해 근거'), ('rag_revision', '개정 구분'),
+            ('rag_table', '표 읽기'), ('rag_combine', '두 근거 결합'),
+            ('rag_conflict', '근거 충돌'), ('rag_klue', 'KLUE 독해')]
+    cx, cy, radius = 490, 310, 185
+    body = [text(35, 40, '과제별 독해 프로필 — RAG310 안에서 무엇이 어려운가', 25),
+            text(35, 70, '각 축은 해당 과제의 엄격 정답률(%) · 같은 근거 제한 조건 · 면적은 종합 점수가 아님', 15, fill=MUTED)]
+
+    def point(i, r):
+        angle = -math.pi / 2 + i * math.tau / len(axes)
+        return cx + r * math.cos(angle), cy + r * math.sin(angle)
+
+    def points(values):
+        return ' '.join(f'{x:.2f},{y:.2f}' for x, y in values)
+
+    for level in (25, 50, 75, 100):
+        body.append(f'<polygon points="{points(point(i, radius * level / 100) for i in range(8))}" '
+                    f'fill="none" stroke="{GRID}" stroke-width="1"/>')
+        body.append(text(cx + 6, cy - radius * level / 100 + 5, str(level), 11, fill=MUTED))
+    reference, _ = summary(MODELS[0][2])
+    for i, (key, label) in enumerate(axes):
+        x, y = point(i, radius)
+        body.append(f'<path d="M{cx},{cy}L{x},{y}" stroke="{GRID}"/>')
+        x, y = point(i, radius + 37)
+        body.append(text(x, y, f'{label} (n={reference[key]["total"]})', 16, 'middle'))
+    for index in (1, 2, 0):
+        label, color, report, _ = MODELS[index]
+        s, metric = summary(report)
+        vertices = [point(i, radius * s[key][metric] / s[key]['total']) for i, (key, _) in enumerate(axes)]
+        body.append(f'<polygon points="{points(vertices)}" fill="{color}" fill-opacity=".04" stroke="{color}" stroke-width="2"/>')
+        for x, y in vertices:
+            body.append(f'<circle cx="{x:.2f}" cy="{y:.2f}" r="3" fill="{color}"/>')
+    for i in range(3):
+        label, color, *_ = MODELS[i]
+        x = 110 + 300 * i
+        body.append(f'<path d="M{x},575h25" stroke="{color}" stroke-width="2"/>')
+        body.append(text(x + 33, 580, label, 15))
+    body.append(text(35, 625, 'trid: gpu-05-mix04-s3000 · 공개 LoRA 두 모델은 비교 기준선. 작은 과제 표본과 평가 데이터 노출 차이를 고려해야 합니다.', 13, fill=MUTED))
+    return svg(1000, 650, body)
+
+
+def answer_errors():
+    body = [text(35, 40, '답이 있는데 보류하는가 — 답 있음 228문항의 출력 분해', 25),
+            text(35, 70, '엄격 정답 / 잘못된 보류 / 그 밖의 비정답 · 서로 겹치지 않는 세 범주', 15, fill=MUTED)]
+    colors = ('#2563eb', '#b45309', '#64748b')
+    for i, (label, _, report, _) in enumerate(MODELS[:3]):
+        s, metric = summary(report)
+        a = s['answerable']
+        counts = (a[metric], a['abstained'], a['total'] - a[metric] - a['abstained'])
+        assert min(counts) >= 0 and sum(counts) == 228
+        y = 115 + i * 95
+        body.append(text(35, y + 25, label, 17))
+        x = 320
+        for count, color in zip(counts, colors):
+            width = 630 * count / 228
+            body.append(f'<rect x="{x}" y="{y}" width="{width}" height="45" fill="{color}"/>')
+            body.append(text(x + width / 2, y + 29, f'{count} ({count / 228:.1%})', 14, 'middle'))
+            x += width
+    for i, (label, color) in enumerate(zip(('엄격 정답', '답 있음에도 보류', '나머지 비정답'), colors)):
+        x = 220 + i * 230
+        body.append(f'<rect x="{x}" y="415" width="18" height="18" fill="{color}"/>')
+        body.append(text(x + 27, 430, label, 16))
+    body.append(text(35, 480, '비정답에는 값·출처·형식 오류 등이 포함됩니다. 보류 자체가 오류는 아니며, 여기서는 답이 있는 문항만 집계합니다.', 13, fill=MUTED))
+    return svg(1000, 505, body)
+
+
+def experiment_comparison():
+    runs = [('gpu-05-mix04', '실제 QA 확장 / 기준선'),
+            ('gpu-06-mix05', '문서별 teacher QA'),
+            ('gpu-07-shared-ctx-01', '공유 문맥 QA'),
+            ('gpu-07-mix06', '공유 문맥 + 기관 QA')]
+    body = [text(35, 40, '데이터를 바꿨을 때 — 자체 91M의 3,000단계 실험', 25),
+            text(35, 70, 'RAG310 답 있음 228문항 · 엄격 정답률(%) · 같은 단계 수가 모든 학습 조건의 동일성을 뜻하지는 않음', 14, fill=MUTED)]
+    for i, (run, label) in enumerate(runs):
+        s, metric = summary(f'open-weight-baseline/rag310-trid-public-dialogue-{run}-s3000-evidence.json')
+        a = s['answerable']; rate = a[metric] / a['total']
+        y = 115 + i * 65
+        body.append(text(35, y + 22, label, 17))
+        body.append(f'<rect x="340" y="{y}" width="{rate * 570 / .25}" height="30" fill="#2563eb"/>')
+        body.append(text(350 + rate * 570 / .25, y + 22, f'{rate:.1%} · {a[metric]}/{a["total"]}', 16))
+    for tick in (0, 5, 10, 15, 20, 25):
+        x = 340 + 570 * tick / 25
+        body.append(text(x, 400, f'{tick}%', 12, 'middle', fill=MUTED))
+    body.append(text(35, 450, '이 그림은 엄격 정답입니다. 실험 판정 보고서의 “출처 일치 + 정답 언급” 점수·유의확률과 혼용하지 않습니다.', 13, fill=MUTED))
+    return svg(1000, 475, body)
+
+
 def main():
     (FIG / 'benchmark.svg').write_text(benchmark())
     (FIG / 'training-data.svg').write_text(training_data())
+    for name, draw in [('task-radar', task_radar), ('answer-errors', answer_errors),
+                       ('experiment-comparison', experiment_comparison)]:
+        (FIG / f'{name}.svg').write_text(draw())
 
 
 if __name__ == '__main__':
