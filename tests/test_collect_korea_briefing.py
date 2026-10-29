@@ -79,6 +79,12 @@ class CleaningTest(unittest.TestCase):
         line = "담당자는 현장 책임자와 함께 점검하였다. 배포된 자료는 보도시점 이후 공개된다."
         self.assertEqual(clean_text(line), line)
 
+    def test_garbled_hwpx_masthead_removed(self):
+        for head in ("광부 보도자료", "광 보도참고자료", "고 보도자료", "부 보도설명자료", "보도정정자료",
+                     "광부 보도시점 2024. 1. 31.(수) 11:00"):
+            self.assertEqual(clean_text(f"{head}\n\n{BODY}"), BODY, head)
+        self.assertEqual(clean_text("광부 보도자료를 배포했다."), "광부 보도자료를 배포했다.")
+
     def test_private_use_glyphs_and_nfc(self):
         decomposed = "\u1100\u1161 \uf02e \U000f02ef 항목"
         self.assertEqual(clean_text(decomposed), "가 항목")
@@ -98,6 +104,10 @@ class LicenseFilterTest(unittest.TestCase):
         self.assertEqual(view["ministry_line"], "이 자료는 외교부의 보도자료를 전재하여 제공함을 알려드립니다.")
         self.assertEqual(view["page_text"], "본문 첫 문단")
         self.assertEqual([a["file_id"] for a in pick_attachments(view["attachments"])], ["12", "11"])
+
+    def test_double_escaped_title_unescaped(self):
+        page = VIEW.replace("재외공관장 &amp; 방산", "수출&amp;middot;수주 &amp;#x2024; 지원")
+        self.assertEqual(parse_view(page)["title"], "수출·수주 \u2024 지원")
 
     def test_page_without_type1_notice_is_dropped(self):
         page = VIEW.replace("공공누리 제1유형(출처표시)", "공공누리 제4유형(출처표시+상업적이용금지+변경금지)")

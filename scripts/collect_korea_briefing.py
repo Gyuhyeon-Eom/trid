@@ -138,7 +138,11 @@ def parse_list(page):
 def parse_view(page):
     """Metadata, licence flag, attachments and page body text from a pressReleaseView.do page."""
     title = re.search(r'id="titleText"[^>]*value="([^"]*)"', page) or re.search(r"<title>(.*?)</title>", page, re.S)
-    title = flat(html.unescape(title.group(1))) if title else ""
+    title = title.group(1) if title else ""
+    # korea.kr escapes titleText twice (`&amp;middot;`); unescape to a fixed point.
+    while (unescaped := html.unescape(title)) != title:
+        title = unescaped
+    title = flat(title)
     title = re.sub(r"\s*-\s*보도자료\s*\|.*$", "", title)
     date = re.search(r'<div class="info">\s*<span>(\d{4})\.(\d{2})\.(\d{2})</span>', page)
     attachments = []
@@ -171,10 +175,12 @@ def available_tools():
 
 PHONE = re.compile(r"(?<![\d.-])(?:\(?0\d{1,2}\)?[\s.)-]?\d{3,4}[\s.-]\d{4}|1[5-9]\d{2}-\d{4})(?![\d-])")
 EMAIL = re.compile(r"[\w.+-]+@[\w-]+(?:\.[\w-]+)+")
-HEADER_KEY = re.compile(r"^[\s<\[(【]*(?:보도\s*자료\s*)?(?:보도\s*시점|보도\s*일시|보도\s*시각|배포\s*일시|배포\s*시각|배\s*포|"
+# HWPX mastheads often extract as a garbled 1-2 syllable logo fragment before the header ("광부 보도자료", "고 보도자료").
+MASTHEAD_NOISE = r"(?:(?:광부|광|고|부)\s+)?"
+HEADER_KEY = re.compile(r"^[\s<\[(【]*" + MASTHEAD_NOISE + r"(?:보도\s*자료\s*)?(?:보도\s*시점|보도\s*일시|보도\s*시각|배포\s*일시|배포\s*시각|배\s*포|"
                         r"엠바고|담당\s*부서|담당\s*과|담\s*당\s*자|책\s*임\s*자|문\s*의|연\s*락\s*처|자료\s*문의)"
                         r"(?=[\s:：)\]>】]|$)")
-HEADER_LINE = re.compile(r"^[\s<]*(?:보도\s*자료|보도\s*참고\s*자료|참고\s*자료|설명\s*자료|해명\s*자료|"
+HEADER_LINE = re.compile(r"^[\s<]*" + MASTHEAD_NOISE + r"(?:보도\s*(?:참고\s*|설명\s*|해명\s*|정정\s*)?자료|참고\s*자료|설명\s*자료|해명\s*자료|"
                          r"제\s*\d+\s*[-–]\s*\d+\s*호)[\s>]*$")
 PICTURE = re.compile(r"원본 그림의 (?:이름|크기)|^\s*그림입니다\.?|^\s*사진 찍은 날짜|^\s*<(?:표|그림)>\s*$")
 CONTACT_PROSE = re.compile(r"취재를 원하시면|연락\s*주시기\s*바랍니다")
