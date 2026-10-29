@@ -1,0 +1,42 @@
+{
+  "candidate": "runs/trid-public-dialogue-01",
+  "decision": "do_not_deploy",
+  "training_steps": 600,
+  "validation_loss": {
+    "before": 3.7689,
+    "after": 0.4634
+  },
+  "review_method": "Assistant comparison of generated outputs with predeclared source facts; not independent human review",
+  "user_regressions": {
+    "안녕": {
+      "pass": true,
+      "reason": "Natural greeting, EOS"
+    },
+    "너한테 할 수 있는 질문이 뭐야": {
+      "pass": false,
+      "reason": "Unnecessary clarification instead of explaining capabilities"
+    },
+    "제작비 지원 비율과 최대 한도가 어떻게 돼?": {
+      "pass": true,
+      "reason": "70% and 40 million KRW, but source was training-exposed"
+    }
+  },
+  "heldout_public_qa": {
+    "correct": 0,
+    "total": 8,
+    "required_to_deploy": 6,
+    "failures": "Wrong or missing requested facts in every answer. Unfounded 144% grant percentage is a critical factual failure."
+  },
+  "counterfactual": {
+    "input": "35%, 20 million KRW (controlled modification, not real public source)",
+    "output": "30%, 20 million KRW",
+    "pass": false
+  },
+  "next_experiment": {
+    "run": "runs/trid-public-dialogue-02",
+    "steps": 1200,
+    "real_qa_sampling_mass": 0.8,
+    "public_sampling_mass": 0.05,
+    "changes": "Common document instruction format; remove copy-summary/requote/temporal templates from second-stage sampling; continue learned model, leave all previous artifacts immutable."
+  }
+}

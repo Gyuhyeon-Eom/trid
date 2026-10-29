@@ -1,0 +1,24 @@
+{
+  "experiment": "trid-public-dialogue-01",
+  "initial_run": "runs/trid-korean-medium-cpt-gpu-complete",
+  "candidate_run": "runs/trid-public-dialogue-01",
+  "training": {"steps": 600, "batch_size": 8, "micro_batch_size": 2, "learning_rate": 0.0001, "seed": 271030, "device": "mps", "objective": "answer-only next-token cross-entropy, example-normalized"},
+  "selection": "Best loss on a fixed seed sample of 64 development examples; no selection on the user probes.",
+  "release_gate": {
+    "all_three_user_regressions": "Greeting is an appropriate greeting; capabilities question describes relevant assistance without claiming live lookup; grant response states both up to 70% and maximum 40 million KRW without invented conditions.",
+    "heldout_public_qa": "At least 6 of 8 answers must answer the specific question with all required facts and no unsupported factual claims. Development documents were excluded from this SFT training, not necessarily from pretraining.",
+    "termination": "All three user regression answers must stop on EOS within 128 output tokens.",
+    "decision": "Do not deploy on loss reduction alone. No automatic activation. Record human-readable assessment of actual generated outputs."
+  },
+  "heldout_required_facts": {
+    "korea-kr-press-156613021-1": "Environmental, health, population and socioeconomic data; 19 fields integrated/analyzed for environmental health monitoring.",
+    "korea-kr-press-156613021-2": "Local environmental health diagnosis/evaluation supports tailored policy; priority areas can be mapped.",
+    "korea-kr-press-156612807-1": "Feasibility study 50% capped at 80 million KRW; market research/consulting 50% capped at 40 million KRW.",
+    "korea-kr-press-156612807-2": "Download application and proposal forms from the named portals and submit with supporting documents by email.",
+    "korea-kr-press-156612611-1": "Average annual services worth 2.5 million KRW per person, not a universal cash entitlement.",
+    "korea-kr-press-156612611-2": "Home visits and tailored counseling, daily living assistance, medical expense assistance and housing improvements.",
+    "korea-kr-press-156612149-1": "Gyeonggi Province; 3 billion KRW in disaster-safety special grant tax.",
+    "korea-kr-press-156612149-2": "Safe treatment of polluted water and safety measures minimizing further environmental damage."
+  },
+  "limitations": "User grant document and related answers are training-exposed regressions. Public examples are assistant-authored. No claim that 103 examples establish broad dialogue, arithmetic or document reasoning ability. Never substitute reference answers for model generation."
+}

@@ -1,0 +1,20 @@
+{
+  "run": "trid-public-dialogue-gpu-01",
+  "decision": "do_not_deploy",
+  "completed_steps": 1200,
+  "training_seconds": 258.6,
+  "weights_sha256": "7b410464566a3a8b0cbc09bc8d121493d9fb5745672854e09fc976eca580e8cc",
+  "s3_stream_sha256_verified": true,
+  "heldout_public_qa": {
+    "correct": 1,
+    "total": 8,
+    "passed_ids": [
+      "korea-kr-press-156612611-1"
+    ],
+    "required_to_deploy": 6,
+    "review": "Assistant review against predeclared facts; not independent human evaluation"
+  },
+  "user_regressions": "Greeting and training-exposed grant amount correct; capability reply describes dialogue/work assistance but remains generic. Other document understanding is insufficient.",
+  "site_model_unchanged": true,
+  "local_duplicate": "trid-public-dialogue-02 stopped after CUDA 100-step proof; weights preserved; optimizer state unavailable; CUDA reruns stage two from completed stage-one weights."
+}

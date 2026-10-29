@@ -1,0 +1,19 @@
+{
+  "kind": "controlled counterfactual, NOT a real public notice or training data",
+  "original_source": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156612711",
+  "changes": {
+    "70%": "35%",
+    "4천만 원": "2천만 원"
+  },
+  "question": "제작비 지원 비율과 최대 한도가 어떻게 돼?",
+  "result": {
+    "answer": "과기정통부는 선정된 기업을 대상으로 총제작비의 30%까지 최대 2천만 원 한도 내에서 정부지원금을 지원하고, [D1]",
+    "input_tokens": 667,
+    "generated_tokens_including_eos": 35,
+    "first_token_seconds": 0.2093,
+    "total_seconds": 0.6302,
+    "tokens_per_second_including_prefill": 55.54,
+    "history_turns_dropped": 0,
+    "stopped_on_eos": true
+  }
+}
