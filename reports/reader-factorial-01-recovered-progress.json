@@ -1,0 +1,31 @@
+{
+  "complete": false,
+  "results": [
+    {
+      "name": "reader-factorial-01-cpt-v1-v2-v4",
+      "backbone": "cpt-v1",
+      "head": "v2",
+      "data": "v4",
+      "dev_correct": 231,
+      "dev_total": 480,
+      "probe_correct": 20,
+      "probe_total": 40,
+      "model_sha256": "90ccb60fcb98b839e5d74f0b3cd0781f30609654e88c660c3778167e33c9317c"
+    }
+  ],
+  "pending": [
+    "reader-factorial-01-base-v1-v1-v2",
+    "reader-factorial-01-base-v1-v1-v4",
+    "reader-factorial-01-base-v1-v2-v2",
+    "reader-factorial-01-base-v1-v2-v4",
+    "reader-factorial-01-cpt-v1-v1-v2",
+    "reader-factorial-01-cpt-v1-v1-v4",
+    "reader-factorial-01-cpt-v1-v2-v2"
+  ],
+  "evaluation_hashes": [
+    "c4385fc1c15d99a67bdcb6b81376916ef0db659835d0cf24c622edc3f4529043",
+    "35803b6d474f5dd48b299610b007a1d6d405d675a54add4097c5ff1eed97d6d6",
+    "055aa08bbd18e49b0094d1d008c7434549436540799f87c36d52dec8622edd4b"
+  ],
+  "note": "Fixed-step comparison, not equal epochs. Probe is reused diagnostic data; no automatic model selection."
+}
