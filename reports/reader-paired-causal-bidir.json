@@ -1,0 +1,3299 @@
+{
+  "before_run": "/Users/eomgyuhyeon/사업/trid/runs/trid-medium-reader-dev-01",
+  "after_run": "/Users/eomgyuhyeon/사업/trid/runs/trid-medium-reader-dev-02-bidir",
+  "data_sha256": "c4385fc1c15d99a67bdcb6b81376916ef0db659835d0cf24c622edc3f4529043",
+  "before_model_sha256": "50740db8f5b18db9087f43a9683ad2d80ee5d6a5a73b6d0d194503ddf16ee20a",
+  "after_model_sha256": "b15daa7957ae2773d9238a3ba0a86094faf3bdd72a407446ae7e86ccf879376a",
+  "total": 480,
+  "paired_counts": {
+    "both_correct": 228,
+    "improved": 50,
+    "regressed": 31,
+    "both_wrong": 171
+  },
+  "net_accuracy_change_pp": 3.9583333333333335,
+  "mcnemar_exact_two_sided_p": 0.04482852238579866,
+  "transitions": {
+    "correct -> correct": 228,
+    "correct -> false_presence:conflict": 1,
+    "correct -> false_presence:missing": 18,
+    "correct -> wrong_abstention:head:conflict": 1,
+    "correct -> wrong_abstention:head:missing": 2,
+    "correct -> wrong_value_right_source:disjoint": 5,
+    "correct -> wrong_value_right_source:overlong": 1,
+    "correct -> wrong_value_right_source:truncated": 3,
+    "false_presence:missing -> correct": 11,
+    "false_presence:missing -> false_presence:missing": 26,
+    "unsupported_combine -> unsupported_combine": 40,
+    "wrong_abstention:head:missing -> correct": 3,
+    "wrong_abstention:head:missing -> wrong_abstention:head:missing": 17,
+    "wrong_abstention:head:missing -> wrong_both": 1,
+    "wrong_abstention:head:missing -> wrong_value_right_source:disjoint": 2,
+    "wrong_both -> correct": 21,
+    "wrong_both -> wrong_both": 2,
+    "wrong_both -> wrong_value_right_source:disjoint": 1,
+    "wrong_value_right_source:disjoint -> correct": 12,
+    "wrong_value_right_source:disjoint -> wrong_abstention:head:missing": 8,
+    "wrong_value_right_source:disjoint -> wrong_value_right_source:disjoint": 57,
+    "wrong_value_right_source:disjoint -> wrong_value_right_source:overlong": 2,
+    "wrong_value_right_source:disjoint -> wrong_value_right_source:truncated": 5,
+    "wrong_value_right_source:overlong -> correct": 3,
+    "wrong_value_right_source:overlong -> wrong_abstention:head:missing": 3,
+    "wrong_value_right_source:overlong -> wrong_value_right_source:disjoint": 1,
+    "wrong_value_right_source:overlong -> wrong_value_right_source:overlong": 2,
+    "wrong_value_right_source:truncated -> wrong_both": 1,
+    "wrong_value_right_source:truncated -> wrong_value_right_source:disjoint": 2,
+    "wrong_value_right_source:truncated -> wrong_value_right_source:truncated": 1
+  },
+  "changed_rows": [
+    {
+      "id": "valid-klue-klue-mrc-v1_train_00588",
+      "task": "rag_klue_missing",
+      "outcome": "both_wrong",
+      "before_category": [
+        "false_presence",
+        "missing"
+      ],
+      "after_category": [
+        "false_presence",
+        "missing"
+      ],
+      "gold": "확인 불가",
+      "before": "월스트리트 저널 [D2]",
+      "after": "미국 휴스턴에 계열사를 두고 있었기 때문이었다고 한다.\n\n미국 월스트리트 저널 [D2]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_03017",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "'사채회사' [D8]",
+      "before": "여직원 [D8]",
+      "after": "대부업 [D8]"
+    },
+    {
+      "id": "valid-syn-combine-00013",
+      "task": "rag_combine",
+      "outcome": "both_wrong",
+      "before_category": [
+        "unsupported_combine",
+        null
+      ],
+      "after_category": [
+        "unsupported_combine",
+        null
+      ],
+      "gold": "4만 5천원 [D5], 서진시 인재개발원 [D9]",
+      "before": "서진시 인재개발원 [D9]",
+      "after": "4만 5천원 [D5]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_02641",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "헤르만 폰 잘차 [D2]",
+      "before": "아크레에서 처음 결성되었다. 이후 (성전기사 [D2]",
+      "after": "팔레스타인 [D2]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_15333",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_both",
+        null
+      ],
+      "after_category": [
+        "wrong_both",
+        null
+      ],
+      "gold": "아랍에미리트 군병원 [D6]",
+      "before": "마스크 [D9]",
+      "after": "딜리버리히어로 코리아 김신명 [D9]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_08935",
+      "task": "rag_klue_missing",
+      "outcome": "both_wrong",
+      "before_category": [
+        "false_presence",
+        "missing"
+      ],
+      "after_category": [
+        "false_presence",
+        "missing"
+      ],
+      "gold": "확인 불가",
+      "before": "32강 [D8]",
+      "after": "4 · 5위를 차지한 최영훈(36점 [D8]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_15254",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "서울대 [D9]",
+      "before": "오스틴 [D9]",
+      "after": "미국 워싱턴DC 국제투자분쟁해결센 [D9]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_12032",
+      "task": "rag_klue",
+      "outcome": "improved",
+      "before_category": [
+        "wrong_value_right_source",
+        "overlong"
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "1조8953억원 [D9]",
+      "before": "9조5586억원이다. 즉 1조8953억원 [D9]",
+      "after": "1조8953억원 [D9]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_15125",
+      "task": "rag_klue_missing",
+      "outcome": "regressed",
+      "before_category": [
+        "correct",
+        null
+      ],
+      "after_category": [
+        "false_presence",
+        "missing"
+      ],
+      "gold": "확인 불가",
+      "before": "확인 불가",
+      "after": "이재용 [D3]"
+    },
+    {
+      "id": "valid-syn-noise-00019",
+      "task": "rag_noise",
+      "outcome": "improved",
+      "before_category": [
+        "wrong_both",
+        null
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "미화 379달러 [D6]",
+      "before": "2,900,000원 [D4]",
+      "after": "미화 379달러 [D6]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_02416",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "상대론적 질량 [D2]",
+      "before": "뉴튼역학에서는 이 중 어떤 에너지도 질량 [D2]",
+      "after": "불변질량인 m = E/c [D2]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_04234",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "truncated"
+      ],
+      "after_category": [
+        "wrong_both",
+        null
+      ],
+      "gold": "《비유클리드 기하학의 해석에 대한 에세이》 [D4]",
+      "before": "비유클리드 기하학의 해석에 대한 에세이》 [D4]",
+      "after": "‘OOO씨가 거래를 수락했습니다. 결제하실 전용계좌는 OO은행’ [D5]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_08454",
+      "task": "rag_klue",
+      "outcome": "improved",
+      "before_category": [
+        "wrong_abstention",
+        "head:missing"
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "21억원 [D7]",
+      "before": "확인 불가",
+      "after": "21억원 [D7]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_06911",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "스테파노리치 [D7]",
+      "before": "‘아임쇼핑’ [D7]",
+      "after": "‘갤러리아면세점63’ [D7]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_05314",
+      "task": "rag_klue_missing",
+      "outcome": "both_wrong",
+      "before_category": [
+        "false_presence",
+        "missing"
+      ],
+      "after_category": [
+        "false_presence",
+        "missing"
+      ],
+      "gold": "확인 불가",
+      "before": "니키아스 [D1]",
+      "after": "투키디데스에 따르면, 니키아스 [D1]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_10277",
+      "task": "rag_klue",
+      "outcome": "improved",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "8일 [D7]",
+      "before": "16,000원으로 출시를 기념해 1월 31일 [D7]",
+      "after": "8일 [D7]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_11649",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "187가구 [D3]",
+      "before": "2357가구다. 전용 60㎡가 1528가구로 가장 많고 60㎡ 초과~85㎡ 이하 711가구 [D3]",
+      "after": "1528가구 [D3]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_12095",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "전문성 [D3]",
+      "before": "‘국방전력발전업무훈령’ [D3]",
+      "after": "100점 만점 중 △업체현황 18점 [D3]"
+    },
+    {
+      "id": "valid-syn-combine-00011",
+      "task": "rag_combine",
+      "outcome": "both_wrong",
+      "before_category": [
+        "unsupported_combine",
+        null
+      ],
+      "after_category": [
+        "unsupported_combine",
+        null
+      ],
+      "gold": "1년 [D9], 17:00 [D8]",
+      "before": "17:00 [D8]",
+      "after": "1년 [D9]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_04747",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "물질 및 용도 특허 [D5]",
+      "before": "저분자 화합물 [D5]",
+      "after": "특허가 끝나기 전 [D5]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_07850",
+      "task": "rag_klue_missing",
+      "outcome": "both_wrong",
+      "before_category": [
+        "false_presence",
+        "missing"
+      ],
+      "after_category": [
+        "false_presence",
+        "missing"
+      ],
+      "gold": "확인 불가",
+      "before": "서울 [D4]",
+      "after": "경기 [D4]"
+    },
+    {
+      "id": "valid-syn-noise-00031",
+      "task": "rag_noise",
+      "outcome": "improved",
+      "before_category": [
+        "wrong_both",
+        null
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "19일 전까지 [D5]",
+      "before": "3일 전까지 [D7]",
+      "after": "19일 전까지 [D5]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_03100",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "히브리 백성 [D2]",
+      "before": "18세기 소란 반자 [D2]",
+      "after": "아치형 십자가 천장이 있으며, 한가운데에는 조반니 바티스타 파롤디 [D2]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_17194",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "웹RTC [D1]",
+      "before": "‘아자르’ [D1]",
+      "after": "‘영상 기반 소셜 & 데이팅 앱’ [D1]"
+    },
+    {
+      "id": "valid-syn-noise-00014",
+      "task": "rag_noise",
+      "outcome": "improved",
+      "before_category": [
+        "wrong_both",
+        null
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "1명 [D7]",
+      "before": "115명 [D4]",
+      "after": "1명 [D7]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_05436",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "올리브 잎 [D8]",
+      "before": "피와 삼위일체 [D8]",
+      "after": "피와 삼위일체 하느님을 상징한다.\n\n비둘기는 노아 [D8]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_11836",
+      "task": "rag_klue_missing",
+      "outcome": "improved",
+      "before_category": [
+        "false_presence",
+        "missing"
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "확인 불가",
+      "before": "민·관·군 합동대응팀에 따르면 KBS MBC YTN 등 방송 3사와 농협은행 제주은행 [D2]",
+      "after": "확인 불가"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_17378",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "기아자동차 [D9]",
+      "before": "K5(현지명 옵티마)가 1만3666대로 가장 많이 팔렸고, 쏘울 [D9]",
+      "after": "제네시스 [D9]"
+    },
+    {
+      "id": "valid-syn-combine-00025",
+      "task": "rag_combine",
+      "outcome": "both_wrong",
+      "before_category": [
+        "unsupported_combine",
+        null
+      ],
+      "after_category": [
+        "unsupported_combine",
+        null
+      ],
+      "gold": "2년 [D6], 1년 [D7]",
+      "before": "1년 [D7]",
+      "after": "2년 [D6]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_05292",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "스카이 해븐 사원 [D5]",
+      "before": "차원문 [D5]",
+      "after": "소븐가르드 [D5]"
+    },
+    {
+      "id": "valid-syn-combine-00016",
+      "task": "rag_combine",
+      "outcome": "both_wrong",
+      "before_category": [
+        "unsupported_combine",
+        null
+      ],
+      "after_category": [
+        "unsupported_combine",
+        null
+      ],
+      "gold": "다온구 시설관리공단 [D2], 1582-6661 [D6]",
+      "before": "1582-6661 [D6]",
+      "after": "내선 9130 [D2]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_14646",
+      "task": "rag_klue",
+      "outcome": "regressed",
+      "before_category": [
+        "correct",
+        null
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "‘동반성장 소통 데이’ [D3]",
+      "before": "‘동반성장 소통 데이’ [D3]",
+      "after": "오성디스플 [D3]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_06359",
+      "task": "rag_klue_missing",
+      "outcome": "regressed",
+      "before_category": [
+        "correct",
+        null
+      ],
+      "after_category": [
+        "false_presence",
+        "missing"
+      ],
+      "gold": "확인 불가",
+      "before": "확인 불가",
+      "after": "5000명 [D8]"
+    },
+    {
+      "id": "valid-syn-noise-00007",
+      "task": "rag_noise",
+      "outcome": "improved",
+      "before_category": [
+        "wrong_both",
+        null
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "7일 전까지 [D3]",
+      "before": "1년 [D7]",
+      "after": "7일 전까지 [D3]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_16052",
+      "task": "rag_klue_missing",
+      "outcome": "both_wrong",
+      "before_category": [
+        "false_presence",
+        "missing"
+      ],
+      "after_category": [
+        "false_presence",
+        "missing"
+      ],
+      "gold": "확인 불가",
+      "before": "멜리사 매키엔 호주 [D7]",
+      "after": "쉐라톤워커힐호텔 [D7]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_06923",
+      "task": "rag_klue_missing",
+      "outcome": "improved",
+      "before_category": [
+        "false_presence",
+        "missing"
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "확인 불가",
+      "before": "다니엘 아이젠버그 [D7]",
+      "after": "확인 불가"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_10991",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_abstention",
+        "head:missing"
+      ],
+      "gold": "구제역 파동 [D6]",
+      "before": "독자 [D6]",
+      "after": "확인 불가"
+    },
+    {
+      "id": "valid-syn-combine-00010",
+      "task": "rag_combine",
+      "outcome": "both_wrong",
+      "before_category": [
+        "unsupported_combine",
+        null
+      ],
+      "after_category": [
+        "unsupported_combine",
+        null
+      ],
+      "gold": "총무실 [D9], 한빛홀 [D4]",
+      "before": "한빛홀 [D4]",
+      "after": "근거 충돌"
+    },
+    {
+      "id": "valid-syn-combine-00028",
+      "task": "rag_combine",
+      "outcome": "both_wrong",
+      "before_category": [
+        "unsupported_combine",
+        null
+      ],
+      "after_category": [
+        "unsupported_combine",
+        null
+      ],
+      "gold": "남위수 [D9], 이음홀 [D6]",
+      "before": "상생협력팀 [D9]",
+      "after": "남위수 [D9]"
+    },
+    {
+      "id": "valid-syn-combine-00033",
+      "task": "rag_combine",
+      "outcome": "both_wrong",
+      "before_category": [
+        "unsupported_combine",
+        null
+      ],
+      "after_category": [
+        "unsupported_combine",
+        null
+      ],
+      "gold": "170,000원 [D5], 총무지원단 [D9]",
+      "before": "총무지원단 [D9]",
+      "after": "학사팀 [D5]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_02713",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "의원내각제 [D5]",
+      "before": "내각에도 있는지에 대해서는 학계의 해석이 엇갈리고 있다. \"국회가 헌법 개정안을 발의한다\"는 부분에서 발안권 [D5]",
+      "after": "법률(국민투표법) [D5]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_14821",
+      "task": "rag_klue",
+      "outcome": "improved",
+      "before_category": [
+        "wrong_abstention",
+        "head:missing"
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "CJ제일제당 [D4]",
+      "before": "확인 불가",
+      "after": "CJ제일제당 [D4]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_15020",
+      "task": "rag_klue_missing",
+      "outcome": "regressed",
+      "before_category": [
+        "correct",
+        null
+      ],
+      "after_category": [
+        "false_presence",
+        "missing"
+      ],
+      "gold": "확인 불가",
+      "before": "확인 불가",
+      "after": "페스티벌’ [D3]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_11684",
+      "task": "rag_klue_missing",
+      "outcome": "regressed",
+      "before_category": [
+        "correct",
+        null
+      ],
+      "after_category": [
+        "false_presence",
+        "missing"
+      ],
+      "gold": "확인 불가",
+      "before": "확인 불가",
+      "after": "연지동 [D2]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_10048",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "저소비 모드(LCM: Low-Consumption Mode) [D7]",
+      "before": "ST마이크로일렉트로닉스(STMicroelectronics, 이하 ST)가 유연한 동적 모드 선택 [D7]",
+      "after": "인에이블(Enable) [D7]"
+    },
+    {
+      "id": "valid-syn-combine-00000",
+      "task": "rag_combine",
+      "outcome": "both_wrong",
+      "before_category": [
+        "unsupported_combine",
+        null
+      ],
+      "after_category": [
+        "unsupported_combine",
+        null
+      ],
+      "gold": "오후 4시 40분 [D8], 오후 6시 10분 [D1]",
+      "before": "오후 6시 10분 [D1]",
+      "after": "오후 4시 40분 [D8]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_10868",
+      "task": "rag_klue",
+      "outcome": "regressed",
+      "before_category": [
+        "correct",
+        null
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "truncated"
+      ],
+      "gold": "서울 역삼동 [D3]",
+      "before": "서울 역삼동 [D3]",
+      "after": "서울 [D3]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_02939",
+      "task": "rag_klue_missing",
+      "outcome": "both_wrong",
+      "before_category": [
+        "false_presence",
+        "missing"
+      ],
+      "after_category": [
+        "false_presence",
+        "missing"
+      ],
+      "gold": "확인 불가",
+      "before": "차원문 [D7]",
+      "after": "소븐가르드 [D7]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_04814",
+      "task": "rag_klue_missing",
+      "outcome": "regressed",
+      "before_category": [
+        "correct",
+        null
+      ],
+      "after_category": [
+        "false_presence",
+        "missing"
+      ],
+      "gold": "확인 불가",
+      "before": "확인 불가",
+      "after": "프랑스 [D3]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_06715",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "우리투자증권 [D3]",
+      "before": "한국경제신문 [D3]",
+      "after": "김용환 [D3]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_08416",
+      "task": "rag_klue",
+      "outcome": "regressed",
+      "before_category": [
+        "correct",
+        null
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "1997년 [D5]",
+      "before": "1997년 [D5]",
+      "after": "1993년 [D5]"
+    },
+    {
+      "id": "valid-syn-missing-00013",
+      "task": "rag_missing",
+      "outcome": "regressed",
+      "before_category": [
+        "correct",
+        null
+      ],
+      "after_category": [
+        "false_presence",
+        "missing"
+      ],
+      "gold": "확인 불가",
+      "before": "확인 불가",
+      "after": "기획센터 [D3]"
+    },
+    {
+      "id": "valid-syn-combine-00037",
+      "task": "rag_combine",
+      "outcome": "both_wrong",
+      "before_category": [
+        "unsupported_combine",
+        null
+      ],
+      "after_category": [
+        "unsupported_combine",
+        null
+      ],
+      "gold": "2025. 8. 9. [D7], 13일 전까지 [D6]",
+      "before": "13일 전까지 [D6]",
+      "after": "2025. 8. 9. [D7]"
+    },
+    {
+      "id": "valid-syn-combine-00002",
+      "task": "rag_combine",
+      "outcome": "both_wrong",
+      "before_category": [
+        "unsupported_combine",
+        null
+      ],
+      "after_category": [
+        "unsupported_combine",
+        null
+      ],
+      "gold": "누리홀 [D6], 1인당 88,100원 [D3]",
+      "before": "1인당 88,100원 [D3]",
+      "after": "63,300원 [D6]"
+    },
+    {
+      "id": "valid-syn-noise-00026",
+      "task": "rag_noise",
+      "outcome": "improved",
+      "before_category": [
+        "wrong_both",
+        null
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "153시간 [D8]",
+      "before": "157시간 이내 [D1]",
+      "after": "153시간 [D8]"
+    },
+    {
+      "id": "valid-syn-combine-00017",
+      "task": "rag_combine",
+      "outcome": "both_wrong",
+      "before_category": [
+        "unsupported_combine",
+        null
+      ],
+      "after_category": [
+        "unsupported_combine",
+        null
+      ],
+      "gold": "9일 이내 [D4], 별빛구 청소년수련관 [D9]",
+      "before": "별빛구 청소년수련관 [D9]",
+      "after": "옥학주 [D4]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_09169",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "LG생활건강 [D1]",
+      "before": "헬스·뷰티 전문점 시장 1, 2위인 CJ ‘올리브영’ [D1]",
+      "after": "메디힐 [D1]"
+    },
+    {
+      "id": "valid-syn-noise-00018",
+      "task": "rag_noise",
+      "outcome": "improved",
+      "before_category": [
+        "wrong_both",
+        null
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "설석만 [D1]",
+      "before": "임린동 [D2]",
+      "after": "설석만 [D1]"
+    },
+    {
+      "id": "valid-syn-noise-00030",
+      "task": "rag_noise",
+      "outcome": "improved",
+      "before_category": [
+        "wrong_both",
+        null
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "문화사업과 [D6]",
+      "before": "고객지원센터 [D4]",
+      "after": "문화사업과 [D6]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_00168",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_both",
+        null
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "세계의 목구멍 [D9]",
+      "before": "탄탈륨 [D8]",
+      "after": "소븐가르드 [D9]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_10502",
+      "task": "rag_klue",
+      "outcome": "improved",
+      "before_category": [
+        "wrong_value_right_source",
+        "overlong"
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "112만8000여명 [D2]",
+      "before": "3분여짜리 동영상은 112만8000여명 [D2]",
+      "after": "112만8000여명 [D2]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_11930",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "1911건 [D9]",
+      "before": "1억9016만원 [D9]",
+      "after": "4138건 [D9]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_08128",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "3단계 [D6]",
+      "before": "90% [D6]",
+      "after": "50% [D6]"
+    },
+    {
+      "id": "valid-syn-combine-00022",
+      "task": "rag_combine",
+      "outcome": "both_wrong",
+      "before_category": [
+        "unsupported_combine",
+        null
+      ],
+      "after_category": [
+        "unsupported_combine",
+        null
+      ],
+      "gold": "내선 8060 [D3], 경영지원지원단 [D9]",
+      "before": "전한혜 [D3]",
+      "after": "전한혜입니다.\nQ. 문의 전화는 어떻게 되나요? A. 내선 8060 [D3]"
+    },
+    {
+      "id": "valid-syn-combine-00015",
+      "task": "rag_combine",
+      "outcome": "both_wrong",
+      "before_category": [
+        "unsupported_combine",
+        null
+      ],
+      "after_category": [
+        "unsupported_combine",
+        null
+      ],
+      "gold": "2026년 6월 27일 [D3], 21:00 [D2]",
+      "before": "21:00 [D2]",
+      "after": "2026년 6월 27일 [D3]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_13288",
+      "task": "rag_klue_missing",
+      "outcome": "regressed",
+      "before_category": [
+        "correct",
+        null
+      ],
+      "after_category": [
+        "false_presence",
+        "missing"
+      ],
+      "gold": "확인 불가",
+      "before": "확인 불가",
+      "after": "이 회사 김성호 대표 [D3]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_04187",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "해련스님 [D9]",
+      "before": "탑에 새겨진 기록을 통해 해련스 [D9]",
+      "after": "사리가 모셔져 있음을 알게 되었다.\n\n전형적인 8각 사리탑으로, 3개 [D9]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_05776",
+      "task": "rag_klue",
+      "outcome": "improved",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "21곳 [D3]",
+      "before": "3곳 [D3]",
+      "after": "21곳 [D3]"
+    },
+    {
+      "id": "valid-syn-combine-00001",
+      "task": "rag_combine",
+      "outcome": "both_wrong",
+      "before_category": [
+        "unsupported_combine",
+        null
+      ],
+      "after_category": [
+        "unsupported_combine",
+        null
+      ],
+      "gold": "145시간 [D6], 2027-03-05 [D4]",
+      "before": "10개월 [D6]",
+      "after": "근거 충돌"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_00364",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_abstention",
+        "head:missing"
+      ],
+      "gold": "이탈리아 [D4]",
+      "before": "오스트리아 [D4]",
+      "after": "확인 불가"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_16042",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "truncated"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "2012년 [D2]",
+      "before": "12년 [D2]",
+      "after": "2008년에는 1548년 [D2]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_03304",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_abstention",
+        "head:missing"
+      ],
+      "gold": "티무르 왕조 [D4]",
+      "before": "오르다 칸의 권위를 인정했다. (우즈베크 [D4]",
+      "after": "확인 불가"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_15109",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_abstention",
+        "head:missing"
+      ],
+      "gold": "CJ GLS [D3]",
+      "before": "CJ그룹 [D3]",
+      "after": "확인 불가"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_05186",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "truncated"
+      ],
+      "gold": "약 600년 [D2]",
+      "before": "275년 [D2]",
+      "after": "600년 [D2]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_15542",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "3.74% [D6]",
+      "before": "1.8% [D6]",
+      "after": "4.5% [D6]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_01743",
+      "task": "rag_klue_missing",
+      "outcome": "regressed",
+      "before_category": [
+        "correct",
+        null
+      ],
+      "after_category": [
+        "false_presence",
+        "missing"
+      ],
+      "gold": "확인 불가",
+      "before": "확인 불가",
+      "after": "1992년 [D7]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_02098",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "overlong"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "교황 율리오 2세 [D4]",
+      "before": "교황 율리오 2세를 [D4]",
+      "after": "아치형 십자가 천장이 있으며, 한가운데에는 조반니 바티스타 파롤디 [D4]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_11580",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_abstention",
+        "head:missing"
+      ],
+      "gold": "한정대 [D4]",
+      "before": "제조기 [D4]",
+      "after": "확인 불가"
+    },
+    {
+      "id": "valid-syn-missing-00038",
+      "task": "rag_missing",
+      "outcome": "regressed",
+      "before_category": [
+        "correct",
+        null
+      ],
+      "after_category": [
+        "false_presence",
+        "missing"
+      ],
+      "gold": "확인 불가",
+      "before": "확인 불가",
+      "after": "내선 6980 [D4]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_01766",
+      "task": "rag_klue_missing",
+      "outcome": "both_wrong",
+      "before_category": [
+        "false_presence",
+        "missing"
+      ],
+      "after_category": [
+        "false_presence",
+        "missing"
+      ],
+      "gold": "확인 불가",
+      "before": "경제·사회개발에 통합된 일부문으로서 사회보장의 제반 사업 [D7]",
+      "after": "계획적 정비작업 [D7]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_05725",
+      "task": "rag_klue",
+      "outcome": "regressed",
+      "before_category": [
+        "correct",
+        null
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "2009년 [D3]",
+      "before": "2009년 [D3]",
+      "after": "1941년 [D3]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_00156",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_abstention",
+        "head:missing"
+      ],
+      "gold": "서초동 [D1]",
+      "before": "서울교대 [D1]",
+      "after": "확인 불가"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_06526",
+      "task": "rag_klue_missing",
+      "outcome": "both_wrong",
+      "before_category": [
+        "false_presence",
+        "missing"
+      ],
+      "after_category": [
+        "false_presence",
+        "missing"
+      ],
+      "gold": "확인 불가",
+      "before": "‘센텀협성아파트’로 간판을 바꿔 달았고, 앞서 6월에는 재송동 세명그린타워 [D2]",
+      "after": "세명그린타워아파트(1개동 209가구)가 ‘센텀그린타워아파트’ [D2]"
+    },
+    {
+      "id": "valid-syn-combine-00024",
+      "task": "rag_combine",
+      "outcome": "both_wrong",
+      "before_category": [
+        "unsupported_combine",
+        null
+      ],
+      "after_category": [
+        "unsupported_combine",
+        null
+      ],
+      "gold": "2026-07-07 [D1], 48,700원 [D6]",
+      "before": "48,700원 [D6]",
+      "after": "2026-07-07 [D1]"
+    },
+    {
+      "id": "valid-syn-noise-00002",
+      "task": "rag_noise",
+      "outcome": "improved",
+      "before_category": [
+        "wrong_both",
+        null
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "바른홀 [D2]",
+      "before": "교육동 세미나실 [D4]",
+      "after": "바른홀 [D2]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_11996",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "스위스 [D7]",
+      "before": "일본 [D7]",
+      "after": "독일 [D7]"
+    },
+    {
+      "id": "valid-syn-missing-00024",
+      "task": "rag_missing",
+      "outcome": "regressed",
+      "before_category": [
+        "correct",
+        null
+      ],
+      "after_category": [
+        "false_presence",
+        "missing"
+      ],
+      "gold": "확인 불가",
+      "before": "확인 불가",
+      "after": "미화 192달러 [D3]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_13903",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "고객 중심의 눈높이 경영 [D4]",
+      "before": "LG전자 [D4]",
+      "after": "세탁기 [D4]"
+    },
+    {
+      "id": "valid-syn-combine-00031",
+      "task": "rag_combine",
+      "outcome": "both_wrong",
+      "before_category": [
+        "unsupported_combine",
+        null
+      ],
+      "after_category": [
+        "unsupported_combine",
+        null
+      ],
+      "gold": "구복음 [D3], 2026년 4월 1일 [D7]",
+      "before": "2026년 4월 1일 [D7]",
+      "after": "18:00 [D3]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_12963",
+      "task": "rag_klue",
+      "outcome": "improved",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "미국 [D7]",
+      "before": "일본 [D7]",
+      "after": "미국 [D7]"
+    },
+    {
+      "id": "valid-syn-combine-00018",
+      "task": "rag_combine",
+      "outcome": "both_wrong",
+      "before_category": [
+        "unsupported_combine",
+        null
+      ],
+      "after_category": [
+        "unsupported_combine",
+        null
+      ],
+      "gold": "60,000원 [D4], 1회 270,000원 [D7]",
+      "before": "1회 270,000원 [D7]",
+      "after": "60,000원 [D4]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_07811",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "국회 [D9]",
+      "before": "태평양에 [D9]",
+      "after": "법무법인 태평양 [D9]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_03367",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "overlong"
+      ],
+      "after_category": [
+        "wrong_abstention",
+        "head:missing"
+      ],
+      "gold": "중화민국 임시정부 [D5]",
+      "before": "몽강연합자치정부를 1936년에 세웠다. 왕게민은 1937년 베이징에 중화민국 임시정부를 세우고 중일전 [D5]",
+      "after": "확인 불가"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_15198",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "‘체리스 초이스(Cherry’s Choice)’ [D7]",
+      "before": "‘월드 시그니처 배틀(WSB)’ [D7]",
+      "after": "‘서울카페쇼’ [D7]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_00707",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "페름기 [D1]",
+      "before": "끝은 2억9900만 년 전 [D1]",
+      "after": "石炭紀)는 고생대 가운데 다섯 번째 기이며, 데본기 [D1]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_07700",
+      "task": "rag_klue",
+      "outcome": "regressed",
+      "before_category": [
+        "correct",
+        null
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "truncated"
+      ],
+      "gold": "올해 1월 25일 [D8]",
+      "before": "올해 1월 25일 [D8]",
+      "after": "1월 25일 [D8]"
+    },
+    {
+      "id": "valid-syn-missing-00022",
+      "task": "rag_missing",
+      "outcome": "regressed",
+      "before_category": [
+        "correct",
+        null
+      ],
+      "after_category": [
+        "false_presence",
+        "missing"
+      ],
+      "gold": "확인 불가",
+      "before": "확인 불가",
+      "after": "맹세교 [D4]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_05553",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "한국 [D1]",
+      "before": "인도네시아 [D1]",
+      "after": "빌레로이앤보흐, 영국 [D1]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_16542",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "truncated"
+      ],
+      "gold": "CJ프레시웨이 [D8]",
+      "before": "CJ오쇼핑 CJ푸드 [D8]",
+      "after": "CJ프레시웨 [D8]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_07146",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "4조원 [D2]",
+      "before": "2분기 3조9000억원 [D2]",
+      "after": "4조3000억원 [D2]"
+    },
+    {
+      "id": "valid-syn-noise-00039",
+      "task": "rag_noise",
+      "outcome": "improved",
+      "before_category": [
+        "wrong_both",
+        null
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "2026-12-19 [D5]",
+      "before": "2027. 1. 11. [D4]",
+      "after": "2026-12-19 [D5]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_08601",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "11 대 1 [D6]",
+      "before": "108%, 평균 경쟁률은 4.9 대 1 [D6]",
+      "after": "84㎡ [D6]"
+    },
+    {
+      "id": "valid-syn-combine-00012",
+      "task": "rag_combine",
+      "outcome": "both_wrong",
+      "before_category": [
+        "unsupported_combine",
+        null
+      ],
+      "after_category": [
+        "unsupported_combine",
+        null
+      ],
+      "gold": "21학점 [D5], 064-464-7077 [D8]",
+      "before": "064-464-7077 [D8]",
+      "after": "21학점 [D5]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_17059",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "‘Brush’ [D1]",
+      "before": "‘트로트 여제’ [D1]",
+      "after": "‘역대급 결과물’ [D1]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_16656",
+      "task": "rag_klue_missing",
+      "outcome": "improved",
+      "before_category": [
+        "false_presence",
+        "missing"
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "확인 불가",
+      "before": "마스크 [D1]",
+      "after": "확인 불가"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_01451",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_abstention",
+        "head:missing"
+      ],
+      "gold": "구문론 [D3]",
+      "before": "언어 사용의 화용론 [D3]",
+      "after": "확인 불가"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_01319",
+      "task": "rag_klue",
+      "outcome": "improved",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "1897년 [D6]",
+      "before": "1493년 [D6]",
+      "after": "1897년 [D6]"
+    },
+    {
+      "id": "valid-syn-missing-00021",
+      "task": "rag_missing",
+      "outcome": "regressed",
+      "before_category": [
+        "correct",
+        null
+      ],
+      "after_category": [
+        "false_presence",
+        "missing"
+      ],
+      "gold": "확인 불가",
+      "before": "확인 불가",
+      "after": "전산처 [D2]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_02078",
+      "task": "rag_klue_missing",
+      "outcome": "both_wrong",
+      "before_category": [
+        "false_presence",
+        "missing"
+      ],
+      "after_category": [
+        "false_presence",
+        "missing"
+      ],
+      "gold": "확인 불가",
+      "before": "\"사쿠라 대전\" [D7]",
+      "after": "코야마 타카오 [D7]"
+    },
+    {
+      "id": "valid-syn-missing-00027",
+      "task": "rag_missing",
+      "outcome": "improved",
+      "before_category": [
+        "false_presence",
+        "missing"
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "확인 불가",
+      "before": "99명이 [D4]",
+      "after": "확인 불가"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_10474",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "overlong"
+      ],
+      "gold": "7 [D3]",
+      "before": "36개 [D3]",
+      "after": "3만2000여건의 제안을 7대 과제와 36개 [D3]"
+    },
+    {
+      "id": "valid-syn-combine-00006",
+      "task": "rag_combine",
+      "outcome": "both_wrong",
+      "before_category": [
+        "unsupported_combine",
+        null
+      ],
+      "after_category": [
+        "unsupported_combine",
+        null
+      ],
+      "gold": "지다화 [D7], 시장지원지원단 [D9]",
+      "before": "시장지원지원단 [D9]",
+      "after": "지다화 [D7]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_00267",
+      "task": "rag_klue_missing",
+      "outcome": "both_wrong",
+      "before_category": [
+        "false_presence",
+        "missing"
+      ],
+      "after_category": [
+        "false_presence",
+        "missing"
+      ],
+      "gold": "확인 불가",
+      "before": "<레 디 포르토갈로 호> [D8]",
+      "after": "<카이저 함> [D8]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_06537",
+      "task": "rag_klue",
+      "outcome": "improved",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "르네상스 시대 [D1]",
+      "before": "3000년 [D1]",
+      "after": "르네상스 시대 [D1]"
+    },
+    {
+      "id": "valid-syn-combine-00035",
+      "task": "rag_combine",
+      "outcome": "both_wrong",
+      "before_category": [
+        "unsupported_combine",
+        null
+      ],
+      "after_category": [
+        "unsupported_combine",
+        null
+      ],
+      "gold": "8만 9천원 [D9], 2월 23일 [D8]",
+      "before": "2월 23일 [D8]",
+      "after": "8만 9천원 [D9]"
+    },
+    {
+      "id": "valid-syn-combine-00009",
+      "task": "rag_combine",
+      "outcome": "both_wrong",
+      "before_category": [
+        "unsupported_combine",
+        null
+      ],
+      "after_category": [
+        "unsupported_combine",
+        null
+      ],
+      "gold": "연 34,600원 [D6], 226명 이내 [D3]",
+      "before": "410만 원 [D6]",
+      "after": "연 34,600원 [D6]"
+    },
+    {
+      "id": "valid-syn-missing-00000",
+      "task": "rag_missing",
+      "outcome": "regressed",
+      "before_category": [
+        "correct",
+        null
+      ],
+      "after_category": [
+        "false_presence",
+        "missing"
+      ],
+      "gold": "확인 불가",
+      "before": "확인 불가",
+      "after": "노무팀 [D6]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_04046",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "해마호 [D7]",
+      "before": "카스 [D7]",
+      "after": "강제탈 [D7]"
+    },
+    {
+      "id": "valid-syn-noise-00000",
+      "task": "rag_noise",
+      "outcome": "improved",
+      "before_category": [
+        "wrong_both",
+        null
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "251명 [D8]",
+      "before": "242명 [D9]",
+      "after": "251명 [D8]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_01971",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "overlong"
+      ],
+      "after_category": [
+        "wrong_abstention",
+        "head:missing"
+      ],
+      "gold": "파르네제 [D4]",
+      "before": "파르네제에 의해 제지된다.\n\n드디어 도착한 엘프 [D4]",
+      "after": "확인 불가"
+    },
+    {
+      "id": "valid-syn-noise-00009",
+      "task": "rag_noise",
+      "outcome": "improved",
+      "before_category": [
+        "wrong_both",
+        null
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "88퍼센트 [D9]",
+      "before": "10.1% [D1]",
+      "after": "88퍼센트 [D9]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_12398",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_abstention",
+        "head:missing"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "6만대 [D3]",
+      "before": "확인 불가",
+      "after": "4만6000대 [D3]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_11230",
+      "task": "rag_klue",
+      "outcome": "improved",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "이건희 [D2]",
+      "before": "정몽구 [D2]",
+      "after": "이건희 [D2]"
+    },
+    {
+      "id": "valid-syn-combine-00039",
+      "task": "rag_combine",
+      "outcome": "both_wrong",
+      "before_category": [
+        "unsupported_combine",
+        null
+      ],
+      "after_category": [
+        "unsupported_combine",
+        null
+      ],
+      "gold": "9곳 [D4], 서림을 [D2]",
+      "before": "서림을 [D2]",
+      "after": "9곳 [D4]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_03121",
+      "task": "rag_klue",
+      "outcome": "improved",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "스미토모 [D8]",
+      "before": "광장의 산책과 에도 성의 역사를 둘러볼 수 있는 휴식처이다. 또, 황거에 인접해 있기 때문에 황궁 [D8]",
+      "after": "스미토모 [D8]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_13720",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "100ppm [D1]",
+      "before": "1697억원(월평균 142억원 [D1]",
+      "after": "25% [D1]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_08055",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "overlong"
+      ],
+      "gold": "2.9% [D6]",
+      "before": "8.3% [D6]",
+      "after": "6만8009대를 팔았다고 3일 발표했다. 작년 같은 달 6만6107대보다 2.9% [D6]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_11862",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "overlong"
+      ],
+      "after_category": [
+        "wrong_abstention",
+        "head:missing"
+      ],
+      "gold": "23대 [D8]",
+      "before": "15대가 더 팔릴 것으로 예상하고 있다. 작년에는 23대 [D8]",
+      "after": "확인 불가"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_05971",
+      "task": "rag_klue",
+      "outcome": "regressed",
+      "before_category": [
+        "correct",
+        null
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "지난 11월 [D3]",
+      "before": "지난 11월 [D3]",
+      "after": "오전 8시 [D3]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_08159",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "4월20일 [D3]",
+      "before": "5월3일 [D3]",
+      "after": "5월 4일 [D3]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_06190",
+      "task": "rag_klue_missing",
+      "outcome": "improved",
+      "before_category": [
+        "false_presence",
+        "missing"
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "확인 불가",
+      "before": "50톤 [D2]",
+      "after": "확인 불가"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_02321",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_abstention",
+        "head:missing"
+      ],
+      "after_category": [
+        "wrong_both",
+        null
+      ],
+      "gold": "호루스 [D9]",
+      "before": "확인 불가",
+      "after": "난민 [D5]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_12904",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "브랜드 [D1]",
+      "before": "경기 용인시 ‘용인 에버랜드역 라마다호텔’ [D1]",
+      "after": "‘평택 하버 라마다앙코르’ [D1]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_16502",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "약 2098억달러 [D3]",
+      "before": "50억2만달 [D3]",
+      "after": "50억2만달러 [D3]"
+    },
+    {
+      "id": "valid-syn-noise-00032",
+      "task": "rag_noise",
+      "outcome": "improved",
+      "before_category": [
+        "wrong_both",
+        null
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "안전부 [D1]",
+      "before": "장학처 [D9]",
+      "after": "안전부 [D1]"
+    },
+    {
+      "id": "valid-syn-combine-00004",
+      "task": "rag_combine",
+      "outcome": "both_wrong",
+      "before_category": [
+        "unsupported_combine",
+        null
+      ],
+      "after_category": [
+        "unsupported_combine",
+        null
+      ],
+      "gold": "28일 이내 [D7], 내선 3969 [D9]",
+      "before": "내선 3969 [D9]",
+      "after": "28일 이내 [D7]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_01128",
+      "task": "rag_klue_missing",
+      "outcome": "improved",
+      "before_category": [
+        "false_presence",
+        "missing"
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "확인 불가",
+      "before": "지진동과 진자의 진동을 구별할 수가 있다. 이것이 역학적 방식 [D4]",
+      "after": "확인 불가"
+    },
+    {
+      "id": "valid-syn-conflict-00024",
+      "task": "rag_conflict",
+      "outcome": "regressed",
+      "before_category": [
+        "correct",
+        null
+      ],
+      "after_category": [
+        "false_presence",
+        "conflict"
+      ],
+      "gold": "근거 충돌",
+      "before": "근거 충돌",
+      "after": "1인당 11만 5천원 [D5]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_05190",
+      "task": "rag_klue_missing",
+      "outcome": "both_wrong",
+      "before_category": [
+        "false_presence",
+        "missing"
+      ],
+      "after_category": [
+        "false_presence",
+        "missing"
+      ],
+      "gold": "확인 불가",
+      "before": "광범한 논의를 하였다. 한가지 주요한 예외는 폴란드에서 나타났는데 화기무기 [D5]",
+      "after": "폴란드 후사르는 유럽 [D5]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_09765",
+      "task": "rag_klue",
+      "outcome": "improved",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "48개월 [D4]",
+      "before": "9월 한 달 [D4]",
+      "after": "48개월 [D4]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_14587",
+      "task": "rag_klue_missing",
+      "outcome": "regressed",
+      "before_category": [
+        "correct",
+        null
+      ],
+      "after_category": [
+        "false_presence",
+        "missing"
+      ],
+      "gold": "확인 불가",
+      "before": "확인 불가",
+      "after": "최숙희 [D2]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_01170",
+      "task": "rag_klue_missing",
+      "outcome": "both_wrong",
+      "before_category": [
+        "false_presence",
+        "missing"
+      ],
+      "after_category": [
+        "false_presence",
+        "missing"
+      ],
+      "gold": "확인 불가",
+      "before": "‘사이버 명예훼손 전담팀’ [D5]",
+      "after": "대거 독일에 서버를 둔 메신저 텔레그램 [D5]"
+    },
+    {
+      "id": "valid-syn-noise-00005",
+      "task": "rag_noise",
+      "outcome": "improved",
+      "before_category": [
+        "wrong_both",
+        null
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "박환일 [D5]",
+      "before": "표민근 [D2]",
+      "after": "박환일 [D5]"
+    },
+    {
+      "id": "valid-syn-noise-00037",
+      "task": "rag_noise",
+      "outcome": "regressed",
+      "before_category": [
+        "correct",
+        null
+      ],
+      "after_category": [
+        "wrong_abstention",
+        "head:conflict"
+      ],
+      "gold": "2026-04-19 [D1]",
+      "before": "2026-04-19 [D1]",
+      "after": "근거 충돌"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_04129",
+      "task": "rag_klue",
+      "outcome": "improved",
+      "before_category": [
+        "wrong_value_right_source",
+        "overlong"
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "캐나다 벤쿠버 [D9]",
+      "before": "고든 뉴펠드(Gordon Neufeld, 1946년 ~ )는 캐나다 벤쿠버 [D9]",
+      "after": "캐나다 벤쿠버 [D9]"
+    },
+    {
+      "id": "valid-syn-noise-00021",
+      "task": "rag_noise",
+      "outcome": "improved",
+      "before_category": [
+        "wrong_both",
+        null
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "상생협력과 [D3]",
+      "before": "교무부 [D9]",
+      "after": "상생협력과 [D3]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_11780",
+      "task": "rag_klue_missing",
+      "outcome": "both_wrong",
+      "before_category": [
+        "false_presence",
+        "missing"
+      ],
+      "after_category": [
+        "false_presence",
+        "missing"
+      ],
+      "gold": "확인 불가",
+      "before": "박해린 [D2]",
+      "after": "정재훈 [D2]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_13665",
+      "task": "rag_klue_missing",
+      "outcome": "improved",
+      "before_category": [
+        "false_presence",
+        "missing"
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "확인 불가",
+      "before": "송구영 [D3]",
+      "after": "확인 불가"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_03866",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "truncated"
+      ],
+      "gold": "엑소더스 크라이 [D7]",
+      "before": "아동 성학대를 [D7]",
+      "after": "크라이 [D7]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_09656",
+      "task": "rag_klue",
+      "outcome": "improved",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "1985년 [D3]",
+      "before": "1991년부터 청주지점장을 지내다가 1997년 [D3]",
+      "after": "1985년 [D3]"
+    },
+    {
+      "id": "valid-syn-combine-00003",
+      "task": "rag_combine",
+      "outcome": "both_wrong",
+      "before_category": [
+        "unsupported_combine",
+        null
+      ],
+      "after_category": [
+        "unsupported_combine",
+        null
+      ],
+      "gold": "내선 3157 [D9], 문화사업팀 [D1]",
+      "before": "문화사업팀 [D1]",
+      "after": "내선 3157 [D9]"
+    },
+    {
+      "id": "valid-syn-combine-00023",
+      "task": "rag_combine",
+      "outcome": "both_wrong",
+      "before_category": [
+        "unsupported_combine",
+        null
+      ],
+      "after_category": [
+        "unsupported_combine",
+        null
+      ],
+      "gold": "3주 [D4], 월 115,000원 [D5]",
+      "before": "월 115,000원 [D5]",
+      "after": "3주 [D4]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_03571",
+      "task": "rag_klue",
+      "outcome": "improved",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "폴란드 [D1]",
+      "before": "오스만 [D1]",
+      "after": "폴란드 [D1]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_06689",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "24시간 [D9]",
+      "before": "2회 또는 1회 48시간 [D9]",
+      "after": "6월 30일까지 [D9]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_16816",
+      "task": "rag_klue",
+      "outcome": "improved",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "대우조선해양 [D9]",
+      "before": "LNG [D9]",
+      "after": "대우조선해양 [D9]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_04141",
+      "task": "rag_klue_missing",
+      "outcome": "both_wrong",
+      "before_category": [
+        "false_presence",
+        "missing"
+      ],
+      "after_category": [
+        "false_presence",
+        "missing"
+      ],
+      "gold": "확인 불가",
+      "before": "1904년 정위 계급에 오른 뒤 육군무관학교 교관과 군법회의 판사 등을 지내다가, 1906년 [D3]",
+      "after": "1904년 [D3]"
+    },
+    {
+      "id": "valid-syn-combine-00038",
+      "task": "rag_combine",
+      "outcome": "both_wrong",
+      "before_category": [
+        "unsupported_combine",
+        null
+      ],
+      "after_category": [
+        "unsupported_combine",
+        null
+      ],
+      "gold": "2주 [D7], 회계지원단 [D5]",
+      "before": "회계지원단 [D5]",
+      "after": "2주이다. 계약 담당은 교무실 [D7]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_06863",
+      "task": "rag_klue",
+      "outcome": "improved",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "3만원 [D8]",
+      "before": "100만원 [D8]",
+      "after": "3만원 [D8]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_12699",
+      "task": "rag_klue_missing",
+      "outcome": "improved",
+      "before_category": [
+        "false_presence",
+        "missing"
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "확인 불가",
+      "before": "무브 [D2]",
+      "after": "확인 불가"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_09316",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "마이크 살비노(Mike Salvino) [D3]",
+      "before": "알소프 [D3]",
+      "after": "저드슨 알소프 [D3]"
+    },
+    {
+      "id": "valid-syn-combine-00027",
+      "task": "rag_combine",
+      "outcome": "both_wrong",
+      "before_category": [
+        "unsupported_combine",
+        null
+      ],
+      "after_category": [
+        "unsupported_combine",
+        null
+      ],
+      "gold": "8.1% [D2], 월 190만원 [D4]",
+      "before": "월 190만원 [D4]",
+      "after": "8.1% [D2]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_14117",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "스마트빌딩 센싱 [D3]",
+      "before": "BEMS(Building Energy Management System) [D3]",
+      "after": "BEMS [D3]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_10557",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "‘순간’ [D1]",
+      "before": "국립무용단의 ‘그대 논개여’. 윤성주 예술감독이 부임 후 선보인 첫 작품으로 지난해 11월 국립극장 해오름극장 [D1]",
+      "after": "9일 서울 능동 유니버설아트센터 대극장에서 여는 ‘무용인 한마음 축제’ [D1]"
+    },
+    {
+      "id": "valid-syn-combine-00005",
+      "task": "rag_combine",
+      "outcome": "both_wrong",
+      "before_category": [
+        "unsupported_combine",
+        null
+      ],
+      "after_category": [
+        "unsupported_combine",
+        null
+      ],
+      "gold": "길채구 [D9], 고객지원실 [D6]",
+      "before": "고객지원실 [D6]",
+      "after": "길채구 [D9]"
+    },
+    {
+      "id": "valid-syn-noise-00011",
+      "task": "rag_noise",
+      "outcome": "improved",
+      "before_category": [
+        "wrong_both",
+        null
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "294만원 [D3]",
+      "before": "미화 348달러 [D9]",
+      "after": "294만원 [D3]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_08687",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "서영교 [D4]",
+      "before": "박광온 [D4]",
+      "after": "‘취업 후 학자금 상환 특별법 일부개정안 [D4]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_05182",
+      "task": "rag_klue_missing",
+      "outcome": "both_wrong",
+      "before_category": [
+        "false_presence",
+        "missing"
+      ],
+      "after_category": [
+        "false_presence",
+        "missing"
+      ],
+      "gold": "확인 불가",
+      "before": "아동 성학대를 하려고 거래를 시도하는 소아성애자 [D3]",
+      "after": "아동 성학대를 하려고 거래를 시도하는 소아성애자를 뒤쫓 [D3]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_03350",
+      "task": "rag_klue_missing",
+      "outcome": "both_wrong",
+      "before_category": [
+        "false_presence",
+        "missing"
+      ],
+      "after_category": [
+        "false_presence",
+        "missing"
+      ],
+      "gold": "확인 불가",
+      "before": "가츠에 대한 경계를 조금 푼 듯 보인다. 해신의 섬에서 월하의 소년과 다시 재회하게 되는데, 이후 해신 [D9]",
+      "after": "거츠가 카스카의 상태를 살피려 하나 파르네제에 의해 제지된다.\n\n드디어 도착한 엘프헬 [D9]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_12616",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "자주포 [D4]",
+      "before": "‘비호복합’ [D4]",
+      "after": "무기체계 [D4]"
+    },
+    {
+      "id": "valid-syn-noise-00001",
+      "task": "rag_noise",
+      "outcome": "improved",
+      "before_category": [
+        "wrong_both",
+        null
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "시설팀 [D3]",
+      "before": "복지정책센터 [D7]",
+      "after": "시설팀 [D3]"
+    },
+    {
+      "id": "valid-syn-combine-00030",
+      "task": "rag_combine",
+      "outcome": "both_wrong",
+      "before_category": [
+        "unsupported_combine",
+        null
+      ],
+      "after_category": [
+        "unsupported_combine",
+        null
+      ],
+      "gold": "오후 1시 [D7], 2월 27일(일) [D9]",
+      "before": "2월 27일(일) [D9]",
+      "after": "오후 1시 [D7]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_07967",
+      "task": "rag_klue",
+      "outcome": "regressed",
+      "before_category": [
+        "correct",
+        null
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "2017년 [D5]",
+      "before": "2017년 [D5]",
+      "after": "23일 [D5]"
+    },
+    {
+      "id": "valid-syn-missing-00020",
+      "task": "rag_missing",
+      "outcome": "regressed",
+      "before_category": [
+        "correct",
+        null
+      ],
+      "after_category": [
+        "false_presence",
+        "missing"
+      ],
+      "gold": "확인 불가",
+      "before": "확인 불가",
+      "after": "12퍼센트 [D3]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_02630",
+      "task": "rag_klue",
+      "outcome": "regressed",
+      "before_category": [
+        "correct",
+        null
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "overlong"
+      ],
+      "gold": "마르쿠스 안토니우스 [D2]",
+      "before": "마르쿠스 안토니우스 [D2]",
+      "after": "페루시아에서 분명히 나타나며, 문제를 일으키는데, 공식 페라타 제6군단은 이 당시에 마르쿠스 안토니우스 [D2]"
+    },
+    {
+      "id": "valid-syn-combine-00036",
+      "task": "rag_combine",
+      "outcome": "both_wrong",
+      "before_category": [
+        "unsupported_combine",
+        null
+      ],
+      "after_category": [
+        "unsupported_combine",
+        null
+      ],
+      "gold": "76,000원 [D5], 5월 17일 [D4]",
+      "before": "5월 17일 [D4]",
+      "after": "76,000원 [D5]"
+    },
+    {
+      "id": "valid-syn-value-00003",
+      "task": "rag_value",
+      "outcome": "improved",
+      "before_category": [
+        "wrong_abstention",
+        "head:missing"
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "261명 [D2]",
+      "before": "확인 불가",
+      "after": "261명 [D2]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_00291",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "북센티널섬 [D4]",
+      "before": "니코바르 제도 [D4]",
+      "after": "니코바 [D4]"
+    },
+    {
+      "id": "valid-syn-missing-00009",
+      "task": "rag_missing",
+      "outcome": "regressed",
+      "before_category": [
+        "correct",
+        null
+      ],
+      "after_category": [
+        "false_presence",
+        "missing"
+      ],
+      "gold": "확인 불가",
+      "before": "확인 불가",
+      "after": "3년 [D6]"
+    },
+    {
+      "id": "valid-syn-combine-00021",
+      "task": "rag_combine",
+      "outcome": "both_wrong",
+      "before_category": [
+        "unsupported_combine",
+        null
+      ],
+      "after_category": [
+        "unsupported_combine",
+        null
+      ],
+      "gold": "23일 [D9], 3,800,000원 [D3]",
+      "before": "3,800,000원 [D3]",
+      "after": "23일 [D9]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_05238",
+      "task": "rag_klue_missing",
+      "outcome": "both_wrong",
+      "before_category": [
+        "false_presence",
+        "missing"
+      ],
+      "after_category": [
+        "false_presence",
+        "missing"
+      ],
+      "gold": "확인 불가",
+      "before": "뉴런들이다. 그렇지만 GABA 수용기를 자극하는 약물들은 헌팅턴병 [D2]",
+      "after": "헌팅턴병 환자들은 또한 여러 가지 심리적 장애 [D2]"
+    },
+    {
+      "id": "valid-syn-noise-00028",
+      "task": "rag_noise",
+      "outcome": "improved",
+      "before_category": [
+        "wrong_both",
+        null
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "송범문 [D1]",
+      "before": "은원교 [D2]",
+      "after": "송범문 [D1]"
+    },
+    {
+      "id": "valid-syn-value-00025",
+      "task": "rag_value",
+      "outcome": "regressed",
+      "before_category": [
+        "correct",
+        null
+      ],
+      "after_category": [
+        "wrong_abstention",
+        "head:missing"
+      ],
+      "gold": "6주 [D5]",
+      "before": "6주 [D5]",
+      "after": "확인 불가"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_17301",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "truncated"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "1만위안 [D3]",
+      "before": "1만위 [D3]",
+      "after": "74.7% [D3]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_16160",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "truncated"
+      ],
+      "gold": "화웨이 [D3]",
+      "before": "‘짝퉁’ 제조업체 [D3]",
+      "after": "화웨 [D3]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_14516",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "중산계급 [D4]",
+      "before": "하오(豪)’가 합쳐진 말로 ‘교양과 지식은 없는 벼락부자’ [D4]",
+      "after": "‘중찬제지(中慘階級)’ 등은 서민층이 자신의 처지를 비관하면서 만들어낸 말이다. ‘충얼다이’ [D4]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_00292",
+      "task": "rag_klue_missing",
+      "outcome": "improved",
+      "before_category": [
+        "false_presence",
+        "missing"
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "확인 불가",
+      "before": "남양주 불암사 목조관음보살좌상’은 조선후기 호남지역을 중심으로 활동했던 무염이 수(首)조각승 [D3]",
+      "after": "확인 불가"
+    },
+    {
+      "id": "valid-syn-noise-00025",
+      "task": "rag_noise",
+      "outcome": "improved",
+      "before_category": [
+        "wrong_both",
+        null
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "1860-7114 [D9]",
+      "before": "내선 5055 [D7]",
+      "after": "1860-7114 [D9]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_06956",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "마쓰시타 [D8]",
+      "before": "A3연구소 [D8]",
+      "after": "‘베타맥스’ [D8]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_09113",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_abstention",
+        "head:missing"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "gold": "5개 [D5]",
+      "before": "확인 불가",
+      "after": "4곳 [D5]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_13950",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_abstention",
+        "head:missing"
+      ],
+      "gold": "‘원칙이 바로 선 시장경제 질서 확립’ [D3]",
+      "before": "중점 [D3]",
+      "after": "확인 불가"
+    },
+    {
+      "id": "valid-syn-combine-00034",
+      "task": "rag_combine",
+      "outcome": "both_wrong",
+      "before_category": [
+        "unsupported_combine",
+        null
+      ],
+      "after_category": [
+        "unsupported_combine",
+        null
+      ],
+      "gold": "1572-1244 [D3], 미화 77달러 [D4]",
+      "before": "미화 77달러 [D4]",
+      "after": "근거 충돌"
+    },
+    {
+      "id": "valid-syn-noise-00023",
+      "task": "rag_noise",
+      "outcome": "improved",
+      "before_category": [
+        "wrong_both",
+        null
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "회계과 [D4]",
+      "before": "품질관리과 [D3]",
+      "after": "회계과 [D4]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_13741",
+      "task": "rag_klue_missing",
+      "outcome": "improved",
+      "before_category": [
+        "false_presence",
+        "missing"
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "확인 불가",
+      "before": "10월 [D1]",
+      "after": "확인 불가"
+    },
+    {
+      "id": "valid-syn-missing-00007",
+      "task": "rag_missing",
+      "outcome": "regressed",
+      "before_category": [
+        "correct",
+        null
+      ],
+      "after_category": [
+        "false_presence",
+        "missing"
+      ],
+      "gold": "확인 불가",
+      "before": "확인 불가",
+      "after": "오후 6시 30분 [D8]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_03195",
+      "task": "rag_klue_missing",
+      "outcome": "both_wrong",
+      "before_category": [
+        "false_presence",
+        "missing"
+      ],
+      "after_category": [
+        "false_presence",
+        "missing"
+      ],
+      "gold": "확인 불가",
+      "before": "칼림도어 [D7]",
+      "after": "노스렌드 [D7]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_13415",
+      "task": "rag_klue",
+      "outcome": "regressed",
+      "before_category": [
+        "correct",
+        null
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "truncated"
+      ],
+      "gold": "5등급 [D8]",
+      "before": "5등급 [D8]",
+      "after": "5등 [D8]"
+    },
+    {
+      "id": "valid-syn-missing-00012",
+      "task": "rag_missing",
+      "outcome": "both_wrong",
+      "before_category": [
+        "false_presence",
+        "missing"
+      ],
+      "after_category": [
+        "false_presence",
+        "missing"
+      ],
+      "gold": "확인 불가",
+      "before": "19:50 [D1]",
+      "after": "14개월 [D1]"
+    },
+    {
+      "id": "valid-syn-noise-00038",
+      "task": "rag_noise",
+      "outcome": "improved",
+      "before_category": [
+        "wrong_both",
+        null
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "1686-8615 [D3]",
+      "before": "051-980-6614 [D1]",
+      "after": "1686-8615 [D3]"
+    },
+    {
+      "id": "valid-syn-value-00012",
+      "task": "rag_value",
+      "outcome": "regressed",
+      "before_category": [
+        "correct",
+        null
+      ],
+      "after_category": [
+        "wrong_abstention",
+        "head:missing"
+      ],
+      "gold": "2년 [D4]",
+      "before": "2년 [D4]",
+      "after": "확인 불가"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_10073",
+      "task": "rag_klue_missing",
+      "outcome": "improved",
+      "before_category": [
+        "false_presence",
+        "missing"
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "확인 불가",
+      "before": "팬오션 [D9]",
+      "after": "확인 불가"
+    },
+    {
+      "id": "valid-syn-noise-00020",
+      "task": "rag_noise",
+      "outcome": "improved",
+      "before_category": [
+        "wrong_both",
+        null
+      ],
+      "after_category": [
+        "correct",
+        null
+      ],
+      "gold": "18시간 [D7]",
+      "before": "36시간 [D6]",
+      "after": "18시간 [D7]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_09102",
+      "task": "rag_klue",
+      "outcome": "both_wrong",
+      "before_category": [
+        "wrong_value_right_source",
+        "disjoint"
+      ],
+      "after_category": [
+        "wrong_value_right_source",
+        "truncated"
+      ],
+      "gold": "포스코건설 [D6]",
+      "before": "권오준 포스 [D6]",
+      "after": "포스 [D6]"
+    },
+    {
+      "id": "valid-klue-klue-mrc-v1_train_06640",
+      "task": "rag_klue_missing",
+      "outcome": "regressed",
+      "before_category": [
+        "correct",
+        null
+      ],
+      "after_category": [
+        "false_presence",
+        "missing"
+      ],
+      "gold": "확인 불가",
+      "before": "확인 불가",
+      "after": "2.8% [D7]"
+    }
+  ],
+  "limitations": "Development-set diagnostic, no deployment claim. Raw paired p-value is unadjusted for multiple comparisons; report all pairs, do not use as an automatic selection gate."
+}

@@ -199,3 +199,11 @@ uv sync --frozen --extra corpus --python 3.12
 결과를 로컬 reports에 내려받은 후 `scripts/summarize_reader_factorial.py --output reports/<새파일>.json`으로 집계한다. dev/probe 모델 해시, 실행 이름, 평가 데이터 해시, 480/40행 분모와 정답 집계를 확인한다. 미완료 조합은 0점 대신 pending으로 남긴다. 역사적 실측 보고서의 임시 복사본으로 278/480 및 13/40 집계를 재현했고, 모델 해시 불일치는 거부했다. 후속 제거 실험은 몸통·헤드·학습 설정을 고정해 비교하며, probe 결과로 자동 모델 선택하지 않는다.
 
 `scripts/run_reader_removals_gpu.sh`는 systemd `trid-reader-removals-01`로 실행한다. CPT와 8조합 서비스 종료 후 8개 보존 완료 마커를 확인한 다음, CPT-v1 몸통·v2 헤드를 고정하고 TyDi / synthetic-hard / klue-hard 제거 데이터를 각각 2,000단계 학습한다. 다른 조건과 보존 절차는 factorial 실행과 같다. 비교 기준은 factorial의 CPT-v1/head-v2/data-v4이며, 결과를 보고 몸통·헤드를 다시 선택하지 않는다. 최초 8조합 중 실패가 있으면 제거 실험도 시작하지 않는다.
+
+### 비교 신뢰도와 중단 복구
+
+- 학습 데이터 감사: `reports/reader-hard-label-audit.json`. KLUE 파생 부정 예제 1,500행 중 원본의 대체 정답 문자열 충돌 후보는 68행이다(오표기 확정 수 아님). `train_09245`(도시), `train_10904`(작은소참진드기)는 근거가 답을 제공하는 확정 오표기다. 현재 실험 데이터는 변경하지 않았으며, 이 비교로 v4의 정답 품질을 보장하지 않는다. 향후 새 데이터에서 모든 정답 표현 검사와 의미 검토가 필요하다.
+- 짝지은 오류 비교: `.venv/bin/python -m scripts.compare_reader_reports --before reports/<이전>.json --after reports/<이후>.json --output reports/<새파일>.json`. 동일 데이터 해시·ID·gold를 확인하고 기존 오류 분류를 재사용한다. 개선/악화, 구간 경계/출처/답 없음 오류 전이를 기록한다. McNemar 정확 p값은 다중 비교 보정 전 개발 진단값이며 배포 판정 기준이 아니다.
+- 실제 과거 causal→bidirectional 보고서 비교: 480행 중 둘 다 정답 228, 개선 50, 악화 31, 둘 다 오답 171. 순증 19/480이며 새 GPU 실험 결과가 아니다.
+- EC2 재시작 후 `/home/ubuntu/recover_gpu_experiments.py`를 먼저 실행해 복구 계획을 확인한다. 실행 허용은 `sudo python3 /home/ubuntu/recover_gpu_experiments.py --execute`. 이 도구는 EC2 재시작이나 데이터 삭제를 하지 않는다. 활성 서비스는 중복 시작하지 않으며 CPT의 latest/state/모델/optimizer 파일을 확인한다. 텐서 내용 검증은 실제 trainer 로드 시 수행한다.
+- 독해기는 optimizer 재개가 지원되지 않는다. 보존 완료되지 않은 기존 독해 실행 디렉터리가 있으면 복구 도구는 덮어쓰지 않고 중단한다. 해당 실행은 별도 검토·보존 후 새 실험 식별자로 재실행해야 한다. transient systemd 서비스는 재부팅 후 자동 복구를 보장하지 않으므로 위 명시적 복구 절차를 사용한다.

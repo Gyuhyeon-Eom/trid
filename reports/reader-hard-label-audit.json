@@ -1,0 +1,451 @@
+{
+  "scope": "training-only; running datasets unchanged",
+  "train_sha256": "c68d4c7c0a53b219d57dd08918f63ff1780c1206942bb954d803842dc324c0d2",
+  "klue_negative_rows": 1500,
+  "alternate_answer_collision_rows": 68,
+  "collision_is_not_mislabel": true,
+  "manual_sample": {
+    "selection": "first 3 rows in each of 6 hard-negative groups in file order",
+    "rows": 18,
+    "confirmed_mislabels_in_sample": 0
+  },
+  "confirmed_false_negative": [
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_09245",
+      "question": "여미족이 사는 곳은?",
+      "evidence": "여미족은 ‘젊고(young), 도시에 거주하는(urban) 남성(male)’의 줄임말이다",
+      "answer_in_evidence": "도시",
+      "cause": "first gold 대도시 excluded, alternative 도시 remained"
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_10904",
+      "question": "SFTS의 감염원은?",
+      "evidence": "작은소참진드기(야생진드기의 일종)로 인해 발생하는 SFTS바이러스",
+      "answer_in_evidence": "작은소참진드기",
+      "cause": "first gold includes quotes; alternative without quotes matches after whitespace removal"
+    }
+  ],
+  "risk_candidates": [
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_00264",
+      "matched_original_answers": [
+        "민주당"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_04787",
+      "matched_original_answers": [
+        "SCIRI"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_11656",
+      "matched_original_answers": [
+        "푸조"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_09789",
+      "matched_original_answers": [
+        "4"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_09283",
+      "matched_original_answers": [
+        "3"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_08261",
+      "matched_original_answers": [
+        "6"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_06271",
+      "matched_original_answers": [
+        "8"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_14038",
+      "matched_original_answers": [
+        "1"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_10469",
+      "matched_original_answers": [
+        "10"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_11325",
+      "matched_original_answers": [
+        "현대"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_07134",
+      "matched_original_answers": [
+        "김상훈",
+        "김 변호사"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_15758",
+      "matched_original_answers": [
+        "분양가 상한제"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_05955",
+      "matched_original_answers": [
+        "스텐트"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_13966",
+      "matched_original_answers": [
+        "한독주니어포럼"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_15259",
+      "matched_original_answers": [
+        "5"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_17520",
+      "matched_original_answers": [
+        "20"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_14277",
+      "matched_original_answers": [
+        "5"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_05876",
+      "matched_original_answers": [
+        "15"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_09093",
+      "matched_original_answers": [
+        "2"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_17541",
+      "matched_original_answers": [
+        "3"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_17348",
+      "matched_original_answers": [
+        "29일",
+        "29"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_15719",
+      "matched_original_answers": [
+        "7"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_11973",
+      "matched_original_answers": [
+        "8"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_11920",
+      "matched_original_answers": [
+        "10"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_09925",
+      "matched_original_answers": [
+        "20"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_11162",
+      "matched_original_answers": [
+        "12"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_16733",
+      "matched_original_answers": [
+        "역량"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_05986",
+      "matched_original_answers": [
+        "TV"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_11691",
+      "matched_original_answers": [
+        "경기 창조경제 혁신센터"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_15390",
+      "matched_original_answers": [
+        "장더장"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_13416",
+      "matched_original_answers": [
+        "100"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_16014",
+      "matched_original_answers": [
+        "서울"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_09755",
+      "matched_original_answers": [
+        "5"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_07974",
+      "matched_original_answers": [
+        "9"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_09245",
+      "matched_original_answers": [
+        "도시"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_09307",
+      "matched_original_answers": [
+        "힐스테이트 태전"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_12648",
+      "matched_original_answers": [
+        "2만"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_00669",
+      "matched_original_answers": [
+        "영국"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_11020",
+      "matched_original_answers": [
+        "4"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_14970",
+      "matched_original_answers": [
+        "2"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_06741",
+      "matched_original_answers": [
+        "12"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_16972",
+      "matched_original_answers": [
+        "리"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_11706",
+      "matched_original_answers": [
+        "2"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_12552",
+      "matched_original_answers": [
+        "워싱턴"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_06363",
+      "matched_original_answers": [
+        "코레일"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_08368",
+      "matched_original_answers": [
+        "12"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_06482",
+      "matched_original_answers": [
+        "20"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_14562",
+      "matched_original_answers": [
+        "서울",
+        "롯데호텔",
+        "롯데호텔 34층",
+        "롯데호텔 34층 집무실"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_16755",
+      "matched_original_answers": [
+        "공릉"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_02079",
+      "matched_original_answers": [
+        "1"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_10904",
+      "matched_original_answers": [
+        "작은소 참진드기"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_13403",
+      "matched_original_answers": [
+        "1"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_08578",
+      "matched_original_answers": [
+        "5"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_02443",
+      "matched_original_answers": [
+        "18"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_13972",
+      "matched_original_answers": [
+        "8"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_06901",
+      "matched_original_answers": [
+        "2"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_00363",
+      "matched_original_answers": [
+        "4"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_09632",
+      "matched_original_answers": [
+        "최경희"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_15391",
+      "matched_original_answers": [
+        "11"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_10248",
+      "matched_original_answers": [
+        "인터넷TV",
+        "IPTV"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_11711",
+      "matched_original_answers": [
+        "7"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_17586",
+      "matched_original_answers": [
+        "콜 오브 듀티 : 블랙 옵스"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_05630",
+      "matched_original_answers": [
+        "57"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_12979",
+      "matched_original_answers": [
+        "ISA"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_05956",
+      "matched_original_answers": [
+        "5"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_08384",
+      "matched_original_answers": [
+        "구원파"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_08651",
+      "matched_original_answers": [
+        "혼외 아들"
+      ]
+    },
+    {
+      "id": "train-kluemh-klue-mrc-v1_train_11267",
+      "matched_original_answers": [
+        "30"
+      ]
+    }
+  ],
+  "limits": [
+    "Not a full semantic review of all 3500 hard negatives",
+    "Short numeric and substring hits are not proof of answerability",
+    "same_type synthetic negatives still omit the target label; not all new rows eliminate lexical shortcuts",
+    "Implausible generated values observed: 30-minute parking fee 470만원, clinic change deadline 16개월"
+  ],
+  "recommendation": "Future dataset only: consider every annotated answer and normalized variants when selecting negative passages; manually adjudicate candidate IDs. Preserve current factorial data hashes."
+}
