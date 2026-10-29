@@ -88,8 +88,8 @@ SHAPES = {"RRN": re.compile(r"\d{6}[- ]?\d{7}"), "FRN": re.compile(r"\d{6}[- ]?\
 # 표 숫자열("2010 2011 2012 2013")이나 코드('DATE0703221230', '154.16341649')에 붙은 구간 제외; 'T.055-…'는 허용.
 # \Z(문자열 끝)를 쓴다: '$'는 끝의 줄바꿈 앞에서도 맞아서 줄 끝 글자("CENTER\n010-…", "7630\n010-…")를 붙은 것으로
 # 오판해 줄 단위 연락처가 남았다(B-004, FineWeb clean-v1 표본).
-GLUED_AFTER = re.compile(r"[-－ .]?\d|[A-Za-z_]")
-GLUED_BEFORE = re.compile(r"\d[-－ .]?\Z|[A-Za-z_]\Z")
+GLUED_AFTER = re.compile(r"[-－ .]?\d|[A-Za-z_]|[-－][A-Za-z0-9]")
+GLUED_BEFORE = re.compile(r"\d[-－ .,]?\Z|[A-Za-z_]\Z|[A-Za-z0-9][-－]\Z")  # ',': "1,017 20250923"(금액+날짜)
 
 _kiwi = None
 
@@ -245,10 +245,15 @@ def well_formed(text, label, start, end):
 FALLBACK_PHONE = re.compile(r"(?<![\d._])(?<!\d[-－])(?:\+\d{1,3}[-. ]?)?(?:\(0(?!80|60)\d{1,3}\)[-.－]? ?|0(?!80|60)\d{1,3}[-.)－] ?)"
                             r"\d{3,4}[-.－] ?\d{4}(?![-.－]?\d|_)"
                             r"|(?<![\w+])\+[1-9]\d{0,2}(?:[- ]\d{1,4}){2,3}[- ]\d{4}(?![-.－]?\d|_)"
-                            r"|(?<![\w+])\+[1-9]\d(?:[- ]?\d){7,13}(?![-.－]?\d|_)")
+                            r"|(?<![\w+])\+[1-9]\d{0,2}[- ]?\d{7,12}(?![-.－]?\d|_)")
 # 법인등록번호는 주민등록번호와 형식(6-7자리)이 같다. 앞 문맥이 '등록번호'(주민·외국인 제외)이고 법인등록번호 검증식이
 # 맞을 때만 개인정보가 아닌 것으로 보고 남긴다. 둘 중 하나라도 아니면 치환한다.
 CORP_CONTEXT = re.compile(r"(?<!주민)(?<!외국인)(?:법인|학원|사업장|고유)?\s*등록\s*번호\s*[:：]?\s*$")
+# 회사명 바로 뒤 13자리(기업 목록 표의 법인등록번호 열): 법인등록번호 검증식이 맞을 때만 남긴다.
+COMPANY_CONTEXT = re.compile(r"㈜|\(주\)|주식회사|유한회사|법인|재단|협동조합")
+# 특허·상표 출원/등록번호 "10-2019-0164070"(권리구분 2자리-연도-일련 7자리)를 ko-pii가 계좌로 볼 때, 출원·등록 문맥이
+# 앞에 있으면 남긴다.
+IP_NUMBER = re.compile(r"\d{2}-(?:19|20)\d{2}-\d{7}")
 # 하이픈 없는 숫자열을 ko-pii가 계좌로 볼 때: 숫자열이 URL 토큰의 일부이고 같은 줄의 그 앞 20자에 은행·계좌 단어가 없으면
 # 글번호 같은 식별자로 보고 남긴다. 하이픈이 있거나, URL 밖이거나, 은행 문맥이 있으면 치환한다.
 BANK_CONTEXT = re.compile(r"계좌|은행|입금|예금주|농협|신협|수협|새마을|우체국|국민|신한|우리|하나|기업|카카오뱅크|케이뱅크|토스뱅크|KB|SC|Account|account")
@@ -268,19 +273,43 @@ def corporate_number(digits):
     return len(digits) == 13 and (10 - sum(int(c) * (1 + i % 2) for i, c in enumerate(digits[:12])) % 10) % 10 == int(digits[12])
 
 
+CARD_CONTEXT = re.compile(r"카드|결제|신용|체크|[Cc]ard")
+
+
+def in_url_without_context(text, start, context):
+    """숫자열이 같은 줄의 URL 토큰 안에 있고, 그 앞 20자(URL 앞부분 기준)에 해당 개인정보 문맥 단어가 없다."""
+    before = text[text.rfind("\n", 0, start) + 1:start]
+    return bool(URL_TOKEN.search(before)) and not context.search(before[-20:].split("://")[0])
+
+
 def personal(text, label, start, end):
-    """형식이 맞는 탐지 가운데, 구조·문맥으로 개인정보가 아님이 확인되는 경우만 False."""
+    """형식이 맞는 탐지 가운데, 구조·문맥·검증식으로 개인정보가 아님이 확인되는 경우만 False. 하이픈 없는 숫자열이
+    URL 안에 있다는 사실만으로는 면제하지 않는다: 해당 개인정보 문맥 단어가 없을 때만 글번호·게시물 ID로 본다."""
     span = text[start:end]
+    digits = re.sub(r"\D", "", span)
     before = text[max(0, start - 20):start]
-    if label in ("RRN", "FRN") and CORP_CONTEXT.search(before):
-        return not corporate_number(re.sub(r"\D", "", span))
-    if label in ("RRN", "FRN") and span.isdigit() and not PERSON_ID_CONTEXT.search(before):
-        return not (ean13(span) or ITEM_ID_CONTEXT.search(before))
-    if label == "ACCOUNT" and "-" not in span:
-        line_start = text.rfind("\n", 0, start) + 1
-        before = text[line_start:start]
-        if URL_TOKEN.search(before) and not BANK_CONTEXT.search(before[-20:].split("://")[0]):
+    if label in ("RRN", "FRN"):
+        if PERSON_ID_CONTEXT.search(before):
+            return True
+        if CORP_CONTEXT.search(before) or COMPANY_CONTEXT.search(before):
+            return not corporate_number(digits)
+        if span.isdigit() and (ean13(span) or ITEM_ID_CONTEXT.search(before)
+                               or in_url_without_context(text, start, PERSON_ID_CONTEXT)):
             return False
+        # 7번째 자리 0·9는 1800년대 출생 형식: 현재 쓰이는 주민번호가 아니라 법인등록번호 등 다른 13자리 번호
+        return not (label == "RRN" and digits[6:7] in ("0", "9"))
+    if label == "CARD":
+        m = re.fullmatch(r"(\d{4})([- ]?)(\d{4})([- ]?)(\d{4})([- ]?)(\d{4})", span)
+        if m and len({m.group(2), m.group(4), m.group(6)}) > 1:
+            return False  # 구분 문자가 섞임: "2100-0413 2100-0431" 같은 내선번호 나열
+        if m and m.group(2) == " " and sum(1900 <= int(m.group(i)) <= 2099 for i in (1, 3, 5, 7)) >= 2:
+            return False  # 표의 연도·기간 열 "2015 2016 2017 2018", "2023 2025 0401 1231"
+        if span.isdigit() and in_url_without_context(text, start, CARD_CONTEXT):
+            return False  # 게시물 ID(facebook.com/.../posts/2369610576400219)
+    if label == "ACCOUNT" and "-" not in span and in_url_without_context(text, start, BANK_CONTEXT):
+        return False
+    if label == "ACCOUNT" and IP_NUMBER.fullmatch(span) and ITEM_ID_CONTEXT.search(before):
+        return False
     return True
 
 

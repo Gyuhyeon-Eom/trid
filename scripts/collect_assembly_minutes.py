@@ -31,6 +31,7 @@ import sys
 import threading
 import time
 import unicodedata
+from collections import Counter
 from concurrent.futures import ThreadPoolExecutor
 from html.parser import HTMLParser
 from pathlib import Path
@@ -314,12 +315,32 @@ def done_ids(s3):
     return ids
 
 
-def fetch(client, s3, index, per_shard, workers, limit, metrics):
+def stratified(meetings, seed):
+    """Seeded order that alternates meeting classes (plenary, committee, audit ...) so a limited fetch is spread."""
+    import random
+    by_class = {}
+    for m in sorted(meetings, key=lambda m: m['id']):
+        by_class.setdefault(str(m.get('class')), []).append(m)
+    queues = []
+    for cls in sorted(by_class):
+        q = by_class[cls]
+        random.Random(f'{seed}:{cls}').shuffle(q)
+        queues.append(q)
+    out = []
+    while any(queues):
+        for q in queues:
+            if q:
+                out.append(q.pop())
+    return out
+
+
+def fetch(client, s3, index, per_shard, workers, limit, metrics, seed=None):
     meetings = list(read_json_s3(s3, f'corpus/state/{SOURCE}/{index}', {'meetings': {}})['meetings'].values())
-    meetings.sort(key=lambda m: m['id'])
+    meetings = stratified(meetings, seed) if seed is not None else sorted(meetings, key=lambda m: m['id'])
     done = done_ids(s3)
     todo = [m for m in meetings if m['id'] not in done][:limit]
-    print(f'{len(meetings)} meetings indexed, {len(done)} done, {len(todo)} to fetch', flush=True)
+    print(f'{len(meetings)} meetings indexed, {len(done)} done, {len(todo)} to fetch '
+          f'({dict(Counter(str(m.get("class")) for m in todo))} by class)', flush=True)
     shard = 1 + max([-1] + [int(k.rsplit('-', 1)[1].split('.')[0]) for k in list_keys(s3, f'corpus/state/{SOURCE}/{VERSION}/shard-')])
     started = time.monotonic()
 
@@ -328,10 +349,13 @@ def fetch(client, s3, index, per_shard, workers, limit, metrics):
         if r.status_code != 200 or '회의록' not in r.text:
             return meeting, None, None, f'http_{r.status_code}'
         t = time.monotonic()
-        s3.put_object(Bucket=BUCKET, Key=f"corpus/raw/{SOURCE}/{meeting['id']}.html.gz", Body=gzip.compress(r.content, mtime=0))
+        raw_key = f"corpus/raw/{SOURCE}/{meeting['id']}.html.gz"
+        raw_sha = put_verified(s3, raw_key, gzip.compress(r.content, mtime=0))
         metrics.add('s3_s', time.monotonic() - t)
         t = time.monotonic()
         row, pii = row_of(meeting, r.text, datetime.datetime.now(datetime.timezone.utc).isoformat(timespec='seconds'))
+        row['meta'].update({'raw_key': raw_key, 'raw_gzip_sha256': raw_sha,
+                            'raw_html_sha256': hashlib.sha256(r.content).hexdigest()})
         metrics.add('parse_s', time.monotonic() - t)
         return meeting, row, pii, None
 
@@ -339,7 +363,15 @@ def fetch(client, s3, index, per_shard, workers, limit, metrics):
         chunk = todo[begin:begin + per_shard]
         with ThreadPoolExecutor(workers) as pool:
             results = list(pool.map(one, chunk))
-        rows = [row for _, row, _, _ in results if row and row['text']]
+        seen_text = {}
+        rows = []
+        for _, row, _, _ in results:
+            if row and row['text']:
+                if row['sha256'] in seen_text:
+                    row['flags'].append(f"duplicate_text_of:{seen_text[row['sha256']]}")
+                seen_text.setdefault(row['sha256'], row['id'])
+                rows.append(row)
+        empty = [str(m['id']) for m, row, _, _ in results if row is not None and not row['text']]
         failures = {str(m['id']): err for m, _, _, err in results if err}
         ids = [m['id'] for m, row, _, _ in results if row is not None]
         body = gzip.compress(''.join(json.dumps(r, ensure_ascii=False) + '\n' for r in rows).encode(), mtime=0)
@@ -351,6 +383,8 @@ def fetch(client, s3, index, per_shard, workers, limit, metrics):
             for label, n in (p or {}).items():
                 pii[label] = pii.get(label, 0) + n
         manifest = {'key': key, 'sha256': digest, 'bytes': len(body), 'ids': ids, 'failures': failures,
+                    'empty_text_ids': empty,
+                    'duplicate_text_rows': sum(any(f.startswith('duplicate_text_of:') for f in r['flags']) for r in rows),
                     'rows': len(rows), 'characters': sum(len(r['text']) for r in rows),
                     'splits': {s: sum(r['split'] == s for r in rows) for s in ('train', 'valid', 'test')},
                     'chars_by_kind': {k: sum(len(r['text']) for r in rows if r['kind'] == k) for k in {r['kind'] for r in rows}},
@@ -408,13 +442,14 @@ def main():
     p.add_argument('--workers', type=int, default=4, help='concurrent fetches sharing the host limiter')
     p.add_argument('--per-shard', type=int, default=200)
     p.add_argument('--limit', type=int, help='fetch at most this many meetings (pilot)')
+    p.add_argument('--seed', help='fetch order: seeded, alternating meeting classes (default: ascending id)')
     args = p.parse_args()
     s3, metrics = s3_client(), Metrics()
     client = Client(HostLimiter(args.interval))
     if args.action == 'discover':
         discover(client, s3, args.terms, args.classes, args.index, metrics)
     elif args.action == 'fetch':
-        fetch(client, s3, args.index, args.per_shard, args.workers, args.limit, metrics)
+        fetch(client, s3, args.index, args.per_shard, args.workers, args.limit, metrics, args.seed)
     else:
         aggregate(s3, args.index)
 
