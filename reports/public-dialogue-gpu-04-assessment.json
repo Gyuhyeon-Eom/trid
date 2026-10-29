@@ -1,0 +1,21 @@
+{
+  "runs": ["trid-public-dialogue-gpu-04-mix02", "trid-public-dialogue-gpu-04-mix03"],
+  "hypothesis": "Over-abstention is inherited from the stage-one parent trid-public-dialogue-01 (93% answerable abstention).",
+  "change": "Initialize directly from the pretrained base runs/trid-korean-medium-cpt-gpu-complete (SHA256 3ca24bc4...8c03, the same base stage one used), skipping stage one. Same 1200 steps, seed, lr, batch, L40S CUDA. Run on mix-02 (original abstention share) and mix-03 (abstention share 10%).",
+  "confound": "Total SFT steps are 1200 here vs 600+1200 for gpu-01/gpu-03.",
+  "weights_sha256": {
+    "mix02": "4d853d94fb351cac1584888f46b443d9825fe63cec05961e2d69a759dbb69899",
+    "mix03": "064f14d9776f77856b037d83dce199d17d2289fe83b9d441aa3f99c743843d6b"
+  },
+  "best_validation_loss_last_step": {"mix02": 0.6161, "mix03": 0.6050},
+  "rag310_evidence_grounded_mention": {
+    "gpu-01 (stage-one parent, mix-02)": {"answerable": "24/228", "unanswerable": "44/82", "answerable_abstained": "88/228"},
+    "gpu-03 (stage-one parent, mix-03)": {"answerable": "17/228", "unanswerable": "45/82", "answerable_abstained": "94/228"},
+    "gpu-04 (base, mix-02)": {"answerable": "20/228", "unanswerable": "45/82", "answerable_abstained": "99/228"},
+    "gpu-04 (base, mix-03)": {"answerable": "26/228", "unanswerable": "40/82", "answerable_abstained": "90/228"}
+  },
+  "heldout_public_qa": {"mix02": "0/8", "mix03": "0/8", "notes": "Wrong facts, unrelated generic text, repetition; one 1/8 in earlier runs (250만원) no longer reproduced."},
+  "decision": "do_not_deploy",
+  "conclusion": "Hypothesis rejected. Across 2x2 (start: stage-one vs base; abstention share: 31% vs 10%) answerable accuracy stays 7.5-11.4% and answerable abstention 38.6-43.4%, all within noise for 228 items. Neither the data share nor the starting checkpoint explains the abstention; the remaining explanation is insufficient long-passage reading ability of the 91M backbone with this SFT.",
+  "review": "Automatic RAG310 scoring; public 8 by assistant review against predeclared facts, not independent human evaluation."
+}
