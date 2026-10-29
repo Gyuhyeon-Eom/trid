@@ -1,0 +1,23 @@
+{
+ "reservation": "reports/coordination/benchmark-reserve-001.jsonl",
+ "reservation_sha256": "9cf8233b33a790c02be80358c3a94d54ca79af0cea83d6bf5e66c9986ffb9a71",
+ "reserved_families": 1000,
+ "mode": "metadata-only: id/group/url; text overlap not checked",
+ "corpus": [
+  {
+   "path": "data/mix-v3-dry/train.jsonl",
+   "sha256": "8da32dbb7debe5dc684b6ab4b76d00310fada3bc249d2419bc18b98f653cee4f"
+  },
+  {
+   "path": "data/mix-v3-dry/valid.jsonl",
+   "sha256": "3e1acadd5c3df879baafe105b18eae053c8a21ac4efbf66e420c98df22f1d123"
+  },
+  {
+   "path": "data/mix-v3-dry/test.jsonl",
+   "sha256": "6c094edfd565ffe67b13530ac3afa7f9a563a43339ce2d3bf82ce67b4710f24d"
+  }
+ ],
+ "corpus_rows_scanned": 328573,
+ "matched_corpus_rows": 0,
+ "matches": []
+}

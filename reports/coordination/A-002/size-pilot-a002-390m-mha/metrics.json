@@ -1,0 +1,91 @@
+[
+  {
+    "step": 0,
+    "valid_loss": 9.213001489639282,
+    "perplexity": 10026.646615796037
+  },
+  {
+    "step": 51,
+    "train_loss": 6.327860355377197,
+    "valid_loss": 6.213671386241913,
+    "perplexity": 499.5318631988122,
+    "tokens_seen": 3342336,
+    "lineage_tokens_seen": 3342336,
+    "training_seconds": 116.051,
+    "session_tokens_per_second": 28800.6,
+    "grad_norm": 1.1267,
+    "grad_norm_max_since_eval": 46.1904,
+    "cuda_max_memory_allocated_gib": 27.157,
+    "epoch": 0
+  },
+  {
+    "step": 102,
+    "train_loss": 5.125357151031494,
+    "valid_loss": 5.005266964435577,
+    "perplexity": 149.19690811059203,
+    "tokens_seen": 6684672,
+    "lineage_tokens_seen": 6684672,
+    "training_seconds": 189.524,
+    "session_tokens_per_second": 35270.9,
+    "grad_norm": 0.6176,
+    "grad_norm_max_since_eval": 1.7749,
+    "cuda_max_memory_allocated_gib": 27.157,
+    "epoch": 0
+  },
+  {
+    "step": 153,
+    "train_loss": 4.5591044425964355,
+    "valid_loss": 4.538831532001495,
+    "perplexity": 93.58138935171885,
+    "tokens_seen": 10027008,
+    "lineage_tokens_seen": 10027008,
+    "training_seconds": 262.868,
+    "session_tokens_per_second": 38144.7,
+    "grad_norm": 0.6751,
+    "grad_norm_max_since_eval": 1.5307,
+    "cuda_max_memory_allocated_gib": 27.157,
+    "epoch": 0
+  },
+  {
+    "step": 204,
+    "train_loss": 4.164490699768066,
+    "valid_loss": 4.228930622339249,
+    "perplexity": 68.64378677828289,
+    "tokens_seen": 13369344,
+    "lineage_tokens_seen": 13369344,
+    "training_seconds": 380.503,
+    "session_tokens_per_second": 28412.8,
+    "grad_norm": 0.546,
+    "grad_norm_max_since_eval": 1.4989,
+    "cuda_max_memory_allocated_gib": 27.157,
+    "epoch": 0
+  },
+  {
+    "step": 255,
+    "train_loss": 3.803610324859619,
+    "valid_loss": 3.9788525104522705,
+    "perplexity": 53.45565921041946,
+    "tokens_seen": 16711680,
+    "lineage_tokens_seen": 16711680,
+    "training_seconds": 457.558,
+    "session_tokens_per_second": 34334.9,
+    "grad_norm": 0.4794,
+    "grad_norm_max_since_eval": 1.9158,
+    "cuda_max_memory_allocated_gib": 27.157,
+    "epoch": 0
+  },
+  {
+    "step": 306,
+    "train_loss": 3.698749303817749,
+    "valid_loss": 3.777162045240402,
+    "perplexity": 43.691870071506024,
+    "tokens_seen": 20054016,
+    "lineage_tokens_seen": 20054016,
+    "training_seconds": 534.965,
+    "session_tokens_per_second": 36850.8,
+    "grad_norm": 0.4933,
+    "grad_norm_max_since_eval": 2.1049,
+    "cuda_max_memory_allocated_gib": 27.157,
+    "epoch": 0
+  }
+]
