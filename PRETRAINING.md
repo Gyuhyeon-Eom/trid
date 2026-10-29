@@ -191,7 +191,7 @@ uv sync --frozen --extra corpus --python 3.12
 - `trid-cpt`와 재시작 단위 `trid-cpt-resumed` 종료 및 CPT 메타데이터 `status=complete`를 모두 확인한 뒤 시작한다. 기존 CPT 실행 중에는 소스를 교체하지 않는다.
 - 몸통 base-v1/CPT-v1 × 헤드 v1/v2 × curriculum v2/v4의 8조합. 모든 조합은 bidirectional, 2,000 steps, batch/micro-batch 16, lr 1e-4, seed 271029, eval 100으로 고정한다.
 - 개발셋은 동일한 v2 validation으로 평가한다. 기관문서 probe는 진단용이며 반복 사용했으므로 새로운 독립 최종 평가로 주장하지 않는다. v4와 v2의 데이터량이 달라 같은 step 수는 같은 epoch 수가 아니다.
-- 결과 이름은 `reader-factorial-01-{backbone}-{head}-{data}`. 기존 미완료 디렉터리는 덮어쓰지 않고 중단한다. 실행별 모델·보고서를 S3에 보존하고 원격 가중치의 SHA256을 로컬과 비교한 뒤 이번 실행의 로컬 safetensors만 회수한다. 실행 전 여유 공간 1.5GiB 미만이면 중단한다.
+- 결과 이름은 `reader-factorial-01-{backbone}-{head}-{data}`. 학습 미완료 디렉터리는 덮어쓰지 않는다. 학습 완료 모델은 `scripts/run_reader_trial.py`가 설정·초기 모델·데이터 해시를 확인한 뒤 누락된 평가만 이어간다. 기존 보고서도 모델·데이터 해시와 분모를 검증한다. 모델·보고서를 S3에 보존하고 모든 원격 가중치의 SHA256을 검증한 뒤 보존 완료 마커를 쓰고 로컬 가중치를 회수한다. 새 학습 전 여유 공간 1.5GiB 미만이면 중단한다.
 - 이 비교는 세 묶음의 효과를 분리한다. 헤드 내부 변경·합성 hard negatives·TyDi 및 사전학습 최적화 각각의 기여도를 분리하는 실험은 아니다.
 
 후속 데이터 제거 비교는 `scripts/ablate_reader_data.py --remove {tydi,synthetic-hard,klue-hard} --output data/<새경로>`로 준비한다. v4의 해당 task만 제거하며 남은 행의 바이트·순서와 검증셋은 보존한다. synthetic-hard는 긍정/부정 예제를 함께 제거한다. 실제 생성 결과는 각각 train 35,063 / 33,661 / 32,161행이며 검증 SHA256은 모두 v2와 같다. 이는 데이터 준비 결과이지 성능 측정 결과가 아니다.
@@ -206,4 +206,11 @@ uv sync --frozen --extra corpus --python 3.12
 - 짝지은 오류 비교: `.venv/bin/python -m scripts.compare_reader_reports --before reports/<이전>.json --after reports/<이후>.json --output reports/<새파일>.json`. 동일 데이터 해시·ID·gold를 확인하고 기존 오류 분류를 재사용한다. 개선/악화, 구간 경계/출처/답 없음 오류 전이를 기록한다. McNemar 정확 p값은 다중 비교 보정 전 개발 진단값이며 배포 판정 기준이 아니다.
 - 실제 과거 causal→bidirectional 보고서 비교: 480행 중 둘 다 정답 228, 개선 50, 악화 31, 둘 다 오답 171. 순증 19/480이며 새 GPU 실험 결과가 아니다.
 - EC2 재시작 후 `/home/ubuntu/recover_gpu_experiments.py`를 먼저 실행해 복구 계획을 확인한다. 실행 허용은 `sudo python3 /home/ubuntu/recover_gpu_experiments.py --execute`. 이 도구는 EC2 재시작이나 데이터 삭제를 하지 않는다. 활성 서비스는 중복 시작하지 않으며 CPT의 latest/state/모델/optimizer 파일을 확인한다. 텐서 내용 검증은 실제 trainer 로드 시 수행한다.
-- 독해기는 optimizer 재개가 지원되지 않는다. 보존 완료되지 않은 기존 독해 실행 디렉터리가 있으면 복구 도구는 덮어쓰지 않고 중단한다. 해당 실행은 별도 검토·보존 후 새 실험 식별자로 재실행해야 한다. transient systemd 서비스는 재부팅 후 자동 복구를 보장하지 않으므로 위 명시적 복구 절차를 사용한다.
+- 독해기는 optimizer 재개가 지원되지 않는다. **학습 미완료** 실행은 별도 검토·보존 후 새 실험 식별자로 재실행해야 한다. **학습 완료·평가 미완료** 실행은 기존 가중치를 재사용해 평가부터 재개한다. transient systemd 서비스는 재부팅 후 자동 복구를 보장하지 않으므로 위 명시적 복구 절차를 사용한다.
+
+### GPU 평가 환경 복구 (2026-10-29)
+
+- 원격 첫 조합은 학습 완료 뒤 Python 3.10에 `hashlib.file_digest`가 없어 평가가 실패했다. 함수 우회 패치 대신 `/home/ubuntu/trid-eval-venv`에 Python 3.12.16, PyTorch 2.11.0+cpu, tokenizers 0.23.3, safetensors 0.8.0, numpy 2.5.4를 설치했다.
+- 평가·집계·보존 검증은 이 Python 3.12 환경에서 수행한다. 이번 비교의 CUDA 학습은 조건을 고정하기 위해 기존 `/home/ubuntu/trid-venv`(Python 3.10.12, PyTorch 2.11.0+cu128)를 유지한다. 이는 실험 환경 기록이지 제품의 Python 3.12 요구사항을 낮추는 변경이 아니다.
+- 실행기는 모델 학습 전에 평가 런타임을 검사한다. 재실행 때 전체 소스 아카이브를 덮어쓰지 않는다. 평가 복구용 코드만 배포했으며 기존 데이터·모델 계산은 변경하지 않았다. Python 문법과 의존성 버전까지 프로젝트 요구사항에 맞춘 통합 CUDA 환경으로의 이전은 별도 새 실험에서 해야 한다.
+- 복구 변경 검증: 로컬 전체 269 tests 통과, 두 shell 실행기 `bash -n` 통과. 원격 Python 3.12에서 의존성 import와 `hashlib.file_digest` 사용 가능 여부를 확인했고, 복구 도구가 두 systemd 서비스를 시작한 응답을 받았다. 이후 결과 확인 중 EC2가 `stopping / User initiated`로 바뀌어 실제 평가 완료·다음 조합 진행은 확인하지 못했다. 첫 조합 보고서는 이 시점 S3에 없었다. 완료 모델은 설치 전 S3에 보존했으며 인스턴스를 임의로 재시작하지 않았다.

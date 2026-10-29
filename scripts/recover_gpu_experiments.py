@@ -42,8 +42,14 @@ def plan(root, active):
         if not remaining:
             continue
         for name in remaining:
-            if (root / 'runs' / name).exists():
-                raise ValueError(f'Reader attempt needs manual review; no optimizer resume available, preserve it: {name}')
+            attempt = root / 'runs' / name
+            if attempt.exists():
+                metadata = attempt / 'training.json'
+                trained = json.loads(metadata.read_text()) if metadata.is_file() else {}
+                if trained.get('status') != 'complete' or not (attempt / 'reader.safetensors').is_file():
+                    raise ValueError(f'Reader attempt needs manual review; no optimizer resume available, preserve it: {name}')
+                # The trial runner validates recipe/data/model fingerprints before
+                # reusing a completed model and resuming its missing evaluations.
         if not runner.is_file():
             raise ValueError(f'Missing previously deployed runner: {runner}')
         commands.append((unit, prefix + '.log', ['/bin/bash', str(runner)]))
