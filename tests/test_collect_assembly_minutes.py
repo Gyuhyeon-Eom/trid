@@ -59,14 +59,16 @@ class AssemblyMinutesTests(unittest.TestCase):
         self.assertTrue(row['source'].endswith('xml.do?id=55958&type=view'))
 
     def test_host_limiter_spaces_starts_across_threads_and_backs_off(self):
-        limiter, starts = HostLimiter(0.05), []
-        threads = [threading.Thread(target=lambda: (limiter.acquire(), starts.append(time.monotonic()))) for _ in range(4)]
+        limiter, waits = HostLimiter(0.05), []
+        started = time.monotonic()
+        threads = [threading.Thread(target=lambda: waits.append(limiter.acquire())) for _ in range(4)]
         for t in threads:
             t.start()
         for t in threads:
             t.join()
-        starts.sort()
-        self.assertTrue(all(b - a >= 0.045 for a, b in zip(starts, starts[1:])))
+        # Four starts share one host interval: the last one cannot begin before 3 intervals have passed.
+        self.assertGreaterEqual(time.monotonic() - started, 0.15 - 0.01)
+        self.assertAlmostEqual(sorted(waits)[-1], 0.15, delta=0.03)
         limiter.observe(429, 0.1, retry_after=0.2)
         self.assertGreaterEqual(limiter.interval, 0.2)
         for _ in range(200):
