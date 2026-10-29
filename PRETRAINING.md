@@ -187,8 +187,8 @@ uv sync --frozen --extra corpus --python 3.12
 
 ### CPT 이후 독해기 factorial 비교 (2026-10-29)
 
-- 실행기: `/tmp/reader-ablation-8.sh`, S3 `trid-training-148761639313/src/reader-ablation-8.sh`; 원격 systemd 단위 `trid-reader-factorial-01`.
-- `trid-cpt` 종료와 CPT 메타데이터 `status=complete`를 모두 확인한 뒤 시작한다. 기존 CPT 실행 중에는 소스를 교체하지 않는다.
+- 실행기: `scripts/run_reader_factorial_gpu.sh`, S3 `trid-training-148761639313/src/reader-ablation-8.sh`; 원격 systemd 단위 `trid-reader-factorial-01`.
+- `trid-cpt`와 재시작 단위 `trid-cpt-resumed` 종료 및 CPT 메타데이터 `status=complete`를 모두 확인한 뒤 시작한다. 기존 CPT 실행 중에는 소스를 교체하지 않는다.
 - 몸통 base-v1/CPT-v1 × 헤드 v1/v2 × curriculum v2/v4의 8조합. 모든 조합은 bidirectional, 2,000 steps, batch/micro-batch 16, lr 1e-4, seed 271029, eval 100으로 고정한다.
 - 개발셋은 동일한 v2 validation으로 평가한다. 기관문서 probe는 진단용이며 반복 사용했으므로 새로운 독립 최종 평가로 주장하지 않는다. v4와 v2의 데이터량이 달라 같은 step 수는 같은 epoch 수가 아니다.
 - 결과 이름은 `reader-factorial-01-{backbone}-{head}-{data}`. 기존 미완료 디렉터리는 덮어쓰지 않고 중단한다. 실행별 모델·보고서를 S3에 보존하고 원격 가중치의 SHA256을 로컬과 비교한 뒤 이번 실행의 로컬 safetensors만 회수한다. 실행 전 여유 공간 1.5GiB 미만이면 중단한다.
