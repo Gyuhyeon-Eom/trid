@@ -1,0 +1,28 @@
+{
+  "runs": ["trid-public-dialogue-gpu-07-shared-ctx-01-s3000", "trid-public-dialogue-gpu-07-mix06-s3000"],
+  "hypothesis": "Shared contexts (several questions with different answers against one byte-identical context) remove the context->answer shortcut, so the model reads the question and RAG310 answerable accuracy rises.",
+  "data": {
+    "shared-ctx-01": "data/public-dialogue-shared-ctx-01 (scripts/prepare_contrastive_qa.py, built in the parallel answer-quality session): mix-04 real QA regrouped into 3,867 shared contexts, 11,969 real-QA rows (1,400 single-answer passages dropped), 1-3 passages per context.",
+    "mix06": "data/public-dialogue-mix-06 = shared-ctx-01 + teacher-qa-kr-01-shared (3,152 rows, shared contexts of two korea.kr passages, 2-8 questions each) at 25% sampling mass."
+  },
+  "recipe": "Init pretrained base (runs/trid-korean-medium-cpt-gpu-complete), 3,000 steps, same seed/lr/batch as gpu-05-mix04-s3000, L40S shared with teacher generation. Evaluated on the GPU.",
+  "rag310_evidence_grounded_mention": {
+    "gpu-05-mix04-s3000 (control)": {"answerable": "39/228 (17.1%)", "unanswerable": "42/82", "answerable_abstained": "67/228 (29.4%)"},
+    "gpu-07-shared-ctx-01-s3000": {"answerable": "23/228 (10.1%)", "unanswerable": "45/82", "answerable_abstained": "75/228 (32.9%)"},
+    "gpu-07-mix06-s3000": {"answerable": "36/228 (15.8%)", "unanswerable": "44/82", "answerable_abstained": "64/228 (28.1%)"}
+  },
+  "paired_answerable": {
+    "mix04 -> shared-ctx-01": {"improved": 11, "regressed": 27, "mcnemar_exact_p": 0.0139},
+    "shared-ctx-01 -> mix06": {"improved": 25, "regressed": 12, "mcnemar_exact_p": 0.047},
+    "mix04 -> mix06": {"improved": 24, "regressed": 27, "mcnemar_exact_p": 0.7798}
+  },
+  "question_sensitivity_klue_dev": {
+    "gpu-05-mix04-s3000": {"all_same_rate": 0.2857, "mean_distinct_ratio": 0.8546, "correct_rate": 0.1078},
+    "gpu-07-shared-ctx-01-s3000": {"all_same_rate": 0.3609, "mean_distinct_ratio": 0.8158, "correct_rate": 0.0706},
+    "gpu-07-mix06-s3000": {"all_same_rate": 0.3308, "mean_distinct_ratio": 0.8296, "correct_rate": 0.0929}
+  },
+  "heldout_public_qa": {"shared-ctx-01": "1/8 (250만원)", "mix06": "0/8 (250만원 with extra words)"},
+  "decision": "do_not_deploy",
+  "conclusion": "At 3,000 steps the shared-context KLUE mix was significantly worse than mix-04 on RAG310 answerable (p=0.014) and did not raise question sensitivity (all_same 0.29 -> 0.36). Hypothesis not supported as built. Confounds: shared-ctx-01 drops 1,400 passages and 11% of real-QA rows and most contexts carry 2-3 passages (longer prompts, more distractors) while RAG310/sensitivity use the original layouts. Adding shared-context institution QA recovered the loss (p=0.047 vs shared-ctx-01) but is not better than mix-04 (p=0.78).",
+  "review": "Automatic RAG310 and question-sensitivity scoring; public 8 by assistant review against predeclared facts, not independent human evaluation."
+}

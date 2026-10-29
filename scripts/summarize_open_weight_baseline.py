@@ -29,7 +29,8 @@ TRID_RAG = {'trid-medium-sft-v1 (free)': 'reports/rag310-medium-sft-v1-free.json
                for run in ('trid-public-dialogue-01', 'trid-public-dialogue-gpu-01', 'trid-public-dialogue-gpu-03',
                            'trid-public-dialogue-gpu-04-mix02', 'trid-public-dialogue-gpu-04-mix03',
                            'trid-public-dialogue-gpu-05-mix04-s1200', 'trid-public-dialogue-gpu-05-mix04-s3000',
-                           'trid-public-dialogue-gpu-06-mix05-s3000')
+                           'trid-public-dialogue-gpu-06-mix05-s3000',
+                           'trid-public-dialogue-gpu-07-shared-ctx-01-s3000', 'trid-public-dialogue-gpu-07-mix06-s3000')
                for decoding in ('evidence', 'free')}}
 TRID_PROBE = {'trid reader cpt-v1/v2/v4': 'reports/reader-factorial-01-cpt-v1-v2-v4-probe.json',
               'trid reader cpt-v1/v2/v2': 'reports/reader-factorial-01-cpt-v1-v2-v2-probe.json'}
