@@ -36,7 +36,9 @@ def aws(*args, capture=True):
 
 def code_files():
     files = sorted(p for p in (ROOT / 'trid').rglob('*.py') if '__pycache__' not in p.parts)
-    files += [ROOT / 'scripts/train_medium_cpt_gpu.py', ROOT / 'scripts/sm_pretrain.sh']
+    files += [ROOT / f'scripts/{name}' for name in ('train_medium_cpt_gpu.py', 'sm_pretrain.sh', 'sm_sft_eval.sh',
+                                                     'train_public_dialogue.py', 'evaluate_rag_eval.py',
+                                                     'evaluate_question_sensitivity.py')]
     files += sorted((ROOT / 'configs').glob('*.json'))
     return files
 
@@ -72,6 +74,8 @@ def main():
     p.add_argument('--purpose', default='')
     p.add_argument('--log', type=Path, default=ROOT / 'reports/coordination/sm-jobs-A.jsonl')
     p.add_argument('--wait', action='store_true')
+    p.add_argument('--entry', default='sm_pretrain.sh', choices=['sm_pretrain.sh', 'sm_sft_eval.sh'],
+                   help='entrypoint under scripts/: pretraining or SFT + development evaluation')
     a = p.parse_args()
     checkpoint = a.checkpoint_s3 or f's3://{BUCKET}/corpus/runs/pretrain/{a.run}/'
     prefix, key, head, dirty = upload_code()
@@ -86,7 +90,7 @@ def main():
     spec = {
         'TrainingJobName': name, 'RoleArn': ROLE,
         'AlgorithmSpecification': {'TrainingImage': IMAGE, 'TrainingInputMode': 'File',
-                                   'ContainerEntrypoint': ['bash', '/opt/ml/input/data/code/scripts/sm_pretrain.sh']},
+                                   'ContainerEntrypoint': ['bash', f'/opt/ml/input/data/code/scripts/{a.entry}']},
         'InputDataConfig': [channel('code', f's3://{BUCKET}/{prefix}'), channel('data', a.data_s3)],
         'OutputDataConfig': {'S3OutputPath': f's3://{BUCKET}/corpus/sm-output/'},
         'ResourceConfig': {'InstanceType': a.instance_type, 'InstanceCount': 1, 'VolumeSizeInGB': 100},
@@ -96,7 +100,7 @@ def main():
         'Tags': [{'Key': 'trid-owner', 'Value': 'A'}, {'Key': 'trid-run', 'Value': a.run}],
     }
     aws('sagemaker', 'create-training-job', '--cli-input-json', json.dumps(spec))
-    record = {'job': name, 'owner': a.owner, 'purpose': a.purpose, 'run': a.run, 'config': a.config, 'steps': a.steps,
+    record = {'job': name, 'owner': a.owner, 'purpose': a.purpose, 'entry': a.entry, 'run': a.run, 'config': a.config, 'steps': a.steps,
               'instance_type': a.instance_type, 'stop_condition': f'run complete, MAX_SESSIONS={a.max_sessions} or '
               f'MaxRuntimeInSeconds={a.max_runtime}; instance terminates when the job ends', 'checkpoint_s3': checkpoint,
               'data_s3': a.data_s3, 'code_s3': f's3://{BUCKET}/{prefix}', 'code_sha': key, 'git_head': head,
