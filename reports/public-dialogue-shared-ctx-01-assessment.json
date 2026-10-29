@@ -1,0 +1,23 @@
+{
+  "runs": ["trid-public-dialogue-shared-ctx-01-s1200"],
+  "control": "trid-public-dialogue-gpu-05-mix04-s1200 (same init, seed, 1,200 steps, lr, batch, validation file)",
+  "motivation": "gpu-05-mix04-s3000 returned '1일 2만 5천 원 [D3]' for six different questions about one RAG310 passage (first-token KL 0.002-0.05 for 4 of 5 question swaps). In mix-04, 12,831 of 13,115 real-QA contexts occur with exactly one question, so context->answer can lower the loss without reading the question.",
+  "change": "data/public-dialogue-shared-ctx-01 (scripts/prepare_contrastive_qa.py): the same mix-04 real-QA questions and answer spans regrouped into 3,867 byte-identical contexts of 1-3 passages, each with 2-18 questions and at least two different answers. 11,969 of 13,403 items kept (1,400 single-answer passages that fit no group dropped, 19 too long). Real-QA mass 0.8, abstain share 22.6% (parent 23.8%), other components and validation unchanged. 0 RAG310 passages in training.",
+  "device": "MPS (control: CUDA L40S). Best validation loss 0.6205 at step 1200 (control 0.6013).",
+  "rag310_evidence_grounded_mention": {
+    "gpu-05-mix04-s1200 (control)": {"answerable": "27/228", "unanswerable": "38/82", "answerable_abstained": "78/228"},
+    "shared-ctx-01-s1200": {"answerable": "27/228", "unanswerable": "44/82", "answerable_abstained": "89/228"},
+    "gpu-05-mix04-s3000 (reference)": {"answerable": "39/228", "unanswerable": "42/82", "answerable_abstained": "67/228"}
+  },
+  "rag310_free_answerable": {"control": "22/228", "shared-ctx-01-s1200": "16/228"},
+  "paired_vs_control_answerable_evidence": {"improved": 16, "regressed": 16, "mcnemar_exact_p": 1.0},
+  "question_sensitivity_klue_dev": {
+    "protocol": "scripts/evaluate_question_sensitivity.py: KLUE MRC official dev, 133 paragraphs / 269 questions with >=2 different gold answers, single passage, RAG310 prompt format, greedy 64 tokens",
+    "gpu-05-mix04-s1200": {"correct": "25/269", "abstained": 130, "paragraphs_all_abstained": 40, "identical_outputs_among_46_non_abstaining_paragraphs": 7},
+    "gpu-05-mix04-s3000": {"correct": "29/269", "abstained": 120, "paragraphs_all_abstained": 32, "identical_outputs_among_46_non_abstaining_paragraphs": 6},
+    "shared-ctx-01-s1200": {"correct": "11/269", "abstained": 176, "paragraphs_all_abstained": 61, "identical_outputs_among_21_non_abstaining_paragraphs": 5}
+  },
+  "fixed_passage_probe": "shared-ctx-01-s1200 still answers '1일 2만 5천 원 [D3]' to five of the six travel-allowance questions (the sixth: 확인 불가).",
+  "decision": "hypothesis_rejected; do_not_deploy. Forcing question use through shared contexts did not improve answerable accuracy at 91M/1,200 steps and increased abstention. On held-out KLUE dev the control already varies its outputs across questions (identical outputs in 7 of 46 non-abstaining paragraphs), so the single-answer behaviour on RAG310 is one symptom of weak reading, not a pure data shortcut. Remaining explanation: 91M capacity / pretraining for passage-conditioned span selection. Next: scale the model (350M; CPU deployment ceiling ~1B); re-test the shared-context layout only as a controlled arm at that scale.",
+  "limits": "Single seed, 1,200 steps; MPS vs CUDA control. Dropped 1,434 items (10.7%). Hard same-title distractors of mix-04 replaced by unrelated grouped passages. Automatic scoring only."
+}
