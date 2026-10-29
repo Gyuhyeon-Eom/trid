@@ -1,0 +1,23 @@
+{
+  "status": "Proposed next evaluation generation spec, fixed from development outputs only (C-003 smoke, C-004 preflight) before any final-test run. Not tuned on final-test results. Owner of adoption: supervisor.",
+  "evidence": {
+    "c003_output_cap_256": "Explanation items truncated at 256 tokens: Qwen3-1.7B 5/5, Kanana-1.5-2.1B 3/5; Kanana completed explanations used 191 and 231 tokens. 256 is therefore not a completion-safe cap.",
+    "c004_preflight_dev": "380 development prompts (RAG310 310, pilot 30, institution probe 40): input tokens trid p50 368 / max 959, Qwen3 p50 486 / max 1336, Kanana p50 439 / max 1200. Same text costs about 1.2-1.3x more tokens on the comparison tokenizers. All reference answers fit every model's room."
+  },
+  "primary": {
+    "name": "full-document, identical input",
+    "input": "Same passages, question and work instruction for every model; each model's official chat template; thinking disabled where the template supports it; greedy (temperature 0).",
+    "qwen3_1.7b": {"serving_context": 8192, "n_ctx_train": 40960, "max_new_tokens": 1024},
+    "kanana_1.5_2.1b": {"serving_context": 8192, "n_ctx_train": 32768, "max_new_tokens": 1024},
+    "trid": {"context": 1024, "max_new_tokens_requested": 1024, "max_new_tokens_used": "min(1024, 1024 - input_tokens)",
+             "note": "trid's trained context is 1,024 tokens, so its output room is what the input leaves (development minimum 65). This is a property of the model, recorded per item, not hidden."},
+    "denominator": "Every planned item for every model. input_exceeds (input alone does not fit), exceptions and truncated outputs stay in the denominator and are reported separately; they are never removed from the primary metric.",
+    "recorded_per_item": ["requested cap", "used cap", "context_limited", "input tokens", "finish (eos/limit/exception/input_exceeds)", "raw response"]
+  },
+  "auxiliary": [
+    {"name": "common-context subset", "rule": "items whose trid input + 512 <= 1024 and whose other-model inputs + 512 fit their serving context; all models capped at 512 new tokens", "purpose": "compare reading at equal output budget; reported separately, never replaces primary"},
+    {"name": "equal-budget note", "rule": "token caps are per tokenizer; equal token counts are not equal text lengths", "purpose": "interpretation"}
+  ],
+  "decoding": "No value-copy constraint in the free-text explanation evaluation; the value-copy decoder remains the default product path and is evaluated separately with the value-format metric.",
+  "not_changed": "No re-run of the C-003 10 items; no final-test items used."
+}

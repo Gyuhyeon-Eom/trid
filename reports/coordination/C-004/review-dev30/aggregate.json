@@ -1,0 +1,133 @@
+{
+  "protocol": "Review records for free-text evaluation outputs: export -> blinded packet -> verdict import -> aggregate.\n\nexport     One record per (model, item) from stored raw outputs (scripts/train_public_dialogue.py evaluate,\n           scripts/evaluate_external_chat.py --freeform-prompts), the prompt file and a checklist fixed before\n           generation. Writes records.jsonl (with model/run), a blinded packet.jsonl (random codes, shuffled, no model\n           or run fields) and mapping.json (code -> record, file hashes). Every output id must match the prompt set.\nimport     Verdict rows keyed by packet code. Rejected: unknown code, a packet hash from another export, a reviewer\n           not in the registry or declared with a different type (an AI reviewer can never be recorded as human or\n           expert), and a second verdict by the same reviewer on the same code.\naggregate  Per model: execution status counts over ALL items, and per reviewer type the reviewed/unreviewed/uncertain\n           counts and verdict distribution. Unreviewed and uncertain are never scored as wrong or right; the rate is\n           shown only over reviewed items, next to the coverage.\n\nObjective checks (cited [Dn] ids exist in the prompt, numbers absent from the prompt) are auxiliary evidence only;\nthey never set a semantic verdict.\n",
+  "export_dir": "reports/coordination/C-004/review-dev30",
+  "packet_sha256": "df35ae2fcc948c5f8e2a78acebe400aa29637c4f38671d503bfdeba99a589625",
+  "verdict_files": [
+    {
+      "path": "reports/coordination/C-004/review-dev30/verdicts-ai.jsonl",
+      "sha256": "83689ef2dba960f7ae8bb143f139c0a033e5a7df540b81a8439cd6bc82e52971"
+    }
+  ],
+  "models": {
+    "kanana-1.5-2.1b-q8": {
+      "items": 10,
+      "execution": {
+        "limit": 3,
+        "eos": 7
+      },
+      "context_limited": 0,
+      "reviews": {
+        "ai": {
+          "reviewed": 10,
+          "uncertain": 0,
+          "unreviewed": 0,
+          "conclusion": {
+            "정답": 9,
+            "부분": 1
+          },
+          "correct_rate_over_reviewed": 0.9,
+          "false_added_claim": 3,
+          "condition_or_exception_missing": 1
+        },
+        "human": {
+          "reviewed": 0,
+          "uncertain": 0,
+          "unreviewed": 10,
+          "conclusion": {},
+          "correct_rate_over_reviewed": null,
+          "false_added_claim": 0,
+          "condition_or_exception_missing": 0
+        },
+        "expert": {
+          "reviewed": 0,
+          "uncertain": 0,
+          "unreviewed": 10,
+          "conclusion": {},
+          "correct_rate_over_reviewed": null,
+          "false_added_claim": 0,
+          "condition_or_exception_missing": 0
+        }
+      }
+    },
+    "qwen3-1.7b-q8": {
+      "items": 10,
+      "execution": {
+        "limit": 5,
+        "eos": 5
+      },
+      "context_limited": 0,
+      "reviews": {
+        "ai": {
+          "reviewed": 10,
+          "uncertain": 0,
+          "unreviewed": 0,
+          "conclusion": {
+            "정답": 8,
+            "부분": 2
+          },
+          "correct_rate_over_reviewed": 0.8,
+          "false_added_claim": 5,
+          "condition_or_exception_missing": 2
+        },
+        "human": {
+          "reviewed": 0,
+          "uncertain": 0,
+          "unreviewed": 10,
+          "conclusion": {},
+          "correct_rate_over_reviewed": null,
+          "false_added_claim": 0,
+          "condition_or_exception_missing": 0
+        },
+        "expert": {
+          "reviewed": 0,
+          "uncertain": 0,
+          "unreviewed": 10,
+          "conclusion": {},
+          "correct_rate_over_reviewed": null,
+          "false_added_claim": 0,
+          "condition_or_exception_missing": 0
+        }
+      }
+    },
+    "trid": {
+      "items": 10,
+      "execution": {
+        "eos": 10
+      },
+      "context_limited": 3,
+      "reviews": {
+        "ai": {
+          "reviewed": 10,
+          "uncertain": 0,
+          "unreviewed": 0,
+          "conclusion": {
+            "오답": 6,
+            "부분": 2,
+            "보류": 2
+          },
+          "correct_rate_over_reviewed": 0.0,
+          "false_added_claim": 0,
+          "condition_or_exception_missing": 5
+        },
+        "human": {
+          "reviewed": 0,
+          "uncertain": 0,
+          "unreviewed": 10,
+          "conclusion": {},
+          "correct_rate_over_reviewed": null,
+          "false_added_claim": 0,
+          "condition_or_exception_missing": 0
+        },
+        "expert": {
+          "reviewed": 0,
+          "uncertain": 0,
+          "unreviewed": 10,
+          "conclusion": {},
+          "correct_rate_over_reviewed": null,
+          "false_added_claim": 0,
+          "condition_or_exception_missing": 0
+        }
+      }
+    }
+  }
+}
