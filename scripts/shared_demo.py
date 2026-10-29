@@ -139,6 +139,22 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
         raise ValueError('Proxy secret must contain at least 32 characters')
     assets = ROOT / 'trid/shared_ui'
     origin = 'https://' + hostname
+    public_sources = ROOT / 'data/public-document-sft-source'
+    public_docs = {
+        doc['id']: doc for doc in (
+            json.loads(line) for line in (public_sources / 'documents.jsonl').read_text().splitlines()
+            if line.strip()
+        ) if doc['license'] == 'KOGL-Type1'
+    }
+    public_questions = {}
+    for line in (public_sources / 'annotations.jsonl').read_text().splitlines():
+        if line.strip():
+            row = json.loads(line)
+            public_questions.setdefault(row['source_id'], []).append(row['question'])
+    public_options = ''.join(
+        f'<option value="{html.escape(key, quote=True)}">{html.escape(doc["date"] + " · " + doc["title"])}</option>'
+        for key, doc in public_docs.items()
+    )
 
     class Handler(BaseHTTPRequestHandler):
         server_version = 'trid'
@@ -205,7 +221,8 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                 self.respond(503, {'error': '현재 테스트 인원이 많습니다. 잠시 후 다시 접속해 주세요.'}); return
             page = ((assets / 'index.html').read_text()
                     .replace('TOKEN_PLACEHOLDER', session.csrf)
-                    .replace('MODEL_PLACEHOLDER', html.escape(state.run)))
+                    .replace('MODEL_PLACEHOLDER', html.escape(state.run))
+                    .replace('PUBLIC_OPTIONS_PLACEHOLDER', public_options))
             self.respond(200, page.encode(), 'text/html; charset=utf-8', cookie=sid)
 
         def do_POST(self):
@@ -236,8 +253,25 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                         if path == '/api/load':
                             doc = parse_pdf(body, unquote(self.headers.get('X-File-Name', 'document.pdf')), state.tok)
                         elif path == '/api/sample':
-                            content = (ROOT / 'data/reading-demo-v3/travel-named.txt').read_text()
-                            doc = Document('가상 출장 규정 · 샘플', [content], make_chunks([content], state.tok), ['시연용 가상 자료입니다. 실제 기관 규정이 아닙니다.'])
+                            request = json.loads(body)
+                            if not isinstance(request, dict):
+                                raise DocumentError('문서 선택 형식을 확인해 주세요.')
+                            if 'source_id' in request:
+                                key = request['source_id']
+                                if not isinstance(key, str) or key not in public_docs:
+                                    raise DocumentError('목록에서 공개 문서를 선택해 주세요.')
+                                source = public_docs[key]
+                                content = source['text']
+                                warnings = [
+                                    f"발표일: {source['date']} · 당시 자료이며 현재 적용 여부는 확인하지 않았습니다.",
+                                    f"원문: {source['source']}",
+                                    source['attribution'] + ' · 공공누리 제1유형, 텍스트만 이용',
+                                    '학습 데이터로 선정된 문서입니다. 독립 성능 평가가 아니며, 새 SFT 모델은 아직 배포하지 않았습니다.',
+                                ]
+                                doc = Document(source['title'], [content], make_chunks([content], state.tok), warnings)
+                            else:
+                                content = (ROOT / 'data/reading-demo-v3/travel-named.txt').read_text()
+                                doc = Document('가상 출장 규정 · 샘플', [content], make_chunks([content], state.tok), ['시연용 가상 자료입니다. 실제 기관 규정이 아닙니다.'])
                         else:
                             request = json.loads(body)
                             content = request.get('text') if isinstance(request, dict) else None
@@ -250,6 +284,8 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                             session.document = doc
                             session.document_id = secrets.token_urlsafe(24)
                         result = {'document_id': session.document_id, 'name': doc.name, 'pages': doc.pages, 'warnings': doc.warnings}
+                        if path == '/api/sample' and 'source_id' in request:
+                            result['suggested_questions'] = public_questions.get(request['source_id'], [])
                     elif path == '/api/clear':
                         with state.lock:
                             session.document = session.document_id = None

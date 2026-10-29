@@ -16,6 +16,8 @@ function setBusy(value) {
   el('command-form').querySelector('button').disabled = value;
   el('save-text').disabled = value;
   el('cancel-text').disabled = value;
+  el('load-public').disabled = value;
+  el('public-document').disabled = value;
   el('pending').textContent = value ? 'trid > 처리 중…' : '';
   if (!value && el('paste-panel').hidden) el('command').focus();
 }
@@ -36,6 +38,7 @@ function loaded(data) {
   documentId = data.document_id; pages = data.pages; documentName = data.name;
   print(`trid > ${documentName} · ${pages.length}페이지를 읽었습니다.\n질문을 입력하세요. /source로 원문을 확인할 수 있습니다.`, 'reply');
   for (const warning of data.warnings) print(warning.replace('추출 문서 보기에서 확인해 주세요.', '/source로 원문을 확인해 주세요.'), 'muted');
+  if (data.suggested_questions?.length) print('질문 예시 (정답을 미리 보여주는 기능이 아닙니다):\n' + data.suggested_questions.join('\n'), 'muted');
 }
 function help() {
   print('/sample  가상 출장 규정 불러오기\n/pdf     텍스트 PDF 열기 (2MB · 20페이지 · 5만 자 이하, OCR 미지원)\n/paste   문서 직접 붙여넣기 (5,000자 이하)\n/source  현재 문서 원문 보기\n/clear   서버 문서와 이 화면의 기록 지우기\n/help    도움말\n\n문서를 넣은 뒤 질문을 그대로 입력하세요.\n예: 해외 출장 식비는 얼마야?\n이전 질문을 이어서 이해하는 대화 모드가 아니라, 질문마다 문서에서 답을 찾습니다.\n↑ / ↓ 이전 명령 선택 · Enter 실행', 'muted');
@@ -96,6 +99,10 @@ el('command').addEventListener('keydown', event=>{
   historyIndex = Math.max(0, Math.min(commandHistory.length, historyIndex + (event.key === 'ArrowUp' ? -1 : 1)));
   el('command').value = historyIndex === commandHistory.length ? draft : commandHistory[historyIndex];
 });
+el('public-form').addEventListener('submit', event=>{
+  event.preventDefault();
+  void task(async()=>loaded(await jsonApi('/api/sample', {source_id:el('public-document').value})));
+});
 el('file').addEventListener('change', ()=>{
   const file = el('file').files[0]; if (!file || busy) return;
   if (file.size > 2*1024*1024) {print('오류 > PDF는 2MB 이하로 넣어 주세요.', 'error'); return;}
@@ -111,4 +118,4 @@ el('document-text').addEventListener('keydown', event=>{
   if (event.key === 'Escape') {event.preventDefault(); el('cancel-text').click();}
   if (event.key === 'Enter' && (event.ctrlKey || event.metaKey)) {event.preventDefault(); el('save-text').click();}
 });
-print('trid > /sample을 입력하면 바로 테스트할 수 있습니다.');
+print('trid > 위에서 실제 공개 문서를 선택하고 문서 불러오기를 누르세요. /sample은 기존 가상 출장 규정입니다.');
