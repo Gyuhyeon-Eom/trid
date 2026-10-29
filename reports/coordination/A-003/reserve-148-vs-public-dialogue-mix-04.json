@@ -1,0 +1,28 @@
+{
+ "manifest_sha256": "0ed3cc079e8da0f9765e320091c88608186ef259c426f3319944c0921f7495e8",
+ "reserved_families": 148,
+ "corpus": [
+  {
+   "path": "data/public-dialogue-mix-04/train.jsonl",
+   "sha256": "1d35a2677e901f9aed4dc23dfaa55ff254161bba1d785e23ee95f82c7b7c22b8"
+  },
+  {
+   "path": "data/public-dialogue-mix-04/valid.jsonl",
+   "sha256": "ef4f080f8b01a386f11525cdee70f9ad63541f6b67b0554a38629224cae97659"
+  }
+ ],
+ "corpus_rows_scanned": 18979,
+ "matched_corpus_rows": 0,
+ "families_with_matches": 0,
+ "match_types": {},
+ "thresholds": {
+  "minhash_estimate": 0.5,
+  "ngram8_containment": 0.5,
+  "partial_review_min_shared_ngram8": 50
+ },
+ "per_family_matched_rows": {},
+ "matches": [],
+ "partial_review_rows": 0,
+ "partial_review_note": "rows sharing >= partial_min reserved word 8-grams below the containment threshold; evidence for manual review, not counted as matches or excluded automatically",
+ "partial_review": []
+}

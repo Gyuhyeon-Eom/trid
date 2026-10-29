@@ -1,0 +1,32 @@
+{
+ "manifest_sha256": "0ed3cc079e8da0f9765e320091c88608186ef259c426f3319944c0921f7495e8",
+ "reserved_families": 148,
+ "corpus": [
+  {
+   "path": "data/korean-foundation-v1/train.jsonl",
+   "sha256": "1651d2f0b9c41d302a75ba1e0ac81c37d31e925eaed7ee2567ab1fb703ee40de"
+  },
+  {
+   "path": "data/korean-foundation-v1/valid.jsonl",
+   "sha256": "7290759b0b178ab0e6f9baeddd7e4d370f4d025c8e9b21bdbdac890e8feb28ab"
+  },
+  {
+   "path": "data/korean-foundation-v1/test.jsonl",
+   "sha256": "8e3b7c3f7277057c0c23a9cd96567ed3324f393713858473434a4a1e631265b8"
+  }
+ ],
+ "corpus_rows_scanned": 24000,
+ "matched_corpus_rows": 0,
+ "families_with_matches": 0,
+ "match_types": {},
+ "thresholds": {
+  "minhash_estimate": 0.5,
+  "ngram8_containment": 0.5,
+  "partial_review_min_shared_ngram8": 50
+ },
+ "per_family_matched_rows": {},
+ "matches": [],
+ "partial_review_rows": 0,
+ "partial_review_note": "rows sharing >= partial_min reserved word 8-grams below the containment threshold; evidence for manual review, not counted as matches or excluded automatically",
+ "partial_review": []
+}

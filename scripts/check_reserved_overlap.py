@@ -66,7 +66,7 @@ def sign(a):
 _ctx = {}
 
 
-def init(manifest_path, minhash_threshold, containment):
+def init(manifest_path, minhash_threshold, containment, text_fields=('text',), partial_min=50):
     rows = [json.loads(l) for l in Path(manifest_path).read_text().splitlines() if l.strip()]
     _ctx['rows'] = rows
     _ctx['signer'] = Signer()
@@ -83,19 +83,21 @@ def init(manifest_path, minhash_threshold, containment):
                            ('exact', r['exact_sha256'])):
             if value:
                 _ctx['by'][key][value].add(i)
-    _ctx['minhash'], _ctx['containment'] = minhash_threshold, containment
+    _ctx['minhash'], _ctx['containment'], _ctx['fields'] = minhash_threshold, containment, tuple(text_fields)
+    _ctx['partial_min'] = partial_min
 
 
 def match(lines):
     out = []
     for line in lines:
         row = json.loads(line)
-        text = row.get('text') or ''
+        text = '\n'.join(row.get(f) or '' for f in _ctx['fields'])
         hits = defaultdict(set)
         for key, value in (('id', row.get('id')), ('group', row.get('group')), ('url', url_key(row.get('source'))),
                            ('exact', exact_hash(text))):
             for i in _ctx['by'][key].get(value, ()):
                 hits[i].add(key)
+        partial = {}
         if len(_ctx['rows']):
             est = (_ctx['sigs'] == _ctx['signer'](text)[None, :]).mean(axis=1)
             for i in np.flatnonzero(est >= _ctx['minhash']):
@@ -104,9 +106,13 @@ def match(lines):
             for i, n in shared.items():
                 if n / _ctx['sizes'][i] >= _ctx['containment']:
                     hits[i].add('containment')
-        if hits:
+                elif n >= _ctx['partial_min']:
+                    # Weak evidence for review (quotation of part of a reserved document); not counted as a match.
+                    partial[_ctx['rows'][i]['family_id']] = {'shared_ngram8': n, 'of_reserved': _ctx['sizes'][i]}
+        if hits or partial:
             out.append({'corpus_id': row.get('id'), 'kind': row.get('kind'),
-                        'families': {_ctx['rows'][i]['family_id']: sorted(v) for i, v in hits.items()}})
+                        'families': {_ctx['rows'][i]['family_id']: sorted(v) for i, v in hits.items()},
+                        'partial_review': partial})
     return out
 
 
@@ -161,10 +167,14 @@ def chunks(paths, size=500):
 def check(a):
     manifest_sha = hashlib.sha256(a.manifest.read_bytes()).hexdigest()
     families = {json.loads(l)['family_id'] for l in a.manifest.read_text().splitlines() if l.strip()}
-    matches, scanned = [], 0
-    with Pool(a.workers, initializer=init, initargs=(str(a.manifest), a.minhash, a.containment)) as pool:
+    found_rows, scanned = [], 0
+    with Pool(a.workers, initializer=init,
+              initargs=(str(a.manifest), a.minhash, a.containment, a.text_fields, a.partial_min)) as pool:
         for found in pool.imap(match, chunks(a.corpus), chunksize=1):
-            matches += found
+            found_rows += found
+    matches = [m for m in found_rows if m['families']]
+    partial = [{'corpus_id': m['corpus_id'], 'kind': m['kind'], 'families': m['partial_review']}
+               for m in found_rows if m['partial_review']]
     for path in a.corpus:
         with Path(path).open(encoding='utf-8') as f:
             scanned += sum(1 for line in f if line.strip())
@@ -174,14 +184,19 @@ def check(a):
               'corpus': [{'path': str(p), 'sha256': hashlib.sha256(Path(p).read_bytes()).hexdigest()} for p in a.corpus],
               'corpus_rows_scanned': scanned, 'matched_corpus_rows': len(matches),
               'families_with_matches': len(hit_families), 'match_types': dict(by_type),
-              'thresholds': {'minhash_estimate': a.minhash, 'ngram8_containment': a.containment},
-              'per_family_matched_rows': dict(hit_families), 'matches': matches}
+              'thresholds': {'minhash_estimate': a.minhash, 'ngram8_containment': a.containment,
+                             'partial_review_min_shared_ngram8': a.partial_min},
+              'per_family_matched_rows': dict(hit_families), 'matches': matches,
+              'partial_review_rows': len(partial),
+              'partial_review_note': 'rows sharing >= partial_min reserved word 8-grams below the containment threshold; '
+                                     'evidence for manual review, not counted as matches or excluded automatically',
+              'partial_review': partial}
     a.report.parent.mkdir(parents=True, exist_ok=True)
     a.report.write_text(json.dumps(report, ensure_ascii=False, indent=1))
     if a.exclude_ids:
         a.exclude_ids.write_text(''.join(f"{m['corpus_id']}\n" for m in matches))
     print(json.dumps({k: report[k] for k in ('reserved_families', 'corpus_rows_scanned', 'matched_corpus_rows',
-                                             'families_with_matches', 'match_types')}, ensure_ascii=False))
+                                             'families_with_matches', 'match_types', 'partial_review_rows')}, ensure_ascii=False))
 
 
 def main():
@@ -198,6 +213,8 @@ def main():
     c.add_argument('--minhash', type=float, default=0.5)
     c.add_argument('--containment', type=float, default=0.5)
     c.add_argument('--workers', type=int, default=8)
+    c.add_argument('--text-fields', nargs='+', default=['text'], help='row fields joined as the text (SFT rows: prompt answer)')
+    c.add_argument('--partial-min', type=int, default=50, help='shared reserved 8-grams that flag a row for review')
     m = sub.add_parser('check-ids', help='metadata-only reservation (doc_family_id, url): id/group/url matches only')
     m.add_argument('--reservation', type=Path, required=True)
     m.add_argument('--corpus', type=Path, nargs='+', required=True)
