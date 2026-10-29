@@ -104,6 +104,20 @@ class QualityTests(unittest.TestCase):
         for t in tables:
             self.assertEqual(kq.redact(t), (t, {}), t)
 
+    def test_contacts_on_their_own_line_are_replaced_once(self):
+        text = ('CUSTOMER CENTER\n010-2776-1821\n※ 안내\n[전화] / [전화]\n010-5496-7630\n010-6557-1132\n'
+                '문의: (02)724-7836\n담당 02-123-4567\nhong@korea.kr')
+        out, counts = kq.redact(text)
+        self.assertEqual(out, 'CUSTOMER CENTER\n[전화]\n※ 안내\n[전화] / [전화]\n[전화]\n[전화]\n문의: [전화]\n담당 [전화]\n[이메일]')
+        self.assertEqual(dict(counts), {'PHONE': 5, 'EMAIL': 1})
+        self.assertEqual(kq.redact(out), (out, {}))
+        text = ('문의. 02) 737-7378, www.x.org\n문의 : 052- 290-3333\nTEL:032)433-3777ㅣEmail\n'
+                '강호준 010-1234-5678 hong@korea.kr\n주문일 2024.03.15, 금액 1,234,567원, ISBN 978-89-7277-350-4')
+        out, counts = kq.redact(text)
+        self.assertEqual(out, '문의. [전화], www.x.org\n문의 : [전화]\nTEL:[전화]ㅣEmail\n'
+                              '강호준 [전화] [이메일]\n주문일 2024.03.15, 금액 1,234,567원, ISBN 978-89-7277-350-4')
+        self.assertEqual(dict(counts), {'PHONE': 4, 'EMAIL': 1})
+
     def test_builder_records_quality_and_pii_counts(self):
         with tempfile.TemporaryDirectory() as d:
             src = Path(d) / 'press'

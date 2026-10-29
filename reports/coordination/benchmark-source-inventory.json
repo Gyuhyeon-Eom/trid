@@ -1,0 +1,201 @@
+{
+ "id": "benchmark-source-inventory",
+ "owner": "B (01a18644-74cb-75c1-8098-96d4f5c0e5fe)",
+ "instructions": [
+  "BENCHMARK-SCALE-001",
+  "BENCHMARK-RESERVATION-001"
+ ],
+ "generated_at": "2026-10-29T18:41:43+00:00",
+ "what_this_is": "candidate document families the supervisor may reserve for the final test; no questions or answers are made here. Counts are documents/families that exist, not reviewed test items.",
+ "doc_family_semantics": {
+  "institutions:alio-rule:<seq>": "one ALIO 내부규정 entry with every revision file and attachment",
+  "korea-kr:<newsId>": "one 정책브리핑 보도자료 with its attachments",
+  "assembly-minutes:<id>": "one 국회 회의록 (one meeting; 부록 included)"
+ },
+ "families_file": {
+  "s3": "s3://trid-training-148761639313/corpus/state/inventory/inventory-v1/doc-families.jsonl.gz",
+  "sha256": "e59717abf01c7ebfce60985524d1cd88e6cbae9bb27b9d898a64f53bb75ebf2b",
+  "rows": 290233,
+  "fields": [
+   "business_group",
+   "business_group_rule",
+   "date",
+   "doc_family_id",
+   "doc_type",
+   "effective_date",
+   "institution",
+   "institution_id",
+   "institution_type",
+   "licence",
+   "meeting_class",
+   "ministry",
+   "rule_category",
+   "source",
+   "term",
+   "text_path",
+   "text_sha256",
+   "text_status",
+   "title",
+   "training_inclusion",
+   "training_inclusion_evidence",
+   "url"
+  ],
+  "local": "data/corpus-inventory/inventory-v1/doc-families.jsonl.gz"
+ },
+ "counts": {
+  "by_source_text_status": {
+   "institutions | catalogued": 7990,
+   "korea-kr-briefing | secured": 281995,
+   "assembly-minutes | secured": 5,
+   "assembly-minutes | catalogued": 243
+  },
+  "by_business_group_doc_type": {
+   "고용·인사 | 규정": 1953,
+   "공기업 운영·서비스 | 규정": 1966,
+   "미분류 | 규정": 1401,
+   "주거·부동산 | 규정": 255,
+   "계약·조달 | 규정": 487,
+   "회계·예산 | 규정": 506,
+   "보건·안전 | 규정": 376,
+   "교육·연구 | 규정": 657,
+   "보훈·복지 | 규정": 389,
+   "주거·부동산 | 보도자료": 14249,
+   "미분류 | 보도자료": 132432,
+   "계약·조달 | 보도자료": 7090,
+   "고용·인사 | 보도자료": 17673,
+   "회계·예산 | 보도자료": 10085,
+   "교육·연구 | 보도자료": 23599,
+   "보건·안전 | 보도자료": 42395,
+   "공기업 운영·서비스 | 보도자료": 19226,
+   "보훈·복지 | 보도자료": 15246,
+   "미분류 | 회의록": 248
+  },
+  "by_business_group_institution_type": {
+   "고용·인사 | 기타공공기관": 1274,
+   "공기업 운영·서비스 | 기타공공기관": 1288,
+   "미분류 | 기타공공기관": 837,
+   "주거·부동산 | 기타공공기관": 95,
+   "계약·조달 | 기타공공기관": 345,
+   "회계·예산 | 기타공공기관": 325,
+   "보건·안전 | 기타공공기관": 266,
+   "교육·연구 | 기타공공기관": 522,
+   "고용·인사 | 공기업(시장형)": 85,
+   "보훈·복지 | 기타공공기관": 322,
+   "주거·부동산 | 공기업(준시장형)": 81,
+   "교육·연구 | 공기업(준시장형)": 19,
+   "공기업 운영·서비스 | 공기업(시장형)": 61,
+   "미분류 | 공기업(시장형)": 74,
+   "보건·안전 | 준정부기관(위탁집행형)": 64,
+   "공기업 운영·서비스 | 준정부기관(기금관리형)": 110,
+   "고용·인사 | 준정부기관(기금관리형)": 102,
+   "고용·인사 | 준정부기관(위탁집행형)": 345,
+   "주거·부동산 | 준정부기관(위탁집행형)": 52,
+   "계약·조달 | 공기업(준시장형)": 24,
+   "회계·예산 | 준정부기관(위탁집행형)": 98,
+   "공기업 운영·서비스 | 준정부기관(위탁집행형)": 389,
+   "미분류 | 준정부기관(위탁집행형)": 219,
+   "주거·부동산 | 공기업(시장형)": 16,
+   "미분류 | 준정부기관(기금관리형)": 170,
+   "미분류 | 공기업(준시장형)": 101,
+   "보건·안전 | 공기업(준시장형)": 16,
+   "보훈·복지 | 준정부기관(위탁집행형)": 41,
+   "교육·연구 | 준정부기관(위탁집행형)": 94,
+   "계약·조달 | 공기업(시장형)": 14,
+   "보건·안전 | 공기업(시장형)": 9,
+   "보훈·복지 | 준정부기관(기금관리형)": 21,
+   "회계·예산 | 준정부기관(기금관리형)": 33,
+   "주거·부동산 | 준정부기관(기금관리형)": 11,
+   "공기업 운영·서비스 | 공기업(준시장형)": 118,
+   "회계·예산 | 공기업(시장형)": 12,
+   "계약·조달 | 준정부기관(위탁집행형)": 89,
+   "계약·조달 | 준정부기관(기금관리형)": 15,
+   "고용·인사 | 공기업(준시장형)": 147,
+   "회계·예산 | 공기업(준시장형)": 38,
+   "보훈·복지 | 공기업(시장형)": 1,
+   "보건·안전 | 준정부기관(기금관리형)": 21,
+   "교육·연구 | 공기업(시장형)": 9,
+   "교육·연구 | 준정부기관(기금관리형)": 13,
+   "보훈·복지 | 공기업(준시장형)": 4,
+   "주거·부동산 | 중앙부처": 14249,
+   "미분류 | 중앙부처": 132432,
+   "계약·조달 | 중앙부처": 7090,
+   "고용·인사 | 중앙부처": 17673,
+   "회계·예산 | 중앙부처": 10085,
+   "교육·연구 | 중앙부처": 23599,
+   "보건·안전 | 중앙부처": 42395,
+   "공기업 운영·서비스 | 중앙부처": 19226,
+   "보훈·복지 | 중앙부처": 15246,
+   "미분류 | 국회": 248
+  },
+  "by_training_inclusion": {
+   "institutions | unknown": 7990,
+   "korea-kr-briefing | unknown": 242385,
+   "korea-kr-briefing | included_prior_trid_training": 38846,
+   "korea-kr-briefing | included_prior_dev_split": 764,
+   "assembly-minutes | unknown": 248
+  },
+  "secured_and_not_known_in_training_by_business_group": {
+   "주거·부동산 | 보도자료": 11776,
+   "미분류 | 보도자료": 110826,
+   "계약·조달 | 보도자료": 6109,
+   "고용·인사 | 보도자료": 15345,
+   "회계·예산 | 보도자료": 9554,
+   "교육·연구 | 보도자료": 20728,
+   "보건·안전 | 보도자료": 38811,
+   "보훈·복지 | 보도자료": 12646,
+   "공기업 운영·서비스 | 보도자료": 16590,
+   "미분류 | 회의록": 5
+  },
+  "institutions_per_source": {
+   "assembly-minutes": 1,
+   "institutions": 354,
+   "korea-kr-briefing": 71
+  },
+  "alio_rules_catalogued": 7990,
+  "alio_rules_total_reported_by_site": 42270
+ },
+ "business_group_note": "rule-based proposal from title keywords, then ministry/committee; not reviewed. 미분류 rows are reported, never folded into another group.",
+ "doc_types_not_yet_inventoried": [
+  "공고",
+  "업무편람/매뉴얼",
+  "서식/표",
+  "FAQ",
+  "지자체 보도자료",
+  "PRISM 정책연구보고서",
+  "지방공기업 문서"
+ ],
+ "blocked_or_pending": [
+  {
+   "source": "지방공기업 (클린아이 www.cleaneye.go.kr)",
+   "state": "blocked",
+   "reason": "robots.txt \"Disallow: /\" (2026-10-29T18:36Z); need another official list (행정안전부 공개 현황/data.go.kr)"
+  },
+  {
+   "source": "PRISM",
+   "state": "pending",
+   "reason": "SPA backed by api.prism.go.kr; endpoints and per-report licence not inventoried yet"
+  },
+  {
+   "source": "광역 지자체 17곳 보도자료",
+   "state": "pending",
+   "reason": "robots.txt saved per host (data/corpus-inventory/robots/); several hosts Disallow most paths (seoul, daejeon, sejong, gyeongnam, jeju), busan 401, chungbuk unreachable; press-board paths not mapped"
+  },
+  {
+   "source": "ALIO 내부규정 원문(HWP)",
+   "state": "pending",
+   "reason": "catalogue only. Text path verified on one file: /occasional/findRuleDtl.json?seq=10794 lists every revision file (bFiles), /download/rulefiledown.json?fileNo=69727 returned HWP 5 (49,152 B), trid.service.ingest.tool_text (rhwp, MIT) gave 15,447 chars incl. 제정/개정 history. Bulk detail/file requests not run."
+  },
+  {
+   "source": "국회 회의록 위원회명·날짜",
+   "state": "pending",
+   "reason": "list walk stores ids only; committee/date come from the fetched minutes"
+  }
+ ],
+ "reservation_handling": "reserve by doc_family_id; reserved families must be excluded from training in every source (A tokens stage) and B will route them to quarantine:benchmark_reserved once the supervisor publishes the reservation manifest. B keeps collecting other documents.",
+ "limitations": [
+  "training_inclusion is exact-id evidence only; unknown means not proven absent (FineWeb-2 web text may contain copies).",
+  "press releases are one source type from central ministries; they cannot stand in for 8 업무군 coverage.",
+  "ALIO counts are catalogue entries (metadata); rule text is not yet collected."
+ ],
+ "status": "partial"
+}

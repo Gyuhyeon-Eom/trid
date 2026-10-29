@@ -75,19 +75,21 @@ SITE_MENU = re.compile(r"개인정보\s*처리\s*방침|이용\s*약관|쿠키|�
 PII_LABELS = {"RRN": "[주민번호]", "FRN": "[외국인번호]", "PHONE": "[전화]", "EMAIL": "[이메일]", "ACCOUNT": "[계좌]",
               "CARD": "[카드]", "PASSPORT": "[여권]", "DRIVER_LICENSE": "[운전면허]"}
 # ko-pii 호출 전 선별: 위 라벨 중 하나라도 잡힐 수 있는 문자열(6자리 이상 숫자, 전화형 구분자, @, 여권 영문+8자리)
-PII_HINT = re.compile(r"\d{6}|\d{2,4}[-.)－ ]\d{3,4}[-.－ ]\d{4}|@|[A-Z]\d{8}")
+PII_HINT = re.compile(r"\d{6}|\d{2,4}[-.)－ ]{1,2}\d{3,4}[-.－ ]{1,2}\d{4}|@|[A-Z]\d{8}")
 # ko-pii는 공백·줄바꿈을 접어 매칭하므로 표를 펼친 숫자열("0 1 396 136", "2010 2011 2012 2013")을 전화·카드·주민번호로
 # 잡는다(3,000건 샘플에서 PHONE 238건 중 대부분). 원문 구간이 라벨의 표기 형식과 정확히 맞고, 앞뒤에 숫자 묶음이
 # 더 이어지지 않을 때만 치환한다. 형식: 주민등록번호 6-7자리(주민등록법 시행규칙 별표), 전화 02/0NN-NNN(N)-NNNN(전기통신번호
 # 관리세칙), 여권 M+8자리 또는 M+3자리+영문+4자리(2020 차세대 여권), 운전면허 지역2-연도2-일련6-검증2(도로교통법 시행규칙).
 SHAPES = {"RRN": re.compile(r"\d{6}[- ]?\d{7}"), "FRN": re.compile(r"\d{6}[- ]?\d{7}"),
-          "PHONE": re.compile(r"(\+?82[-. ]?\d{1,2}|0\d{1,2})[-.)－ ]?\d{3,4}[-.－ ]?\d{4}"),
+          "PHONE": re.compile(r"\(?(\+?82[-. ]?\d{1,2}|0\d{1,2})\)?[-.)－ ]{0,2}\d{3,4}[-.－ ]{0,2}\d{4}"),
           "EMAIL": re.compile(r"[^\s@]+@[^\s@]+\.[^\s@]+"),
           "ACCOUNT": re.compile(r"\d[\d-]{8,20}\d"), "CARD": re.compile(r"\d{4}([- ]?\d{4}){3}|\d{4}[- ]?\d{6}[- ]?\d{5}"),
           "PASSPORT": re.compile(r"[A-Z]\d{3}[A-Z0-9]\d{4}"), "DRIVER_LICENSE": re.compile(r"(\d{2}|[가-힣]{2})-?\d{2}-\d{6}-\d{2}")}
-# 표 숫자열("2010 2011 2012 2013")이나 코드('DATE0703221230', '154.16341649')에 붙은 구간 제외; 'T.055-…'는 허용
+# 표 숫자열("2010 2011 2012 2013")이나 코드('DATE0703221230', '154.16341649')에 붙은 구간 제외; 'T.055-…'는 허용.
+# \Z(문자열 끝)를 쓴다: '$'는 끝의 줄바꿈 앞에서도 맞아서 줄 끝 글자("CENTER\n010-…", "7630\n010-…")를 붙은 것으로
+# 오판해 줄 단위 연락처가 남았다(B-004, FineWeb clean-v1 표본).
 GLUED_AFTER = re.compile(r"[-－ .]?\d|[A-Za-z]")
-GLUED_BEFORE = re.compile(r"\d[-－ .]?$|[A-Za-z]$")
+GLUED_BEFORE = re.compile(r"\d[-－ .]?\Z|[A-Za-z]\Z")
 
 _kiwi = None
 
@@ -227,26 +229,42 @@ def assess_batch(texts, t=FINEWEB2):
     return [assess(x, w, t) for x, w in zip(texts, words_batch(texts))]
 
 
-def well_formed(text, d):
+# ko-pii가 구간 끝에 붙여 오는 구분 문자(표 구분선으로 쓰는 'ㅣ', '|', 공백)는 형식 검사 전에 뗀다.
+SPAN_TAIL = " \t\nㅣ|"
+
+
+def well_formed(text, label, start, end):
     """원문 구간이 라벨 형식과 일치하고, 앞뒤에 숫자 묶음이나 영문자가 붙어 있지 않은 탐지만 인정한다."""
-    return bool(SHAPES[d.label].fullmatch(text, d.start, d.end)) and not (
-        GLUED_AFTER.match(text[d.end:d.end + 2]) or GLUED_BEFORE.search(text[max(0, d.start - 2):d.start]))
+    return bool(SHAPES[label].fullmatch(text, start, end)) and not (
+        GLUED_AFTER.match(text[end:end + 2]) or GLUED_BEFORE.search(text[max(0, start - 2):start]))
 
 
-def redact(text):
-    """PII를 고정 토큰으로 치환. (텍스트, 라벨별 치환 수)."""
-    counts = Counter()
-    if not PII_HINT.search(text):
-        return text, counts
+def _redact_once(text):
     from ko_pii import detect_all
-    hits = sorted(detect_all(text, include=list(PII_LABELS)), key=lambda d: (d.start, -d.end))
-    out, pos = [], 0
-    for d in hits:
-        if d.start < pos or not well_formed(text, d):
+    counts, out, pos = Counter(), [], 0
+    for d in sorted(detect_all(text, include=list(PII_LABELS)), key=lambda d: (d.start, -d.end)):
+        end = d.end
+        while end > d.start and text[end - 1] in SPAN_TAIL:
+            end -= 1
+        if d.start < pos or not well_formed(text, d.label, d.start, end):
             continue
         out.append(text[pos:d.start])
         out.append(PII_LABELS[d.label])
         counts[d.label] += 1
-        pos = d.end
+        pos = end
     out.append(text[pos:])
     return "".join(out), counts
+
+
+def redact(text):
+    """PII를 고정 토큰으로 치환. (텍스트, 라벨별 치환 수). 결과가 바뀌지 않을 때까지(최대 3회) 반복한다: ko-pii는
+    붙어 있는 연락처(전화 바로 뒤 이메일)를 겹친 구간으로 내놓아 한 번에 하나만 치환되는 경우가 있다(B-004)."""
+    counts = Counter()
+    for _ in range(3):
+        if not PII_HINT.search(text):
+            break
+        text, found = _redact_once(text)
+        if not found:
+            break
+        counts += found
+    return text, counts

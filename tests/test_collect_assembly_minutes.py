@@ -1,6 +1,8 @@
 """Assembly minutes: list-tree parsing must reproduce the site's own requests; text must start at the minutes body."""
+import threading
+import time
 import unittest
-from scripts.collect_assembly_minutes import extract, minute_ids, nodes_of, payload, row_of
+from scripts.collect_assembly_minutes import HostLimiter, extract, minute_ids, nodes_of, payload, row_of
 
 LIST = '''<ul class="tree_list"><li><div class="tit_wrap"><div class="txt">
 <a href="javascript:void(0);" class="tit sess" data-id="" data-sess="430" data-th="22" data-class="1"
@@ -44,12 +46,32 @@ class AssemblyMinutesTests(unittest.TestCase):
         self.assertFalse(any(line.startswith('Scroll') for line in lines))
 
     def test_row_schema(self):
-        row = row_of({'id': 55958, 'class': '1', 'th': '22'}, VIEWER, '2026-10-30T00:00:00+00:00')
+        row, pii = row_of({'id': 55958, 'class': '1', 'th': '22'}, VIEWER.replace('개의하겠습니다.', '개의하겠습니다. 문의 02-123-4567'),
+                          '2026-10-30T00:00:00+00:00')
+        self.assertNotIn('02-123-4567', row['text'])
+        self.assertEqual(dict(pii), {'PHONE': 1})
+        self.assertEqual((row['clean_version'], row['provenance']['institution']), ('clean-v1', '국회'))
+        self.assertIn(row['split'], ('train', 'valid', 'test'))
         self.assertEqual(row['id'], 'assembly-minutes:55958')
         self.assertEqual(row['kind'], 'assembly_plenary')
         self.assertEqual(row['license'], 'KOGL-Type1')
         self.assertEqual(row['title'], '제22대국회 제430회 제1차 국회본회의')
         self.assertTrue(row['source'].endswith('xml.do?id=55958&type=view'))
+
+    def test_host_limiter_spaces_starts_across_threads_and_backs_off(self):
+        limiter, starts = HostLimiter(0.05), []
+        threads = [threading.Thread(target=lambda: (limiter.acquire(), starts.append(time.monotonic()))) for _ in range(4)]
+        for t in threads:
+            t.start()
+        for t in threads:
+            t.join()
+        starts.sort()
+        self.assertTrue(all(b - a >= 0.045 for a, b in zip(starts, starts[1:])))
+        limiter.observe(429, 0.1, retry_after=0.2)
+        self.assertGreaterEqual(limiter.interval, 0.2)
+        for _ in range(200):
+            limiter.observe(200, 0.1)
+        self.assertAlmostEqual(limiter.interval, 0.05)
 
 
 if __name__ == '__main__':
