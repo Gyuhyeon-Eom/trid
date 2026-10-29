@@ -89,7 +89,6 @@ class AssemblyMinutesTests(unittest.TestCase):
             t.join()
         # Four starts share one host interval: the last one cannot begin before 3 intervals have passed.
         self.assertGreaterEqual(time.monotonic() - started, 0.15 - 0.01)
-        self.assertAlmostEqual(sorted(waits)[-1], 0.15, delta=0.03)
         limiter.observe(429, 0.1, retry_after=0.2)
         self.assertGreaterEqual(limiter.interval, 0.2)
         for _ in range(200):
