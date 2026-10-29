@@ -232,6 +232,37 @@ def prepare_real_stage(output, parent, source):
     print(json.dumps({k: v for k, v in metadata.items() if k != 'parent_provenance'}, ensure_ascii=False), flush=True)
 
 
+def prepare_teacher_stage(output, parent, teacher_dirs, teacher_mass):
+    """Add open-model-drafted institution QA (scripts/build_teacher_qa.py) as a new component.
+
+    Every parent weight is scaled by (1 - teacher_mass); teacher rows share teacher_mass uniformly.
+    Parent validation is copied unchanged so checkpoint selection stays comparable.
+    """
+    if output.exists():
+        raise ValueError('Use a new data directory')
+    if not 0 < teacher_mass < 1:
+        raise ValueError('teacher mass must be between 0 and 1')
+    train = read_jsonl(parent / 'train.jsonl')
+    for row in train:
+        row['weight'] *= 1 - teacher_mass
+    teacher = [r for d in teacher_dirs for r in read_jsonl(d / 'train.jsonl')]
+    if not teacher or len({r['id'] for r in teacher}) != len(teacher):
+        raise ValueError('Teacher rows missing or duplicated')
+    for row in teacher:
+        row['weight'] = teacher_mass / len(teacher)
+    output.mkdir(parents=True)
+    (output / 'train.jsonl').write_text(''.join(json.dumps(r, ensure_ascii=False) + '\n' for r in train + teacher))
+    (output / 'valid.jsonl').write_bytes((parent / 'valid.jsonl').read_bytes())
+    metadata = {'purpose': 'Parent mix plus open-model-drafted, source-verbatim institution QA',
+                'parent_data': str(parent), 'teacher_data': [str(d) for d in teacher_dirs], 'teacher_mass': teacher_mass,
+                'teacher_rows': dict(Counter(r['task'] for r in teacher)), 'validation': 'byte-identical copy of parent',
+                'teacher_provenance': [json.loads((d / 'provenance.json').read_text()) for d in teacher_dirs],
+                'parent_provenance': json.loads((parent / 'provenance.json').read_text())}
+    (output / 'provenance.json').write_text(json.dumps(metadata, ensure_ascii=False, indent=2))
+    print(json.dumps({k: v for k, v in metadata.items() if not k.endswith('provenance')}, ensure_ascii=False), flush=True)
+
+
+
 def evaluate(run, data, output):
     import torch
     from trid.runtime import load_run, generate
@@ -259,7 +290,7 @@ def evaluate(run, data, output):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('action', choices=['prepare', 'prepare-qa', 'prepare-abstain', 'prepare-real', 'train', 'evaluate'])
+    parser.add_argument('action', choices=['prepare', 'prepare-qa', 'prepare-abstain', 'prepare-real', 'prepare-teacher', 'train', 'evaluate'])
     parser.add_argument('--data', type=Path, required=True)
     parser.add_argument('--run', type=Path, required=True)
     parser.add_argument('--report', type=Path)
@@ -269,6 +300,8 @@ def main():
     parser.add_argument('--parent-data', type=Path, default=ROOT / 'data/public-dialogue-mix-02')
     parser.add_argument('--abstain-share', type=float, default=.10)
     parser.add_argument('--real-source', type=Path, default=ROOT / 'data/korean-rag-curriculum-v4')
+    parser.add_argument('--teacher-data', type=Path, action='append', default=[])
+    parser.add_argument('--teacher-mass', type=float, default=.25)
     args = parser.parse_args()
     if args.action == 'prepare':
         prepare(args.data, args.init_run)
@@ -278,6 +311,8 @@ def main():
         prepare_abstain_stage(args.data, args.parent_data, args.abstain_share)
     elif args.action == 'prepare-real':
         prepare_real_stage(args.data, args.parent_data, args.real_source)
+    elif args.action == 'prepare-teacher':
+        prepare_teacher_stage(args.data, args.parent_data, args.teacher_data, args.teacher_mass)
     elif args.action == 'evaluate':
         if args.report is None:
             parser.error('--report required')

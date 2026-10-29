@@ -82,12 +82,15 @@ def passages(text):
     return [p for p in out if MIN_CHARS <= len(p) <= MAX_CHARS]
 
 
-def select(work, count, seed):
+def select(work, count, seed, exclude_selected=()):
+    """`exclude_selected`: earlier work dirs whose documents must not be selected again."""
     excluded_ids, excluded_hashes = set(), set()
     for path in EXCLUDE:
         for doc in read_jsonl(path):
             excluded_ids.add(doc['id'])
             excluded_hashes.add(hashlib.sha256(doc['text'].encode()).hexdigest())
+    for previous in exclude_selected:
+        excluded_ids.update(d['id'] for d in read_jsonl(Path(previous) / 'selected.jsonl'))
     with SOURCE.open() as f:
         total = sum(1 for _ in f)
     chosen = set(random.Random(seed).sample(range(total), min(total, count * 3)))
@@ -112,7 +115,8 @@ def select(work, count, seed):
     (work / 'selected.jsonl').write_text(''.join(json.dumps(d, ensure_ascii=False) + '\n' for d in selected))
     meta = dict(source=str(SOURCE), source_sha256_note='docs.jsonl is append-only crawl output; ids are stable',
                 seed=seed, requested=count, selected=len(selected), skipped=dict(skipped),
-                excluded_sets=[str(p) for p in EXCLUDE], excluded_ids=len(excluded_ids))
+                excluded_sets=[str(p) for p in EXCLUDE], excluded_previous_selections=[str(p) for p in exclude_selected],
+                excluded_ids=len(excluded_ids))
     (work / 'select.json').write_text(json.dumps(meta, ensure_ascii=False, indent=2))
     print(json.dumps(meta, ensure_ascii=False))
 
@@ -246,22 +250,29 @@ def assemble(work, output, tokenizer, missing_share, distractors, seed):
         if len(chosen) < distractors:
             dropped['distractors'] += 1
             continue
-        passages_ = chosen if missing else chosen + [target]
-        rng.shuffle(passages_)
-        body = '\n'.join(f'[D{i}] {p}' for i, p in enumerate(passages_, 1))
-        answer = ABSTAIN if missing else f"{item['answer']} [D{passages_.index(target) + 1}]"
         doc = docs[item['doc_id']]
-        row = dict(id=f"teacher-{item['doc_id']}-{item['passage_index']}-{hashlib.sha1(item['question'].encode()).hexdigest()[:8]}",
-                   prompt=f"{DOCUMENT_INSTRUCTION}{body}\n질문: {item['question']}", answer=answer,
-                   task='teacher_qa_missing' if missing else 'teacher_qa', group='teacher_qa', mixture_component='teacher_qa',
-                   source=f"korea.kr policy briefing, KOGL Type 1 ({doc['source']}); question drafted by {item['generator']}, "
-                          f"checked by {item['verifier']}; answer copied verbatim from the source",
-                   source_guid=item['doc_id'], source_title=doc['title'])
-        try:
-            encode_example(tok, row, 1024)
-            if len(prompt_ids(tok, row['prompt'], None)) + 128 > 1024:
-                raise ValueError('generation reserve')
-        except ValueError:
+        row = None
+        # Drop distractors until the row fits 1024 tokens with a 128-token generation reserve; keep >= 1 other passage.
+        while row is None and len(chosen) >= 1:
+            passages_ = chosen if missing else chosen + [target]
+            rng.shuffle(passages_)
+            body = '\n'.join(f'[D{i}] {p}' for i, p in enumerate(passages_, 1))
+            answer = ABSTAIN if missing else f"{item['answer']} [D{passages_.index(target) + 1}]"
+            candidate = dict(
+                id=f"teacher-{item['doc_id']}-{item['passage_index']}-{hashlib.sha1(item['question'].encode()).hexdigest()[:8]}",
+                prompt=f"{DOCUMENT_INSTRUCTION}{body}\n질문: {item['question']}", answer=answer,
+                task='teacher_qa_missing' if missing else 'teacher_qa', group='teacher_qa', mixture_component='teacher_qa',
+                source=f"korea.kr policy briefing, KOGL Type 1 ({doc['source']}); question drafted by {item['generator']}, "
+                       f"checked by {item['verifier']}; answer copied verbatim from the source",
+                source_guid=item['doc_id'], source_title=doc['title'], passages=len(passages_))
+            try:
+                encode_example(tok, candidate, 1024)
+                if len(prompt_ids(tok, candidate['prompt'], None)) + 128 > 1024:
+                    raise ValueError('generation reserve')
+                row = candidate
+            except ValueError:
+                chosen = chosen[:-1]
+        if row is None:
             dropped['context'] += 1
             continue
         splits['valid' if item['doc_id'] in valid_docs else 'train'].append(row)
@@ -291,13 +302,15 @@ def main():
     p.add_argument('--url', default='http://127.0.0.1:18473')
     p.add_argument('--passages-per-doc', type=int, default=2)
     p.add_argument('--output', type=Path)
+    p.add_argument('--exclude-selected', type=Path, action='append', default=[],
+                   help='select: earlier work dir whose documents are skipped (repeatable)')
     p.add_argument('--tokenizer', type=Path, default=ROOT / 'runs/trid-korean-medium-cpt-gpu-complete/tokenizer.json')
     p.add_argument('--missing-share', type=float, default=.2)
     p.add_argument('--distractors', type=int, default=2)
     p.add_argument('--workers', type=int, default=4)
     a = p.parse_args()
     if a.stage == 'select':
-        select(a.work, a.count, a.seed)
+        select(a.work, a.count, a.seed, a.exclude_selected)
     elif a.stage == 'generate':
         generate(a.work, a.url.rstrip('/'), a.passages_per_doc, a.workers)
     elif a.stage == 'verify':
