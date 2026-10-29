@@ -1,0 +1,39 @@
+{
+ "manifest_sha256": "0ed3cc079e8da0f9765e320091c88608186ef259c426f3319944c0921f7495e8",
+ "reserved_families": 148,
+ "corpus": [
+  {
+   "path": "/tmp/c007/overlap-corpus.jsonl",
+   "sha256": "dac8259a4e29b796e957d1d284266eefe37a5362dac7326662b5962f647bc120"
+  }
+ ],
+ "corpus_rows_scanned": 24171,
+ "matched_corpus_rows": 0,
+ "families_with_matches": 0,
+ "match_types": {},
+ "thresholds": {
+  "minhash_estimate": 0.5,
+  "ngram8_containment": 0.5,
+  "partial_review_min_shared_ngram8": 50
+ },
+ "per_family_matched_rows": {},
+ "matches": [],
+ "partial_review_rows": 1,
+ "partial_review_note": "rows sharing >= partial_min reserved word 8-grams below the containment threshold; evidence for manual review, not counted as matches or excluded automatically",
+ "partial_review": [
+  {
+   "corpus_id": "korea-kr-press-156552370",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:12706": {
+     "shared_ngram8": 86,
+     "of_reserved": 9236
+    },
+    "institutions:alio-rule:33636": {
+     "shared_ngram8": 79,
+     "of_reserved": 20721
+    }
+   }
+  }
+ ]
+}

@@ -22,7 +22,7 @@ import sys
 import time
 import unicodedata
 import urllib.request
-from collections import Counter
+from collections import Counter, defaultdict
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
@@ -227,8 +227,14 @@ def assemble(work, output, tokenizer, missing_share, seed):
     """Shared contexts: two passages from different documents, and every verified question of both passages is
     asked against the byte-identical context, so only the question decides the answer and its source.
 
-    A question is dropped when its answer string also occurs in the other passage (ambiguous source). Abstention
-    rows ask a question from a third document's passage against the same context. Split by document.
+    A question is dropped when its answer string also occurs in the other passage (ambiguous source), or when the
+    same question text is also asked of the other passage. Abstention rows ask a question from a third document's
+    passage against the same context. Split by document.
+
+    Conflicts are decided over all verified rows and quarantine the whole question key (written to
+    quarantine.jsonl with every row): the same question on the same passage with different answers or verdicts,
+    and the same question on different passages of one document with different kept answers. Inputs are sorted
+    before any seeded shuffle, so the output does not depend on the order of verified.jsonl.
     """
     from tokenizers import Tokenizer
     from trid.text import encode_example, prompt_ids
@@ -238,14 +244,35 @@ def assemble(work, output, tokenizer, missing_share, seed):
     tok = Tokenizer.from_file(str(tokenizer))
     rng = random.Random(seed)
     docs = {d['id']: d for d in read_jsonl(work / 'selected.jsonl')}
-    kept = [r for r in read_jsonl(work / 'verified.jsonl') if r['kept']]
+    verified = read_jsonl(work / 'verified.jsonl')
+    per_key, per_doc_question = defaultdict(list), defaultdict(set)
+    for r in verified:
+        per_key[(r['doc_id'], r['passage_index'], norm(r['question']))].append(r)
+        if r['kept']:
+            per_doc_question[(r['doc_id'], norm(r['question']))].add(r['answer'])
+    same_passage = {k for k, rs in per_key.items() if len({(r['answer'], r['kept']) for r in rs}) > 1}
+    cross_passage = {k for k, answers in per_doc_question.items() if len(answers) > 1}
+    quarantine = [dict(category='same_passage_conflict' if k in same_passage else 'cross_passage_conflict',
+                       doc_id=k[0], passage_index=k[1], question=rs[0]['question'], rows=rs)
+                  for k, rs in ((k, sorted(rs, key=lambda r: json.dumps(r, ensure_ascii=False, sort_keys=True)))
+                                for k, rs in sorted(per_key.items()))
+                  if k in same_passage or (k[0], k[2]) in cross_passage]
+    kept = sorted((r for r in verified if r['kept']),
+                  key=lambda r: (r['doc_id'], r['passage_index'], norm(r['question']), r['answer']))
     by_passage, dropped = {}, Counter()
     for item in kept:
-        questions = by_passage.setdefault((item['doc_id'], item['passage_index']), {})
-        if norm(item['question']) in questions:
+        key = (item['doc_id'], item['passage_index'], norm(item['question']))
+        if key in same_passage:
+            dropped['quarantine_same_passage_conflict'] += 1
+            continue
+        if (key[0], key[2]) in cross_passage:
+            dropped['quarantine_cross_passage_conflict'] += 1
+            continue
+        questions = by_passage.setdefault(key[:2], {})
+        if key[2] in questions:
             dropped['duplicate'] += 1
             continue
-        questions[norm(item['question'])] = item
+        questions[key[2]] = item
     doc_ids = sorted({doc_id for doc_id, _ in by_passage})
     rng.shuffle(doc_ids)
     valid_docs = set(doc_ids[:max(1, len(doc_ids) // 20)])
@@ -276,9 +303,12 @@ def assemble(work, output, tokenizer, missing_share, seed):
             rows = []
             for n, key in enumerate(order):
                 other = norm(texts[1 - n])
-                for item in by_passage[key].values():
+                for question, item in by_passage[key].items():
                     if norm(item['answer']) in other:
                         dropped['answer_in_both_passages'] += 1
+                        continue
+                    if question in by_passage[order[1 - n]]:
+                        dropped['question_in_both_passages'] += 1
                         continue
                     rows.append((item, f"{item['answer']} [D{n + 1}]", 'teacher_qa'))
             if len({answer for _, answer, _ in rows}) < 2:
@@ -286,9 +316,10 @@ def assemble(work, output, tokenizer, missing_share, seed):
                 continue
             pool = [k for k in keys if k[0] not in (a[0], b[0])]
             n_missing = round(len(rows) * missing_share / (1 - missing_share))
+            asked = set(by_passage[a]) | set(by_passage[b])
             for key in rng.sample(pool, min(n_missing, len(pool))):
-                item = next(iter(by_passage[key].values()))
-                if all(norm(item['answer']) not in norm(t) for t in texts):
+                question, item = next(iter(by_passage[key].items()))
+                if question not in asked and all(norm(item['answer']) not in norm(t) for t in texts):
                     rows.append((item, ABSTAIN, 'teacher_qa_missing'))
             built = []
             for item, answer, task in rows:
@@ -302,20 +333,22 @@ def assemble(work, output, tokenizer, missing_share, seed):
                     source_guid=item['doc_id'], source_title=doc['title'],
                     context_id=hashlib.sha1(body.encode()).hexdigest()[:12]))
             if not all(fits(r) for r in built):
-                dropped['context_too_long'] += len(built)
+                dropped.update(f"context_too_long_{r['task']}" for r in built)
                 continue
             splits[split] += built
             contexts[len(built)] += 1
+        dropped['unpaired_passage_questions'] += sum(len(by_passage[k]) for k in keys)
     output.mkdir(parents=True)
     for split, rows in splits.items():
         (output / f'{split}.jsonl').write_text(''.join(json.dumps(r, ensure_ascii=False) + '\n' for r in rows))
-    verified = read_jsonl(work / 'verified.jsonl')
+    (output / 'quarantine.jsonl').write_text(''.join(json.dumps(q, ensure_ascii=False) + '\n' for q in quarantine))
     meta = dict(purpose='Open-model-drafted, source-verbatim reading QA on real KOGL Type 1 policy briefings, shared contexts',
                 method=__doc__, work=str(work), select=json.loads((work / 'select.json').read_text()),
                 drafts=len(read_jsonl(work / 'drafts.jsonl')), questions=len(verified), kept=len(kept),
                 rejected=dict(Counter(r for v in verified for r in v['reasons'])),
                 rows={s: dict(Counter(r['task'] for r in rows)) for s, rows in splits.items()},
                 rows_per_context=dict(sorted(contexts.items())), dropped=dict(dropped),
+                quarantined_keys=dict(Counter(q['category'] for q in quarantine)),
                 missing_share=missing_share, seed=seed, split='by document, 5% valid',
                 license='KOGL Type 1 text; attribution kept per row',
                 limitations='Questions are machine-drafted and machine-checked, not human-reviewed. Source documents may '
