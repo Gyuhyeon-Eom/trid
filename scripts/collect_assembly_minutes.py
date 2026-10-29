@@ -25,6 +25,7 @@ import gzip
 import hashlib
 import html
 import json
+import os
 import re
 import statistics
 import sys
@@ -41,7 +42,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 BUCKET = 'trid-training-148761639313'
 SOURCE = 'assembly-minutes'
-VERSION = 'clean-v1'
+VERSION = 'clean-v2'  # clean-v1 (B-006): no private-name quarantine, no restored list metadata, older redact
 BASE = 'https://record.assembly.go.kr/assembly'
 UA = 'Mozilla/5.0 (compatible; trid-collector/0.1; +public-sector research corpus)'
 LICENSE = 'KOGL-Type1'
@@ -50,8 +51,17 @@ CLASSES = {'1': 'assembly_plenary', '2': 'assembly_committee', '3': 'assembly_sp
 TERMS = [str(n) for n in range(1, 23)] + ['10.5']
 MINUTE_LINK = re.compile(r'viewer/minutes/xml\.do\?id=(\d+)&(?:amp;)?type=view')
 HEADER = re.compile(r'제(\d+(?:\.\d+)?)대국회\s*제(\d+)회\s*\(([^)]*)\)\s*제(\d+)차\s*(.+?)\s*\((\d{4})\.\s*(\d{1,2})\.\s*(\d{1,2})\.\)')
+AUDIT_HEADER = re.compile(r'제(\d+(?:\.\d+)?)대국회\s*(\d{4})년도\s*(국정감사|국정조사)\s*(.+?)\s*\((\d{4})\.\s*(\d{1,2})\.\s*(\d{1,2})\.\)')
 UI_TAIL = {'top', 'down', '발언 저장', '발언 인쇄'}
 SPLITS = (('test', 50), ('valid', 100))  # per-10,000 bucket bounds; dev splits, not an independent final test
+# Private persons named in minutes (B-006 review): the representative petitioner of a 국민동의청원 ("홍길동 외 52,585인")
+# and witness / reference / statement speakers ("증인 홍길동"). Whole meetings are quarantined, not edited: replacing names
+# would break the record, and being public is not by itself a basis for training use. Public officials stay.
+PETITIONER = re.compile(r'\(([가-힣]{2,4}) 외 [\d,]+인')
+PRIVATE_SPEAKER = re.compile(r'^(?:증인|참고인|진술인)\s+[가-힣]{2,4}$', re.M)
+# Title/date restored from the official meeting list when the minutes header has another form (e.g. 개회식); kept in
+# S3 with the list request that showed it. Nothing is inferred from the body.
+OFFICIAL_META_KEY = f'corpus/state/{SOURCE}/official-list-meta.json'
 
 
 def payload(kind, d, term):
@@ -126,10 +136,16 @@ def extract(page):
              if not (line.endswith(' 선택') and i + 1 < len(lines) and lines[i + 1].startswith(line[:-3]))]
     meta = {}
     m = HEADER.search(head_text)
+    a = AUDIT_HEADER.search(head_text)
     if m:
         term, session, session_kind, order, meeting, y, mo, d = m.groups()
         meta = {'term': term, 'session': int(session), 'session_kind': session_kind, 'order': int(order),
-                'meeting': meeting, 'date': f'{int(y):04d}-{int(mo):02d}-{int(d):02d}'}
+                'meeting': meeting, 'date': f'{int(y):04d}-{int(mo):02d}-{int(d):02d}',
+                'title': f'제{term}대국회 제{session}회 제{order}차 {meeting}'}
+    elif a:  # 국정감사·국정조사 minutes: "제22대국회 2024년도 국정감사 문화체육관광위원회 (2024.10.24.)"
+        term, year, kind, meeting, y, mo, d = a.groups()
+        meta = {'term': term, 'audit_year': int(year), 'session_kind': kind, 'meeting': meeting,
+                'date': f'{int(y):04d}-{int(mo):02d}-{int(d):02d}', 'title': f'제{term}대국회 {year}년도 {kind} {meeting}'}
     return meta, unicodedata.normalize('NFC', '\n'.join(lines))
 
 
@@ -138,71 +154,124 @@ def split_of(group):
     return next((name for name, upper in SPLITS if bucket < upper), 'train')
 
 
-def row_of(meeting, page, collected_at):
-    """-> (clean-v1 row, pii Counter)."""
+def quarantine_reasons(text, meta, official):
+    reasons = []
+    if PETITIONER.search(text) or PRIVATE_SPEAKER.search(text):
+        reasons.append('private_person_names')
+    if not meta and not official:
+        reasons.append('metadata_incomplete')
+    return reasons
+
+
+def row_of(meeting, page, collected_at, official=None):
+    """-> (row, pii Counter). `official`: {'title', 'date', 'source'} from the official meeting list, used only when the
+    minutes header does not parse. Quarantine reasons are flags 'quarantine:<reason>'."""
     from trid.korean_quality import redact
     meta, text = extract(page)
     text, pii = redact(text)
-    title = (f"제{meta['term']}대국회 제{meta['session']}회 제{meta['order']}차 {meta['meeting']}"
-             if meta else meeting.get('label', ''))
+    title = meta.get('title') or (official or {}).get('title', '')
+    date = meta.get('date') or (official or {}).get('date')
     url = f"{BASE}/viewer/minutes/xml.do?id={meeting['id']}&type=view"
     group = f"{SOURCE}:{meeting['id']}"
+    flags = (['pii_redacted'] if pii else []) + ([] if meta else ['header_unparsed'])
+    flags += [f'quarantine:{r}' for r in quarantine_reasons(text, meta, official)]
+    extra = {'metadata_source': official['source']} if official and not meta else {}
     return {'id': group, 'group': group, 'kind': CLASSES.get(str(meeting.get('class')), 'assembly_minutes'),
             'title': title, 'text': text, 'source': url, 'license': LICENSE,
-            'attribution': f'출처: 국회사무처 국회회의록, {url}', 'date': meta.get('date'),
+            'attribution': f'출처: 국회사무처 국회회의록, {url}', 'date': date,
             'sha256': hashlib.sha256(text.encode()).hexdigest(), 'collected_at': collected_at, 'extractor': 'html:viewer',
-            'clean_version': VERSION, 'flags': (['pii_redacted'] if pii else []) + ([] if meta else ['header_unparsed']),
-            'split': split_of(group),
+            'clean_version': VERSION, 'flags': flags, 'split': split_of(group),
             'provenance': {'institution': '국회', 'institution_type': '국회', 'doc_type': '회의록',
-                           'committee': meta.get('meeting'), 'published_date': meta.get('date')},
-            'meta': {**{k: v for k, v in meta.items() if k != 'date'}, 'minutes_id': meeting['id'],
+                           'committee': meta.get('meeting') or (official or {}).get('meeting'), 'published_date': date},
+            'meta': {**{k: v for k, v in meta.items() if k not in ('date', 'title')}, **extra, 'minutes_id': meeting['id'],
                      'class_id': meeting.get('class'), 'list_term': meeting.get('th'), 'pii_redactions': dict(pii)}}, pii
 
 
 class HostLimiter:
-    """One request-start interval for the whole host, shared by every worker thread. Slows down on 429/5xx,
-    Retry-After or time-to-first-byte above max(2x running median, median + 1 s); drifts back toward the base
-    interval when healthy. Callers pass time-to-first-byte, not total transfer time: a large file download is not a
-    sign of server distress (2026-10-30: total time pushed the ALIO interval from 1 s to the 30 s cap)."""
+    """One request-start interval for the whole host. Slows down on 429/5xx, Retry-After or time-to-first-byte above
+    max(2x running median, median + 1 s); drifts back toward the base interval when healthy. Callers pass
+    time-to-first-byte, not total transfer time: a large file download is not a sign of server distress (2026-10-30:
+    total time pushed the ALIO interval from 1 s to the 30 s cap).
 
-    def __init__(self, interval, max_interval=30.0):
+    With `host`, the next allowed start time lives in a lock file (<tmp>/trid-host-limits/<host>), so every process
+    and thread on this machine that talks to that host shares one interval (B-007: two collectors on one host must not
+    add up to more than the policy rate)."""
+
+    def __init__(self, interval, max_interval=30.0, host=None, shared_dir=None):
+        import tempfile
         self.base = self.interval = interval
         self.max_interval = max_interval
         self.next_start, self.lock, self.latencies = 0.0, threading.Lock(), []
+        self.reserved = threading.local()  # per thread: exact reserved start of its latest request (rate evidence)
+        self.shared = None
+        if host:
+            folder = Path(shared_dir or tempfile.gettempdir()) / 'trid-host-limits'
+            folder.mkdir(parents=True, exist_ok=True)
+            self.shared = folder / host
+            self.shared.touch(exist_ok=True)
+
+    def _reserve(self, earliest_gap=0.0):
+        """Reserve the next start (wall clock) and return it; with a shared file, under an exclusive file lock."""
+        import fcntl
+        with self.lock:
+            now = time.time()
+            if not self.shared:
+                start = max(now + earliest_gap, self.next_start)
+                self.next_start = start + self.interval
+                return start, now
+            with open(self.shared, 'r+') as f:
+                fcntl.flock(f, fcntl.LOCK_EX)
+                try:
+                    text = f.read().strip()
+                    shared_next = float(text) if text else 0.0
+                    start = max(now + earliest_gap, shared_next, self.next_start)
+                    self.next_start = start + self.interval
+                    f.seek(0)
+                    f.truncate()
+                    f.write(repr(self.next_start))
+                finally:
+                    fcntl.flock(f, fcntl.LOCK_UN)
+            return start, now
 
     def acquire(self):
-        with self.lock:
-            now = time.monotonic()
-            start = max(now, self.next_start)
-            self.next_start = start + self.interval
+        start, now = self._reserve()
+        self.reserved.start = start
         wait = start - now
         if wait > 0:
             time.sleep(wait)
         return wait
 
     def observe(self, status, latency, retry_after=None):
+        backoff = False
         with self.lock:
             self.latencies = (self.latencies + [latency])[-50:]
             median = statistics.median(self.latencies)
             if status == 429 or status >= 500 or retry_after:
                 self.interval = min(self.max_interval, max(self.interval * 2, float(retry_after or 0)))
-                self.next_start = time.monotonic() + self.interval
+                backoff = True
             elif len(self.latencies) >= 10 and latency > max(2 * median, median + 1.0):
                 self.interval = min(self.max_interval, self.interval * 1.5)
             else:
                 self.interval = max(self.base, self.interval * 0.95)
+        if backoff:  # push the shared next start out for every process, not only this one
+            self._reserve(earliest_gap=self.interval)
 
 
 class Client:
-    def __init__(self, limiter):
+    def __init__(self, limiter, request_log=None):
         import requests
         self.session, self.limiter = requests.Session(), limiter
         self.session.headers.update({'User-Agent': UA})
+        self.request_log, self.log_lock = request_log, threading.Lock()
 
     def request(self, method, url, metrics, **kw):
         for attempt in range(6):
             waited = self.limiter.acquire()
             started = time.monotonic()
+            if self.request_log:  # one line per request start: the evidence for the host-wide rate
+                with self.log_lock, open(self.request_log, 'a') as log:
+                    log.write(json.dumps({'t': time.time(), 'reserved': getattr(self.limiter.reserved, 'start', None),
+                                          'pid': os.getpid(), 'method': method, 'url': url}) + '\n')
             try:
                 r = self.session.request(method, url, timeout=180, **kw)
             except Exception as exc:  # network error: count as a 5xx-like failure and back off
@@ -272,19 +341,35 @@ def put_verified(s3, key, body):
 
 
 def discover(client, s3, terms, classes, index, metrics):
-    """Resumable walk; state = {'done': ['<term>/<class>', ...], 'meetings': {id: {...}}}."""
+    """Resumable walk; state = {'done': ['<term>/<class>', ...], 'meetings': {id: {...}}, 'walk': {'<term>/<class>':
+    {'queue': [...], 'seen': [...], 'requests': n}}}. The walk (pending list nodes and requests already made) is saved
+    every 25 requests, so a stop never repeats finished list requests (B-007)."""
     key = f'corpus/state/{SOURCE}/{index}'
     state = read_json_s3(s3, key, {'done': [], 'meetings': {}})
+    walks = state.setdefault('walk', {})
     save = lambda: s3.put_object(Bucket=BUCKET, Key=key, Body=json.dumps(state).encode())
     for term in terms:
         for cls in classes:
-            if f'{term}/{cls}' in state['done']:
+            name = f'{term}/{cls}'
+            if name in state['done']:
                 continue
             list_url = f'{BASE}/mnts/total/{term}.do?' + urlencode({'class_id_sch': cls, 'cmit_chk': 'all'})
-            page = client.request('GET', list_url, metrics).text
-            queue, seen_requests, requests_made = nodes_of(page), set(), 0
-            for mid in minute_ids(page):
-                state['meetings'].setdefault(str(mid), {'id': mid, 'th': term, 'class': cls})
+            if name in walks:
+                walk = walks[name]
+                queue = [tuple(item) for item in walk['queue']]
+                seen_requests = {(endpoint, tuple(map(tuple, form))) for endpoint, form in walk['seen']}
+                requests_made = walk['requests']
+            else:
+                page = client.request('GET', list_url, metrics).text
+                queue, seen_requests, requests_made = nodes_of(page), set(), 0
+                for mid in minute_ids(page):
+                    state['meetings'].setdefault(str(mid), {'id': mid, 'th': term, 'class': cls})
+
+            def checkpoint():
+                walks[name] = {'queue': [list(item) for item in queue], 'requests': requests_made,
+                               'seen': [[endpoint, [list(kv) for kv in form]] for endpoint, form in seen_requests]}
+                save()
+
             while queue:
                 kind, data = queue.pop()
                 data.setdefault('th', term)
@@ -293,16 +378,17 @@ def discover(client, s3, terms, classes, index, metrics):
                 request_key = (endpoint, tuple(sorted(form.items())))
                 if request_key in seen_requests:
                     continue
-                seen_requests.add(request_key)
                 sub = client.request('POST', BASE + endpoint, metrics, data=form,
                                      headers={'X-Requested-With': 'XMLHttpRequest', 'Referer': list_url}).text
+                seen_requests.add(request_key)
                 requests_made += 1
                 for mid in minute_ids(sub):
                     state['meetings'].setdefault(str(mid), {'id': mid, 'th': term, 'class': cls, 'sess': data.get('sess', '')})
                 queue.extend(nodes_of(sub))
                 if requests_made % 25 == 0:
-                    save()
-            state['done'].append(f'{term}/{cls}')
+                    checkpoint()
+            state['done'].append(name)
+            walks.pop(name, None)
             save()
             print(json.dumps({'term': term, 'class': cls, 'meetings_total': len(state['meetings']),
                               'list_requests': requests_made, 'metrics': metrics.snapshot()}), flush=True)
@@ -334,15 +420,64 @@ def stratified(meetings, seed):
     return out
 
 
-def fetch(client, s3, index, per_shard, workers, limit, metrics, seed=None):
+def write_shard(s3, client, shard, results, workers, metrics, started, origin):
+    """results: [(meeting, row|None, pii|None, error|None)] -> verified docs/quarantine shards + manifest."""
+    seen_text, docs, held = {}, [], []
+    for _, row, _, _ in results:
+        if row and row['text']:
+            if row['sha256'] in seen_text:
+                row['flags'].append(f"duplicate_text_of:{seen_text[row['sha256']]}")
+            seen_text.setdefault(row['sha256'], row['id'])
+            (held if any(f.startswith('quarantine:') for f in row['flags']) else docs).append(row)
+    t = time.monotonic()
+    keys = {}
+    for name, rows in (('docs', docs), ('quarantine', held)):
+        body = gzip.compress(''.join(json.dumps(r, ensure_ascii=False) + '\n' for r in rows).encode(), mtime=0)
+        key = f'corpus/clean/{SOURCE}/{VERSION}/{name}-{shard:05d}.jsonl.gz'
+        keys[name] = {'key': key, 'sha256': put_verified(s3, key, body), 'bytes': len(body), 'rows': len(rows),
+                      'characters': sum(len(r['text']) for r in rows)}
+    pii = Counter()
+    for _, _, p, _ in results:
+        pii.update(p or {})
+    manifest = {**keys['docs'], 'quarantine': keys['quarantine'], 'origin': origin,
+                'ids': [m['id'] for m, row, _, _ in results if row is not None],
+                'failures': {str(m['id']): err for m, _, _, err in results if err},
+                'empty_text_ids': [str(m['id']) for m, row, _, _ in results if row is not None and not row['text']],
+                'duplicate_text_rows': sum(any(f.startswith('duplicate_text_of:') for f in r['flags']) for r in docs + held),
+                'quarantine_reasons': dict(Counter(f for r in held for f in r['flags'] if f.startswith('quarantine:'))),
+                'quarantined_ids': [r['meta']['minutes_id'] for r in held],
+                'splits': {s: sum(r['split'] == s for r in docs) for s in ('train', 'valid', 'test')},
+                'chars_by_kind': {k: sum(len(r['text']) for r in docs if r['kind'] == k) for k in {r['kind'] for r in docs}},
+                'pii_redactions': dict(pii), 'metrics': metrics.snapshot(), 'elapsed_s': round(time.monotonic() - started, 1),
+                'workers': workers, 'interval_s': client.limiter.interval if client else None}
+    s3.put_object(Bucket=BUCKET, Key=f'corpus/state/{SOURCE}/{VERSION}/shard-{shard:05d}.json',
+                  Body=json.dumps(manifest, ensure_ascii=False).encode())
+    metrics.add('s3_s', time.monotonic() - t)
+    return manifest
+
+
+def next_shard(s3):
+    return 1 + max([-1] + [int(k.rsplit('-', 1)[1].split('.')[0]) for k in list_keys(s3, f'corpus/state/{SOURCE}/{VERSION}/shard-')])
+
+
+def processed(meeting, html_bytes, official, raw_key, raw_sha):
+    t = time.monotonic()
+    row, pii = row_of(meeting, html_bytes.decode('utf-8', 'replace'),
+                      datetime.datetime.now(datetime.timezone.utc).isoformat(timespec='seconds'), official.get(str(meeting['id'])))
+    row['meta'].update({'raw_key': raw_key, 'raw_gzip_sha256': raw_sha, 'raw_html_sha256': hashlib.sha256(html_bytes).hexdigest()})
+    return row, pii, time.monotonic() - t
+
+
+def fetch(client, s3, index, per_shard, workers, limit, metrics, seed=None, classes=None):
     meetings = list(read_json_s3(s3, f'corpus/state/{SOURCE}/{index}', {'meetings': {}})['meetings'].values())
+    meetings = [m for m in meetings if not classes or str(m.get('class')) in classes]
     meetings = stratified(meetings, seed) if seed is not None else sorted(meetings, key=lambda m: m['id'])
     done = done_ids(s3)
     todo = [m for m in meetings if m['id'] not in done][:limit]
+    official = read_json_s3(s3, OFFICIAL_META_KEY, {})
     print(f'{len(meetings)} meetings indexed, {len(done)} done, {len(todo)} to fetch '
           f'({dict(Counter(str(m.get("class")) for m in todo))} by class)', flush=True)
-    shard = 1 + max([-1] + [int(k.rsplit('-', 1)[1].split('.')[0]) for k in list_keys(s3, f'corpus/state/{SOURCE}/{VERSION}/shard-')])
-    started = time.monotonic()
+    shard, started = next_shard(s3), time.monotonic()
 
     def one(meeting):
         r = client.request('GET', f"{BASE}/viewer/minutes/xml.do?id={meeting['id']}&type=view", metrics)
@@ -352,61 +487,58 @@ def fetch(client, s3, index, per_shard, workers, limit, metrics, seed=None):
         raw_key = f"corpus/raw/{SOURCE}/{meeting['id']}.html.gz"
         raw_sha = put_verified(s3, raw_key, gzip.compress(r.content, mtime=0))
         metrics.add('s3_s', time.monotonic() - t)
-        t = time.monotonic()
-        row, pii = row_of(meeting, r.text, datetime.datetime.now(datetime.timezone.utc).isoformat(timespec='seconds'))
-        row['meta'].update({'raw_key': raw_key, 'raw_gzip_sha256': raw_sha,
-                            'raw_html_sha256': hashlib.sha256(r.content).hexdigest()})
-        metrics.add('parse_s', time.monotonic() - t)
+        row, pii, parse = processed(meeting, r.content, official, raw_key, raw_sha)
+        metrics.add('parse_s', parse)
         return meeting, row, pii, None
 
     for begin in range(0, len(todo), per_shard):
         chunk = todo[begin:begin + per_shard]
         with ThreadPoolExecutor(workers) as pool:
             results = list(pool.map(one, chunk))
-        seen_text = {}
-        rows = []
-        for _, row, _, _ in results:
-            if row and row['text']:
-                if row['sha256'] in seen_text:
-                    row['flags'].append(f"duplicate_text_of:{seen_text[row['sha256']]}")
-                seen_text.setdefault(row['sha256'], row['id'])
-                rows.append(row)
-        empty = [str(m['id']) for m, row, _, _ in results if row is not None and not row['text']]
-        failures = {str(m['id']): err for m, _, _, err in results if err}
-        ids = [m['id'] for m, row, _, _ in results if row is not None]
-        body = gzip.compress(''.join(json.dumps(r, ensure_ascii=False) + '\n' for r in rows).encode(), mtime=0)
-        t = time.monotonic()
-        key = f'corpus/clean/{SOURCE}/{VERSION}/docs-{shard:05d}.jsonl.gz'
-        digest = put_verified(s3, key, body)
-        pii = {}
-        for _, _, p, _ in results:
-            for label, n in (p or {}).items():
-                pii[label] = pii.get(label, 0) + n
-        manifest = {'key': key, 'sha256': digest, 'bytes': len(body), 'ids': ids, 'failures': failures,
-                    'empty_text_ids': empty,
-                    'duplicate_text_rows': sum(any(f.startswith('duplicate_text_of:') for f in r['flags']) for r in rows),
-                    'rows': len(rows), 'characters': sum(len(r['text']) for r in rows),
-                    'splits': {s: sum(r['split'] == s for r in rows) for s in ('train', 'valid', 'test')},
-                    'chars_by_kind': {k: sum(len(r['text']) for r in rows if r['kind'] == k) for k in {r['kind'] for r in rows}},
-                    'pii_redactions': pii, 'metrics': metrics.snapshot(), 'elapsed_s': round(time.monotonic() - started, 1),
-                    'workers': workers, 'interval_s': client.limiter.interval}
-        s3.put_object(Bucket=BUCKET, Key=f'corpus/state/{SOURCE}/{VERSION}/shard-{shard:05d}.json',
-                      Body=json.dumps(manifest, ensure_ascii=False).encode())
-        metrics.add('s3_s', time.monotonic() - t)
+        m = write_shard(s3, client, shard, results, workers, metrics, started, 'download')
         done_n = begin + len(chunk)
         rate = done_n / max(1e-9, time.monotonic() - started)
-        print(json.dumps({'shard': shard, 'rows': len(rows), 'failures': len(failures), 'done': done_n, 'todo': len(todo),
+        print(json.dumps({'shard': shard, 'rows': m['rows'], 'quarantine': m['quarantine']['rows'],
+                          'failures': len(m['failures']), 'done': done_n, 'todo': len(todo),
                           'meetings_per_s': round(rate, 3), 'eta_h': round((len(todo) - done_n) / max(rate, 1e-9) / 3600, 2),
                           'interval_s': round(client.limiter.interval, 2), 'metrics': metrics.snapshot()}), flush=True)
+        shard += 1
+
+
+def reprocess(s3, from_version, index, per_shard, metrics):
+    """Rebuild meetings already collected under `from_version` from the stored raw HTML (no download)."""
+    meetings = read_json_s3(s3, f'corpus/state/{SOURCE}/{index}', {'meetings': {}})['meetings']
+    ids = []
+    for key in sorted(list_keys(s3, f'corpus/state/{SOURCE}/{from_version}/shard-')):
+        ids += read_json_s3(s3, key, {'ids': []})['ids']
+    done = done_ids(s3)
+    todo = [meetings.get(str(i), {'id': i}) for i in ids if i not in done]
+    official = read_json_s3(s3, OFFICIAL_META_KEY, {})
+    print(f'{len(ids)} meetings in {from_version}, {len(todo)} to rebuild from raw', flush=True)
+    shard, started = next_shard(s3), time.monotonic()
+    for begin in range(0, len(todo), per_shard):
+        results = []
+        for meeting in todo[begin:begin + per_shard]:
+            raw_key = f"corpus/raw/{SOURCE}/{meeting['id']}.html.gz"
+            body = s3.get_object(Bucket=BUCKET, Key=raw_key)['Body'].read()
+            row, pii, parse = processed(meeting, gzip.decompress(body), official, raw_key, hashlib.sha256(body).hexdigest())
+            metrics.add('parse_s', parse)
+            results.append((meeting, row, pii, None))
+        m = write_shard(s3, None, shard, results, 0, metrics, started, f'raw-reprocess:{from_version}')
+        print(json.dumps({'shard': shard, 'rows': m['rows'], 'quarantine': m['quarantine']['rows'],
+                          'reasons': m['quarantine_reasons']}, ensure_ascii=False), flush=True)
         shard += 1
 
 
 def aggregate(s3, index):
     manifests = [read_json_s3(s3, k, {}) for k in list_keys(s3, f'corpus/state/{SOURCE}/{VERSION}/shard-')]
     for m in manifests:
-        head = s3.head_object(Bucket=BUCKET, Key=m['key'], ChecksumMode='ENABLED')
-        if base64.b64decode(head.get('ChecksumSHA256', '')).hex() != m['sha256'] or head['ContentLength'] != m['bytes']:
-            raise RuntimeError(f"shard verification failed: {m['key']}")
+        for part in (m, m.get('quarantine')):
+            if not part:
+                continue
+            head = s3.head_object(Bucket=BUCKET, Key=part['key'], ChecksumMode='ENABLED')
+            if base64.b64decode(head.get('ChecksumSHA256', '')).hex() != part['sha256'] or head['ContentLength'] != part['bytes']:
+                raise RuntimeError(f"shard verification failed: {part['key']}")
     meetings = read_json_s3(s3, f'corpus/state/{SOURCE}/{index}', {'meetings': {}, 'done': []})
     chars = sum(m['characters'] for m in manifests)
     sums = lambda field: {k: sum(m[field].get(k, 0) for m in manifests) for k in {k for m in manifests for k in m[field]}}
@@ -414,7 +546,9 @@ def aggregate(s3, index):
              'index_pairs_done': len(meetings['done']), 'meetings_fetched': sum(len(m['ids']) for m in manifests),
              'rows': sum(m['rows'] for m in manifests), 'characters': chars, 'estimated_tokens': round(chars / 1.6),
              'estimate_note': 'chars / 1.6, not a tokenizer count', 'chars_by_kind': sums('chars_by_kind'),
-             'splits': sums('splits'), 'pii_redactions': sums('pii_redactions'), 'shards': len(manifests)}
+             'splits': sums('splits'), 'pii_redactions': sums('pii_redactions'), 'shards': len(manifests),
+             'quarantine_rows': sum(m.get('quarantine', {}).get('rows', 0) for m in manifests),
+             'quarantine_reasons': sums('quarantine_reasons')}
     provenance = {'source': SOURCE, 'clean_version': VERSION, 'site': 'https://record.assembly.go.kr/assembly/',
                   'license': LICENSE, 'license_evidence': ['https://record.assembly.go.kr/assembly/ footer: 공공누리 제1유형(출처표시)',
                                                            'https://open.assembly.go.kr/portal/policy/copyRightPage.do'],
@@ -434,7 +568,7 @@ def aggregate(s3, index):
 
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument('action', choices=['discover', 'fetch', 'aggregate'])
+    p.add_argument('action', choices=['discover', 'fetch', 'reprocess', 'aggregate'])
     p.add_argument('--index', default='index.json', help='state file name for the resumable meeting index')
     p.add_argument('--terms', nargs='*', default=TERMS)
     p.add_argument('--classes', nargs='*', default=list(CLASSES))
@@ -443,13 +577,19 @@ def main():
     p.add_argument('--per-shard', type=int, default=200)
     p.add_argument('--limit', type=int, help='fetch at most this many meetings (pilot)')
     p.add_argument('--seed', help='fetch order: seeded, alternating meeting classes (default: ascending id)')
+    p.add_argument('--from-version', default='clean-v1', help='reprocess: rebuild this version\'s meetings from raw')
     args = p.parse_args()
     s3, metrics = s3_client(), Metrics()
-    client = Client(HostLimiter(args.interval))
+    host = BASE.split('://', 1)[1].split('/', 1)[0]
+    request_log = Path(__file__).resolve().parents[1] / f'logs/requests-{host}.jsonl'
+    request_log.parent.mkdir(exist_ok=True)
+    client = Client(HostLimiter(args.interval, host=host), request_log)
     if args.action == 'discover':
         discover(client, s3, args.terms, args.classes, args.index, metrics)
     elif args.action == 'fetch':
-        fetch(client, s3, args.index, args.per_shard, args.workers, args.limit, metrics, args.seed)
+        fetch(client, s3, args.index, args.per_shard, args.workers, args.limit, metrics, args.seed, set(args.classes))
+    elif args.action == 'reprocess':
+        reprocess(s3, args.from_version, args.index, args.per_shard, metrics)
     else:
         aggregate(s3, args.index)
 

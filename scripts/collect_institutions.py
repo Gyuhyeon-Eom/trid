@@ -387,7 +387,8 @@ def main():
     p.add_argument('--limit', type=int)
     p.add_argument('--retry-status', nargs='*', default=[], help='re-fetch families whose state has these statuses')
     args = p.parse_args()
-    s3, metrics, client = s3_client(), Metrics(), Client(HostLimiter(args.interval))
+    s3, metrics = s3_client(), Metrics()
+    client = Client(HostLimiter(args.interval, host='www.alio.go.kr'), ROOT / 'logs/requests-www.alio.go.kr.jsonl')
     if args.action == 'agencies':
         agencies(client, s3, metrics)
     elif args.action == 'rules-index':

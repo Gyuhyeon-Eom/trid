@@ -50,13 +50,34 @@ class AssemblyMinutesTests(unittest.TestCase):
                           '2026-10-30T00:00:00+00:00')
         self.assertNotIn('02-123-4567', row['text'])
         self.assertEqual(dict(pii), {'PHONE': 1})
-        self.assertEqual((row['clean_version'], row['provenance']['institution']), ('clean-v1', '국회'))
+        self.assertEqual((row['clean_version'], row['provenance']['institution']), ('clean-v2', '국회'))
         self.assertIn(row['split'], ('train', 'valid', 'test'))
         self.assertEqual(row['id'], 'assembly-minutes:55958')
         self.assertEqual(row['kind'], 'assembly_plenary')
         self.assertEqual(row['license'], 'KOGL-Type1')
         self.assertEqual(row['title'], '제22대국회 제430회 제1차 국회본회의')
         self.assertTrue(row['source'].endswith('xml.do?id=55958&type=view'))
+        self.assertFalse(any(f.startswith('quarantine:') for f in row['flags']))
+
+    def test_private_persons_and_missing_metadata_quarantine_the_meeting(self):
+        petition = VIEWER.replace('개의하겠습니다.', '개의하겠습니다. 청원(홍길동 외 52,585인 국민동의로 제출)')
+        row, _ = row_of({'id': 1, 'class': '2'}, petition, 't')
+        self.assertIn('quarantine:private_person_names', row['flags'])
+        witness = VIEWER.replace('<p>성원이', '<div>증인 김철수</div><p>성원이')
+        self.assertIn('quarantine:private_person_names', row_of({'id': 2, 'class': '5'}, witness, 't')[0]['flags'])
+        headerless = VIEWER.replace('제22대국회 제430회 (임시회) 제1차 국회본회의 (2025.12.11.)', '개회식')
+        row, _ = row_of({'id': 3, 'class': '1'}, headerless, 't')
+        self.assertIn('quarantine:metadata_incomplete', row['flags'])
+        official = {'title': '제418회 국회(정기회) 개회식', 'date': '2024-09-02', 'source': 'list:/mnts/async/sess.do?sess=418'}
+        row, _ = row_of({'id': 3, 'class': '1'}, headerless, 't', official)
+        self.assertEqual((row['title'], row['date'], row['meta']['metadata_source']), (official['title'], '2024-09-02', official['source']))
+        self.assertFalse(any(f.startswith('quarantine:') for f in row['flags']))
+
+    def test_audit_minutes_header_is_parsed_from_the_document(self):
+        audit = VIEWER.replace('제22대국회 제430회 (임시회) 제1차 국회본회의 (2025.12.11.)', '제22대국회 2024년도 국정감사 문화체육관광위원회 (2024.10.24.)')
+        row, _ = row_of({'id': 52032, 'class': '5'}, audit, 't')
+        self.assertEqual((row['title'], row['date'], row['kind']), ('제22대국회 2024년도 국정감사 문화체육관광위원회', '2024-10-24', 'assembly_audit'))
+        self.assertNotIn('quarantine:metadata_incomplete', row['flags'])
 
     def test_host_limiter_spaces_starts_across_threads_and_backs_off(self):
         limiter, waits = HostLimiter(0.05), []
@@ -74,6 +95,20 @@ class AssemblyMinutesTests(unittest.TestCase):
         for _ in range(200):
             limiter.observe(200, 0.1)
         self.assertAlmostEqual(limiter.interval, 0.05)
+
+    def test_shared_limiter_spaces_reservations_across_processes(self):
+        import multiprocessing
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            with multiprocessing.get_context('spawn').Pool(3) as pool:
+                starts = sorted(s for batch in pool.starmap(_reserve_n, [(d, 4)] * 3) for s in batch)
+        self.assertEqual(len(starts), 12)
+        self.assertTrue(all(b - a >= 0.1 - 1e-6 for a, b in zip(starts, starts[1:])), starts)  # epoch-float rounding
+
+
+def _reserve_n(shared_dir, n):
+    limiter = HostLimiter(0.1, host='proof.example', shared_dir=shared_dir)
+    return [limiter._reserve()[0] for _ in range(n)]
 
 
 if __name__ == '__main__':
