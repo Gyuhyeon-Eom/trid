@@ -1,0 +1,336 @@
+{
+  "summary": {
+    "pilot_condition": {
+      "rows": 5,
+      "decoder_accepts": 5,
+      "max_answer_tokens": 16
+    },
+    "pilot_exception": {
+      "rows": 5,
+      "decoder_accepts": 5,
+      "max_answer_tokens": 32
+    },
+    "pilot_table": {
+      "rows": 5,
+      "decoder_accepts": 5,
+      "max_answer_tokens": 16
+    },
+    "pilot_combine": {
+      "rows": 5,
+      "decoder_accepts": 5,
+      "max_answer_tokens": 23
+    },
+    "pilot_numeric_change": {
+      "rows": 5,
+      "decoder_accepts": 5,
+      "max_answer_tokens": 12
+    },
+    "pilot_explanation": {
+      "rows": 5,
+      "decoder_accepts": 0,
+      "max_answer_tokens": 144
+    }
+  },
+  "rows": [
+    {
+      "id": "pilot-cond-01",
+      "task": "pilot_condition",
+      "split": "train",
+      "loader": "ok",
+      "tokens": 2,
+      "prompt_tokens": 739,
+      "answer_tokens": 16,
+      "value_copy_decoder_accepts_gold": true
+    },
+    {
+      "id": "pilot-cond-02",
+      "task": "pilot_condition",
+      "split": "train",
+      "loader": "ok",
+      "tokens": 2,
+      "prompt_tokens": 737,
+      "answer_tokens": 7,
+      "value_copy_decoder_accepts_gold": true
+    },
+    {
+      "id": "pilot-cond-03",
+      "task": "pilot_condition",
+      "split": "train",
+      "loader": "ok",
+      "tokens": 2,
+      "prompt_tokens": 723,
+      "answer_tokens": 11,
+      "value_copy_decoder_accepts_gold": true
+    },
+    {
+      "id": "pilot-cond-04",
+      "task": "pilot_condition",
+      "split": "train",
+      "loader": "ok",
+      "tokens": 2,
+      "prompt_tokens": 805,
+      "answer_tokens": 12,
+      "value_copy_decoder_accepts_gold": true
+    },
+    {
+      "id": "pilot-exc-01",
+      "task": "pilot_exception",
+      "split": "train",
+      "loader": "ok",
+      "tokens": 2,
+      "prompt_tokens": 789,
+      "answer_tokens": 19,
+      "value_copy_decoder_accepts_gold": true
+    },
+    {
+      "id": "pilot-exc-02",
+      "task": "pilot_exception",
+      "split": "train",
+      "loader": "ok",
+      "tokens": 2,
+      "prompt_tokens": 734,
+      "answer_tokens": 28,
+      "value_copy_decoder_accepts_gold": true
+    },
+    {
+      "id": "pilot-exc-04",
+      "task": "pilot_exception",
+      "split": "train",
+      "loader": "ok",
+      "tokens": 2,
+      "prompt_tokens": 721,
+      "answer_tokens": 28,
+      "value_copy_decoder_accepts_gold": true
+    },
+    {
+      "id": "pilot-exc-05",
+      "task": "pilot_exception",
+      "split": "train",
+      "loader": "ok",
+      "tokens": 2,
+      "prompt_tokens": 800,
+      "answer_tokens": 32,
+      "value_copy_decoder_accepts_gold": true
+    },
+    {
+      "id": "pilot-tab-01",
+      "task": "pilot_table",
+      "split": "train",
+      "loader": "ok",
+      "tokens": 2,
+      "prompt_tokens": 752,
+      "answer_tokens": 6,
+      "value_copy_decoder_accepts_gold": true
+    },
+    {
+      "id": "pilot-tab-02",
+      "task": "pilot_table",
+      "split": "train",
+      "loader": "ok",
+      "tokens": 2,
+      "prompt_tokens": 647,
+      "answer_tokens": 6,
+      "value_copy_decoder_accepts_gold": true
+    },
+    {
+      "id": "pilot-tab-03",
+      "task": "pilot_table",
+      "split": "train",
+      "loader": "ok",
+      "tokens": 2,
+      "prompt_tokens": 651,
+      "answer_tokens": 8,
+      "value_copy_decoder_accepts_gold": true
+    },
+    {
+      "id": "pilot-tab-04",
+      "task": "pilot_table",
+      "split": "train",
+      "loader": "ok",
+      "tokens": 2,
+      "prompt_tokens": 479,
+      "answer_tokens": 8,
+      "value_copy_decoder_accepts_gold": true
+    },
+    {
+      "id": "pilot-comb-01",
+      "task": "pilot_combine",
+      "split": "train",
+      "loader": "ok",
+      "tokens": 2,
+      "prompt_tokens": 826,
+      "answer_tokens": 22,
+      "value_copy_decoder_accepts_gold": true
+    },
+    {
+      "id": "pilot-comb-02",
+      "task": "pilot_combine",
+      "split": "train",
+      "loader": "ok",
+      "tokens": 2,
+      "prompt_tokens": 767,
+      "answer_tokens": 20,
+      "value_copy_decoder_accepts_gold": true
+    },
+    {
+      "id": "pilot-comb-03",
+      "task": "pilot_combine",
+      "split": "train",
+      "loader": "ok",
+      "tokens": 2,
+      "prompt_tokens": 827,
+      "answer_tokens": 21,
+      "value_copy_decoder_accepts_gold": true
+    },
+    {
+      "id": "pilot-comb-05",
+      "task": "pilot_combine",
+      "split": "train",
+      "loader": "ok",
+      "tokens": 2,
+      "prompt_tokens": 650,
+      "answer_tokens": 23,
+      "value_copy_decoder_accepts_gold": true
+    },
+    {
+      "id": "pilot-num-01",
+      "task": "pilot_numeric_change",
+      "split": "train",
+      "loader": "ok",
+      "tokens": 2,
+      "prompt_tokens": 737,
+      "answer_tokens": 7,
+      "value_copy_decoder_accepts_gold": true
+    },
+    {
+      "id": "pilot-num-02",
+      "task": "pilot_numeric_change",
+      "split": "train",
+      "loader": "ok",
+      "tokens": 2,
+      "prompt_tokens": 775,
+      "answer_tokens": 11,
+      "value_copy_decoder_accepts_gold": true
+    },
+    {
+      "id": "pilot-num-04",
+      "task": "pilot_numeric_change",
+      "split": "train",
+      "loader": "ok",
+      "tokens": 2,
+      "prompt_tokens": 705,
+      "answer_tokens": 6,
+      "value_copy_decoder_accepts_gold": true
+    },
+    {
+      "id": "pilot-num-05",
+      "task": "pilot_numeric_change",
+      "split": "train",
+      "loader": "ok",
+      "tokens": 2,
+      "prompt_tokens": 753,
+      "answer_tokens": 12,
+      "value_copy_decoder_accepts_gold": true
+    },
+    {
+      "id": "pilot-exp-01",
+      "task": "pilot_explanation",
+      "split": "train",
+      "loader": "ok",
+      "tokens": 2,
+      "prompt_tokens": 638,
+      "answer_tokens": 113,
+      "value_copy_decoder_accepts_gold": false
+    },
+    {
+      "id": "pilot-exp-02",
+      "task": "pilot_explanation",
+      "split": "train",
+      "loader": "ok",
+      "tokens": 2,
+      "prompt_tokens": 751,
+      "answer_tokens": 91,
+      "value_copy_decoder_accepts_gold": false
+    },
+    {
+      "id": "pilot-exp-03",
+      "task": "pilot_explanation",
+      "split": "train",
+      "loader": "ok",
+      "tokens": 2,
+      "prompt_tokens": 664,
+      "answer_tokens": 144,
+      "value_copy_decoder_accepts_gold": false
+    },
+    {
+      "id": "pilot-exp-04",
+      "task": "pilot_explanation",
+      "split": "train",
+      "loader": "ok",
+      "tokens": 2,
+      "prompt_tokens": 763,
+      "answer_tokens": 91,
+      "value_copy_decoder_accepts_gold": false
+    },
+    {
+      "id": "pilot-cond-05",
+      "task": "pilot_condition",
+      "split": "valid",
+      "loader": "ok",
+      "tokens": 2,
+      "prompt_tokens": 649,
+      "answer_tokens": 11,
+      "value_copy_decoder_accepts_gold": true
+    },
+    {
+      "id": "pilot-exc-03",
+      "task": "pilot_exception",
+      "split": "valid",
+      "loader": "ok",
+      "tokens": 2,
+      "prompt_tokens": 648,
+      "answer_tokens": 14,
+      "value_copy_decoder_accepts_gold": true
+    },
+    {
+      "id": "pilot-tab-05",
+      "task": "pilot_table",
+      "split": "valid",
+      "loader": "ok",
+      "tokens": 2,
+      "prompt_tokens": 537,
+      "answer_tokens": 16,
+      "value_copy_decoder_accepts_gold": true
+    },
+    {
+      "id": "pilot-comb-04",
+      "task": "pilot_combine",
+      "split": "valid",
+      "loader": "ok",
+      "tokens": 2,
+      "prompt_tokens": 725,
+      "answer_tokens": 19,
+      "value_copy_decoder_accepts_gold": true
+    },
+    {
+      "id": "pilot-num-03",
+      "task": "pilot_numeric_change",
+      "split": "valid",
+      "loader": "ok",
+      "tokens": 2,
+      "prompt_tokens": 648,
+      "answer_tokens": 8,
+      "value_copy_decoder_accepts_gold": true
+    },
+    {
+      "id": "pilot-exp-05",
+      "task": "pilot_explanation",
+      "split": "valid",
+      "loader": "ok",
+      "tokens": 2,
+      "prompt_tokens": 787,
+      "answer_tokens": 127,
+      "value_copy_decoder_accepts_gold": false
+    }
+  ]
+}

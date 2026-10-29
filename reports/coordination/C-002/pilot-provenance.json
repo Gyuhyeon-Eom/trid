@@ -1,0 +1,53 @@
+{
+  "purpose": "C-002 pilot: 5 items each for condition, exception, table, two-evidence combination, numeric change (artificial) and grounded explanation, on real korea.kr KOGL Type 1 policy briefings. Training/development pilot, NOT a final private evaluation set. Questions and explanation framing are assistant-authored (AI); every answer value, quoted evidence and condition is a verbatim span of the cited passage (checked by the builder). Not human-reviewed.",
+  "spec": "reports/coordination/C-002/pilot-spec.json",
+  "spec_sha256": "ea22665043fcc610064b5e3f6724a405de13c02695c66886ee4092a2e160acb3",
+  "rows": {
+    "train": {
+      "pilot_condition": 4,
+      "pilot_exception": 4,
+      "pilot_table": 4,
+      "pilot_combine": 4,
+      "pilot_numeric_change": 4,
+      "pilot_explanation": 4
+    },
+    "valid": {
+      "pilot_condition": 1,
+      "pilot_exception": 1,
+      "pilot_table": 1,
+      "pilot_combine": 1,
+      "pilot_numeric_change": 1,
+      "pilot_explanation": 1
+    }
+  },
+  "documents": {
+    "train": [
+      "korea-kr-press-156034454",
+      "korea-kr-press-156036000",
+      "korea-kr-press-156036744",
+      "korea-kr-press-156040155",
+      "korea-kr-press-156040599",
+      "korea-kr-press-156042818",
+      "korea-kr-press-156053040",
+      "korea-kr-press-156053620",
+      "korea-kr-press-156054886",
+      "korea-kr-press-156056986",
+      "korea-kr-press-156068253",
+      "korea-kr-press-156079600",
+      "korea-kr-press-156100606",
+      "korea-kr-press-156105204",
+      "korea-kr-press-156293842"
+    ],
+    "valid": [
+      "korea-kr-press-156034390",
+      "korea-kr-press-156061779",
+      "korea-kr-press-156089162"
+    ]
+  },
+  "dev_rule": "Document-level split chosen before writing answers so that each task type has one development item; every other document is train. All rows of a document, including distractor passages, stay in one split.",
+  "excluded_sets": [
+    "/Users/eomgyuhyeon/사업/trid/data/institution-qa-frozen-01/source-docs.jsonl",
+    "/Users/eomgyuhyeon/사업/trid/data/public-document-sft-source/documents.jsonl"
+  ],
+  "tokenizer": "/Users/eomgyuhyeon/사업/trid/runs/trid-korean-medium-cpt-gpu-complete/tokenizer.json"
+}

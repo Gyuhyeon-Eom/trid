@@ -233,7 +233,8 @@ def prepare_real_stage(output, parent, source):
 
 
 def prepare_teacher_stage(output, parent, teacher_dirs, teacher_mass):
-    """Add open-model-drafted institution QA (scripts/build_teacher_qa.py) as a new component.
+    """Add extra source-verbatim QA sets (teacher QA from scripts/build_teacher_qa.py, task pilots from
+    scripts/build_task_pilot.py) as one new component. The mix provenance carries each set's own purpose.
 
     Every parent weight is scaled by (1 - teacher_mass); teacher rows share teacher_mass uniformly.
     Parent validation is copied unchanged so checkpoint selection stays comparable.
@@ -253,10 +254,11 @@ def prepare_teacher_stage(output, parent, teacher_dirs, teacher_mass):
     output.mkdir(parents=True)
     (output / 'train.jsonl').write_text(''.join(json.dumps(r, ensure_ascii=False) + '\n' for r in train + teacher))
     (output / 'valid.jsonl').write_bytes((parent / 'valid.jsonl').read_bytes())
-    metadata = {'purpose': 'Parent mix plus open-model-drafted, source-verbatim institution QA',
+    added = [json.loads((d / 'provenance.json').read_text()) for d in teacher_dirs]
+    metadata = {'purpose': 'Parent mix plus added QA sets: ' + ' | '.join(p['purpose'] for p in added),
                 'parent_data': str(parent), 'teacher_data': [str(d) for d in teacher_dirs], 'teacher_mass': teacher_mass,
                 'teacher_rows': dict(Counter(r['task'] for r in teacher)), 'validation': 'byte-identical copy of parent',
-                'teacher_provenance': [json.loads((d / 'provenance.json').read_text()) for d in teacher_dirs],
+                'teacher_provenance': added,
                 'parent_provenance': json.loads((parent / 'provenance.json').read_text())}
     (output / 'provenance.json').write_text(json.dumps(metadata, ensure_ascii=False, indent=2))
     print(json.dumps({k: v for k, v in metadata.items() if not k.endswith('provenance')}, ensure_ascii=False), flush=True)
