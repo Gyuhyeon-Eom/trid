@@ -110,10 +110,7 @@ def prepare_qa_stage(output):
             if row['mixture_component'] == 'real_qa':
                 if not row['prompt'].startswith(RAG_PREFIX):
                     raise ValueError('Unexpected real QA prompt')
-                row['prompt'] = (
-                    '다음은 발표일 미상의 문서입니다. 문서 질문은 근거에 따라 답하고 출처 번호를 인용하세요. '
-                    '인사나 사용 안내에는 자연스럽게 답하세요. 현재 시행 여부는 단정하지 마세요.\n'
-                    + row['prompt'][len(RAG_PREFIX):])
+                row['prompt'] = DOCUMENT_INSTRUCTION + row['prompt'][len(RAG_PREFIX):]
             try:
                 encode_example(tok, row, 1024)
                 if len(prompt_ids(tok, row['prompt'], row.get('history'))) + 128 > 1024:
@@ -140,6 +137,9 @@ def prepare_qa_stage(output):
 
 
 ABSTAIN = '확인 불가'
+DOCUMENT_INSTRUCTION = ('다음은 발표일 미상의 문서입니다. 문서 질문은 근거에 따라 답하고 출처 번호를 인용하세요. '
+                        '인사나 사용 안내에는 자연스럽게 답하세요. 현재 시행 여부는 단정하지 마세요.\n')
+REAL_TASKS = ('rag_klue', 'rag_klue_hard', 'rag_klue_missing', 'rag_tydi')
 
 
 def prepare_abstain_stage(output, parent, abstain_share):
@@ -173,6 +173,64 @@ def prepare_abstain_stage(output, parent, abstain_share):
     print(json.dumps({k: v for k, v in metadata.items() if k != 'parent_provenance'}, ensure_ascii=False), flush=True)
 
 
+def prepare_real_stage(output, parent, source):
+    """Replace the parent's real-QA rows with every real-passage row of `source` (KLUE train, TyDi train).
+
+    Other components, their weights, the real-QA total mass and the validation file are unchanged.
+    Synthetic authored rows are not imported. Rows that cannot fit the 1024 context with a 128-token
+    generation reserve are dropped.
+    """
+    from tokenizers import Tokenizer
+    from trid.prompts import RAG_PREFIX, rag_passages
+    from trid.text import encode_example, prompt_ids
+    if output.exists():
+        raise ValueError('Use a new data directory')
+    tok = Tokenizer.from_file(str(ROOT / 'runs/trid-public-dialogue-01/tokenizer.json'))
+    parent_train = read_jsonl(parent / 'train.jsonl')
+    kept = [r for r in parent_train if r['mixture_component'] != 'real_qa']
+    real_mass = sum(r['weight'] for r in parent_train if r['mixture_component'] == 'real_qa')
+    real, dropped, seen = [], 0, set()
+    for original in read_jsonl(source / 'train.jsonl'):
+        if original.get('task') not in REAL_TASKS:
+            continue
+        if not original['prompt'].startswith(RAG_PREFIX) or 'train' not in original['source']:
+            raise ValueError(f"Unexpected real QA row {original['id']}")
+        if original['id'] in seen:
+            continue
+        seen.add(original['id'])
+        row = {k: v for k, v in original.items() if k != 'weight'}
+        row.update(prompt=DOCUMENT_INSTRUCTION + original['prompt'][len(RAG_PREFIX):], mixture_component='real_qa')
+        try:
+            encode_example(tok, row, 1024)
+            if len(prompt_ids(tok, row['prompt'], row.get('history'))) + 128 > 1024:
+                raise ValueError('generation reserve')
+        except ValueError:
+            dropped += 1
+            continue
+        real.append(row)
+    for row in real:
+        row['weight'] = real_mass / len(real)
+    # RAG310 rows carry no source ids, so compare the evidence passages themselves.
+    eval_passages = {text.strip() for r in read_jsonl(ROOT / 'data/korean-rag-eval-v1/test.jsonl')
+                     for _, text in rag_passages(r['prompt']) if len(text.strip()) >= 40}
+    overlap = sum(text.strip() in eval_passages for r in real
+                  for _, text in rag_passages(RAG_PREFIX + r['prompt'][len(DOCUMENT_INSTRUCTION):]))
+    if overlap:
+        raise ValueError(f'{overlap} training passages also appear in RAG310')
+    output.mkdir(parents=True)
+    (output / 'train.jsonl').write_text(''.join(json.dumps(r, ensure_ascii=False) + '\n' for r in kept + real))
+    (output / 'valid.jsonl').write_bytes((parent / 'valid.jsonl').read_bytes())
+    tasks = Counter(r['task'] for r in real)
+    metadata = {'purpose': 'Real-passage expansion: all KLUE train / KLUE hard-distractor / TyDi train rows, no synthetic rows',
+                'parent_data': str(parent), 'source': str(source), 'real_qa_rows': {'before': len(parent_train) - len(kept), 'after': len(real)},
+                'real_qa_tasks': dict(tasks), 'real_qa_abstain_share': round(sum(ABSTAIN in r['answer'] for r in real) / len(real), 4),
+                'dropped_for_context': dropped, 'real_qa_total_mass_unchanged': round(real_mass, 6),
+                'validation': 'byte-identical copy of parent', 'rag310_source_overlap': 0,
+                'licenses': {'KLUE MRC v1.1 train': 'CC BY-SA 4.0', 'TyDi QA v1.1 GoldP train': 'Apache-2.0'},
+                'parent_provenance': json.loads((parent / 'provenance.json').read_text())}
+    (output / 'provenance.json').write_text(json.dumps(metadata, ensure_ascii=False, indent=2))
+    print(json.dumps({k: v for k, v in metadata.items() if k != 'parent_provenance'}, ensure_ascii=False), flush=True)
+
 
 def evaluate(run, data, output):
     import torch
@@ -201,7 +259,7 @@ def evaluate(run, data, output):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('action', choices=['prepare', 'prepare-qa', 'prepare-abstain', 'train', 'evaluate'])
+    parser.add_argument('action', choices=['prepare', 'prepare-qa', 'prepare-abstain', 'prepare-real', 'train', 'evaluate'])
     parser.add_argument('--data', type=Path, required=True)
     parser.add_argument('--run', type=Path, required=True)
     parser.add_argument('--report', type=Path)
@@ -210,6 +268,7 @@ def main():
     parser.add_argument('--device', choices=['cpu', 'mps', 'cuda'], default='mps')
     parser.add_argument('--parent-data', type=Path, default=ROOT / 'data/public-dialogue-mix-02')
     parser.add_argument('--abstain-share', type=float, default=.10)
+    parser.add_argument('--real-source', type=Path, default=ROOT / 'data/korean-rag-curriculum-v4')
     args = parser.parse_args()
     if args.action == 'prepare':
         prepare(args.data, args.init_run)
@@ -217,6 +276,8 @@ def main():
         prepare_qa_stage(args.data)
     elif args.action == 'prepare-abstain':
         prepare_abstain_stage(args.data, args.parent_data, args.abstain_share)
+    elif args.action == 'prepare-real':
+        prepare_real_stage(args.data, args.parent_data, args.real_source)
     elif args.action == 'evaluate':
         if args.report is None:
             parser.error('--report required')

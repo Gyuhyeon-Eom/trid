@@ -993,6 +993,286 @@
           ]
         }
       }
+    },
+    "trid-public-dialogue-gpu-05-mix04-s1200 (evidence)": {
+      "report": "reports/open-weight-baseline/rag310-trid-public-dialogue-gpu-05-mix04-s1200-evidence.json",
+      "model_sha256": "ceeb00f97a96126a23c894dd23009ba22204c8864873ab92eeb5d6944e3b862d",
+      "test_sha256": "5187c9f5946e8dcd52da0e49b25dae1d58656cbca9b737ab635cd4d1c5b37ad4",
+      "strict_product": {
+        "correct": 56,
+        "total": 310,
+        "rate": 0.1806,
+        "wilson95": [
+          0.1418,
+          0.2273
+        ]
+      },
+      "content_strict": {
+        "correct": 56,
+        "total": 310,
+        "rate": 0.1806,
+        "wilson95": [
+          0.1418,
+          0.2273
+        ]
+      },
+      "mentions_gold": {
+        "correct": 65,
+        "total": 310,
+        "rate": 0.2097,
+        "wilson95": [
+          0.1681,
+          0.2584
+        ]
+      },
+      "grounded_mention": {
+        "all": {
+          "correct": 65,
+          "total": 310,
+          "rate": 0.2097,
+          "wilson95": [
+            0.1681,
+            0.2584
+          ]
+        },
+        "answerable": {
+          "correct": 27,
+          "total": 228,
+          "rate": 0.1184,
+          "wilson95": [
+            0.0827,
+            0.1668
+          ]
+        },
+        "unanswerable": {
+          "correct": 38,
+          "total": 82,
+          "rate": 0.4634,
+          "wilson95": [
+            0.3596,
+            0.5706
+          ]
+        },
+        "answerable_abstained": {
+          "correct": 78,
+          "total": 228,
+          "rate": 0.3421,
+          "wilson95": [
+            0.2836,
+            0.4058
+          ]
+        }
+      }
+    },
+    "trid-public-dialogue-gpu-05-mix04-s1200 (free)": {
+      "report": "reports/open-weight-baseline/rag310-trid-public-dialogue-gpu-05-mix04-s1200-free.json",
+      "model_sha256": "ceeb00f97a96126a23c894dd23009ba22204c8864873ab92eeb5d6944e3b862d",
+      "test_sha256": "5187c9f5946e8dcd52da0e49b25dae1d58656cbca9b737ab635cd4d1c5b37ad4",
+      "strict_product": {
+        "correct": 53,
+        "total": 310,
+        "rate": 0.171,
+        "wilson95": [
+          0.1331,
+          0.2168
+        ]
+      },
+      "content_strict": {
+        "correct": 53,
+        "total": 310,
+        "rate": 0.171,
+        "wilson95": [
+          0.1331,
+          0.2168
+        ]
+      },
+      "mentions_gold": {
+        "correct": 63,
+        "total": 310,
+        "rate": 0.2032,
+        "wilson95": [
+          0.1622,
+          0.2515
+        ]
+      },
+      "grounded_mention": {
+        "all": {
+          "correct": 60,
+          "total": 310,
+          "rate": 0.1935,
+          "wilson95": [
+            0.1534,
+            0.2412
+          ]
+        },
+        "answerable": {
+          "correct": 22,
+          "total": 228,
+          "rate": 0.0965,
+          "wilson95": [
+            0.0646,
+            0.1418
+          ]
+        },
+        "unanswerable": {
+          "correct": 38,
+          "total": 82,
+          "rate": 0.4634,
+          "wilson95": [
+            0.3596,
+            0.5706
+          ]
+        },
+        "answerable_abstained": {
+          "correct": 72,
+          "total": 228,
+          "rate": 0.3158,
+          "wilson95": [
+            0.2589,
+            0.3788
+          ]
+        }
+      }
+    },
+    "trid-public-dialogue-gpu-05-mix04-s3000 (evidence)": {
+      "report": "reports/open-weight-baseline/rag310-trid-public-dialogue-gpu-05-mix04-s3000-evidence.json",
+      "model_sha256": "c29fbed5be4facf08a9b913fa9aa419ea1c77275744cd14795ed07577539f475",
+      "test_sha256": "5187c9f5946e8dcd52da0e49b25dae1d58656cbca9b737ab635cd4d1c5b37ad4",
+      "strict_product": {
+        "correct": 71,
+        "total": 310,
+        "rate": 0.229,
+        "wilson95": [
+          0.1857,
+          0.279
+        ]
+      },
+      "content_strict": {
+        "correct": 71,
+        "total": 310,
+        "rate": 0.229,
+        "wilson95": [
+          0.1857,
+          0.279
+        ]
+      },
+      "mentions_gold": {
+        "correct": 81,
+        "total": 310,
+        "rate": 0.2613,
+        "wilson95": [
+          0.2155,
+          0.3129
+        ]
+      },
+      "grounded_mention": {
+        "all": {
+          "correct": 81,
+          "total": 310,
+          "rate": 0.2613,
+          "wilson95": [
+            0.2155,
+            0.3129
+          ]
+        },
+        "answerable": {
+          "correct": 39,
+          "total": 228,
+          "rate": 0.1711,
+          "wilson95": [
+            0.1277,
+            0.2253
+          ]
+        },
+        "unanswerable": {
+          "correct": 42,
+          "total": 82,
+          "rate": 0.5122,
+          "wilson95": [
+            0.4059,
+            0.6174
+          ]
+        },
+        "answerable_abstained": {
+          "correct": 67,
+          "total": 228,
+          "rate": 0.2939,
+          "wilson95": [
+            0.2385,
+            0.356
+          ]
+        }
+      }
+    },
+    "trid-public-dialogue-gpu-05-mix04-s3000 (free)": {
+      "report": "reports/open-weight-baseline/rag310-trid-public-dialogue-gpu-05-mix04-s3000-free.json",
+      "model_sha256": "c29fbed5be4facf08a9b913fa9aa419ea1c77275744cd14795ed07577539f475",
+      "test_sha256": "5187c9f5946e8dcd52da0e49b25dae1d58656cbca9b737ab635cd4d1c5b37ad4",
+      "strict_product": {
+        "correct": 67,
+        "total": 310,
+        "rate": 0.2161,
+        "wilson95": [
+          0.1739,
+          0.2653
+        ]
+      },
+      "content_strict": {
+        "correct": 67,
+        "total": 310,
+        "rate": 0.2161,
+        "wilson95": [
+          0.1739,
+          0.2653
+        ]
+      },
+      "mentions_gold": {
+        "correct": 80,
+        "total": 310,
+        "rate": 0.2581,
+        "wilson95": [
+          0.2125,
+          0.3095
+        ]
+      },
+      "grounded_mention": {
+        "all": {
+          "correct": 72,
+          "total": 310,
+          "rate": 0.2323,
+          "wilson95": [
+            0.1887,
+            0.2824
+          ]
+        },
+        "answerable": {
+          "correct": 30,
+          "total": 228,
+          "rate": 0.1316,
+          "wilson95": [
+            0.0937,
+            0.1816
+          ]
+        },
+        "unanswerable": {
+          "correct": 42,
+          "total": 82,
+          "rate": 0.5122,
+          "wilson95": [
+            0.4059,
+            0.6174
+          ]
+        },
+        "answerable_abstained": {
+          "correct": 64,
+          "total": 228,
+          "rate": 0.2807,
+          "wilson95": [
+            0.2264,
+            0.3423
+          ]
+        }
+      }
     }
   },
   "institution_probe": {

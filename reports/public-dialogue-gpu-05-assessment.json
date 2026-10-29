@@ -1,0 +1,20 @@
+{
+  "runs": ["trid-public-dialogue-gpu-05-mix04-s1200", "trid-public-dialogue-gpu-05-mix04-s3000"],
+  "motivation": "gpu-04-mix03 answered 90/120 (75%) of sampled training answerable questions but 26/228 (11.4%) of RAG310 answerable questions: memorization without generalization, so more diverse real passages should help.",
+  "change": "data/public-dialogue-mix-04 (scripts/train_public_dialogue.py prepare-real): real QA rows 5,332 -> 13,403 from KLUE MRC v1.1 train (CC BY-SA 4.0) incl. hard-distractor rows and TyDi QA GoldP Korean train (Apache-2.0); no synthetic rows; other components, real-QA mass 0.8 and validation unchanged. 0 RAG310 evidence passages appear in training. Init: pretrained base (same as gpu-04). 1,200 and 3,000 steps on L40S.",
+  "weights_sha256": {
+    "s1200": "ceeb00f97a96126a23c894dd23009ba22204c8864873ab92eeb5d6944e3b862d",
+    "s3000": "c29fbed5be4facf08a9b913fa9aa419ea1c77275744cd14795ed07577539f475"
+  },
+  "rag310_evidence_grounded_mention": {
+    "gpu-04-mix02 (base init, old data, 1200)": {"answerable": "20/228 (8.8%)", "unanswerable": "45/82", "answerable_abstained": "99/228 (43.4%)"},
+    "gpu-05-mix04-s1200": {"answerable": "27/228 (11.8%)", "unanswerable": "38/82", "answerable_abstained": "78/228 (34.2%)"},
+    "gpu-05-mix04-s3000": {"answerable": "39/228 (17.1%)", "unanswerable": "42/82", "answerable_abstained": "67/228 (29.4%)"}
+  },
+  "paired_vs_gpu04_mix02_answerable": {"improved": 31, "regressed": 12, "mcnemar_exact_p": 0.0054},
+  "answerable_by_task_gpu04_to_s3000": {"rag_value": "2->5/32", "rag_name": "3->7/24", "rag_noise": "2->8/24", "rag_table": "0->0/20", "rag_revision": "5->5/16", "rag_combine": "0->0/12", "rag_klue": "8->14/100"},
+  "heldout_public_qa": {"s3000": "1/8", "notes": "Only 250만원 correct; two answers fall back to self-description."},
+  "decision": "do_not_deploy; first statistically supported improvement. Continue with institution-document QA (scripts/build_teacher_qa.py).",
+  "limits": "s3000 also has 2.5x more steps than gpu-04; the s1200 run isolates data at equal steps (+7 answerable, not significant alone). KLUE/TyDi passages are Wikipedia/news and may overlap trid pretraining text. Tables and multi-passage combination remain 0.",
+  "review": "Automatic RAG310 scoring; public 8 by assistant review against predeclared facts, not independent human evaluation."
+}
