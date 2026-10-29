@@ -7,6 +7,7 @@ set -euo pipefail
 : "${RUN:?}" "${CONFIG:?}" "${STEPS:?}"
 cp -r /opt/ml/input/data/code /opt/work
 cd /opt/work
+export PYTHONPATH=/opt/work  # scripts/*.py import the trid package from the copied code channel
 pip install -q tokenizers safetensors
 CKPT=/opt/ml/checkpoints
 mkdir -p "$CKPT/monitor"

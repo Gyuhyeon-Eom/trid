@@ -28,7 +28,9 @@ IMAGE = '763104351884.dkr.ecr.ap-northeast-2.amazonaws.com/pytorch-training:2.8.
 
 
 def aws(*args, capture=True):
-    out = subprocess.run(['aws', '--region', REGION, *args], check=True, capture_output=capture, text=True)
+    out = subprocess.run(['aws', '--region', REGION, *args], capture_output=True, text=True)
+    if out.returncode:
+        raise SystemExit(f'aws {args[0]} {args[1]} failed: {out.stderr.strip()}')
     return out.stdout if capture else None
 
 

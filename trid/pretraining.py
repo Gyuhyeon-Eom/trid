@@ -164,11 +164,13 @@ def restore_checkpoint(root, model, optimizer, generator, device):
     model.load_state_dict(load_file(str(folder / "model.safetensors")))
     tensors = load_file(str(folder / "optimizer.safetensors"))
     generator.set_state(tensors.pop("batch_rng"))
+    # Fused/capturable AdamW (CUDA) keeps `step` on the parameter's device; the default implementation keeps it on CPU.
+    on_device = {id(p) for g in optimizer.param_groups if g.get("fused") or g.get("capturable") for p in g["params"]}
     for i, p in enumerate(model.parameters()):
         for key in ["step", "exp_avg", "exp_avg_sq"]:
             value = tensors.get(f"p{i}.{key}")
             if value is not None:
-                optimizer.state[p][key] = value if key == "step" else value.to(device)
+                optimizer.state[p][key] = value.to(device) if key != "step" or id(p) in on_device else value
     return json.loads((folder / "state.json").read_text())
 
 
