@@ -1,0 +1,48 @@
+{
+ "table": {
+  "accepted": 393,
+  "check_reject": 668,
+  "quarantine": 413,
+  "semantic_reject": 26
+ },
+ "exception": {
+  "check_reject": 1063,
+  "quarantine": 206,
+  "accepted": 154,
+  "declined": 31,
+  "semantic_reject": 32,
+  "draft_error": 14
+ },
+ "condition": {
+  "check_reject": 674,
+  "semantic_reject": 101,
+  "accepted": 309,
+  "quarantine": 375,
+  "draft_error": 19,
+  "declined": 22
+ },
+ "combine": {
+  "draft_error": 49,
+  "accepted": 253,
+  "quarantine": 733,
+  "semantic_reject": 71,
+  "check_reject": 338,
+  "declined": 56
+ },
+ "explanation": {
+  "declined": 410,
+  "quarantine": 540,
+  "accepted": 337,
+  "check_reject": 70,
+  "semantic_reject": 138,
+  "draft_error": 5
+ },
+ "numeric_change": {
+  "accepted": 846,
+  "quarantine": 450,
+  "check_reject": 50,
+  "semantic_reject": 140,
+  "draft_error": 13,
+  "declined": 1
+ }
+}

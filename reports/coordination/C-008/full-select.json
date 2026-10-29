@@ -1,0 +1,32 @@
+{
+  "seed": "c008",
+  "per_type": 1500,
+  "pool_sizes": {
+    "numeric_change": 155758,
+    "explanation": 155407,
+    "combine": 132678,
+    "condition": 38389,
+    "exception": 31926,
+    "table": 5441
+  },
+  "selected": {
+    "table": 1500,
+    "exception": 1500,
+    "condition": 1500,
+    "combine": 1500,
+    "explanation": 1500,
+    "numeric_change": 1500
+  },
+  "skipped": {
+    "excluded": 22578
+  },
+  "excluded_ids": 22578,
+  "extra_exclude": [
+    "/tmp/c006/qa-01/selected.jsonl",
+    "/tmp/c006/qa-02/selected.jsonl",
+    "reports/coordination/C-002/pilot-spec.json",
+    "reports/coordination/C-007/pilot60/pilot60.json",
+    "reports/coordination/C-008/quarantine-docs.txt",
+    "/tmp/c008/distractors.txt"
+  ]
+}
