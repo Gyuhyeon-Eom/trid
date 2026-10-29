@@ -1,0 +1,19 @@
+{
+  "run": "trid-public-dialogue-gpu-03",
+  "hypothesis": "Over-abstention on answerable questions comes from the high sampling share of '확인 불가' real-QA targets.",
+  "change": "Only the real-QA abstention sampling share: 31.3% -> 10% of real QA (25.0% -> 8.0% of all training steps). Same parent (trid-public-dialogue-01), seed, steps 1200, lr, batch, L40S CUDA; validation byte-identical to mix-02.",
+  "data": "data/public-dialogue-mix-03 (scripts/train_public_dialogue.py prepare-abstain)",
+  "weights_sha256": "2ece86358c66a98d16e3eb8b4cb41564144ec00c83909d61f055b0e7b1bee047",
+  "training_seconds": 253.64,
+  "best_validation_loss": {"gpu-01": 0.4237, "gpu-03": 0.4490},
+  "rag310_evidence_grounded_mention": {
+    "answerable": {"gpu-01": "24/228", "gpu-03": "17/228"},
+    "unanswerable": {"gpu-01": "44/82", "gpu-03": "45/82"},
+    "answerable_abstained": {"gpu-01": "88/228", "gpu-03": "94/228", "both": 63}
+  },
+  "answerable_abstentions_by_task_gpu03": {"rag_klue": 56, "rag_value": 11, "rag_table": 11, "rag_name": 6, "rag_noise": 5, "rag_revision": 3, "rag_combine": 2},
+  "heldout_public_qa": {"correct": 1, "total": 8, "passed_ids": ["korea-kr-press-156612611-1"], "notes": "Off-topic self-description, wrong facts, one repetition loop to the token limit."},
+  "decision": "do_not_deploy",
+  "conclusion": "Hypothesis rejected. Cutting abstention targets by two thirds did not reduce answerable abstention (38.6% -> 41.2%); answerable accuracy did not improve (10.5% -> 7.5%, within noise for 228 items). Abstention is a fallback when the model fails to locate the answer, concentrated on long KLUE Wikipedia/news passages, not a learned frequency prior. Caveat: both runs start from trid-public-dialogue-01, which abstained on 93% of answerable questions.",
+  "review": "Automatic RAG310 scoring; public 8 by assistant review against predeclared facts, not independent human evaluation."
+}

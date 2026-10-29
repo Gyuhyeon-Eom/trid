@@ -26,7 +26,8 @@ CONDITION = 'grammar_instructed'
 TRID_RAG = {'trid-medium-sft-v1 (free)': 'reports/rag310-medium-sft-v1-free.json',
             'trid-medium-sft-v1 (evidence)': 'reports/rag310-medium-sft-v1-evidence.json',
             **{f'{run} ({decoding})': f'reports/open-weight-baseline/rag310-{run}-{decoding}.json'
-               for run in ('trid-public-dialogue-01', 'trid-public-dialogue-gpu-01') for decoding in ('evidence', 'free')}}
+               for run in ('trid-public-dialogue-01', 'trid-public-dialogue-gpu-01', 'trid-public-dialogue-gpu-03')
+               for decoding in ('evidence', 'free')}}
 TRID_PROBE = {'trid reader cpt-v1/v2/v4': 'reports/reader-factorial-01-cpt-v1-v2-v4-probe.json',
               'trid reader cpt-v1/v2/v2': 'reports/reader-factorial-01-cpt-v1-v2-v2-probe.json'}
 

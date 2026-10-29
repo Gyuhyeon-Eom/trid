@@ -573,6 +573,146 @@
           ]
         }
       }
+    },
+    "trid-public-dialogue-gpu-03 (evidence)": {
+      "report": "reports/open-weight-baseline/rag310-trid-public-dialogue-gpu-03-evidence.json",
+      "model_sha256": "2ece86358c66a98d16e3eb8b4cb41564144ec00c83909d61f055b0e7b1bee047",
+      "test_sha256": "5187c9f5946e8dcd52da0e49b25dae1d58656cbca9b737ab635cd4d1c5b37ad4",
+      "strict_product": {
+        "correct": 57,
+        "total": 310,
+        "rate": 0.1839,
+        "wilson95": [
+          0.1447,
+          0.2308
+        ]
+      },
+      "content_strict": {
+        "correct": 57,
+        "total": 310,
+        "rate": 0.1839,
+        "wilson95": [
+          0.1447,
+          0.2308
+        ]
+      },
+      "mentions_gold": {
+        "correct": 62,
+        "total": 310,
+        "rate": 0.2,
+        "wilson95": [
+          0.1593,
+          0.2481
+        ]
+      },
+      "grounded_mention": {
+        "all": {
+          "correct": 62,
+          "total": 310,
+          "rate": 0.2,
+          "wilson95": [
+            0.1593,
+            0.2481
+          ]
+        },
+        "answerable": {
+          "correct": 17,
+          "total": 228,
+          "rate": 0.0746,
+          "wilson95": [
+            0.0471,
+            0.1162
+          ]
+        },
+        "unanswerable": {
+          "correct": 45,
+          "total": 82,
+          "rate": 0.5488,
+          "wilson95": [
+            0.4413,
+            0.6519
+          ]
+        },
+        "answerable_abstained": {
+          "correct": 94,
+          "total": 228,
+          "rate": 0.4123,
+          "wilson95": [
+            0.3504,
+            0.4771
+          ]
+        }
+      }
+    },
+    "trid-public-dialogue-gpu-03 (free)": {
+      "report": "reports/open-weight-baseline/rag310-trid-public-dialogue-gpu-03-free.json",
+      "model_sha256": "2ece86358c66a98d16e3eb8b4cb41564144ec00c83909d61f055b0e7b1bee047",
+      "test_sha256": "5187c9f5946e8dcd52da0e49b25dae1d58656cbca9b737ab635cd4d1c5b37ad4",
+      "strict_product": {
+        "correct": 58,
+        "total": 310,
+        "rate": 0.1871,
+        "wilson95": [
+          0.1476,
+          0.2342
+        ]
+      },
+      "content_strict": {
+        "correct": 58,
+        "total": 310,
+        "rate": 0.1871,
+        "wilson95": [
+          0.1476,
+          0.2342
+        ]
+      },
+      "mentions_gold": {
+        "correct": 63,
+        "total": 310,
+        "rate": 0.2032,
+        "wilson95": [
+          0.1622,
+          0.2515
+        ]
+      },
+      "grounded_mention": {
+        "all": {
+          "correct": 62,
+          "total": 310,
+          "rate": 0.2,
+          "wilson95": [
+            0.1593,
+            0.2481
+          ]
+        },
+        "answerable": {
+          "correct": 17,
+          "total": 228,
+          "rate": 0.0746,
+          "wilson95": [
+            0.0471,
+            0.1162
+          ]
+        },
+        "unanswerable": {
+          "correct": 45,
+          "total": 82,
+          "rate": 0.5488,
+          "wilson95": [
+            0.4413,
+            0.6519
+          ]
+        },
+        "answerable_abstained": {
+          "correct": 87,
+          "total": 228,
+          "rate": 0.3816,
+          "wilson95": [
+            0.321,
+            0.4461
+          ]
+        }
+      }
     }
   },
   "institution_probe": {

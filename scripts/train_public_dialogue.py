@@ -139,6 +139,41 @@ def prepare_qa_stage(output):
     print(json.dumps(metadata, ensure_ascii=False), flush=True)
 
 
+ABSTAIN = '확인 불가'
+
+
+def prepare_abstain_stage(output, parent, abstain_share):
+    """Copy a mix, changing only the training sampling share of real-QA abstention answers.
+
+    Real-QA total mass and every other row weight stay identical; validation is copied unchanged so
+    checkpoint selection is comparable with the parent experiment.
+    """
+    if output.exists():
+        raise ValueError('Use a new data directory')
+    if not 0 < abstain_share < 1:
+        raise ValueError('abstain share must be between 0 and 1')
+    train = read_jsonl(parent / 'train.jsonl')
+    real = [r for r in train if r['mixture_component'] == 'real_qa']
+    abstain = sum(r['weight'] for r in real if ABSTAIN in r['answer'])
+    answer = sum(r['weight'] for r in real if ABSTAIN not in r['answer'])
+    if not abstain or not answer:
+        raise ValueError('Parent real QA must contain both abstentions and answers')
+    total = abstain + answer
+    scale = {True: abstain_share * total / abstain, False: (1 - abstain_share) * total / answer}
+    for row in real:
+        row['weight'] *= scale[ABSTAIN in row['answer']]
+    output.mkdir(parents=True)
+    (output / 'train.jsonl').write_text(''.join(json.dumps(r, ensure_ascii=False) + '\n' for r in train))
+    (output / 'valid.jsonl').write_bytes((parent / 'valid.jsonl').read_bytes())
+    metadata = {'purpose': 'Single-variable experiment: real-QA abstention sampling share only',
+                'parent_data': str(parent), 'real_qa_abstain_share': {'before': round(abstain / total, 4), 'after': abstain_share},
+                'real_qa_total_mass_unchanged': round(total, 6), 'validation': 'byte-identical copy of parent',
+                'parent_provenance': json.loads((parent / 'provenance.json').read_text())}
+    (output / 'provenance.json').write_text(json.dumps(metadata, ensure_ascii=False, indent=2))
+    print(json.dumps({k: v for k, v in metadata.items() if k != 'parent_provenance'}, ensure_ascii=False), flush=True)
+
+
+
 def evaluate(run, data, output):
     import torch
     from trid.runtime import load_run, generate
@@ -166,18 +201,22 @@ def evaluate(run, data, output):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('action', choices=['prepare', 'prepare-qa', 'train', 'evaluate'])
+    parser.add_argument('action', choices=['prepare', 'prepare-qa', 'prepare-abstain', 'train', 'evaluate'])
     parser.add_argument('--data', type=Path, required=True)
     parser.add_argument('--run', type=Path, required=True)
     parser.add_argument('--report', type=Path)
     parser.add_argument('--init-run', type=Path, default=ROOT / 'runs/trid-korean-medium-cpt-gpu-complete')
     parser.add_argument('--steps', type=int, default=600)
     parser.add_argument('--device', choices=['cpu', 'mps', 'cuda'], default='mps')
+    parser.add_argument('--parent-data', type=Path, default=ROOT / 'data/public-dialogue-mix-02')
+    parser.add_argument('--abstain-share', type=float, default=.10)
     args = parser.parse_args()
     if args.action == 'prepare':
         prepare(args.data, args.init_run)
     elif args.action == 'prepare-qa':
         prepare_qa_stage(args.data)
+    elif args.action == 'prepare-abstain':
+        prepare_abstain_stage(args.data, args.parent_data, args.abstain_share)
     elif args.action == 'evaluate':
         if args.report is None:
             parser.error('--report required')
