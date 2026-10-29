@@ -1,0 +1,1272 @@
+{
+  "protocol": "Evaluate an extractive reader on the frozen institution probe (data/institution-qa-frozen-01).\n\nPrimary metric per row is `exact`: the raw generated answer is a member of the row's declared\n`accepted_answers` (full strings such as '225대 [D1]' or '확인 불가'); no normalization. The legacy\nscripts/evaluate_rag_eval.score strict value (NFKC, whitespace-stripped) is reported as `legacy_strict`\nand is secondary only. Forty cases: a probe, not a certification.\n",
+  "run": "/Users/eomgyuhyeon/사업/trid/runs/trid-medium-reader-dev-02-bidir",
+  "model_sha256": "b15daa7957ae2773d9238a3ba0a86094faf3bdd72a407446ae7e86ccf879376a",
+  "reader_attention": "bidirectional",
+  "data": "data/institution-qa-frozen-01",
+  "data_sha256": "35803b6d474f5dd48b299610b007a1d6d405d675a54add4097c5ff1eed97d6d6",
+  "source_docs_sha256": "055aa08bbd18e49b0094d1d008c7434549436540799f87c36d52dec8622edd4b",
+  "device": "cpu",
+  "threads": 2,
+  "evaluated_at_unix": 1793226638.672043,
+  "total_seconds": 3.1764120422303677,
+  "exact_definition": "raw generated string is a member of accepted_answers; no normalization",
+  "legacy_definition": "scripts/evaluate_rag_eval.score strict (NFKC, whitespace-insensitive); secondary",
+  "summary": {
+    "all": {
+      "total": 40,
+      "exact": 13,
+      "legacy_strict": 13,
+      "false_presence": 9,
+      "wrong_abstention": 5,
+      "exceptions": 0,
+      "exact_rate": 0.325,
+      "categories": {
+        "correct": 13,
+        "false_presence": 9,
+        "wrong_abstention": 5,
+        "wrong_both": 2,
+        "wrong_value_right_source": 11
+      }
+    },
+    "institution_value": {
+      "total": 30,
+      "exact": 12,
+      "legacy_strict": 12,
+      "false_presence": 0,
+      "wrong_abstention": 5,
+      "exceptions": 0,
+      "exact_rate": 0.4,
+      "categories": {
+        "correct": 12,
+        "wrong_abstention": 5,
+        "wrong_both": 2,
+        "wrong_value_right_source": 11
+      }
+    },
+    "institution_missing": {
+      "total": 10,
+      "exact": 1,
+      "legacy_strict": 1,
+      "false_presence": 9,
+      "wrong_abstention": 0,
+      "exceptions": 0,
+      "exact_rate": 0.1,
+      "categories": {
+        "correct": 1,
+        "false_presence": 9
+      }
+    },
+    "single_evidence": {
+      "total": 24,
+      "exact": 6,
+      "legacy_strict": 6,
+      "false_presence": 7,
+      "wrong_abstention": 5,
+      "exceptions": 0,
+      "exact_rate": 0.25,
+      "categories": {
+        "correct": 6,
+        "false_presence": 7,
+        "wrong_abstention": 5,
+        "wrong_value_right_source": 6
+      }
+    },
+    "multi_evidence": {
+      "total": 16,
+      "exact": 7,
+      "legacy_strict": 7,
+      "false_presence": 2,
+      "wrong_abstention": 0,
+      "exceptions": 0,
+      "exact_rate": 0.4375,
+      "categories": {
+        "correct": 7,
+        "false_presence": 2,
+        "wrong_both": 2,
+        "wrong_value_right_source": 5
+      }
+    }
+  },
+  "results": [
+    {
+      "id": "inst-a-01",
+      "task": "institution_value",
+      "question": "2015년 7월 국토교통부가 밝힌 비엠더블유코리아(주)의 BMW 3·4시리즈 리콜에서, 조수석 좌석안전띠 결함으로 리콜 대상이 된 BMW 3시리즈는 몇 대인가?",
+      "evidence_count": 1,
+      "generated": "444대 [D1]",
+      "accepted_answers": [
+        "225대 [D1]"
+      ],
+      "exact": false,
+      "legacy": false,
+      "presence": 0,
+      "presence_probs": [
+        0.6168584227561951,
+        0.38313665986061096,
+        4.920460469293175e-06
+      ],
+      "reason": null,
+      "exception": null,
+      "input_tokens": 334,
+      "seconds": 0.08244829205796123,
+      "category": "wrong_value_right_source",
+      "detail": "disjoint",
+      "groups": [
+        "all",
+        "institution_value",
+        "single_evidence"
+      ]
+    },
+    {
+      "id": "inst-a-02",
+      "task": "institution_value",
+      "question": "조달청이 2015년 8월 3일~8월 7일 주간에 집행할 예정이라고 밝힌 신기술·서비스 분야 물품 및 용역입찰은 총 몇 건인가?",
+      "evidence_count": 2,
+      "generated": "4.15(월 [D2]",
+      "accepted_answers": [
+        "203건 [D1]"
+      ],
+      "exact": false,
+      "legacy": false,
+      "presence": 0,
+      "presence_probs": [
+        0.7706782817840576,
+        0.22931911051273346,
+        2.5667941372375935e-06
+      ],
+      "reason": null,
+      "exception": null,
+      "input_tokens": 653,
+      "seconds": 0.14476879173889756,
+      "category": "wrong_both",
+      "detail": null,
+      "groups": [
+        "all",
+        "institution_value",
+        "multi_evidence"
+      ]
+    },
+    {
+      "id": "inst-a-03",
+      "task": "institution_value",
+      "question": "2016년 6월 30일 시행된 방위산업기술보호법에 따라, 보유 기술이 방위산업기술에 해당하는지 판정 신청서를 제출하면 방위사업청은 신청을 받은 날부터 며칠 이내에 판정 결과를 통보하는가?",
+      "evidence_count": 2,
+      "generated": "15일 이내에 [D2]",
+      "accepted_answers": [
+        "15일 이내 [D2]",
+        "15일 [D2]"
+      ],
+      "exact": false,
+      "legacy": false,
+      "presence": 0,
+      "presence_probs": [
+        0.9896609783172607,
+        0.010337844491004944,
+        1.1861950497404905e-06
+      ],
+      "reason": null,
+      "exception": null,
+      "input_tokens": 324,
+      "seconds": 0.07602762477472425,
+      "category": "wrong_value_right_source",
+      "detail": "overlong",
+      "groups": [
+        "all",
+        "institution_value",
+        "multi_evidence"
+      ]
+    },
+    {
+      "id": "inst-a-04",
+      "task": "institution_value",
+      "question": "고용노동부가 2016년 12월 민간부문 직장어린이집 의무이행 현황 중간조사 결과를 발표하면서 밝힌, 직장어린이집을 직접 설치하거나 위탁 보육을 실시해야 하는 의무 사업장의 근로자 수 기준은?",
+      "evidence_count": 1,
+      "generated": "48.4% [D1]",
+      "accepted_answers": [
+        "상시근로자 500인 이상 또는 여성근로자 300인 이상 [D1]",
+        "상시근로자 500인 이상 또는 여성근로자 300인 이상 사업장 [D1]"
+      ],
+      "exact": false,
+      "legacy": false,
+      "presence": 0,
+      "presence_probs": [
+        0.9699501395225525,
+        0.030047165229916573,
+        2.684229002625216e-06
+      ],
+      "reason": null,
+      "exception": null,
+      "input_tokens": 434,
+      "seconds": 0.09700991725549102,
+      "category": "wrong_value_right_source",
+      "detail": "disjoint",
+      "groups": [
+        "all",
+        "institution_value",
+        "single_evidence"
+      ]
+    },
+    {
+      "id": "inst-a-05",
+      "task": "institution_value",
+      "question": "2016년 12월 7일 해양수산부와 관세청의 FTA 활용 수산물 수출 확대 업무협약에 따라, 국립수산물품질관리원 발행 ‘수산물품질인증서’ 등 간단한 서류만으로 원산지를 입증할 수 있게 되는 국내 생산 수산물은 몇 종인가?",
+      "evidence_count": 1,
+      "generated": "확인 불가",
+      "accepted_answers": [
+        "79종 [D1]"
+      ],
+      "exact": false,
+      "legacy": false,
+      "presence": 1,
+      "presence_probs": [
+        0.3613755702972412,
+        0.638611912727356,
+        1.2491987945395522e-05
+      ],
+      "reason": null,
+      "exception": null,
+      "input_tokens": 414,
+      "seconds": 0.08874545805156231,
+      "category": "wrong_abstention",
+      "detail": "head:missing",
+      "groups": [
+        "all",
+        "institution_value",
+        "single_evidence"
+      ]
+    },
+    {
+      "id": "inst-a-06",
+      "task": "institution_value",
+      "question": "공정거래위원회가 2017년 9월 제재한 호남고속철도 오송-광주송정 간 궤도부설공사 입찰 담합 사건에서, 발주처 한국철도시설공단이 삼표피앤씨와 2공구에 대해 체결한 공사 도급 계약 금액은 얼마인가?",
+      "evidence_count": 2,
+      "generated": "233억 원 [D1]",
+      "accepted_answers": [
+        "1,716억 6,500만 원 [D2]"
+      ],
+      "exact": false,
+      "legacy": false,
+      "presence": 0,
+      "presence_probs": [
+        0.9448928236961365,
+        0.0551036112010479,
+        3.5690461572812637e-06
+      ],
+      "reason": null,
+      "exception": null,
+      "input_tokens": 368,
+      "seconds": 0.07817258313298225,
+      "category": "wrong_both",
+      "detail": null,
+      "groups": [
+        "all",
+        "institution_value",
+        "multi_evidence"
+      ]
+    },
+    {
+      "id": "inst-a-07",
+      "task": "institution_value",
+      "question": "문화재청이 LG전자·한국문화재재단과 함께 2017년 경복궁에서 개최한 <최고의 작품을 만나다. 우리문화유산展>의 '야간 전시'는 언제까지인가? (본전시 종료일이 아닌 야간 전시 종료일)",
+      "evidence_count": 1,
+      "generated": "10월 9일까지(야간 전시는 9.30. [D1]",
+      "accepted_answers": [
+        "9.30. [D1]",
+        "9.30.까지 [D1]"
+      ],
+      "exact": false,
+      "legacy": false,
+      "presence": 0,
+      "presence_probs": [
+        0.983915388584137,
+        0.01607951894402504,
+        5.061895990365883e-06
+      ],
+      "reason": null,
+      "exception": null,
+      "input_tokens": 275,
+      "seconds": 0.06284191738814116,
+      "category": "wrong_value_right_source",
+      "detail": "overlong",
+      "groups": [
+        "all",
+        "institution_value",
+        "single_evidence"
+      ]
+    },
+    {
+      "id": "inst-a-08",
+      "task": "institution_value",
+      "question": "산림청이 2017년 9월 20일 밝힌 임산물 불법 채취·무허가 입산 집중단속은 언제까지 실시되는가? (별도의 '임(林)자 사랑해 캠페인' 종료일이 아닌 단속 종료일)",
+      "evidence_count": 1,
+      "generated": "11월 15일 [D1]",
+      "accepted_answers": [
+        "11월 15일 [D1]",
+        "11월 15일까지 [D1]"
+      ],
+      "exact": true,
+      "legacy": true,
+      "presence": 0,
+      "presence_probs": [
+        0.9642131328582764,
+        0.03578384220600128,
+        2.9339842058107024e-06
+      ],
+      "reason": null,
+      "exception": null,
+      "input_tokens": 382,
+      "seconds": 0.08453295798972249,
+      "category": "correct",
+      "detail": null,
+      "groups": [
+        "all",
+        "institution_value",
+        "single_evidence"
+      ]
+    },
+    {
+      "id": "inst-a-09",
+      "task": "institution_value",
+      "question": "중소벤처기업부가 2018년도 추가경정예산을 통해 추가 모집하는 세대융합형 (예비)창업팀에 지원하는 사업화자금의 최대 금액은?",
+      "evidence_count": 2,
+      "generated": "1억원 [D2]",
+      "accepted_answers": [
+        "최대 1억원 [D2]",
+        "1억원 [D2]"
+      ],
+      "exact": true,
+      "legacy": true,
+      "presence": 0,
+      "presence_probs": [
+        0.968051552772522,
+        0.03194321691989899,
+        5.23957851328305e-06
+      ],
+      "reason": null,
+      "exception": null,
+      "input_tokens": 402,
+      "seconds": 0.08736125007271767,
+      "category": "correct",
+      "detail": null,
+      "groups": [
+        "all",
+        "institution_value",
+        "multi_evidence"
+      ]
+    },
+    {
+      "id": "inst-a-10",
+      "task": "institution_value",
+      "question": "중소벤처기업부가 2019년 10월 밝힌 「여성기업지원에 관한 법률 시행령」 개정으로 여성기업 확인 대상이 될 것으로 예상되는 일반협동조합은 ’19.9월말 기준 약 몇 개인가?",
+      "evidence_count": 1,
+      "generated": "약 1,500개 [D1]",
+      "accepted_answers": [
+        "약 1,500개 [D1]",
+        "1,500개 [D1]"
+      ],
+      "exact": true,
+      "legacy": true,
+      "presence": 0,
+      "presence_probs": [
+        0.9961544871330261,
+        0.003844057209789753,
+        1.4431919908020063e-06
+      ],
+      "reason": null,
+      "exception": null,
+      "input_tokens": 421,
+      "seconds": 0.09094012528657913,
+      "category": "correct",
+      "detail": null,
+      "groups": [
+        "all",
+        "institution_value",
+        "single_evidence"
+      ]
+    },
+    {
+      "id": "inst-a-11",
+      "task": "institution_value",
+      "question": "방송통신위원회가 2019년 10월 23일 전체회의에서 ㈜씨엠비에 시정명령과 함께 부과한 과징금은 얼마인가?",
+      "evidence_count": 2,
+      "generated": "9,650만원 [D1]",
+      "accepted_answers": [
+        "9,650만원 [D1]"
+      ],
+      "exact": true,
+      "legacy": true,
+      "presence": 0,
+      "presence_probs": [
+        0.9222801327705383,
+        0.07771256566047668,
+        7.378243481070967e-06
+      ],
+      "reason": null,
+      "exception": null,
+      "input_tokens": 369,
+      "seconds": 0.08576549962162971,
+      "category": "correct",
+      "detail": null,
+      "groups": [
+        "all",
+        "institution_value",
+        "multi_evidence"
+      ]
+    },
+    {
+      "id": "inst-a-12",
+      "task": "institution_value",
+      "question": "조달청이 2019년 4월 15일부터 적용하는 개정 ‘시설공사계약업무처리규정’에서, 부정당업자로 입찰참가자격 제한을 받은 업체를 제재기간 경과 이후 소액수의계약 계약자에서 배제하는 기간은 얼마로 완화되었는가?",
+      "evidence_count": 2,
+      "generated": "4.15(월 [D2]",
+      "accepted_answers": [
+        "6개월 [D2]"
+      ],
+      "exact": false,
+      "legacy": false,
+      "presence": 0,
+      "presence_probs": [
+        0.9906931519508362,
+        0.009306198917329311,
+        7.652284921277897e-07
+      ],
+      "reason": null,
+      "exception": null,
+      "input_tokens": 526,
+      "seconds": 0.11824004165828228,
+      "category": "wrong_value_right_source",
+      "detail": "disjoint",
+      "groups": [
+        "all",
+        "institution_value",
+        "multi_evidence"
+      ]
+    },
+    {
+      "id": "inst-a-13",
+      "task": "institution_value",
+      "question": "농촌진흥청 국립축산과학원이 2019년 4월 10일 위촉식을 갖고 운영을 시작한 ‘온라인 자문단’은 언제까지 활동할 예정인가?",
+      "evidence_count": 1,
+      "generated": "10일 [D1]",
+      "accepted_answers": [
+        "12월 31일 [D1]",
+        "12월 31일까지 [D1]"
+      ],
+      "exact": false,
+      "legacy": false,
+      "presence": 0,
+      "presence_probs": [
+        0.914774477481842,
+        0.08520808815956116,
+        1.7462238247389905e-05
+      ],
+      "reason": null,
+      "exception": null,
+      "input_tokens": 280,
+      "seconds": 0.06215912522748113,
+      "category": "wrong_value_right_source",
+      "detail": "disjoint",
+      "groups": [
+        "all",
+        "institution_value",
+        "single_evidence"
+      ]
+    },
+    {
+      "id": "inst-a-14",
+      "task": "institution_value",
+      "question": "보건복지부가 2020년 신규로 추가 선정하는 잠재적 분만취약지 3개소의 분만산부인과에 지원하는 운영비는 연간 얼마인가?",
+      "evidence_count": 2,
+      "generated": "5억 원 [D2]",
+      "accepted_answers": [
+        "연간 5억 원 [D2]",
+        "5억 원 [D2]"
+      ],
+      "exact": true,
+      "legacy": true,
+      "presence": 0,
+      "presence_probs": [
+        0.9488303065299988,
+        0.05116767808794975,
+        2.0909239992761286e-06
+      ],
+      "reason": null,
+      "exception": null,
+      "input_tokens": 553,
+      "seconds": 0.12315179174765944,
+      "category": "correct",
+      "detail": null,
+      "groups": [
+        "all",
+        "institution_value",
+        "multi_evidence"
+      ]
+    },
+    {
+      "id": "inst-a-15",
+      "task": "institution_value",
+      "question": "문화체육관광부가 2020년 2월 17일 자로 국립현대무용단 예술감독에 임명한 남정호 감독의 임기는?",
+      "evidence_count": 1,
+      "generated": "확인 불가",
+      "accepted_answers": [
+        "3년 [D1]",
+        "3년(’20. 2. 17.~’23. 2. 16.) [D1]"
+      ],
+      "exact": false,
+      "legacy": false,
+      "presence": 1,
+      "presence_probs": [
+        0.284713476896286,
+        0.715154767036438,
+        0.0001317596761509776
+      ],
+      "reason": null,
+      "exception": null,
+      "input_tokens": 163,
+      "seconds": 0.04312437493354082,
+      "category": "wrong_abstention",
+      "detail": "head:missing",
+      "groups": [
+        "all",
+        "institution_value",
+        "single_evidence"
+      ]
+    },
+    {
+      "id": "inst-a-16",
+      "task": "institution_missing",
+      "question": "2015년 7월 국토교통부가 밝힌 비엠더블유코리아(주)의 BMW 3·4시리즈 리콜에서, 자동차 소유자가 무상 교환을 받을 수 있는 시정조치 종료 기한(마지막 날짜)은 언제인가?",
+      "evidence_count": 2,
+      "generated": "2015년 7월 31일 [D2]",
+      "accepted_answers": [
+        "확인 불가"
+      ],
+      "exact": false,
+      "legacy": false,
+      "presence": 0,
+      "presence_probs": [
+        0.8161356449127197,
+        0.18383455276489258,
+        2.9776922019664198e-05
+      ],
+      "reason": null,
+      "exception": null,
+      "input_tokens": 376,
+      "seconds": 0.07906016614288092,
+      "category": "false_presence",
+      "detail": "missing",
+      "groups": [
+        "all",
+        "institution_missing",
+        "multi_evidence"
+      ]
+    },
+    {
+      "id": "inst-a-17",
+      "task": "institution_missing",
+      "question": "방위사업청이 2016년 6월 30일부터 시행된다고 밝힌 ‘방위산업기술보호법’은 국회 본회의에서 어느 날짜에 통과되었는가?",
+      "evidence_count": 1,
+      "generated": "6월 30일(목) [D1]",
+      "accepted_answers": [
+        "확인 불가"
+      ],
+      "exact": false,
+      "legacy": false,
+      "presence": 0,
+      "presence_probs": [
+        0.8051097393035889,
+        0.1946602761745453,
+        0.0002300475025549531
+      ],
+      "reason": null,
+      "exception": null,
+      "input_tokens": 208,
+      "seconds": 0.04830224998295307,
+      "category": "false_presence",
+      "detail": "missing",
+      "groups": [
+        "all",
+        "institution_missing",
+        "single_evidence"
+      ]
+    },
+    {
+      "id": "inst-a-18",
+      "task": "institution_missing",
+      "question": "문화재청이 LG전자·한국문화재재단과 함께 2017년 경복궁에서 개최한 <최고의 작품을 만나다. 우리문화유산展>의 관람료(입장료)는 얼마인가?",
+      "evidence_count": 1,
+      "generated": "궁궐 부 [D1]",
+      "accepted_answers": [
+        "확인 불가"
+      ],
+      "exact": false,
+      "legacy": false,
+      "presence": 0,
+      "presence_probs": [
+        0.8847199082374573,
+        0.11526340991258621,
+        1.6679974578437395e-05
+      ],
+      "reason": null,
+      "exception": null,
+      "input_tokens": 264,
+      "seconds": 0.06090512499213219,
+      "category": "false_presence",
+      "detail": "missing",
+      "groups": [
+        "all",
+        "institution_missing",
+        "single_evidence"
+      ]
+    },
+    {
+      "id": "inst-a-19",
+      "task": "institution_missing",
+      "question": "방송통신위원회의 2019년 사실조사 결과 ㈜씨엠비가 자사 계열 PP에게 과다 지급한 것으로 확인된 프로그램 사용료 금액은 얼마인가?",
+      "evidence_count": 1,
+      "generated": "9,650만원 [D1]",
+      "accepted_answers": [
+        "확인 불가"
+      ],
+      "exact": false,
+      "legacy": false,
+      "presence": 0,
+      "presence_probs": [
+        0.9269635081291199,
+        0.0730132907629013,
+        2.320420571777504e-05
+      ],
+      "reason": null,
+      "exception": null,
+      "input_tokens": 412,
+      "seconds": 0.08811708400025964,
+      "category": "false_presence",
+      "detail": "missing",
+      "groups": [
+        "all",
+        "institution_missing",
+        "single_evidence"
+      ]
+    },
+    {
+      "id": "inst-a-20",
+      "task": "institution_missing",
+      "question": "2020년 2월 17일 자로 임명된 남정호 국립현대무용단 예술감독의 직전(전임) 예술감독은 누구인가?",
+      "evidence_count": 1,
+      "generated": "남정호 [D1]",
+      "accepted_answers": [
+        "확인 불가"
+      ],
+      "exact": false,
+      "legacy": false,
+      "presence": 0,
+      "presence_probs": [
+        0.79298335313797,
+        0.20698189735412598,
+        3.4695905924309045e-05
+      ],
+      "reason": null,
+      "exception": null,
+      "input_tokens": 309,
+      "seconds": 0.07101508276537061,
+      "category": "false_presence",
+      "detail": "missing",
+      "groups": [
+        "all",
+        "institution_missing",
+        "single_evidence"
+      ]
+    },
+    {
+      "id": "inst-b-01",
+      "task": "institution_value",
+      "question": "2020년 7월 행정안전부가 발표한 세종시 추가 이전 계획에서, 과거사관련업무지원단의 이전 인원은 몇 명인가?",
+      "evidence_count": 1,
+      "generated": "141명 [D1]",
+      "accepted_answers": [
+        "58명 [D1]"
+      ],
+      "exact": false,
+      "legacy": false,
+      "presence": 0,
+      "presence_probs": [
+        0.7676512598991394,
+        0.23234643042087555,
+        2.2464250832854304e-06
+      ],
+      "reason": null,
+      "exception": null,
+      "input_tokens": 228,
+      "seconds": 0.05359029211103916,
+      "category": "wrong_value_right_source",
+      "detail": "disjoint",
+      "groups": [
+        "all",
+        "institution_value",
+        "single_evidence"
+      ]
+    },
+    {
+      "id": "inst-b-02",
+      "task": "institution_value",
+      "question": "2021년 1월 국토교통부가 공모한 생활밀착형 도시재생 스마트기술 지원사업에서 사업지 한 곳에 지원되는 국비 상한은 얼마인가?",
+      "evidence_count": 2,
+      "generated": "5억 원 [D2]",
+      "accepted_answers": [
+        "5억 원 [D2]",
+        "최대 5억 원 [D2]"
+      ],
+      "exact": true,
+      "legacy": true,
+      "presence": 0,
+      "presence_probs": [
+        0.904733419418335,
+        0.0950615331530571,
+        0.00020502367988228798
+      ],
+      "reason": null,
+      "exception": null,
+      "input_tokens": 207,
+      "seconds": 0.048728374764323235,
+      "category": "correct",
+      "detail": null,
+      "groups": [
+        "all",
+        "institution_value",
+        "multi_evidence"
+      ]
+    },
+    {
+      "id": "inst-b-03",
+      "task": "institution_value",
+      "question": "2021년 10월 산림청 국립산림품종관리센터 보도자료 기준, 단체가 사전 신청하여 전문 숲 해설가가 진행하는 채종원 산림교육 프로그램에 참여할 때 비용은 얼마인가?",
+      "evidence_count": 1,
+      "generated": "무료 [D1]",
+      "accepted_answers": [
+        "무료 [D1]"
+      ],
+      "exact": true,
+      "legacy": true,
+      "presence": 0,
+      "presence_probs": [
+        0.9269297122955322,
+        0.07306160032749176,
+        8.745893865125254e-06
+      ],
+      "reason": null,
+      "exception": null,
+      "input_tokens": 299,
+      "seconds": 0.06910762516781688,
+      "category": "correct",
+      "detail": null,
+      "groups": [
+        "all",
+        "institution_value",
+        "single_evidence"
+      ]
+    },
+    {
+      "id": "inst-b-04",
+      "task": "institution_value",
+      "question": "2021년 10월 농촌진흥청의 클로르피리포스 등록취소 안내에서, 농약 구매자가 사용하지 않은 농약을 구입처에 반품·환불받아야 하는 기한은 언제까지인가?",
+      "evidence_count": 2,
+      "generated": "11월 9일 [D2]",
+      "accepted_answers": [
+        "11월 9일 [D2]",
+        "11월 9일까지 [D2]"
+      ],
+      "exact": true,
+      "legacy": true,
+      "presence": 0,
+      "presence_probs": [
+        0.8642455339431763,
+        0.13569842278957367,
+        5.6077227782225236e-05
+      ],
+      "reason": null,
+      "exception": null,
+      "input_tokens": 469,
+      "seconds": 0.10229108389467001,
+      "category": "correct",
+      "detail": null,
+      "groups": [
+        "all",
+        "institution_value",
+        "multi_evidence"
+      ]
+    },
+    {
+      "id": "inst-b-05",
+      "task": "institution_value",
+      "question": "2021년 10월 농촌진흥청 보도자료 기준(2021년 기준), 강소농으로 육성된 농업경영체는 총 몇 개인가?",
+      "evidence_count": 1,
+      "generated": "8만 7천개 [D1]",
+      "accepted_answers": [
+        "8만 7천개 [D1]"
+      ],
+      "exact": true,
+      "legacy": true,
+      "presence": 0,
+      "presence_probs": [
+        0.8762083053588867,
+        0.12379004061222076,
+        1.7154308125100215e-06
+      ],
+      "reason": null,
+      "exception": null,
+      "input_tokens": 243,
+      "seconds": 0.055649209301918745,
+      "category": "correct",
+      "detail": null,
+      "groups": [
+        "all",
+        "institution_value",
+        "single_evidence"
+      ]
+    },
+    {
+      "id": "inst-b-06",
+      "task": "institution_value",
+      "question": "2022년 11월 보건복지부가 공모한 어린이 공공전문진료센터 사후보상 시범사업 참여기관 모집 마감일은 언제인가?",
+      "evidence_count": 2,
+      "generated": "2023년 1월 [D2]",
+      "accepted_answers": [
+        "2022.12.15.(목) [D2]",
+        "2022.12.15. [D2]"
+      ],
+      "exact": false,
+      "legacy": false,
+      "presence": 0,
+      "presence_probs": [
+        0.8582954406738281,
+        0.14169900119304657,
+        5.575112027145224e-06
+      ],
+      "reason": null,
+      "exception": null,
+      "input_tokens": 258,
+      "seconds": 0.06012354185804725,
+      "category": "wrong_value_right_source",
+      "detail": "disjoint",
+      "groups": [
+        "all",
+        "institution_value",
+        "multi_evidence"
+      ]
+    },
+    {
+      "id": "inst-b-07",
+      "task": "institution_value",
+      "question": "2022년 11월 16일 방송통신위원회가 보험상담 방송프로그램 관련 16개 방송사업자에 부과한 과징금 총액은 얼마인가?",
+      "evidence_count": 2,
+      "generated": "1억 310만 원 [D2]",
+      "accepted_answers": [
+        "1억 310만 원 [D2]",
+        "총 1억 310만 원 [D2]"
+      ],
+      "exact": true,
+      "legacy": true,
+      "presence": 0,
+      "presence_probs": [
+        0.8724926114082336,
+        0.12749888002872467,
+        8.5508791016764e-06
+      ],
+      "reason": null,
+      "exception": null,
+      "input_tokens": 420,
+      "seconds": 0.09029091661795974,
+      "category": "correct",
+      "detail": null,
+      "groups": [
+        "all",
+        "institution_value",
+        "multi_evidence"
+      ]
+    },
+    {
+      "id": "inst-b-08",
+      "task": "institution_value",
+      "question": "2023년 1월 여성가족부의 2023년 청소년 육성 및 보호 유공 포상 후보자 공모에서, 청소년 후보자(또래에게 귀감이 되는 청소년)의 추천 마감일은 언제인가?",
+      "evidence_count": 1,
+      "generated": "2월 3일(금) [D1]",
+      "accepted_answers": [
+        "2023. 3. 10.(금) [D1]",
+        "2023. 3. 10.(금)까지 [D1]"
+      ],
+      "exact": false,
+      "legacy": false,
+      "presence": 0,
+      "presence_probs": [
+        0.6674298048019409,
+        0.33256417512893677,
+        6.059374754840974e-06
+      ],
+      "reason": null,
+      "exception": null,
+      "input_tokens": 243,
+      "seconds": 0.05583016574382782,
+      "category": "wrong_value_right_source",
+      "detail": "disjoint",
+      "groups": [
+        "all",
+        "institution_value",
+        "single_evidence"
+      ]
+    },
+    {
+      "id": "inst-b-09",
+      "task": "institution_value",
+      "question": "2023년 1월 중소벤처기업부가 공고한 초격차 스타트업 1000+ 프로젝트의 딥테크 팁스 트랙에서 선발 기업이 중소벤처기업부로부터 3년간 받을 수 있는 기업당 최대 지원액은 얼마인가?",
+      "evidence_count": 2,
+      "generated": "15억원, 사업화·해외마케팅 자금 각 최대 1억원 등 기업당 최대 17억원 [D1]",
+      "accepted_answers": [
+        "17억원 [D1]",
+        "최대 17억원 [D1]"
+      ],
+      "exact": false,
+      "legacy": false,
+      "presence": 0,
+      "presence_probs": [
+        0.9313973784446716,
+        0.06859342753887177,
+        9.193568985210732e-06
+      ],
+      "reason": null,
+      "exception": null,
+      "input_tokens": 482,
+      "seconds": 0.10627295775339007,
+      "category": "wrong_value_right_source",
+      "detail": "overlong",
+      "groups": [
+        "all",
+        "institution_value",
+        "multi_evidence"
+      ]
+    },
+    {
+      "id": "inst-b-10",
+      "task": "institution_value",
+      "question": "2024년 2월 교육부가 발표한 2024년 에듀테크 소프트랩 사업 기본계획에 따라 에듀테크 소프트랩 사업 공모가 시작되는 날짜는 언제인가?",
+      "evidence_count": 1,
+      "generated": "확인 불가",
+      "accepted_answers": [
+        "2월 29일(목) [D1]",
+        "2월 29일 [D1]"
+      ],
+      "exact": false,
+      "legacy": false,
+      "presence": 1,
+      "presence_probs": [
+        0.030608918517827988,
+        0.968766450881958,
+        0.0006246176781132817
+      ],
+      "reason": null,
+      "exception": null,
+      "input_tokens": 154,
+      "seconds": 0.038270541932433844,
+      "category": "wrong_abstention",
+      "detail": "head:missing",
+      "groups": [
+        "all",
+        "institution_value",
+        "single_evidence"
+      ]
+    },
+    {
+      "id": "inst-b-11",
+      "task": "institution_value",
+      "question": "2024년 1월 외교부 여권정책협의회 결정에 따라, 당시 2024.1.31.까지 여행이 금지되어 있던 8개 국가 및 6개 지역의 여행금지 지정 기간은 언제까지 연장되었나?",
+      "evidence_count": 2,
+      "generated": "6개월 [D2]",
+      "accepted_answers": [
+        "2024년 7월 31일 [D2]",
+        "2024년 7월 31일까지 [D2]"
+      ],
+      "exact": false,
+      "legacy": false,
+      "presence": 0,
+      "presence_probs": [
+        0.9539089798927307,
+        0.04608651250600815,
+        4.4344660636852495e-06
+      ],
+      "reason": null,
+      "exception": null,
+      "input_tokens": 228,
+      "seconds": 0.05310308327898383,
+      "category": "wrong_value_right_source",
+      "detail": "disjoint",
+      "groups": [
+        "all",
+        "institution_value",
+        "multi_evidence"
+      ]
+    },
+    {
+      "id": "inst-b-12",
+      "task": "institution_value",
+      "question": "2024년 1월 해양경찰청 발표에서 해양오염방제 자재·약제의 성능시험과 검정 민원 처리기관을 일원화한 대상 기관은 어디인가?",
+      "evidence_count": 1,
+      "generated": "해양경찰연구센터 [D1]",
+      "accepted_answers": [
+        "해양경찰연구센터 [D1]"
+      ],
+      "exact": true,
+      "legacy": true,
+      "presence": 0,
+      "presence_probs": [
+        0.6280311942100525,
+        0.37043535709381104,
+        0.0015334204072132707
+      ],
+      "reason": null,
+      "exception": null,
+      "input_tokens": 147,
+      "seconds": 0.03713966626673937,
+      "category": "correct",
+      "detail": null,
+      "groups": [
+        "all",
+        "institution_value",
+        "single_evidence"
+      ]
+    },
+    {
+      "id": "inst-b-13",
+      "task": "institution_value",
+      "question": "2025년 9월 조달청이 직접생산 기준 위반 등 불공정 조달행위로 적발된 20개사에 대해 환수하기로 결정한 부당이득금 총액은 얼마인가?",
+      "evidence_count": 1,
+      "generated": "확인 불가",
+      "accepted_answers": [
+        "853백만원 [D1]",
+        "853백만원 상당 [D1]"
+      ],
+      "exact": false,
+      "legacy": false,
+      "presence": 1,
+      "presence_probs": [
+        0.32284849882125854,
+        0.6765185594558716,
+        0.0006330133765004575
+      ],
+      "reason": null,
+      "exception": null,
+      "input_tokens": 144,
+      "seconds": 0.03680333308875561,
+      "category": "wrong_abstention",
+      "detail": "head:missing",
+      "groups": [
+        "all",
+        "institution_value",
+        "single_evidence"
+      ]
+    },
+    {
+      "id": "inst-b-14",
+      "task": "institution_value",
+      "question": "2025년 9월 식품의약품안전처가 베트남산 과·채가공품(냉동제품)에 대해 검사명령을 시행하기 시작한 날짜는 언제인가?",
+      "evidence_count": 2,
+      "generated": "9월 30일 [D1]",
+      "accepted_answers": [
+        "9월 30일 [D1]"
+      ],
+      "exact": true,
+      "legacy": true,
+      "presence": 0,
+      "presence_probs": [
+        0.8417779803276062,
+        0.15795235335826874,
+        0.000269682495854795
+      ],
+      "reason": null,
+      "exception": null,
+      "input_tokens": 229,
+      "seconds": 0.054219374898821115,
+      "category": "correct",
+      "detail": null,
+      "groups": [
+        "all",
+        "institution_value",
+        "multi_evidence"
+      ]
+    },
+    {
+      "id": "inst-b-15",
+      "task": "institution_value",
+      "question": "2026년 8월 법무부와 우정사업본부의 정주 지원 업무협약에 따라 국내 거주 동포와 가족이 우체국예금 이용 시 적용받는 우대금리 상한은 얼마인가?",
+      "evidence_count": 1,
+      "generated": "확인 불가",
+      "accepted_answers": [
+        "0.15% [D1]",
+        "최대 0.15% [D1]"
+      ],
+      "exact": false,
+      "legacy": false,
+      "presence": 1,
+      "presence_probs": [
+        0.30101650953292847,
+        0.6987954378128052,
+        0.000187973229913041
+      ],
+      "reason": null,
+      "exception": null,
+      "input_tokens": 198,
+      "seconds": 0.048362832982093096,
+      "category": "wrong_abstention",
+      "detail": "head:missing",
+      "groups": [
+        "all",
+        "institution_value",
+        "single_evidence"
+      ]
+    },
+    {
+      "id": "inst-b-16",
+      "task": "institution_missing",
+      "question": "2020년 7월 행정안전부의 세종시 추가 이전 계획에서, 5개 부서(141명)의 이전에 소요되는 총 이사 비용(이전 비용)은 얼마인가?",
+      "evidence_count": 1,
+      "generated": "141명이 [D1]",
+      "accepted_answers": [
+        "확인 불가"
+      ],
+      "exact": false,
+      "legacy": false,
+      "presence": 0,
+      "presence_probs": [
+        0.9603937268257141,
+        0.03959905356168747,
+        7.21483183951932e-06
+      ],
+      "reason": null,
+      "exception": null,
+      "input_tokens": 340,
+      "seconds": 0.07909362483769655,
+      "category": "false_presence",
+      "detail": "missing",
+      "groups": [
+        "all",
+        "institution_missing",
+        "single_evidence"
+      ]
+    },
+    {
+      "id": "inst-b-17",
+      "task": "institution_missing",
+      "question": "2021년 가을 국립산림품종관리센터가 운영하는 \"가을은 독서의 계절, 씨앗 책갈피\" 프로그램의 1회당 참가 정원은 몇 명인가?",
+      "evidence_count": 1,
+      "generated": "확인 불가",
+      "accepted_answers": [
+        "확인 불가"
+      ],
+      "exact": true,
+      "legacy": true,
+      "presence": 1,
+      "presence_probs": [
+        0.3931357264518738,
+        0.6068599224090576,
+        4.395692030811915e-06
+      ],
+      "reason": null,
+      "exception": null,
+      "input_tokens": 291,
+      "seconds": 0.06849091686308384,
+      "category": "correct",
+      "detail": null,
+      "groups": [
+        "all",
+        "institution_missing",
+        "single_evidence"
+      ]
+    },
+    {
+      "id": "inst-b-18",
+      "task": "institution_missing",
+      "question": "2024년 1월 해양경찰청 발표에서 해양오염방제 자재·약제 시험 권한을 해양경찰연구센터로 위임하는 개정 법령의 시행일은 언제인가?",
+      "evidence_count": 1,
+      "generated": "20년 [D1]",
+      "accepted_answers": [
+        "확인 불가"
+      ],
+      "exact": false,
+      "legacy": false,
+      "presence": 0,
+      "presence_probs": [
+        0.816270112991333,
+        0.18372799456119537,
+        1.8237005861010402e-06
+      ],
+      "reason": null,
+      "exception": null,
+      "input_tokens": 524,
+      "seconds": 0.11672816704958677,
+      "category": "false_presence",
+      "detail": "missing",
+      "groups": [
+        "all",
+        "institution_missing",
+        "single_evidence"
+      ]
+    },
+    {
+      "id": "inst-b-19",
+      "task": "institution_missing",
+      "question": "2024년 교육부 에듀테크 소프트랩 사업 기본계획에서, 2021년부터 운영 중인 경기 소프트랩(경기대학교)의 2024년 연간 지원 예산은 얼마인가?",
+      "evidence_count": 2,
+      "generated": "16억원 14억원 [D2]",
+      "accepted_answers": [
+        "확인 불가"
+      ],
+      "exact": false,
+      "legacy": false,
+      "presence": 0,
+      "presence_probs": [
+        0.9805204272270203,
+        0.019477950409054756,
+        1.6470372656840482e-06
+      ],
+      "reason": null,
+      "exception": null,
+      "input_tokens": 546,
+      "seconds": 0.1248690839856863,
+      "category": "false_presence",
+      "detail": "missing",
+      "groups": [
+        "all",
+        "institution_missing",
+        "multi_evidence"
+      ]
+    },
+    {
+      "id": "inst-b-20",
+      "task": "institution_missing",
+      "question": "2026년 8월 법무부 출입국·외국인정책본부와 우정사업본부가 체결한 정주 지원 업무협약의 유효기간은 몇 년인가?",
+      "evidence_count": 1,
+      "generated": "0.15% [D1]",
+      "accepted_answers": [
+        "확인 불가"
+      ],
+      "exact": false,
+      "legacy": false,
+      "presence": 0,
+      "presence_probs": [
+        0.8462694883346558,
+        0.15372717380523682,
+        3.3176922897837358e-06
+      ],
+      "reason": null,
+      "exception": null,
+      "input_tokens": 373,
+      "seconds": 0.08579475013539195,
+      "category": "false_presence",
+      "detail": "missing",
+      "groups": [
+        "all",
+        "institution_missing",
+        "single_evidence"
+      ]
+    }
+  ]
+}

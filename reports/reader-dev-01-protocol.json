@@ -1,0 +1,12 @@
+{
+  "run": "runs/trid-medium-reader-dev-01",
+  "purpose": "First full-data medium reader training; development improvement, not a deployment or Qwen-parity claim.",
+  "initialization": "runs/trid-korean-medium-base-v1",
+  "training": {"steps": 2000, "batch_size": 16, "micro_batch_size": 4, "learning_rate": 0.0001, "seed": 271029, "context": 1024, "eval_every": 100, "device": "mps"},
+  "evaluation": {"data": "data/korean-rag-curriculum-v2/valid.jsonl", "rag_rows": 480, "expected_present_rows": 337, "missing_rows": 103, "conflict_rows": 40, "unsupported_combine_rows_included_in_present": 40, "strict": "Raw emitted answer equals stripped gold including source and abstention wording; no aliases or normalization."},
+  "development_gates_registered_before_candidate_results": {"strict_accuracy_at_least": 0.80, "false_presence_rate_on_each_missing_and_conflict_at_most": 0.05, "conflict_strict_accuracy_at_least": 0.70, "klue_strict_accuracy_at_least": 0.70, "multi_passage_reachable_present_strict_accuracy_at_least": 0.70, "reachable_present_wrong_abstention_rate_at_most": 0.15, "execution_exceptions": 0},
+  "interpretation": "These are internal engineering gates, not sufficient deployment acceptance. Training checkpoint selection uses this same validation split; independent generalization, latency, retrieval and security still require separate verification. Locked RAG310 is not used in this development loop.",
+  "structural_limits": {"reachable_present_rows": 297, "single_span_strict_ceiling": "440/480", "constant_missing_abstention_baseline": "103/480", "combination_answers_supported": false},
+  "historical_baseline": {"run": "/tmp/trid-extractive-smoke", "training_steps": 20, "strict": 23, "total": 480, "production_quality": false},
+  "scheduling_decision": "Gracefully interrupted SFTv2 PID15477 and idle reader/retrieval queues PID77033/PID86488; preserved best/last SFT weights and did not claim optimizer/RNG resume. Reader depends on completed base, not SFTv2 weights. Collectors untouched. New training command does not automatically invoke locked-set evaluation."
+}

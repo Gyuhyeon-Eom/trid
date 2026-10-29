@@ -1,0 +1,37 @@
+{
+  "sampled_at": "2026-10-28T20:30:04+09:00",
+  "pid": 15477,
+  "training_run": "runs/trid-korean-medium-rag-v2/attempt-001",
+  "hardware_memory_bytes": 34359738368,
+  "native_sample_command": "sample 15477 1 10",
+  "native_sample_path": "/tmp/python_2026-10-28_203004_lwoh.sample.txt",
+  "physical_footprint_sample_display": "38.3G",
+  "peak_physical_footprint_sample_display": "38.6G",
+  "swap_usage_sysctl_display": "total = 24576.00M used = 23336.75M free = 1239.25M",
+  "sample_observation": "Main thread waited in autograd backward. Metal GPU stream sampled linear backward (57/83) and softmax backward (19/83), including command-buffer semaphore waits. This was not validation or checkpoint saving during the sampled second.",
+  "historical_step_100_elapsed_seconds": 6467.14,
+  "timing_scope": "Cumulative wall time includes initial validation and step-100 validation. Not a pure training-update throughput measurement; prior system sleep is not excluded.",
+  "inference": "Memory pressure is a strong contributor to the slowdown, not proven to explain every second of the historical interval.",
+  "preservation": "Running SFT and collectors were not stopped or patched. SFT checkpoints contain weights, not optimizer/RNG state; an exact lossless restart is unavailable.",
+  "next_process_optimization": "Microbatch four examples within each unchanged effective batch; preserve example/token/auxiliary-intent denominators for SFT and separate all-row/present-row denominators for the reader. Project vocabulary logits only at supervised positions for SFT.",
+  "mps_speedup_measured": false,
+  "verification": {
+    "full_unittest_suite": {"tests": 227, "passed": true, "seconds": 9.074},
+    "actual_cpu_training_smoke": {
+      "sft_cli_steps": 2,
+      "extractive_script_steps": 2,
+      "effective_batch": 7,
+      "micro_batch": 2,
+      "sft_auxiliary_intent_weight": 0.3,
+      "sft_final_weights_changed": true,
+      "both_training_runs_completed": true
+    },
+    "dense_pretraining_cpu_smoke": {
+      "compile_backend": "eager",
+      "fullgraph": true,
+      "loss_and_all_parameter_gradients_match_eager": true,
+      "hardware_compiler_speedup_claim": false
+    },
+    "independent_fable_code_review": "No blockers found; execution evidence supplied by parent, review itself was read-only."
+  }
+}

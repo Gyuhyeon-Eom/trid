@@ -205,7 +205,7 @@ flowchart LR
 
 ## 8. 순위별 실험 5개
 
-결정 지표는 모두 `data/korean-rag-eval-v1` 310문항(`scripts/evaluate_rag_eval.py`의 strict/value/lenient_value/source/abstained, 유형별 분해)이며, 체크포인트 선택은 검증 split로만 한다.
+아래 표는 최초 실험 제안이다. 당시에는 310문항 평가셋의 지표를 비교 기준으로 적었으나, 현재 개발 반복과 체크포인트 선택은 curriculum의 내부 검증셋에서만 수행한다. `data/korean-rag-eval-v1` 310문항은 개발 튜닝에 사용하지 않는다. 현재 고정된 개발 목표와 실제 기관 문서 점검 범위는 [KOREAN_RAG.md](../KOREAN_RAG.md)의 「개발 판정과 실제 기관 문서 점검」을 따른다. 아래 합격 수치를 현 개발 프로토콜과 혼용하지 않는다.
 
 | 순위 | 실험 | 첫 단계 | 결정 지표 | 통과 기준 |
 |---|---|---|---|---|

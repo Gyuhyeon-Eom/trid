@@ -1,0 +1,80 @@
+{
+  "run": "runs/trid-korean-medium-base-v1",
+  "weights_sha256": "4da69c6bcbc02ff861c6d2b982da174662d9dc1cb5caf878b3f596bc27e780eb",
+  "data": "data/mix-v3-dry/valid.jsonl",
+  "data_sha256": "3e1acadd5c3df879baafe105b18eae053c8a21ac4efbf66e420c98df22f1d123",
+  "device": "cpu",
+  "context_length": 1024,
+  "limit_docs_per_source": 100,
+  "sources": {
+    "admrul": {
+      "docs": 100,
+      "target_tokens": 473261,
+      "loss": 3.3306174096909196,
+      "perplexity": 27.955596432222634,
+      "family": "law",
+      "seconds": 90.9
+    },
+    "law": {
+      "docs": 54,
+      "target_tokens": 699097,
+      "loss": 3.101010263829067,
+      "perplexity": 22.220388400497235,
+      "family": "law",
+      "seconds": 145.0
+    },
+    "ordin": {
+      "docs": 100,
+      "target_tokens": 179578,
+      "loss": 3.0374522469866854,
+      "perplexity": 20.852049629504442,
+      "family": "law",
+      "seconds": 40.6
+    },
+    "press_release": {
+      "docs": 100,
+      "target_tokens": 139227,
+      "loss": 3.8639203009350287,
+      "perplexity": 47.651795049089344,
+      "family": "briefing",
+      "seconds": 32.8
+    },
+    "wikipedia": {
+      "docs": 100,
+      "target_tokens": 181530,
+      "loss": 3.242347674164136,
+      "perplexity": 25.593737026807652,
+      "family": "wiki",
+      "seconds": 39.5
+    }
+  },
+  "families": {
+    "briefing": {
+      "docs": 100,
+      "target_tokens": 139227,
+      "loss": 3.8639203009350287,
+      "perplexity": 47.651795049089344
+    },
+    "law": {
+      "docs": 254,
+      "target_tokens": 1351936,
+      "loss": 3.1729445017731748,
+      "perplexity": 23.877688844227144
+    },
+    "wiki": {
+      "docs": 100,
+      "target_tokens": 181530,
+      "loss": 3.242347674164136,
+      "perplexity": 25.593737026807652
+    }
+  },
+  "overall": {
+    "docs": 454,
+    "target_tokens": 1672693,
+    "loss": 3.2379900573377873,
+    "perplexity": 25.482451972600497
+  },
+  "seconds": 348.8,
+  "evaluated_at": "2026-10-29T00:34:18.600985+00:00",
+  "protocol": "First N documents per kind in file order; BOS+text+EOS tokenized with the run tokenizer; each document chunked independently to context_length; every target position counted once; loss = sum CE / target tokens."
+}
