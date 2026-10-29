@@ -1,4 +1,4 @@
-"""FineWeb-2 Korean (HuggingFaceFW/fineweb-2, kor_Hang) -> corpus contract clean-v3 (docs/CORPUS_CONTRACT.md).
+"""FineWeb-2 Korean (HuggingFaceFW/fineweb-2, kor_Hang) -> corpus contract clean-v4 (docs/CORPUS_CONTRACT.md).
 
   clean     (AWS SageMaker CPU job) for each parquet file: use the immutable raw copy in
             s3://<bucket>/corpus/raw/fineweb2-ko/<repo path> (download the pinned revision from the HF Hub and store
@@ -10,18 +10,20 @@
   aggregate (anywhere)                       sum the per-file manifests into <version>/{stats,provenance}.json and
             ATTRIBUTION.txt.
 
-clean-v3 per document, in order: NFC -> trid.korean_quality.clean_lines -> drop if empty -> script-ratio check
+clean-v4 per document, in order: NFC -> trid.korean_quality.clean_lines -> drop if empty -> script-ratio check
 (FINEWEB2 thresholds) -> drop gambling/adult-service advertising spam (spam_reason) -> licence quarantine (known
 paid-report/resale domains; NOT a full licence verification) -> provisional quarantine of rows from hosts of
-benchmark-reserved institutions (pending a text-overlap check) -> trid.korean_quality.redact (ko-pii, format-checked;
-mitigation, not a guarantee of no personal data) -> exact duplicate drop within the file (NFC, whitespace removed) ->
-split by sha256("split:"+group): test 0.5 %, valid 0.5 %, train otherwise. These dev splits are not an independent
-final test. Cross-source dedup and evaluation decontamination belong to the tokens stage (owner A).
+benchmark-reserved institutions (pending a text-overlap check) -> hold of rows on uncommon TLDs (MT/SEO risk) ->
+trid.korean_quality.redact (ko-pii plus the fallbacks in that module, format-checked; mitigation, not a guarantee of
+no personal data) -> exact duplicate drop within the file (NFC, whitespace removed) -> split by
+sha256("split:"+group): test 0.5 %, valid 0.5 %, train otherwise. These dev splits are not an independent final test.
+Cross-source dedup and evaluation decontamination belong to the tokens stage (owner A).
 
 clean-v1 (B-002) lacked the spam rule, the reserved-host quarantine, report.kyobobook.co.kr and the redact() fix for
 contacts at the start of a line. clean-v2 (B-004 pilot) had those, but redact() still skipped "02) 737-7378" and
-"052- 290-3333" (two separator characters) and numbers followed by 'ㅣ', and sometimes needed a second pass. Both
-stay under their own prefixes and are not train-ready.
+"052- 290-3333" (two separator characters) and numbers followed by 'ㅣ', and sometimes needed a second pass. clean-v3
+(B-004 pilot) fixed those but left 050 safe numbers and numbers glued to text, read a corporate registration number as
+an RRN and a URL article id as an account, and had no MT/SEO hold. All stay under their own prefixes, not train-ready.
 
 Licence: the FineWeb-2 compilation is ODC-By 1.0; that does not license the underlying web pages, which keep their
 authors' copyright and Common Crawl's terms of use. Every row keeps its source URL.
@@ -49,7 +51,7 @@ sys.path.insert(0, str(ROOT))
 
 BUCKET = 'trid-training-148761639313'
 SOURCE = 'fineweb2-ko'
-VERSION = 'clean-v3'
+VERSION = 'clean-v4'
 REPO = 'HuggingFaceFW/fineweb-2'
 LICENSE = 'ODC-By-1.0 (FineWeb-2 compilation only); underlying web text: original authors, Common Crawl terms of use'
 SHARD_CHARS = 200_000_000
@@ -68,6 +70,11 @@ SPAM_ADS = re.compile(r'(?:카지노|토토|바카라|슬롯|홀덤|파워볼)\s
                       r'|먹튀\s*(?:검증|사이트|제보|확정|폴리스|업체)|안전\s*놀이터'
                       r'|출장\s*(?:마사지|맛사지|안마|샵|업소|만남)|콜걸|대딸방')
 SPAM_MIN_HITS, SPAM_PER_1000 = 3, 2.0
+# Machine-translated / SEO pages (B-005): in a 40-row AI review of fixed-sample rows on other TLDs (.xyz, .icu, .site,
+# .ru, .za, ...) about 25 were spam, MT or adult pages, against about 4 of 40 on .com. There is no reliable text rule,
+# so rows from other TLDs are held in quarantine (not dropped) until a reviewed classifier exists. This also holds
+# legitimate pages (diaspora news on .ca, wiki mirrors); the hold is a risk decision, not a quality verdict.
+COMMON_TLDS = frozenset({'kr', 'com', 'net', 'org', 'co', 'io', 'me', 'tv', 'edu', 'gov'})
 SPLITS = (('test', 50), ('valid', 100))  # per-10,000 bucket upper bounds
 
 
@@ -93,6 +100,8 @@ def quarantine_reason(url):
         return 'paid_report_site'
     if any(host == s or host.endswith('.' + s) for s in reserved_hosts()):
         return 'benchmark_reserved_host_pending_text_check'
+    if host.rsplit('.', 1)[-1] not in COMMON_TLDS:
+        return 'uncertain_tld_mt_seo_risk'
     return None
 
 

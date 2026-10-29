@@ -1,4 +1,4 @@
-"""FineWeb-2 clean-v3: contract rows, PII redaction, licence and reservation quarantine, spam, deterministic splits."""
+"""FineWeb-2 clean-v4: contract rows, PII redaction, licence/reservation/TLD quarantine, spam, deterministic splits."""
 import base64
 import gzip
 import hashlib
@@ -28,7 +28,7 @@ class FakeS3:
         return {'ContentLength': len(body), 'ChecksumSHA256': base64.b64encode(hashlib.sha256(body).digest()).decode()}
 
 
-class CleanV3Tests(unittest.TestCase):
+class CleanV4Tests(unittest.TestCase):
     def test_row_contract_pii_and_split(self):
         row, reason, pii = clean_record(RECORD, '2026-10-30T00:00:00+00:00')
         self.assertEqual(reason, 'ok')
@@ -38,7 +38,7 @@ class CleanV3Tests(unittest.TestCase):
         self.assertEqual(pii, Counter({'EMAIL': 1}))
         self.assertEqual(row['sha256'], hashlib.sha256(row['text'].encode()).hexdigest())
         self.assertEqual(row['id'], 'fineweb2-ko:ad224e20-74af-4f43-8e94-81f2c15355dc')
-        self.assertEqual((row['clean_version'], row['split'], row['meta']['source_split']), ('clean-v3', split_of(row['group']), 'train'))
+        self.assertEqual((row['clean_version'], row['split'], row['meta']['source_split']), ('clean-v4', split_of(row['group']), 'train'))
         self.assertIn('pii_redacted', row['flags'])
         self.assertEqual(row['provenance'], {'institution_type': 'web', 'site': 'example.kr'})
 
@@ -55,6 +55,12 @@ class CleanV3Tests(unittest.TestCase):
         self.assertEqual(reason, 'quarantine:benchmark_reserved_host_pending_text_check')
         self.assertEqual(clean_record(dict(RECORD, url='https://www.alio.go.kr/x'), 't')[1],
                          'quarantine:benchmark_reserved_host_pending_text_check')
+
+    def test_uncommon_tlds_are_held_not_dropped(self):
+        row, reason, _ = clean_record(dict(RECORD, url='https://pokertis.info/a'), 't')
+        self.assertEqual(reason, 'quarantine:uncertain_tld_mt_seo_risk')
+        self.assertIn('quarantine:uncertain_tld_mt_seo_risk', row['flags'])
+        self.assertEqual(clean_record(dict(RECORD, url='https://news.example.co.kr/a'), 't')[1], 'ok')
 
     def test_ad_spam_is_dropped_but_policy_texts_on_gambling_are_kept(self):
         ads = '먹튀검증 완료된 토토사이트 추천! 안전놀이터 가입 시 이벤트. 우리카지노 주소 안내. ' * 3

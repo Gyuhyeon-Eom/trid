@@ -74,8 +74,8 @@ SITE_MENU = re.compile(r"개인정보\s*처리\s*방침|이용\s*약관|쿠키|�
 
 PII_LABELS = {"RRN": "[주민번호]", "FRN": "[외국인번호]", "PHONE": "[전화]", "EMAIL": "[이메일]", "ACCOUNT": "[계좌]",
               "CARD": "[카드]", "PASSPORT": "[여권]", "DRIVER_LICENSE": "[운전면허]"}
-# ko-pii 호출 전 선별: 위 라벨 중 하나라도 잡힐 수 있는 문자열(6자리 이상 숫자, 전화형 구분자, @, 여권 영문+8자리)
-PII_HINT = re.compile(r"\d{6}|\d{2,4}[-.)－ ]{1,2}\d{3,4}[-.－ ]{1,2}\d{4}|@|[A-Z]\d{8}")
+# ko-pii 호출 전 선별: 위 라벨 중 하나라도 잡힐 수 있는 문자열(6자리 이상 숫자, 전화형 구분자, @, 여권 영문+8자리, 국제번호 +)
+PII_HINT = re.compile(r"\d{6}|\d{2,4}[-.)－ ]{1,2}\d{3,4}[-.－ ]{1,2}\d{4}|@|[A-Z]\d{8}|\+\d{1,3}[- ]?\d")
 # ko-pii는 공백·줄바꿈을 접어 매칭하므로 표를 펼친 숫자열("0 1 396 136", "2010 2011 2012 2013")을 전화·카드·주민번호로
 # 잡는다(3,000건 샘플에서 PHONE 238건 중 대부분). 원문 구간이 라벨의 표기 형식과 정확히 맞고, 앞뒤에 숫자 묶음이
 # 더 이어지지 않을 때만 치환한다. 형식: 주민등록번호 6-7자리(주민등록법 시행규칙 별표), 전화 02/0NN-NNN(N)-NNNN(전기통신번호
@@ -88,8 +88,8 @@ SHAPES = {"RRN": re.compile(r"\d{6}[- ]?\d{7}"), "FRN": re.compile(r"\d{6}[- ]?\
 # 표 숫자열("2010 2011 2012 2013")이나 코드('DATE0703221230', '154.16341649')에 붙은 구간 제외; 'T.055-…'는 허용.
 # \Z(문자열 끝)를 쓴다: '$'는 끝의 줄바꿈 앞에서도 맞아서 줄 끝 글자("CENTER\n010-…", "7630\n010-…")를 붙은 것으로
 # 오판해 줄 단위 연락처가 남았다(B-004, FineWeb clean-v1 표본).
-GLUED_AFTER = re.compile(r"[-－ .]?\d|[A-Za-z]")
-GLUED_BEFORE = re.compile(r"\d[-－ .]?\Z|[A-Za-z]\Z")
+GLUED_AFTER = re.compile(r"[-－ .]?\d|[A-Za-z_]")
+GLUED_BEFORE = re.compile(r"\d[-－ .]?\Z|[A-Za-z_]\Z")
 
 _kiwi = None
 
@@ -239,18 +239,68 @@ def well_formed(text, label, start, end):
         GLUED_AFTER.match(text[end:end + 2]) or GLUED_BEFORE.search(text[max(0, start - 2):start]))
 
 
+# ko-pii가 잡지 않는 전화형 번호(050 안심번호, 'ㅣ'·영문에 붙은 번호, 해외 지역번호 등)를 같은 경로에서 보수적으로
+# 치환한다. 구분 문자가 있어야 하고(표 숫자열 제외) 앞뒤가 숫자로 이어지지 않아야 한다. 080(수신자 부담)·060(정보이용료
+# ARS)은 번호 계획상 사업자 번호라 치환하지 않는다(B-005 정책, 보고서에 근거 기록).
+FALLBACK_PHONE = re.compile(r"(?<![\d._])(?<!\d[-－])(?:\+\d{1,3}[-. ]?)?(?:\(0(?!80|60)\d{1,3}\)[-.－]? ?|0(?!80|60)\d{1,3}[-.)－] ?)"
+                            r"\d{3,4}[-.－] ?\d{4}(?![-.－]?\d|_)"
+                            r"|(?<![\w+])\+[1-9]\d{0,2}(?:[- ]\d{1,4}){2,3}[- ]\d{4}(?![-.－]?\d|_)"
+                            r"|(?<![\w+])\+[1-9]\d(?:[- ]?\d){7,13}(?![-.－]?\d|_)")
+# 법인등록번호는 주민등록번호와 형식(6-7자리)이 같다. 앞 문맥이 '등록번호'(주민·외국인 제외)이고 법인등록번호 검증식이
+# 맞을 때만 개인정보가 아닌 것으로 보고 남긴다. 둘 중 하나라도 아니면 치환한다.
+CORP_CONTEXT = re.compile(r"(?<!주민)(?<!외국인)(?:법인|학원|사업장|고유)?\s*등록\s*번호\s*[:：]?\s*$")
+# 하이픈 없는 숫자열을 ko-pii가 계좌로 볼 때: 숫자열이 URL 토큰의 일부이고 같은 줄의 그 앞 20자에 은행·계좌 단어가 없으면
+# 글번호 같은 식별자로 보고 남긴다. 하이픈이 있거나, URL 밖이거나, 은행 문맥이 있으면 치환한다.
+BANK_CONTEXT = re.compile(r"계좌|은행|입금|예금주|농협|신협|수협|새마을|우체국|국민|신한|우리|하나|기업|카카오뱅크|케이뱅크|토스뱅크|KB|SC|Account|account")
+URL_TOKEN = re.compile(r"\S*(?:https?://|www\.|[?&][\w.-]*=)\S*$")
+# 하이픈 없는 13자리 숫자는 바코드(EAN-13)·상표·특허 등록번호와 주민번호 형식이 겹친다. 앞 문맥에 주민·생년이 있으면
+# 치환하고, 없으면서 EAN-13 검증식이 맞거나 식별자 문맥(상표·특허·바코드·제품 코드 등)이 있으면 남긴다. 그 밖은 치환한다.
+PERSON_ID_CONTEXT = re.compile(r"주민|생년|외국인")
+ITEM_ID_CONTEXT = re.compile(r"상표|특허|디자인|바코드|품번|제품|모델|코드|ISBN|EAN|출원|등록")
+
+
+def ean13(digits):
+    return len(digits) == 13 and (10 - sum(int(c) * (1 if i % 2 == 0 else 3) for i, c in enumerate(digits[:12])) % 10) % 10 == int(digits[12])
+
+
+def corporate_number(digits):
+    """법인등록번호 검증식: 앞 12자리에 1,2를 번갈아 곱한 합의 (10 - 합 % 10) % 10이 마지막 자리."""
+    return len(digits) == 13 and (10 - sum(int(c) * (1 + i % 2) for i, c in enumerate(digits[:12])) % 10) % 10 == int(digits[12])
+
+
+def personal(text, label, start, end):
+    """형식이 맞는 탐지 가운데, 구조·문맥으로 개인정보가 아님이 확인되는 경우만 False."""
+    span = text[start:end]
+    before = text[max(0, start - 20):start]
+    if label in ("RRN", "FRN") and CORP_CONTEXT.search(before):
+        return not corporate_number(re.sub(r"\D", "", span))
+    if label in ("RRN", "FRN") and span.isdigit() and not PERSON_ID_CONTEXT.search(before):
+        return not (ean13(span) or ITEM_ID_CONTEXT.search(before))
+    if label == "ACCOUNT" and "-" not in span:
+        line_start = text.rfind("\n", 0, start) + 1
+        before = text[line_start:start]
+        if URL_TOKEN.search(before) and not BANK_CONTEXT.search(before[-20:].split("://")[0]):
+            return False
+    return True
+
+
 def _redact_once(text):
     from ko_pii import detect_all
-    counts, out, pos = Counter(), [], 0
-    for d in sorted(detect_all(text, include=list(PII_LABELS)), key=lambda d: (d.start, -d.end)):
+    hits = []
+    for d in detect_all(text, include=list(PII_LABELS)):
         end = d.end
         while end > d.start and text[end - 1] in SPAN_TAIL:
             end -= 1
-        if d.start < pos or not well_formed(text, d.label, d.start, end):
+        if well_formed(text, d.label, d.start, end) and personal(text, d.label, d.start, end):
+            hits.append((d.start, end, d.label))
+    hits += [(m.start(), m.end(), "PHONE") for m in FALLBACK_PHONE.finditer(text)]
+    counts, out, pos = Counter(), [], 0
+    for start, end, label in sorted(hits, key=lambda h: (h[0], -h[1])):
+        if start < pos:
             continue
-        out.append(text[pos:d.start])
-        out.append(PII_LABELS[d.label])
-        counts[d.label] += 1
+        out.append(text[pos:start])
+        out.append(PII_LABELS[label])
+        counts[label] += 1
         pos = end
     out.append(text[pos:])
     return "".join(out), counts
