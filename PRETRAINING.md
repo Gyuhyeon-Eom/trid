@@ -193,3 +193,7 @@ uv sync --frozen --extra corpus --python 3.12
 - 개발셋은 동일한 v2 validation으로 평가한다. 기관문서 probe는 진단용이며 반복 사용했으므로 새로운 독립 최종 평가로 주장하지 않는다. v4와 v2의 데이터량이 달라 같은 step 수는 같은 epoch 수가 아니다.
 - 결과 이름은 `reader-factorial-01-{backbone}-{head}-{data}`. 기존 미완료 디렉터리는 덮어쓰지 않고 중단한다. 실행별 모델·보고서를 S3에 보존하고 원격 가중치의 SHA256을 로컬과 비교한 뒤 이번 실행의 로컬 safetensors만 회수한다. 실행 전 여유 공간 1.5GiB 미만이면 중단한다.
 - 이 비교는 세 묶음의 효과를 분리한다. 헤드 내부 변경·합성 hard negatives·TyDi 및 사전학습 최적화 각각의 기여도를 분리하는 실험은 아니다.
+
+후속 데이터 제거 비교는 `scripts/ablate_reader_data.py --remove {tydi,synthetic-hard,klue-hard} --output data/<새경로>`로 준비한다. v4의 해당 task만 제거하며 남은 행의 바이트·순서와 검증셋은 보존한다. synthetic-hard는 긍정/부정 예제를 함께 제거한다. 실제 생성 결과는 각각 train 35,063 / 33,661 / 32,161행이며 검증 SHA256은 모두 v2와 같다. 이는 데이터 준비 결과이지 성능 측정 결과가 아니다.
+
+결과를 로컬 reports에 내려받은 후 `scripts/summarize_reader_factorial.py --output reports/<새파일>.json`으로 집계한다. dev/probe 모델 해시, 실행 이름, 평가 데이터 해시, 480/40행 분모와 정답 집계를 확인한다. 미완료 조합은 0점 대신 pending으로 남긴다. 역사적 실측 보고서의 임시 복사본으로 278/480 및 13/40 집계를 재현했고, 모델 해시 불일치는 거부했다. 후속 제거 실험은 몸통·헤드·학습 설정을 고정해 비교하며, probe 결과로 자동 모델 선택하지 않는다.
