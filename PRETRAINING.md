@@ -197,3 +197,5 @@ uv sync --frozen --extra corpus --python 3.12
 후속 데이터 제거 비교는 `scripts/ablate_reader_data.py --remove {tydi,synthetic-hard,klue-hard} --output data/<새경로>`로 준비한다. v4의 해당 task만 제거하며 남은 행의 바이트·순서와 검증셋은 보존한다. synthetic-hard는 긍정/부정 예제를 함께 제거한다. 실제 생성 결과는 각각 train 35,063 / 33,661 / 32,161행이며 검증 SHA256은 모두 v2와 같다. 이는 데이터 준비 결과이지 성능 측정 결과가 아니다.
 
 결과를 로컬 reports에 내려받은 후 `scripts/summarize_reader_factorial.py --output reports/<새파일>.json`으로 집계한다. dev/probe 모델 해시, 실행 이름, 평가 데이터 해시, 480/40행 분모와 정답 집계를 확인한다. 미완료 조합은 0점 대신 pending으로 남긴다. 역사적 실측 보고서의 임시 복사본으로 278/480 및 13/40 집계를 재현했고, 모델 해시 불일치는 거부했다. 후속 제거 실험은 몸통·헤드·학습 설정을 고정해 비교하며, probe 결과로 자동 모델 선택하지 않는다.
+
+`scripts/run_reader_removals_gpu.sh`는 systemd `trid-reader-removals-01`로 실행한다. CPT와 8조합 서비스 종료 후 8개 보존 완료 마커를 확인한 다음, CPT-v1 몸통·v2 헤드를 고정하고 TyDi / synthetic-hard / klue-hard 제거 데이터를 각각 2,000단계 학습한다. 다른 조건과 보존 절차는 factorial 실행과 같다. 비교 기준은 factorial의 CPT-v1/head-v2/data-v4이며, 결과를 보고 몸통·헤드를 다시 선택하지 않는다. 최초 8조합 중 실패가 있으면 제거 실험도 시작하지 않는다.
