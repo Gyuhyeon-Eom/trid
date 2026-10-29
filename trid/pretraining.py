@@ -15,9 +15,8 @@ from safetensors.torch import load_file, save_file
 from .corpus import sha256, write_json
 from .model import Config, Trid
 from .runtime import device_for, sync
-from .training import loss_for
 
-PRECISIONS, SCHEDULES = ("fp32", "bf16"), ("cosine", "wsd")
+PRECISIONS, SCHEDULES, SAMPLINGS = ("fp32", "bf16"), ("cosine", "wsd"), ("replacement", "epoch")
 
 
 def atomic_json(path, data):
@@ -41,21 +40,98 @@ def lr_ratio(step, steps, schedule="cosine", decay_fraction=.1):
 
 
 def train_loss(model, x, y, z_loss=0.):
-    if not z_loss:
-        return loss_for(model, x, y)
-    # PaLM (arXiv 2204.02311 §5): z_loss * log²Z keeps the softmax normalizer near 0.
+    """Dense token-mean CE over every position. Pretraining supervises all tokens, so the
+    sparse supervised-position path in trid.training would only copy the hidden states."""
     logits, _ = model(x)
     flat = logits.reshape(-1, logits.size(-1))
-    return F.cross_entropy(flat, y.reshape(-1)) + z_loss * torch.logsumexp(flat.float(), -1).square().mean()
+    loss = F.cross_entropy(flat, y.reshape(-1))
+    if z_loss:
+        # PaLM (arXiv 2204.02311 §5): z_loss * log²Z keeps the softmax normalizer near 0.
+        loss = loss + z_loss * torch.logsumexp(flat.float(), -1).square().mean()
+    return loss
 
 
-def sample_batch(tokens, length, size, generator, device):
-    if len(tokens) <= length:
-        raise ValueError("문맥 길이보다 많은 토큰이 필요합니다.")
-    starts = torch.randint(0, len(tokens) - length, (size,), generator=generator).tolist()
+def window_batch(tokens, length, starts, device):
     values = np.stack([tokens[i:i + length + 1] for i in starts]).astype(np.int64)
     values = torch.from_numpy(values).to(device)
     return values[:, :-1], values[:, 1:]
+
+
+def sample_batch(tokens, length, size, generator, device):
+    """Windows drawn i.i.d. with replacement (sampling='replacement'; also validation)."""
+    if len(tokens) <= length:
+        raise ValueError("문맥 길이보다 많은 토큰이 필요합니다.")
+    starts = torch.randint(0, len(tokens) - length, (size,), generator=generator).tolist()
+    return window_batch(tokens, length, starts, device)
+
+
+def window_kinds(tokens, length, sources):
+    """Kind index of each non-overlapping window, by the document covering its first token.
+    `sources` is one split of data/sources.json (trid.corpus.write_sources)."""
+    offsets, kinds = np.asarray(sources["offsets"], dtype=np.int64), np.asarray(sources["kind"], dtype=np.int64)
+    if len(offsets) != len(kinds) or len(offsets) == 0 or offsets[0] != 0 or np.any(np.diff(offsets) <= 0) or offsets[-1] >= len(tokens):
+        raise ValueError("sources.json의 문서 경계가 토큰 파일과 맞지 않습니다.")
+    starts = np.arange((len(tokens) - 1) // length, dtype=np.int64) * length
+    return kinds[np.searchsorted(offsets, starts, side="right") - 1]
+
+
+class EpochSampler:
+    """sampling='epoch': every non-overlapping context window of train.bin once per epoch, in a
+    permutation seeded by seed + epoch. `weights` (per kind index, from `source_weights`) repeat
+    windows of a kind floor(w) times plus one more with probability frac(w), so w=2 doubles a kind
+    and w=.5 keeps a seeded half of it. Position = (epoch, cursor into that epoch's order)."""
+
+    def __init__(self, tokens, length, seed, kinds=None, weights=None):
+        if len(tokens) <= length:
+            raise ValueError("문맥 길이보다 많은 토큰이 필요합니다.")
+        self.tokens, self.length, self.seed = tokens, length, seed
+        self.count = (len(tokens) - 1) // length
+        self.kinds = None if weights is None else np.asarray(kinds, dtype=np.int64)
+        self.weights = None if weights is None else np.asarray(weights, dtype=np.float64)
+        self.epoch, self.cursor, self._order = 0, 0, None
+
+    def order(self, epoch):
+        rng = np.random.default_rng([self.seed, epoch])
+        if self.weights is None:
+            return rng.permutation(self.count)
+        w = self.weights[self.kinds]
+        repeats = np.floor(w).astype(np.int64) + (rng.random(self.count) < (w - np.floor(w)))
+        ids = np.repeat(np.arange(self.count), repeats)
+        if len(ids) == 0:
+            raise ValueError("source_weights로 남는 학습 구간이 없습니다.")
+        return ids[rng.permutation(len(ids))]
+
+    def position(self):
+        return {"epoch": self.epoch, "cursor": self.cursor}
+
+    def seek(self, position):
+        self.epoch, self.cursor, self._order = int(position["epoch"]), int(position["cursor"]), None
+
+    def draw(self, size, device):
+        starts = []
+        while len(starts) < size:
+            if self._order is None:
+                self._order = self.order(self.epoch)
+            take = self._order[self.cursor:self.cursor + size - len(starts)]
+            starts.extend((take * self.length).tolist())
+            self.cursor += len(take)
+            if self.cursor >= len(self._order):
+                self.epoch, self.cursor, self._order = self.epoch + 1, 0, None
+        return window_batch(self.tokens, self.length, starts, device)
+
+
+def param_groups(model, decay_norms):
+    """decay_norms=False: weight decay only on matrices (embedding included); RMSNorm gains and
+    other 1-D parameters are left undecayed. True reproduces the single decayed group."""
+    if decay_norms:
+        return [{"params": list(model.parameters()), "weight_decay": .1}]
+    params = list(model.parameters())
+    return [{"params": [p for p in params if p.ndim > 1], "weight_decay": .1},
+            {"params": [p for p in params if p.ndim <= 1], "weight_decay": 0.}]
+
+
+def save_weights(model, path):
+    save_file({k: v.detach().cpu().contiguous() for k, v in model.state_dict().items()}, str(path))
 
 
 def save_checkpoint(root, model, optimizer, generator, state):
@@ -63,7 +139,7 @@ def save_checkpoint(root, model, optimizer, generator, state):
     folder = root / "checkpoints" / name
     pending = folder.with_name(name + ".tmp")
     pending.mkdir(parents=True, exist_ok=False)
-    save_file({k: v.detach().cpu().contiguous() for k, v in model.state_dict().items()}, str(pending / "model.safetensors"))
+    save_weights(model, pending / "model.safetensors")
     tensors = {"batch_rng": generator.get_state()}
     for i, p in enumerate(model.parameters()):
         for key, value in optimizer.state[p].items():
@@ -97,13 +173,14 @@ def restore_checkpoint(root, model, optimizer, generator, device):
 
 
 @torch.inference_mode()
-def validate(model, tokens, batch_size, device, batches=8):
+def validate(model, tokens, batch_size, device, batches=8, autocast=None):
     model.eval()
     generator = torch.Generator().manual_seed(20261026)
     values = []
     for _ in range(batches):
         x, y = sample_batch(tokens, model.cfg.context_length, batch_size, generator, device)
-        values.append(loss_for(model, x, y).item())
+        with autocast or contextlib.nullcontext():
+            values.append(train_loss(model, x, y).item())
     model.train()
     return sum(values) / len(values)
 
@@ -111,13 +188,24 @@ def validate(model, tokens, batch_size, device, batches=8):
 def pretrain(data, output, config_path=None, steps=2000, stop_after=200,
              batch_size=8, lr=.0003, device="auto", seed=42, resume=False,
              eval_every=50, validation_batches=8, init_run=None, accumulate=1,
-             precision="fp32", compile=False, schedule="cosine", decay_fraction=.1, z_loss=0.):
+             precision="fp32", compile=False, schedule="cosine", decay_fraction=.1, z_loss=0.,
+             checkpoint_every=None, sampling="replacement", source_weights=None, decay_norms=False):
+    """New-run options are recorded in training.json and restored on resume; only stop_after,
+    device, precision and compile are per-session. Runs created before checkpoint_every /
+    sampling / source_weights / decay_norms existed resume with the old behaviour
+    (checkpoint at every eval, sampling with replacement, every parameter decayed)."""
     if resume and init_run:
         raise ValueError("--resume과 --init-run을 함께 사용할 수 없습니다.")
-    if min(steps, stop_after, batch_size, eval_every, validation_batches, accumulate) < 1 or lr <= 0 or z_loss < 0:
+    if checkpoint_every is None:
+        checkpoint_every = eval_every
+    if min(steps, stop_after, batch_size, eval_every, checkpoint_every, validation_batches, accumulate) < 1 or lr <= 0 or z_loss < 0:
         raise ValueError("학습 설정은 양수여야 합니다.")
+    if checkpoint_every % eval_every:
+        raise ValueError("checkpoint_every는 eval_every의 배수여야 합니다.")
     if precision not in PRECISIONS or schedule not in SCHEDULES or not 0 < decay_fraction <= 1:
         raise ValueError("precision은 fp32|bf16, schedule은 cosine|wsd, decay_fraction은 (0, 1]이어야 합니다.")
+    if sampling not in SAMPLINGS:
+        raise ValueError("sampling은 replacement|epoch이어야 합니다.")
     root, data = Path(output), Path(data)
     device = device_for(device)
     manifest = json.loads((data / "manifest.json").read_text())
@@ -150,6 +238,9 @@ def pretrain(data, output, config_path=None, steps=2000, stop_after=200,
         accumulate, schedule = metadata.get("accumulate", 1), metadata.get("schedule", "cosine")
         decay_fraction, z_loss = metadata.get("decay_fraction", .1), metadata.get("z_loss", 0.)
         eval_every, validation_batches = metadata["eval_every"], metadata["validation_batches"]
+        # Keys absent from runs created before these options existed: the old behaviour.
+        checkpoint_every, sampling = metadata.get("checkpoint_every", eval_every), metadata.get("sampling", "replacement")
+        source_weights, decay_norms = metadata.get("source_weights"), metadata.get("decay_norms", True)
     else:
         if root.exists() and any(root.iterdir()):
             raise ValueError("새 출력 경로를 사용하거나 --resume으로 이어서 학습하세요.")
@@ -197,36 +288,65 @@ def pretrain(data, output, config_path=None, steps=2000, stop_after=200,
         raise ValueError("학습/검증 토큰이 문맥 길이보다 짧습니다.")
     if max(int(train_tokens.max()), int(valid_tokens.max())) >= cfg.vocab_size:
         raise ValueError("토큰 ID가 모델 어휘 범위를 초과합니다.")
+    sampler = kinds = weights = None
+    if source_weights is not None:
+        if sampling != "epoch":
+            raise ValueError("source_weights는 sampling='epoch'에서만 쓸 수 있습니다.")
+        if not (data / "sources.json").exists():
+            raise ValueError("source_weights에는 data/sources.json이 필요합니다 (trid.corpus.write_sources).")
+        sources = json.loads((data / "sources.json").read_text())
+        names = sources["kinds"]
+        if not isinstance(source_weights, dict) or not source_weights:
+            raise ValueError("source_weights는 {kind: weight} 사전이어야 합니다.")
+        unknown = sorted(set(source_weights) - set(names))
+        if unknown or any(not isinstance(w, (int, float)) or w < 0 for w in source_weights.values()):
+            raise ValueError(f"source_weights의 kind는 {names} 중 하나이고 가중치는 0 이상이어야 합니다. 알 수 없음: {unknown}")
+        source_weights = {k: float(v) for k, v in source_weights.items()}
+        weights = [source_weights.get(k, 1.) for k in names]
+        kinds = window_kinds(train_tokens, cfg.context_length, sources["splits"]["train"])
+    if sampling == "epoch":
+        sampler = EpochSampler(train_tokens, cfg.context_length, seed, kinds, weights)
     step_tokens = batch_size * accumulate * cfg.context_length
     torch.manual_seed(seed)
+    if device == "cuda":
+        torch.set_float32_matmul_precision("high")
     model = Trid(cfg).to(device).train()
     if init_run:
         model.load_state_dict(load_file(str(Path(init_run) / "model.safetensors")))
-    optimizer = torch.optim.AdamW(model.parameters(), lr=lr, betas=(.9, .95), weight_decay=.1)
+    optimizer = torch.optim.AdamW(param_groups(model, decay_norms), lr=lr, betas=(.9, .95), fused=device == "cuda")
     generator = torch.Generator().manual_seed(seed)
+    autocast = (torch.autocast(device_type=device, dtype=torch.bfloat16) if precision == "bf16"
+                else contextlib.nullcontext())
     metrics_path = root / "metrics.json"
     if resume:
         state = restore_checkpoint(root, model, optimizer, generator, device)
         metrics = [m for m in json.loads(metrics_path.read_text()) if m["step"] <= state["step"]]
+        if sampler is not None:
+            if "sampler" not in state:
+                raise ValueError("epoch 샘플링 실행인데 체크포인트에 sampler 위치가 없습니다.")
+            sampler.seek(state["sampler"])
     else:
-        baseline = validate(model, valid_tokens, batch_size, device, validation_batches)
+        baseline = validate(model, valid_tokens, batch_size, device, validation_batches, autocast)
         state = {"step": 0, "best_loss": baseline, "best_step": 0, "training_seconds": 0.0}
+        if sampler is not None:
+            state["sampler"] = sampler.position()
         metrics = [{"step": 0, "valid_loss": baseline, "perplexity": math.exp(min(30, baseline))}]
-        save_file({k: v.detach().cpu().contiguous() for k, v in model.state_dict().items()}, str(root / "model.safetensors"))
+        save_weights(model, root / "model.safetensors")
         save_checkpoint(root, model, optimizer, generator, state)
         atomic_json(metrics_path, metrics)
     if state["step"] >= steps:
         print("계획한 학습 단계를 이미 완료했습니다.", flush=True)
         return
     metadata.update(status="training", parameters=model.parameter_count(), device=device,
-                    precision=precision, compile=bool(compile))
+                    precision=precision, compile=bool(compile), checkpoint_every=checkpoint_every,
+                    sampling=sampling, source_weights=source_weights, decay_norms=decay_norms)
+    if sampler is not None:
+        metadata["epoch_windows"] = int(len(sampler.order(0)))
     atomic_json(root / "training.json", metadata)
     print(f"pretrain: {model.parameter_count():,} parameters | {device} | {precision}{' compile' if compile else ''} | "
-          f"{state['step']}/{steps} steps | {step_tokens:,} tokens/step", flush=True)
+          f"{state['step']}/{steps} steps | {step_tokens:,} tokens/step | {sampling}", flush=True)
     # Checkpoints and validation always use the eager module; compile wraps it only for the training forward.
     trainer = torch.compile(model) if compile else model
-    autocast = (torch.autocast(device_type=device, dtype=torch.bfloat16) if precision == "bf16"
-                else contextlib.nullcontext())
     stop = min(steps, state["step"] + stop_after)
     sync(device)
     started = time.perf_counter()
@@ -238,38 +358,52 @@ def pretrain(data, output, config_path=None, steps=2000, stop_after=200,
             for group in optimizer.param_groups:
                 group["lr"] = lr * lr_ratio(step, steps, schedule, decay_fraction)
             # One draw per optimizer step keeps the batch RNG stream identical across accumulate settings.
-            x, y = sample_batch(train_tokens, cfg.context_length, batch_size * accumulate, generator, device)
+            if sampler is None:
+                x, y = sample_batch(train_tokens, cfg.context_length, batch_size * accumulate, generator, device)
+            else:
+                x, y = sampler.draw(batch_size * accumulate, device)
             optimizer.zero_grad(set_to_none=True)
             loss = 0.
             for xi, yi in zip(x.chunk(accumulate), y.chunk(accumulate)):
                 with autocast:
                     micro = train_loss(trainer, xi, yi, z_loss) / accumulate
-                if not torch.isfinite(micro):
-                    raise RuntimeError("학습 손실이 유한하지 않습니다.")
                 micro.backward()
                 loss = loss + micro.detach()
+            # One host sync per step; a non-finite micro loss raises before the update is applied.
+            if not torch.isfinite(loss):
+                raise RuntimeError("학습 손실이 유한하지 않습니다.")
             torch.nn.utils.clip_grad_norm_(model.parameters(), 1.)
             optimizer.step()
-            if step % eval_every == 0 or step == stop:
-                score = validate(model, valid_tokens, batch_size, device, validation_batches)
-                sync(device)
-                elapsed = time.perf_counter() - started
-                state.update(step=step, training_seconds=prior_seconds + elapsed)
-                if score < state["best_loss"]:
-                    state.update(best_loss=score, best_step=step)
-                    temp = root / "best.tmp.safetensors"
-                    save_file({k: v.detach().cpu().contiguous() for k, v in model.state_dict().items()}, str(temp))
-                    temp.replace(root / "model.safetensors")
-                entry = {"step": step, "train_loss": loss.item(), "valid_loss": score,
-                         "perplexity": math.exp(min(30, score)),
-                         "tokens_seen": step * step_tokens,
-                         "lineage_tokens_seen": metadata.get("inherited_tokens_seen", 0) + step * step_tokens,
-                         "training_seconds": round(state["training_seconds"], 3),
-                         "session_tokens_per_second": round((step - session_start_step) * step_tokens / elapsed, 1)}
-                metrics.append(entry)
-                atomic_json(metrics_path, metrics)
+            evaluating = step % eval_every == 0 or step == stop
+            checkpointing = step % checkpoint_every == 0 or step == stop
+            if not evaluating:
+                continue
+            score = validate(model, valid_tokens, batch_size, device, validation_batches, autocast)
+            sync(device)
+            elapsed = time.perf_counter() - started
+            state.update(step=step, training_seconds=prior_seconds + elapsed)
+            # Best weights are written only alongside a checkpoint (or at session end), so model.safetensors
+            # always corresponds to a recorded best_step and eval-only steps cost no weight I/O.
+            if score < state["best_loss"] and checkpointing:
+                state.update(best_loss=score, best_step=step)
+                temp = root / "best.tmp.safetensors"
+                save_weights(model, temp)
+                temp.replace(root / "model.safetensors")
+            entry = {"step": step, "train_loss": loss.item(), "valid_loss": score,
+                     "perplexity": math.exp(min(30, score)),
+                     "tokens_seen": step * step_tokens,
+                     "lineage_tokens_seen": metadata.get("inherited_tokens_seen", 0) + step * step_tokens,
+                     "training_seconds": round(state["training_seconds"], 3),
+                     "session_tokens_per_second": round((step - session_start_step) * step_tokens / elapsed, 1)}
+            if sampler is not None:
+                entry["epoch"] = sampler.epoch
+            metrics.append(entry)
+            atomic_json(metrics_path, metrics)
+            if checkpointing:
+                if sampler is not None:
+                    state["sampler"] = sampler.position()
                 save_checkpoint(root, model, optimizer, generator, state)
-                print(f"step {step}/{steps} | train {loss.item():.4f} | valid {score:.4f} | {entry['session_tokens_per_second']:,.0f} tokens/s", flush=True)
+            print(f"step {step}/{steps} | train {loss.item():.4f} | valid {score:.4f} | {entry['session_tokens_per_second']:,.0f} tokens/s", flush=True)
     except KeyboardInterrupt:
         # Do not serialize a partly-applied update; continue from last complete checkpoint.
         interrupted = True

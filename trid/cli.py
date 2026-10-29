@@ -33,7 +33,7 @@ def main():
     train.add_argument("--steps", type=int, default=300)
     train.add_argument("--batch-size", type=int, default=24)
     train.add_argument("--lr", type=float, default=.0005)
-    train.add_argument("--device", choices=["auto", "mps", "cpu"], default="auto")
+    train.add_argument("--device", choices=["auto", "cuda", "mps", "cpu"], default="auto")
     train.add_argument("--seed", type=int, default=42)
     train.add_argument("--init-run", help="직접 사전학습한 로컬 체크포인트에서 대화 학습")
     train.add_argument("--eval-every", type=int, default=100)
@@ -41,6 +41,7 @@ def main():
     train.add_argument("--intent-weight", type=float, default=0.0, help="질문 유형 구분 보조 손실의 가중치; 추론에는 사용하지 않음")
     train.add_argument("--context-length", type=int, help="별도 학습 실행의 문맥 길이; 기존 가중치와 토크나이저 유지")
     train.add_argument("--loss-normalization", choices=["token", "example"], default="token", help="example: 답변 길이에 관계없이 질문별 평균 손실을 동일 비중으로 학습")
+    train.add_argument("--micro-batch-size", type=int, default=4, help="한 배치를 나누어 역전파하는 크기; 메모리만 제한하고 학습 결과는 동일 (batch-size 이하로 제한)")
     fetch = sub.add_parser("fetch-wiki", help="공개 한국어 Wikipedia 문서 다운로드 (명시적 네트워크 작업)")
     fetch.add_argument("--output", default="data/wiki-ko-pilot")
     fetch.add_argument("--max-documents", type=int, default=12000)
@@ -57,7 +58,7 @@ def main():
     pretrain.add_argument("--stop-after", type=int, default=200, help="이번 실행에서 수행할 최대 추가 단계")
     pretrain.add_argument("--batch-size", type=int, default=8)
     pretrain.add_argument("--lr", type=float, default=.0003)
-    pretrain.add_argument("--device", choices=["auto", "mps", "cpu"], default="auto")
+    pretrain.add_argument("--device", choices=["auto", "cuda", "mps", "cpu"], default="auto")
     pretrain.add_argument("--seed", type=int, default=42)
     start = pretrain.add_mutually_exclusive_group()
     start.add_argument("--resume", action="store_true")
@@ -69,11 +70,11 @@ def main():
     evaluate.add_argument("--data", default="data/demo/test.jsonl")
     evaluate.add_argument("--output", default="reports/evaluation.json")
     evaluate.add_argument("--limit", type=int, default=0)
-    evaluate.add_argument("--device", choices=["auto", "mps", "cpu"], default="auto")
+    evaluate.add_argument("--device", choices=["auto", "cuda", "mps", "cpu"], default="auto")
     for name in ["ask", "chat", "complete"]:
         p = sub.add_parser(name, help={"ask": "한 번 질문; --index를 주면 색인 문서를 근거로 답하고 감사 로그를 남김", "chat": "터미널 대화", "complete": "사전학습 모델의 문장 이어쓰기"}[name])
         p.add_argument("--run", default=str(PROJECT_ROOT / "runs/trid-pretrain-pilot") if name == "complete" else None)
-        p.add_argument("--device", choices=["auto", "mps", "cpu"], default="auto")
+        p.add_argument("--device", choices=["auto", "cuda", "mps", "cpu"], default="auto")
         p.add_argument("--max-tokens", type=int, default=48 if name == 'complete' else 96)
         if name == 'chat':
             p.add_argument('--mode',choices=['select','dialogue','institution'],default='dialogue',help='기본은 파일 없는 대화; select는 모드 선택, institution은 가상 문서 실험')
@@ -105,7 +106,8 @@ def main():
         elif args.command == "train":
             from .training import train as train_model
             train_model(args.data, args.output, args.steps, args.batch_size, args.lr, args.device, args.seed, args.init_run,
-                        args.eval_every, args.validation_limit, args.intent_weight, args.context_length, args.loss_normalization)
+                        args.eval_every, args.validation_limit, args.intent_weight, args.context_length, args.loss_normalization,
+                        args.micro_batch_size)
         elif args.command == "evaluate":
             from .evaluation import evaluate as run_evaluation
             run_evaluation(args.run, args.data, args.output, args.device, args.limit)

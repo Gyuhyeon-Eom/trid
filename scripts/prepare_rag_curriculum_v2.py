@@ -241,7 +241,10 @@ def norm(t):return unicodedata.normalize('NFC',t).strip()
 def digest(t):return hashlib.sha256(re.sub(r'\s+','',norm(t)).encode()).hexdigest()
 def sha256(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 
-def klue_rows(tok,r,limit_train,limit_valid,counts):
+def klue_candidates(counts):
+    """(items, pool, prov): official train QAs keyed by title-hash split ('train'/'valid'), with dev-overlap titles/contexts
+    excluded and passages containing citation markup or special tokens skipped. pool[split] holds (title, ctx) per
+    kept passage and is the only source of distractors for that split."""
     prov=json.loads((KLUE/'provenance.json').read_text())
     for name,expected in prov['sha256'].items():
         if sha256(KLUE/name)!=expected:raise ValueError('KLUE source changed')
@@ -258,34 +261,42 @@ def klue_rows(tok,r,limit_train,limit_valid,counts):
             if '[D' in ctx or any(s in ctx for s in SPECIAL):counts['klue_skipped_markup']+=1;continue
             pool[split].append((title,ctx))
             for qa in p['qas']:items[split].append((title,ctx,p['context'],qa))
-    out={'train':[],'valid':[]}
-    for split,limit in [('train',limit_train),('valid',limit_valid)]:
-        r.shuffle(items[split])
-        for title,ctx,raw,qa in items[split]:
-            if len(out[split])>=limit:break
-            q=norm(qa['question'])
-            if qa['is_impossible']:answer_text=None
-            else:
-                ok=[a for a in qa['answers'] if a.get('text') and raw[a['answer_start']:a['answer_start']+len(a['text'])]==a['text']]
-                if not ok:counts['klue_invalid_span']+=1;continue
-                answer_text=norm(ok[0]['text'])
-                if answer_text not in ctx:counts['klue_answer_not_in_normalized']+=1;continue
-            ids=r.sample([f'D{k}' for k in range(1,10)],2)
-            passages=[(ids[0],ctx)]
-            if r.random()<.5:
-                other=r.choice(pool[split])
-                if other[0]!=title:passages.append((ids[1],other[1]))
-            def build(ps):
-                r.shuffle(ps)
-                answer='확인 불가' if answer_text is None else f'{answer_text} [{ids[0]}]'
-                return {'id':f'{split}-klue-{qa["guid"]}','prompt':rag_prompt(ps,q),'answer':answer,
-                        'task':'rag_klue_missing' if answer_text is None else 'rag_klue','group':'rag_real',
-                        'source':'KLUE MRC v1.1 train (CC BY-SA 4.0), reformatted','source_guid':qa['guid'],'source_title':title}
-            row=build(list(passages))
-            if fits(tok,row):out[split].append(row);continue
-            row=build(passages[:1])
-            if fits(tok,row):out[split].append(row)
-            else:counts['klue_too_long']+=1
+    return items,pool,prov
+
+def klue_emit(tok,r,split,items,pool,limit,counts):
+    """Shuffle `items` (train-split candidates stay with the train-split `pool`) and build up to `limit` rows."""
+    out=[]
+    r.shuffle(items)
+    for title,ctx,raw,qa in items:
+        if len(out)>=limit:break
+        q=norm(qa['question'])
+        if qa['is_impossible']:answer_text=None
+        else:
+            ok=[a for a in qa['answers'] if a.get('text') and raw[a['answer_start']:a['answer_start']+len(a['text'])]==a['text']]
+            if not ok:counts['klue_invalid_span']+=1;continue
+            answer_text=norm(ok[0]['text'])
+            if answer_text not in ctx:counts['klue_answer_not_in_normalized']+=1;continue
+        ids=r.sample([f'D{k}' for k in range(1,10)],2)
+        passages=[(ids[0],ctx)]
+        if r.random()<.5:
+            other=r.choice(pool)
+            if other[0]!=title:passages.append((ids[1],other[1]))
+        def build(ps):
+            r.shuffle(ps)
+            answer='확인 불가' if answer_text is None else f'{answer_text} [{ids[0]}]'
+            return {'id':f'{split}-klue-{qa["guid"]}','prompt':rag_prompt(ps,q),'answer':answer,
+                    'task':'rag_klue_missing' if answer_text is None else 'rag_klue','group':'rag_real',
+                    'source':'KLUE MRC v1.1 train (CC BY-SA 4.0), reformatted','source_guid':qa['guid'],'source_title':title}
+        row=build(list(passages))
+        if fits(tok,row):out.append(row);continue
+        row=build(passages[:1])
+        if fits(tok,row):out.append(row)
+        else:counts['klue_too_long']+=1
+    return out
+
+def klue_rows(tok,r,limit_train,limit_valid,counts):
+    items,pool,prov=klue_candidates(counts)
+    out={split:klue_emit(tok,r,split,items[split],pool[split],limit,counts) for split,limit in [('train',limit_train),('valid',limit_valid)]}
     return out,prov
 
 def fits(tok,row):

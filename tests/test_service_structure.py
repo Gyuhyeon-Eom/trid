@@ -105,5 +105,54 @@ class SplittingTest(unittest.TestCase):
         self.assertIn("제12조에 따른", passages[1].text)
 
 
+class ActualLawRegressionTest(unittest.TestCase):
+    def test_official_annex_heading_and_inserted_annex(self):
+        text = ("법\n제1조(목적) 목적.\n제2조(기준) 별표 2의2에 따른다.\n"
+                "■ 법 시행령 [별표 2의2]\n지급 기준 내용")
+        passages, refs = parse_document(text, "a", "법")
+        target = next(p for p in passages if "별표 2의2" in p.path)
+        self.assertIn((passages[2].id, target.id), refs)
+        self.assertEqual(text[target.char_start:target.char_end], target.text)
+
+    def test_external_chains_do_not_become_local_edges(self):
+        text = ("법\n제1조(목적) 「형법」 제127조 및 제129조부터 제132조까지를 적용한다.\n"
+                "제127조(내부) 내부.\n제129조(내부) 내부.\n제132조(내부) 내부.")
+        _, refs = parse_document(text, "a", "법")
+        self.assertEqual(refs, [])
+        self.assertEqual(external_references(text), [
+            ("형법", "제127조"), ("형법", "제129조"), ("형법", "제132조")])
+
+    def test_external_alias_declaration(self):
+        self.assertEqual(external_references('「피해자 지원법」(이하 "법"이라 한다) 제3조의2'),
+                         [("피해자 지원법", "제3조의2")])
+
+    def test_external_subarticle_chain_with_multiple_paragraphs(self):
+        text = "「형사소송법」 제361조, 제361조의3제1항ㆍ제3항, 제377조 및 제379조제1항ㆍ제4항"
+        self.assertEqual(external_references(text), [
+            ("형사소송법", "제361조"), ("형사소송법", "제361조의3"),
+            ("형사소송법", "제377조"), ("형사소송법", "제379조")])
+
+    def test_repealed_and_inserted_list_entries(self):
+        from trid.service.structure import _markers
+        text = "② 심의한다.\n2. 명예회복\n2의2. 지원\n4. 기타"
+        self.assertEqual([label for _, label in _markers(text, 0, len(text), "ho")],
+                         ["2.", "2의2.", "4."])
+
+    def test_same_subarticle_specific_paragraph_reference(self):
+        text = ("법\n제1조(목적) 목적.\n제2조의2(지원) ① " + "지원 기준이다. " * 40
+                + "\n② 제2조의2제1항에 따른다. " + "절차이다. " * 40)
+        passages, refs = parse_document(text, "a", "법", limit=400)
+        target = next(p for p in passages if "제2조의2" in p.path and "①" in p.path)
+        src = next(p for p in passages if "제2조의2제1항" in p.text)
+        self.assertIn((src.id, target.id), refs)
+    def test_unbound_law_alias_is_not_local_but_this_law_is(self):
+        text = ("시행령\n제1조(목적) 법 제3조에 따른다.\n"
+                "제2조(기준) 이 법 제3조에 따른다.\n제3조(내부) 내용.")
+        passages, refs = parse_document(text, "a", "시행령")
+        self.assertNotIn((passages[1].id, passages[3].id), refs)
+        self.assertIn((passages[2].id, passages[3].id), refs)
+
+
+
 if __name__ == "__main__":
     unittest.main()

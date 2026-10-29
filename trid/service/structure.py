@@ -22,22 +22,24 @@ H_PYEON = re.compile(r"^제\s*(\d+)\s*편(?![가-힣])")
 H_JANG = re.compile(r"^제\s*(\d+)\s*장(?![가-힣])")
 H_JEOL = re.compile(r"^제\s*(\d+)\s*절(?![가-힣])")
 H_JO = re.compile(r"^제\s*(\d+)\s*조(?:의\s*(\d+))?\s*(?=[(（【\[]|$|[①-⑳]|삭제)")
-H_ANNEX = re.compile(r"^[\[【(]?\s*별표\s*(\d+)?\s*[\]】)]?(?=\s|$)")
-H_FORM = re.compile(r"^[\[【(]?\s*(?:별지\s*)?(?:제\s*)?(\d+)\s*호\s*서식|^[\[【(]?\s*서식\s*(\d+)")
+H_ANNEX = re.compile(r"^(?:■[^\n]*?\[\s*|[\[【(]?\s*)별표\s*(\d+(?:의\s*\d+)?)?\s*[\]】)]?(?=\s|$)")
+H_FORM = re.compile(r"^(?:■[^\n]*?\[\s*|[\[【(]?\s*)(?:별지\s*)?(?:제\s*)?(\d+(?:의\s*\d+)?)\s*호\s*서식|^[\[【(]?\s*서식\s*(\d+)")
 H_BUCHIK = re.compile(r"^부\s*칙(?![가-힣])")
 
-# Split markers; 호/목 must count up from 1/가 to be taken as a list.
+# Split markers; line-start 호/목 may have gaps from repealed entries.
 M_HANG = re.compile(r"(?:^|(?<=[\s)）\]】]))([①-⑳])")
-M_HO = re.compile(r"(?:^|(?<=\s))(\d{1,2})\.\s(?!\d)")
+M_HO = re.compile(r"(?:^|(?<=\s))(\d{1,3}(?:의\d+)?)\.\s(?!\d)")
 M_MOK = re.compile(r"(?:^|(?<=\s))([가-하])\.\s")
 M_PARA = re.compile(r"\n[ \t]*\n")
 M_LINE = re.compile(r"\n")
 M_SENT = re.compile(r"(?<=[.다])\s+")
 
-R_EXT = re.compile(r"「([^」]+)」\s*제\s*(\d+)\s*조(?:의\s*(\d+))?")
+_EXT_ARTICLE = r"제\s*\d+\s*조(?:의\s*\d+)?(?:\s*(?:ㆍ|및|,)?\s*제\s*\d+\s*[항호])*"
+R_EXT = re.compile(r"「([^」]+)」\s*(?:\([^)\n]*\)\s*)?(" + _EXT_ARTICLE
+                   + r"(?:(?:\s*(?:및|부터|까지|ㆍ|,)\s*)+" + _EXT_ARTICLE + r")*)")
 R_JO = re.compile(r"제\s*(\d+)\s*조(?:의\s*(\d+))?(?:\s*제\s*(\d+)\s*항)?")
 R_HANG = re.compile(r"(?<![조\d])제\s*(\d+)\s*항")
-R_ANNEX = re.compile(r"별표\s*(\d+)")
+R_ANNEX = re.compile(r"별표\s*(\d+(?:의\s*\d+)?)")
 R_FORM = re.compile(r"별지\s*제?\s*(\d+)\s*호\s*서식|서식\s*제?\s*(\d+)\s*호?")
 
 
@@ -55,7 +57,8 @@ def is_regulation(text):
 
 def external_references(text):
     """[(document title, 조 label)] for 「○○규정」 제N조 mentions."""
-    return [(m.group(1).strip(), f"제{m.group(2)}조" + (f"의{m.group(3)}" if m.group(3) else "")) for m in R_EXT.finditer(text)]
+    return [(m.group(1).strip(), jo_label(article)) for m in R_EXT.finditer(text)
+            for article in R_JO.finditer(m.group(2))]
 
 
 # ----------------------------------------------------------------------------- blocks
@@ -133,12 +136,16 @@ def _markers(text, start, end, level):
     if level == "hang":
         return [(start + m.start(1), m.group(1)) for m in M_HANG.finditer(s)]
     if level in ("ho", "mok"):
-        regex, out, expect = (M_HO, [], 1) if level == "ho" else (M_MOK, [], 0)
+        regex, out, previous = (M_HO, [], None) if level == "ho" else (M_MOK, [], None)
         for m in regex.finditer(s):
-            value = int(m.group(1)) if level == "ho" else MOK.find(m.group(1))
-            if value == expect and value >= 0:
+            value = tuple(map(int, m.group(1).split("의"))) if level == "ho" else (MOK.find(m.group(1)),)
+            # Repealed entries leave gaps; inserted 호 use e.g. 2의2. Only line-start
+            # entries may begin mid-list, avoiding ordinary inline decimal numbers.
+            at_line_start = not s[s.rfind("\n", 0, m.start(1)) + 1:m.start(1)].strip()
+            first = value == ((1,) if level == "ho" else (0,)) or at_line_start
+            if value[0] >= 0 and ((previous is None and first) or (previous is not None and value > previous)):
                 out.append((start + m.start(1), m.group(1) + "."))
-                expect += 1
+                previous = value
         return out
     regex = {"para": M_PARA, "line": M_LINE, "sent": M_SENT}[level]
     return [(start + m.end(), None) for m in regex.finditer(s) if 0 < m.start()]
@@ -248,9 +255,13 @@ def _resolve_refs(text, passages, jo_of):
         body = R_EXT.sub(blank, p.text)  # external refs are not local ones
         for m in R_JO.finditer(body):
             jo = jo_label(m)
-            if jo == jo_of[i]:
-                continue
             hang = hang_label(int(m.group(3))) if m.group(3) else None
+            if jo == jo_of[i] and not hang:
+                continue
+            # An unbound "법 제N조"/"같은 법 제N조" is not this document.
+            prefix = body[max(0, m.start() - 16):m.start()]
+            if re.search(r"(?:법|영|규칙|조례)\s*$", prefix) and not re.search(r"이\s+(?:법|영|규칙|조례)\s*$", prefix):
+                continue
             add(p.id, (by_hang.get((jo, hang)) if hang else None) or by_jo.get(jo))
         if jo_of[i]:
             for m in R_HANG.finditer(R_JO.sub(blank, body)):

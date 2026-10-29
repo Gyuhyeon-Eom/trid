@@ -151,13 +151,30 @@ uv sync --frozen --extra corpus --python 3.12
 | 인자 | 기본 | 동작 |
 |---|---|---|
 | `accumulate` | 1 | gradient accumulation 횟수. 옵티마이저 1스텝 = `batch_size × accumulate × context_length` 토큰. 손실은 1/accumulate로 나눠 더하므로 `accumulate=2, batch 2`와 `accumulate=1, batch 4`의 학습 손실 차이는 FP32에서 1e-5 이내(테스트). 배치 난수는 스텝마다 한 번만 뽑아 쪼개므로 두 설정의 토큰 순서가 같습니다. `tokens_seen`·`lineage_tokens_seen`·`tokens/s`가 이 크기를 반영하고, `--resume`은 저장된 값을 복원합니다(`--init-run`의 `inherited_tokens_seen`도 부모의 accumulate를 곱함). |
-| `precision` | `fp32` | `bf16`이면 학습 forward·손실만 `torch.autocast(device_type, dtype=bfloat16)`로 실행합니다. master weight·옵티마이저 상태·검증·저장은 FP32 그대로입니다. 실행마다 지정하며 `--resume`이 복원하지 않습니다. |
+| `precision` | `fp32` | `bf16`이면 학습 forward·손실과 검증을 `torch.autocast(device_type, dtype=bfloat16)`로 실행합니다(검증도 같은 autocast — 2026-10-29부터). master weight·옵티마이저 상태·저장은 FP32 그대로입니다. 실행마다 지정하며 `--resume`이 복원하지 않습니다. |
 | `compile` | `False` | `torch.compile(model)`을 학습 forward에만 씁니다. 검증과 체크포인트는 원래 모듈을 쓰므로 `model.safetensors` 키에 `_orig_mod.`가 붙지 않습니다. 첫 스텝에 컴파일 시간(작은 모델 CPU 기준 약 15초)이 듭니다. |
 | `schedule` | `cosine` | `cosine`: 기존대로 warmup 후 코사인으로 최대 lr의 10%까지. `wsd`: warmup → `lr` 고정(stable) → 마지막 `decay_fraction` 구간에서 0까지 선형 감소(warmup–stable–decay, [MiniCPM arXiv 2404.06395](https://arxiv.org/html/2404.06395v2) §4.2 "디케이 10% 스텝이면 충분", SmolLM2는 20%). `--resume`은 `planned_steps`와 함께 복원합니다. |
 | `decay_fraction` | 0.1 | WSD의 디케이 비율 (0, 1]. 100스텝·0.1이면 90스텝까지 lr, 95스텝 0.5·lr, 100스텝 0. |
 | `z_loss` | 0 | PaLM식 $z\_loss \cdot \log^2 Z$ 항 ([arXiv 2204.02311](https://arxiv.org/pdf/2204.02311)). bf16으로 바꿀 때 PaLM 1e-4 또는 Kanana 5e-6을 권장. 0이면 기존 `loss_for` 경로 그대로입니다. |
 
 현재 CLI(`trid pretrain`)에는 이 인자가 아직 없으므로 Python에서 `pretrain(..., accumulate=32, precision="bf16", compile=True, schedule="wsd")`처럼 호출하거나 파이프라인 스크립트에 넘깁니다. 91M 학습 job이 MPS를 쓰는 동안 위 검증은 모두 CPU에서만 했고, MPS에서의 bf16·compile 수치(보고서 측정 +79% 처리량)는 다음 파일럿에서 다시 잽니다.
+
+## 체크포인트 주기·epoch 샘플링·소스 가중치·weight decay 그룹 (2026-10-29)
+
+`pretrain()`에 인자 네 개를 더했습니다. 모두 `training.json`에 기록되고 `--resume`이 복원하며, 키가 없는 이전 실행(예: 진행 중인 cpt-v1)은 괄호의 옛 동작으로 재개합니다. 새 실행의 기본값은 `decay_norms`만 옛 동작과 다릅니다.
+
+| 인자 | 기본 | 옛 실행 재개 시 | 동작 |
+|---|---|---|---|
+| `checkpoint_every` | `eval_every` | `eval_every` | 검증은 `eval_every`마다, 옵티마이저 체크포인트(약 1.1 GB 쓰기)는 `checkpoint_every`(`eval_every`의 배수)마다. best 가중치(`model.safetensors`)도 검증 손실이 개선된 **체크포인트 스텝**(또는 세션 마지막 스텝)에만 씁니다. 그래서 `best_step`은 항상 저장된 체크포인트와 일치합니다. |
+| `sampling` | `replacement` | `replacement` | `epoch`: `train.bin`을 겹치지 않는 `context_length` 창으로 잘라 epoch마다 `seed + epoch`로 시드한 순열로 한 번씩 봅니다(`trid.pretraining.EpochSampler`). 위치 `{"epoch", "cursor"}`는 체크포인트 `state.json`의 `sampler`에 저장되어 재개 시 그 자리에서 이어집니다. `training.json`의 `epoch_windows`가 epoch당 창 수, metrics의 `epoch`가 현재 epoch. replacement로 만든 실행은 재개해도 replacement를 유지합니다(바꾸려면 새 실행). |
+| `source_weights` | `None` | `None` | `sampling='epoch'` 전용. `{kind: weight}`로 창 시작 토큰이 속한 문서의 `kind`별 배수를 지정합니다. $w$ 배수는 창을 $\lfloor w \rfloor$번 반복하고 소수 부분 확률로 한 번 더(시드 고정) — `2`는 두 배, `0.5`는 절반, `0`은 제외. 데이터 폴더의 `sources.json`(아래)이 필요합니다. |
+| `decay_norms` | `False` | `True` | `False`: 2차원 이상 파라미터(임베딩 포함)에만 weight decay 0.1, RMSNorm gain 등 1차원 파라미터는 0. `True`: 모든 파라미터 decay(옛 동작). 체크포인트 형식은 파라미터 순서 기준이라 그룹 수와 무관합니다. |
+
+같이 바뀐 커널 수준 동작(인자 없음): CUDA에서 `AdamW(fused=True)`와 `torch.set_float32_matmul_precision("high")`, 검증도 학습과 같은 autocast, micro-batch마다 하던 `isfinite` 동기화를 스텝당 한 번(누적 손실)으로 — 비유한 손실이면 옵티마이저 갱신 전에 그대로 `RuntimeError`.
+
+`sources.json`은 `trid.corpus.prepare`가 토큰 파일 옆에 쓰는 사이드카로 split별 문서 시작 오프셋(`<|bos|>` 위치)과 JSONL의 `kind` 색인(`kinds` 이름표; `kind`가 없는 행은 `unknown`)을 담습니다. `.bin`과 원본 JSONL만 읽으므로 이미 만든 폴더에도 `trid.corpus.write_sources(source_jsonl_dir, token_dir)`로 추가할 수 있습니다(`manifest.json`을 건드리지 않아 재개 지문이 바뀌지 않음). mix-v3의 kind: `law`, `admrul`, `ordin`, `press_release`, `wikipedia`.
+
+`scripts/train_medium_cpt_gpu.py`는 `--eval-every 100 --checkpoint-every 1000 --sampling epoch --no-decay-norms --stop-after 5000`이 기본이고 `--source-weights press_release=2 ordin=0.5`(또는 JSON 하나)를 받습니다. 테스트(`tests/test_pretraining.py`): epoch 샘플러가 창을 epoch당 정확히 한 번 보고 커서에서 재개, 파라미터 그룹 분리, 체크포인트 주기, 새 키 없는 `training.json` 재개가 옛 동작과 비트 단위로 같음, 사이드카 작성과 가중 샘플링, GPU 스크립트 CPU 2스텝 smoke.
 
 ### 다음 실행 제안 (`runs/trid-korean-medium-base-v1` 이후)
 
@@ -167,3 +184,12 @@ uv sync --frozen --extra corpus --python 3.12
 - `schedule="wsd", decay_fraction=0.1` — 수집이 길어져 총 토큰이 유동적인 상황에서 stable 구간의 어느 체크포인트에서든 디케이를 붙일 수 있습니다. `--resume`은 `planned_steps`를 고정하므로 디케이 시점을 바꾸려면 `--init-run`으로 새 실행을 만듭니다.
 - lr는 128k 토큰 배치 기준 6e-4·1e-3·2e-3 세 값으로 20M 토큰 파일럿을 돌려 도메인별 BPC로 고릅니다(보고서 §3.2). warmup은 현행 `min(100, steps//10)`이 유지됩니다.
 - `precision="bf16", compile=True`는 250스텝 파일럿에서 FP32와 검증 손실 차이를 `reports/`에 기록한 뒤 채택하고, 채택 시 `z_loss=1e-4`(PaLM) 또는 `5e-6`(Kanana)을 함께 켭니다.
+
+### CPT 이후 독해기 factorial 비교 (2026-10-29)
+
+- 실행기: `/tmp/reader-ablation-8.sh`, S3 `trid-training-148761639313/src/reader-ablation-8.sh`; 원격 systemd 단위 `trid-reader-factorial-01`.
+- `trid-cpt` 종료와 CPT 메타데이터 `status=complete`를 모두 확인한 뒤 시작한다. 기존 CPT 실행 중에는 소스를 교체하지 않는다.
+- 몸통 base-v1/CPT-v1 × 헤드 v1/v2 × curriculum v2/v4의 8조합. 모든 조합은 bidirectional, 2,000 steps, batch/micro-batch 16, lr 1e-4, seed 271029, eval 100으로 고정한다.
+- 개발셋은 동일한 v2 validation으로 평가한다. 기관문서 probe는 진단용이며 반복 사용했으므로 새로운 독립 최종 평가로 주장하지 않는다. v4와 v2의 데이터량이 달라 같은 step 수는 같은 epoch 수가 아니다.
+- 결과 이름은 `reader-factorial-01-{backbone}-{head}-{data}`. 기존 미완료 디렉터리는 덮어쓰지 않고 중단한다. 실행별 모델·보고서를 S3에 보존하고 원격 가중치의 SHA256을 로컬과 비교한 뒤 이번 실행의 로컬 safetensors만 회수한다. 실행 전 여유 공간 1.5GiB 미만이면 중단한다.
+- 이 비교는 세 묶음의 효과를 분리한다. 헤드 내부 변경·합성 hard negatives·TyDi 및 사전학습 최적화 각각의 기여도를 분리하는 실험은 아니다.

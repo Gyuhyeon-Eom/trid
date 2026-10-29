@@ -70,6 +70,15 @@ class MixTests(unittest.TestCase):
         texts.append(' '.join(base[:-1]))  # true near-duplicate of row 0
         self.assertEqual(set(self.near(texts)), {2})
 
+    def test_holdout_percent_applies_to_each_split(self):
+        counts = defaultdict(int)
+        for i in range(20000):
+            counts[mix.split_for_group(f"holdout:{i}", 1.0)] += 1
+        for split in ("test", "valid"):
+            self.assertGreaterEqual(counts[split], 160)
+            self.assertLessEqual(counts[split], 240)
+        self.assertEqual(mix.split_for_group("holdout:449", 1.0), "test")
+
     def test_groups_never_straddle_splits(self):
         with tempfile.TemporaryDirectory() as d:
             docs = [(f'law:{g}', article(g * 10 + v)) for g in range(400) for v in range(3)]

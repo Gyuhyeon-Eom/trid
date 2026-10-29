@@ -202,3 +202,30 @@ def prepare(source, output, vocab_size=8192, tokenizer_path=None):
     if (source / "provenance.json").exists():
         manifest["source_provenance"] = json.loads((source / "provenance.json").read_text())
     write_json(root / "manifest.json", manifest)
+    write_sources(source, root)
+
+
+def write_sources(source, output):
+    """Sidecar `sources.json` beside the token files: per split, the start offset of every document
+    (positions of <|bos|> in the .bin) and its `kind` index from the source JSONL (rows without a
+    `kind` are "unknown"). Lets pretraining weight context windows by source kind. Only reads the
+    .bin and JSONL, so it can also be added to token folders prepared before this sidecar existed."""
+    source, root = Path(source), Path(output)
+    tok = Tokenizer.from_file(str(root / "tokenizer.json"))
+    bos, names, splits = tok.token_to_id("<|bos|>"), [], {}
+    for split in ("train", "valid", "test"):
+        if not (root / f"{split}.bin").exists():
+            continue
+        kinds = []
+        with (source / f"{split}.jsonl").open(encoding="utf-8") as f:
+            for line in f:
+                if line.strip():
+                    kind = json.loads(line).get("kind") or "unknown"
+                    if kind not in names:
+                        names.append(kind)
+                    kinds.append(names.index(kind))
+        offsets = np.flatnonzero(np.memmap(root / f"{split}.bin", dtype="<u2", mode="r") == bos)
+        if len(offsets) != len(kinds):
+            raise ValueError(f"{split}: 문서 수({len(kinds)})와 <|bos|> 수({len(offsets)})가 다릅니다.")
+        splits[split] = {"offsets": offsets.tolist(), "kind": kinds}
+    write_json(root / "sources.json", {"format": "document-start-offsets", "kinds": names, "splits": splits})

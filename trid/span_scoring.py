@@ -1,38 +1,40 @@
 """Span-level answer selection: score every candidate `값 [Dn]` (plus 확인 불가 / 근거 충돌) by its full
 log-likelihood under the model and return the best. Replaces token-greedy constrained decoding, which
 commits to the first token before seeing the rest of the span (reports/closed-network-architecture-survey.md §8).
-Candidates are word-boundary substrings of the cited passage, so the copy guarantee of trid.constrained holds.
+Candidates are substrings of the cited passage cut by trid.span_boundaries, so the copy guarantee of trid.constrained holds.
 Only single-fact answers are enumerated; two-fact (combine) answers are out of scope here.
 """
 import re
 import torch
 
 from .constrained import ABSTAIN
+from .span_boundaries import start_ok, end_ok
 from .text import prompt_ids
 
 WORD = re.compile(r"\S+")
-GLUE = re.compile(r"[0-9A-Za-z,.]")  # a number or latin token is never split in the middle
 
 
 def candidates(passages, max_words=8, max_chars=64):
-    """[(answer_text, span, source_id)]: spans start at a word start and end after any character that does
-    not split a number/latin run (so '3일 전' comes out of '3일 전까지' and '102%' out of '102%를'),
-    cover at most max_words whitespace words, plus the two abstentions."""
+    """[(answer_text, span, source_id)]: spans start where trid.span_boundaries.start_ok allows (word starts and
+    after punctuation delimiters, never inside a word or number) and end where end_ok allows (so '3일 전' comes out
+    of '3일 전까지', '102%' out of '102%를' and '1911건' out of '(1911건)'), contain no bracket character, cover at
+    most max_words whitespace words and max_chars characters, plus the two abstentions."""
     out, seen = [], set()
     for sid, text in passages:
         words = [(m.start(), m.end()) for m in WORD.finditer(text)]
-        for i, (start, _) in enumerate(words):
+        for i, (word_start, word_end) in enumerate(words):
             limit = words[min(len(words), i + max_words) - 1][1]
-            for end in range(start + 1, min(limit, start + max_chars) + 1):
-                if text[end - 1].isspace():
+            for start in range(word_start, word_end):
+                if not start_ok(text, start):
                     continue
-                if end < len(text) and GLUE.match(text[end - 1]) and GLUE.match(text[end]):
-                    continue
-                span = text[start:end]
-                if "[" in span or "]" in span or (span, sid) in seen:
-                    continue
-                seen.add((span, sid))
-                out.append((f"{span} [{sid}]", span, sid))
+                for end in range(start + 1, min(limit, start + max_chars) + 1):
+                    if text[end - 1].isspace() or not end_ok(text, end - 1):
+                        continue
+                    span = text[start:end]
+                    if "[" in span or "]" in span or (span, sid) in seen:
+                        continue
+                    seen.add((span, sid))
+                    out.append((f"{span} [{sid}]", span, sid))
     out += [(a, None, None) for a in ABSTAIN]
     return out
 

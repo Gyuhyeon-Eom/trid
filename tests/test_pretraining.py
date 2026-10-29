@@ -1,27 +1,24 @@
 import contextlib
-import importlib.util
 import io
 import json
 import math
-import os
+import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
 
 import numpy as np
 import torch
+from torch.nn import functional as F
 from safetensors.torch import load_file, save_file
 
 from trid.corpus import sha256, write_json, prepare, split_for
-from trid.pretraining import lr_ratio, pretrain, sample_batch
+from trid.pretraining import EpochSampler, lr_ratio, param_groups, pretrain, sample_batch, train_loss, validate, window_kinds
 from trid.text import train_tokenizer
 from trid.model import Config, Trid
 from trid.training import train
 from dataclasses import asdict
-
-# Snapshot of trid/pretraining.py taken before the accumulate/precision/compile/schedule/z_loss options.
-BASELINE = Path(os.environ.get("TRID_PRETRAIN_BASELINE", "/tmp/pretraining_before.py"))
-
 
 class PretrainingTests(unittest.TestCase):
     def setUp(self):
@@ -67,28 +64,177 @@ class PretrainingTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "변경"):
                 pretrain(data, root / "resumed", resume=True, **options)
 
-    @unittest.skipUnless(BASELINE.exists(), f"{BASELINE} 없음: 옵션 추가 전 pretraining.py 스냅샷이 필요합니다")
-    def test_defaults_match_pre_option_code_bitwise(self):
-        spec = importlib.util.spec_from_file_location("trid._pretraining_before", BASELINE)
-        before = importlib.util.module_from_spec(spec)
-        before.__package__ = "trid"
-        spec.loader.exec_module(before)
+    def test_epoch_sampler_covers_every_window_once_and_resumes_at_cursor(self):
+        tokens = np.arange(41, dtype="<u2")  # 5 non-overlapping windows of 8 (+1 target token)
+        sampler = EpochSampler(tokens, 8, seed=7)
+        self.assertEqual(sampler.count, 5)
+        starts = []
+        for _ in range(3):
+            x, y = sampler.draw(2, "cpu")
+            torch.testing.assert_close(y, x + 1)
+            starts.extend(x[:, 0].tolist())
+        self.assertEqual(sorted(starts[:5]), [0, 8, 16, 24, 32])
+        self.assertEqual(sampler.position(), {"epoch": 1, "cursor": 1})
+        self.assertNotEqual(sampler.order(0).tolist(), sampler.order(1).tolist())
+        self.assertEqual(sampler.order(1).tolist(), EpochSampler(tokens, 8, seed=7).order(1).tolist())
+        position = sampler.position()
+        expected = [sampler.draw(3, "cpu")[0][:, 0].tolist() for _ in range(2)]
+        other = EpochSampler(tokens, 8, seed=7)
+        other.seek(position)
+        self.assertEqual([other.draw(3, "cpu")[0][:, 0].tolist() for _ in range(2)], expected)
+        self.assertEqual(sorted(sum(expected, [])[:4] + starts[5:]), [0, 8, 16, 24, 32])  # rest of epoch 1 before epoch 2 starts
+        # Documents at 0 and 20: windows 0-2 start in kind 0, windows 3-4 in kind 1.
+        kinds = window_kinds(tokens, 8, {"offsets": [0, 20], "kind": [0, 1]})
+        self.assertEqual(kinds.tolist(), [0, 0, 0, 1, 1])
+        self.assertEqual(sorted(EpochSampler(tokens, 8, 7, kinds, [2., 0.]).order(0).tolist()), [0, 0, 1, 1, 2, 2])
+        self.assertEqual(sorted(EpochSampler(tokens, 8, 7, kinds, [1., 1.]).order(0).tolist()), [0, 1, 2, 3, 4])
+        with self.assertRaisesRegex(ValueError, "남는"):
+            EpochSampler(tokens, 8, 7, kinds, [0., 0.]).order(0)
+        with self.assertRaisesRegex(ValueError, "경계"):
+            window_kinds(tokens, 8, {"offsets": [3, 20], "kind": [0, 1]})
+
+    def test_optimizer_param_groups_exclude_norms_from_decay(self):
+        model = Trid(Config(vocab_size=64, dim=32, layers=2, heads=4, hidden_dim=64, context_length=8))
+        names = {id(p): n for n, p in model.named_parameters()}
+        groups = param_groups(model, decay_norms=False)
+        decayed = {names[id(p)] for p in groups[0]["params"]}
+        plain = {names[id(p)] for p in groups[1]["params"]}
+        self.assertEqual((groups[0]["weight_decay"], groups[1]["weight_decay"]), (.1, 0.))
+        self.assertIn("embedding.weight", decayed)
+        self.assertIn("norm.weight", plain)
+        self.assertTrue(all(n.endswith("norm.weight") for n in plain), plain)
+        self.assertTrue(all(p.ndim <= 1 for p in groups[1]["params"]) and all(p.ndim > 1 for p in groups[0]["params"]))
+        self.assertEqual(decayed | plain, set(names.values()))
+        self.assertFalse(decayed & plain)
+        old = param_groups(model, decay_norms=True)
+        self.assertEqual((len(old), len(old[0]["params"]), old[0]["weight_decay"]), (1, len(names), .1))
+
+    def test_checkpoint_cadence_separate_from_eval(self):
         with tempfile.TemporaryDirectory() as tmp, contextlib.redirect_stdout(io.StringIO()):
             root = Path(tmp)
             data, cfg = self.make_data(root)
-            options = dict(config_path=cfg, steps=3, stop_after=3, batch_size=2, device="cpu", eval_every=1, validation_batches=1)
-            before.pretrain(data, root / "old", **options)
-            pretrain(data, root / "new", **options)
-            old = json.loads((root / "old/metrics.json").read_text())
-            new = json.loads((root / "new/metrics.json").read_text())
-            self.assertEqual(len(old), 4)
-            for a, b in zip(old, new):
-                for key in ["step", "train_loss", "valid_loss", "perplexity", "tokens_seen"]:
-                    self.assertEqual(a.get(key), b.get(key), key)
-            a, b = load_file(str(root / "old/model.safetensors")), load_file(str(root / "new/model.safetensors"))
+            options = dict(config_path=cfg, steps=5, stop_after=5, batch_size=2, device="cpu", eval_every=1,
+                           checkpoint_every=2, validation_batches=1)
+            pretrain(data, root / "run", **options)
+            metrics = json.loads((root / "run/metrics.json").read_text())
+            self.assertEqual([m["step"] for m in metrics], [0, 1, 2, 3, 4, 5])
+            # Checkpoints at 2 and 4 (never 1 or 3) plus the final step; the last two are kept.
+            self.assertEqual(sorted(p.name for p in (root / "run/checkpoints").glob("step-*")), ["step-00000004", "step-00000005"])
+            meta = json.loads((root / "run/training.json").read_text())
+            self.assertIn(meta["best_step"], {0, 2, 4, 5})
+            self.assertEqual([meta[k] for k in ["checkpoint_every", "eval_every", "sampling", "source_weights", "decay_norms"]],
+                             [2, 1, "replacement", None, False])
+            if meta["best_step"] >= 4:
+                best = load_file(str(root / "run/model.safetensors"))
+                saved = load_file(str(root / f"run/checkpoints/step-{meta['best_step']:08d}/model.safetensors"))
+                for key in best:
+                    torch.testing.assert_close(best[key], saved[key], rtol=0, atol=0)
+            with self.assertRaisesRegex(ValueError, "배수"):
+                pretrain(data, root / "bad", **{**options, "eval_every": 2, "checkpoint_every": 3})
+
+    def test_epoch_sampling_resumes_at_cursor(self):
+        with tempfile.TemporaryDirectory() as tmp, contextlib.redirect_stdout(io.StringIO()):
+            root = Path(tmp)
+            data, cfg = self.make_data(root)
+            options = dict(config_path=cfg, steps=4, batch_size=2, device="cpu", eval_every=2, validation_batches=1, sampling="epoch")
+            pretrain(data, root / "full", stop_after=4, **options)
+            pretrain(data, root / "resumed", stop_after=2, **options)
+            pretrain(data, root / "resumed", stop_after=2, resume=True, **{**options, "sampling": "replacement"})
+            def last(run):
+                name = json.loads((run / "latest.json").read_text())["checkpoint"]
+                return run / "checkpoints" / name
+            a, b = load_file(str(last(root / "full") / "model.safetensors")), load_file(str(last(root / "resumed") / "model.safetensors"))
             for key in a:
                 torch.testing.assert_close(a[key], b[key], rtol=0, atol=0)
-            self.assertEqual(json.loads((root / "new/training.json").read_text())["schedule"], "cosine")
+            state = json.loads((last(root / "resumed") / "state.json").read_text())
+            self.assertEqual(state["sampler"], {"epoch": 0, "cursor": 8})  # 4 steps x 2 windows of 24
+            meta = json.loads((root / "resumed/training.json").read_text())
+            self.assertEqual((meta["sampling"], meta["epoch_windows"], meta["status"]), ("epoch", 24, "complete"))
+            self.assertEqual(json.loads((root / "resumed/metrics.json").read_text())[-1]["epoch"], 0)
+            replacement = root / "replacement"
+            pretrain(data, replacement, stop_after=4, **{**options, "sampling": "replacement"})
+            c = load_file(str(last(replacement) / "model.safetensors"))
+            self.assertFalse(all(torch.equal(a[k], c[k]) for k in a))
+            state.pop("sampler")
+            write_json(last(root / "resumed") / "state.json", state)
+            with self.assertRaisesRegex(ValueError, "sampler"):
+                pretrain(data, root / "resumed", stop_after=1, resume=True, **options)
+
+    def test_run_without_new_keys_resumes_with_old_behaviour(self):
+        with tempfile.TemporaryDirectory() as tmp, contextlib.redirect_stdout(io.StringIO()):
+            root = Path(tmp)
+            data, cfg = self.make_data(root)
+            options = dict(config_path=cfg, steps=4, batch_size=2, device="cpu", eval_every=2, validation_batches=1)
+            pretrain(data, root / "full", stop_after=4, decay_norms=True, **options)
+            pretrain(data, root / "old", stop_after=2, decay_norms=True, **options)
+            meta = json.loads((root / "old/training.json").read_text())
+            for key in ["checkpoint_every", "sampling", "source_weights", "decay_norms", "epoch_windows"]:
+                meta.pop(key, None)
+            write_json(root / "old/training.json", meta)
+            # The caller's new defaults (decay_norms=False, epoch sampling) must not override the recorded run.
+            pretrain(data, root / "old", stop_after=2, resume=True, sampling="epoch", checkpoint_every=4, **options)
+            def last(run):
+                name = json.loads((run / "latest.json").read_text())["checkpoint"]
+                return load_file(str(run / "checkpoints" / name / "model.safetensors"))
+            a, b = last(root / "full"), last(root / "old")
+            for key in a:
+                torch.testing.assert_close(a[key], b[key], rtol=0, atol=0)
+            meta = json.loads((root / "old/training.json").read_text())
+            self.assertEqual([meta[k] for k in ["status", "checkpoint_every", "sampling", "source_weights", "decay_norms"]],
+                             ["complete", 2, "replacement", None, True])
+            self.assertEqual(len(list((root / "old/checkpoints").glob("step-*"))), 2)
+
+    def test_prepare_writes_sources_and_weighted_epoch_sampling(self):
+        with tempfile.TemporaryDirectory() as tmp, contextlib.redirect_stdout(io.StringIO()):
+            root = Path(tmp)
+            base, cfg = self.make_data(root)
+            source = root / "source"
+            source.mkdir()
+            rows = {"train": [("law", "제1조 이 법은 국민의 권리를 보호한다. " * 3), ("press", "정부는 오늘 새 정책을 발표했다. " * 3),
+                              ("press", "장관은 현장을 방문해 점검했다. " * 3), ("law", "제2조 시행일은 공포 후 6개월이다. " * 3)],
+                    "valid": [("press", "검증용 보도자료 문장입니다. " * 4)], "test": [("law", "시험용 법령 문장입니다. " * 4)]}
+            for split, docs in rows.items():
+                (source / f"{split}.jsonl").write_text("".join(json.dumps({"kind": k, "text": t}, ensure_ascii=False) + "\n" for k, t in docs))
+            prepare(source, root / "tokens", tokenizer_path=base / "tokenizer.json")
+            sources = json.loads((root / "tokens/sources.json").read_text())
+            self.assertEqual(sources["kinds"], ["law", "press"])
+            train = sources["splits"]["train"]
+            self.assertEqual(train["kind"], [0, 1, 1, 0])
+            tokens = np.memmap(root / "tokens/train.bin", dtype="<u2", mode="r")
+            from tokenizers import Tokenizer
+            bos = Tokenizer.from_file(str(base / "tokenizer.json")).token_to_id("<|bos|>")
+            self.assertEqual(train["offsets"], np.flatnonzero(tokens == bos).tolist())
+            self.assertEqual(train["offsets"][0], 0)
+            kinds = window_kinds(tokens, 8, train)
+            press_windows = int((kinds == 1).sum())
+            self.assertGreater(press_windows, 0)
+            options = dict(config_path=cfg, steps=2, stop_after=2, batch_size=2, device="cpu", eval_every=1, validation_batches=1)
+            pretrain(root / "tokens", root / "weighted", sampling="epoch", source_weights={"press": 2, "law": 0}, **options)
+            meta = json.loads((root / "weighted/training.json").read_text())
+            self.assertEqual((meta["source_weights"], meta["epoch_windows"], meta["status"]), ({"press": 2., "law": 0.}, 2 * press_windows, "complete"))
+            pretrain(root / "tokens", root / "weighted", resume=True, stop_after=1)
+            with self.assertRaisesRegex(ValueError, "kind"):
+                pretrain(root / "tokens", root / "bad-kind", sampling="epoch", source_weights={"wiki": 1}, **options)
+            with self.assertRaisesRegex(ValueError, "epoch"):
+                pretrain(root / "tokens", root / "bad-mode", sampling="replacement", source_weights={"press": 2}, **options)
+            with self.assertRaisesRegex(ValueError, "sources.json"):
+                pretrain(base, root / "no-sidecar", sampling="epoch", source_weights={"press": 2}, **options)
+
+    def test_gpu_script_cpu_smoke(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            data, cfg = self.make_data(root)
+            script = Path(__file__).resolve().parents[1] / "scripts/train_medium_cpt_gpu.py"
+            command = [sys.executable, str(script), "--data", str(data), "--config", str(cfg), "--output", str(root / "out"),
+                       "--steps", "2", "--stop-after", "2", "--batch-size", "2", "--accumulate", "1", "--eval-every", "1",
+                       "--checkpoint-every", "1", "--validation-batches", "1", "--device", "cpu", "--precision", "fp32",
+                       "--no-compile", "--sampling", "epoch", "--stop-flag", str(root / "stop.flag")]
+            result = subprocess.run(command, capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            meta = json.loads((root / "out/training.json").read_text())
+            self.assertEqual([meta[k] for k in ["status", "completed_steps", "sampling", "checkpoint_every", "decay_norms", "precision", "compile"]],
+                             ["complete", 2, "epoch", 1, False, "fp32", False])
+            self.assertIn("complete", result.stdout)
 
     def test_accumulation_matches_larger_batch(self):
         with tempfile.TemporaryDirectory() as tmp, contextlib.redirect_stdout(io.StringIO()):
@@ -137,6 +283,29 @@ class PretrainingTests(unittest.TestCase):
         torch.testing.assert_close(x[:, 1:], y[:, :-1])
         self.assertTrue(torch.all(y == x + 1))
         self.assertFalse(torch.any(y == -100))
+
+    def test_dense_train_loss_matches_token_mean_ce_and_gradients(self):
+        torch.manual_seed(3)
+        model = Trid(Config(vocab_size=64, dim=32, layers=2, heads=4, hidden_dim=64, context_length=8))
+        values = np.arange(60, dtype="<u2")
+        x, y = sample_batch(values, 8, 3, torch.Generator().manual_seed(2), "cpu")
+        logits, _ = model(x)
+        expected = F.cross_entropy(logits.reshape(-1, logits.size(-1)), y.reshape(-1))
+        model.zero_grad(set_to_none=True)
+        expected.backward()
+        grads = {name: p.grad.clone() for name, p in model.named_parameters()}
+        actual = train_loss(model, x, y)
+        torch.testing.assert_close(actual, expected)
+        model.zero_grad(set_to_none=True)
+        actual.backward()
+        for name, p in model.named_parameters():
+            self.assertGreater(float(grads[name].abs().sum()), 0.0, name)
+            torch.testing.assert_close(p.grad, grads[name], msg=name)
+        with_z = train_loss(model, x, y, z_loss=1e-2)
+        self.assertGreater(with_z.item(), expected.item())
+        self.assertAlmostEqual(validate(model, values, 3, "cpu", batches=1),
+                               train_loss(model, *sample_batch(values, 8, 3, torch.Generator().manual_seed(20261026), "cpu")).item(),
+                               places=6)
 
     def test_continuation_preserves_parent_and_resumes_new_schedule(self):
         with tempfile.TemporaryDirectory() as tmp, contextlib.redirect_stdout(io.StringIO()):

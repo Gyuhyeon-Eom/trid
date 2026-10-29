@@ -11,16 +11,19 @@ from .text import prompt_ids
 
 
 def device_for(name="auto"):
+    available = {"cuda": torch.cuda.is_available, "mps": torch.backends.mps.is_available}
     if name == "auto":
-        return "mps" if torch.backends.mps.is_available() else "cpu"
-    if name == "mps" and not torch.backends.mps.is_available():
-        raise ValueError("이 컴퓨터에서 MPS를 사용할 수 없습니다.")
+        return next((d for d, ok in available.items() if ok()), "cpu")
+    if name in available and not available[name]():
+        raise ValueError(f"이 컴퓨터에서 {name.upper()}를 사용할 수 없습니다.")
     return name
 
 
 def sync(device):
     if str(device) == "mps":
         torch.mps.synchronize()
+    elif str(device).startswith("cuda"):
+        torch.cuda.synchronize()
 
 
 def load_run(path, device="auto"):

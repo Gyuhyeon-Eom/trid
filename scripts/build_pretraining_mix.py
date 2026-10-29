@@ -146,7 +146,7 @@ def near_duplicates(signatures, exact):
 
 def split_for_group(group, holdout):
     bucket = int(hashlib.sha256(f"split:{group}".encode()).hexdigest()[:8], 16) % 10000
-    return "test" if bucket < holdout * 50 else "valid" if bucket < holdout * 100 else "train"
+    return "test" if bucket < holdout * 100 else "valid" if bucket < holdout * 200 else "train"
 
 
 def build(sources, output, holdout_percent, quality="public-docs"):

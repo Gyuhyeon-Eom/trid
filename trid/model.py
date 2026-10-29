@@ -81,7 +81,9 @@ class Attention(nn.Module):
         self.register_buffer('rope_cos', angles.cos(), persistent=False)
         self.register_buffer('rope_sin', angles.sin(), persistent=False)
 
-    def forward(self, x, cache=None, use_cache=False):
+    def forward(self, x, cache=None, use_cache=False, attention='causal', lengths=None):
+        """attention 'causal' (default, generation and every existing caller) or 'bidirectional': every token
+        attends to every token of its own sequence (no cache); `lengths` [b] masks right-padding keys."""
         b, t, d = x.shape
         projected = self.qkv(x)
         if self.kv_heads == self.heads:
@@ -109,13 +111,20 @@ class Attention(nn.Module):
         if self.kv_heads != self.heads:
             groups = self.heads // self.kv_heads
             k, v = k.repeat_interleave(groups, dim=1), v.repeat_interleave(groups, dim=1)
-        # Cached decoding must not apply the top-left causal mask to a one-token query.
-        mask = None
-        if offset and t > 1:
-            mask = torch.arange(k.shape[-2], device=x.device)[None, :] <= (
-                offset + torch.arange(t, device=x.device)[:, None])
-        y = F.scaled_dot_product_attention(q, k, v, attn_mask=mask,
-                                          is_causal=(offset == 0 and t > 1))
+        if attention == 'causal':
+            # Cached decoding must not apply the top-left causal mask to a one-token query.
+            mask = None
+            if offset and t > 1:
+                mask = torch.arange(k.shape[-2], device=x.device)[None, :] <= (
+                    offset + torch.arange(t, device=x.device)[:, None])
+            y = F.scaled_dot_product_attention(q, k, v, attn_mask=mask, is_causal=(offset == 0 and t > 1))
+        else:
+            # Key padding mask broadcast over heads and queries: [b, 1, 1, t]; padding queries still see
+            # every real key, so no row is fully masked.
+            mask = None
+            if lengths is not None:
+                mask = (torch.arange(t, device=x.device)[None, :] < lengths[:, None])[:, None, None, :]
+            y = F.scaled_dot_product_attention(q, k, v, attn_mask=mask, is_causal=False)
         y = y.transpose(1, 2).contiguous().reshape(b, t, d)
         return self.output(y), next_cache
 
@@ -129,8 +138,8 @@ class Block(nn.Module):
         self.up = nn.Linear(cfg.dim, cfg.hidden_dim, bias=False)
         self.down = nn.Linear(cfg.hidden_dim, cfg.dim, bias=False)
 
-    def forward(self, x, cache=None, use_cache=False):
-        a, cache = self.attn(self.attn_norm(x), cache, use_cache)
+    def forward(self, x, cache=None, use_cache=False, attention='causal', lengths=None):
+        a, cache = self.attn(self.attn_norm(x), cache, use_cache, attention, lengths)
         x = x + a
         n = self.ffn_norm(x)
         return x + self.down(F.silu(self.gate(n)) * self.up(n)), cache
@@ -154,13 +163,18 @@ class Trid(nn.Module):
         if isinstance(module, (nn.Linear, nn.Embedding)):
             nn.init.normal_(module.weight, mean=0.0, std=0.02)
 
-    def forward(self, tokens, cache=None, use_cache=False, return_hidden=False, hidden_only=False):
+    def forward(self, tokens, cache=None, use_cache=False, return_hidden=False, hidden_only=False,
+                attention='causal', lengths=None):
+        if attention not in ('causal', 'bidirectional'):
+            raise ValueError("attention은 'causal' 또는 'bidirectional'이어야 합니다.")
+        if attention == 'bidirectional' and (cache is not None or use_cache):
+            raise ValueError('양방향 attention은 KV 캐시와 함께 쓸 수 없습니다.')
         offset = 0 if cache is None else cache[0][0].shape[-2]
         if tokens.shape[1] + offset > self.cfg.context_length:
             raise ValueError(f"문맥 한도 {self.cfg.context_length} 토큰을 초과했습니다.")
         x, new_cache = self.embedding(tokens), []
         for i, block in enumerate(self.blocks):
-            x, c = block(x, None if cache is None else cache[i], use_cache)
+            x, c = block(x, None if cache is None else cache[i], use_cache, attention, lengths)
             new_cache.append(c)
         # Tied input/output embeddings reduce model size.
         hidden = self.norm(x)
