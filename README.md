@@ -1,163 +1,113 @@
 <h1 align="center">trid</h1>
 
-<p align="center">
-  <b>대한민국 공공기관 폐쇄망용 한국어 sLLM</b><br>
-  기관 문서를 근거로 받아, 값을 지어내지 않고 원문에서 찾아 출처와 함께 답합니다.
-</p>
+<p align="center"><b>공공기관 문서를 읽는 자체 학습 한국어 sLLM</b><br>
+외부 사전학습 가중치 없이, 문서의 근거와 질문을 연결하는 작은 언어모델을 만듭니다.</p>
 
 <p align="center">
-  📑 <a href="docs/RESEARCH_LOG.md">연구 기록</a> &nbsp;|&nbsp;
-  📊 <a href="reports/">평가 보고서</a> &nbsp;|&nbsp;
-  ⚙️ <a href="docs/SERVICE.md">서비스·설치</a> &nbsp;|&nbsp;
-  🛡️ <a href="docs/SECURITY.md">보안 검증</a> &nbsp;|&nbsp;
-  🧪 <a href="docs/SHARING.md">테스트 데모</a>
-</p>
-
-<p align="center">
-  <img alt="license" src="https://img.shields.io/badge/code-Apache%202.0-green">
-  <img alt="python" src="https://img.shields.io/badge/python-3.12-informational">
-  <img alt="weights" src="https://img.shields.io/badge/weights-not%20released-lightgrey">
+<a href="#모델-구조">모델 구조</a> · <a href="#학습">학습</a> · <a href="#평가">평가</a> ·
+<a href="docs/SERVICE.md">실행 안내</a> · <a href="docs/SECURITY.md">보안</a>
 </p>
 
 ## 소개
 
-trid는 인터넷이 끊긴 기관 내부 서버에서 규정·공고·보도자료를 읽고 질문에 답하는 한국어 소형 언어모델입니다. 검색한 근거 문단에 번호를 붙여 모델에 주면, 모델은 다음 세 가지 중 하나로만 답합니다.
+trid는 대한민국 공공기관·공기업의 규정, 공고, 보도자료를 읽고 한국어 질문에 답하기 위한 소형 언어모델입니다. 기관 내부망에서 외부 API 없이 실행하고, 답의 출처를 확인할 수 있는 문서 질의응답을 목표로 합니다.
 
-```
-8만 원 [D3]      값과 출처
-확인 불가         근거에 없음
-근거 충돌         근거끼리 값이 다름
-```
+토크나이저를 직접 학습하고 Transformer 가중치는 무작위 초기화부터 학습합니다. Qwen·Kanana의 가중치를 trid에 넣지 않습니다. 저장소에 있는 공개 모델 학습·평가 결과는 **비교 실험**이며 자체 모델과 구분합니다.
 
-- **외부 가중치 없음**: Llama·Qwen 계열과 같은 decoder 구조를 쓰되, 토크나이저와 가중치를 무작위 초기화부터 직접 학습합니다. 모델이 무엇을 배웠는지 데이터까지 거슬러 확인할 수 있습니다.
-- **지어내지 않는 답**: 값은 인용한 근거 문단에 실제로 있는 글자열만, 출처는 프롬프트에 준 번호만 출력할 수 있도록 디코딩 단계에서 제한합니다.
-- **답이 없으면 멈춤**: 근거가 없으면 `확인 불가`, 근거끼리 값이 다르면 `근거 충돌`로 답하도록 학습합니다.
-- **폐쇄망 그대로 동작**: 추론에 외부 API, 외부 임베딩 모델, 네트워크 호출이 없습니다. HWP·HWPX·PDF 문서를 바로 색인합니다.
-- **추적 가능한 학습 데이터**: 학습 자료마다 출처 URL, 라이선스, SHA256을 `provenance.json`에 남깁니다.
+현재는 **91M 모델의 독해력 개선**과 **350M급 구조 후보 검증**을 진행하고 있습니다. 근거 기반 설명까지 개발 범위를 넓히되, 현재 검증된 출력은 짧은 값·출처 또는 보류 응답 중심입니다. 범용 대화·설명 능력이나 실무 배포 준비가 완료된 모델은 아닙니다.
 
-## 소식
+## 모델 구조
 
-- **2026-10-29** 개발 방향을 **외부 가중치 없는 자체 sLLM**으로 확정했습니다. 목표는 대한민국 공공기관·공기업 문서 전반에 대응하는 모델입니다. 공개 가중치 모델은 비교 기준선으로만 씁니다.
-- **2026-10-29** Qwen3-1.7B와 Kanana-1.5-2.1B를 튜닝 전후로 같은 평가셋에서 측정해, 자체 모델이 도달해야 할 기준선을 세웠습니다. [기준선](reports/open-weight-baseline/README.md) · [LoRA 측정](reports/open-weight-lora/)
-- **2026-10-29** trid-91M의 법령·보도·위키 혼합 자료 **10억 토큰 이어 사전학습**을 마쳤습니다. [기록](docs/experiments/PRETRAINING.md)
-- **2026-10-28** 법령·행정규칙·자치법규 3,000건으로 조문 구조 그래프 검색을 측정했습니다. [측정](reports/graph-retrieval-v1.md)
+<p align="center"><img src="docs/figures/architecture.png" width="820" alt="trid-91M Transformer 구조: RoPE, RMSNorm, SwiGLU, 공유 임베딩"></p>
 
-## 성능
+두 구성 모두 decoder-only Transformer에 RoPE, pre-norm RMSNorm, SwiGLU, 공유 입·출력 임베딩을 사용합니다.
 
-<p align="center"><img src="docs/figures/benchmark.png" width="960" alt="trid benchmark"></p>
-
-- **RAG310**: 근거가 주어진 질의응답 310문항입니다. 자체 작성 기관 문서 160문항과 KLUE MRC dev 150문항으로 구성되며, 답이 있는 문항 228개와 답이 없거나 근거가 충돌하는 문항 82개가 섞여 있습니다.
-- **기관 문서 probe**: 실제 정책브리핑 보도자료에서 만든 40문항입니다(답 있음 30, 답 없음 10).
-- 값, 출처, `값 [Dn]` 형식을 모두 맞혀야 정답으로 칩니다. 회색 막대는 비교용 공개 모델이며 trid가 아닙니다.
-
-<details>
-<summary><b>상세 수치</b></summary>
-
-| 모델 | RAG310 전체 | 답 있음 228 | 답 없음·충돌 82 | 기관 probe 40 |
-|---|---:|---:|---:|---:|
-| **trid-91M** | **71** | **29** | **42** | **20** |
-| Kanana-1.5-2.1B + LoRA (기준선) | 223 | 161 | 62 | 35 |
-| Qwen3-1.7B + LoRA (기준선) | 180 | 126 | 54 | 30 |
-| Kanana-1.5-2.1B (기준선, 튜닝 전) | 63 | 52 | 11 | 15 |
-| Qwen3-1.7B (기준선, 튜닝 전) | 20 | 6 | 14 | 0 |
-
-- trid-91M의 RAG310은 생성 SFT 모델(`public-dialogue-gpu-05-mix04`), 기관 probe는 추출 독해기(`cpt-v1/head-v2/data-v4`, exact) 결과입니다.
-- 공개 모델 LoRA는 trid 학습 커리큘럼 2,000예제로 250단계 학습했습니다. 모든 공개 모델에 같은 근거 제한 문법을 적용했습니다.
-- RAG310은 튜닝이나 체크포인트 선택에 쓰지 않았습니다. 자체 작성 160문항은 학습 커리큘럼과 같은 개발자가 만든 합성 문서라 실제 기관 문서 성능을 대표하지 않습니다. 기관 probe는 여러 번 사용한 진단 자료입니다.
-- 원본 출력과 채점: [`reports/open-weight-baseline/`](reports/open-weight-baseline/), [`reports/open-weight-lora/`](reports/open-weight-lora/), [`reports/reader-factorial-01-two-complete.json`](reports/reader-factorial-01-two-complete.json)
-
-</details>
-
-검색 단계는 병목이 아닙니다. RAG310 질의에서 BM25 + Kiwi 형태소 분석의 Recall@3은 0.947로, 외부 임베딩 모델(KURE-v1)과 3pp 이내입니다([보고서](reports/retrieval-benchmark-v1.md)). 남은 격차는 근거를 읽고 값을 고르는 모델의 독해력입니다.
-
-## 모델 구성
-
-### 전체 흐름
-
-<p align="center"><img src="docs/figures/pipeline.png" width="960" alt="trid pipeline"></p>
-
-공개 한국어 자료를 정제해 토크나이저와 모델을 처음부터 학습하고, 근거 질의응답으로 지도학습합니다. 서비스에서는 기관 문서를 검색해 근거 문단을 번호와 함께 프롬프트에 넣고, 근거 복사 디코딩으로 답을 만듭니다.
-
-### 모델 구조
-
-<p align="center"><img src="docs/figures/architecture.png" width="820" alt="trid model architecture"></p>
-
-| | trid-91M |
-|---|---|
-| 파라미터 | 91,245,312 |
-| 구조 | decoder-only Transformer. RoPE, SwiGLU, RMSNorm(pre-norm), 입·출력 임베딩 공유 |
-| 크기 | 12층 · hidden 768 · attention head 12 · FFN 2,048 |
-| 파라미터 분포 | 임베딩 6.3M (7%) · attention 28.3M (31%) · FFN 56.6M (62%) |
-| 문맥 길이 | 1,024 토큰 |
-| 토크나이저 | byte-level BPE, 어휘 8,192. 한국어 1.6~1.8자/토큰 |
-| 옵션 | GQA(`kv_heads`), QK-norm. 기본은 꺼져 있음 |
-| 독해 헤드 | 추출 헤드: 답 있음/없음/충돌 3분류 + 근거 내 글자 구간 시작·끝 |
-| 실행 | llama.cpp `llama` 아키텍처 호환 GGUF. Q8_0에서 PyTorch와 greedy 출력 동일 |
-
-### 답을 만드는 방식
-
-세 방식 모두 근거에 없는 값은 나올 수 없습니다. 차이는 모델이 어디서 결정하느냐입니다.
-
-| 방식 | 코드 | 동작 |
+| 항목 | trid-91M — 기존 실험 모델 | 350M급 — 다음 구조 후보 |
 |---|---|---|
-| 근거 복사 제한 디코딩 | `trid/constrained.py` | 토큰마다 "지금까지 생성한 글자열 + 이 토큰"이 인용 근거의 부분 문자열인지 검사합니다. 출처 번호도 프롬프트에 있는 것만 허용합니다. |
-| 구간 점수화 | `trid/span_scoring.py` | 근거의 어절 경계에서 시작하는 후보 구간을 모두 `값 [Dn]`으로 만들고, 전체 로그우도로 비교해 고릅니다. |
-| 추출 헤드 | `trid/extractive.py` | 생성하지 않고 근거 안의 시작·끝 위치를 직접 고릅니다. 출처는 고른 구간이 속한 문단에서 정해집니다. |
+| 설정 | [korean-medium-91m.json](configs/korean-medium-91m.json) | [korean-350m.json](configs/korean-350m.json) |
+| hidden / 층 수 | 768 / 12 | 1,024 / 28 |
+| query head / KV head | 12 / 12 | 16 / 4 (GQA) |
+| FFN hidden | 2,048 | 3,072 |
+| QK-norm | 끔 | 켬 |
+| 어휘 / 문맥 | 8,192 / 1,024 | 8,192 / 1,024 |
+| 상태 | 사전학습·SFT·추출 독해 평가 기록 있음 | 설정 추가 및 작은 학습 실행 확인 기록; 독해 성능 미확인 |
 
-### 학습 데이터
+위 구조 그림은 **91M** 기준입니다. 350M급 후보는 크기뿐 아니라 GQA와 QK-norm도 바뀌므로, 앞으로의 비교를 순수한 파라미터 수 증가 효과로 해석하지 않습니다. 후보를 기존 모델보다 우수하다고 판단할 평가 결과는 아직 없습니다.
 
-<p align="center"><img src="docs/figures/training-data.png" width="960" alt="trid pretraining data"></p>
+### 질문에 답하는 방법
 
-- **사전학습**: 한국어 위키백과(CC BY-SA), 국가법령정보센터 법령·행정규칙·자치법규(저작권법 제7조), 정책브리핑 보도자료(공공누리 제1유형)만 씁니다. 품질 필터, 개인정보 치환, MinHash 근사 중복 제거를 거칩니다.
-- **지도학습**: 합성 기관 문서 기반 근거 질의응답 커리큘럼, KLUE MRC, TyDi QA 한국어, 정책브리핑 실제 보도자료에서 뽑은 근거 질의응답을 씁니다. 평가셋 문서와 겹치는 학습 지문은 제외합니다.
-- **공개 모델의 역할**: 기관 문서 독해 예제 일부는 공개 모델이 질문 초안을 쓰고 다른 모델이 검증합니다(`scripts/build_teacher_qa.py`). 답은 모두 원문 글자열을 그대로 복사하며, 공개 모델의 가중치나 생성 답변은 trid에 들어가지 않습니다.
+근거 문단을 `[D1]`, `[D2]`처럼 표시해 질문과 함께 입력합니다. 문서 QA의 제한 출력은 다음과 같습니다. 아래는 출력 형식 예시이지 실제 모델의 시연 결과는 아닙니다.
 
-### 폐쇄망 서비스
+```text
+8만 원 [D3]      근거에서 고른 값과 출처
+확인 불가         근거 부족
+근거 충돌         근거 사이의 모순
+```
 
-<p align="center"><img src="docs/figures/system.png" width="960" alt="closed-network QA system"></p>
+- **생성형 독해**: 다음 토큰을 예측하되, 근거 제한 디코딩에서는 인용 문단의 부분 문자열과 유효한 출처 번호만 허용합니다.
+- **구간 점수화**: 근거 안의 후보 구간을 `값 [Dn]`으로 만들고 전체 로그우도로 비교합니다.
+- **추출 독해기**: 몸통에 답 있음·없음·충돌 분류와 시작·끝 위치 헤드를 붙여, 문서 구간을 직접 고릅니다. 출처는 해당 구간의 문단에서 정합니다.
 
-| 구성 요소 | 역할 |
-|---|---|
-| 수집 (`trid/service/ingest.py`) | HWP·HWPX·PDF·txt 텍스트 추출, 개인정보 마스킹 |
-| 조문 구조 그래프 | LLM 없이 법→장→조→항→호 계층과 "제12조에 따른" 같은 명시 참조를 파싱 |
-| 검색 | Kiwi 형태소 분석 + BM25로 문단을 찾고, 구조 그래프로 참조 조문·별표까지 확장 |
-| 권한 필터 | 사용자가 볼 수 없는 문서를 검색 대상에서 제외 |
-| 모델 | 근거 문단을 `[D1]…[Dn]`으로 받아 값과 출처를 선택하거나 보류 |
-| 감사 로그 | 답이 어느 문서의 몇 번째 글자에서 왔는지, 누가 질의했는지 기록 |
+**복사 제한은 정확성 보장이 아닙니다.** 근거 안의 잘못된 값이나 악성 지시문도 선택할 수 있습니다. 이 제약은 일반 자유 생성·설명 답변에 자동 적용되지 않으며, 개인정보 마스킹·권한 필터·보안 평가가 별도로 필요합니다.
 
-## 빠른 시작
+## 학습
+
+<p align="center"><img src="docs/figures/pipeline.png" width="960" alt="공개 자료 정제, 토크나이저 학습, 사전학습, SFT와 근거 기반 추론 흐름"></p>
+
+그림은 자체 학습과 문서 QA의 전체 흐름입니다. 초기 Mac 실험에서 시작했으며, 이후 이어 사전학습과 SFT에는 CUDA GPU도 사용했습니다.
+
+<p align="center"><img src="docs/figures/training-data.png" width="960" alt="91M 사전학습 단계와 준비된 혼합 말뭉치 구성"></p>
+
+- **사전학습**: 한국어 위키백과, 국가법령정보센터 자료, 정책브리핑 보도자료를 사용합니다. 정제·개인정보 치환·중복 제거를 거치고 출처와 라이선스를 기록합니다.
+- **지도학습**: 합성 기관 문서 QA, KLUE MRC, TyDi QA 한국어와 실제 보도자료 기반 QA를 사용합니다. 같은 문서에서 질문을 바꿨을 때 답도 올바르게 바뀌는지 확인하는 실험을 진행했습니다.
+- **질문 작성 보조**: 일부 실제 문서 QA는 공개 모델이 질문 초안을 작성하고 다른 모델이 검증합니다. 해당 QA의 답은 원문에서 복사하고 작성·검증 모델을 기록합니다. 이는 외부 가중치를 이어받는 학습과 다릅니다.
+
+혼합 자료 막대는 **준비된 말뭉치의 측정값**입니다. 측정용 토크나이저가 실제 CPT 토크나이저와 달라 학습 중 토큰 노출 비율로 읽으면 안 됩니다. 위키 검증 손실과 혼합 검증 손실도 데이터가 달라 직접 비교할 수 없습니다.
+
+### 현재 개발 과제
+
+1. **질문을 실제로 읽는 독해** — 같은 지문에 서로 다른 질문을 넣고 답 변화와 정답 여부를 함께 측정합니다. 공유 문맥으로 묶은 QA 실험은 기존 기준선 대비 개선을 입증하지 못했습니다. [실험 판정](reports/public-dialogue-gpu-07-assessment.json)
+2. **모델 규모와 구조 검증** — 350M급 후보를 기존 91M과 구분해 검증합니다. 작은 학습에서 loss가 내려가는 것과 문서 독해력이 좋아지는 것은 별개입니다.
+3. **근거 기반 설명과 어려운 문서** — 조건·예외, 표, 두 근거 결합, 근거에 따른 설명을 개발 과제로 다룹니다. 짧은 값 추출 성능을 설명 품질로 대신하지 않습니다.
+
+학습 계보와 실패 기록은 [사전학습 기록](docs/experiments/PRETRAINING.md), [RAG 실험 기록](docs/experiments/KOREAN_RAG.md), [연구 기록](docs/RESEARCH_LOG.md)에 보존합니다.
+
+## 평가
+
+<p align="center"><img src="docs/figures/benchmark.png" width="960" alt="기존 91M 생성 모델과 별도 추출 독해기의 기록된 기준선 비교"></p>
+
+이 그림은 **기존 체크포인트의 기록된 기준선**입니다. 350M 후보의 결과나 현재 배포 모델의 통합 성능이 아닙니다. 새 실험을 가장 좋은 결과로 자동 교체하지 않습니다.
+
+- **RAG310**: 자체 작성 160문항 + KLUE dev 150문항. 질문과 근거를 이미 제공한 독해 평가로, 검색 포함 서비스 성능은 아닙니다. trid는 `public-dialogue-gpu-05-mix04-s3000` 생성 모델입니다.
+- **기관 probe**: 실제 보도자료 기반 40문항. trid는 별도 `cpt-v1/head-v2/data-v4` 추출 독해기의 `exact`입니다. 생성 모델의 값·출처·형식 채점과 동일한 지표가 아닙니다.
+- **외부 기준선**: Qwen3·Kanana와 그 LoRA 결과입니다. 공개 모델에도 근거 제한 문법을 적용한 조건이며, 각 모델의 범용 능력 순위를 뜻하지 않습니다. 외부 모델의 사전학습 데이터 노출 여부는 확인할 수 없습니다.
+- **평가 한계**: 기관 probe와 개발 중 반복 확인한 평가는 새 독립 최종 평가가 아닙니다. 합성 문항과 실제 기관 문서 성능도 구분합니다.
+
+[생성 모델 원본 보고서](reports/open-weight-baseline/) · [공개 모델 비교](reports/open-weight-lora/) · [추출 독해 결과](reports/reader-factorial-01-two-complete.json)
+
+## 폐쇄망 서비스
+
+<p align="center"><img src="docs/figures/system.png" width="960" alt="문서 수집, 조문 구조 검색, 권한 필터와 추출 독해를 연결하는 목표 시스템"></p>
+
+HWP·HWPX·PDF·텍스트에서 문단을 추출하고, Kiwi 형태소 분석과 BM25로 검색합니다. 법·장·조·항·호 및 명시 참조를 파싱한 구조 그래프로 관련 조문을 확장합니다. 권한 필터와 감사 로그는 모델 밖 서비스 계층에서 처리합니다.
+
+그림은 **목표 구조**를 포함합니다. 특히 risk–coverage 기반 보류 확률 보정과 CPU 지연 목표를 이미 달성했다고 주장하지 않습니다. 모델 점수, 서비스 전체 지연, 보안성은 별도로 검증합니다.
+
+## 실행
+
+가중치는 아직 공개 배포하지 않습니다. 아래 명령은 의존성과 **호환되는 자체 모델의 로컬 run 폴더**를 준비한 개발 환경용입니다. 공개 모델용 HF 체크포인트를 그대로 넣는 명령이 아닙니다.
 
 ```sh
-# 설치 (Python 3.12, uv)
 uv sync --frozen --python 3.12 --extra service
 
-# 문서 폴더 색인: HWP·HWPX·PDF·txt, 조문 구조 그래프, 개인정보 마스킹
-.venv/bin/trid ingest <문서폴더>/ --index index/
-
-# 질의
-.venv/bin/trid ask --index index/ --run runs/<run> --user kim '숙박비 상한은 1박당 얼마인가?'
-
-# 내부망 JSON API (127.0.0.1, bearer token, 감사 로그)
+# <documents>와 <run>을 실제 경로로 바꿉니다.
+.venv/bin/trid ingest <documents> --index index/
+.venv/bin/trid ask --index index/ --run runs/<run> --user kim '숙박비 상한은 얼마인가?'
 .venv/bin/trid serve --index index/ --run runs/<run>
-
-# CPU 배포용 GGUF 내보내기 (llama.cpp)
-uv sync --extra gguf
-.venv/bin/python scripts/export_gguf.py --run runs/<run> --output trid.q8_0.gguf --quant q8_0
 ```
 
-`.hwp`는 [rhwp](https://github.com/edwardkim/rhwp) CLI, `.pdf`는 poppler `pdftotext`를 사용합니다. 오프라인 설치와 서비스 설정은 [docs/SERVICE.md](docs/SERVICE.md), 평가 재현은 [docs/experiments/KOREAN_RAG.md](docs/experiments/KOREAN_RAG.md)에 있습니다.
+HWP는 [rhwp](https://github.com/edwardkim/rhwp), PDF는 poppler의 `pdftotext`가 필요합니다. 오프라인 설치, 사용자 권한, API 인증과 실행 조건은 [서비스 안내](docs/SERVICE.md)를 참고하세요. GGUF 내보내기는 지원되는 생성 모델 경로이며 추출 헤드를 포함한 서비스 전체 변환을 뜻하지 않습니다.
 
 ## 라이선스
 
-코드는 [Apache License 2.0](LICENSE)입니다. 학습 데이터는 위키백과(CC BY-SA), 법제처 법령·판례(저작권법 제7조), korea.kr 보도자료(공공누리 제1유형), KLUE(CC BY-SA), TyDi QA(Apache 2.0)를 사용하며 자료별 출처는 각 `provenance.json`에 있습니다. 비교 기준선으로 측정한 Qwen3와 Kanana-1.5는 Apache 2.0이며 trid 가중치에는 포함되지 않습니다. 학습된 가중치는 아직 배포하지 않습니다.
-
-## 인용
-
-```bibtex
-@misc{trid2026,
-  title  = {trid: A Korean small language model for grounded QA in air-gapped public-sector networks},
-  author = {Eom, Gyuhyeon},
-  year   = {2026},
-  url    = {https://github.com/Gyuhyeon-Eom/trid}
-}
-```
+코드는 [Apache License 2.0](LICENSE)입니다. 데이터에는 위키백과·KLUE의 CC BY-SA, 정책브리핑의 공공누리 제1유형, TyDi QA의 Apache 2.0 등 자료별 조건이 적용됩니다. 법령 등 비보호 저작물과 사이트의 다른 콘텐츠를 구분하며 각 데이터의 출처·이용 조건은 `provenance.json`과 원 출처를 확인합니다. 코드 라이선스가 모든 데이터나 향후 가중치의 이용 조건을 대신하지 않습니다.

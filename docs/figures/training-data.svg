@@ -1,23 +1,23 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 360" width="1240" height="360" font-family="Apple SD Gothic Neo, Noto Sans KR, Malgun Gothic, sans-serif"><rect width="1240" height="360" fill="#ffffff"/>
-<text x="40.0" y="48.0" font-size="24" text-anchor="start" font-weight="bold" fill="#111827">trid-91M 사전학습 데이터</text>
-<text x="40.0" y="76.0" font-size="14" text-anchor="start" font-weight="normal" fill="#6b7280">출처·라이선스를 추적할 수 있는 공개 한국어 자료만 사용 · 외부 사전학습 가중치 없음</text>
-<text x="40.0" y="136.0" font-size="16" text-anchor="start" font-weight="bold" fill="#111827">1단계  위키 사전학습</text>
-<text x="40.0" y="158.0" font-size="13" text-anchor="start" font-weight="normal" fill="#6b7280">100M 토큰 · 48,829 step · val loss 3.206</text>
-<rect x="440.0" y="120" width="760.0" height="34" fill="#10b981"/>
-<text x="820.0" y="142.0" font-size="14" text-anchor="middle" font-weight="bold" fill="#ffffff">100.0%</text>
-<text x="40.0" y="216.0" font-size="16" text-anchor="start" font-weight="bold" fill="#111827">2단계  혼합 이어 학습</text>
-<text x="40.0" y="238.0" font-size="13" text-anchor="start" font-weight="normal" fill="#6b7280">1,000M 토큰 · 15,259 step · 혼합 val loss 3.326 → 1.963</text>
-<rect x="440.0" y="200" width="332.0" height="34" fill="#2563eb"/>
-<text x="606.0" y="222.0" font-size="14" text-anchor="middle" font-weight="bold" fill="#ffffff">43.7%</text>
-<rect x="772.0" y="200" width="83.1" height="34" fill="#f59e0b"/>
-<text x="813.5" y="222.0" font-size="14" text-anchor="middle" font-weight="bold" fill="#ffffff">10.9%</text>
-<rect x="855.1" y="200" width="344.9" height="34" fill="#10b981"/>
-<text x="1027.5" y="222.0" font-size="14" text-anchor="middle" font-weight="bold" fill="#ffffff">45.4%</text>
-<rect x="440" y="268" width="14" height="14" rx="3" fill="#2563eb"/>
-<text x="460.0" y="280.0" font-size="13" text-anchor="start" font-weight="normal" fill="#111827">법령·행정규칙·자치법규</text>
-<rect x="656" y="268" width="14" height="14" rx="3" fill="#f59e0b"/>
-<text x="676.0" y="280.0" font-size="13" text-anchor="start" font-weight="normal" fill="#111827">정책브리핑 보도자료</text>
-<rect x="846" y="268" width="14" height="14" rx="3" fill="#10b981"/>
-<text x="866.0" y="280.0" font-size="13" text-anchor="start" font-weight="normal" fill="#111827">한국어 위키백과</text>
-<text x="40.0" y="330.0" font-size="12" text-anchor="start" font-weight="normal" fill="#6b7280">2단계 혼합 자료: 정제·개인정보 치환·MinHash 중복 제거 후 461.4M 토큰(비율은 측정 토크나이저 기준). 10억 토큰은 이 자료를 약 2회 반복 학습한 양입니다.</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 360" width="1240" height="360" font-family="Nanum Pen Script, NanumPen, sans-serif"><rect width="1240" height="360" fill="#ffffff"/><defs><pattern id="hatch0" width="7" height="7" patternUnits="userSpaceOnUse"><path d="M-2,7L7,-2M0,9L9,0" stroke="#10b981" opacity=".25" stroke-width=".7"/></pattern><pattern id="hatch1" width="7" height="7" patternUnits="userSpaceOnUse"><path d="M-2,7L7,-2M0,9L9,0" stroke="#2563eb" opacity=".25" stroke-width=".7"/></pattern><pattern id="hatch2" width="7" height="7" patternUnits="userSpaceOnUse"><path d="M-2,7L7,-2M0,9L9,0" stroke="#f59e0b" opacity=".25" stroke-width=".7"/></pattern></defs>
+<text x="40.0" y="48.0" font-size="27" text-anchor="start" font-weight="bold" fill="#111827">trid-91M 사전학습 데이터</text>
+<text x="40.0" y="76.0" font-size="17" text-anchor="start" font-weight="normal" fill="#6b7280">출처·라이선스를 추적할 수 있는 공개 한국어 자료만 사용 · 외부 사전학습 가중치 없음</text>
+<text x="40.0" y="136.0" font-size="19" text-anchor="start" font-weight="bold" fill="#111827">1단계  위키 사전학습</text>
+<text x="40.0" y="158.0" font-size="14" text-anchor="start" font-weight="normal" fill="#6b7280">100M 토큰 · 48,829 step · val loss 3.206</text>
+<rect x="440.0" y="120.0" width="760.0" height="34.0" fill="#10b981" fill-opacity=".06"/><rect x="440.0" y="120.0" width="760.0" height="34.0" fill="url(#hatch0)"/><path d="M440.0,154.0 L440.4,120.0 L1200.0,120.3 L1199.7,154.0 Z" fill="none" stroke="#10b981" stroke-width="1.5"/><path d="M440.8,153.5 L439.7,120.7 L1199.6,119.6 L1200.5,153.3" fill="none" stroke="#10b981" stroke-width=".7" opacity=".65"/>
+<text x="820.0" y="142.0" font-size="17" text-anchor="middle" font-weight="normal" fill="#111827">100.0%</text>
+<text x="40.0" y="216.0" font-size="19" text-anchor="start" font-weight="bold" fill="#111827">2단계  혼합 이어 학습</text>
+<text x="40.0" y="238.0" font-size="14" text-anchor="start" font-weight="normal" fill="#6b7280">1,000M 토큰 · 15,259 step · 혼합 val loss 3.326 → 1.963</text>
+<rect x="440.0" y="200.0" width="332.0" height="34.0" fill="#2563eb" fill-opacity=".06"/><rect x="440.0" y="200.0" width="332.0" height="34.0" fill="url(#hatch1)"/><path d="M440.0,234.0 L440.4,200.0 L772.0,200.3 L771.7,234.0 Z" fill="none" stroke="#2563eb" stroke-width="1.5"/><path d="M440.8,233.5 L439.7,200.7 L771.6,199.6 L772.5,233.3" fill="none" stroke="#2563eb" stroke-width=".7" opacity=".65"/>
+<text x="606.0" y="222.0" font-size="17" text-anchor="middle" font-weight="normal" fill="#111827">43.7%</text>
+<rect x="772.0" y="200.0" width="83.1" height="34.0" fill="#f59e0b" fill-opacity=".06"/><rect x="772.0" y="200.0" width="83.1" height="34.0" fill="url(#hatch2)"/><path d="M772.0,234.0 L772.4,200.0 L855.1,200.3 L854.8000000000001,234.0 Z" fill="none" stroke="#f59e0b" stroke-width="1.5"/><path d="M772.8,233.5 L771.7,200.7 L854.7,199.6 L855.6,233.3" fill="none" stroke="#f59e0b" stroke-width=".7" opacity=".65"/>
+<text x="813.5" y="222.0" font-size="17" text-anchor="middle" font-weight="normal" fill="#111827">10.9%</text>
+<rect x="855.1" y="200.0" width="344.9" height="34.0" fill="#10b981" fill-opacity=".06"/><rect x="855.1" y="200.0" width="344.9" height="34.0" fill="url(#hatch0)"/><path d="M855.1,234.0 L855.5,200.0 L1200.0,200.3 L1199.7,234.0 Z" fill="none" stroke="#10b981" stroke-width="1.5"/><path d="M855.9,233.5 L854.8000000000001,200.7 L1199.6,199.6 L1200.5,233.3" fill="none" stroke="#10b981" stroke-width=".7" opacity=".65"/>
+<text x="1027.5" y="222.0" font-size="17" text-anchor="middle" font-weight="normal" fill="#111827">45.4%</text>
+<rect x="440.0" y="268.0" width="14.0" height="14.0" fill="#2563eb" fill-opacity=".06"/><rect x="440.0" y="268.0" width="14.0" height="14.0" fill="url(#hatch1)"/><path d="M440.0,282.0 L440.4,268.0 L454.0,268.3 L453.7,282.0 Z" fill="none" stroke="#2563eb" stroke-width="1.5"/><path d="M440.8,281.5 L439.7,268.7 L453.6,267.6 L454.5,281.3" fill="none" stroke="#2563eb" stroke-width=".7" opacity=".65"/>
+<text x="460.0" y="280.0" font-size="16" text-anchor="start" font-weight="normal" fill="#111827">법령·행정규칙·자치법규</text>
+<rect x="656.0" y="268.0" width="14.0" height="14.0" fill="#f59e0b" fill-opacity=".06"/><rect x="656.0" y="268.0" width="14.0" height="14.0" fill="url(#hatch2)"/><path d="M656.0,282.0 L656.4,268.0 L670.0,268.3 L669.7,282.0 Z" fill="none" stroke="#f59e0b" stroke-width="1.5"/><path d="M656.8,281.5 L655.7,268.7 L669.6,267.6 L670.5,281.3" fill="none" stroke="#f59e0b" stroke-width=".7" opacity=".65"/>
+<text x="676.0" y="280.0" font-size="16" text-anchor="start" font-weight="normal" fill="#111827">정책브리핑 보도자료</text>
+<rect x="846.0" y="268.0" width="14.0" height="14.0" fill="#10b981" fill-opacity=".06"/><rect x="846.0" y="268.0" width="14.0" height="14.0" fill="url(#hatch0)"/><path d="M846.0,282.0 L846.4,268.0 L860.0,268.3 L859.7,282.0 Z" fill="none" stroke="#10b981" stroke-width="1.5"/><path d="M846.8,281.5 L845.7,268.7 L859.6,267.6 L860.5,281.3" fill="none" stroke="#10b981" stroke-width=".7" opacity=".65"/>
+<text x="866.0" y="280.0" font-size="16" text-anchor="start" font-weight="normal" fill="#111827">한국어 위키백과</text>
+<text x="40.0" y="330.0" font-size="15" text-anchor="start" font-weight="normal" fill="#6b7280">혼합 막대: mix-v3 준비 자료 461.4M 토큰의 구성. 실제 CPT와 다른 토크나이저로 측정한 비율이며 학습 노출 비율이 아닙니다.</text>
 </svg>

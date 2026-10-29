@@ -9,12 +9,13 @@ reference baselines only (not trid) and use the `evidence_constrained` condition
 training-data: pretraining runs' own metrics and the mix-v3 token composition measurement.
 """
 import json
+import re
 from html import escape
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 FIG = ROOT / 'docs/figures'
-FONT = "Apple SD Gothic Neo, Noto Sans KR, Malgun Gothic, sans-serif"
+FONT = "Nanum Pen Script, NanumPen, sans-serif"
 INK, MUTED, GRID = '#111827', '#6b7280', '#e5e7eb'
 
 MODELS = (  # label, colour, RAG310 report, probe report; first entry is trid and is highlighted
@@ -22,9 +23,9 @@ MODELS = (  # label, colour, RAG310 report, probe report; first entry is trid an
      'reader-factorial-01-two-complete.json'),
     ('Kanana-1.5-2.1B + LoRA', '#4b5563', 'open-weight-lora/rag310-kanana-lora.json', 'open-weight-lora/probe-kanana-lora.json'),
     ('Qwen3-1.7B + LoRA', '#9ca3af', 'open-weight-lora/rag310-qwen3-lora.json', 'open-weight-lora/probe-qwen3-lora.json'),
-    ('Kanana-1.5-2.1B', '#cbd5e1', 'open-weight-lora/rag310-kanana-base-constrained.json',
+    ('Kanana-1.5-2.1B', '#64748b', 'open-weight-lora/rag310-kanana-base-constrained.json',
      'open-weight-lora/probe-kanana-base-constrained.json'),
-    ('Qwen3-1.7B', '#e2e8f0', 'open-weight-lora/rag310-qwen3-base-constrained.json',
+    ('Qwen3-1.7B', '#a16207', 'open-weight-lora/rag310-qwen3-base-constrained.json',
      'open-weight-lora/probe-qwen3-base-constrained.json'),
 )
 READER = 'reader-factorial-01-cpt-v1-v2-v4'
@@ -54,13 +55,38 @@ def probe_score(report):
 
 
 def text(x, y, s, size=13, anchor='start', weight='normal', fill=INK):
-    return (f'<text x="{x:.1f}" y="{y:.1f}" font-size="{size}" text-anchor="{anchor}" font-weight="{weight}" '
+    return (f'<text x="{x:.1f}" y="{y:.1f}" font-size="{size + 3}" text-anchor="{anchor}" font-weight="{weight}" '
             f'fill="{fill}">{escape(s)}</text>')
 
 
 def svg(width, height, body):
+    """Match the architecture plates: pen lettering, double outlines and pale hatching."""
+    patterns = {}
+
+    def sketch(match):
+        attrs = dict(re.findall(r'([\w-]+)="([^"]*)"', match.group(0)))
+        x, y, w, h = (float(attrs[k]) for k in ('x', 'y', 'width', 'height'))
+        color = attrs['fill']
+        key = patterns.setdefault(color, f'hatch{len(patterns)}')
+        # Exact rectangle retains the data extent; only the pen outline is irregular.
+        return (
+            f'<rect x="{x}" y="{y}" width="{w}" height="{h}" fill="{color}" fill-opacity=".06"/>'
+            f'<rect x="{x}" y="{y}" width="{w}" height="{h}" fill="url(#{key})"/>'
+            f'<path d="M{x},{y+h} L{x+.4},{y} L{x+w},{y+.3} L{x+w-.3},{y+h} Z" '
+            f'fill="none" stroke="{color}" stroke-width="1.5"/>'
+            f'<path d="M{x+.8},{y+h-.5} L{x-.3},{y+.7} L{x+w-.4},{y-.4} L{x+w+.5},{y+h-.7}" '
+            f'fill="none" stroke="{color}" stroke-width=".7" opacity=".65"/>'
+        )
+
+    content = re.sub(r'<rect\b[^>]+/>', sketch, '\n'.join(body))
+    defs = ''.join(
+        f'<pattern id="{key}" width="7" height="7" patternUnits="userSpaceOnUse">'
+        f'<path d="M-2,7L7,-2M0,9L9,0" stroke="{color}" opacity=".25" stroke-width=".7"/>'
+        '</pattern>' for color, key in patterns.items()
+    )
     return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" width="{width}" height="{height}" '
-            f'font-family="{FONT}"><rect width="{width}" height="{height}" fill="#ffffff"/>\n' + '\n'.join(body) + '\n</svg>\n')
+            f'font-family="{FONT}"><rect width="{width}" height="{height}" fill="#ffffff"/>'
+            f'<defs>{defs}</defs>\n{content}\n</svg>\n')
 
 
 def benchmark():
@@ -71,9 +97,8 @@ def benchmark():
     width, height, top, plot_h = 1240, 560, 120, 300
     left, panel_w, gap = 60, 270, 20
     bar_w, bar_gap = 34, 12
-    body = [text(40, 48, 'trid 근거 기반 질의응답 성능', 24, weight='bold'),
-            text(40, 76, '정답률(%) · 값과 출처, 답변 형식까지 모두 맞아야 정답 · greedy · 근거 복사 제한 디코딩 · '
-                         '회색은 공개 모델 비교 기준선(trid 아님)', 14, fill=MUTED)]
+    body = [text(40, 48, 'trid — 근거를 얼마나 정확히 읽는가', 24),
+            text(40, 76, '기록된 기준선 비교 · 정답률(%) · greedy / 근거 제한 · 공개 모델은 trid 가중치에 포함되지 않음', 14, fill=MUTED)]
     base = top + plot_h
     for p, (title, scores) in enumerate(panels):
         x0 = left + p * (panel_w + gap)
@@ -92,14 +117,15 @@ def benchmark():
             bx += bar_w + bar_gap
         n = scores[0][1]
         body.append(text(x0 + panel_w / 2, base + 30, title, 15, 'middle', 'bold'))
-        body.append(text(x0 + panel_w / 2, base + 50, f'{n}문항', 12, 'middle', fill=MUTED))
+        subtitle = f'{n}문항' if p < 3 else '40문항 · trid는 별도 추출 헤드'
+        body.append(text(x0 + panel_w / 2, base + 50, subtitle, 12, 'middle', fill=MUTED))
     lx, ly = left, base + 92
     for label, colour, *_ in MODELS:
         body.append(f'<rect x="{lx}" y="{ly - 12}" width="14" height="14" rx="3" fill="{colour}"/>')
-        body.append(text(lx + 20, ly, label, 13, weight='bold' if colour == MODELS[0][1] else 'normal'))
-        lx += 20 + sum(13 if ord(c) > 0x3000 else 7.5 for c in label) + 36
-    body.append(text(40, height - 18, '기관 문서 probe의 trid-91M은 추출 독해기(exact) 결과입니다. 공개 모델에도 같은 근거 제한 문법을 적용했습니다. '
-                     'probe는 반복 사용한 진단 자료입니다.', 12, fill=MUTED))
+        body.append(text(lx + 20, ly, label, 12))
+        lx += 225
+    body.append(text(40, height - 18, 'RAG310: gpu-05-mix04 생성 모델 / 기관 probe: cpt-v1·head-v2·data-v4 추출 모델(exact). '
+                     '서로 다른 체크포인트이며, probe는 반복 사용한 진단 자료입니다.', 12, fill=MUTED))
     return svg(width, height, body)
 
 
@@ -124,12 +150,12 @@ def training_data():
     y, bar_x, bar_w = 120, 440, 760
     for title, detail, segments in rows:
         body.append(text(40, y + 16, title, 16, weight='bold'))
-        body.append(text(40, y + 38, detail, 13, fill=MUTED))
+        body.append(text(40, y + 38, detail, 11, fill=MUTED))
         x = bar_x
         for colour, share in segments:
             w = bar_w * share
             body.append(f'<rect x="{x:.1f}" y="{y}" width="{w:.1f}" height="34" fill="{colour}"/>')
-            body.append(text(x + w / 2, y + 22, f'{100 * share:.1f}%', 14, 'middle', 'bold', '#ffffff'))
+            body.append(text(x + w / 2, y + 22, f'{100 * share:.1f}%', 14, 'middle', 'normal', INK))
             x += w
         y += 80
     lx = bar_x
@@ -137,8 +163,8 @@ def training_data():
         body.append(f'<rect x="{lx}" y="{y - 12}" width="14" height="14" rx="3" fill="{colour}"/>')
         body.append(text(lx + 20, y, label, 13))
         lx += 60 + 13 * len(label)
-    body.append(text(40, height - 30, f'2단계 혼합 자료: 정제·개인정보 치환·MinHash 중복 제거 후 {whole / 1e6:,.1f}M 토큰(비율은 측정 토크나이저 기준). '
-                     '10억 토큰은 이 자료를 약 2회 반복 학습한 양입니다.', 12, fill=MUTED))
+    body.append(text(40, height - 30, f'혼합 막대: mix-v3 준비 자료 {whole / 1e6:,.1f}M 토큰의 구성. '
+                     '실제 CPT와 다른 토크나이저로 측정한 비율이며 학습 노출 비율이 아닙니다.', 12, fill=MUTED))
     return svg(width, height, body)
 
 
