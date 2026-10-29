@@ -1,10 +1,12 @@
-# trid
+# trid 연구 진행 기록
+
+> 2026-10-29까지 저장소 README였던 문서다. 설계 근거, 실험별 수치, 실패 기록을 그대로 보존한다. 요약과 현재 상태는 [README](../README.md)를 본다.
 
 **대한민국 공공기관 폐쇄망 전용 한국어 언어모델.** 인터넷이 끊긴 기관 내부 서버에서, 규정·공고·보도자료 같은 문서를 근거로 받아 그 안의 값을 **지어내지 않고 그대로 찾아서** 답하는 작은 모델이다. 맥북 한 대로 처음부터 학습하고, 토크나이저·Transformer·학습 루프·평가셋까지 전부 이 저장소 안에 있다. 외부 사전학습 가중치, 외부 API, 외부 임베딩 모델은 제품에 들어가지 않는다.
 
 폐쇄망이라는 조건이 설계를 정한다. 학습 데이터는 출처와 라이선스를 끝까지 설명할 수 있는 자료를 쓰고, 답은 근거 문단의 글자열만 복사하고 출처 번호를 남겨 감사 로그로 추적할 수 있어야 한다. CPU·300 MB 이내 배포가 목표지만, 현재 Python 서비스 전체가 이 조건을 충족한 것은 아니다.
 
-<p align="center"><img src="docs/figures/pipeline.png" width="1020" alt="trid pipeline"></p>
+<p align="center"><img src="figures/pipeline.png" width="1020" alt="trid pipeline"></p>
 
 ## 어떻게 답하나
 
@@ -34,7 +36,7 @@
 
 ### 내부
 
-<p align="center"><img src="docs/figures/architecture.png" width="920" alt="trid model architecture"></p>
+<p align="center"><img src="figures/architecture.png" width="920" alt="trid model architecture"></p>
 
 - GQA(`kv_heads`)는 KV를 압축 저장하고 SDPA 직전에만 head 수로 펼친다. 12→4 KV head면 캐시가 72→24 MiB(FP32, 1,024 토큰).
 - QK-norm은 RoPE 전에 head 차원 RMSNorm. 두 옵션 모두 기본은 꺼져 있어 기존 구성을 유지한다. 켜면 파라미터 모양이나 가중치 키가 달라지므로 기존 체크포인트에 그대로 적용할 수 없다.
@@ -56,20 +58,20 @@
 
 91M 생성 모델로 값을 "쓰게" 하는 대신, 같은 몸통에 **추출 헤드**를 얹어 값을 "고르게" 한다. 근거는 두 가지다. 한국어 소형 인코더는 이 크기에서 이미 추출형 독해를 잘 하고(RoBERTa-small 68M, KLUE-MRC EM 57; KoELECTRA-small, KorQuAD EM 82), 우리 17M 디코더는 구간을 강제로 고르게 해도 출처는 62/80 맞히면서 값은 0/80이다. 출처를 가리키는 능력과 값을 쓰는 능력이 분리돼 있다는 뜻이고, 후자를 생성에 맡길 이유가 없다.
 
-<p align="center"><img src="docs/figures/system.png" width="920" alt="closed-network QA system"></p>
+<p align="center"><img src="figures/system.png" width="920" alt="closed-network QA system"></p>
 
 - `[Dn]`은 고른 구간이 속한 문단에서 결정되므로 번호를 생성하지 않는다.
 - 보류 임계값을 검증 split의 risk–coverage 곡선에서 정하는 것이 목표다. 현재는 3분류 헤드의 argmax를 쓰며, 확률 보정이나 위험 상한 보장은 아직 없다.
 - 디코더 헤드는 설명·대화에만 쓴다.
 - 권한 필터와 감사 로그는 모델 밖, 서비스 계층이다. 어떤 문서가 검색 대상이었고 답이 어느 문서의 몇 번째 글자에서 왔는지 남긴다.
 
-추출 학습은 내부 검증셋에서 **값·출처·보류 판단까지 맞힌 출력 정답률**로 체크포인트를 고른다. 동률이면 검증 손실이 낮은 쪽을 택한다. 학습 라벨과 실제 출력의 허용 구간을 맞추고, 중복된 값의 잘못된 출현을 정답 위치로 쓰던 문제를 고쳤다. 출력 불가능한 학습 라벨은 이유별로 집계해 제외하되 독립 평가셋은 그대로 둔다. 검증은 배치당 한 번의 추론으로 손실과 정답률을 함께 계산한다. [변경과 검증 범위](KOREAN_RAG.md)
+추출 학습은 내부 검증셋에서 **값·출처·보류 판단까지 맞힌 출력 정답률**로 체크포인트를 고른다. 동률이면 검증 손실이 낮은 쪽을 택한다. 학습 라벨과 실제 출력의 허용 구간을 맞추고, 중복된 값의 잘못된 출현을 정답 위치로 쓰던 문제를 고쳤다. 출력 불가능한 학습 라벨은 이유별로 집계해 제외하되 독립 평가셋은 그대로 둔다. 검증은 배치당 한 번의 추론으로 손실과 정답률을 함께 계산한다. [변경과 검증 범위](experiments/KOREAN_RAG.md)
 
 이 변경을 적용한 본 추출 학습을 시작했다. 기존 모델의 정확도가 자동으로 오른 것은 아니며, 유효 구간이 없을 때의 `확인 불가` 처리와 학습된 확신도 보정은 구분한다.
 
 괄호·따옴표 뒤 값을 놓치던 경계 규칙도 후보 검색과 추출 헤드가 공유하도록 수정했다. 소수·천 단위 숫자는 중간에서 자르지 않는다. 개발셋 전체 480문항으로 같은 시험용 가중치를 전후 실행한 결과, 출력 가능한 정답은 늘었지만 정답 수는 **23개로 같았다**. 아직 독해 정확도 개선을 입증한 것은 아니다. `scripts/evaluate_extractive_dev.py`가 미지원 문항까지 포함해 보류 오류와 risk–coverage를 기록하며, 현재 미학습 모델의 확률로 서비스 보류 임계값을 정하지 않는다.
 
-학습 메모리도 줄이는 경로를 넣었다. 실효 batch는 유지하면서 기본 4행씩 gradient를 누적하고, SFT는 정답 위치에만 어휘 분포를 계산한다. CPU 실제 학습과 수치 정합성을 확인했으며 전체 테스트 227개가 통과했다. 이후 독해 학습을 우선하기 위해 SFT v2와 대기 큐를 정상 인터럽트로 중단하고, 완료된 기본 모델에서 2,000단계 추출 학습을 시작했다(`runs/trid-medium-reader-dev-01`). SFT 체크포인트는 보존했지만 optimizer 상태를 이어받은 것은 아니다. 성능 판정은 개발셋 전체 480문항과 과제별 오류율로 하며, MPS 속도 향상 배수는 아직 측정하지 않았다. [메모리 관측과 적용 범위](KOREAN_RAG.md#학습-메모리-제한)
+학습 메모리도 줄이는 경로를 넣었다. 실효 batch는 유지하면서 기본 4행씩 gradient를 누적하고, SFT는 정답 위치에만 어휘 분포를 계산한다. CPU 실제 학습과 수치 정합성을 확인했으며 전체 테스트 227개가 통과했다. 이후 독해 학습을 우선하기 위해 SFT v2와 대기 큐를 정상 인터럽트로 중단하고, 완료된 기본 모델에서 2,000단계 추출 학습을 시작했다(`runs/trid-medium-reader-dev-01`). SFT 체크포인트는 보존했지만 optimizer 상태를 이어받은 것은 아니다. 성능 판정은 개발셋 전체 480문항과 과제별 오류율로 하며, MPS 속도 향상 배수는 아직 측정하지 않았다. [메모리 관측과 적용 범위](experiments/KOREAN_RAG.md#학습-메모리-제한)
 
 기존 독해 실험의 내부 검증 440문항 strict는 causal 58.9%, 양방향 attention 63.2%, KLUE 자료 확장 53.9%였다. 합성 기관 문서 과제의 97.9%와 달리 실제 보도문 40문항은 13/40(32.5%)에 그쳐 실제 문서로의 일반화가 부족했다. 몸통 사전학습 규모·독해 헤드·학습 데이터의 영향을 분리하기 위해 법령·보도·위키 혼합 자료로 **10억 토큰 이어 사전학습을 완료**하고, AWS GPU에서 8조합 비교를 진행하고 있다.
 
@@ -82,7 +84,7 @@
 
 두 조합의 개발셋·probe 평가 모두 실행 예외는 0건이다. v2는 개발셋에서 더 높지만 실제 기관문서 probe에서는 더 낮다. probe의 잘못된 답 있음 판정은 v4 4건→v2 1건으로 줄었으나, 답이 있는데 잘못 보류한 경우는 8건→14건으로 늘었다. 내부 검증 지표 상승을 실제 문서 정확도 상승으로 해석하지 않는다. 개발셋 전체 480문항에는 단일 구간 출력으로 지원하지 못하는 조합 답변 40문항도 포함하므로 과거 내부 검증 440문항 비율과 직접 비교하면 안 된다. 기관문서 probe는 반복 사용한 진단 자료이며 독립 최종 평가가 아니다. 아직 95% 목표 달성이나 CPT·헤드 각각의 개선 효과를 입증한 결과는 아니다.
 
-세 번째 조합 `CPT-v1 / head-v1 / curriculum-v4`의 **100/2,000단계 학습과 GPU 사용률 98%**를 확인했다. 이는 마지막 확인 시점의 기록이다. 8조합 완료 후 고정된 조건으로 TyDi·합성 hard negatives·KLUE hard negatives 제거 실험 3개를 순차 실행한다. 완료 가중치와 보고서는 S3에 보존하고 SHA256을 검증한다. 제품 버전은 **0.1**을 유지한다. [실행·복구 기록](PRETRAINING.md#gpu-평가-환경-복구-2026-10-29), [현재 2/8조합 집계](reports/reader-factorial-01-two-complete.json).
+세 번째 조합 `CPT-v1 / head-v1 / curriculum-v4`의 **100/2,000단계 학습과 GPU 사용률 98%**를 확인했다. 이는 마지막 확인 시점의 기록이다. 8조합 완료 후 고정된 조건으로 TyDi·합성 hard negatives·KLUE hard negatives 제거 실험 3개를 순차 실행한다. 완료 가중치와 보고서는 S3에 보존하고 SHA256을 검증한다. 제품 버전은 **0.1**을 유지한다. [실행·복구 기록](experiments/PRETRAINING.md#gpu-평가-환경-복구-2026-10-29), [현재 2/8조합 집계](../reports/reader-factorial-01-two-complete.json).
 
 **웹 테스트:** [test.tridatum.co](https://test.tridatum.co)에 완료 모델 `reader-factorial-01-cpt-v1-v2-v4`를 연결했다. `/sample` 또는 `/paste` 후 질문할 수 있으며 실제 공개 화면에서 담당 부서 응답과 원문 하이라이트를 확인했다. 기존 샘플의 식비·숙박비 질문에는 보류가 남아 있다. GPU 학습과 별개로 Mac CPU에서 동작하며 **2026-10-30 14:11 KST 자동 종료 예정**이다. Mac 전원·인터넷이 필요하다. 업로드 문서 정확도 보장은 아니며 비공개 자료를 넣으면 안 된다. [배포·사용 안내](SHARING.md).
 
@@ -101,7 +103,7 @@ GraphRAG·LightRAG처럼 모델로 개체·관계를 추출하는 방식도 필�
 | 12개 | 6.25% | 16.25% |
 | 20개 | 17.50% | 22.50% |
 
-그래프 확장은 각각 상위 3개·5개 문단에서 시작한다. 반환 상한은 같지만 실제 반환 개수는 다르다. 검색 지연 중앙값은 약 41~42ms였다. **파서의 참조 경로로 만든 개발 문항이라 그래프에 유리할 수 있으며, 사람이 판정한 정답률이나 답변 성능은 아니다.** 서비스 프롬프트의 최대 5문단·1,024토큰 제한까지 통과하는지는 별도 평가가 필요하다. [측정과 재현 방법](reports/graph-retrieval-v1.md)
+그래프 확장은 각각 상위 3개·5개 문단에서 시작한다. 반환 상한은 같지만 실제 반환 개수는 다르다. 검색 지연 중앙값은 약 41~42ms였다. **파서의 참조 경로로 만든 개발 문항이라 그래프에 유리할 수 있으며, 사람이 판정한 정답률이나 답변 성능은 아니다.** 서비스 프롬프트의 최대 5문단·1,024토큰 제한까지 통과하는지는 별도 평가가 필요하다. [측정과 재현 방법](../reports/graph-retrieval-v1.md)
 
 ### 다음 사전학습 (설계)
 
@@ -115,27 +117,27 @@ GraphRAG·LightRAG처럼 모델로 개체·관계를 추출하는 방식도 필�
 | 사전학습 목표 | causal | causal + masked 혼합 (추출 헤드용) |
 | 실험 | — | Muon, 24×576 deep-thin, logit softcap·U-net skip 묶음 (각 1일) |
 
-다음 학습용 혼합 데이터는 정제·중복 제거·고정 토크나이저 적용까지 실행했다. **328,573문서, 총 461,393,814토큰**이며 실제 학습 split은 451,888,351토큰이다. 10억 토큰은 아직 목표이고, 이 데이터로 새 모델 학습을 시작한 것은 아니다. 그룹의 split 중복과 토큰 범위를 검사했으며, 문서별 기존 해시는 정제 전 원문의 값이므로 산출물 검증에는 파일 해시를 사용한다. [구성·검증·한계](reports/mix-v3-dryrun.md)
+다음 학습용 혼합 데이터는 정제·중복 제거·고정 토크나이저 적용까지 실행했다. **328,573문서, 총 461,393,814토큰**이며 실제 학습 split은 451,888,351토큰이다. 10억 토큰은 아직 목표이고, 이 데이터로 새 모델 학습을 시작한 것은 아니다. 그룹의 split 중복과 토큰 범위를 검사했으며, 문서별 기존 해시는 정제 전 원문의 값이므로 산출물 검증에는 파일 해시를 사용한다. [구성·검증·한계](../reports/mix-v3-dryrun.md)
 
 ### 배포 형태 (측정 기준)
 
-91M · Q8_0 GGUF · llama.cpp CPU가 배포 후보이다. 모델 단독 벤치마크에서 Q8_0의 perplexity 변화는 약 +0.1%였고, 검사한 프롬프트의 greedy 출력은 PyTorch와 같았다. 이는 전체 질의응답 정확도나 서비스 지연 보장이 아니다. p90 약 0.4초는 모델 벤치마크를 바탕으로 한 예상치이며, 현재 Python 서비스의 구간 점수화는 가상 문서 질의에서 **10.9~11.9초**가 걸렸다([실행 기록](docs/SERVICE.md)). 추출 헤드의 실제 정확도와 서비스 지연을 함께 확인해야 한다.
+91M · Q8_0 GGUF · llama.cpp CPU가 배포 후보이다. 모델 단독 벤치마크에서 Q8_0의 perplexity 변화는 약 +0.1%였고, 검사한 프롬프트의 greedy 출력은 PyTorch와 같았다. 이는 전체 질의응답 정확도나 서비스 지연 보장이 아니다. p90 약 0.4초는 모델 벤치마크를 바탕으로 한 예상치이며, 현재 Python 서비스의 구간 점수화는 가상 문서 질의에서 **10.9~11.9초**가 걸렸다([실행 기록](SERVICE.md)). 추출 헤드의 실제 정확도와 서비스 지연을 함께 확인해야 한다.
 
-조사 보고서: [폐쇄망 구조](reports/closed-network-architecture-survey.md) · [학습 기법](reports/oss-training-techniques.md) · [크기·추론](reports/oss-model-size-and-inference.md) · [한국어 OSS](reports/korean-oss-opportunities.md) · [사전학습 자료](reports/korean-pretraining-sources-survey.md)
+조사 보고서: [폐쇄망 구조](../reports/closed-network-architecture-survey.md) · [학습 기법](../reports/oss-training-techniques.md) · [크기·추론](../reports/oss-model-size-and-inference.md) · [한국어 OSS](../reports/korean-oss-opportunities.md) · [사전학습 자료](../reports/korean-pretraining-sources-survey.md)
 
 ## 지금 어디까지 왔나
 
-<p align="center"><img src="docs/figures/pretrain-loss.svg" width="760" alt="pretraining loss"></p>
+<p align="center"><img src="figures/pretrain-loss.svg" width="760" alt="pretraining loss"></p>
 
 위 그림은 완료된 두 사전학습 실행을 분리해 표시한다. 위키 사전학습은 **48,829 step, 100,001,792토큰**, 최종 validation loss **3.2064**다. 이어 법령·보도·위키 혼합 자료로 **15,259 step, 추가 1,000,013,824토큰**을 학습했고, 해당 혼합 검증셋 loss는 **3.3262 → 1.9629**로 낮아졌다. 검증 데이터가 다르므로 위키 loss와 혼합 loss를 직접 비교하거나 정답률로 환산하면 안 된다.
 
-역사적 첫 혼합 SFT v1 후보의 고정 310문항 결과는 값·출처 정답 기준 자유 생성 **1/310**, 근거 제한 디코딩 **3/310**이었다. 답이 있는 228문항만 보면 각각 **0/228**, **2/228**이다. 문맥 초과로 제외된 문항은 없었다. 이는 현재 추출 독해기 평가와 별개의 과거 생성 모델 결과이며 후보는 자동 활성화하지 않았다. [자유 생성](reports/rag310-medium-sft-v1-free.json) · [제한 디코딩](reports/rag310-medium-sft-v1-evidence.json)
+역사적 첫 혼합 SFT v1 후보의 고정 310문항 결과는 값·출처 정답 기준 자유 생성 **1/310**, 근거 제한 디코딩 **3/310**이었다. 답이 있는 228문항만 보면 각각 **0/228**, **2/228**이다. 문맥 초과로 제외된 문항은 없었다. 이는 현재 추출 독해기 평가와 별개의 과거 생성 모델 결과이며 후보는 자동 활성화하지 않았다. [자유 생성](../reports/rag310-medium-sft-v1-free.json) · [제한 디코딩](../reports/rag310-medium-sft-v1-evidence.json)
 
 검색 쪽은 괜찮다. 같은 평가셋에서 BM25에 형태소 분석을 붙이면 Recall@3 0.95, 외부 임베딩 모델(KURE-v1)과 차이가 3pp 안이다. 병목은 생성이다.
 
-숫자와 실패 기록은 전부 [KOREAN_RAG.md](KOREAN_RAG.md)와 `reports/`에 있다. 실패한 시도도 지우지 않고 남겨 뒀다.
+숫자와 실패 기록은 전부 [KOREAN_RAG.md](experiments/KOREAN_RAG.md)와 `reports/`에 있다. 실패한 시도도 지우지 않고 남겨 뒀다.
 
-개발은 Astra의 구현·통합과 Claude Fable의 독립 검토로 교차 확인한다. 첫 외부 기준선 **Qwen3-0.6B Q8_0**의 같은 310문항 정답은 기존 채점에서 0~2개였지만, 이는 출력이 `[D3] 7만 원`처럼 출처를 앞에 쓴 탓이었다. 순서만 허용하는 `content_strict`로 같은 출력을 다시 채점하면 61/310이다. 2026-10-29에 튜닝하지 않은 **Qwen3-1.7B**와 **Kanana-1.5-2.1B**(둘 다 Apache 2.0)도 같은 자료로 실행했다. RAG310 content_strict는 각각 106/310, 26/310이고 trid는 3/310이다. 공개 문서 held-out 8문항은 Qwen 4/8, Kanana 7/8, trid 0/8이다. 두 모델 모두 수치를 바꾼 문서를 그대로 읽었다. 남은 격차는 정해진 출력 형식과 `확인 불가` 보류(기관 probe 0/10)다. 근거가 주어진 질의응답만 쟀고, 서비스 전체·보안 검증은 아니다. [기준선 보고서](reports/open-weight-baseline/README.md) · [과거 프로토콜](KOREAN_RAG.md#qwen-비교와-astrafable-교차-검토)
+개발은 Astra의 구현·통합과 Claude Fable의 독립 검토로 교차 확인한다. 첫 외부 기준선 **Qwen3-0.6B Q8_0**의 같은 310문항 정답은 기존 채점에서 0~2개였지만, 이는 출력이 `[D3] 7만 원`처럼 출처를 앞에 쓴 탓이었다. 순서만 허용하는 `content_strict`로 같은 출력을 다시 채점하면 61/310이다. 2026-10-29에 튜닝하지 않은 **Qwen3-1.7B**와 **Kanana-1.5-2.1B**(둘 다 Apache 2.0)도 같은 자료로 실행했다. RAG310 content_strict는 각각 106/310, 26/310이고 trid는 3/310이다. 공개 문서 held-out 8문항은 Qwen 4/8, Kanana 7/8, trid 0/8이다. 두 모델 모두 수치를 바꾼 문서를 그대로 읽었다. 남은 격차는 정해진 출력 형식과 `확인 불가` 보류(기관 probe 0/10)다. 근거가 주어진 질의응답만 쟀고, 서비스 전체·보안 검증은 아니다. [기준선 보고서](../reports/open-weight-baseline/README.md) · [과거 프로토콜](experiments/KOREAN_RAG.md#qwen-비교와-astrafable-교차-검토)
 
 ## 실행
 
@@ -156,7 +158,7 @@ uv sync --frozen --python 3.12 --extra service
 .venv/bin/python scripts/export_gguf.py --run runs/<run> --output trid.q8_0.gguf --quant q8_0
 ```
 
-서비스 구성과 오프라인 설치는 [docs/SERVICE.md](docs/SERVICE.md), 위협 모델과 보안 검증셋(84건)은 [docs/SECURITY.md](docs/SECURITY.md), 사전학습·SFT·데이터 수집은 [PRETRAINING.md](PRETRAINING.md), [KOREAN_RAG.md](KOREAN_RAG.md).
+서비스 구성과 오프라인 설치는 [docs/SERVICE.md](SERVICE.md), 위협 모델과 보안 검증셋(84건)은 [docs/SECURITY.md](SECURITY.md), 사전학습·SFT·데이터 수집은 [PRETRAINING.md](experiments/PRETRAINING.md), [KOREAN_RAG.md](experiments/KOREAN_RAG.md).
 
 ## 실제 공개 문서 기반 생성형 SFT 데이터
 

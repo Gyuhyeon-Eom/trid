@@ -3,6 +3,7 @@ __pycache__/
 *.pyc
 .DS_Store
 *.log
+logs/
 *.command
 
 # training outputs and collected data stay local (GBs; see README for licences)

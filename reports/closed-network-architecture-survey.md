@@ -1,8 +1,8 @@
 # 폐쇄망 기관 QA를 위한 trid 구조 조사
 
-작성일: 2026-10-28. 대상: `trid` 91M decoder-only Transformer(12층·768·12 head, 문맥 1,024, 자체 8k byte-level BPE, RoPE/SwiGLU/RMSNorm, 입·출력 임베딩 공유, GQA·QK-norm 옵션). 과제는 "검색된 기관 문단을 받아 근거 안의 값을 그대로 복사해 `값 [Dn]`으로 답하거나 `확인 불가`/`근거 충돌`로 보류"하는 것이다. 현재 held-out 결과는 17M 세대가 자유 생성 0/310, 근거 복사 제한 디코딩 3/310이고([README](../README.md), [KOREAN_RAG.md](../KOREAN_RAG.md)), 검색은 BM25+kiwi R@3 0.947로 병목이 아니다([reports/retrieval-benchmark-v1.md](retrieval-benchmark-v1.md)).
+작성일: 2026-10-28. 대상: `trid` 91M decoder-only Transformer(12층·768·12 head, 문맥 1,024, 자체 8k byte-level BPE, RoPE/SwiGLU/RMSNorm, 입·출력 임베딩 공유, GQA·QK-norm 옵션). 과제는 "검색된 기관 문단을 받아 근거 안의 값을 그대로 복사해 `값 [Dn]`으로 답하거나 `확인 불가`/`근거 충돌`로 보류"하는 것이다. 현재 held-out 결과는 17M 세대가 자유 생성 0/310, 근거 복사 제한 디코딩 3/310이고([README](../docs/RESEARCH_LOG.md), [KOREAN_RAG.md](../docs/experiments/KOREAN_RAG.md)), 검색은 BM25+kiwi R@3 0.947로 병목이 아니다([reports/retrieval-benchmark-v1.md](retrieval-benchmark-v1.md)).
 
-전제: **외부 사전학습 생성 모델 가중치는 쓰지 않는다**(검색기는 미결 질문, [korean-oss-opportunities.md §5.2](korean-oss-opportunities.md)). 학습은 Mac 한 대(MPS, 91M 기준 약 2.5k tokens/s, [KOREAN_RAG.md](../KOREAN_RAG.md))에서 한다. 이 문서는 코드를 바꾸지 않았고 학습도 돌리지 않았다.
+전제: **외부 사전학습 생성 모델 가중치는 쓰지 않는다**(검색기는 미결 질문, [korean-oss-opportunities.md §5.2](korean-oss-opportunities.md)). 학습은 Mac 한 대(MPS, 91M 기준 약 2.5k tokens/s, [KOREAN_RAG.md](../docs/experiments/KOREAN_RAG.md))에서 한다. 이 문서는 코드를 바꾸지 않았고 학습도 돌리지 않았다.
 
 표기: 판정은 **적합**(91M·Mac·정책 안에서 바로 넣을 수 있음) / **실험**(소규모 비교 후 결정) / **부적합**(규모·정책·비용상 안 맞음). 난이도는 S(하루 이내)/M(며칠)/L(주 단위). 추론은 `[INFERENCE]`로 표시한다.
 
@@ -54,7 +54,7 @@ trid 자체 기록과 대조하면: 17M 약한 base에서 구간 헤드를 붙�
 
 | 방법 | 내용 | 근거 | 판정 | 난이도 |
 |---|---|---|---|---|
-| (a) 인과 마스크 유지 + 구간 헤드 | 질문을 앞에 두고 문서 토큰마다 시작·끝 logit. 이미 `trid/korean_reader.py`에 구현 ([KOREAN_SPAN.md](../KOREAN_SPAN.md)) | 17M에서 17/196. 문서 위치가 뒤 문맥(같은 문단의 뒷부분)을 못 봄 | 실험(기준선) | S(기존 코드) |
+| (a) 인과 마스크 유지 + 구간 헤드 | 질문을 앞에 두고 문서 토큰마다 시작·끝 logit. 이미 `trid/korean_reader.py`에 구현 ([KOREAN_SPAN.md](../docs/experiments/KOREAN_SPAN.md)) | 17M에서 17/196. 문서 위치가 뒤 문맥(같은 문단의 뒷부분)을 못 봄 | 실험(기준선) | S(기존 코드) |
 | (b) 양방향 마스크로 전환 + MNTP 이어 학습 | LLM2Vec: 디코더에 양방향 attention을 켜고 masked next token prediction으로 적응 ([arXiv 2404.05961](https://arxiv.org/abs/2404.05961)) | Ettin은 이런 사후 전환이 "처음부터 인코더"보다 못하다고 보고하지만, trid는 어차피 몸통이 하나뿐이고 1억 토큰 수준에서 전환 비용은 작다 | **실험(1순위)** | M |
 | (c) 처음부터 마스크+인과 혼합 사전학습 | GPT-BERT: 한 Transformer에 두 목적을 섞어 학습, 인과/마스크 양쪽으로 사용 가능. BabyLM 2024(100M 단어)에서 마스크 전용·인과 전용 모두를 이김 ([arXiv 2410.24159](https://arxiv.org/abs/2410.24159), [Findings](https://arxiv.org/abs/2412.05149)) | 100M 단어 ≈ trid의 1억 토큰 규모와 같은 데이터 체급에서 검증된 드문 결과 | **적합(다음 10억 토큰 사전학습에 포함)** | M |
 | (d) 디코더 생성 + 제약 디코딩만 | 현행 | 17M: 3/310 | 유지(형식 보장·대화 기능용) | — |
@@ -69,7 +69,7 @@ trid 자체 기록과 대조하면: 17M 약한 base에서 구간 헤드를 붙�
 |---|---|---|---|---|---|
 | RETRO ([arXiv 2112.04426](https://arxiv.org/abs/2112.04426)) | 64토큰 청크마다 2T 토큰 DB에서 이웃을 가져와 chunked cross-attention | 7.5B가 25× 큰 모델 급 perplexity | **부적합**. 수조 토큰 DB·BERT 임베딩 색인·cross-attention 층이 필요. 폐쇄망 문서 수천 건에는 청크 검색이 BM25로 충분 | L | — |
 | RETRO++ ([arXiv 2304.06762](https://arxiv.org/abs/2304.06762), EMNLP 2023) | RETRO 재현(최대 9.5B, 330B 토큰 DB)+"상위 검색 문서를 디코더 입력에도 넣는" 변형 | NQ EM +8.6 vs RETRO; 지식 집약 과제에서 GPT보다 우위, 그 외는 동등 | 부적합(사전학습 검색). 다만 "가장 관련 있는 문단을 디코더 입력 맨 앞에 둔다"는 RETRO++의 요점은 프롬프트 순서 규칙으로 바로 쓸 수 있다(Lost in the Middle, [arXiv 2307.03172](https://arxiv.org/abs/2307.03172)) | S(순서 규칙) | — |
-| Memory Layers at Scale ([arXiv 2412.09764](https://arxiv.org/abs/2412.09764), Meta 2024) | FFN 일부를 product-key 메모리(값 1M개 이상)로 교체해 FLOPs 없이 파라미터 추가 | 134M base + 1M 값(총 937M)에서 NQ 0.91→3.16, TriviaQA 7.7→18.8 (1T 토큰 학습, [Table 1](https://arxiv.org/html/2412.09764v1)) | **부적합**. 이득은 "파라미터 안에 사실을 저장"하는 폐쇄형 QA용이다. trid는 사실을 근거 문단에서 읽어야 하며 기관 문서를 가중치에 외우는 것은 목표가 아니다([KOREAN_RAG.md](../KOREAN_RAG.md)). 또 134M에서도 1T 토큰 증거이며, 논문 스스로 소형 base에서 불안정(QK-norm 필요)을 보고 | L | 암기 편향 강화 — 현재 실패 원인(학습 값 암기)을 키움 |
+| Memory Layers at Scale ([arXiv 2412.09764](https://arxiv.org/abs/2412.09764), Meta 2024) | FFN 일부를 product-key 메모리(값 1M개 이상)로 교체해 FLOPs 없이 파라미터 추가 | 134M base + 1M 값(총 937M)에서 NQ 0.91→3.16, TriviaQA 7.7→18.8 (1T 토큰 학습, [Table 1](https://arxiv.org/html/2412.09764v1)) | **부적합**. 이득은 "파라미터 안에 사실을 저장"하는 폐쇄형 QA용이다. trid는 사실을 근거 문단에서 읽어야 하며 기관 문서를 가중치에 외우는 것은 목표가 아니다([KOREAN_RAG.md](../docs/experiments/KOREAN_RAG.md)). 또 134M에서도 1T 토큰 증거이며, 논문 스스로 소형 base에서 불안정(QK-norm 필요)을 보고 | L | 암기 편향 강화 — 현재 실패 원인(학습 값 암기)을 키움 |
 | kNN-LM ([ICLR 2020](https://arxiv.org/abs/1911.00172)) | 모든 학습 토큰의 (문맥 임베딩 → 다음 토큰) 저장소를 만들고 LM 분포와 보간 | Wikitext-103 perplexity 18.65→15.79 | 부적합. 저장소는 토큰당 dim×2바이트: 1억 토큰이면 ~150GB(768·2B·1e8) `[INFERENCE]`. 폐쇄망 문서만 저장하면 수백 MB로 줄지만 그것은 곧 "근거 문단 복사"이고 constrained.py가 이미 한다 | L | 운영 저장소 관리 |
 | REPLUG ([arXiv 2301.12652](https://arxiv.org/abs/2301.12652)) | 검색 문서 k개를 각각 LM에 넣고 출력 분포를 앙상블; 검색기를 LM 피드백으로 학습 | GPT-3 175B 언어모델링·MMLU 향상 | 실험(저비용 변형). k=3이면 추론 3배. 앙상블보다 "각 문단에 대해 답 확률을 따로 구해 가장 높은 문단을 `[Dn]`으로" 쓰는 쪽이 출처 선택에 쓸모 있음 | S | 문단 간 비교가 보정되지 않으면 길이 편향 |
 | Self-RAG ([arXiv 2310.11511](https://arxiv.org/abs/2310.11511)) | 검색 여부·관련성·지지·유용성 반영 토큰을 생성하도록 7B/13B 학습; 평가 토큰 데이터는 GPT-4로 생성 | 7B가 ChatGPT를 사실성·인용에서 능가 | **부적합**(정책: GPT-4 비평 데이터). 다만 "지지(IsSUP)" 토큰 아이디어는 §3의 3-way 존재 분류와 동일하므로 그 형태로는 적합 | — | — |
@@ -98,7 +98,7 @@ Mac에서 처음부터 학습 가능한 것: RAFT식 SFT(S), REPLUG식 문단별
 - Knowledge Conflicts for LLMs 서베이([EMNLP 2024](https://arxiv.org/abs/2403.08319))는 충돌을 (1) 문맥–파라미터, (2) 문맥 간, (3) 파라미터 내로 나눈다. trid의 `근거 충돌`은 (2)이고, 17M의 "학습 값 암기" 실패는 (1)이다. 91M·1억 토큰 모델은 파라미터 지식이 거의 없어 (1)은 사전학습이 커질수록 오히려 커지는 위험이다.
 - Context-aware decoding(CAD, [NAACL 2024](https://arxiv.org/abs/2305.14739))은 "문맥 있음 − 문맥 없음" 분포 대비로 (1)을 줄이며 학습 없이 LLaMA 요약 사실성 +14.3%. trid에서는 "근거를 뺀 프롬프트"로 한 번 더 forward 하면 되므로 비용 2배, 난이도 S. 다만 제약 디코딩과 결합하면 근거에 없는 값은 이미 막히므로 이득은 **출처·구간 선택**에서만 날 것 `[INFERENCE]`.
 - Lookback Lens([EMNLP 2024](https://arxiv.org/abs/2407.07071))는 "문맥 토큰 대 생성 토큰 attention 비율"만으로 문맥 환각을 탐지하는 선형 분류기. 91M은 attention 맵을 전부 들여다볼 수 있으므로 보류 보정기의 특징으로 쓸 수 있다(S).
-- 문맥 간 충돌(2)의 학습 신호: 같은 항목이 다른 값으로 두 문서에 있는 합성 예가 이미 v2 자료에 있고, 평가셋 충돌 12문항이 지표. 17M 세대는 충돌 12/12를 맞췄으나 값 문항 0/71이었으므로([KOREAN_RAG.md](../KOREAN_RAG.md)) "충돌"이 쉬운 표면 신호(같은 항목명 두 번 등장)로 학습됐을 가능성을 평가셋의 두 근거 결합 12문항(두 문서를 결합해야 하는데 충돌이 아님)으로 걸러야 한다.
+- 문맥 간 충돌(2)의 학습 신호: 같은 항목이 다른 값으로 두 문서에 있는 합성 예가 이미 v2 자료에 있고, 평가셋 충돌 12문항이 지표. 17M 세대는 충돌 12/12를 맞췄으나 값 문항 0/71이었으므로([KOREAN_RAG.md](../docs/experiments/KOREAN_RAG.md)) "충돌"이 쉬운 표면 신호(같은 항목명 두 번 등장)로 학습됐을 가능성을 평가셋의 두 근거 결합 12문항(두 문서를 결합해야 하는데 충돌이 아님)으로 걸러야 한다.
 
 ### 3.3 인용 학습
 
@@ -109,7 +109,7 @@ Mac에서 처음부터 학습 가능한 것: RAFT식 SFT(S), REPLUG식 문단별
 
 | 방법 | 보장 | trid와 차이 |
 |---|---|---|
-| `trid/constrained.py` | 값은 인용 문단의 글자 경계 부분 문자열, 출처는 프롬프트의 번호, 남은 토큰 안에 완성 가능한 접두어만 허용, EOS는 완성 후에만 ([KOREAN_RAG.md](../KOREAN_RAG.md)) | 기준 |
+| `trid/constrained.py` | 값은 인용 문단의 글자 경계 부분 문자열, 출처는 프롬프트의 번호, 남은 토큰 안에 완성 가능한 접두어만 허용, EOS는 완성 후에만 ([KOREAN_RAG.md](../docs/experiments/KOREAN_RAG.md)) | 기준 |
 | Constrained Tagging ([arXiv 2610.28922](https://arxiv.org/abs/2610.28922), 2026-10) | 바이트 수준 토큰 트라이 + FSM으로 **입력 전체를 재생산하며** 구간을 태그; 구간은 토큰 내부 글자 경계에서도 시작·끝 가능; 255,312회 중 0.022%만 실패(추론 예산 소진) | trid와 같은 "바이트 트라이·글자 경계" 설계. 입력을 통째로 다시 쓰므로 1,024 문맥 모델에는 부적합. 저자들이 "오류는 어느 구간을 고르느냐에 있지 어디에 있느냐가 아니다"라고 한 것은 trid 3/310의 원인 진단과 일치 |
 | CHyD ([arXiv 2609.10046](https://arxiv.org/abs/2609.10046), 2026-09) | speculative decoding 구조를 바꿔 "인용 모드"에서 근거의 연속 구간만 허용. 기존 하이브리드 방법은 기술 도메인에서 정확 추출 40% 미만, CHyD는 거의 완벽한 추출 충실성, 정확 답 정답률 향상·유창성 지표 약간 하락 | trid는 이미 인용 모드만 있는 특수 사례. CHyD의 "모드 전환이 올바로 켜져야 보장이 성립"이라는 한계는 trid의 "보류냐 값이냐"를 모델이 정한다는 한계와 같음 |
 | Attribute First(ACL 2024) | 강조된 내용과 정확히 일치하도록 제약 디코딩 사용 | 동일 원리 |
@@ -205,7 +205,7 @@ flowchart LR
 
 ## 8. 순위별 실험 5개
 
-아래 표는 최초 실험 제안이다. 당시에는 310문항 평가셋의 지표를 비교 기준으로 적었으나, 현재 개발 반복과 체크포인트 선택은 curriculum의 내부 검증셋에서만 수행한다. `data/korean-rag-eval-v1` 310문항은 개발 튜닝에 사용하지 않는다. 현재 고정된 개발 목표와 실제 기관 문서 점검 범위는 [KOREAN_RAG.md](../KOREAN_RAG.md)의 「개발 판정과 실제 기관 문서 점검」을 따른다. 아래 합격 수치를 현 개발 프로토콜과 혼용하지 않는다.
+아래 표는 최초 실험 제안이다. 당시에는 310문항 평가셋의 지표를 비교 기준으로 적었으나, 현재 개발 반복과 체크포인트 선택은 curriculum의 내부 검증셋에서만 수행한다. `data/korean-rag-eval-v1` 310문항은 개발 튜닝에 사용하지 않는다. 현재 고정된 개발 목표와 실제 기관 문서 점검 범위는 [KOREAN_RAG.md](../docs/experiments/KOREAN_RAG.md)의 「개발 판정과 실제 기관 문서 점검」을 따른다. 아래 합격 수치를 현 개발 프로토콜과 혼용하지 않는다.
 
 | 순위 | 실험 | 첫 단계 | 결정 지표 | 통과 기준 |
 |---|---|---|---|---|
