@@ -352,7 +352,7 @@ def pretrain(data, output, config_path=None, steps=2000, stop_after=200,
     started = time.perf_counter()
     session_start_step = state["step"]
     prior_seconds = state["training_seconds"]
-    step, interrupted = state["step"], False
+    step, interrupted, grad_peak = state["step"], False, None
     try:
         for step in range(state["step"] + 1, stop + 1):
             for group in optimizer.param_groups:
@@ -369,10 +369,11 @@ def pretrain(data, output, config_path=None, steps=2000, stop_after=200,
                     micro = train_loss(trainer, xi, yi, z_loss) / accumulate
                 micro.backward()
                 loss = loss + micro.detach()
-            # One host sync per step; a non-finite micro loss raises before the update is applied.
-            if not torch.isfinite(loss):
-                raise RuntimeError("학습 손실이 유한하지 않습니다.")
-            torch.nn.utils.clip_grad_norm_(model.parameters(), 1.)
+            grad_norm = torch.nn.utils.clip_grad_norm_(model.parameters(), 1.)
+            # One host sync per step: a non-finite loss or gradient norm raises before the update is applied.
+            if not torch.isfinite(torch.stack([loss.float(), grad_norm.float()])).all():
+                raise RuntimeError(f"학습 손실 또는 기울기 노름이 유한하지 않습니다: loss={loss.item()}, grad_norm={grad_norm.item()}")
+            grad_peak = grad_norm.detach() if grad_peak is None else torch.maximum(grad_peak, grad_norm.detach())
             optimizer.step()
             evaluating = step % eval_every == 0 or step == stop
             checkpointing = step % checkpoint_every == 0 or step == stop
@@ -394,7 +395,11 @@ def pretrain(data, output, config_path=None, steps=2000, stop_after=200,
                      "tokens_seen": step * step_tokens,
                      "lineage_tokens_seen": metadata.get("inherited_tokens_seen", 0) + step * step_tokens,
                      "training_seconds": round(state["training_seconds"], 3),
-                     "session_tokens_per_second": round((step - session_start_step) * step_tokens / elapsed, 1)}
+                     "session_tokens_per_second": round((step - session_start_step) * step_tokens / elapsed, 1),
+                     "grad_norm": round(grad_norm.item(), 4), "grad_norm_max_since_eval": round(grad_peak.item(), 4)}
+            grad_peak = None
+            if str(device).startswith("cuda"):
+                entry["cuda_max_memory_allocated_gib"] = round(torch.cuda.max_memory_allocated() / 2**30, 3)
             if sampler is not None:
                 entry["epoch"] = sampler.epoch
             metrics.append(entry)

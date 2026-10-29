@@ -31,7 +31,7 @@ def main():
     p.add_argument('--data', default='data/mix-v3-basetok-tokens')
     start = p.add_mutually_exclusive_group(required=True)
     start.add_argument('--init-run', help='completed local pretraining run to continue from')
-    start.add_argument('--config', help='model config JSON for a fresh random initialization (smoke tests)')
+    start.add_argument('--config', help='model config JSON for a fresh random initialization')
     p.add_argument('--output', required=True)
     p.add_argument('--steps', type=int, default=15259)
     p.add_argument('--stop-after', type=int, default=5000, help='optimizer steps per session before checkpoint/rescan')
@@ -54,6 +54,8 @@ def main():
     p.add_argument('--compile', action=argparse.BooleanOptionalAction, default=True)
     p.add_argument('--stop-flag', default='reports/medium-cpt-gpu-stop.flag',
                    help='create this file to end after the current session, keeping the checkpoint')
+    p.add_argument('--max-sessions', type=int, default=0,
+                   help='end after this many pretrain() sessions in this process, keeping the checkpoint (0: until complete)')
     a = p.parse_args(); os.chdir(ROOT)
     weights = None
     if a.source_weights:
@@ -63,12 +65,16 @@ def main():
             weights = {k: float(v) for k, v in (item.split('=', 1) for item in a.source_weights)}
     out, stop = Path(a.output), Path(a.stop_flag)
     from trid.pretraining import pretrain
+    sessions = 0
     while True:
         meta = json.loads((out / 'training.json').read_text()) if (out / 'training.json').exists() else {}
         if meta.get('status') == 'complete':
             print('complete'); return
         if stop.exists():
             print('stop flag present; leaving checkpoint'); return
+        if a.max_sessions and sessions >= a.max_sessions:
+            print(f'max sessions ({a.max_sessions}) reached; rerun the same command to resume'); return
+        sessions += 1
         session = dict(stop_after=a.stop_after, device=a.device, precision=a.precision, compile=a.compile)
         if meta:
             pretrain(a.data, str(out), resume=True, **session)
