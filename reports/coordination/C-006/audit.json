@@ -1,0 +1,171 @@
+{
+ "/tmp/c006/qa-01": {
+  "work": "/tmp/c006/qa-01",
+  "json_errors": {
+   "selected": 0,
+   "drafts": 0,
+   "verified": 0
+  },
+  "blank_lines": {
+   "drafts": 0,
+   "verified": 0
+  },
+  "passages": {
+   "selected_docs": 2000,
+   "unique_selected_docs": 2000,
+   "expected": 3286,
+   "drafted_rows": 3286,
+   "drafted_unique": 3286,
+   "duplicate_draft_rows": 0,
+   "missing": 0,
+   "unexpected": 0,
+   "generation_error": 12,
+   "generation_error_kinds": {
+    "JSONDecodeError": 12
+   },
+   "zero_questions_no_error": 0
+  },
+  "questions": {
+   "drafted_occurrences": 9496,
+   "drafted_unique_keys": 9490,
+   "verified_rows": 9496,
+   "verified_unique_keys": 9490,
+   "not_verified_occurrences": 0,
+   "verified_rows_without_draft": 0,
+   "verified_rows_beyond_draft_count": 0,
+   "same_key_rows_with_different_answer_or_verdict": 2,
+   "kept_rows": 2793,
+   "rejected_rows": 6703,
+   "rejected_by_screen": 5071,
+   "rejected_by_verifier": 1632,
+   "kept_unique_keys": 2793,
+   "reason_counts": {
+    "answer_not_verbatim": 4074,
+    "answer_length": 2033,
+    "verifier_disagrees": 1632,
+    "answer_is_clause": 1298,
+    "not_a_question": 321,
+    "digits_missing": 218,
+    "answer_in_question": 148
+   },
+   "first_reason_counts": {
+    "answer_not_verbatim": 2593,
+    "answer_length": 2033,
+    "verifier_disagrees": 1632,
+    "answer_is_clause": 186,
+    "digits_missing": 124,
+    "not_a_question": 80,
+    "answer_in_question": 55
+   },
+   "generators": {
+    "kanana-1.5-2.1b-instruct-Q8_0.gguf": 2813,
+    "kanana.gguf": 6683
+   },
+   "verifiers": {
+    "qwen.gguf": 9496
+   }
+  },
+  "files": {
+   "select.json": {
+    "sha256": "87f9b520f4c2d5c797c0300cd7eec6e75648962820030546d15f39deb49fc24f",
+    "bytes": 537
+   },
+   "selected.jsonl": {
+    "sha256": "3b41c87ea121f88264156eed69ad2cae1c36cc75f9cb018040f9b9e6fc989634",
+    "bytes": 8513100
+   },
+   "drafts.jsonl": {
+    "sha256": "411bcc43c910732a0ef1956ae0df51b9076b7ab2c8af42666ae926553662477b",
+    "bytes": 1779674
+   },
+   "verified.jsonl": {
+    "sha256": "549c5a085d7d1d1fc3c358bf6e09a158cfaa3fa9c4d2b97c9e968fabd447c94b",
+    "bytes": 3464039
+   }
+  }
+ },
+ "/tmp/c006/qa-02": {
+  "work": "/tmp/c006/qa-02",
+  "json_errors": {
+   "selected": 0,
+   "drafts": 0,
+   "verified": 0
+  },
+  "blank_lines": {
+   "drafts": 0,
+   "verified": 0
+  },
+  "passages": {
+   "selected_docs": 20000,
+   "unique_selected_docs": 20000,
+   "expected": 32840,
+   "drafted_rows": 32840,
+   "drafted_unique": 32840,
+   "duplicate_draft_rows": 0,
+   "missing": 0,
+   "unexpected": 0,
+   "generation_error": 228,
+   "generation_error_kinds": {
+    "JSONDecodeError": 228
+   },
+   "zero_questions_no_error": 0
+  },
+  "questions": {
+   "drafted_occurrences": 94446,
+   "drafted_unique_keys": 94385,
+   "verified_rows": 94446,
+   "verified_unique_keys": 94385,
+   "not_verified_occurrences": 0,
+   "verified_rows_without_draft": 0,
+   "verified_rows_beyond_draft_count": 0,
+   "same_key_rows_with_different_answer_or_verdict": 29,
+   "kept_rows": 27874,
+   "rejected_rows": 66572,
+   "rejected_by_screen": 50830,
+   "rejected_by_verifier": 15742,
+   "kept_unique_keys": 27868,
+   "reason_counts": {
+    "answer_not_verbatim": 40374,
+    "answer_length": 20881,
+    "verifier_disagrees": 15742,
+    "answer_is_clause": 12645,
+    "not_a_question": 3087,
+    "digits_missing": 1816,
+    "answer_in_question": 1387
+   },
+   "first_reason_counts": {
+    "answer_not_verbatim": 25636,
+    "answer_length": 20881,
+    "verifier_disagrees": 15742,
+    "answer_is_clause": 1833,
+    "digits_missing": 1188,
+    "not_a_question": 847,
+    "answer_in_question": 445
+   },
+   "generators": {
+    "kanana.gguf": 94446
+   },
+   "verifiers": {
+    "qwen.gguf": 94446
+   }
+  },
+  "files": {
+   "select.json": {
+    "sha256": "e59291c7b93aae1ead0f00e149154ad8dd17b1a85ed553767d378d30c56c22dc",
+    "bytes": 615
+   },
+   "selected.jsonl": {
+    "sha256": "c7c9b190fff2017f866637d4c384d795f0575f732f5d36d080c1cd91758002da",
+    "bytes": 89192473
+   },
+   "drafts.jsonl": {
+    "sha256": "66a5525d704d029a8b28b462ddd48c853fcd4301092c4d780e042725ecf9c31d",
+    "bytes": 17516975
+   },
+   "verified.jsonl": {
+    "sha256": "c1c57f6935deb61c6c2ef987cee87e9c5df73251c6587e13a6ae3a2b933bb2b0",
+    "bytes": 33822248
+   }
+  }
+ }
+}
