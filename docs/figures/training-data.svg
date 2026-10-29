@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 360" width="1240" height="360" font-family="Apple SD Gothic Neo, Noto Sans KR, Malgun Gothic, sans-serif"><rect width="1240" height="360" fill="#ffffff"/>
+<text x="40.0" y="48.0" font-size="24" text-anchor="start" font-weight="bold" fill="#111827">trid-91M 사전학습 데이터</text>
+<text x="40.0" y="76.0" font-size="14" text-anchor="start" font-weight="normal" fill="#6b7280">출처·라이선스를 추적할 수 있는 공개 한국어 자료만 사용 · 외부 사전학습 가중치 없음</text>
+<text x="40.0" y="136.0" font-size="16" text-anchor="start" font-weight="bold" fill="#111827">1단계  위키 사전학습</text>
+<text x="40.0" y="158.0" font-size="13" text-anchor="start" font-weight="normal" fill="#6b7280">100M 토큰 · 48,829 step · val loss 3.206</text>
+<rect x="440.0" y="120" width="760.0" height="34" fill="#10b981"/>
+<text x="820.0" y="142.0" font-size="14" text-anchor="middle" font-weight="bold" fill="#ffffff">100.0%</text>
+<text x="40.0" y="216.0" font-size="16" text-anchor="start" font-weight="bold" fill="#111827">2단계  혼합 이어 학습</text>
+<text x="40.0" y="238.0" font-size="13" text-anchor="start" font-weight="normal" fill="#6b7280">1,000M 토큰 · 15,259 step · 혼합 val loss 3.326 → 1.963</text>
+<rect x="440.0" y="200" width="332.0" height="34" fill="#2563eb"/>
+<text x="606.0" y="222.0" font-size="14" text-anchor="middle" font-weight="bold" fill="#ffffff">43.7%</text>
+<rect x="772.0" y="200" width="83.1" height="34" fill="#f59e0b"/>
+<text x="813.5" y="222.0" font-size="14" text-anchor="middle" font-weight="bold" fill="#ffffff">10.9%</text>
+<rect x="855.1" y="200" width="344.9" height="34" fill="#10b981"/>
+<text x="1027.5" y="222.0" font-size="14" text-anchor="middle" font-weight="bold" fill="#ffffff">45.4%</text>
+<rect x="440" y="268" width="14" height="14" rx="3" fill="#2563eb"/>
+<text x="460.0" y="280.0" font-size="13" text-anchor="start" font-weight="normal" fill="#111827">법령·행정규칙·자치법규</text>
+<rect x="656" y="268" width="14" height="14" rx="3" fill="#f59e0b"/>
+<text x="676.0" y="280.0" font-size="13" text-anchor="start" font-weight="normal" fill="#111827">정책브리핑 보도자료</text>
+<rect x="846" y="268" width="14" height="14" rx="3" fill="#10b981"/>
+<text x="866.0" y="280.0" font-size="13" text-anchor="start" font-weight="normal" fill="#111827">한국어 위키백과</text>
+<text x="40.0" y="330.0" font-size="12" text-anchor="start" font-weight="normal" fill="#6b7280">2단계 혼합 자료: 정제·개인정보 치환·MinHash 중복 제거 후 461.4M 토큰(비율은 측정 토크나이저 기준). 10억 토큰은 이 자료를 약 2회 반복 학습한 양입니다.</text>
+</svg>

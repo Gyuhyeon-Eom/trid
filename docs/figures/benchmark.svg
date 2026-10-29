@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 560" width="1240" height="560" font-family="Apple SD Gothic Neo, Noto Sans KR, Malgun Gothic, sans-serif"><rect width="1240" height="560" fill="#ffffff"/>
+<text x="40.0" y="48.0" font-size="24" text-anchor="start" font-weight="bold" fill="#111827">trid 근거 기반 질의응답 성능</text>
+<text x="40.0" y="76.0" font-size="14" text-anchor="start" font-weight="normal" fill="#6b7280">정답률(%) · 값과 출처, 답변 형식까지 모두 맞아야 정답 · greedy · 근거 복사 제한 디코딩 · 회색은 공개 모델 비교 기준선(trid 아님)</text>
+<path d="M60,420.0h270" stroke="#e5e7eb" stroke-width="1"/>
+<text x="52.0" y="424.0" font-size="12" text-anchor="end" font-weight="normal" fill="#6b7280">0</text>
+<path d="M60,345.0h270" stroke="#e5e7eb" stroke-width="1"/>
+<text x="52.0" y="349.0" font-size="12" text-anchor="end" font-weight="normal" fill="#6b7280">25</text>
+<path d="M60,270.0h270" stroke="#e5e7eb" stroke-width="1"/>
+<text x="52.0" y="274.0" font-size="12" text-anchor="end" font-weight="normal" fill="#6b7280">50</text>
+<path d="M60,195.0h270" stroke="#e5e7eb" stroke-width="1"/>
+<text x="52.0" y="199.0" font-size="12" text-anchor="end" font-weight="normal" fill="#6b7280">75</text>
+<path d="M60,120.0h270" stroke="#e5e7eb" stroke-width="1"/>
+<text x="52.0" y="124.0" font-size="12" text-anchor="end" font-weight="normal" fill="#6b7280">100</text>
+<rect x="86.0" y="351.3" width="34" height="68.7" rx="3" fill="#2563eb"/>
+<text x="103.0" y="344.3" font-size="12" text-anchor="middle" font-weight="bold" fill="#111827">22.9</text>
+<rect x="132.0" y="204.2" width="34" height="215.8" rx="3" fill="#4b5563"/>
+<text x="149.0" y="197.2" font-size="12" text-anchor="middle" font-weight="normal" fill="#111827">71.9</text>
+<rect x="178.0" y="245.8" width="34" height="174.2" rx="3" fill="#9ca3af"/>
+<text x="195.0" y="238.8" font-size="12" text-anchor="middle" font-weight="normal" fill="#111827">58.1</text>
+<rect x="224.0" y="359.0" width="34" height="61.0" rx="3" fill="#cbd5e1"/>
+<text x="241.0" y="352.0" font-size="12" text-anchor="middle" font-weight="normal" fill="#111827">20.3</text>
+<rect x="270.0" y="400.6" width="34" height="19.4" rx="3" fill="#e2e8f0"/>
+<text x="287.0" y="393.6" font-size="12" text-anchor="middle" font-weight="normal" fill="#111827">6.5</text>
+<text x="195.0" y="450.0" font-size="15" text-anchor="middle" font-weight="bold" fill="#111827">RAG310 전체</text>
+<text x="195.0" y="470.0" font-size="12" text-anchor="middle" font-weight="normal" fill="#6b7280">310문항</text>
+<path d="M350,420.0h270" stroke="#e5e7eb" stroke-width="1"/>
+<path d="M350,345.0h270" stroke="#e5e7eb" stroke-width="1"/>
+<path d="M350,270.0h270" stroke="#e5e7eb" stroke-width="1"/>
+<path d="M350,195.0h270" stroke="#e5e7eb" stroke-width="1"/>
+<path d="M350,120.0h270" stroke="#e5e7eb" stroke-width="1"/>
+<rect x="376.0" y="381.8" width="34" height="38.2" rx="3" fill="#2563eb"/>
+<text x="393.0" y="374.8" font-size="12" text-anchor="middle" font-weight="bold" fill="#111827">12.7</text>
+<rect x="422.0" y="208.2" width="34" height="211.8" rx="3" fill="#4b5563"/>
+<text x="439.0" y="201.2" font-size="12" text-anchor="middle" font-weight="normal" fill="#111827">70.6</text>
+<rect x="468.0" y="254.2" width="34" height="165.8" rx="3" fill="#9ca3af"/>
+<text x="485.0" y="247.2" font-size="12" text-anchor="middle" font-weight="normal" fill="#111827">55.3</text>
+<rect x="514.0" y="351.6" width="34" height="68.4" rx="3" fill="#cbd5e1"/>
+<text x="531.0" y="344.6" font-size="12" text-anchor="middle" font-weight="normal" fill="#111827">22.8</text>
+<rect x="560.0" y="412.1" width="34" height="7.9" rx="3" fill="#e2e8f0"/>
+<text x="577.0" y="405.1" font-size="12" text-anchor="middle" font-weight="normal" fill="#111827">2.6</text>
+<text x="485.0" y="450.0" font-size="15" text-anchor="middle" font-weight="bold" fill="#111827">RAG310 답 있음</text>
+<text x="485.0" y="470.0" font-size="12" text-anchor="middle" font-weight="normal" fill="#6b7280">228문항</text>
+<path d="M640,420.0h270" stroke="#e5e7eb" stroke-width="1"/>
+<path d="M640,345.0h270" stroke="#e5e7eb" stroke-width="1"/>
+<path d="M640,270.0h270" stroke="#e5e7eb" stroke-width="1"/>
+<path d="M640,195.0h270" stroke="#e5e7eb" stroke-width="1"/>
+<path d="M640,120.0h270" stroke="#e5e7eb" stroke-width="1"/>
+<rect x="666.0" y="266.3" width="34" height="153.7" rx="3" fill="#2563eb"/>
+<text x="683.0" y="259.3" font-size="12" text-anchor="middle" font-weight="bold" fill="#111827">51.2</text>
+<rect x="712.0" y="193.2" width="34" height="226.8" rx="3" fill="#4b5563"/>
+<text x="729.0" y="186.2" font-size="12" text-anchor="middle" font-weight="normal" fill="#111827">75.6</text>
+<rect x="758.0" y="222.4" width="34" height="197.6" rx="3" fill="#9ca3af"/>
+<text x="775.0" y="215.4" font-size="12" text-anchor="middle" font-weight="normal" fill="#111827">65.9</text>
+<rect x="804.0" y="379.8" width="34" height="40.2" rx="3" fill="#cbd5e1"/>
+<text x="821.0" y="372.8" font-size="12" text-anchor="middle" font-weight="normal" fill="#111827">13.4</text>
+<rect x="850.0" y="368.8" width="34" height="51.2" rx="3" fill="#e2e8f0"/>
+<text x="867.0" y="361.8" font-size="12" text-anchor="middle" font-weight="normal" fill="#111827">17.1</text>
+<text x="775.0" y="450.0" font-size="15" text-anchor="middle" font-weight="bold" fill="#111827">RAG310 답 없음·충돌</text>
+<text x="775.0" y="470.0" font-size="12" text-anchor="middle" font-weight="normal" fill="#6b7280">82문항</text>
+<path d="M930,420.0h270" stroke="#e5e7eb" stroke-width="1"/>
+<path d="M930,345.0h270" stroke="#e5e7eb" stroke-width="1"/>
+<path d="M930,270.0h270" stroke="#e5e7eb" stroke-width="1"/>
+<path d="M930,195.0h270" stroke="#e5e7eb" stroke-width="1"/>
+<path d="M930,120.0h270" stroke="#e5e7eb" stroke-width="1"/>
+<rect x="956.0" y="270.0" width="34" height="150.0" rx="3" fill="#2563eb"/>
+<text x="973.0" y="263.0" font-size="12" text-anchor="middle" font-weight="bold" fill="#111827">50.0</text>
+<rect x="1002.0" y="157.5" width="34" height="262.5" rx="3" fill="#4b5563"/>
+<text x="1019.0" y="150.5" font-size="12" text-anchor="middle" font-weight="normal" fill="#111827">87.5</text>
+<rect x="1048.0" y="195.0" width="34" height="225.0" rx="3" fill="#9ca3af"/>
+<text x="1065.0" y="188.0" font-size="12" text-anchor="middle" font-weight="normal" fill="#111827">75.0</text>
+<rect x="1094.0" y="307.5" width="34" height="112.5" rx="3" fill="#cbd5e1"/>
+<text x="1111.0" y="300.5" font-size="12" text-anchor="middle" font-weight="normal" fill="#111827">37.5</text>
+<rect x="1140.0" y="420.0" width="34" height="1.0" rx="3" fill="#e2e8f0"/>
+<text x="1157.0" y="413.0" font-size="12" text-anchor="middle" font-weight="normal" fill="#111827">0.0</text>
+<text x="1065.0" y="450.0" font-size="15" text-anchor="middle" font-weight="bold" fill="#111827">기관 문서 probe</text>
+<text x="1065.0" y="470.0" font-size="12" text-anchor="middle" font-weight="normal" fill="#6b7280">40문항</text>
+<rect x="60" y="500" width="14" height="14" rx="3" fill="#2563eb"/>
+<text x="80.0" y="512.0" font-size="13" text-anchor="start" font-weight="bold" fill="#111827">trid-91M (자체 학습)</text>
+<rect x="258.0" y="500" width="14" height="14" rx="3" fill="#4b5563"/>
+<text x="278.0" y="512.0" font-size="13" text-anchor="start" font-weight="normal" fill="#111827">Kanana-1.5-2.1B + LoRA</text>
+<rect x="479.0" y="500" width="14" height="14" rx="3" fill="#9ca3af"/>
+<text x="499.0" y="512.0" font-size="13" text-anchor="start" font-weight="normal" fill="#111827">Qwen3-1.7B + LoRA</text>
+<rect x="662.5" y="500" width="14" height="14" rx="3" fill="#cbd5e1"/>
+<text x="682.5" y="512.0" font-size="13" text-anchor="start" font-weight="normal" fill="#111827">Kanana-1.5-2.1B</text>
+<rect x="831.0" y="500" width="14" height="14" rx="3" fill="#e2e8f0"/>
+<text x="851.0" y="512.0" font-size="13" text-anchor="start" font-weight="normal" fill="#111827">Qwen3-1.7B</text>
+<text x="40.0" y="542.0" font-size="12" text-anchor="start" font-weight="normal" fill="#6b7280">기관 문서 probe의 trid-91M은 추출 독해기(exact) 결과입니다. 공개 모델에도 같은 근거 제한 문법을 적용했습니다. probe는 반복 사용한 진단 자료입니다.</text>
+</svg>
