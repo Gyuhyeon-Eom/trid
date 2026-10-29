@@ -188,11 +188,18 @@ def complete(base, messages, family, max_tokens, context, grammar=None):
     return result
 
 
-def freeform(base, family, context, path):
-    """Stored prompts (e.g. reports/public-dialogue-01-after.json results) -> unscored raw answers."""
+def freeform(base, family, context, path, output, model_hash):
+    """Stored prompts (e.g. reports/public-dialogue-01-after.json results) -> unscored raw answers.
+
+    Each answer is journaled to `<output>.partial.jsonl` as it finishes (scripts/eval_journal.py); rerunning the
+    same command resumes after an interruption, and the report is written only when every prompt id is present."""
+    from eval_journal import Journal
     prompts = json.loads(path.read_text())['results']
-    results = []
+    journal = Journal(output, dict(model_sha256=model_hash, family=family, prompts_sha256=digest(path),
+                                   max_output_tokens=FREEFORM_MAX_TOKENS, context=context))
     for item in prompts:
+        if journal.done(item['id']):
+            continue
         result = dict(id=item['id'], kind=item.get('kind'), prompt=item['prompt'], reference=item.get('reference'),
                       generated=None, exception=None, skipped_context=False)
         started = time.perf_counter()
@@ -201,9 +208,10 @@ def freeform(base, family, context, path):
         except (OSError, ValueError, KeyError, TypeError) as exc:
             result['exception'] = f'{type(exc).__name__}: {exc}'
         result['seconds'] = time.perf_counter()-started
-        results.append(result)
+        journal.append(result)
+    results, counts = journal.finalize([p['id'] for p in prompts])
     return dict(prompts_path=str(path), prompts_sha256=digest(path), max_output_tokens=FREEFORM_MAX_TOKENS,
-                scoring='none; review raw answers', results=results)
+                scoring='none; review raw answers', counts=counts, results=results)
 
 
 def main():
@@ -235,7 +243,7 @@ def main():
                   model_sha256=model_hash, model_bytes=args.model_file.stat().st_size, runtime=props,
                   temperature=0, thinking=False, evaluated_at_unix=time.time())
     if args.freeform_prompts:
-        report.update(freeform(base, args.family, context, args.freeform_prompts))
+        report.update(freeform(base, args.family, context, args.freeform_prompts, args.output, model_hash))
         if digest(args.model_file) != model_hash:
             raise ValueError('Model changed during evaluation')
         args.output.parent.mkdir(parents=True, exist_ok=True)

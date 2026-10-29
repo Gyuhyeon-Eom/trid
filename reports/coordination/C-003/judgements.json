@@ -1,0 +1,381 @@
+{
+ "note": "AI review (assistant) against reports/coordination/C-003/checklist.json, fixed before generation. Not human or public-sector expert review. 10 existing development pilot items: an execution smoke test, not a benchmark; no superiority claim.",
+ "models": {
+  "trid": {
+   "outputs": "reports/coordination/C-003/outputs-trid-gpu-05-mix04-s3000.json",
+   "items": [
+    {
+     "id": "pilot-exp-01",
+     "conclusion": "오답",
+     "evidence": "없음",
+     "condition_or_exception_missing": "해당없음",
+     "false_added_claim": null,
+     "truncated": false,
+     "format_mismatch": true,
+     "note": "방해 문단의 \"태양광발전설비\" 구간 복사. 설명 없음"
+    },
+    {
+     "id": "pilot-exp-02",
+     "conclusion": "부분",
+     "evidence": "없음",
+     "condition_or_exception_missing": "해당없음",
+     "false_added_claim": null,
+     "truncated": false,
+     "format_mismatch": true,
+     "note": "목적의 일부 명사구만 출력. 설명 없음"
+    },
+    {
+     "id": "pilot-exp-03",
+     "conclusion": "오답",
+     "evidence": "없음",
+     "condition_or_exception_missing": "예",
+     "false_added_claim": null,
+     "truncated": false,
+     "format_mismatch": true,
+     "note": "\"신청서\" 구간. 이유 없음"
+    },
+    {
+     "id": "pilot-exp-04",
+     "conclusion": "오답",
+     "evidence": "없음",
+     "condition_or_exception_missing": "해당없음",
+     "false_added_claim": null,
+     "truncated": false,
+     "format_mismatch": true,
+     "note": "방해 문단 구간 \"산림청\""
+    },
+    {
+     "id": "pilot-exp-05",
+     "conclusion": "보류",
+     "evidence": "없음",
+     "condition_or_exception_missing": "해당없음",
+     "false_added_claim": null,
+     "truncated": false,
+     "format_mismatch": true,
+     "note": "답 있는 질문에 확인 불가"
+    },
+    {
+     "id": "pilot-cond-01",
+     "conclusion": "오답",
+     "evidence": "없음",
+     "condition_or_exception_missing": "예",
+     "false_added_claim": null,
+     "truncated": false,
+     "format_mismatch": false,
+     "note": "\"보건소\"(제출처)로 신청인 질문에 오답"
+    },
+    {
+     "id": "pilot-exc-01",
+     "conclusion": "보류",
+     "evidence": "없음",
+     "condition_or_exception_missing": "예",
+     "false_added_claim": null,
+     "truncated": false,
+     "format_mismatch": false,
+     "note": "답 있는 질문에 확인 불가"
+    },
+    {
+     "id": "pilot-tab-01",
+     "conclusion": "오답",
+     "evidence": "없음",
+     "condition_or_exception_missing": "해당없음",
+     "false_added_claim": null,
+     "truncated": false,
+     "format_mismatch": false,
+     "note": "\"39%\"(다른 행·열 값)"
+    },
+    {
+     "id": "pilot-comb-01",
+     "conclusion": "오답",
+     "evidence": "없음",
+     "condition_or_exception_missing": "예",
+     "false_added_claim": null,
+     "truncated": false,
+     "format_mismatch": false,
+     "note": "\"10.15일\"(신청 시작일) 한 값만, 두 값 모두 오답"
+    },
+    {
+     "id": "pilot-num-01",
+     "conclusion": "부분",
+     "evidence": "지지",
+     "condition_or_exception_missing": "예",
+     "false_added_claim": null,
+     "truncated": false,
+     "format_mismatch": false,
+     "note": "변형 문서 값 \"6년\"을 따름(사전지식 \"4년\" 아님), \"이상\" 누락"
+    }
+   ],
+   "summary": {
+    "explanation_5": {
+     "conclusion": {
+      "오답": 3,
+      "부분": 1,
+      "보류": 1
+     },
+     "false_added_claim": 0,
+     "truncated": 0,
+     "format_mismatch": 5
+    },
+    "value_types_5": {
+     "conclusion": {
+      "오답": 3,
+      "보류": 1,
+      "부분": 1
+     },
+     "false_added_claim": 0,
+     "truncated": 0,
+     "format_mismatch": 0
+    }
+   }
+  },
+  "qwen3-1.7b-q8": {
+   "outputs": "reports/coordination/C-003/outputs-qwen3-1.7b-q8.json",
+   "items": [
+    {
+     "id": "pilot-exp-01",
+     "conclusion": "정답",
+     "evidence": "지지",
+     "condition_or_exception_missing": "해당없음",
+     "false_added_claim": "\"2013년부터 시작하여 2023년까지 12개교를 추가로 신설\"(2023년은 원문에 없음, 추가 신설은 6개교)",
+     "truncated": true,
+     "format_mismatch": true,
+     "note": "조건 줄 없음"
+    },
+    {
+     "id": "pilot-exp-02",
+     "conclusion": "정답",
+     "evidence": "지지",
+     "condition_or_exception_missing": "해당없음",
+     "false_added_claim": "\"인구 증가와 경제 활성화를 지원\"(원문에 없음)",
+     "truncated": true,
+     "format_mismatch": true,
+     "note": ""
+    },
+    {
+     "id": "pilot-exp-03",
+     "conclusion": "정답",
+     "evidence": "지지",
+     "condition_or_exception_missing": "예(잘림)",
+     "false_added_claim": "이유를 고시 내용으로 귀속(원문은 국회·피해자 요구)",
+     "truncated": true,
+     "format_mismatch": true,
+     "note": "조건(전문가 의견수렴·심의) 항목을 시작했으나 잘림"
+    },
+    {
+     "id": "pilot-exp-04",
+     "conclusion": "부분",
+     "evidence": "부분",
+     "condition_or_exception_missing": "해당없음",
+     "false_added_claim": "비율 확대 이유를 특화단지 지정 사업의 목적(비용부담 완화)으로 귀속",
+     "truncated": true,
+     "format_mismatch": true,
+     "note": "원문의 직접 이유(고도화·첨단화 촉진)는 결과로만 언급"
+    },
+    {
+     "id": "pilot-exp-05",
+     "conclusion": "정답",
+     "evidence": "지지",
+     "condition_or_exception_missing": "해당없음",
+     "false_added_claim": null,
+     "truncated": true,
+     "format_mismatch": true,
+     "note": "인용 표기 \"(다1)\" 형식 오류. 방법 설명 중 잘림"
+    },
+    {
+     "id": "pilot-cond-01",
+     "conclusion": "정답",
+     "evidence": "지지",
+     "condition_or_exception_missing": "아니오",
+     "false_added_claim": null,
+     "truncated": false,
+     "format_mismatch": true,
+     "note": "조건(부득이한 경우) 포함. 서술형"
+    },
+    {
+     "id": "pilot-exc-01",
+     "conclusion": "정답",
+     "evidence": "지지",
+     "condition_or_exception_missing": "아니오",
+     "false_added_claim": null,
+     "truncated": false,
+     "format_mismatch": true,
+     "note": "두 제외 대상 모두"
+    },
+    {
+     "id": "pilot-tab-01",
+     "conclusion": "정답",
+     "evidence": "지지",
+     "condition_or_exception_missing": "아니오",
+     "false_added_claim": null,
+     "truncated": false,
+     "format_mismatch": true,
+     "note": "추가 언급한 ‘10년 B=2,082도 표와 일치"
+    },
+    {
+     "id": "pilot-comb-01",
+     "conclusion": "부분",
+     "evidence": "부분",
+     "condition_or_exception_missing": "예",
+     "false_added_claim": "\"출생일 기준 신청 기한은 출생 후 1년까지\"(원문의 신청 기한은 출생일로부터 60일 이내)",
+     "truncated": false,
+     "format_mismatch": true,
+     "note": "월 최대 75천원만 정답"
+    },
+    {
+     "id": "pilot-num-01",
+     "conclusion": "정답",
+     "evidence": "지지",
+     "condition_or_exception_missing": "아니오",
+     "false_added_claim": null,
+     "truncated": false,
+     "format_mismatch": true,
+     "note": "변형 문서 값 6년 이상을 인용"
+    }
+   ],
+   "summary": {
+    "explanation_5": {
+     "conclusion": {
+      "정답": 4,
+      "부분": 1
+     },
+     "false_added_claim": 4,
+     "truncated": 5,
+     "format_mismatch": 5
+    },
+    "value_types_5": {
+     "conclusion": {
+      "정답": 4,
+      "부분": 1
+     },
+     "false_added_claim": 1,
+     "truncated": 0,
+     "format_mismatch": 5
+    }
+   }
+  },
+  "kanana-1.5-2.1b-q8": {
+   "outputs": "reports/coordination/C-003/outputs-kanana-1.5-2.1b-q8.json",
+   "items": [
+    {
+     "id": "pilot-exp-01",
+     "conclusion": "정답",
+     "evidence": "지지",
+     "condition_or_exception_missing": "해당없음",
+     "false_added_claim": null,
+     "truncated": true,
+     "format_mismatch": true,
+     "note": "9.6% 통계도 원문에 있음. 조건 줄 없음"
+    },
+    {
+     "id": "pilot-exp-02",
+     "conclusion": "정답",
+     "evidence": "지지",
+     "condition_or_exception_missing": "해당없음",
+     "false_added_claim": "\"복지 사각지대를 최소화\"(원문에 없음, 경미)",
+     "truncated": false,
+     "format_mismatch": true,
+     "note": "원문 문장 직접 인용"
+    },
+    {
+     "id": "pilot-exp-03",
+     "conclusion": "정답",
+     "evidence": "지지",
+     "condition_or_exception_missing": "예",
+     "false_added_claim": "\"당초 신청기간(2015년 10월 10일)\"(원문은 \"지난해 10월 10일\", 발표 기준 2014년)",
+     "truncated": false,
+     "format_mismatch": true,
+     "note": "절차 조건(전문가 의견수렴·심의, 고시 2월 6일 시행) 누락"
+    },
+    {
+     "id": "pilot-exp-04",
+     "conclusion": "부분",
+     "evidence": "부분",
+     "condition_or_exception_missing": "해당없음",
+     "false_added_claim": "\"제조업의 근간이 되는 핵심 산업\", \"시너지 효과\"(원문에 없음)",
+     "truncated": true,
+     "format_mismatch": true,
+     "note": "직접 이유(고도화·첨단화 촉진)를 비용부담 완화와 섞어 서술"
+    },
+    {
+     "id": "pilot-exp-05",
+     "conclusion": "정답",
+     "evidence": "지지",
+     "condition_or_exception_missing": "해당없음",
+     "false_added_claim": null,
+     "truncated": true,
+     "format_mismatch": true,
+     "note": "미니 클러스터 지원 단계 서술도 원문에 있음"
+    },
+    {
+     "id": "pilot-cond-01",
+     "conclusion": "정답",
+     "evidence": "지지",
+     "condition_or_exception_missing": "아니오",
+     "false_added_claim": null,
+     "truncated": false,
+     "format_mismatch": true,
+     "note": "조건 포함, 60일·보건소도 원문 일치"
+    },
+    {
+     "id": "pilot-exc-01",
+     "conclusion": "정답",
+     "evidence": "지지",
+     "condition_or_exception_missing": "아니오",
+     "false_added_claim": null,
+     "truncated": false,
+     "format_mismatch": true,
+     "note": "원문 구간 그대로 인용"
+    },
+    {
+     "id": "pilot-tab-01",
+     "conclusion": "정답",
+     "evidence": "지지",
+     "condition_or_exception_missing": "아니오",
+     "false_added_claim": null,
+     "truncated": false,
+     "format_mismatch": true,
+     "note": ""
+    },
+    {
+     "id": "pilot-comb-01",
+     "conclusion": "정답",
+     "evidence": "부분",
+     "condition_or_exception_missing": "아니오",
+     "false_added_claim": null,
+     "truncated": false,
+     "format_mismatch": true,
+     "note": "두 값 모두 제시(75천원→75,000원 단위 환산), 출처 번호를 D1/D2에 중복·혼동 표기"
+    },
+    {
+     "id": "pilot-num-01",
+     "conclusion": "정답",
+     "evidence": "지지",
+     "condition_or_exception_missing": "아니오",
+     "false_added_claim": null,
+     "truncated": false,
+     "format_mismatch": true,
+     "note": "변형 문서 값 6년 이상"
+    }
+   ],
+   "summary": {
+    "explanation_5": {
+     "conclusion": {
+      "정답": 4,
+      "부분": 1
+     },
+     "false_added_claim": 3,
+     "truncated": 3,
+     "format_mismatch": 5
+    },
+    "value_types_5": {
+     "conclusion": {
+      "정답": 5
+     },
+     "false_added_claim": 0,
+     "truncated": 0,
+     "format_mismatch": 5
+    }
+   }
+  }
+ }
+}

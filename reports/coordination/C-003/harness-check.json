@@ -1,0 +1,39 @@
+{
+ "note": "Harness validation on existing development prompts (RAG310, repeatedly used diagnostic). Not a benchmark; outputs not scored.",
+ "trid": {
+  "command": "python -m scripts.train_public_dialogue evaluate --run runs/trid-public-dialogue-gpu-05-mix04-s3000 --prompts <RAG310 310 prompts> --max-tokens 64",
+  "interrupted_after_rows": 263,
+  "resumed_new_rows": 47,
+  "final_rows": 310,
+  "unique": 310,
+  "counts": {
+   "items": 310,
+   "exceptions": 0,
+   "skipped_context": 0,
+   "truncated_output": 2,
+   "stopped_without_eos": 2,
+   "duplicates_dropped_on_resume": 0
+  },
+  "weights_sha256": "c29fbed5be4facf08a9b913fa9aa419ea1c77275744cd14795ed07577539f475"
+ },
+ "kanana": {
+  "command": "python scripts/evaluate_external_chat.py --freeform-prompts <first 40 RAG310 prompts> (llama.cpp Q8_0, Mac Metal)",
+  "interrupted_after_rows": 26,
+  "final_rows": 40,
+  "unique": 40,
+  "counts": {
+   "items": 40,
+   "exceptions": 0,
+   "skipped_context": 0,
+   "truncated_output": 0,
+   "stopped_without_eos": 0,
+   "duplicates_dropped_on_resume": 0
+  },
+  "model_sha256": "244c7d717763e885490f48c1dd01a0f7d5f247194c152baf8a8c0158d340adba"
+ },
+ "refusals": [
+  "partial file from different settings refused (unit test)",
+  "incomplete run cannot be finalized (unit test)",
+  "completed report not overwritten (\"Use a new output file\")"
+ ]
+}

@@ -1,0 +1,139 @@
+{
+ "note": "Fixed before any model output was generated (2026-10-30). AI-authored checklist, not human review. These 10 rows are existing training/development pilot items (data/qa-task-pilot-02), NOT an independent benchmark.",
+ "criteria": {
+  "conclusion_correct": "결론(값 유형은 정답 값)이 필수 결론과 의미상 일치",
+  "evidence_supported": "제시 근거가 원문 문단에서 지지되고 올바른 문단을 가리킴(인용 번호 없음은 형식 문제로 별도 기록)",
+  "condition_or_exception_missing": "필수 조건/예외 누락 여부",
+  "false_added_claim": "원문에 없는 사실·수치 추가 또는 원문과 모순",
+  "abstained": "확인 불가/답 거부",
+  "truncated": "생성 한도 도달로 끝나지 않음",
+  "format_mismatch": "요청 형식(결론·근거·조건 구조, [Dn] 표기) 불일치 — 의미 오류와 분리"
+ },
+ "generation": {
+  "max_new_tokens": 256,
+  "trid": "min(256, 1024 - prompt_tokens): trid.runtime.generate rejects input + max_tokens > 1024",
+  "decoding": "greedy, no constraint, no thinking"
+ },
+ "items": [
+  {
+   "id": "pilot-exp-01",
+   "type": "explanation",
+   "split": "train",
+   "question": "방송통신중학교는 무엇을 위해 설립되었는지 근거와 함께 설명해 주세요.",
+   "gold": "결론: 중학교 학력을 취득하지 못한 성인과 학업중단 청소년 등에게 학력취득 기회를 주기 위해 [D1]\n근거: “방송통신중학교(이하 방송중)는 중학교 학력을 취득하지 못한 성인과 학업중단 청소년 등에게 학력취득 기회를 주기 위해 ’13년부터 설립되기 시작한 공립 중학교로, 온라인 및 출석수업 위주로 운영한다.” [D1]\n적용 조건: 원문에 명시된 조건 없음",
+   "prompt_tokens_trid": 638,
+   "generation_room_trid": 386,
+   "required_condition": null,
+   "pitfalls": "설립 시기(’13년~)나 운영 방식(온라인·출석수업)을 목적으로 대체하면 결론 오답",
+   "required_conclusion": "중학교 학력을 취득하지 못한 성인과 학업중단 청소년 등에게 학력취득 기회를 주기 위해",
+   "required_evidence": "방송통신중학교(이하 방송중)는 중학교 학력을 취득하지 못한 성인과 학업중단 청소년 등에게 학력취득 기회를 주기 위해 ’13년부터 설립되기 시작한 공립 중학교로, 온라인 및 출석수업 위주로 운영한다."
+  },
+  {
+   "id": "pilot-exp-02",
+   "type": "explanation",
+   "split": "train",
+   "question": "행복청이 광역복지지원센터를 건립하는 목적을 근거와 함께 설명해 주세요.",
+   "gold": "결론: 입주민에게 수준 높은 맞춤형 복지서비스를 제공해 복지수준 향상과 도시의 지속적인 성장을 위해 [D1]\n근거: “이 시설은 입주민에게 수준 높은 맞춤형 복지서비스를 제공해 복지수준 향상과 도시의 지속적인 성장을 위해 마련됐다.” [D1]\n적용 조건: 원문에 명시된 조건 없음",
+   "prompt_tokens_trid": 751,
+   "generation_room_trid": 273,
+   "required_condition": null,
+   "pitfalls": "사업비(497억 원)·규모를 목적으로 대체하면 결론 오답",
+   "required_conclusion": "입주민에게 수준 높은 맞춤형 복지서비스를 제공해 복지수준 향상과 도시의 지속적인 성장을 위해",
+   "required_evidence": "이 시설은 입주민에게 수준 높은 맞춤형 복지서비스를 제공해 복지수준 향상과 도시의 지속적인 성장을 위해 마련됐다."
+  },
+  {
+   "id": "pilot-exp-03",
+   "type": "explanation",
+   "split": "train",
+   "question": "가습기살균제 피해 조사 신청 접수 기간을 연장한 이유를 근거와 함께 설명해 주세요.",
+   "gold": "결론: 가습기살균제 피해 조사 사실을 미처 알지 못해 신청하지 못한 피해자가 있을 수 있어 [D1]\n근거: “이번 접수 기간의 연장은 가습기살균제 피해 조사 사실을 미처 알지 못해 신청하지 못한 피해자가 있을 수 있어 기간 연장이 필요하다는 국회 환경노동위원회와 피해자들의 요구에 따른 것이다.” [D1]\n적용 조건: 접수 기간의 연장은 의사 등 전문가의 의견수렴과 환경보건위원회(위원장 환경부 차관)의 심의를 거쳐 결정되었고 관련 고시 개정(안)은 2월 6일 시행할 예정이다. [D1]",
+   "prompt_tokens_trid": 664,
+   "generation_room_trid": 360,
+   "required_condition": "연장 결정은 전문가 의견수렴과 환경보건위원회 심의를 거쳤고 관련 고시 개정(안)은 2월 6일 시행 예정",
+   "pitfalls": "연장 기한(2015년 12월 31일)만 답하면 이유 누락; 국회·피해자 요구를 근거로 언급해야 근거 지지",
+   "required_conclusion": "가습기살균제 피해 조사 사실을 미처 알지 못해 신청하지 못한 피해자가 있을 수 있어",
+   "required_evidence": "이번 접수 기간의 연장은 가습기살균제 피해 조사 사실을 미처 알지 못해 신청하지 못한 피해자가 있을 수 있어 기간 연장이 필요하다는 국회 환경노동위원회와 피해자들의 요구에 따른 것이다."
+  },
+  {
+   "id": "pilot-exp-04",
+   "type": "explanation",
+   "split": "train",
+   "question": "뿌리산업 특화단지 지원 사업의 정부 지원 비율을 확대한 이유를 근거와 함께 설명해 주세요.",
+   "gold": "결론: 특화단지의 고도화․첨단화를 촉진하기 위해 [D1]\n근거: “특히 특화단지의 고도화․첨단화를 촉진하기 위해 “뿌리산업 특화단지 지원 사업”의 정부 지원 비율을 기존 10%에서 30%로 확대하기로 했다.” [D1]\n적용 조건: 원문에 명시된 조건 없음",
+   "prompt_tokens_trid": 763,
+   "generation_room_trid": 261,
+   "required_condition": null,
+   "pitfalls": "비율 수치(10%→30%)만 답하면 이유 누락",
+   "required_conclusion": "특화단지의 고도화․첨단화를 촉진하기 위해",
+   "required_evidence": "특히 특화단지의 고도화․첨단화를 촉진하기 위해 “뿌리산업 특화단지 지원 사업”의 정부 지원 비율을 기존 10%에서 30%로 확대하기로 했다."
+  },
+  {
+   "id": "pilot-exp-05",
+   "type": "explanation",
+   "split": "valid",
+   "question": "산업부가 산업단지 지원을 확대하는 목적과 방법을 근거와 함께 설명해 주세요.",
+   "gold": "결론: 전국의 산업단지가 창조경제의 거점으로 발전할 수 있도록 [D1]\n근거: “산업부는 올해 산업집적지 경쟁력강화사업에 597억원을 확보해 ① 산단 연구․혁신 미니 클러스터를 현행 71에서 78개로 확대하고, ② 산단내 성장잠재력을 보유한 기업에 대한 집중지원을 위해 기업성장지원센터를 현행 4개에서 8개로 확대 설치하기로 했다.” [D1]\n적용 조건: 원문에 명시된 조건 없음",
+   "prompt_tokens_trid": 787,
+   "generation_room_trid": 237,
+   "required_condition": null,
+   "pitfalls": "목적(창조경제 거점 발전)과 방법(597억원, 미니 클러스터 71→78, 기업성장지원센터 4→8) 모두 필요; 수치 오기는 허위",
+   "required_conclusion": "전국의 산업단지가 창조경제의 거점으로 발전할 수 있도록",
+   "required_evidence": "산업부는 올해 산업집적지 경쟁력강화사업에 597억원을 확보해 ① 산단 연구․혁신 미니 클러스터를 현행 71에서 78개로 확대하고, ② 산단내 성장잠재력을 보유한 기업에 대한 집중지원을 위해 기업성장지원센터를 현행 4개에서 8개로 확대 설치하기로 했다."
+  },
+  {
+   "id": "pilot-cond-01",
+   "type": "condition",
+   "split": "train",
+   "question": "기저귀·조제분유 지원은 부모가 신청하기 어려운 부득이한 경우 누가 신청할 수 있나요?",
+   "gold": "친족 또는 후견인·법정대리인 [D1]",
+   "prompt_tokens_trid": 739,
+   "generation_room_trid": 285,
+   "required_condition": "부득이한 경우(부모가 신청하지 못하는 경우)",
+   "pitfalls": "“부모”만 답하면 조건 누락"
+  },
+  {
+   "id": "pilot-exc-01",
+   "type": "exception",
+   "split": "train",
+   "question": "정규직 전환 지원 대상에서 제외되는 곳은 어디인가요?",
+   "gold": "국가 및 지방자치단체 등 공공부문, 5인 미만 사업장 [D2]",
+   "prompt_tokens_trid": 789,
+   "generation_room_trid": 235,
+   "required_condition": "제외 대상 두 가지 모두",
+   "pitfalls": "공공부문 또는 5인 미만 사업장 중 하나만 답하면 예외 누락"
+  },
+  {
+   "id": "pilot-tab-01",
+   "type": "table",
+   "split": "train",
+   "question": "표에서 ‘10년의 사망자수(C)는 몇 명인가요?",
+   "gold": "966 [D2]",
+   "prompt_tokens_trid": 752,
+   "generation_room_trid": 272,
+   "required_condition": "‘10년 행, 사망자수(C) 열",
+   "pitfalls": "다른 연도·열 값(예: 2,082, 952)은 오답"
+  },
+  {
+   "id": "pilot-comb-01",
+   "type": "combine",
+   "split": "train",
+   "question": "기저귀·조제분유 지원의 월 최대 지원액과 출생일 기준 신청 기한을 각각 알려주세요.",
+   "gold": "최대 월 75천원 [D2], 출생일로부터 60일 이내 [D1]",
+   "prompt_tokens_trid": 826,
+   "generation_room_trid": 198,
+   "required_condition": "두 값 모두, 각 출처",
+   "pitfalls": "한 값만 답하면 결합 실패"
+  },
+  {
+   "id": "pilot-num-01",
+   "type": "numeric_change",
+   "split": "train",
+   "question": "관련분야 석사학위 소지자가 5급 민간경력자 일괄채용시험에 응시하려면 학위 취득 후 얼마 이상 근무경력이 필요한가요?",
+   "gold": "6년 이상 [D1]",
+   "prompt_tokens_trid": 737,
+   "generation_room_trid": 287,
+   "required_condition": "제공된 문서(인위적 변형본)의 값",
+   "pitfalls": "변형 전 실제 값 “4년 이상”을 답하면 근거 무시(사전지식 의존)"
+  }
+ ]
+}

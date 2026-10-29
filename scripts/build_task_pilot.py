@@ -63,6 +63,32 @@ def require(span, text, what):
         raise ValueError(f'{what} is not a verbatim span of its passage: {span!r}')
 
 
+CONTEXT = 1024
+
+
+def measure(tok, row, context=CONTEXT):
+    """Real lengths of one SFT row, without truncation.
+
+    Training fit uses the existing encoder (input ids exclude the final EOS; labels end with it). Generation room
+    is what the existing runtime allows after the prompt (`trid.runtime.generate` refuses input + max_tokens >
+    context), and the gold answer fits generation only if it plus EOS fits that room.
+    """
+    from trid.text import encode_example, prompt_ids
+    prompt = len(prompt_ids(tok, row['prompt'], row.get('history')))
+    answer = len(tok.encode(row['answer']).ids) + 1
+    try:
+        input_ids, labels = encode_example(tok, row, context)
+    except ValueError:
+        input_ids, labels = None, None
+    eos = tok.token_to_id('<|eos|>')
+    return dict(prompt_tokens=prompt, answer_tokens_with_eos=answer, example_tokens=prompt + answer,
+                input_tokens=None if input_ids is None else len(input_ids),
+                label_tokens=None if labels is None else sum(x != -100 for x in labels),
+                labels_end_with_eos=bool(labels) and labels[-1] == eos,
+                fits_training=input_ids is not None, generation_room=context - prompt,
+                gold_fits_generation=context - prompt >= answer)
+
+
 def assemble(item, kind, targets, distractor, split, docs, spec, rng):
     order = targets + ([distractor] if distractor else [])
     rng.shuffle(order)
@@ -109,7 +135,6 @@ def build(spec_path, output):
     if output.exists():
         raise ValueError('Use a new output directory')
     from tokenizers import Tokenizer
-    from trid.text import encode_example, prompt_ids
     spec = json.loads(Path(spec_path).read_text())
     excluded = {d['id'] for p in EXCLUDE for d in read_jsonl(p)}
     wanted = {i['doc'] for i in spec['items'] if 'doc' in i} | {p[0] for i in spec['items'] for p in i.get('parts', [])}
@@ -122,11 +147,8 @@ def build(spec_path, output):
     tok = Tokenizer.from_file(str(TOKENIZER))
 
     def fits(tok, row):
-        try:
-            encode_example(tok, row, 1024)
-        except ValueError:
-            return False
-        return len(prompt_ids(tok, row['prompt'], None)) + 128 <= 1024
+        m = measure(tok, row)
+        return m['fits_training'] and m['gold_fits_generation']
 
     rows, out = [], {'train': [], 'valid': []}
     for item in spec['items']:
@@ -161,7 +183,7 @@ def build(spec_path, output):
                 break
             row = None
         if row is None:
-            raise ValueError(f"{item['id']}: the prompt does not fit 1,024 tokens with a 128-token reserve")
+            raise ValueError(f"{item['id']}: the full example or its gold-length generation does not fit {CONTEXT} tokens")
         out[split].append(row)
     output.mkdir(parents=True)
     for split, data in out.items():
@@ -177,11 +199,11 @@ def build(spec_path, output):
 
 
 def check(data, report):
-    """Existing loader, tokenizer fit and value-copy decoder acceptance of every gold answer. No training."""
+    """Existing loader, real input/label lengths, gold-length generation room and value-copy decoder acceptance."""
     from tokenizers import Tokenizer
     from trid.constrained import EvidenceConstraint, token_bytes
     from trid.prompts import RAG_PREFIX, rag_passages
-    from trid.text import encode_example, prompt_ids, read_rows
+    from trid.text import read_rows
     tok = Tokenizer.from_file(str(TOKENIZER))
     vocab = token_bytes(tok)
     results = []
@@ -190,19 +212,17 @@ def check(data, report):
         for row in rows:
             body = row['prompt'][len(DOCUMENT_INSTRUCTION):]
             ps = rag_passages(RAG_PREFIX + body)
-            ids = encode_example(tok, row, 1024)
-            constraint = EvidenceConstraint(ps, vocab)
-            accepted = constraint.complete(row['answer'].encode())
-            results.append(dict(id=row['id'], task=row['task'], split=split, loader='ok', tokens=len(ids),
-                                prompt_tokens=len(prompt_ids(tok, row['prompt'], None)),
-                                answer_tokens=len(tok.encode(row['answer']).ids),
+            accepted = EvidenceConstraint(ps, vocab).complete(row['answer'].encode())
+            results.append(dict(id=row['id'], task=row['task'], split=split, loader='ok', **measure(tok, row),
                                 value_copy_decoder_accepts_gold=accepted))
     summary = {}
     for r in results:
         s = summary.setdefault(r['task'], Counter())
         s['rows'] += 1
         s['decoder_accepts'] += r['value_copy_decoder_accepts_gold']
-        s['max_answer_tokens'] = max(s['max_answer_tokens'], r['answer_tokens'])
+        s['max_answer_tokens'] = max(s['max_answer_tokens'], r['answer_tokens_with_eos'])
+        s['min_generation_room'] = min(s.get('min_generation_room', CONTEXT), r['generation_room'])
+        s['gold_fits_generation'] += r['gold_fits_generation']
     report.write_text(json.dumps(dict(summary={k: dict(v) for k, v in summary.items()}, rows=results), ensure_ascii=False, indent=2))
     print(json.dumps({k: dict(v) for k, v in summary.items()}, ensure_ascii=False))
 

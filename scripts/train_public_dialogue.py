@@ -265,27 +265,55 @@ def prepare_teacher_stage(output, parent, teacher_dirs, teacher_mass):
 
 
 
-def evaluate(run, data, output):
+def evaluate(run, data, output, prompts_path=None, max_tokens=128):
+    """Greedy free generation. Default prompts: public-document probes from `data`. `prompts_path`: a stored
+    prompt file ({"results": [{"id", "kind", "prompt", "reference"}]}, the evaluate_external_chat.py
+    --freeform-prompts format) answered with up to `max_tokens`, capped by the context left after each prompt."""
     import torch
     from trid.runtime import load_run, generate
+    from trid.text import prompt_ids
     torch.set_num_threads(2)
     model, tok, device = load_run(run, 'cpu')
-    public = [r for r in read_jsonl(data / 'valid.jsonl') if r['mixture_component'] == 'public' and r['task'] == 'grounded_qa']
-    docs = {d['id']: d for d in read_jsonl(ROOT / 'data/public-document-sft-source/documents.jsonl')}
-    seen = docs['korea-kr-press-156612711']
-    prompts = [{'id': r['id'], 'kind': 'heldout_public_qa', 'prompt': r['prompt'], 'reference': r['answer']} for r in public]
-    for question in ('안녕', '너한테 할 수 있는 질문이 뭐야', '제작비 지원 비율과 최대 한도가 어떻게 돼?'):
-        prompts.append({'id': question, 'kind': 'train_exposed_user_regression', 'prompt': document_prompt(seen, question)})
-    for question in ('반가워, 처음 왔어.', '어떤 일을 부탁하면 되니?', '문서를 읽다가 모르는 게 있으면 물어봐도 돼?'):
-        prompts.append({'id': question, 'kind': 'dialogue_probe', 'prompt': question})
-    results = []
+    if prompts_path is None:
+        public = [r for r in read_jsonl(data / 'valid.jsonl') if r['mixture_component'] == 'public' and r['task'] == 'grounded_qa']
+        docs = {d['id']: d for d in read_jsonl(ROOT / 'data/public-document-sft-source/documents.jsonl')}
+        seen = docs['korea-kr-press-156612711']
+        prompts = [{'id': r['id'], 'kind': 'heldout_public_qa', 'prompt': r['prompt'], 'reference': r['answer']} for r in public]
+        for question in ('안녕', '너한테 할 수 있는 질문이 뭐야', '제작비 지원 비율과 최대 한도가 어떻게 돼?'):
+            prompts.append({'id': question, 'kind': 'train_exposed_user_regression', 'prompt': document_prompt(seen, question)})
+        for question in ('반가워, 처음 왔어.', '어떤 일을 부탁하면 되니?', '문서를 읽다가 모르는 게 있으면 물어봐도 돼?'):
+            prompts.append({'id': question, 'kind': 'dialogue_probe', 'prompt': question})
+    else:
+        prompts = json.loads(Path(prompts_path).read_text())['results']
+    import sys
+    sys.path.insert(0, str(ROOT / 'scripts'))
+    from eval_journal import Journal
+    weights = hashlib.sha256((run / 'model.safetensors').read_bytes()).hexdigest()
+    protocol = (f'Greedy free generation on CPU, up to {max_tokens} tokens capped by the remaining context; '
+                'no constraints, answer lookup, or hardcoded response. No automatic quality score.')
+    source = str(prompts_path) if prompts_path else 'built-in public-document probes'
+    prompts_sha = hashlib.sha256(json.dumps(prompts, ensure_ascii=False, sort_keys=True).encode()).hexdigest()
+    journal = Journal(output, dict(run=str(run), weights_sha256=weights, prompts=source, prompts_sha256=prompts_sha,
+                                   max_tokens=max_tokens, protocol=protocol))
     for item in prompts:
-        result = generate(model, tok, item['prompt'], device, max_tokens=128)
-        row = {**item, **result}
-        results.append(row)
+        if journal.done(item['id']):
+            continue
+        room = model.cfg.context_length - len(prompt_ids(tok, item['prompt']))
+        limit = min(max_tokens, room)
+        row = {**item, 'max_tokens_requested': max_tokens, 'max_tokens_used': limit, 'context_limited': limit < max_tokens,
+               'answer': None, 'exception': None, 'skipped_context': limit < 1}
+        if not row['skipped_context']:
+            try:
+                result = generate(model, tok, item['prompt'], device, max_tokens=limit)
+            except (ValueError, RuntimeError) as exc:
+                row['exception'] = f'{type(exc).__name__}: {exc}'
+            else:
+                row.update(result, truncated_output=not result['stopped_on_eos'] and result['generated_tokens_including_eos'] >= limit)
+        journal.append(row)
         print(json.dumps(row, ensure_ascii=False), flush=True)
-    report = {'run': str(run), 'weights_sha256': hashlib.sha256((run / 'model.safetensors').read_bytes()).hexdigest(),
-              'protocol': 'Greedy free generation, 128 tokens; no constraints, answer lookup, or hardcoded response. No automatic quality score.', 'results': results}
+    results, counts = journal.finalize([p['id'] for p in prompts])
+    report = {'run': str(run), 'weights_sha256': weights, 'prompts': source, 'prompts_sha256': prompts_sha,
+              'protocol': protocol, 'counts': counts, 'results': results}
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(report, ensure_ascii=False, indent=2))
 
@@ -304,6 +332,8 @@ def main():
     parser.add_argument('--real-source', type=Path, default=ROOT / 'data/korean-rag-curriculum-v4')
     parser.add_argument('--teacher-data', type=Path, action='append', default=[])
     parser.add_argument('--teacher-mass', type=float, default=.25)
+    parser.add_argument('--prompts', type=Path, help='evaluate: stored prompt file instead of the built-in probes')
+    parser.add_argument('--max-tokens', type=int, default=128, help='evaluate: generation limit before the context cap')
     args = parser.parse_args()
     if args.action == 'prepare':
         prepare(args.data, args.init_run)
@@ -318,7 +348,7 @@ def main():
     elif args.action == 'evaluate':
         if args.report is None:
             parser.error('--report required')
-        evaluate(args.run, args.data, args.report)
+        evaluate(args.run, args.data, args.report, args.prompts, args.max_tokens)
     else:
         import torch
         from trid.training import train
