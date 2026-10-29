@@ -6,8 +6,9 @@ Stages (each resumable, writes under --work):
   generate  a generator model (llama.cpp server) drafts short-answer questions per passage as JSON.
   verify    a second, different model answers each question from the passage alone. A draft is kept only if
             its answer is a verbatim passage substring and the verifier's answer agrees with it.
-  assemble  RAG-format rows: the answer passage among distractor passages from other documents, `값 [Dn]`;
-            a share of rows omit the answer passage and expect `확인 불가`. Train/valid split by document.
+  assemble  RAG-format rows `값 [Dn]` on shared contexts: two passages from different documents, with every question
+            of both asked against the byte-identical context; some rows ask a third document's question and expect
+            `확인 불가`. Train/valid split by document.
 
 Open models only draft and check questions; every answer is copied from the source text. Generated questions
 and the selection are machine-made and not human-reviewed.
@@ -222,7 +223,13 @@ def verify(work, url, workers):
                 print(f'verified {n}/{len(jobs)}', flush=True)
 
 
-def assemble(work, output, tokenizer, missing_share, distractors, seed):
+def assemble(work, output, tokenizer, missing_share, seed):
+    """Shared contexts: two passages from different documents, and every verified question of both passages is
+    asked against the byte-identical context, so only the question decides the answer and its source.
+
+    A question is dropped when its answer string also occurs in the other passage (ambiguous source). Abstention
+    rows ask a question from a third document's passage against the same context. Split by document.
+    """
     from tokenizers import Tokenizer
     from trid.text import encode_example, prompt_ids
     from scripts.train_public_dialogue import DOCUMENT_INSTRUCTION
@@ -232,63 +239,87 @@ def assemble(work, output, tokenizer, missing_share, distractors, seed):
     rng = random.Random(seed)
     docs = {d['id']: d for d in read_jsonl(work / 'selected.jsonl')}
     kept = [r for r in read_jsonl(work / 'verified.jsonl') if r['kept']]
-    doc_ids = sorted({r['doc_id'] for r in kept})
-    rng.shuffle(doc_ids)
-    valid_docs = set(doc_ids[:max(1, len(doc_ids) // 20)])
-    pool = [(d['id'], p) for d in docs.values() for p in d['passages']]
-    splits, dropped, seen = {'train': [], 'valid': []}, Counter(), set()
+    by_passage, dropped = {}, Counter()
     for item in kept:
-        key = (item['doc_id'], norm(item['question']))
-        if key in seen:
+        questions = by_passage.setdefault((item['doc_id'], item['passage_index']), {})
+        if norm(item['question']) in questions:
             dropped['duplicate'] += 1
             continue
-        seen.add(key)
-        target = docs[item['doc_id']]['passages'][item['passage_index']]
-        others = [p for d, p in rng.sample(pool, distractors * 4) if d != item['doc_id'] and norm(item['answer']) not in norm(p)]
-        missing = rng.random() < missing_share
-        chosen = others[:distractors + (1 if missing else 0)]
-        if len(chosen) < distractors:
-            dropped['distractors'] += 1
-            continue
-        doc = docs[item['doc_id']]
-        row = None
-        # Drop distractors until the row fits 1024 tokens with a 128-token generation reserve; keep >= 1 other passage.
-        while row is None and len(chosen) >= 1:
-            passages_ = chosen if missing else chosen + [target]
-            rng.shuffle(passages_)
-            body = '\n'.join(f'[D{i}] {p}' for i, p in enumerate(passages_, 1))
-            answer = ABSTAIN if missing else f"{item['answer']} [D{passages_.index(target) + 1}]"
-            candidate = dict(
-                id=f"teacher-{item['doc_id']}-{item['passage_index']}-{hashlib.sha1(item['question'].encode()).hexdigest()[:8]}",
-                prompt=f"{DOCUMENT_INSTRUCTION}{body}\n질문: {item['question']}", answer=answer,
-                task='teacher_qa_missing' if missing else 'teacher_qa', group='teacher_qa', mixture_component='teacher_qa',
-                source=f"korea.kr policy briefing, KOGL Type 1 ({doc['source']}); question drafted by {item['generator']}, "
-                       f"checked by {item['verifier']}; answer copied verbatim from the source",
-                source_guid=item['doc_id'], source_title=doc['title'], passages=len(passages_))
-            try:
-                encode_example(tok, candidate, 1024)
-                if len(prompt_ids(tok, candidate['prompt'], None)) + 128 > 1024:
-                    raise ValueError('generation reserve')
-                row = candidate
-            except ValueError:
-                chosen = chosen[:-1]
-        if row is None:
-            dropped['context'] += 1
-            continue
-        splits['valid' if item['doc_id'] in valid_docs else 'train'].append(row)
+        questions[norm(item['question'])] = item
+    doc_ids = sorted({doc_id for doc_id, _ in by_passage})
+    rng.shuffle(doc_ids)
+    valid_docs = set(doc_ids[:max(1, len(doc_ids) // 20)])
+    splits = {'train': [], 'valid': []}
+    contexts = Counter()
+
+    def fits(row):
+        try:
+            encode_example(tok, row, 1024)
+            return len(prompt_ids(tok, row['prompt'], None)) + 128 <= 1024
+        except ValueError:
+            return False
+
+    for split in splits:
+        keys = [k for k in by_passage if (k[0] in valid_docs) == (split == 'valid')]
+        rng.shuffle(keys)
+        while len(keys) >= 2:
+            a = keys.pop()
+            partner = next((i for i in range(len(keys) - 1, max(-1, len(keys) - 8), -1) if keys[i][0] != a[0]), None)
+            if partner is None:
+                dropped['no_partner'] += 1
+                continue
+            b = keys.pop(partner)
+            order = [a, b]
+            rng.shuffle(order)
+            texts = [docs[d]['passages'][i] for d, i in order]
+            body = '\n'.join(f'[D{n}] {t}' for n, t in enumerate(texts, 1))
+            rows = []
+            for n, key in enumerate(order):
+                other = norm(texts[1 - n])
+                for item in by_passage[key].values():
+                    if norm(item['answer']) in other:
+                        dropped['answer_in_both_passages'] += 1
+                        continue
+                    rows.append((item, f"{item['answer']} [D{n + 1}]", 'teacher_qa'))
+            if len({answer for _, answer, _ in rows}) < 2:
+                dropped['single_answer_context'] += len(rows)
+                continue
+            pool = [k for k in keys if k[0] not in (a[0], b[0])]
+            n_missing = round(len(rows) * missing_share / (1 - missing_share))
+            for key in rng.sample(pool, min(n_missing, len(pool))):
+                item = next(iter(by_passage[key].values()))
+                if all(norm(item['answer']) not in norm(t) for t in texts):
+                    rows.append((item, ABSTAIN, 'teacher_qa_missing'))
+            built = []
+            for item, answer, task in rows:
+                doc = docs[item['doc_id']]
+                built.append(dict(
+                    id=f"teacher-{a[0]}-{a[1]}-{b[0]}-{b[1]}-{hashlib.sha1(item['question'].encode()).hexdigest()[:8]}",
+                    prompt=f"{DOCUMENT_INSTRUCTION}{body}\n질문: {item['question']}", answer=answer, task=task,
+                    group='teacher_qa', mixture_component='teacher_qa',
+                    source=f"korea.kr policy briefing, KOGL Type 1 ({doc['source']}); question drafted by "
+                           f"{item['generator']}, checked by {item['verifier']}; answer copied verbatim from the source",
+                    source_guid=item['doc_id'], source_title=doc['title'],
+                    context_id=hashlib.sha1(body.encode()).hexdigest()[:12]))
+            if not all(fits(r) for r in built):
+                dropped['context_too_long'] += len(built)
+                continue
+            splits[split] += built
+            contexts[len(built)] += 1
     output.mkdir(parents=True)
     for split, rows in splits.items():
         (output / f'{split}.jsonl').write_text(''.join(json.dumps(r, ensure_ascii=False) + '\n' for r in rows))
     verified = read_jsonl(work / 'verified.jsonl')
-    meta = dict(purpose='Open-model-drafted, source-verbatim reading QA on real KOGL Type 1 policy briefings',
+    meta = dict(purpose='Open-model-drafted, source-verbatim reading QA on real KOGL Type 1 policy briefings, shared contexts',
                 method=__doc__, work=str(work), select=json.loads((work / 'select.json').read_text()),
                 drafts=len(read_jsonl(work / 'drafts.jsonl')), questions=len(verified), kept=len(kept),
                 rejected=dict(Counter(r for v in verified for r in v['reasons'])),
                 rows={s: dict(Counter(r['task'] for r in rows)) for s, rows in splits.items()},
-                dropped=dict(dropped), missing_share=missing_share, distractors=distractors, seed=seed,
-                split='by document, 5% valid', license='KOGL Type 1 text; attribution kept per row',
+                rows_per_context=dict(sorted(contexts.items())), dropped=dict(dropped),
+                missing_share=missing_share, seed=seed, split='by document, 5% valid',
+                license='KOGL Type 1 text; attribution kept per row',
                 limitations='Questions are machine-drafted and machine-checked, not human-reviewed. Source documents may '
-                            'have appeared in trid pretraining. Distractors are random other-document passages.')
+                            'have appeared in trid pretraining. Paired passages come from random other documents.')
     (output / 'provenance.json').write_text(json.dumps(meta, ensure_ascii=False, indent=2))
     print(json.dumps({k: v for k, v in meta.items() if k != 'method'}, ensure_ascii=False))
 
@@ -306,7 +337,6 @@ def main():
                    help='select: earlier work dir whose documents are skipped (repeatable)')
     p.add_argument('--tokenizer', type=Path, default=ROOT / 'runs/trid-korean-medium-cpt-gpu-complete/tokenizer.json')
     p.add_argument('--missing-share', type=float, default=.2)
-    p.add_argument('--distractors', type=int, default=2)
     p.add_argument('--workers', type=int, default=4)
     a = p.parse_args()
     if a.stage == 'select':
@@ -318,7 +348,7 @@ def main():
     else:
         if a.output is None:
             p.error('--output required')
-        assemble(a.work, a.output, a.tokenizer, a.missing_share, a.distractors, a.seed)
+        assemble(a.work, a.output, a.tokenizer, a.missing_share, a.seed)
 
 
 if __name__ == '__main__':

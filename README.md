@@ -34,24 +34,24 @@ trid는 인터넷이 끊긴 기관 내부 서버에서 규정·공고·보도자
 
 값은 디코딩 단계에서 **인용한 근거 문단에 실제로 있는 글자열만** 나오도록 제한하고, 출처 번호도 프롬프트에 준 번호만 허용합니다. 근거에 없는 숫자나 이름은 출력할 수 없습니다. 근거 안의 엉뚱한 구간을 고를 위험은 남아 있어 학습·색인 마스킹·권한 필터로 줄이고 보안 검증셋으로 측정합니다([SECURITY](docs/SECURITY.md)).
 
+**외부 사전학습 가중치를 쓰지 않습니다.** trid는 Llama·Qwen 계열과 같은 구조를 따르되, 가중치는 무작위 초기화부터 출처가 기록된 데이터로 직접 학습합니다. 그래야 모델이 무엇을 배웠는지 데이터까지 추적할 수 있습니다. Qwen3·Kanana 같은 공개 모델은 같은 평가셋에서 **비교 기준선**으로만 측정합니다.
+
 ## 소식
 
-- **2026-10-29** 공개 가중치 모델에 trid 학습 커리큘럼으로 LoRA SFT를 적용했습니다. Kanana-1.5-2.1B + LoRA가 RAG310에서 형식까지 엄격하게 채점해 **223/310**, 기관 문서 probe에서 **35/40**을 기록했습니다. 자체 91M의 최고치는 71/310입니다. [보고서](reports/open-weight-lora/)
-- **2026-10-29** 튜닝하지 않은 Qwen3-1.7B와 Kanana-1.5-2.1B를 같은 평가셋으로 측정해 기준선을 세웠습니다. [기준선](reports/open-weight-baseline/README.md)
+- **2026-10-29** 개발 방향을 **외부 가중치 없는 자체 sLLM**으로 확정했습니다. 목표는 대한민국 공공기관·공기업 문서 전반에 대응하는 모델입니다. 앞으로 공개 가중치 모델은 비교 기준선으로만 씁니다.
+- **2026-10-29** 비교 기준선으로 Qwen3-1.7B와 Kanana-1.5-2.1B를 튜닝 전후로 측정했습니다. 공개 모델 + LoRA는 RAG310에서 180~223/310입니다. 자체 모델이 도달해야 할 참고 수준이며 trid 모델이 아닙니다. [기준선](reports/open-weight-baseline/README.md) · [LoRA 측정](reports/open-weight-lora/)
 - **2026-10-29** 자체 91M 몸통의 법령·보도·위키 혼합 자료 **10억 토큰 이어 사전학습** 완료를 확인했습니다. 추출 독해기 8조합 비교 중 2조합이 끝났습니다. [기록](docs/experiments/PRETRAINING.md)
 - **2026-10-28** 법령·행정규칙·자치법규 3,000건에서 조문 구조 그래프 검색을 측정했습니다. 다중 근거 회수율은 BM25 단독 6.25%, 그래프 확장 16.25%입니다(12문단 기준). [측정](reports/graph-retrieval-v1.md)
 
 ## 모델
 
-현재 두 트랙을 같은 평가셋으로 비교하고 있습니다. 어느 쪽도 제품 기본 모델로 확정하지 않았고 가중치는 배포하지 않습니다.
+자체 개발 모델 하나만 있습니다. 가중치는 아직 배포하지 않습니다.
 
-| 모델 | 트랙 | 파라미터 | 구조 | 상태 |
-|---|---|---:|---|---|
-| **trid-91M** | 자체 개발. 무작위 초기화부터 직접 학습 | 91.2M | decoder-only, 12층, dim 768, 문맥 1,024, BPE 8,192 | 실험. 추출 독해 헤드를 테스트 데모에 연결 |
-| **trid-Kanana-2.1B-LoRA** | 공개 가중치 + trid SFT | 2.1B | `kakaocorp/kanana-1.5-2.1b-instruct-2505` + LoRA r16 | 실험. Q8_0 GGUF 2.2 GB |
-| **trid-Qwen3-1.7B-LoRA** | 공개 가중치 + trid SFT | 1.7B | `Qwen/Qwen3-1.7B` + LoRA r16 | 실험. Q8_0 GGUF 1.8 GB |
+| 모델 | 파라미터 | 구조 | 상태 |
+|---|---:|---|---|
+| **trid-91M** | 91.2M | decoder-only, 12층, dim 768, 문맥 1,024, BPE 8,192. 무작위 초기화부터 직접 학습 | 실험. 추출 독해 헤드를 테스트 데모에 연결 |
 
-두 공개 기반 모델은 모두 Apache 2.0입니다. LoRA는 `data/korean-rag-curriculum-v4`에서 2,000예제를 뽑아 250단계(batch 8, lr 2e-4) 학습한 뒤 병합했습니다.
+모델 크기 확대와 공공기관 문서 수집 확대를 다음 단계로 진행합니다.
 
 <details>
 <summary><b>trid-91M 구조</b></summary>
@@ -74,11 +74,12 @@ trid는 인터넷이 끊긴 기관 내부 서버에서 규정·공고·보도자
 ## 주요 특징
 
 - **폐쇄망 전제**: 추론 시 외부 API, 외부 임베딩 모델, 네트워크 호출이 없습니다. 형태소 분석기 모델 파일까지 패키지에 포함됩니다.
-- **복사 보장 디코딩**: 값은 인용 문단의 부분 문자열로만 생성합니다(`trid/constrained.py`, `trid/span_scoring.py`). 공개 가중치 트랙에도 같은 제약을 llama.cpp GBNF 문법으로 적용합니다.
+- **복사 보장 디코딩**: 값은 인용 문단의 부분 문자열로만 생성합니다(`trid/constrained.py`, `trid/span_scoring.py`). 비교 기준선 측정에도 같은 제약을 llama.cpp GBNF 문법으로 적용합니다.
 - **보류 응답**: 근거가 없으면 `확인 불가`, 근거끼리 다르면 `근거 충돌`로 멈추도록 학습하고 평가합니다.
 - **조문 구조 그래프 검색**: LLM 없이 법→장→조→항→호 계층과 명시 참조("제12조에 따른")를 파싱해 BM25 결과를 참조 조문·별표로 확장합니다.
 - **감사 가능성**: 권한 필터, 감사 로그, 답이 어느 문서의 몇 번째 글자에서 왔는지 기록합니다. HWP·HWPX·PDF를 수집하고 색인 단계에서 개인정보를 마스킹합니다.
 - **출처 추적 가능한 학습 데이터**: 학습 자료마다 출처 URL, 라이선스, SHA256을 `provenance.json`에 남깁니다.
+- **공개 모델은 데이터 작성 보조로만**: 기관 문서 독해 예제 일부는 공개 모델(Kanana·Qwen)이 질문 초안을 쓰고 다른 모델이 검증합니다(`scripts/build_teacher_qa.py`). 답은 모두 원문 글자열을 그대로 복사하며, 공개 모델의 가중치나 생성 답변은 trid에 들어가지 않습니다. 해당 행에는 작성·검증 모델이 기록됩니다.
 
 ## 성능
 
@@ -95,8 +96,8 @@ trid는 인터넷이 끊긴 기관 내부 서버에서 규정·공고·보도자
 | Qwen3-1.7B (튜닝 전) | 근거 제한 문법 | 20 (6.5%) | 6 | 14 |
 | Kanana-1.5-2.1B (튜닝 전) | 지시만 | 1 (0.3%) | — | — |
 | Kanana-1.5-2.1B (튜닝 전) | 근거 제한 문법 | 63 (20.3%) | 52 | 11 |
-| **trid-Qwen3-1.7B-LoRA** | 근거 제한 문법 | 180 (58.1%) | 126 | 54 |
-| **trid-Kanana-2.1B-LoRA** | 근거 제한 문법 | **223 (71.9%)** | **161** | **62** |
+| 참고: Qwen3-1.7B + LoRA (외부 가중치, trid 아님) | 근거 제한 문법 | 180 (58.1%) | 126 | 54 |
+| 참고: Kanana-1.5-2.1B + LoRA (외부 가중치, trid 아님) | 근거 제한 문법 | 223 (71.9%) | 161 | 62 |
 
 ### 실제 기관 보도자료 probe (40문항)
 
@@ -105,8 +106,8 @@ trid는 인터넷이 끊긴 기관 내부 서버에서 규정·공고·보도자
 | trid-91M 추출 독해기 (`cpt-v1/head-v2/data-v4`) | 20 | 14 | 6 |
 | Qwen3-1.7B (튜닝 전, 근거 제한 문법) | 0 | 0 | 0 |
 | Kanana-1.5-2.1B (튜닝 전, 근거 제한 문법) | 15 | 15 | 0 |
-| **trid-Qwen3-1.7B-LoRA** (근거 제한 문법) | 30 | 20 | 10 |
-| **trid-Kanana-2.1B-LoRA** (근거 제한 문법) | **35** | **26** | 9 |
+| 참고: Qwen3-1.7B + LoRA (외부 가중치, trid 아님) | 30 | 20 | 10 |
+| 참고: Kanana-1.5-2.1B + LoRA (외부 가중치, trid 아님) | 35 | 26 | 9 |
 
 > [!NOTE]
 > - RAG310은 모델 선택이나 튜닝에 사용하지 않았습니다. 다만 자체 작성 160문항은 학습 커리큘럼과 같은 개발자가 만든 합성 문서라, 실제 기관 문서 성능을 대표하지 않습니다.
@@ -150,28 +151,21 @@ uv sync --frozen --python 3.12 --extra service
 .venv/bin/python scripts/evaluate_rag_eval.py --run runs/<run> --decoding evidence --output reports/<name>.json
 .venv/bin/python scripts/evaluate_security.py --run runs/<run> --decoding span --output reports/<name>.json
 
-# 공개 가중치 모델: llama-server를 띄운 뒤 같은 평가셋으로 측정
+# 비교 기준선(공개 모델): llama-server를 띄운 뒤 같은 평가셋으로 측정
 .venv/bin/python scripts/evaluate_external_chat.py --model-file <model.gguf> --model-id <id> --revision <rev> \
     --family qwen3 --output reports/<name>.json
 ```
 
 ## 학습
 
-| 단계 | 자체 트랙 (trid-91M) | 공개 가중치 트랙 |
-|---|---|---|
-| 데이터 수집·정제 | `scripts/collect_*.py`, `scripts/build_pretraining_mix.py` | 동일 자료 사용 |
-| 사전학습 | `trid pretrain` ([기록](docs/experiments/PRETRAINING.md)) | `scripts/prepare_trid_cpt_sample.py` → `scripts/train_trid_cpt.py` |
-| 지도학습 | `scripts/train_public_dialogue.py`, 추출 헤드 `trid/extractive.py` | `scripts/train_trid_sft.py` (LoRA 병합) |
-| 대화 자기증류 | — | `scripts/distill_trid_chat.py` |
+| 단계 | trid (자체) |
+|---|---|
+| 데이터 수집·정제 | `scripts/collect_*.py`, `scripts/build_pretraining_mix.py` |
+| 사전학습 | `trid pretrain` ([기록](docs/experiments/PRETRAINING.md)) |
+| 지도학습 | `scripts/train_public_dialogue.py`, 추출 헤드 `trid/extractive.py` |
+| 기관 문서 독해 예제 | `scripts/build_teacher_qa.py` (원문 복사 답, 공개 모델은 질문 초안·검증만) |
 
-공개 가중치 트랙은 Kanana 설정이 transformers 4.x를 요구해 별도 환경에서 실행합니다.
-
-```sh
-uv run --no-project --python 3.12 --with 'torch==2.9.*' --with 'transformers>=4.51,<5' --with 'peft==0.17.*' \
-    --with safetensors --with numpy --with tokenizers \
-    python scripts/train_trid_sft.py --model <hf dir> --model-id <id> --revision <rev> --family qwen3 \
-    --output runs/<name> --device cuda
-```
+`scripts/prepare_trid_cpt_sample.py`, `scripts/train_trid_cpt.py`, `scripts/train_trid_sft.py`, `scripts/distill_trid_chat.py`는 공개 가중치 모델을 학습하는 도구입니다. 위 비교 기준선(LoRA) 측정을 재현하는 용도로만 남겨 두며 trid 학습에는 쓰지 않습니다.
 
 ## 배포
 
@@ -223,7 +217,7 @@ deploy/               테스트 데모 배포 설정
 
 ## 라이선스
 
-코드는 [Apache License 2.0](LICENSE)입니다. 학습 데이터는 위키백과(CC BY-SA), 법제처 법령·판례(저작권법 제7조), korea.kr 보도자료(공공누리 제1유형), KLUE(CC BY-SA), TyDi QA를 사용하며 자료별 출처는 각 `provenance.json`에 있습니다. 공개 가중치 트랙의 기반 모델 Qwen3와 Kanana-1.5는 Apache 2.0입니다. 학습된 가중치는 아직 배포하지 않습니다.
+코드는 [Apache License 2.0](LICENSE)입니다. 학습 데이터는 위키백과(CC BY-SA), 법제처 법령·판례(저작권법 제7조), korea.kr 보도자료(공공누리 제1유형), KLUE(CC BY-SA), TyDi QA(Apache 2.0)를 사용하며 자료별 출처는 각 `provenance.json`에 있습니다. 비교 기준선으로 측정한 Qwen3와 Kanana-1.5는 Apache 2.0이며 trid 가중치에는 포함되지 않습니다. 학습된 가중치는 아직 배포하지 않습니다.
 
 ## 인용
 
