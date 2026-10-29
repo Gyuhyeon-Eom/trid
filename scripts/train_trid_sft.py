@@ -7,8 +7,8 @@ Isolated environment (Kanana's config needs transformers 4.x; the project venv p
 
 Grounded-QA rows are drawn from data/korean-rag-curriculum-v4/train.jsonl by the curriculum's own `weight`
 (sampling mass), without replacement, with a fixed seed; `--rag-only` restricts the draw to `rag_*` tasks so the
-curriculum's fixed conversational templates are not learned. `--chat` adds every row of a self-distilled chat
-set (scripts/distill_trid_chat.py), with its dialogue history, and no system prompt. RAG rows use the same system
+curriculum's fixed conversational templates are not learned. `--chat` (repeatable) adds every row of distilled sets
+(scripts/distill_trid_chat.py, scripts/distill_trid_document_qa.py), with dialogue history, and no system prompt. RAG rows use the same system
 prompt as the `grammar_instructed` evaluation condition (scripts/evaluate_external_chat.SYSTEM). Each sample is the
 model's native chat template with the generation prompt (Qwen3: no-thinking prefix) followed by the answer and the
 template's end-of-turn token; loss covers only those answer tokens. No evaluation-set selection: fixed step count,
@@ -105,7 +105,8 @@ def main():
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--examples', type=int, default=2000)
     p.add_argument('--rag-only', action='store_true', help='draw only rag_* curriculum tasks')
-    p.add_argument('--chat', type=Path, help='self-distilled chat directory with train.jsonl (all rows used)')
+    p.add_argument('--chat', type=Path, action='append', default=[],
+                   help='distilled directory with train.jsonl (all rows used); repeatable')
     p.add_argument('--batch-size', type=int, default=8)
     p.add_argument('--micro-batch-size', type=int, default=2)
     p.add_argument('--lr', type=float, default=2e-4)
@@ -129,7 +130,7 @@ def main():
     if args.rag_only:
         train_rows = [r for r in train_rows if r['task'].startswith('rag')]
     chosen = weighted_sample(train_rows, args.examples, rng)
-    chat_rows = read_jsonl(args.chat / 'train.jsonl') if args.chat else []
+    chat_rows = [row for path in args.chat for row in read_jsonl(path / 'train.jsonl')]
     chosen += chat_rows
     train, dropped = [], 0
     for row in chosen:
@@ -197,8 +198,8 @@ def main():
         'protocol': __doc__, 'stage': 'trid_sft', 'base_model_id': args.model_id, 'base_revision': args.revision,
         'family': args.family, 'data': str(args.data.relative_to(ROOT)), 'train_sha256': digest(args.data / 'train.jsonl'),
         'valid_sha256': digest(args.data / 'valid.jsonl'), 'rag_only': args.rag_only,
-        'chat': str(args.chat) if args.chat else None,
-        'chat_sha256': digest(args.chat / 'train.jsonl') if args.chat else None, 'chat_rows': len(chat_rows),
+        'chat': [str(path) for path in args.chat],
+        'chat_sha256': {str(path): digest(path / 'train.jsonl') for path in args.chat}, 'chat_rows': len(chat_rows),
         'examples_drawn': len(chosen),
         'examples_trained': len(train), 'dropped_over_max_tokens': dropped,
         'task_counts': {t: sum(r['task'] == t for r in chosen) for t in sorted({r['task'] for r in chosen})},
