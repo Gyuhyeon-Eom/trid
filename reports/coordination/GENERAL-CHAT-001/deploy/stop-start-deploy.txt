@@ -1,0 +1,15 @@
+00:40:54 stop
+Demo is stopped (supervisor and model server process group exited).
+group 80468 members left: 0
+00:40:58 start
+Demo ready. Run deploy to connect test.tridatum.co.
+00:41:19 deploy
+env.ORIGIN_URL ("https://background-merit-combinations...")           Environment Variable      
+Current Version ID: d272a2ae-82fc-41ab-af07-58215e0c9291
+https://test.tridatum.co
+00:41:26 done
+{'status': 'running', 'supervisor_pid': 85814, 'backend_pid': 85815, 'backend_pgid': 85815, 'backend_started': 'Sat Oct 31 00:40:58 2026', 'connection_status': 'ready'}
+python3.1 85815 127.0.0.1:51873
+llama-ser 85818 127.0.0.1:51912
+llama-ser 85826 127.0.0.1:51917
+llama-ser 85828 127.0.0.1:51918

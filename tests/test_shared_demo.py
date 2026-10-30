@@ -195,6 +195,15 @@ class ChatBackendTests(unittest.TestCase):
         self.assertEqual(r['answer'], '네.')
         self.assertEqual(sent[-1][1:], ['user 2', 'assistant 2', '그래서?'])  # the latest turn kept, the oldest gone
 
+    def test_chat_resamples_a_reply_that_repeats_an_earlier_answer(self):
+        from scripts.shared_demo import chat_reply
+        earlier = '출장 중 체력 관리는 휴식과 가벼운 운동이 중요해요.'
+        history = [{'role': 'user', 'content': '체력 관리는?'}, {'role': 'assistant', 'content': earlier}]
+        replies = iter([{'generated': earlier}, {'generated': '오늘 이야기 나눠서 저도 즐거웠어요.'}])
+        with patch('scripts.shared_demo.chat_complete', side_effect=lambda *a: next(replies)):
+            r = chat_reply('http://127.0.0.1:1', 'qwen3', 4096, history, '오늘 얘기 고마웠어요.')
+        self.assertEqual(r['answer'], '오늘 이야기 나눠서 저도 즐거웠어요.')
+
     def test_value_hold_passage_numbers_are_neither_quotes_nor_support(self):
         from scripts.shared_demo import PassageChunk
         text = '식비는 하루 3만 원입니다. 담당은 운영지원팀입니다.'

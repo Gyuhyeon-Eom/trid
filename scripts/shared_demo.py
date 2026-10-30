@@ -326,10 +326,11 @@ CHAT_SYSTEM = (
     '당신은 TRID입니다. 공공기관 직원과 이야기하는 한국어 AI 비서입니다. 사용자의 말에 공감하고, 앞선 대화를 이어서 '
     '자연스럽고 구체적으로 답하세요. 대화 도중에 인사나 자기소개를 반복하지 마세요. 한국어로만 답하세요.')
 # Qwen3's recommended non-thinking sampling for conversation (greedy decoding made the 1.7B model repeat its previous
-# answer on follow-ups); classification and document answers stay greedy. Han characters are excluded by grammar
-# (sampled Qwen3 drifts into Chinese mid-reply).
+# answer on follow-ups); classification and document answers stay greedy. Scripts sampled Qwen3 drifts into mid-reply
+# are excluded by grammar: Han, kana, and accented Latin ("잘 hiểu해요"); plain ASCII (Excel, PDF) stays.
 CHAT_SAMPLING = dict(temperature=0.7, top_p=0.8, top_k=20, min_p=0, presence_penalty=1.5)
-NO_HAN = r'root ::= [^\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]*'
+NO_FOREIGN_SCRIPT = (r'root ::= [^\u00c0-\u024f\u1e00-\u1eff\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff'
+                     r'\u0300-\u036f]*')
 EXPLAIN_SYSTEM = (
     '당신은 TRID입니다. 공공기관 업무 용어·개념·일반적인 요령을 쉬운 한국어로 짧게 설명하세요. 특정 기관 규정의 금액·'
     '한도·기한·조문 번호는 말하지 말고, 어느 기관의 규정이나 자료에 따른 설명인 것처럼 기관명을 내세우지 마세요. 구체적인 '
@@ -440,7 +441,7 @@ def route(base, family, context, history, question, continues=None):
 
 
 def chat_complete(base, messages, family, max_tokens, context):
-    """Conversation completion: the model's native template (Qwen3 without thinking), CHAT_SAMPLING, no Han characters.
+    """Conversation completion: the model's native template (Qwen3 without thinking), CHAT_SAMPLING, no foreign script.
     {'generated', 'truncated_output'}; {'skipped_context': True} when the prompt leaves no room for `max_tokens`."""
     prompt = llama_request(base, '/apply-template', {'messages': messages, 'chat_template_kwargs': {'enable_thinking': False}})['prompt']
     if family == 'qwen3' and not prompt.endswith(QWEN3_NO_THINK):
@@ -448,7 +449,7 @@ def chat_complete(base, messages, family, max_tokens, context):
     tokens = llama_request(base, '/tokenize', {'content': prompt, 'add_special': True, 'parse_special': True})['tokens']
     if len(tokens) + max_tokens > context:
         return {'skipped_context': True}
-    c = llama_request(base, '/completion', dict(prompt=tokens, n_predict=max_tokens, grammar=NO_HAN, cache_prompt=False,
+    c = llama_request(base, '/completion', dict(prompt=tokens, n_predict=max_tokens, grammar=NO_FOREIGN_SCRIPT, cache_prompt=False,
                                                  seed=secrets.randbelow(2 ** 31), **CHAT_SAMPLING))
     return {'generated': c['content'].strip(), 'truncated_output': c['stop_type'] == 'limit'}
 
@@ -468,7 +469,10 @@ def chat_reply(base, family, context, history, question, max_tokens=384, explain
     withheld unless every number in it was given by the visitor in this conversation (their own facts may be repeated
     or organised); everyday figures stay. On the first turn of a conversation (`first_turn`, default: no turns given)
     the model is told there is nothing earlier, so "제 이름이 뭐라고 했죠?" after a new conversation is not answered
-    with a claimed memory."""
+    with a claimed memory. A reply that repeats one of the earlier answers given to it (≥ 0.9 similar: the 1.7B model
+    answered "오늘 얘기 고마웠어요" with its previous answer word for word) is sampled once more."""
+    from difflib import SequenceMatcher
+
     system = EXPLAIN_SYSTEM if explain else CHAT_SYSTEM
     if (not history) if first_turn is None else first_turn:
         system += ' 이 대화는 지금 막 시작되어 앞선 내용이 없습니다. 사용자가 앞에서 한 말을 물으면 아직 들은 적이 없다고 답하세요.'
@@ -478,6 +482,12 @@ def chat_reply(base, family, context, history, question, max_tokens=384, explain
         if not r.get('skipped_context') or not turns:
             break
         turns = turns[2:]
+    earlier = [h['content'] for h in turns if h['role'] == 'assistant']
+    repeats = lambda text: any(SequenceMatcher(None, text, e).ratio() >= 0.9 for e in earlier)
+    if r.get('generated') and repeats(r['generated']):
+        again = chat_complete(base, _messages(system, turns, question), family, max_tokens, context)
+        if again.get('generated') and not repeats(again['generated']):
+            r = again
     output = (r.get('generated') or '').strip()
     given_text = ' '.join([question] + [h['content'] for h in history if h['role'] == 'user'])
     given, given_values = _numbers(given_text), _values(given_text)

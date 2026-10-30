@@ -1,0 +1,15 @@
+2026-10-31 00:40:49 KST
+# state.json
+{'status': 'running', 'supervisor_pid': 80467, 'backend_pid': 80468, 'backend_pgid': 80468, 'backend_started': 'Fri Oct 30 23:57:23 2026', 'connection_status': 'ready'}
+# backend group
+80467     1 80467 Fri Oct 30 23:57:23 2026 /Users/eomgyuhyeon/사업/trid/.venv/bin/python /Users/eomgyuhyeon/사업/trid/scripts/share_demo_control.py 
+80468 80467 80468 Fri Oct 30 23:57:23 2026 /Users/eomgyuhyeon/사업/trid/.venv/bin/python /Users/eomgyuhyeon/사업/trid/scripts/shared_demo.py --secre
+80470 80468 80468 Fri Oct 30 23:57:25 2026 /Users/eomgyuhyeon/사업/trid/runs/tools/llama.cpp-8ca4060-metal/llama-server -m /Users/eomgyuhyeon/사업/t
+80479 80468 80468 Fri Oct 30 23:57:29 2026 /Users/eomgyuhyeon/사업/trid/runs/tools/llama.cpp-8ca4060-metal/llama-server -m /Users/eomgyuhyeon/사업/t
+80492 80468 80468 Fri Oct 30 23:57:31 2026 /Users/eomgyuhyeon/사업/trid/runs/tools/llama.cpp-8ca4060-metal/llama-server -m /Users/eomgyuhyeon/사업/t
+80507 80468 80468 Fri Oct 30 23:57:41 2026 /Users/eomgyuhyeon/사업/trid/.venv/bin/python -c from multiprocessing.resource_tracker import main;main(4)
+# listeners
+python3.1 80468 127.0.0.1:51873
+llama-ser 80470 127.0.0.1:51912
+llama-ser 80479 127.0.0.1:51917
+llama-ser 80492 127.0.0.1:51918
