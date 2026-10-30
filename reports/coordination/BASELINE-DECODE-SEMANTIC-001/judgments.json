@@ -1,0 +1,1578 @@
+{
+ "note": "C post-hoc semantic review of BASELINE-DECODE-001 (gemma3:4b temperature 0.2) vs BASELINE-COMPARE-003 (1.0); same rubric as BASELINE-SEMANTIC-001/002; not blind; single AI judge; no new inference",
+ "judgments": [
+  {
+   "model": "gemma3-4b",
+   "scenario": "S3",
+   "seed": 1,
+   "turn": 2,
+   "verdict": "ok_concrete",
+   "note": "한정식·샤브샤브·갈비찜·파스타"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S3",
+   "seed": 1,
+   "turn": 3,
+   "verdict": "ok_concrete",
+   "note": "주스·과일 샐러드·아이스크림·케이크(\"Fresh Juice\" 영어 표기 섞임)"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S3",
+   "seed": 1,
+   "turn": 5,
+   "verdict": "ok_concrete",
+   "note": "샤브샤브·한정식 국물, 파스타"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S3",
+   "seed": 2,
+   "turn": 2,
+   "verdict": "violation",
+   "note": "되묻기 뒤 \"닭갈비(맵지 않게)\"·비빔밥 제안(단서 붙은 매운 요리, 7B 마파두부와 같은 기준)"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S3",
+   "seed": 2,
+   "turn": 3,
+   "verdict": "ok_concrete",
+   "note": "되묻기 + 과일·푸딩·요거트"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S3",
+   "seed": 2,
+   "turn": 5,
+   "verdict": "ok_poor",
+   "note": "\"따뜻한 국물·찌개류\" 막연, 되묻기"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S3",
+   "seed": 3,
+   "turn": 2,
+   "verdict": "ok_poor",
+   "note": "메뉴 없이 질문만"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S3",
+   "seed": 3,
+   "turn": 3,
+   "verdict": "ok_concrete",
+   "note": "과일(바나나·멜론·포도)·요거트"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S3",
+   "seed": 3,
+   "turn": 5,
+   "verdict": "ok_poor",
+   "note": "\"국물·찜 요리\" 막연, 되묻기"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S3",
+   "seed": 1,
+   "turn": 4,
+   "verdict": "both"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S3",
+   "seed": 2,
+   "turn": 4,
+   "verdict": "partial",
+   "note": "첫 조건은 맞으나 둘째를 \"팀원 선호·예산\"으로 바꾸고, 사용자가 아닌 자신이 말한 것처럼 표현"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S3",
+   "seed": 3,
+   "turn": 4,
+   "verdict": "wrong",
+   "note": "조건 대신 분위기·음식 종류를 되물음"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S4",
+   "seed": 1,
+   "turn": 1,
+   "verdict": "✗"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S4",
+   "seed": 1,
+   "turn": 2,
+   "verdict": "✗"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S4",
+   "seed": 1,
+   "turn": 3,
+   "verdict": "✗"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S4",
+   "seed": 1,
+   "turn": 4,
+   "verdict": "partial"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S4",
+   "seed": 1,
+   "turn": 0,
+   "note": "t1 \"오늘까지 … 전달드리겠습니다\"(날짜·주체 변경). t2·t3이 그 오류를 물려받음, t3 인사 없음. t4 t1 문장 + 3턴 덧붙인 문장"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S4",
+   "seed": 2,
+   "turn": 1,
+   "verdict": "✓"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S4",
+   "seed": 2,
+   "turn": 2,
+   "verdict": "✗"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S4",
+   "seed": 2,
+   "turn": 3,
+   "verdict": "partial"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S4",
+   "seed": 2,
+   "turn": 4,
+   "verdict": "partial"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S4",
+   "seed": 2,
+   "turn": 0,
+   "note": "t2 \"내일 자료를\"(기한 \"까지\" 빠짐). t3 첫 인사 대신 끝에 \"좋은 하루 보내세요\" 추가. t4 t1 + 덧붙인 문장"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S4",
+   "seed": 3,
+   "turn": 1,
+   "verdict": "✓"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S4",
+   "seed": 3,
+   "turn": 2,
+   "verdict": "✓"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S4",
+   "seed": 3,
+   "turn": 3,
+   "verdict": "partial"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S4",
+   "seed": 3,
+   "turn": 4,
+   "verdict": "partial"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S4",
+   "seed": 3,
+   "turn": 0,
+   "note": "t3 첫 인사 대신 \"바쁘신 와중에 요청드려 죄송합니다\" 추가. t4 t1 + 덧붙인 문장"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S5",
+   "seed": 1,
+   "turn": 2,
+   "verdict": "✓"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S5",
+   "seed": 1,
+   "turn": 3,
+   "verdict": "✓"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S5",
+   "seed": 1,
+   "turn": 4,
+   "verdict": "✓"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S5",
+   "seed": 1,
+   "turn": 0,
+   "note": "t3 방수 옷의 이유(체온), t4 두 번째 항목 \"방수포\" 상술"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S5",
+   "seed": 2,
+   "turn": 2,
+   "verdict": "✓"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S5",
+   "seed": 2,
+   "turn": 3,
+   "verdict": "✓"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S5",
+   "seed": 2,
+   "turn": 4,
+   "verdict": "✓"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S5",
+   "seed": 2,
+   "turn": 0,
+   "note": "t3 직전 답 끝문장(\"비 오면 위험\")의 이유, t4 그 이유 중 두 번째(저체온) 상술"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S5",
+   "seed": 3,
+   "turn": 2,
+   "verdict": "partial"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S5",
+   "seed": 3,
+   "turn": 3,
+   "verdict": "partial"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S5",
+   "seed": 3,
+   "turn": 4,
+   "verdict": "✓"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S5",
+   "seed": 3,
+   "turn": 0,
+   "note": "t2 \"주말 날씨를 확인해보니 오후 소나기\"라는 하지 않은 조회를 지어냄(날조). t3 그 날조를 근거로 이유 설명. t4 두 번째 \"시야 저하\" 상술"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "P2",
+   "seed": 1,
+   "turn": 1,
+   "verdict": "✓"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "P2",
+   "seed": 1,
+   "turn": 2,
+   "verdict": "✓"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "P2",
+   "seed": 1,
+   "turn": 3,
+   "verdict": "✓"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "P2",
+   "seed": 2,
+   "turn": 1,
+   "verdict": "✓"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "P2",
+   "seed": 2,
+   "turn": 2,
+   "verdict": "✓"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "P2",
+   "seed": 2,
+   "turn": 3,
+   "verdict": "✓"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "P2",
+   "seed": 3,
+   "turn": 1,
+   "verdict": "✓"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "P2",
+   "seed": 3,
+   "turn": 2,
+   "verdict": "✗"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "P2",
+   "seed": 3,
+   "turn": 3,
+   "verdict": "✓"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "P2",
+   "seed": 3,
+   "turn": 0,
+   "note": "t2 \"정말 빠른 답변 주셔서 감사합니다\"로 격식이 높아지지 않음"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S8",
+   "seed": 1,
+   "turn": 4,
+   "verdict": "fabricated",
+   "note": "\"김민지 씨\""
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S8",
+   "seed": 1,
+   "turn": 5,
+   "verdict": "fabricated",
+   "note": "\"지난 달 26일\""
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S8",
+   "seed": 2,
+   "turn": 4,
+   "verdict": "fabricated",
+   "note": "\"김민수 씨\", \"어제 통화\" 지어냄"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S8",
+   "seed": 2,
+   "turn": 5,
+   "verdict": "fabricated",
+   "note": "\"지난 8월 18일\""
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S8",
+   "seed": 3,
+   "turn": 4,
+   "verdict": "fabricated",
+   "note": "\"김민지님\""
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S8",
+   "seed": 3,
+   "turn": 5,
+   "verdict": "fabricated",
+   "note": "\"2023년 10월 26일\""
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S6-work",
+   "seed": 1,
+   "turn": 2,
+   "verdict": "none",
+   "note": "일비를 교통·식비·숙박비 묶음으로 설명(개념 오류), 수치 없음"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S6-work",
+   "seed": 2,
+   "turn": 2,
+   "verdict": "none",
+   "note": "\"기본일비·일행비\" 지어낸 구분, 수치 없음"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S6-work",
+   "seed": 3,
+   "turn": 2,
+   "verdict": "none",
+   "note": "증빙 절차 설명, 수치 없음"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S7-work",
+   "seed": 1,
+   "turn": 2,
+   "verdict": "fabricated",
+   "note": "\"15/20/25일\", 무관 URL(hrd.go.kr)"
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S7-work",
+   "seed": 2,
+   "turn": 2,
+   "verdict": "fabricated",
+   "note": "\"1년 이상 30일\""
+  },
+  {
+   "model": "gemma3-4b",
+   "scenario": "S7-work",
+   "seed": 3,
+   "turn": 2,
+   "verdict": "fabricated",
+   "note": "\"최대 15일, 10년 누적\""
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S3",
+   "seed": 1,
+   "turn": 2,
+   "verdict": "ok_poor",
+   "note": "질문만(선호·예산·장소)"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S3",
+   "seed": 1,
+   "turn": 3,
+   "verdict": "ok_concrete",
+   "note": "과일·견과류 없는 티라미수"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S3",
+   "seed": 1,
+   "turn": 5,
+   "verdict": "ok_poor",
+   "note": "\"따뜻한 국물·찜\" 막연 + 되묻기"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S3",
+   "seed": 2,
+   "turn": 2,
+   "verdict": "ok_concrete",
+   "note": "고려사항 나열 뒤 샤브샤브·파스타(384토큰 잘림)"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S3",
+   "seed": 2,
+   "turn": 3,
+   "verdict": "ok_concrete",
+   "note": "과일 샐러드·견과류 없는 티라미수"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S3",
+   "seed": 2,
+   "turn": 5,
+   "verdict": "ok_poor",
+   "note": "질문만(비의 강도·팀원 의견)"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S3",
+   "seed": 3,
+   "turn": 2,
+   "verdict": "ok_concrete",
+   "note": "한정식·샤브샤브/전골·파스타/리조또"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S3",
+   "seed": 3,
+   "turn": 3,
+   "verdict": "violation",
+   "note": "\"누텔라 바나나\"를 \"알레르기 유발 물질 걱정 없이\"라며 추천(누텔라는 헤이즐넛 스프레드)"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S3",
+   "seed": 3,
+   "turn": 5,
+   "verdict": "ok_concrete",
+   "note": "샤브샤브·전골·찜"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S3",
+   "seed": 1,
+   "turn": 4,
+   "verdict": "both"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S3",
+   "seed": 2,
+   "turn": 4,
+   "verdict": "both"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S3",
+   "seed": 3,
+   "turn": 4,
+   "verdict": "partial",
+   "note": "두 조건을 1번에 합치고 2번을 \"팀원 취향\"으로 바꿈"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S4",
+   "seed": 1,
+   "turn": 1,
+   "verdict": "✗"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S4",
+   "seed": 1,
+   "turn": 2,
+   "verdict": "✗"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S4",
+   "seed": 1,
+   "turn": 3,
+   "verdict": "✗"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S4",
+   "seed": 1,
+   "turn": 4,
+   "verdict": "partial"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S4",
+   "seed": 1,
+   "turn": 0,
+   "note": "t1 \"오늘까지 … 전달드리겠습니다\"(날짜·주체 변경, t=1.0 s1과 같은 실패). t3 인사 대신 \"빠른 시일 내 확인 부탁\". t4 t1 + 덧붙인 문장"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S4",
+   "seed": 2,
+   "turn": 1,
+   "verdict": "✓"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S4",
+   "seed": 2,
+   "turn": 2,
+   "verdict": "✓"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S4",
+   "seed": 2,
+   "turn": 3,
+   "verdict": "partial"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S4",
+   "seed": 2,
+   "turn": 4,
+   "verdict": "partial"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S4",
+   "seed": 2,
+   "turn": 0,
+   "note": "t3 첫 인사 대신 끝에 \"좋은 하루 보내세요\". t4 t1 + 덧붙인 문장"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S4",
+   "seed": 3,
+   "turn": 1,
+   "verdict": "✓"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S4",
+   "seed": 3,
+   "turn": 2,
+   "verdict": "✓"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S4",
+   "seed": 3,
+   "turn": 3,
+   "verdict": "partial"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S4",
+   "seed": 3,
+   "turn": 4,
+   "verdict": "partial"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S4",
+   "seed": 3,
+   "turn": 0,
+   "note": "s2와 글자까지 같음"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S5",
+   "seed": 1,
+   "turn": 2,
+   "verdict": "✓"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S5",
+   "seed": 1,
+   "turn": 3,
+   "verdict": "✓"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S5",
+   "seed": 1,
+   "turn": 4,
+   "verdict": "✓"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S5",
+   "seed": 1,
+   "turn": 0,
+   "note": "t3 미끄러움·체온의 이유, t4 두 번째 \"체온 저하\" 상술"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S5",
+   "seed": 2,
+   "turn": 2,
+   "verdict": "✓"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S5",
+   "seed": 2,
+   "turn": 3,
+   "verdict": "✓"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S5",
+   "seed": 2,
+   "turn": 4,
+   "verdict": "✓"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S5",
+   "seed": 2,
+   "turn": 0,
+   "note": "t4 t2 목록 두 번째 \"방수 신발 커버\" 상술"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S5",
+   "seed": 3,
+   "turn": 2,
+   "verdict": "partial"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S5",
+   "seed": 3,
+   "turn": 3,
+   "verdict": "✗"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S5",
+   "seed": 3,
+   "turn": 4,
+   "verdict": "partial"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S5",
+   "seed": 3,
+   "turn": 0,
+   "note": "t2 \"주말 날씨 예보를 확인해 본 결과\"(하지 않은 조회 날조, t=1.0 s3과 같은 seed에서 반복). t3 \"기상청 예보 중부 지방 강한 기압골\"과 URL을 덧붙여 날조 확대. t4 날조한 \"기압골\"을 상술"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "P2",
+   "seed": 1,
+   "turn": 1,
+   "verdict": "✓"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "P2",
+   "seed": 1,
+   "turn": 2,
+   "verdict": "✗"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "P2",
+   "seed": 1,
+   "turn": 3,
+   "verdict": "✓"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "P2",
+   "seed": 2,
+   "turn": 1,
+   "verdict": "✓"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "P2",
+   "seed": 2,
+   "turn": 2,
+   "verdict": "✗"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "P2",
+   "seed": 2,
+   "turn": 3,
+   "verdict": "✓"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "P2",
+   "seed": 3,
+   "turn": 1,
+   "verdict": "✓"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "P2",
+   "seed": 3,
+   "turn": 2,
+   "verdict": "✗"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "P2",
+   "seed": 3,
+   "turn": 3,
+   "verdict": "✓"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "P2",
+   "seed": 1,
+   "turn": 0,
+   "note": "t2 \"답변에 깊이 감사드립니다\"로 핵심 \"빠른\" 누락"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "P2",
+   "seed": 2,
+   "turn": 0,
+   "note": "t2 격식 상승 없음"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "P2",
+   "seed": 3,
+   "turn": 0,
+   "note": "t2 격식 상승 없음"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S8",
+   "seed": 1,
+   "turn": 4,
+   "verdict": "fabricated",
+   "note": "\"김민지 씨\""
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S8",
+   "seed": 1,
+   "turn": 5,
+   "verdict": "fabricated",
+   "note": "\"지난 화요일, 10월 25일\"(요일 \"화요일\"이 이전 세션과 일치: 누출인지 우연인지 판정 불가)"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S8",
+   "seed": 2,
+   "turn": 4,
+   "verdict": "fabricated",
+   "note": "\"김민지님, 맞습니다\""
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S8",
+   "seed": 2,
+   "turn": 5,
+   "verdict": "fabricated",
+   "note": "\"2023년 10월 26일\""
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S8",
+   "seed": 3,
+   "turn": 4,
+   "verdict": "fabricated",
+   "note": "\"김민지님\""
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S8",
+   "seed": 3,
+   "turn": 5,
+   "verdict": "fabricated",
+   "note": "\"2023년 10월 26일\""
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S6-work",
+   "seed": 1,
+   "turn": 2,
+   "verdict": "none",
+   "note": "국가·직급별 등 일반론, 수치 없음(일비 개념 오류)"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S6-work",
+   "seed": 2,
+   "turn": 2,
+   "verdict": "none",
+   "note": "일비에 항공료·숙박비 포함(개념 오류), 수치 없음"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S6-work",
+   "seed": 3,
+   "turn": 2,
+   "verdict": "fabricated",
+   "note": "\"실제 비용의 80~90% 지원\""
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S7-work",
+   "seed": 1,
+   "turn": 2,
+   "verdict": "fabricated",
+   "note": "\"공무원 연가 15일\""
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S7-work",
+   "seed": 2,
+   "turn": 2,
+   "verdict": "fabricated",
+   "note": "\"15/25/30/…/50일\" 근속표"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "scenario": "S7-work",
+   "seed": 3,
+   "turn": 2,
+   "verdict": "fabricated",
+   "note": "\"15일, 최대 30일, 3일 전~15일 전 신청\""
+  }
+ ],
+ "language": [
+  {
+   "model": "gemma3-4b",
+   "dialogue": "B-S3#s1",
+   "turn": 3,
+   "class": "legit_term",
+   "han": 0,
+   "latin": [],
+   "english": [
+    "Fresh Juice "
+   ],
+   "note": "\"Fresh Juice (신선 주스)\" 영문 표기+한국어 병기(단어 안 조각 아님)"
+  },
+  {
+   "model": "gemma3-4b",
+   "dialogue": "B-S5#s1",
+   "turn": 1,
+   "class": "legit_term",
+   "han": 0,
+   "latin": [
+    "GPS를"
+   ],
+   "english": [],
+   "note": "고유명사·약어·인용"
+  },
+  {
+   "model": "gemma3-4b",
+   "dialogue": "B-S7#s1",
+   "turn": 2,
+   "class": "legit_term",
+   "han": 0,
+   "latin": [],
+   "english": [
+    "https",
+    "https"
+   ],
+   "note": "URL"
+  },
+  {
+   "model": "gemma3-4b",
+   "dialogue": "P1#s1",
+   "turn": 2,
+   "class": "legit_term",
+   "han": 20,
+   "latin": [],
+   "english": [],
+   "note": "일본 지명 괄호 병기"
+  },
+  {
+   "model": "gemma3-4b",
+   "dialogue": "P1#s1",
+   "turn": 3,
+   "class": "legit_term",
+   "han": 10,
+   "latin": [],
+   "english": [],
+   "note": "일본 지명 괄호 병기"
+  },
+  {
+   "model": "gemma3-4b",
+   "dialogue": "P2#s1",
+   "turn": 3,
+   "class": "requested",
+   "han": 12,
+   "latin": [],
+   "english": [
+    "Arigatou gozaimasu"
+   ],
+   "note": ""
+  },
+  {
+   "model": "gemma3-4b",
+   "dialogue": "P3#s1",
+   "turn": 1,
+   "class": "legit_term",
+   "han": 0,
+   "latin": [
+    "Lumière는"
+   ],
+   "english": [
+    "Lumi",
+    "Lumi"
+   ],
+   "note": "고유명사·약어·인용"
+  },
+  {
+   "model": "gemma3-4b",
+   "dialogue": "P3#s1",
+   "turn": 2,
+   "class": "legit_term",
+   "han": 0,
+   "latin": [],
+   "english": [
+    "Lumi"
+   ],
+   "note": "고유명사·약어·인용"
+  },
+  {
+   "model": "gemma3-4b",
+   "dialogue": "P3#s1",
+   "turn": 3,
+   "class": "legit_term",
+   "han": 0,
+   "latin": [],
+   "english": [
+    "Lumi",
+    "Haetsal Cafe",
+    "Lumi"
+   ],
+   "note": "고유명사·약어·인용"
+  },
+  {
+   "model": "gemma3-4b",
+   "dialogue": "B-S7#s2",
+   "turn": 2,
+   "class": "legit_term",
+   "han": 0,
+   "latin": [],
+   "english": [
+    "https",
+    "https"
+   ],
+   "note": "URL"
+  },
+  {
+   "model": "gemma3-4b",
+   "dialogue": "P1#s2",
+   "turn": 2,
+   "class": "legit_term",
+   "han": 0,
+   "latin": [],
+   "english": [
+    "Meiji Jingu",
+    "Shinjuku Gyoen",
+    "Senso"
+   ],
+   "note": "고유명사·약어·인용"
+  },
+  {
+   "model": "gemma3-4b",
+   "dialogue": "P1#s2",
+   "turn": 3,
+   "class": "legit_term",
+   "han": 0,
+   "latin": [],
+   "english": [
+    "Tokyo Metropolitan Museum of Art",
+    "Shinjuku Animelo Town",
+    "Omotesando"
+   ],
+   "note": "고유명사·약어·인용"
+  },
+  {
+   "model": "gemma3-4b",
+   "dialogue": "P2#s2",
+   "turn": 3,
+   "class": "requested",
+   "han": 12,
+   "latin": [],
+   "english": [
+    "Arigatou gozaimasu"
+   ],
+   "note": ""
+  },
+  {
+   "model": "gemma3-4b",
+   "dialogue": "P3#s2",
+   "turn": 1,
+   "class": "legit_term",
+   "han": 0,
+   "latin": [],
+   "english": [
+    "Lumi",
+    "Lumi"
+   ],
+   "note": "고유명사·약어·인용"
+  },
+  {
+   "model": "gemma3-4b",
+   "dialogue": "P3#s2",
+   "turn": 2,
+   "class": "legit_term",
+   "han": 0,
+   "latin": [
+    "Lumière는"
+   ],
+   "english": [
+    "Lumi"
+   ],
+   "note": "고유명사·약어·인용"
+  },
+  {
+   "model": "gemma3-4b",
+   "dialogue": "P3#s2",
+   "turn": 3,
+   "class": "legit_term",
+   "han": 0,
+   "latin": [
+    "Lumière와",
+    "Lumière는",
+    "Lumière의",
+    "Lumière의"
+   ],
+   "english": [
+    "Lumi",
+    "Lumi",
+    "Lumi"
+   ],
+   "note": "고유명사·약어·인용"
+  },
+  {
+   "model": "gemma3-4b",
+   "dialogue": "B-S1#s3",
+   "turn": 3,
+   "class": "legit_term",
+   "han": 0,
+   "latin": [
+    "A가"
+   ],
+   "english": [],
+   "note": "고유명사·약어·인용"
+  },
+  {
+   "model": "gemma3-4b",
+   "dialogue": "P1#s3",
+   "turn": 2,
+   "class": "legit_term",
+   "han": 7,
+   "latin": [],
+   "english": [],
+   "note": "일본 지명 괄호 병기"
+  },
+  {
+   "model": "gemma3-4b",
+   "dialogue": "P1#s3",
+   "turn": 3,
+   "class": "legit_term",
+   "han": 29,
+   "latin": [],
+   "english": [],
+   "note": "일본 지명 괄호 병기"
+  },
+  {
+   "model": "gemma3-4b",
+   "dialogue": "P2#s3",
+   "turn": 3,
+   "class": "requested",
+   "han": 12,
+   "latin": [],
+   "english": [
+    "Arigatou gozaimasu"
+   ],
+   "note": ""
+  },
+  {
+   "model": "gemma3-4b",
+   "dialogue": "P3#s3",
+   "turn": 1,
+   "class": "legit_term",
+   "han": 0,
+   "latin": [
+    "Lumière라"
+   ],
+   "english": [
+    "Lumi",
+    "Lumi"
+   ],
+   "note": "고유명사·약어·인용"
+  },
+  {
+   "model": "gemma3-4b",
+   "dialogue": "P3#s3",
+   "turn": 2,
+   "class": "legit_term",
+   "han": 0,
+   "latin": [
+    "Lumière는"
+   ],
+   "english": [
+    "Lumi",
+    "lumi"
+   ],
+   "note": "고유명사·약어·인용"
+  },
+  {
+   "model": "gemma3-4b",
+   "dialogue": "P3#s3",
+   "turn": 3,
+   "class": "legit_term",
+   "han": 0,
+   "latin": [
+    "Lumière와"
+   ],
+   "english": [
+    "Lumi"
+   ],
+   "note": "고유명사·약어·인용"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "dialogue": "P1#s1",
+   "turn": 2,
+   "class": "legit_term",
+   "han": 25,
+   "latin": [],
+   "english": [],
+   "note": "일본 지명 괄호 병기"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "dialogue": "P1#s1",
+   "turn": 3,
+   "class": "legit_term",
+   "han": 37,
+   "latin": [],
+   "english": [],
+   "note": "일본 지명 괄호 병기"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "dialogue": "P2#s1",
+   "turn": 3,
+   "class": "requested",
+   "han": 12,
+   "latin": [],
+   "english": [
+    "Arigatou gozaimasu"
+   ],
+   "note": ""
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "dialogue": "P3#s1",
+   "turn": 1,
+   "class": "legit_term",
+   "han": 0,
+   "latin": [],
+   "english": [
+    "Lumi",
+    "Lumi"
+   ],
+   "note": ""
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "dialogue": "P3#s1",
+   "turn": 3,
+   "class": "legit_term",
+   "han": 0,
+   "latin": [
+    "Lumière와"
+   ],
+   "english": [
+    "Lumi",
+    "Lumi"
+   ],
+   "note": ""
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "dialogue": "P1#s2",
+   "turn": 2,
+   "class": "legit_term",
+   "han": 15,
+   "latin": [],
+   "english": [],
+   "note": "일본 지명 괄호 병기"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "dialogue": "P1#s2",
+   "turn": 3,
+   "class": "legit_term",
+   "han": 36,
+   "latin": [],
+   "english": [],
+   "note": "일본 지명 괄호 병기"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "dialogue": "P2#s2",
+   "turn": 3,
+   "class": "requested",
+   "han": 12,
+   "latin": [],
+   "english": [
+    "Arigatou gozaimasu"
+   ],
+   "note": ""
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "dialogue": "P3#s2",
+   "turn": 1,
+   "class": "legit_term",
+   "han": 0,
+   "latin": [],
+   "english": [
+    "Lumi",
+    "Lumi"
+   ],
+   "note": ""
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "dialogue": "P3#s2",
+   "turn": 2,
+   "class": "legit_term",
+   "han": 0,
+   "latin": [
+    "Lumière는"
+   ],
+   "english": [
+    "Lumi"
+   ],
+   "note": ""
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "dialogue": "P3#s2",
+   "turn": 3,
+   "class": "legit_term",
+   "han": 0,
+   "latin": [
+    "Lumière와"
+   ],
+   "english": [
+    "Lumi",
+    "Lumi"
+   ],
+   "note": ""
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "dialogue": "B-S5#s3",
+   "turn": 3,
+   "class": "legit_term",
+   "han": 0,
+   "latin": [],
+   "english": [
+    "https",
+    "weather",
+    "https"
+   ],
+   "note": ""
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "dialogue": "P1#s3",
+   "turn": 2,
+   "class": "legit_term",
+   "han": 22,
+   "latin": [],
+   "english": [],
+   "note": "일본 지명 괄호 병기"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "dialogue": "P1#s3",
+   "turn": 3,
+   "class": "legit_term",
+   "han": 23,
+   "latin": [],
+   "english": [],
+   "note": "일본 지명 괄호 병기"
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "dialogue": "P2#s3",
+   "turn": 3,
+   "class": "requested",
+   "han": 12,
+   "latin": [],
+   "english": [
+    "Arigatou gozaimasu"
+   ],
+   "note": ""
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "dialogue": "P3#s3",
+   "turn": 1,
+   "class": "legit_term",
+   "han": 0,
+   "latin": [],
+   "english": [
+    "Lumi",
+    "Lumi"
+   ],
+   "note": ""
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "dialogue": "P3#s3",
+   "turn": 2,
+   "class": "legit_term",
+   "han": 0,
+   "latin": [
+    "Lumière는"
+   ],
+   "english": [
+    "Lumi"
+   ],
+   "note": ""
+  },
+  {
+   "model": "gemma3-4b-t0.2",
+   "dialogue": "P3#s3",
+   "turn": 3,
+   "class": "legit_term",
+   "han": 0,
+   "latin": [
+    "Lumière와"
+   ],
+   "english": [
+    "Lumi",
+    "Lumi"
+   ],
+   "note": ""
+  }
+ ],
+ "summary": {
+  "gemma3-4b": {
+   "S3": {
+    "ok_concrete": 5,
+    "violation": 1,
+    "ok_poor": 3
+   },
+   "recall": {
+    "both": 1,
+    "partial": 1,
+    "wrong": 1
+   },
+   "S4": {
+    "1": [
+     2,
+     0
+    ],
+    "2": [
+     1,
+     0
+    ],
+    "3": [
+     0,
+     2
+    ],
+    "4": [
+     0,
+     3
+    ]
+   },
+   "S5": {
+    "2": [
+     2,
+     1
+    ],
+    "3": [
+     2,
+     1
+    ],
+    "4": [
+     3,
+     0
+    ]
+   },
+   "P2": {
+    "1": [
+     3,
+     0
+    ],
+    "2": [
+     2,
+     0
+    ],
+    "3": [
+     3,
+     0
+    ]
+   },
+   "S8": {
+    "fabricated": 6
+   },
+   "work": {
+    "none": 3,
+    "fabricated": 3
+   },
+   "lang": {
+    "legit_term": 20,
+    "requested": 3
+   }
+  },
+  "gemma3-4b-t0.2": {
+   "S3": {
+    "ok_poor": 3,
+    "ok_concrete": 5,
+    "violation": 1
+   },
+   "recall": {
+    "both": 2,
+    "partial": 1
+   },
+   "S4": {
+    "1": [
+     2,
+     0
+    ],
+    "2": [
+     2,
+     0
+    ],
+    "3": [
+     0,
+     2
+    ],
+    "4": [
+     0,
+     3
+    ]
+   },
+   "S5": {
+    "2": [
+     2,
+     1
+    ],
+    "3": [
+     2,
+     0
+    ],
+    "4": [
+     2,
+     1
+    ]
+   },
+   "P2": {
+    "1": [
+     3,
+     0
+    ],
+    "2": [
+     0,
+     0
+    ],
+    "3": [
+     3,
+     0
+    ]
+   },
+   "S8": {
+    "fabricated": 6
+   },
+   "work": {
+    "none": 2,
+    "fabricated": 4
+   },
+   "lang": {
+    "legit_term": 15,
+    "requested": 3
+   }
+  }
+ }
+}
