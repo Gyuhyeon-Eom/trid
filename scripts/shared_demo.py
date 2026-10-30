@@ -19,6 +19,7 @@ from urllib.parse import urlsplit, unquote
 import torch
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from evaluate_external_chat import GRAMMAR, MAX_TOKENS, SYSTEM, complete, digest, evidence_grammar, request as llama_request
+from trid.case_prompts import CASE_SYSTEM
 from trid.extractive import load_reader, read as read_extractive, passage_spans
 from trid.prompts import rag_prompt
 from trid.pdf_documents import Document, DocumentError, make_chunks, answer_document, retrieve
@@ -95,6 +96,81 @@ def answer_document_chat(document, question, base, family, context, constrained=
         return {**result, 'status': 'review', 'answer': '모델 출력이 형식 검증을 통과하지 못해 답으로 표시하지 않습니다.'}
     return {**result, 'status': 'answer', 'candidates': candidates,
             'answer': ', '.join(f"{c['prediction']['answer']} [{c['prediction']['source']}]" for c in candidates)}
+
+
+LEADING_TAGS = re.compile(r'^(?:\s*(?:\[[^\]\n]{1,12}\]|D[1-9]\s*:)\s*)+')
+NUMBER = re.compile(r'\d[\d,.]*')
+MIN_QUOTE_CHARS = 4
+
+
+def _numbers(text):
+    return {n.rstrip('.,').replace(',', '') for n in NUMBER.findall(text)}
+
+
+def answer_document_case(document, question, base, family, context, max_tokens=256):
+    """Serving contract of CASE-trained versions (explanatory answers, trained with CASE_SYSTEM). The model is asked
+    with its training instruction; its output is never shown as a verified answer. Only output sentences that occur
+    verbatim in a retrieved passage are shown as verified quotes, highlighted in the source. The rest is returned as
+    `commentary` explicitly marked unverified, with numbers that appear in no retrieved passage nor the question listed
+    as warnings (a warning list, not a truth check). Repeated sentences are collapsed."""
+    question = question.strip()
+    if not question:
+        raise DocumentError('질문을 입력해 주세요.')
+    selected = [(chunk, score) for chunk, score in retrieve(document, question) if '[D' not in chunk.text]
+    result = {'file': document.name, 'candidates': [], 'checked_chunks': len(selected), 'answer_mode': 'case',
+              'total_chunks': len(document.chunks), 'warnings': document.warnings, 'raw_output': None,
+              'commentary': None, 'commentary_verified': False, 'unsupported_numbers': [],
+              'scope': '관련도 상위 최대 6개 구간을 확인한 결과입니다. 미검색 구간까지 정보가 없다고 보장하지 않습니다.'}
+    if not selected:
+        return {**result, 'status': 'not_found', 'answer': '질문과 관련된 문서 구간을 찾지 못했습니다. 질문을 바꾸거나 추출 내용을 확인해 주세요.'}
+    prompt = rag_prompt([(f'D{i}', chunk.text) for i, (chunk, _) in enumerate(selected, 1)], question)
+    messages = [{'role': 'system', 'content': CASE_SYSTEM}, {'role': 'user', 'content': prompt}]
+    r = complete(base, messages, family, max_tokens, context)
+    if r.get('skipped_context'):
+        raise DocumentError('검색된 문서 구간이 모델 문맥 한도를 넘었습니다. 질문을 더 구체적으로 입력해 주세요.')
+    output = r['generated']
+    segments, seen, repeats = [], set(), 0
+    for part in re.split(r'(?<=[.!?])\s+|\n+', output):
+        part = part.strip()
+        if not part:
+            continue
+        if part in seen:
+            repeats += 1
+            continue
+        seen.add(part)
+        segments.append(part)
+    candidates, quoted = [], set()
+    # A length-truncated last sentence is a fragment; it can match the source verbatim but is not a full quote.
+    for part in segments[:-1] if r.get('truncated_output') and segments else segments:
+        quote = LEADING_TAGS.sub('', part).strip()
+        for text in (quote, quote.rstrip('.')):
+            if len(text) < MIN_QUOTE_CHARS or text in quoted:
+                continue
+            hit = next(((i, chunk, chunk.text.find(text)) for i, (chunk, _) in enumerate(selected)
+                        if text in chunk.text), None)
+            if hit:
+                i, chunk, start = hit
+                quoted.add(text)
+                candidates.append({'page': chunk.page, 'text': chunk.text, 'page_text_start': chunk.start,
+                                   'retrieval_score': round(selected[i][1], 3),
+                                   'page_character_span': [chunk.start + start, chunk.start + start + len(text)],
+                                   'prediction': {'answer': text, 'source': f'D{i + 1}', 'abstains': False, 'presence': 0,
+                                                  'source_character_span': [start, start + len(text)]}})
+                break
+    support = _numbers('\n'.join(chunk.text for chunk, _ in selected) + '\n' + question)
+    notes = []
+    if repeats:
+        notes.append(f'같은 문장 반복 {repeats}회를 생략했습니다.')
+    if r.get('truncated_output'):
+        notes.append(f'모델 출력이 길이 한도({max_tokens}토큰)에서 잘렸습니다.')
+    result.update(raw_output=output, commentary='\n'.join(segments), commentary_notes=notes,
+                  unsupported_numbers=sorted(_numbers(output) - support), candidates=candidates)
+    if candidates:
+        return {**result, 'status': 'quoted',
+                'answer': f'원문과 글자 그대로 일치하는 인용 {len(candidates)}건을 아래에 표시합니다. 모델 해설은 검증되지 않았습니다.'}
+    return {**result, 'status': 'unverified',
+            'answer': '원문과 글자 그대로 일치하는 인용이 없어 검증된 답이 없습니다. 아래 모델 해설은 검증되지 않았습니다.'}
+
 
 
 @dataclass
@@ -437,6 +513,9 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                                                      version['device'], reader=read_chunk)
                             if any(item['prediction']['presence'] == 2 for item in result['checked']):
                                 result.update(status='review', answer='모델이 근거 충돌로 판단한 구간이 있습니다. /source로 원문을 확인해 주세요.')
+                        elif version.get('answer_mode') == 'case':
+                            result = answer_document_case(session.document, question, version['base'],
+                                                          version['family'], version['context'])
                         else:
                             result = answer_document_chat(session.document, question, version['base'],
                                                           version['family'], version['context'],

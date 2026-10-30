@@ -7,7 +7,7 @@ import unittest
 from unittest.mock import patch
 from types import SimpleNamespace
 
-from scripts.shared_demo import make_server, State, TTL, MAX_BODY, read_chunk, answer_document_chat
+from scripts.shared_demo import make_server, State, TTL, MAX_BODY, read_chunk, answer_document_chat, answer_document_case
 from trid.pdf_documents import Document, make_chunks
 from trid.pdf_documents import DocumentError
 from trid.prompts import rag_prompt
@@ -122,6 +122,31 @@ class ChatBackendTests(unittest.TestCase):
     def test_abstention_and_conflict_are_not_answers(self):
         self.assertEqual(self.ask('확인 불가')[0]['status'], 'not_found')
         self.assertEqual(self.ask('근거 충돌')[0]['status'], 'review')
+
+    def case(self, generated):
+        text = '출장 담당은 운영지원팀입니다. 식비는 하루 3만 원입니다.'
+        document = Document('d', [text], make_chunks([text], CharTokenizer()), [])
+        with patch('scripts.shared_demo.complete', return_value={'generated': generated, 'truncated_output': False}):
+            return answer_document_case(document, '식비는 얼마?', 'http://127.0.0.1:1', 'qwen3', 4096), text
+
+    def test_case_mode_highlights_only_verbatim_sentences_and_never_verifies_commentary(self):
+        result, text = self.case('[근거] [D1] 식비는 하루 3만 원입니다.\n따라서 하루 3만 원을 받습니다.')
+        self.assertEqual(result['status'], 'quoted')
+        self.assertFalse(result['commentary_verified'])
+        self.assertEqual([text[a:b] for a, b in (c['page_character_span'] for c in result['candidates'])],
+                         ['식비는 하루 3만 원입니다.'])
+
+    def test_case_mode_without_verbatim_quote_is_unverified_and_flags_invented_numbers(self):
+        result, _ = self.case('식비는 하루 5만 원이며 담당자 번호는 02-3456-7890입니다.')
+        self.assertEqual(result['status'], 'unverified')
+        self.assertEqual(result['candidates'], [])
+        self.assertIn('5', result['unsupported_numbers'])
+        self.assertIn('3456', result['unsupported_numbers'])
+
+    def test_case_mode_collapses_repeated_sentences(self):
+        result, _ = self.case('식비는 하루 3만 원입니다. 식비는 하루 3만 원입니다. 식비는 하루 3만 원입니다.')
+        self.assertEqual(result['commentary'], '식비는 하루 3만 원입니다.')
+        self.assertTrue(any('반복 2회' in n for n in result['commentary_notes']))
 
 
 class ExtractiveChunkTests(unittest.TestCase):

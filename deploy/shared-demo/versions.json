@@ -32,9 +32,10 @@
   },
   {
     "id": "trid-qwen3-1.7b-pilot-sft-001",
-    "label": "trid Qwen3-1.7B pilot-sft-001 (실험판, 평가 중)",
+    "label": "TRID 1.7B · 실험판",
     "kind": "llama",
-    "decoding": "grammar_instructed",
+    "answer_mode": "case",
+    "decoding": "case_system_256",
     "family": "qwen3",
     "llama_server": "runs/tools/llama.cpp-8ca4060/llama-server",
     "model_file": "runs/pilot-sft-001-a-qwen3-1p7b/pilot-sft-001-a-qwen3-1p7b.q8_0.gguf",
@@ -45,9 +46,9 @@
     "port": 51917,
     "base_model": "Qwen/Qwen3-1.7B HF rev 70d244cc86ccca08cf5af4e1e306ecf908b1ad5e + LoRA 병합(r16) → 로컬 Q8_0 GGUF (Alibaba Qwen 원 모델 기반, 독자 기초모델 아님)",
     "license": "기반 모델 Apache-2.0 · 학습 사례는 공공 공개 자료(law.go.kr 해석례·행정규칙, data.go.kr 등) 기반",
-    "version": "pilot-sft-001 · 2026-10-30 · C017 학습 사례 57건 × 2 epoch = 15단계 · llama.cpp 8ca4060 · greedy · 사고 모드 끔",
+    "version": "pilot-sft-001 · 평가 중 · 2026-10-30 · C017 학습 사례 57건 × 2 epoch = 15단계 · 서빙: 학습과 같은 CASE_SYSTEM 지시, greedy, 최대 256토큰, 사고 모드 끔, llama.cpp 8ca4060",
     "status": "실험판 · 평가 중 · 성능 개선 미확인 · 독립 검증 합격 아님",
     "evaluation": "아직 없음: 원본 대비 고정 평가(RAG310·probe)와 C 블라인드 채점이 진행 중임. 학습 사례는 AI 검토만 거친 자료(독립·사람 검증 0)이며 답 토큰의 89%가 공식 해석례 결론·이유 추출임. 근거 충돌 학습 사례 0건.",
-    "limits": "서빙 호환 문제(배포 전 실측): 이 모델은 값 형식 지시에도 '[결과] … [근거] …'나 문장형 설명으로 답하는 경우가 많아, 원문 위치 검증을 통과하지 못하고 답으로 표시되지 않는 경우가 대부분임(로컬 스모크 7문항 중 0문항 표시). 검증을 우회해 표시하지 않음. 특화가 정답률을 높였는지·회귀가 있는지 미확인. 해석례는 해석일 기준이며 현행 법령 여부 미확인. 기준선 버전 파일(공식 GGUF 061b54da…)과 이 버전의 원본(로컬 변환 f2ba848c…)은 다른 파일임."
+    "limits": "답 표시 방식: 모델 출력 중 검색된 원문과 글자 그대로 일치하는 문장만 '원문 인용(확인됨)'으로 강조하고, 나머지 해설은 '검증 안 됨'으로 표시함. 해설의 결론·조건·예외·주체가 맞는지는 확인하지 않음. 원문에 없는 숫자는 경고로 표시하지만 경고가 없다고 사실이라는 뜻은 아님. 배포 전 실측에서 근거에 없는 전화번호를 지어낸 사례와 같은 문장을 반복하는 사례가 있었음. 특화가 정답률을 높였는지·회귀가 있는지 미확인(C 평가 중). 이 서빙 조건(CASE_SYSTEM·256토큰·검색 구간)은 고정 평가(값 형식 지시·64토큰·고정 근거)와 다름. 해석례는 해석일 기준이며 현행 법령 여부 미확인. 기준선 버전 파일(공식 GGUF 061b54da…)과 이 버전의 원본(로컬 변환 f2ba848c…)은 다른 파일임."
   }
 ]

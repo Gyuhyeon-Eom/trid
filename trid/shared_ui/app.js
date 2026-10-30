@@ -79,7 +79,12 @@ async function execute(value) {
       const chars = Array.from(candidate.text);
       // Code-point offsets are returned by the Python model; bracket the exact source span.
       const source = chars.slice(0,a).join('') + '【' + chars.slice(a,b).join('') + '】' + chars.slice(b).join('');
-      print(`[근거 ${candidate.page}페이지]\n${source}`, 'muted');
+      print(`[${result.answer_mode === 'case' ? '원문 인용 · 글자 그대로 확인됨' : '근거'} ${candidate.page}페이지]\n${source}`, 'muted');
+    }
+    if (result.commentary) {
+      print(`[모델 해설 · 검증 안 됨 — 원문과 대조하세요]\n${result.commentary}`, 'muted');
+      for (const note of result.commentary_notes || []) print(note, 'muted');
+      if (result.unsupported_numbers?.length) print(`주의: 검색된 원문과 질문에 없는 숫자가 해설에 있습니다: ${result.unsupported_numbers.join(', ')}`, 'error');
     }
     if (!result.candidates.length) print(result.scope, 'muted');
   });
