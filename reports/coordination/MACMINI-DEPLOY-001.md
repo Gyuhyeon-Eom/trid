@@ -133,6 +133,19 @@ A는 장기 키를 자동으로 만들지 않았다. 맥북의 기존 자격 증
     - S1 job 상태 대조
   - 세션이 만료되면 감시는 AccessDenied나 만료 오류로 멈춘다. 이 경우 job 상태는 바뀌지 않는다.
 
+- **CLI v2 전환 준비 완료 (커밋 `636cd61`, 맥미니 `d258f23`):**
+  - 부모가 맥미니에 `/opt/homebrew/bin/aws`(aws-cli 2.37.13)를 설치했다.
+  - driver는 `TRID_AWS_CLI`, plist는 PATH 맨 앞 `/opt/homebrew/bin`과 `TRID_AWS_CLI=/opt/homebrew/bin/aws`, preflight는 v2 확인 후 같은 경로를 쓴다. 따라서 `.venv`의 CLI v1(1.46.2)을 쓰지 않는다.
+- **인증 만료·부재 처리:**
+  - driver는 자격 증명 만료나 부재 오류(ExpiredToken, InvalidClientTokenId, 프로필 없음 등)를 받으면 상태를 `auth.status=reauth_required`, "사용자 재인증 필요"로 기록한다.
+  - 그 뒤 interval마다 대기한다. 종료해서 launchd가 반복 재시작하게 만들지 않는다. job도 만들지 않는다.
+  - 정상 호출이 다시 성공하면 `auth` 항목을 지운다.
+  - 맥북 실측(`--once`)으로 확인했다:
+    - 없는 프로필 → reauth_required
+    - 가짜 키 → reauth_required
+    - 정상 자격 → 해제
+  - 로그에는 시각과 상태만 남는다. 토큰은 출력하지 않는다.
+- **launchd:** 아직 미등록이다. 부모가 `trid-controller` 프로필로 로그인하고 STS를 검증한 뒤 등록한다.
 ## 5. 현재 영향
 - 승인된 S1 학습은 막히지 않았다. 두 job은 job 안 평가로 끝나고, 결과는 S3에 저장된다.
 - 맥미니 제어기는 인증이 생긴 뒤 감시만 하는 모드로 붙는다.

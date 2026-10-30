@@ -10,7 +10,9 @@ ok=0
 check() { if "${@:2}" >/dev/null 2>&1; then echo "PASS $1"; else echo "FAIL $1"; ok=1; fi; }
 version=$("$AWS" --version 2>&1) || { echo "FAIL aws CLI missing at $AWS"; exit 1; }
 case "$version" in aws-cli/2.*) echo "PASS CLI v2 ($AWS)";; *) echo "FAIL CLI is not v2: ${version%% *}"; ok=1;; esac
-echo "identity: $("$AWS" sts get-caller-identity --query Arn --output text 2>&1 | head -1)"
+arn=$("$AWS" sts get-caller-identity --query Arn --output text 2>&1 | head -1)
+echo "identity: $arn"
+case "$arn" in *:root) echo "WARN root temporary login session: monitor-only use; launching jobs is refused by the driver";; esac
 job=$(/usr/bin/python3 -c "import json; c=json.load(open('$HOME/trid-controller/state/campaign.json')); print(next(iter(c['arms'].values()))['job'])")
 check "sagemaker:ListTrainingJobs" "$AWS" sagemaker list-training-jobs --max-results 1
 check "sagemaker:DescribeTrainingJob $job" "$AWS" sagemaker describe-training-job --training-job-name "$job"

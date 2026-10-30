@@ -241,6 +241,17 @@ def step(campaign, state):
         and all(e.get('status') != 'InProgress' for e in a['evals'].values()) for a in state['arms'].values())
 
 
+def identity_guard(campaign, state):
+    """Record which kind of identity the controller runs as. Root (e.g. a user's `aws login` session) is accepted only
+    for monitoring; launching jobs requires a dedicated least-privilege identity, so a non-monitor campaign stops."""
+    arn = aws('sts', 'get-caller-identity', '--query', 'Arn', '--output', 'text').stdout.strip()
+    root = arn.endswith(':root')
+    state['identity'] = {'kind': 'root' if root else 'iam',
+                         'warning': '루트 임시 로그인 세션: 감시 전용으로만 사용, job 발행 금지' if root else None}
+    if root and not campaign['common'].get('monitor_only'):
+        raise SystemExit('Refusing to drive a launching campaign with root credentials; use a least-privilege role.')
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument('--campaign', type=Path, required=True)
@@ -253,6 +264,7 @@ def main():
     state = json.loads(path.read_text()) if path.exists() else {'campaign': campaign['id'], 'arms': {}}
     while True:
         try:
+            identity_guard(campaign, state)
             finished = step(campaign, state)
             state.pop('auth', None)
         except RuntimeError as exc:
