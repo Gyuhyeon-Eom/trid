@@ -57,4 +57,13 @@
 - **맥북:** 이 감시에 관여하지 않는다(단일 writer: 맥미니). 맥북은 보고서 작성과 읽기 조회만 한다.
 - **중지 방법:** `launchctl bootout gui/501/co.tridatum.trid.sft-controller`. 캠페인이 끝나면(두 arm 완료, 평가 완료) driver가 exit 0으로 멈추고, KeepAlive(SuccessfulExit=false)라 재시작하지 않는다.
 
+## 5. 감시 완료 기록 (15:03)
+- **완료 기록:** 15:01:23 주기에 맥미니 감시기가 두 S1 job Completed를 기록했다. 맥북의 SageMaker 직접 조회와 일치한다(91M Billable 2,676초, 390M 9,266초).
+- **결함:** 감시 모드에서는 job 안 평가가 끝나도 controller에 "평가 대기"가 남았다. 그래서 완료된 캠페인이 종료되지 않고 감시를 계속했다(작업 생성 없음, status 쓰기만).
+- **수정 (커밋 `353a241`, 맥미니 `2f69fe5`):** monitor 모드에서는 controller 평가 대기를 비운다. 맥북에서 같은 캠페인으로 실행해 즉시 종료(rc 0)되는 것을 확인했다.
+- **맥미니 반영:** `launchctl kickstart -k`로 반영했다. 한 주기(15:03:46)를 돌고 끝났다.
+  - 결과: `state = not running`, `runs = 2`, `last exit code = 0`
+  - KeepAlive(SuccessfulExit=false)라서 재시작하지 않는다.
+- **현재 상태:** 맥미니 제어기는 **idle(정상 종료)**이다. 등록은 남아 있다. 다시 쓰려면 새 캠페인 파일과 별도 승인이 필요하다. root 발행 가드는 유지한다.
+
 SUPERVISION_REPORT_READY MACMINI-DEPLOY-002
