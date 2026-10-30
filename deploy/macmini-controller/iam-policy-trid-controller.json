@@ -1,0 +1,43 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "TrainingJobsOfTrid",
+      "Effect": "Allow",
+      "Action": ["sagemaker:CreateTrainingJob", "sagemaker:DescribeTrainingJob", "sagemaker:StopTrainingJob", "sagemaker:AddTags"],
+      "Resource": "arn:aws:sagemaker:ap-northeast-2:148761639313:training-job/trid-pt-*"
+    },
+    {
+      "Sid": "ListJobsForDuplicateCheck",
+      "Effect": "Allow",
+      "Action": ["sagemaker:ListTrainingJobs"],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PassOnlyTheExistingTrainingRole",
+      "Effect": "Allow",
+      "Action": "iam:PassRole",
+      "Resource": "arn:aws:iam::148761639313:role/trid-sagemaker-lora",
+      "Condition": {"StringEquals": {"iam:PassedToService": "sagemaker.amazonaws.com"}}
+    },
+    {
+      "Sid": "CorpusPrefixOnly",
+      "Effect": "Allow",
+      "Action": ["s3:GetObject", "s3:PutObject", "s3:DeleteObject"],
+      "Resource": "arn:aws:s3:::trid-training-148761639313/corpus/*"
+    },
+    {
+      "Sid": "ListCorpusPrefix",
+      "Effect": "Allow",
+      "Action": "s3:ListBucket",
+      "Resource": "arn:aws:s3:::trid-training-148761639313",
+      "Condition": {"StringLike": {"s3:prefix": ["corpus/*"]}}
+    },
+    {
+      "Sid": "ReadTrainingLogs",
+      "Effect": "Allow",
+      "Action": ["logs:DescribeLogStreams", "logs:GetLogEvents"],
+      "Resource": "arn:aws:logs:ap-northeast-2:148761639313:log-group:/aws/sagemaker/TrainingJobs*"
+    }
+  ]
+}

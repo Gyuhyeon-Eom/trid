@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- trid SFT campaign controller on the always-on Mac mini (single writer). Install only after the controller AWS
+     profile exists: ~/Library/LaunchAgents/co.tridatum.trid.sft-controller.plist, then `launchctl bootstrap gui/$(id -u) <plist>`.
+     KeepAlive restarts the driver only after a crash; a finished campaign exits 0 and stays stopped. -->
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>co.tridatum.trid.sft-controller</string>
+  <key>WorkingDirectory</key><string>/Users/eomgyuhyeon/trid-controller/repo</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/Users/eomgyuhyeon/trid-controller/repo/.venv/bin/python</string>
+    <string>scripts/drive_sft_campaign.py</string>
+    <string>--campaign</string><string>/Users/eomgyuhyeon/trid-controller/state/campaign.json</string>
+    <string>--state</string><string>/Users/eomgyuhyeon/trid-controller/state/state.json</string>
+    <string>--interval</string><string>300</string>
+  </array>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PATH</key><string>/Users/eomgyuhyeon/trid-controller/repo/.venv/bin:/usr/bin:/bin</string>
+    <key>AWS_PROFILE</key><string>trid-controller</string>
+    <key>AWS_DEFAULT_REGION</key><string>ap-northeast-2</string>
+  </dict>
+  <key>RunAtLoad</key><true/>
+  <key>KeepAlive</key><dict><key>SuccessfulExit</key><false/></dict>
+  <key>ThrottleInterval</key><integer>300</integer>
+  <key>StandardOutPath</key><string>/Users/eomgyuhyeon/trid-controller/logs/controller.log</string>
+  <key>StandardErrorPath</key><string>/Users/eomgyuhyeon/trid-controller/logs/controller.err</string>
+</dict>
+</plist>

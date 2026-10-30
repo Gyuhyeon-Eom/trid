@@ -128,6 +128,8 @@ def step(campaign, state):
     state['spent_usd'] = round(spent_usd(state, prices), 2) if cap else None
     for name, arm in campaign['arms'].items():
         s = state['arms'].setdefault(name, {'segments': [], 'consecutive_failures': 0, 'evals': {}, 'halted': None, 'done': False})
+        if not s['segments'] and arm.get('job'):  # a job launched elsewhere (approved stage) to monitor from the start
+            s['segments'].append({'job': arm['job'], 'status': 'InProgress', 'failure': None, 'launched_at': now, 'seeded': True})
         run_s3 = f"{arm['checkpoint_s3']}{arm['run']}/sft/"
         training = s3_json(run_s3 + 'training.json') or {}
         metrics = s3_json(run_s3 + 'metrics.json') or []
@@ -143,16 +145,25 @@ def step(campaign, state):
             s['done'] = True
         if not running and not s['done'] and not s['halted']:
             limit = arm.get('max_segments', common.get('max_segments'))
-            if limit and len([g for g in s['segments'] if g['status'] == 'Completed']) >= limit:
+            launches = arm.get('max_launches', common.get('max_launches'))
+            adopted = running_job(arm['run'])
+            if adopted:
+                s['segments'].append({'job': adopted, 'status': 'InProgress', 'failure': None, 'launched_at': now,
+                                      'adopted': True, 'from_step': training.get('completed_steps')})
+            elif common.get('monitor_only'):
+                # Watch and collect only: jobs are launched elsewhere under an approved stage; never launch or retry.
+                if seg and seg['status'] in ('Failed', 'Stopped'):
+                    s['halted'] = f"{now}: monitored job ended {seg['status']}: {seg.get('failure')}"
+                else:
+                    s['waiting'] = f'{now}: monitor_only; no running job for {arm["run"]}'
+            elif launches is not None and len(s['segments']) >= launches:
+                s['halted'] = f'{now}: launch limit {launches} reached (no retries beyond the approved stage)'
+            elif limit and len([g for g in s['segments'] if g['status'] == 'Completed']) >= limit:
                 s['halted'] = f'{now}: segment limit {limit} reached (smoke/limited campaign)'
             elif s['consecutive_failures'] >= 2:
                 s['halted'] = f"{now}: two consecutive failed segments; last: {seg.get('failure') if seg else None}"
             elif cap and state['spent_usd'] + common['max_runtime'] / 3600 * prices[arm['instance']] > cap:
                 s['halted'] = f"{now}: cost cap {cap} USD: spent {state['spent_usd']} + next segment worst case exceeds it"
-            elif running_job(arm['run']):
-                adopted = running_job(arm['run'])
-                s['segments'].append({'job': adopted, 'status': 'InProgress', 'failure': None, 'launched_at': now,
-                                      'adopted': True, 'from_step': training.get('completed_steps')})
             else:
                 session_steps = arm.get('session_steps', common.get('session_steps'))
                 env = {'INIT_S3': arm['init_s3'], 'INIT_STEP': arm['init_step'], 'SFT_STEPS': common['steps'],
