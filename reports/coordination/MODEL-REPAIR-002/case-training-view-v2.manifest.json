@@ -1,0 +1,62 @@
+{
+ "version": "case-training-view-v2",
+ "code_sha256": "d790d651bf9e5ef047054eebfe9dd1492ee85111978825af3146a2c6fe34b9e8",
+ "source_view": {
+  "path": "data/case-training-view-v1",
+  "files": {
+   "train": {
+    "rows": 34,
+    "sha256": "0d8a640b9f3712461a0b2dbe03c239da147736fd93ea268765e1dfecc20b7a50"
+   },
+   "dev": {
+    "rows": 6,
+    "sha256": "91774ff501efe5b70b54b9751f51763efdcce5470ae31981867de603cac0fa7b"
+   },
+   "held": {
+    "rows": 120,
+    "sha256": "dab12a6f00317cb4968964085ee91e3200af6722bffacdf017bbbb4a82d51a6d"
+   }
+  }
+ },
+ "review": {
+  "path": "reports/coordination/MODEL-REPAIR-002/train-review-v2.jsonl",
+  "sha256": "2f6aba821ecc4a8ccd2b548a05b6f3e0ba3a833d55be9f604441ba707a2291df",
+  "decisions": {
+   "pass": 28,
+   "fix": 6,
+   "author": 83
+  },
+  "reviewer": "B (AI, one reviewer; not human or independent review)",
+  "scope": "train split only"
+ },
+ "provenance_relabelled_rows": 14,
+ "files": {
+  "train": {
+   "rows": 117,
+   "sha256": "fc1957df99ce2f2bcf1e57baf0ce7069b1788d531e804dcd14705f70e2b52492"
+  },
+  "dev": {
+   "rows": 6,
+   "sha256": "91774ff501efe5b70b54b9751f51763efdcce5470ae31981867de603cac0fa7b"
+  },
+  "held": {
+   "rows": 37,
+   "sha256": "a0443713120d268ae1b04e8dcb8f72aabde0b89f49d7e989917be3ca7f3d9762"
+  }
+ },
+ "tokens": {
+  "train": {
+   "answer_max": 256,
+   "total_max": 2841,
+   "answer_total": 21146
+  },
+  "dev": {
+   "answer_max": 178,
+   "total_max": 889,
+   "answer_total": 876
+  }
+ },
+ "max_answer_tokens": 256,
+ "max_total_tokens": 4096,
+ "contract": "case adapter (CASE_SYSTEM + rag_prompt D1..Dn): every kept target cites [Dn]; numbers are in the cited passage, the question or the provenance line; no-evidence behaviours start with 확인 불가; answer <= 256 tokens. Development training only; AI review only; nothing is labelled current law."
+}

@@ -8,7 +8,9 @@ negation, condition, exception, subject, time) and writes a new version:
         existing passage, every number of a cited sentence is in its cited passages, the question or the provenance
         line, answer <= --max-answer-tokens and the whole sequence <= --max-total-tokens (counted as A's trainer does)
   hold  the row moves to held.jsonl with the review reason
-A train row without a review record stops the build. The dev split is carried unchanged (it is not reviewed here).
+  author  (rows the source view held) the row comes back with the authored 'target', checked like a fix
+A train row without a review record stops the build. The dev split is carried unchanged (it is not reviewed here); so
+are the source view's held rows that no 'author' record brings back, with their original reasons.
 In every row the provenance line names a statute's title '법령 …' instead of '기관 …' (the pilot stores the statute
 title in its institution field for 별표/서식 rows).
 
@@ -113,6 +115,25 @@ def main():
             if a > args.max_answer_tokens or t > args.max_total_tokens:
                 raise SystemExit(f"{row['id']}: over budget after review ({a} answer, {t} total tokens)")
             kept[name].append({**row, 'answer_tokens': a, 'total_tokens': t})
+    for row in map(json.loads, (view / 'held.jsonl').read_text().splitlines()):
+        context, changed = relabel(row)
+        relabelled += changed
+        row = {**row, 'context': context}
+        rec = review.get(row['id'])
+        if row['split'] != 'train' or rec is None or rec['decision'] != 'author':
+            held.append(row)
+            continue
+        decisions['author'] += 1
+        problems = contract_problems(rec['target'], context, row['question'])
+        if problems:
+            raise SystemExit(f"{row['id']}: authored target breaks the contract: {problems}")
+        row = {k: v for k, v in row.items() if k != 'held'}
+        row = {**row, 'target': rec['target'], 'transforms': row['transforms'] + ['authored_short_target'],
+               'review': {k: rec[k] for k in ('decision', 'checks') if k in rec}}
+        a, t = tokens(row['context'], row['question'], row['target'])
+        if a > args.max_answer_tokens or t > args.max_total_tokens:
+            raise SystemExit(f"{row['id']}: authored target over budget ({a} answer, {t} total tokens)")
+        kept['train'].append({**row, 'answer_tokens': a, 'total_tokens': t})
     unused = review.keys() - {r['id'] for r in kept['train']} - {r['id'] for r in held}
     if unused:
         raise SystemExit(f'review records for rows not in the train split: {sorted(unused)}')

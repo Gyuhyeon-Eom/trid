@@ -1,0 +1,21 @@
+{
+ "id": "case-training-view-v2-a",
+ "source": "data/case-training-view-v2 (B, MODEL-REPAIR-002 reviewed train split)",
+ "train": [
+  {
+   "path": "train.jsonl",
+   "sha256": "fc1957df99ce2f2bcf1e57baf0ce7069b1788d531e804dcd14705f70e2b52492",
+   "adapter": "case",
+   "split": "train",
+   "epochs": 2
+  }
+ ],
+ "valid": [
+  {
+   "path": "dev.jsonl",
+   "sha256": "91774ff501efe5b70b54b9751f51763efdcce5470ae31981867de603cac0fa7b",
+   "adapter": "case",
+   "split": "pilot_dev"
+  }
+ ]
+}
