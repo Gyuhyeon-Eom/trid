@@ -136,12 +136,13 @@ class ChatBackendTests(unittest.TestCase):
         self.assertEqual([text[a:b] for a, b in (c['page_character_span'] for c in result['candidates'])],
                          ['식비는 하루 3만 원입니다.'])
 
-    def test_case_mode_without_verbatim_quote_is_unverified_and_flags_invented_numbers(self):
-        result, _ = self.case('식비는 하루 5만 원이며 담당자 번호는 02-3456-7890입니다.')
-        self.assertEqual(result['status'], 'unverified')
-        self.assertEqual(result['candidates'], [])
-        self.assertIn('5', result['unsupported_numbers'])
+    def test_case_mode_withholds_commentary_sentences_with_invented_numbers(self):
+        result, _ = self.case('식비는 하루 5만 원이며 담당자 번호는 02-3456-7890입니다.\n담당은 운영지원팀입니다.')
+        self.assertEqual(result['status'], 'quoted')  # the second sentence is verbatim source text
+        self.assertEqual(result['commentary'], '담당은 운영지원팀입니다.')
+        self.assertNotIn('3456', result['commentary'])
         self.assertIn('3456', result['unsupported_numbers'])
+        self.assertTrue(any('1개를 숨겼습니다' in n for n in result['commentary_notes']))
 
     def test_case_mode_collapses_repeated_sentences(self):
         result, _ = self.case('식비는 하루 3만 원입니다. 식비는 하루 3만 원입니다. 식비는 하루 3만 원입니다.')

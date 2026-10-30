@@ -158,12 +158,20 @@ def answer_document_case(document, question, base, family, context, max_tokens=2
                                                   'source_character_span': [start, start + len(text)]}})
                 break
     support = _numbers('\n'.join(chunk.text for chunk, _ in selected) + '\n' + question)
-    notes = []
+    notes, shown, withheld = [], [], 0
+    for part in segments:
+        # A sentence carrying a number found in no retrieved passage nor the question is withheld, not just flagged.
+        if _numbers(part) - support:
+            withheld += 1
+        else:
+            shown.append(part)
+    if withheld:
+        notes.append(f'검색된 원문과 질문에 없는 숫자가 들어 있는 해설 문장 {withheld}개를 숨겼습니다.')
     if repeats:
         notes.append(f'같은 문장 반복 {repeats}회를 생략했습니다.')
     if r.get('truncated_output'):
         notes.append(f'모델 출력이 길이 한도({max_tokens}토큰)에서 잘렸습니다.')
-    result.update(raw_output=output, commentary='\n'.join(segments), commentary_notes=notes,
+    result.update(raw_output=output, commentary='\n'.join(shown) or None, commentary_notes=notes,
                   unsupported_numbers=sorted(_numbers(output) - support), candidates=candidates)
     if candidates:
         return {**result, 'status': 'quoted',
