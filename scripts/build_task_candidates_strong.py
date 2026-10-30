@@ -108,9 +108,13 @@ def chat(url, messages, max_tokens, schema=None, template=None):
     with urllib.request.urlopen(req, timeout=900) as r:
         out = json.load(r)
     choice = out['choices'][0]
+    msg = choice['message']
+    # completion_tokens counts the hidden reasoning and the visible answer together; their character lengths are kept
+    # separately so a 'length' stop can be attributed to the reasoning or to the answer.
     meta = dict(finish_reason=choice.get('finish_reason'), prompt_tokens=out.get('usage', {}).get('prompt_tokens'),
-                completion_tokens=out.get('usage', {}).get('completion_tokens'), max_tokens=max_tokens)
-    return (choice['message'].get('content') or '').strip(), meta
+                completion_tokens=out.get('usage', {}).get('completion_tokens'), max_tokens=max_tokens,
+                reasoning_chars=len(msg.get('reasoning_content') or ''), answer_chars=len(msg.get('content') or ''))
+    return (msg.get('content') or '').strip(), meta
 
 
 def draft_schema(kind, ids):
@@ -291,7 +295,8 @@ def draft_one(url, cand, retries=2):
         out, meta = chat(url, messages, 6000, None, {'enable_thinking': True})
         if meta['finish_reason'] != 'stop':
             attempts.append(dict(meta, failure='generator reply truncated'))
-            raise ValueError(f"generator reply truncated ({meta['completion_tokens']} tokens)")
+            raise ValueError(f"generator reply truncated: finish_reason={meta['finish_reason']}, completion_tokens={meta['completion_tokens']} "
+                             f"(reasoning {meta['reasoning_chars']} chars, answer {meta['answer_chars']} chars), attempt {len(attempts)}")
         try:
             reply = parse_reply(out, schema)
         except ValueError as exc:
