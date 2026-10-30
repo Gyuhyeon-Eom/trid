@@ -123,7 +123,8 @@ def _numbers(text):
     return {n.rstrip('.,').replace(',', '') for n in NUMBER.findall(text)}
 
 
-def answer_document_case(document, question, base, family, context, max_tokens=256, selected=None, topical=None):
+def answer_document_case(document, question, base, family, context, max_tokens=256, selected=None, topical=None,
+                         provenance=None):
     """Serving contract of CASE-trained versions (explanatory answers, trained with CASE_SYSTEM). The model is asked
     with its training instruction; its output is never shown as a verified answer. Output sentences that occur verbatim
     in a retrieved passage and contain one of the question's `topical` words (when given) are shown as quotes,
@@ -141,7 +142,12 @@ def answer_document_case(document, question, base, family, context, max_tokens=2
               'scope': '관련도 상위 최대 6개 구간을 확인한 결과입니다. 미검색 구간까지 정보가 없다고 보장하지 않습니다.'}
     if not selected:
         return {**result, 'status': 'not_found', 'answer': '질문과 관련된 문서 구간을 찾지 못했습니다. 질문을 바꾸거나 추출 내용을 확인해 주세요.'}
-    prompt = rag_prompt([(f'D{i}', chunk.text) for i, (chunk, _) in enumerate(selected, 1)], question)
+    # Versions trained on B's case-training-view (MODEL-REPAIR-001) saw D1 start with a '자료 정보: …' line naming the
+    # document, institution and date basis; they are served the same way (`provenance`), others without it.
+    texts = [chunk.text for chunk, _ in selected]
+    if provenance:
+        texts[0] = provenance + texts[0]
+    prompt = rag_prompt([(f'D{i}', text) for i, text in enumerate(texts, 1)], question)
     messages = [{'role': 'system', 'content': CASE_SYSTEM}, {'role': 'user', 'content': prompt}]
     r = complete(base, messages, family, max_tokens, context)
     if r.get('skipped_context'):
@@ -568,6 +574,15 @@ class Workspace:
         return (f"검색 자료 {self.manifest['documents']:,}건·{self.manifest['passages']:,}구간({shown}; 기준일 {lo}~{hi}). "
                 "법제처 국가법령정보센터·공공데이터포털 등 공개 자료이며 기관 내부 비공개 자료가 아닙니다. 질의응답 자료는 "
                 "국민권익위원회 게시판 비중이 큽니다. 모든 값은 표시된 기준일 당시 값이며 현행 여부는 다시 확인하지 않았습니다.")
+
+    def provenance(self, doc_id):
+        """The '자료 정보: 문서 … · 기관 … · 기준 …' line of B's case-training-view (scripts/build_case_training_view.py
+        provenance()), from this document's metadata; the date basis says that later amendments were not checked."""
+        m = self.meta[doc_id]
+        when = f"{m['date']} {m['date_type'] or ''}".strip() + ' 기준 자료(이후 개정 여부 미확인)' if m.get('date') else None
+        parts = [f"문서 {m['title']}", f"기관 {m['institution']}" if m.get('institution') else None,
+                 f'기준 {when}' if when else None]
+        return f"자료 정보: {' · '.join(p for p in parts if p)}\n"
 
     def describe(self, doc_id, score=None):
         m = self.meta[doc_id]
@@ -1087,7 +1102,9 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                                 elif version.get('answer_mode') == 'case':
                                     result = answer_document_case(document, question, version['base'], version['family'],
                                                                   version['context'], selected=selected,
-                                                                  topical=selection['retrieval']['topical_words'] if selection else None)
+                                                                  topical=selection['retrieval']['topical_words'] if selection else None,
+                                                                  provenance=workspace.provenance(selection['applied'])
+                                                                  if selection and version.get('provenance_line') else None)
                                 else:
                                     result = answer_document_chat(document, question, version['base'], version['family'],
                                                                   version['context'], version['decoding'] == 'evidence_constrained',
