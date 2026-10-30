@@ -1,0 +1,205 @@
+{
+ "decomposition_rag310_answerable": {
+  "91m-evidence": {
+   "answerable": {
+    "right_source_wrong_value": 89,
+    "abstain": 86,
+    "correct": 18,
+    "wrong_source": 33,
+    "right_source_partial_value": 2
+   },
+   "unanswerable": {
+    "answered_with_citation": 38,
+    "abstain": 44
+   },
+   "precision_when_answering": "18/142"
+  },
+  "91m-free": {
+   "answerable": {
+    "right_source_wrong_value": 80,
+    "abstain": 82,
+    "correct": 18,
+    "format_no_citation": 11,
+    "wrong_source": 33,
+    "right_source_partial_value": 4
+   },
+   "unanswerable": {
+    "format_no_citation": 4,
+    "answered_with_citation": 35,
+    "abstain": 43
+   },
+   "precision_when_answering": "18/146"
+  },
+  "390m-evidence": {
+   "answerable": {
+    "right_source_wrong_value": 87,
+    "right_source_partial_value": 12,
+    "correct": 26,
+    "wrong_source": 40,
+    "abstain": 63
+   },
+   "unanswerable": {
+    "answered_with_citation": 46,
+    "abstain": 36
+   },
+   "precision_when_answering": "26/165"
+  },
+  "390m-free": {
+   "answerable": {
+    "right_source_wrong_value": 91,
+    "right_source_partial_value": 5,
+    "correct": 24,
+    "wrong_source": 37,
+    "format_no_citation": 8,
+    "abstain": 63
+   },
+   "unanswerable": {
+    "answered_with_citation": 45,
+    "abstain": 35,
+    "format_no_citation": 2
+   },
+   "precision_when_answering": "24/165"
+  }
+ },
+ "klue_dev_question_sensitivity": {
+  "91m": {
+   "correct": "17/269",
+   "abstained": 145,
+   "all_abstain_paragraphs": 43,
+   "no_abstain_paragraphs": 34,
+   "identical_among_no_abstain": 7
+  },
+  "390m": {
+   "correct": "22/269",
+   "abstained": 131,
+   "all_abstain_paragraphs": 39,
+   "no_abstain_paragraphs": 43,
+   "identical_among_no_abstain": 10
+  }
+ },
+ "fixed_passage_probe": {
+  "passage": "RAG310 first item D3 travel allowance (development set)",
+  "questions": [
+   "일비는 하루에 얼마인가요?",
+   "식비는 하루에 얼마인가요?",
+   "서울특별시 숙박비 상한은 얼마인가요?",
+   "광역시 숙박비 상한은 얼마인가요?",
+   "그 밖의 지역 숙박비 상한은 얼마인가요?",
+   "자가용 연료비는 어떻게 지급하나요?"
+  ],
+  "gold_values": {
+   "일비는 하루에 얼마인가요?": "2만 원",
+   "식비는 하루에 얼마인가요?": "2만 5천 원",
+   "서울특별시 숙박비 상한은 얼마인가요?": "10만 원",
+   "광역시 숙박비 상한은 얼마인가요?": "8만 원",
+   "그 밖의 지역 숙박비 상한은 얼마인가요?": "7만 원",
+   "자가용 연료비는 어떻게 지급하나요?": "실비"
+  },
+  "candidates": [
+   "2만 원 [D3]",
+   "1일 2만 원 [D3]",
+   "1일 2만 5천 원 [D3]",
+   "10만 원 [D3]",
+   "8만 원 [D3]",
+   "7만 원 [D3]",
+   "실비 [D3]",
+   "확인 불가"
+  ],
+  "91m": {
+   "greedy_outputs": {
+    "일비는 하루에 얼마인가요?": "1일 2만 원, 식비는 1일 2만 원, 식비는 1일 2만 원, 식비는 1일 2만 원, 식비는",
+    "식비는 하루에 얼마인가요?": "1일 2만 원, 식비는 1일 2만 원, 식비는 1일 2만 원, 식비는 1일 2만 원, 식비는",
+    "서울특별시 숙박비 상한은 얼마인가요?": "1일 2만 원 [D3]",
+    "광역시 숙박비 상한은 얼마인가요?": "1일 2만 원 [D3]",
+    "그 밖의 지역 숙박비 상한은 얼마인가요?": "1일 2만 원 [D3]",
+    "자가용 연료비는 어떻게 지급하나요?": "숙박비 상한은 서울특별시 10만 원, 광역시 8만 원, 그 밖의 지역 7만 원 [D3]"
+   },
+   "best_candidate_by_logprob": [
+    {
+     "q": "일비는 하루에 얼마",
+     "best": "1일 2만 원 [D3]",
+     "gold_logprob": -2.33,
+     "best_logprob": -2.33
+    },
+    {
+     "q": "식비는 하루에 얼마",
+     "best": "1일 2만 원 [D3]",
+     "gold_logprob": -4.91,
+     "best_logprob": -3.4
+    },
+    {
+     "q": "서울특별시 숙박비 ",
+     "best": "1일 2만 원 [D3]",
+     "gold_logprob": -4.9,
+     "best_logprob": -1.12
+    },
+    {
+     "q": "광역시 숙박비 상한",
+     "best": "1일 2만 원 [D3]",
+     "gold_logprob": -8.55,
+     "best_logprob": -0.99
+    },
+    {
+     "q": "그 밖의 지역 숙박",
+     "best": "1일 2만 원 [D3]",
+     "gold_logprob": -9.83,
+     "best_logprob": -0.98
+    },
+    {
+     "q": "자가용 연료비는 어",
+     "best": "1일 2만 원 [D3]",
+     "gold_logprob": -3.47,
+     "best_logprob": -3.31
+    }
+   ]
+  },
+  "390m": {
+   "greedy_outputs": {
+    "일비는 하루에 얼마인가요?": "1일 2만 원 [D3]",
+    "식비는 하루에 얼마인가요?": "2026 [D3]",
+    "서울특별시 숙박비 상한은 얼마인가요?": "2026 [D3]",
+    "광역시 숙박비 상한은 얼마인가요?": "2026 [D3]",
+    "그 밖의 지역 숙박비 상한은 얼마인가요?": "2026 [D3]",
+    "자가용 연료비는 어떻게 지급하나요?": "실비 [D3]"
+   },
+   "best_candidate_by_logprob": [
+    {
+     "q": "일비는 하루에 얼마",
+     "best": "1일 2만 5천 원 [D3]",
+     "gold_logprob": -1.98,
+     "best_logprob": -1.91
+    },
+    {
+     "q": "식비는 하루에 얼마",
+     "best": "1일 2만 5천 원 [D3]",
+     "gold_logprob": -2.64,
+     "best_logprob": -2.64
+    },
+    {
+     "q": "서울특별시 숙박비 ",
+     "best": "10만 원 [D3]",
+     "gold_logprob": -5.97,
+     "best_logprob": -5.97
+    },
+    {
+     "q": "광역시 숙박비 상한",
+     "best": "10만 원 [D3]",
+     "gold_logprob": -12.47,
+     "best_logprob": -6.35
+    },
+    {
+     "q": "그 밖의 지역 숙박",
+     "best": "10만 원 [D3]",
+     "gold_logprob": -8.53,
+     "best_logprob": -3.65
+    },
+    {
+     "q": "자가용 연료비는 어",
+     "best": "실비 [D3]",
+     "gold_logprob": -0.47,
+     "best_logprob": -0.47
+    }
+   ]
+  }
+ }
+}

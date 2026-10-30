@@ -1,0 +1,145 @@
+{
+  "version": "0.1.1",
+  "stage": "sft",
+  "initialization": "continued from local run: /opt/init",
+  "tokenizer": "inherited unchanged from local init run",
+  "objective": "supervised next-token prediction, answer-only loss",
+  "device": "cuda",
+  "parameters": 91245312,
+  "config": {
+    "vocab_size": 8192,
+    "dim": 768,
+    "layers": 12,
+    "heads": 12,
+    "hidden_dim": 2048,
+    "context_length": 1024,
+    "rope_theta": 10000.0,
+    "num_intents": 0,
+    "kv_heads": null,
+    "qk_norm": false
+  },
+  "inherited_context_length": 1024,
+  "seed": 271030,
+  "steps_requested": 1200,
+  "batch_size": 8,
+  "learning_rate": 0.0001,
+  "data_sha256": {
+    "train": "1d35a2677e901f9aed4dc23dfaa55ff254161bba1d785e23ee95f82c7b7c22b8",
+    "valid": "ef4f080f8b01a386f11525cdee70f9ad63541f6b67b0554a38629224cae97659"
+  },
+  "train_rows": 18581,
+  "valid_rows": 398,
+  "validation_rows_used": 64,
+  "eval_every": 100,
+  "intent_auxiliary_weight": 0.0,
+  "intent_map": {},
+  "loss_normalization": "example",
+  "micro_batch_size": 2,
+  "validation_metric": "example-mean answer CE",
+  "status": "complete",
+  "pretrained_model": "/opt/init",
+  "initial_weights_sha256": "78efeb901e794d52bda807540f60f29b4e7ce253ad4a3836f80a5e2e650700d3",
+  "data_provenance": {
+    "purpose": "Real-passage expansion: all KLUE train / KLUE hard-distractor / TyDi train rows, no synthetic rows",
+    "parent_data": "/Users/eomgyuhyeon/사업/trid/data/public-dialogue-mix-02",
+    "source": "/Users/eomgyuhyeon/사업/trid/data/korean-rag-curriculum-v4",
+    "real_qa_rows": {
+      "before": 5332,
+      "after": 13403
+    },
+    "real_qa_tasks": {
+      "rag_klue": 6963,
+      "rag_klue_missing": 3184,
+      "rag_klue_hard": 1663,
+      "rag_tydi": 1593
+    },
+    "real_qa_abstain_share": 0.2376,
+    "dropped_for_context": 2642,
+    "real_qa_total_mass_unchanged": 0.8,
+    "validation": "byte-identical copy of parent",
+    "rag310_source_overlap": 0,
+    "licenses": {
+      "KLUE MRC v1.1 train": "CC BY-SA 4.0",
+      "TyDi QA v1.1 GoldP train": "Apache-2.0"
+    },
+    "parent_provenance": {
+      "purpose": "Second generative experiment: broader actual QA, common instruction format",
+      "parent_data": "/Users/eomgyuhyeon/사업/trid/data/public-dialogue-mix-01",
+      "sampling_mass": {
+        "dialogue": 0.1,
+        "document_dialogue": 0.05,
+        "public": 0.05,
+        "real_qa": 0.8
+      },
+      "within_component": "uniform rows",
+      "removed_public_tasks": [
+        "extractive_summary",
+        "followup",
+        "temporal_limit"
+      ],
+      "dropped_for_context": {
+        "train": 94,
+        "valid": 5
+      },
+      "parent_provenance": {
+        "purpose": "Generative model experiment, no automatic activation",
+        "sources": [
+          "base-dialogue-v1 authored dialogue",
+          "korean-rag-curriculum-v2 real_qa KLUE CC BY-SA",
+          "public-document-sft-01 KOGL-Type1"
+        ],
+        "sampling_mass": {
+          "dialogue": 0.3,
+          "document_dialogue": 0.2,
+          "public": 0.3,
+          "real_qa": 0.2
+        },
+        "within_component": "equal task probability",
+        "public_context": "full source text, never gold-only evidence selection",
+        "dropped_for_context": {
+          "train:document_dialogue": 66,
+          "train:public": 16,
+          "train:real_qa": 574,
+          "valid:public": 6,
+          "valid:real_qa": 23
+        },
+        "rows": {
+          "train": {
+            "dialogue": 4865,
+            "document_dialogue": 284,
+            "public": 67,
+            "real_qa": 5426
+          },
+          "valid": {
+            "dialogue": 213,
+            "document_dialogue": 5,
+            "public": 14,
+            "real_qa": 177
+          }
+        },
+        "limitations": "Small public source set; developmental split, may overlap pretraining; user-reported public source is train-exposed regression, not heldout accuracy."
+      },
+      "rows": {
+        "train": {
+          "dialogue": 4865,
+          "document_dialogue": 284,
+          "public": 29,
+          "real_qa": 5332
+        },
+        "valid": {
+          "dialogue": 213,
+          "document_dialogue": 5,
+          "public": 8,
+          "real_qa": 172
+        }
+      }
+    }
+  },
+  "best_validation_loss": 0.626001225784421,
+  "initial_validation_loss": 4.157479502260685,
+  "best_step": 1200,
+  "completed_steps": 1200,
+  "training_seconds": 243.41,
+  "weight_bytes": 364989448,
+  "note": "Checkpoint selected by validation loss. Optimizer state is not saved; rerun training into a new directory."
+}

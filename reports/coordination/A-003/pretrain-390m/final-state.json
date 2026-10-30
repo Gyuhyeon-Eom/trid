@@ -1,0 +1,10 @@
+{
+  "step": 15259,
+  "best_loss": 1.8370494544506073,
+  "best_step": 15259,
+  "training_seconds": 22989.050377462998,
+  "sampler": {
+    "epoch": 2,
+    "cursor": 28464
+  }
+}

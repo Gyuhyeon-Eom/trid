@@ -1,0 +1,76 @@
+{
+ "assembly-minutes clean-v5": {
+  "manifest": "corpus/state/assembly-minutes/clean-v5.manifest.json",
+  "shards": 22,
+  "shard_sha256_ok": 22,
+  "rows": 1684,
+  "characters": 130962603,
+  "tokens_incl_bos_eos": 76743781,
+  "chars_per_token": 1.707,
+  "tokens_by_split": {
+   "train": 75948343,
+   "valid": 449176,
+   "test": 346262
+  },
+  "rows_by_split": {
+   "train": 1665,
+   "valid": 9,
+   "test": 10
+  },
+  "tokens_by_kind": {
+   "assembly_audit": 8444179,
+   "assembly_plenary": 14438275,
+   "assembly_committee": 53861327
+  },
+  "doc_tokens_p50_p90_p99_max": [
+   31502,
+   101327,
+   177040,
+   1158589
+  ],
+  "docs_over_1024_2048_4096": [
+   1610,
+   1537,
+   1458
+  ],
+  "prior_trid_training_flag_rows": 0,
+  "id_in_mix_v3_press": 0,
+  "exact_text_in_mix_v3": 0
+ },
+ "korea-kr-briefing clean-v3": {
+  "manifest": "corpus/state/korea-kr-briefing/clean-v3.manifest.json",
+  "shards": 15,
+  "shard_sha256_ok": 15,
+  "rows": 281709,
+  "characters": 1047841584,
+  "tokens_incl_bos_eos": 682431940,
+  "chars_per_token": 1.537,
+  "tokens_by_split": {
+   "train": 675369774,
+   "test": 3555058,
+   "valid": 3507108
+  },
+  "rows_by_split": {
+   "train": 278915,
+   "test": 1447,
+   "valid": 1347
+  },
+  "tokens_by_kind": {
+   "press_release": 682431940
+  },
+  "doc_tokens_p50_p90_p99_max": [
+   1127,
+   3967,
+   23849,
+   5304835
+  ],
+  "docs_over_1024_2048_4096": [
+   152387,
+   72776,
+   26880
+  ],
+  "prior_trid_training_flag_rows": 0,
+  "id_in_mix_v3_press": 39582,
+  "exact_text_in_mix_v3": 39274
+ }
+}
