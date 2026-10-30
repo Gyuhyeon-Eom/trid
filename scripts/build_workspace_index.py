@@ -54,6 +54,7 @@ def api_snapshot(directory, meta):
         if sha256(directory / f['path']) != f['sha256']:
             raise ValueError(f"{directory / f['path']}: sha256 differs from the snapshot manifest")
     documents, facts, skipped, added = [], [], {'restricted': 0, 'empty': 0, 'duplicate': 0}, []
+    updated = []
     for f in manifest['files']:
         if not f['path'].startswith('normalized/'):
             continue
@@ -63,8 +64,18 @@ def api_snapshot(directory, meta):
                 skipped['restricted'] += 1
                 continue
             doc_id = f"{row['source_id'].rsplit(':', 1)[0]}:{row['version']}"
-            if doc_id in meta or row['source_id'] in meta:
+            existing = doc_id if doc_id in meta else row['source_id'] if row['source_id'] in meta else None
+            if existing:
+                # Same text already indexed from another input: keep that document, but carry the snapshot's metadata
+                # that the other input lacks (who the rule applies to, issuer code), so deduplication loses nothing.
                 skipped['duplicate'] += 1
+                issuer = row.get('issuer') or {}
+                meta[existing].update({k: v for k, v in (('applies_to', row.get('applies_to')),
+                                                          ('issuer_id', issuer.get('id')),
+                                                          ('issuer_id_scheme', issuer.get('id_scheme')),
+                                                          ('source_id', row['source_id']),
+                                                          ('metadata_snapshot_id', manifest['snapshot_id'])) if v})
+                updated.append(existing)
                 continue
             for fact in row.get('structured_facts') or []:
                 facts.append({**fact, 'source_id': row['source_id'], 'version': row['version'],
@@ -88,8 +99,52 @@ def api_snapshot(directory, meta):
                             'attribution': manifest.get('producer'), 'source_id': row['source_id'], 'version': row['version'],
                             'snapshot_id': manifest['snapshot_id']}
     info = {'snapshot_id': manifest['snapshot_id'], 'manifest_sha256': sha256(manifest_path), 'indexed': len(documents),
-            'added_documents': added, 'skipped': skipped, 'facts': len(facts), 'producer': manifest.get('producer')}
+            'added_documents': added, 'metadata_updated': len(updated), 'skipped': skipped, 'facts': len(facts),
+            'producer': manifest.get('producer')}
     return documents, facts, info
+
+
+GUIDE_MIN_CHARS = 500
+IMAGES_REMOVED = ('원본 파일의 이미지(그림)를 빼고 추출한 본문입니다. 그림 속 정보는 빠져 있고, 표·이미지를 원본과 대조해 '
+                  '검증하지 않았습니다.')
+
+
+def guides(path, meta, tables, pending=()):
+    """(documents, info) of B's cleaned practice guides (data/public-data/guides-vN/documents.jsonl). B's `documents`
+    part already passed its rights / PII / reserved-overlap checks (held rows are in held.jsonl and never read here);
+    rows with a status hold, near-empty extractions (covers, separators: < GUIDE_MIN_CHARS) and rows without an
+    unrestricted or KOGL Type 1 licence are still left out. An extractor label saying images were removed becomes a
+    `limitations` note shown with every answer from the document; ids in `pending` (a check B has not finished) are
+    indexed with `review_pending` so answers say the document is not fully approved. Table passages are flagged
+    (B: table_check unverified)."""
+    documents, skipped = [], {}
+    for line in (path / 'documents.jsonl').read_text().splitlines():
+        row = json.loads(line)
+        m = row.get('meta') or {}
+        license_ = row.get('license') or ''
+        why = ('hold' if m.get('status_holds') else 'empty_or_cover' if len(row['text'].strip()) < GUIDE_MIN_CHARS else
+               'license' if not any(k in license_ for k in ('제한 없음', '1유형', 'KOGL-Type1')) else None)
+        if why:
+            skipped.setdefault(why, []).append(row['id'])
+            continue
+        prov = row.get('provenance') or {}
+        doc = Document(row['id'], row['title'], row['sha256'], {'public'}, row['text'])
+        doc.passages, doc.refs = parse_document(row['text'], row['id'], row['title'])
+        documents.append(doc)
+        meta[row['id']] = {'title': row['title'], 'kind': prov.get('doc_type') or '업무매뉴얼', 'institution': prov.get('institution'),
+                           'date': prov.get('date'), 'date_type': prov.get('date_type'), 'effective_date': None,
+                           'currency': '자료 기준일 당시 내용이며 현행 여부는 확인하지 않았음', 'source': row.get('source'),
+                           'license': license_, 'attribution': row.get('collected_at'), 'extractor': m.get('extractor'),
+                           'applies_to': {'scope': 'institution', 'note': prov.get('applies_to')}, 'table_check': m.get('table_check'),
+                           'limitations': [IMAGES_REMOVED] if 'images removed' in (m.get('extractor') or '') else []}
+        if row['id'] in pending:
+            meta[row['id']]['review_pending'] = pending[row['id']]
+        if m.get('table_check') == 'unverified':
+            tables += [p.id for p in doc.passages if '|' in p.text or '<table' in p.text or '<tr' in p.text]
+    manifest = path / 'manifest.json'
+    return documents, {'path': str(path), 'manifest_sha256': sha256(manifest) if manifest.exists() else None,
+                       'indexed': [d.doc_id for d in documents], 'skipped': skipped,
+                       'pending': {d: pending[d] for d in pending if any(x.doc_id == d for x in documents)}}
 
 
 def main():
@@ -98,6 +153,10 @@ def main():
     p.add_argument('--practice', action='store_true', help=f'also index B search corpus {PRACTICE.relative_to(ROOT)}')
     p.add_argument('--api-snapshot', type=Path, action='append', default=[],
                    help='also index a local copy of a B API-S3-001 snapshot (reports/coordination/HYBRID-RAG-001-SCHEMA.md)')
+    p.add_argument('--guides', type=Path, action='append', default=[],
+                   help="also index B's cleaned practice guides (data/public-data/guides-vN); see guides()")
+    p.add_argument('--guide-pending', action='append', default=[], metavar='ID=NOTE',
+                   help='guide document indexed while a B check is still open; NOTE is shown with its answers')
     a = p.parse_args()
     if a.out.exists():
         p.error('Use a new --out directory')
@@ -171,6 +230,11 @@ def main():
         docs, rows_facts, snapshots[str(snap)] = api_snapshot(snap, meta)
         documents += docs
         facts += rows_facts
+    guide_info = []
+    for path in a.guides:
+        docs, info = guides(path, meta, tables, dict(x.split('=', 1) for x in a.guide_pending))
+        documents += docs
+        guide_info.append(info)
     index = Index.build(documents)
     index.save(a.out)
     meta = {d.doc_id: meta[d.doc_id] for d in documents}  # documents actually indexed only
@@ -182,6 +246,7 @@ def main():
     if a.practice:
         inputs.update({str((PRACTICE / f).relative_to(ROOT)): sha256(PRACTICE / f) for f in ('documents.jsonl', 'passages.jsonl', 'manifest.json')})
     inputs.update({f'{s}/manifest.json': info['manifest_sha256'] for s, info in snapshots.items()})
+    inputs.update({f"{g['path']}/manifest.json": g['manifest_sha256'] for g in guide_info})
     manifest = {'built_at_unix': time.time(), 'seconds': round(time.time() - started, 1), 'inputs': inputs,
                 'documents': len(documents), 'passages': len(index.passages), 'by_kind': counts,
                 'table_passages': len(tables), 'date_range': [dates[0], dates[-1]] if dates else None,
@@ -190,7 +255,7 @@ def main():
                                 f'B passages as given (skipped {skipped})' if a.practice else '')
                              + ''.join(f"; API snapshot {info['snapshot_id']} ({info['indexed']} records, skipped "
                                        f"{info['skipped']})" for info in snapshots.values()),
-                'api_snapshots': snapshots, 'structured_facts': len(facts),
+                'api_snapshots': snapshots, 'guides': guide_info, 'structured_facts': len(facts),
                 'note': 'Search-only corpus for the test site. Not a training-approval list; training holds are separate.'}
     if facts:
         (a.out / 'facts.jsonl').write_text(''.join(json.dumps(f, ensure_ascii=False) + '\n' for f in facts))

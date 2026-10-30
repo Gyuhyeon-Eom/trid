@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from scripts.build_workspace_index import api_snapshot
+from scripts.build_workspace_index import api_snapshot, guides
 
 
 def record(source_id, version, text, restrictions=None, facts=None):
@@ -41,6 +41,7 @@ class ApiSnapshotTests(unittest.TestCase):
         self.assertEqual((meta['law:admrul:901']['institution'], meta['law:admrul:901']['date_type']), ('가기관', '발령일자'))
         self.assertEqual(meta['law:admrul:901']['applies_to']['scope'], 'institution')
         self.assertEqual((info['skipped']['restricted'], info['skipped']['duplicate']), (1, 1))
+        self.assertEqual(meta['law:admrul:903']['applies_to']['scope'], 'institution')  # metadata kept, text not re-added
         self.assertEqual((facts[0]['value'], facts[0]['source_id']), (21000, 'law:admrul:1'))
 
     def test_file_changed_after_manifest_is_rejected(self):
@@ -48,6 +49,27 @@ class ApiSnapshotTests(unittest.TestCase):
         (d / 'normalized/records-00000.jsonl').write_text('{}\n')
         with self.assertRaises(ValueError):
             api_snapshot(d, {})
+
+
+class GuidesTests(unittest.TestCase):
+    def test_only_substantive_licensed_rows_are_indexed_with_limitations_and_pending_notes(self):
+        def row(id_, text, license_='이용허락범위 제한 없음', extractor='kordoc:pdf', holds=()):
+            return {'id': id_, 'title': f'기관_{id_}', 'sha256': id_, 'text': text, 'license': license_, 'source': 'https://example.invalid',
+                    'meta': {'extractor': extractor, 'table_check': 'unverified', 'status_holds': list(holds)},
+                    'provenance': {'institution': '가기관', 'doc_type': '업무매뉴얼', 'applies_to': '가기관 업무'}}
+        body = '제1장 총칙\n' + '업무 절차를 설명한다. ' * 60
+        rows = [row('ok', body), row('cover', '표지'), row('held', body, holds=['reserved_overlap']),
+                row('nc', body, license_='공공누리 제3유형'), row('kogl1', body, license_='공공저작물 : 출처표시 (제 1유형)'),
+                row('img', body, extractor='kordoc:hwpx(BinData images removed: zip entry limit)')]
+        d = Path(tempfile.mkdtemp())
+        (d / 'documents.jsonl').write_text(''.join(json.dumps(r, ensure_ascii=False) + '\n' for r in rows))
+        meta, tables = {}, []
+        docs, info = guides(d, meta, tables, {'img': '검사 전 조건부'})
+        self.assertEqual([x.doc_id for x in docs], ['ok', 'kogl1', 'img'])
+        self.assertEqual(info['skipped'], {'empty_or_cover': ['cover'], 'hold': ['held'], 'license': ['nc']})
+        self.assertEqual((meta['ok']['limitations'], meta['img']['review_pending']), ([], '검사 전 조건부'))
+        self.assertIn('이미지', meta['img']['limitations'][0])
+        self.assertNotIn('review_pending', meta['ok'])
 
 
 if __name__ == '__main__':

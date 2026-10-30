@@ -433,6 +433,10 @@ NORMALIZE = re.compile(r'[\s·ㆍ・「」『』()（）\[\]〈〉<>,.\-]')
 def _norm(text):
     return NORMALIZE.sub('', text or '')
 
+def _alias_ok(alias):
+    return len(alias) >= 3 or bool(re.fullmatch(r'[A-Z]{2}', alias))
+
+
 
 def _longest_shared(a, b):
     """Length of the longest substring of `a` that also occurs in `b` (both normalised)."""
@@ -531,6 +535,15 @@ class Workspace:
             base = _norm(re.split(r'\s*[\[(]|\s+-\s+', m['title'])[0])
             if len(base) >= 4 and re.search(r'(법|령|규정|규칙|지침|훈령|예규|고시|편람|기준)$', base):
                 self.rule_names.setdefault(base, set()).add(doc_id)
+        # The tables (별표) of a rule, by number, for the rule's own documents: a statute body passage that says
+        # "별표 2에 따른다" is answered together with that table of the same statute (one rule, not a mix of rules).
+        self.rule_tables = {}
+        for base, docs in self.rule_names.items():
+            for d in docs:
+                n = re.search(r'\[별표\s*0*(\d+)', self.meta[d]['title'])
+                if n:
+                    self.rule_tables.setdefault(base, {})[int(n.group(1))] = d
+        self.rule_of = {d: base for base, docs in self.rule_names.items() for d in docs}
         self.dense, self.dense_info, self.embedder = None, None, embedder
         if (root / 'dense.f16.npy').exists():
             self.dense_info = json.loads((root / 'dense.json').read_text())
@@ -567,26 +580,63 @@ class Workspace:
         q = self.embedder(question)
         return [f for f in pool if float(self.embedder(f['metric']) @ q) >= self.FACT_COS]
 
-    def _registry(self, path):
-        """alias -> official name, from the corpus issuers and the official ALIO list of public institutions. Aliases are
-        derived generically (the name; without a (사)/(재) prefix; without a leading 한국/국립/대한 when ≥3 characters
-        remain); an alias claimed by two institutions is dropped. Each official name records its corpus documents
-        (issued by it, or rules/manuals whose title starts with its name) and its ALIO type and ministry."""
-        self.institutions = {}
+    def _registry(self, path, official=ROOT / 'data/agency-aliases-v1/aliases.jsonl'):
+        """alias -> official name. Sources: corpus issuers; the ALIO list of public institutions (with generic aliases:
+        without a leading 한국/국립/대한 when ≥3 characters remain); and B's official alias table (agency-aliases-v1:
+        기관코드 official names, ALIO names, statutory abbreviations defined in law texts, predecessor names), each row
+        with its evidence. An alias marked ambiguous, or claimed by two institutions, is never resolved automatically
+        (`self.ambiguous` keeps its candidates for asking back). A predecessor name stays its own (old) institution with
+        `successor` noted: an old body's rules are not applied to its successor. Each official name records its corpus
+        documents (issued by it, or rules/manuals whose title starts with its name) and its ALIO type and ministry."""
+        self.institutions, self.ambiguous = {}, {}
         names = [(n, None) for n in self.by_institution]
         if path.exists():
             names += [(_norm(re.sub(r'^\((사|재|주)\)', '', a['apbaNa'])), a) for a in json.loads(path.read_text())['agencies']]
         aliases = {}
+        entry_of = lambda name: self.institutions.setdefault(name, {'name': name, 'alio': None, 'docs': set()})
         for name, alio in names:
-            entry = self.institutions.setdefault(name, {'name': name, 'alio': None, 'docs': set()})
+            entry = entry_of(name)
             if alio:
                 entry['alio'] = {'id': alio['apbaId'], 'name': alio['apbaNa'], 'type': alio['typeNa'], 'ministry': alio['jidtNa']}
-            entry['docs'] |= self.by_institution.get(name, set())
             for alias in {name} | {name[len(p):] for p in ('한국', '국립', '대한') if name.startswith(p) and len(name) - len(p) >= 3}:
                 aliases.setdefault(alias, set()).add(name)
+        self.alias_source = None
+        if official.exists():
+            self.alias_source = {'file': str(official), 'manifest_sha256': hashlib.sha256(
+                official.with_name('manifest.json').read_bytes()).hexdigest() if official.with_name('manifest.json').exists() else None}
+            for line in official.read_text().splitlines():
+                row = json.loads(line)
+                alias, canonical, kind = _norm(row['alias']), _norm(row['canonical']), row['kind']
+                # Hangul aliases need 3+ characters; Latin acronyms (LH) defined in law texts count from 2.
+                if not _alias_ok(alias) or len(canonical) < 3:
+                    continue
+                if row['ambiguous']:
+                    self.ambiguous.setdefault(alias, set()).add(canonical)
+                    continue
+                # 기관코드 short names include departments ("인사처" = 한국전력기술(주) 안전기획관리본부 인사처): an
+                # official row counts only when its canonical name is the body's own full name (a top-level body).
+                if kind in ('official_name', 'official_full_name') and _norm(row['evidence'].get('full_name')) != canonical:
+                    continue
+                if kind == 'predecessor_name':
+                    entry_of(alias)['successor'] = row['canonical']
+                    aliases.setdefault(alias, set()).add(alias)
+                    continue
+                entry = entry_of(canonical)
+                if row.get('alio_id') and not entry['alio']:
+                    entry['alio_id'] = row['alio_id']
+                aliases.setdefault(alias, set()).add(canonical)
+        prefixes = {}
+        for d, t in self.norm_titles.items():
+            if d not in self.qa_docs:
+                for k in range(3, min(len(t), 40) + 1):
+                    prefixes.setdefault(t[:k], set()).add(d)
         for name, entry in self.institutions.items():
-            entry['docs'] |= {d for d, t in self.norm_titles.items() if t.startswith(name) and d not in self.qa_docs}
-        return {alias: next(iter(owners)) for alias, owners in aliases.items() if len(owners) == 1 and len(alias) >= 3}
+            entry['docs'] = self.by_institution.get(name, set()) | prefixes.get(name, set())
+        for alias, owners in aliases.items():
+            if len(owners) > 1:
+                self.ambiguous.setdefault(alias, set()).update(owners)
+        return {alias: next(iter(owners)) for alias, owners in aliases.items()
+                if len(owners) == 1 and _alias_ok(alias) and alias not in self.ambiguous}
 
     def scores(self, question, protected=False):
         """Hybrid passage scores in [0, 1] (authority-weighted), plus the raw cosines (None without dense vectors).
@@ -657,14 +707,16 @@ class Workspace:
     INSTITUTION_SUFFIX = re.compile(r'(공사|공단|위원회|재단|진흥원|연구원|은행|센터|청|처|부)$')
 
     def institution_candidates(self, mention):
-        """Official institutions an unregistered short form may stand for: its characters appear in order in the
-        official name and both end in the same kind of body (건보공단 → 국민건강보험공단, 인사처 → 인사혁신처). A guess
-        to confirm (one candidate) or ask about (several), never a silent substitution."""
+        """Official institutions a name outside the alias table may stand for, to ASK about (never resolved silently):
+        the official table's candidates when the alias is ambiguous there; otherwise names in which its characters
+        appear in order and that end in the same kind of body (건보공단 ~ 국민건강보험공단). At most six."""
+        if mention in self.ambiguous:
+            return sorted(self.ambiguous[mention])[:6]
         suffix = self.INSTITUTION_SUFFIX.search(mention)
         if len(mention) < 3 or not suffix:
             return []
         pattern = re.compile('.*?'.join(map(re.escape, mention)))
-        return sorted(n for n in self.institutions if n != mention and n.endswith(suffix.group(1)) and pattern.search(n))
+        return sorted(n for n in self.institutions if n != mention and n.endswith(suffix.group(1)) and pattern.search(n))[:6]
 
     def scope(self):
         kinds = sorted(self.manifest['by_kind'].items(), key=lambda kv: -kv[1])
@@ -708,19 +760,20 @@ class Workspace:
         mentioned = [w for w in mentioned if not any(w in a or a in w for a in found)]
         # Unregistered names count when rules/manuals start with them ("해양경찰청 …"); Q&A titles are visitors'
         # questions ("국민건강보험공단 지사장께 …") and a mention inside another body's title is not its rule either.
-        # A short form matching exactly one official name is read as that institution.
-        resolved = {w: c[0] for w in mentioned for c in [self.institution_candidates(w)] if len(c) == 1}
-        official += [n for n in resolved.values() if n not in official]
-        mentioned = [w for w in mentioned if w not in resolved]
+        # Other unregistered or ambiguous names stay unknown: select() asks which official institution is meant.
         named = [n for n in official if self.institutions[n]['docs']]
         unknown = [n for n in official if not self.institutions[n]['docs']]
         leading = {w: {d for d, t in self.norm_titles.items() if t.startswith(w) and d not in self.qa_docs} for w in mentioned}
         named += [w for w, docs in leading.items() if docs]
-        unknown += [w for w, docs in leading.items() if not docs]
+        # A name outside the official table that only occurs inside document titles ("환경시설설치공사매뉴얼") and
+        # resembles no official institution is a topic word ("설치공사"), not an institution.
+        topic = {w for w, docs in leading.items() if not docs and not self.institution_candidates(w)
+                 and any(w in t for d, t in self.norm_titles.items() if d not in self.qa_docs)}
+        unknown += [w for w, docs in leading.items() if not docs and w not in topic]
         allowed = None
         if named:
             allowed = set().union(*((self.institutions[n]['docs'] if n in self.institutions else leading[n]) for n in named))
-        mentioned = found + mentioned + list(resolved)
+        mentioned = found + mentioned
         # An exact canonical rule name ("공무원 여비 규정") names the rule whatever its length; only otherwise are
         # shared title fragments of TITLE_MIN+ characters read as naming a document.
         exact = [n for n in self.rule_names if len(n) >= 6 and n in q]
@@ -812,8 +865,16 @@ class Workspace:
             # The question's best evidence is a privacy-protected passage: no answer from weaker neighbours.
             return {**result, 'status': 'not_found', 'reason': 'protected'}
         best = {d: float(scores[idx[0]]) for d, idx in passing.items()}
-        applied = next(iter(passing))
         general = not (pinned or titled or named or result.get('continued'))
+        subject = self.civil_service_subject(question)
+        if general and subject:
+            # "지방공무원 …" is not answered from a rule whose own 제1조 limits it to 국가공무원 (B applies_to), and back.
+            kept = {d: s for d, s in best.items() if self.applies(d).get('scope') not in
+                    {'central_government', 'local_government'} - {subject}}
+            if kept:
+                best = kept
+        applied = next(iter(best))
+        result['civil_service_subject'] = subject
         if general and applied in self.specific:
             # A question naming no institution: a common rule as good as (CLOSE) the top institution's own rule wins.
             common = [d for d in best if d not in self.specific and best[d] >= self.CLOSE * best[applied]]
@@ -840,7 +901,44 @@ class Workspace:
                                 self.index.passages[i].id in self.tables, self.index.passages[i].id in self.value_hold),
                   float(scores[i]))
                   for i in passing[applied]]
+        linked = self.linked_tables(applied, [c for c, _ in chunks], everywhere)
+        if linked:
+            result['linked_tables'] = sorted({str(self.passage_doc[i]) for i in linked})
+            chunks += [(PassageChunk(self.index.passages[i].text, 1, self.index.passages[i].char_start,
+                                     self.passage_doc[i], self.index.passages[i].path,
+                                     self.index.passages[i].id in self.tables, self.index.passages[i].id in self.value_hold),
+                        float(everywhere[i])) for i in linked]
         return {**result, 'status': 'answer', 'applied': applied, 'chunks': chunks}
+
+    def linked_tables(self, applied, chunks, scores, per_table=2, max_tables=2):
+        """Passages of the tables (별표) that the chosen statute-body passages cite by number, from the same rule —
+        the best-scoring `per_table` of each (privacy passages excluded), for the `max_tables` cited tables whose best
+        passage scores highest — so "식비는 별표 2에 따른다" comes with 별표 2."""
+        tables = self.rule_tables.get(self.rule_of.get(applied), {})
+        if not tables or applied in tables.values():
+            return []
+        cited = {int(n) for c in chunks for n in re.findall(r'별표\s*(\d+)', c.text)}
+        cited -= {int(n) for c in chunks for n in re.findall(r'\[별표\s*(\d+)\]', c.text)}  # already quoted inline
+        ranked = []
+        for n in sorted(cited):
+            doc = tables.get(n)
+            if doc:
+                idx = np.flatnonzero((self.passage_doc == doc) & ~self.private_mask)
+                if len(idx):
+                    ranked.append([int(i) for i in idx[np.argsort(-scores[idx], kind='stable')][:per_table]])
+        ranked.sort(key=lambda idx: -float(scores[idx[0]]))
+        return [i for idx in ranked[:max_tables] for i in idx]
+
+    def applies(self, doc):
+        """B's structured applicability ({'scope', 'basis', ...}) of a document; {} when absent or free text only."""
+        a = self.meta[doc].get('applies_to')
+        return a if isinstance(a, dict) else {}
+
+    @staticmethod
+    def civil_service_subject(question):
+        """'local_government' / 'central_government' when the question names only 지방공무원 / only 국가공무원."""
+        local, central = '지방공무원' in question, '국가공무원' in question
+        return 'local_government' if local and not central else 'central_government' if central and not local else None
 
 
 
@@ -864,12 +962,17 @@ def workspace_reply(workspace, selection):
         answer = ('이 질문과 가장 관련된 구간은 개인정보 검토로 공개 대상에서 제외되어 있어 답하지 않습니다. 같은 문서의 다른 '
                   '구간이나 다른 자료로 대신 답하지 않습니다.')
     elif status == 'unknown_institution':
-        described = []
+        described, successors = [], []
         for name in selection['unknown_institutions']:
-            alio = (workspace.institutions.get(name) or {}).get('alio')
+            entry = workspace.institutions.get(name) or {}
+            alio = entry.get('alio')
             described.append(f"{alio['name']}({alio['type']}, 주무부처 {alio['ministry']})" if alio else f"'{name}'")
+            if entry.get('successor'):
+                successors.append(f"'{name}'은(는) 기관코드상 {entry['successor']}(으)로 승계된 옛 기관명입니다. 옛 기관의 규정을 "
+                                  f"현 기관에 그대로 적용하지 않으니, {entry['successor']} 기준을 원하면 그 이름으로 물어 주세요.")
         answer = (f"{', '.join(described)}의 규정은 현재 검색 자료에 없습니다. 다른 기관의 규정으로 대신 답하지 않습니다. "
-                  '해당 기관 규정 문서를 첨부(＋)로 넣으면 그 문서에서 찾을 수 있습니다. 기관을 정하지 않고 공공기관 '
+                  + (' '.join(successors) + ' ' if successors else '')
+                  + '해당 기관 규정 문서를 첨부(＋)로 넣으면 그 문서에서 찾을 수 있습니다. 기관을 정하지 않고 공공기관 '
                   '일반 기준을 찾으려면 기관명 없이 물어 주세요.')
     elif selection.get('reason') == 'irrelevant':
         words = ', '.join(f"'{w}'" for w in selection['retrieval']['topical_words'])
@@ -1292,14 +1395,31 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                                 how = ('질문에 적힌 문서명' if selection['title_matched'] else
                                        f"질문에 적힌 기관({', '.join(selection['institutions'])})" if selection['institutions'] else
                                        '앞선 대화에서 쓴 문서(질문에 기관·문서명이 없어 이어서 찾음)' if selection.get('continued') else
-                                       '관련도')
+                                       '관련도 판정')
                                 result['scope'] = (f'{how}으로 고른 문서 1건의 구간만 모델에 넣었습니다. 다른 기관·문서의 규정을 '
                                                    '섞지 않습니다. 검색되지 않은 자료까지 정보가 없다고 보장하지 않습니다.')
-                                if selection.get('scope_note') == 'specific':
-                                    m = workspace.meta[selection['applied']]
-                                    result['scope'] += (f" 이 문서는 {m['institution'] or '특정 기관'}의 자체 규정(또는 그 소속·특정 대상 "
-                                                        '규정)입니다. 질문에 기관을 정하지 않았고 공통 규정은 찾지 못했으므로, 질문한 대상에 '
-                                                        '이 규정이 적용되는지는 확인되지 않았습니다.')
+                                m = workspace.meta[selection['applied']]
+                                scope_text = workspace.applies(selection['applied']).get('note')
+                                if scope_text:
+                                    result['scope'] += f" 이 자료의 적용 범위(B 기록): {scope_text}."
+                                elif selection.get('scope_note') == 'specific':
+                                    noun = '규정' if re.search(r'법령|규정|규칙|훈령|예규|지침|행정규칙', f"{m['kind']} {m['title']}") else '자료'
+                                    result['scope'] += (f" 이 문서는 {m['institution'] or '특정 기관'}의 자체 {noun}(또는 그 소속·특정 대상 "
+                                                        f'{noun})입니다. 질문에 기관을 정하지 않았고 공통 규정은 찾지 못했으므로, 질문한 대상에 '
+                                                        f"이 {noun}{'이' if noun == '규정' else '가'} 적용되는지는 확인되지 않았습니다.")
+                                for note in m.get('limitations') or []:
+                                    result['scope'] += ' 자료 한계: ' + note
+                                if m.get('review_pending'):
+                                    result['scope'] += ' ' + m['review_pending']
+                                applies = workspace.applies(selection['applied']).get('scope')
+                                if (applies in ('central_government', 'local_government')
+                                        and re.search(r'공공기관|공기업|준정부기관|공단|공사', question) and '공무원' not in question):
+                                    who = '국가공무원' if applies == 'central_government' else '지방공무원'
+                                    result['scope'] += (f' 이 규정은 {who}에게 적용되는 규정(제1조 목적 기준)이며, 공공기관 직원에게 '
+                                                        '그대로 적용된다고 볼 근거는 검색 자료에 없습니다. 기관 자체 규정을 확인하세요.')
+                                if selection.get('linked_tables'):
+                                    result['scope'] += (' 본문이 인용한 같은 규정의 별표 구간을 함께 넣었습니다'
+                                                        f"({len(selection['linked_tables'])}건).")
                         result['model'] = version['label']
                         result['version'] = version_id
                         result['elapsed_ms'] = round((time.monotonic() - started) * 1000)
@@ -1345,7 +1465,7 @@ def main():
                         help='JSON list of served versions; the first is the default and must be extractive')
     parser.add_argument('--secret-file', required=True)
     parser.add_argument('--port', type=int, default=51873)
-    parser.add_argument('--workspace', type=Path, default=ROOT / 'runs/workspace-index/v3',
+    parser.add_argument('--workspace', type=Path, default=ROOT / 'runs/workspace-index/v4',
                         help='shared search index of approved public sources (scripts/build_workspace_index.py)')
     parser.add_argument('--passage-review', type=Path, default=ROOT / 'data/search-corpus-v4/passages.jsonl',
                         help="B's per-passage review metadata (value_review: hold_for_value_use, privacy_review)")

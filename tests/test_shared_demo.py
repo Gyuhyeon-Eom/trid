@@ -225,14 +225,16 @@ class ChatBackendTests(unittest.TestCase):
 
 
 class WorkspaceTests(unittest.TestCase):
+    TEXTS = {'a': ('가기관 출장 규정', '제1조(식비) 국외 출장 식비는 하루 8만원으로 한다.\n제2조(숙박) 국외 출장 숙박비는 1박 25만원으로 한다.'),
+             'b': ('나기관 출장 규정', '제1조(식비) 국외 출장 식비는 하루 6만원으로 한다.\n제2조(숙박) 숙박비는 실비로 한다.')}
+
     def setUp(self):
         import tempfile
         from trid.service.index import Index
         from trid.service.structure import parse_document
         from trid.service.types import Document as ServiceDocument
         from scripts.shared_demo import Workspace
-        texts = {'a': ('가기관 출장 규정', '제1조(식비) 국외 출장 식비는 하루 8만원으로 한다.\n제2조(숙박) 국외 출장 숙박비는 1박 25만원으로 한다.'),
-                 'b': ('나기관 출장 규정', '제1조(식비) 국외 출장 식비는 하루 6만원으로 한다.\n제2조(숙박) 숙박비는 실비로 한다.')}
+        texts = self.TEXTS
         docs, meta = [], {}
         for key, (title, text) in texts.items():
             d = ServiceDocument(key, title, key, {'public'}, text)
@@ -244,7 +246,7 @@ class WorkspaceTests(unittest.TestCase):
         Index.build(docs).save(self.dir.name)
         Path = __import__('pathlib').Path
         (Path(self.dir.name) / 'meta.json').write_text(json.dumps(meta, ensure_ascii=False))
-        (Path(self.dir.name) / 'manifest.json').write_text(json.dumps({'documents': 2, 'by_kind': {'행정규칙': 2}, 'date_range': ['2026-01-01', '2026-01-01']}))
+        (Path(self.dir.name) / 'manifest.json').write_text(json.dumps({'documents': len(texts), 'by_kind': {'행정규칙': len(texts)}, 'date_range': ['2026-01-01', '2026-01-01']}))
         self.ws = Workspace(self.dir.name)
 
     def test_ambiguous_institution_is_asked_back_instead_of_picked(self):
@@ -320,6 +322,17 @@ class WorkspaceTests(unittest.TestCase):
         self.assertIn('국민건강보험공단', r['unknown_institutions'])
         self.assertIn('국민건강보험공단', workspace_reply(self.ws, r)['answer'])
 
+    def test_short_form_without_official_alias_is_asked_not_resolved(self):
+        r = self.ws.select('국토부 국외 출장 식비는?')  # no official basis for 국토부 in agency-aliases-v1
+        self.assertEqual((r['status'], r['reason']), ('clarify', 'institution'))
+        self.assertIn('국토교통부', r['institutions'])
+
+    def test_predecessor_name_is_not_answered_with_successor_rules(self):
+        from scripts.shared_demo import workspace_reply
+        r = self.ws.select('기획재정부 국외 출장 식비는?')
+        self.assertEqual((r['status'], r['unknown_institutions']), ('unknown_institution', ['기획재정부']))
+        self.assertIn('재정경제부', workspace_reply(self.ws, r)['answer'])
+
     def test_exact_short_rule_name_is_recognised(self):
         r = self.ws.select('나기관 출장 규정에서 숙박비는?')
         self.assertTrue(r['title_matched'])
@@ -334,6 +347,33 @@ class WorkspaceTests(unittest.TestCase):
         r = ws.select('국외 출장 식비는 하루 얼마인가요?', pinned='b')
         self.assertEqual(r['chunks'], [])
         self.assertNotIn('b', {c.doc_id for c, _ in ws.select('국외 출장 식비는 하루 얼마인가요?')['chunks']})
+
+
+class CivilServiceScopeTests(WorkspaceTests.__base__):
+    TEXTS = {'a': ('가기관 수당 규정', '제1조(목적) 이 영은 국가공무원 및 지방공무원의 출장 식비를 정한다. 출장 식비는 하루 2만원.'),
+             'b': ('나기관 수당 규정', '제1조(목적) 이 영은 국가공무원 및 지방공무원의 출장 식비를 정한다. 출장 식비는 하루 3만원.')}
+    setUp = WorkspaceTests.setUp
+
+    def test_rule_for_the_other_civil_service_population_is_not_applied(self):
+        self.ws.meta['a']['applies_to'] = {'scope': 'central_government', 'basis': '제1조(목적) names 국가공무원'}
+        self.ws.meta['b']['applies_to'] = {'scope': 'local_government', 'basis': '제1조(목적) names 지방공무원'}
+        r = self.ws.select('지방공무원 출장 식비는 하루 얼마인가요?')
+        self.assertEqual((r['status'], r['applied']), ('answer', 'b'))
+        self.assertEqual(self.ws.select('공무원 출장 식비는 하루 얼마인가요?')['status'], 'clarify')  # no population named
+
+
+class RuleTableLinkTests(WorkspaceTests.__base__):
+    """A statute body passage citing 별표 N is answered with that table of the same statute, not another table."""
+    TEXTS = {'law': ('공무원 여비 규정', '제16조(식비) 국내 출장 식비는 별표 2에 따라 지급한다.'),
+             't2': ('공무원 여비 규정 [별표 0002] 국내 여비 지급표', '국내 출장 식비 하루 25,000원'),
+             't8': ('공무원 여비 규정 [별표 0008] 상시 출장 공무원의 여비 지급 기준표', '상시 출장 식비 월 지급'),
+             'other': ('다른 여비 규정 [별표 0002] 지급표', '식비 하루 1원')}
+    setUp = WorkspaceTests.setUp
+
+    def test_cited_table_of_the_same_rule_is_added(self):
+        r = self.ws.select('국내 출장 식비 지급', pinned='law')
+        self.assertEqual(r['linked_tables'], ['t2'])
+        self.assertEqual({c.doc_id for c, _ in r['chunks']}, {'law', 't2'})
 
 
 class ExtractiveChunkTests(unittest.TestCase):
