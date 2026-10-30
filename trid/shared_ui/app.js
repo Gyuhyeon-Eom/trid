@@ -105,7 +105,11 @@ function renderAnswer(result, started) {
   else tags.append(tag(STATUS[result.status] || result.status || '근거 검색', result.status === 'model_failure' ? 'bad' : ''));
   m.append(tags);
   for (const text of result.commentary_notes || []) if (text.includes('숨겼습니다')) note(m, text, 'warn');
-  if (result.table_warning) note(m, result.table_warning, 'warn');
+  // Serious source limits get one short line in the answer body; their full wording stays in the fold below.
+  const limits = [];
+  if (result.source_limits?.length) limits.push(result.source_limits.some(t => t.includes('그림')) ? '원본 그림 제외 추출본' : '원본 추출 한계 있음');
+  if (result.table_warning) limits.push('표 행·열 대응 미검증');
+  if (limits.length) note(m, `자료 한계: ${limits.join(' · ')} — 자세한 내용은 아래 출처에서 확인하세요`, 'warn');
   // A verified quote is the answer itself: show the exact span; its surrounding text stays in the fold.
   for (const c of result.candidates || []) {
     const [a, z] = c.prediction?.source_character_span || [0, 0];
@@ -137,6 +141,7 @@ function renderAnswer(result, started) {
     b.prepend(node('span', 'label', `${result.answer_mode === 'case' ? '원문 일치 · 정답 검증 아님' : '근거'}${where ? ' · ' + where : ''}`));
     details.append(b);
   }
+  if (result.table_warning) details.append(block('자료 한계 · 표', result.table_warning));
   if (result.commentary) details.append(block('모델 해설 · 검증 안 됨 — 원문과 대조하세요', result.commentary));
   if (ws?.selection === 'answer' && ws.others?.length) {
     details.append(block('검색된 다른 문서 (이 답변에는 쓰지 않음 · 다른 기관 기준이면 질문에 기관명을 넣어 주세요)',
