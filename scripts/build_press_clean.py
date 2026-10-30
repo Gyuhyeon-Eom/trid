@@ -37,6 +37,7 @@ PRIOR_TRAINING_FILES = ('mix-v3-dry/train.jsonl', 'trid-cpt-kanana-100m/train.js
 PRESS_ID = re.compile(r'korea-kr-press-(\d+)')
 SPLITS = (('test', 50), ('valid', 100))
 SHARD_ROWS = 20000
+CODE_SHA256 = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()  # as loaded
 ITEMS = ROOT / 'data/korea-kr-briefing-source/raw/items'  # collector cache: which attachment the body came from
 # File-name cues of the press release itself vs. other attachments (B-011: A-004's five longest rows were a statistics
 # yearbook, survey results, a research report, a white-paper appendix and an arbitration award, not the releases).
@@ -206,7 +207,7 @@ def main():
     kq = ROOT / 'trid/korean_quality.py'
     manifest = {'source': SOURCE, 'clean_version': args.version, 'built_at': built_at,
                 'input': str(INPUT.relative_to(ROOT)), 'input_sha256': hashlib.sha256(INPUT.read_bytes()).hexdigest(),
-                'input_rows': len(lines), 'code_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+                'input_rows': len(lines), 'code_sha256': CODE_SHA256,
                 'korean_quality_sha256': hashlib.sha256(kq.read_bytes()).hexdigest(), 'reasons': dict(reasons),
                 'pii_redactions': dict(pii_total), 'eval_files': eval_used, 'eval_ids': len(eval_ids),
                 'eval_match': ('quarantine if the news id appears anywhere in an eval file, or the whitespace-free text of '
