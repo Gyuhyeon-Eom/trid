@@ -36,6 +36,11 @@ C010_DEV = ROOT / 'reports/coordination/C-010/dev60-source-review.jsonl'
 REVIEW_HOLD = ROOT / 'reports/coordination/C-011/review-hold.json'   # id -> reason, from AI review; held until a person checks
 PLAIN_CASES = ROOT / 'reports/coordination/C-012/plain-cases.json'
 HOLD_REASON = 'reserve-overlap (B-013, unresolved): training input on hold; never an evaluation item'
+# What a case trains (C-013). Official cases carry the official 회답 and 이유 in the context, so the target is found and
+# restated from a supplied answer: retrieval-grounded extraction/explanation, not evidence of independent legal reasoning.
+TASK_OFFICIAL = 'official_answer_extraction'      # context holds the official answer; target restates it with its reasons
+TASK_PLAIN = 'official_answer_plain_explanation'   # same context; target is a plain-language restatement (synthetic)
+TASK_PACK = 'statute_application'                 # context is the article text only; C wrote the conclusion from it
 
 
 def overlap_ids():
@@ -78,6 +83,7 @@ def official_case(row):
               f"시점: 이 해석은 {date}({kind}) 당시 시행되던 법령을 기준으로 한 것이므로, 지금 적용하려면 현행 조문과 이후 개정 여부를 확인해야 합니다.\n"
               f"출처: 법제처 법령해석례{' ' + agenda if agenda else ''} ({row['id']})")
     return dict(kind='official_interpretation', behavior='answer_with_basis', question=question, context=[context],
+                task_type=TASK_OFFICIAL, source_answer_present=True,
                 target=target, evidence=dict(conclusion=answer, reasons=reasons), date=date, date_field=kind,
                 agenda=agenda, title=row['title'],
                 authored='question (whole 질의요지), conclusion and reasons verbatim from the official interpretation; '
@@ -93,6 +99,7 @@ def pack_cases():
             if span not in a['text']:
                 raise ValueError(f"{c['id']}: evidence not verbatim in {c['article']}: {span[:40]!r}")
         rows.append(dict(kind='pack_behavior', behavior=c['behavior'], question=c['question'], context=[a['text']],
+                         task_type=TASK_PACK, source_answer_present=False,
                          target=c['target'], evidence=dict(spans=c['evidence']), doc=c['doc'], article=c['article'],
                          effective=a['raw_dates'].get('시행일자'), date_fields=a['raw_dates'], source=a['source'],
                          text_sha256=a['text_sha256'], authored='question and explanation written by C (AI assistant); not human-reviewed',
@@ -117,6 +124,7 @@ def plain_cases(batch):
             continue
         target = p['target_plain']
         out.append(dict(src, id=f"plain:{src['doc']}", kind='plain_explanation', target=target,
+                        task_type=TASK_PLAIN, source_answer_present=True,
                         verbatim_case=src['id'], verbatim_content_sha256=src['content_sha256'], must_keep=p['must_keep'],
                         authored='question and context verbatim (same as verbatim_case); target written by C (AI) in plain language',
                         synthetic_parts='target (AI-written plain-language explanation)',
@@ -157,17 +165,21 @@ def main():
                     text_sha256=row['sha256'], split_hint=row.get('split'))
         out.append(case)
     out += pack_cases()
+    def apply_review(c):
+        """Attach review records whose content_sha256 matches the case as built now; a non-correct verdict holds it."""
+        matching = [r for r in reviews.get(c['id'], []) if r['content_sha256'] == c['content_sha256']]
+        keep = ('reviewer_id', 'reviewer_type', 'verdict', 'note', 'file', 'scope', 'work_relevance', 'dimensions')
+        c['review'] = (dict(status='ai_reviewed', records=[{k: r[k] for k in keep if k in r} for r in matching])
+                       if matching else dict(status='unreviewed', records=[]))
+        if matching and any(r['verdict'] != 'correct' for r in matching) and not c.get('training_hold'):
+            c['training_hold'] = 'review: AI review found a defect (see review.records)'
+
     for c in out:
         c['content_sha256'] = hashlib.sha256((c['question'] + '\n' + c['target']).encode()).hexdigest()
         c['training_hold'] = HOLD_REASON if c['doc'] in held else (f"review hold: {review_hold[c['id']]}" if c['id'] in review_hold else None)
         if not c['training_hold'] and c.get('split_hint') in ('valid', 'test'):
             c['training_hold'] = f"B v3 split '{c['split_hint']}': kept out of training to keep evaluation-side rows separate"
-        matching = [r for r in reviews.get(c['id'], []) if r['content_sha256'] == c['content_sha256']]
-        c['review'] = (dict(status='ai_reviewed', records=[{k: r[k] for k in ('reviewer_id', 'reviewer_type', 'verdict', 'note', 'file')}
-                                                          for r in matching])
-                       if matching else dict(status='unreviewed', records=[]))
-        if c['review']['status'] == 'ai_reviewed' and any(r['verdict'] != 'correct' for r in matching) and not c['training_hold']:
-            c['training_hold'] = 'review: AI review found a defect (see review.records)'
+        apply_review(c)
         c['synthetic_parts'] = 'template lines' if c['kind'] == 'official_interpretation' else 'question and explanation (AI-written)'
     batch = [c for c in out if not c['training_hold']]
     excluded = [c for c in out if c['training_hold']]
@@ -175,15 +187,25 @@ def main():
     (a.out / 'candidates.jsonl').write_text(''.join(json.dumps(c, ensure_ascii=False) + '\n' for c in batch))
     (a.out / 'excluded.jsonl').write_text(''.join(json.dumps(c, ensure_ascii=False) + '\n' for c in excluded))
     plain, plain_rejected = plain_cases(batch)
+    for c in plain:
+        apply_review(c)
+        if c.get('training_hold'):
+            plain_rejected[c['verbatim_case']] = c['training_hold']
+    plain = [c for c in plain if not c.get('training_hold')]
     (a.out / 'plain-candidates.jsonl').write_text(''.join(json.dumps(c, ensure_ascii=False) + '\n' for c in plain))
+    # Every document behind a built case (kept or held) is training-side: it must not appear in a final evaluation set.
+    (a.out / 'final-eval-exclusion.json').write_text(json.dumps(dict(
+        rule='training-side documents: do not use in any final evaluation set (C-013)',
+        docs=sorted({c['doc'] for c in out})), ensure_ascii=False, indent=2))
     meta = dict(purpose='internal-work SFT candidates (question / context / target / evidence); not evaluation items; '
                         'AI review only where review.status says so, never human-verified here; tokenizer/template left to A',
                 review_status=dict(Counter(c['review']['status'] for c in batch)),
+                task_types=dict(Counter(f"{c['task_type']} (source_answer_present={c['source_answer_present']})" for c in batch + plain)),
                 candidates=dict(Counter(c['behavior'] for c in batch)), candidates_total=len(batch),
                 excluded=dict(Counter(c['training_hold'][:40] for c in excluded)), skipped_before_case=dict(skipped),
                 evidence_docs=sorted({c['doc'] for c in batch}),
                 plain_explanations=dict(written=len(plain), rejected=plain_rejected,
-                                        note='separate file plain-candidates.jsonl; AI-written, synthetic, unreviewed; '
+                                        note='separate file plain-candidates.jsonl; AI-written, synthetic; review status per case; '
                                              'the verbatim case stays in candidates.jsonl'),
                 inputs={str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest()
                         for p in (V3, PACKS, PACK_CASES, *OVERLAPS, C010_DEV, REVIEW_HOLD, PLAIN_CASES, *a.reviews)},
