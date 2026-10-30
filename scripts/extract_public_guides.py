@@ -11,8 +11,10 @@ reserved families is checked separately (852 families unsigned, unchecked).
 import argparse
 import csv
 import hashlib
+import html
 import io
 import json
+import re
 import sys
 import unicodedata
 from collections import Counter
@@ -47,23 +49,185 @@ DATASETS = {
                      applies_to='청탁금지법상 공직자등(공공기관 임직원 포함)', date=None, date_type='행별 자료발간연도'),
     '15038798': dict(institution='행정안전부', institution_type='중앙행정기관', area='지방재정·회계', doc_type='해설사례집',
                      applies_to='지방자치단체 재정 운영', date='2019-09-11', date_type='데이터셋 파일 기준일(2019년판, 이후 개정 미반영)'),
+    '15077063': dict(institution='재정경제부', institution_type='중앙행정기관', area='공공기관 경영평가', doc_type='편람',
+                     applies_to='공기업·준정부기관 경영실적 평가(2026년도 평가)', date='2026-01-23',
+                     date_type='게시일(재공지), 2026년도 편람'),
+    '15038527': dict(institution='행정안전부', institution_type='중앙행정기관', area='인사', doc_type='업무 해설서',
+                     applies_to='지방공무원 인사(지방자치단체)', date='2025-11-11', date_type='데이터셋 파일 기준일(2025년판)'),
+    '15152718': dict(institution='한국국제협력단', institution_type='공공기관(준정부기관)', area='인사·복무', doc_type='질의응답 세트',
+                     applies_to='KOICA 직원(복무규정 등 KOICA 내부규정). 다른 기관에 그대로 적용되지 않음',
+                     date='2025-10-31', date_type='데이터셋 파일 기준일'),
+    '15146890': dict(institution='조달청', institution_type='중앙행정기관', area='계약·조달', doc_type='질의회신 해석사례',
+                     applies_to='국가계약법령·조달 제도 (국민신문고 회신)', date=None, date_type='행별 회신일자'),
+    '15170150': dict(institution='한국남부발전(주)', institution_type='공기업', area='사내 정보시스템', doc_type='사내 FAQ',
+                     applies_to='남부발전 직원·협력업체 시스템 이용', date=None, date_type='행별 등록일자'),
+    '15173808': dict(institution='국가철도공단', institution_type='공공기관(준정부기관)', area='전자조달 시스템·계약', doc_type='FAQ·질의응답',
+                     applies_to='KR 전자조달시스템 이용자', date=None, date_type='행별 등록일자·답변일자'),
+    '15144457': dict(institution='국민권익위원회', institution_type='중앙행정기관', area='복무·청탁금지', doc_type='질의응답 게시판',
+                     applies_to='청탁금지법 질의(국민 질의, 기관 답변)', date=None, date_type='행별 등록일자·답변일자'),
+    '15131770': dict(institution='한국동서발전(주)', institution_type='공기업', area='실적증명·SRM', doc_type='질의응답 게시글',
+                     applies_to='동서발전 실적증명·협력시스템 이용 업체', date=None, date_type='행별 작성 일자'),
 }
 
 
 def decode(raw):
+    """(text, encoding, replaced): strict UTF-8 / CP949 first; a file with a few bad bytes is read as CP949 with
+    replacement characters, and rows containing them are held."""
     for enc in ('utf-8-sig', 'cp949'):
         try:
-            return raw.decode(enc), enc
+            return raw.decode(enc), enc, False
         except UnicodeDecodeError:
             pass
-    raise ValueError('unknown encoding')
+    return raw.decode('cp949', errors='replace'), 'cp949+replace', True
+
+
+
+def zip_name(info):
+    """Member name: zipfile decodes names without the UTF-8 flag as CP437; Korean tools write them in CP949."""
+    if info.flag_bits & 0x800:
+        return info.filename
+    try:
+        return info.filename.encode('cp437').decode('cp949')
+    except (UnicodeEncodeError, UnicodeDecodeError):
+        return info.filename
+
+Q_COLS = ('질문', '질의내용', '질문내용')
+A_COLS = ('답변', '회신내용', '정답', '답변내용')
+DATE_COLS = ('회신일자', '답변일자', '등록일자', '등록일', '자료발간연도', '작성 일자')
+
+
+def qa_from_csv(pk, text):
+    """One (title, question, answer, extra fields, holds) per CSV row; column names differ per dataset."""
+    for n, it in enumerate(csv.DictReader(io.StringIO(text)), 1):
+        spill = it.pop(None, None)  # cells beyond the header: the row does not line up with its columns
+        it = {(k or '').strip(): (v or '').strip() for k, v in it.items()}
+        q = next((it[c] for c in Q_COLS if it.get(c)), '') or it.get('제목', '') or it.get('주제', '')
+        a = next((it[c] for c in A_COLS if it.get(c)), '') or it.get('내용', '')
+        holds = ['csv_row_misaligned'] if spill else []
+        if '\ufffd' in q + a:
+            holds.append('decode_replacement')
+        if pk == '15144457' and (it.get('등록일자') or '9999') < '2016':
+            holds.append('answer_may_be_user_comment')  # dataset description: before 2016 answers were user comments
+        if pk == '15131770':
+            holds.append('question_answer_not_separated')  # one free-text post per row
+        extra = {k: v for k, v in it.items() if k not in Q_COLS + A_COLS + ('내용',)}
+        yield n, (it.get('제목') or q), q, a, extra, holds
+
+
+MENU_PATH = re.compile(r'[가-힣A-Za-z]+\s*>\s*[가-힣A-Za-z]+')
+RULE_CITE = re.compile(r'제\d+조|[가-힣](?:법|법률|시행령|시행규칙|규정|규칙|지침|예규|고시|훈령|기준|매뉴얼|편람)(?=[\s」』)\],.]|$)')
+SYSTEM_CATEGORY = re.compile(r'로그인|회원|인증|시스템|브라우저|프로그램|오류|접속|전산|RCMS일반|사용자 정보')
+
+
+def faq_signals(answer, category=''):
+    """Separates system-operation FAQs from rule/procedure answers by visible signals only (heuristic, recorded as such):
+    menu paths in the answer ('A > B'), citations of a rule (제N조, …법, …지침, …매뉴얼), a system-like source category."""
+    menu, cites, system = len(MENU_PATH.findall(answer)), bool(RULE_CITE.search(answer)), bool(SYSTEM_CATEGORY.search(category))
+    if cites and not menu and not system:
+        kind = 'rule_or_procedure'
+    elif (menu or system) and not cites:
+        kind = 'system_operation'
+    elif cites:
+        kind = 'mixed'
+    else:
+        kind = 'other'
+    return {'menu_paths': menu, 'cites_rule': cites, 'system_category': system, 'faq_kind': kind,
+            'faq_kind_method': 'heuristic: menu paths / rule citations / source category'}
+
+
+def resplit(src_version, out_version, notes_path):
+    """Exclusive status per row of an extracted version: every row lands in exactly one part. Overlap with the signed
+    reserved families and reviewer source notes (typos are annotated, never corrected) put a row on hold."""
+    src, out = OUT / src_version, OUT / out_version
+    if (out / 'manifest.json').exists():
+        raise SystemExit(f'{out} exists; versions are never overwritten')
+    rep = json.loads((src / 'overlap-148.json').read_text())
+    overlap = {m['corpus_id'] for m in rep.get('matches') or []} | {x['corpus_id'] for x in rep.get('partial_review') or []}
+    notes = json.loads(Path(notes_path).read_text())['notes'] if notes_path else {}
+    parts = {k: [] for k in ('qa_rule_or_procedure', 'qa_mixed', 'qa_other', 'qa_system_operation', 'documents', 'held')}
+    for name in ('qa_items', 'documents', 'held'):
+        for x in (src / f'{name}.jsonl').read_text().split('\n'):
+            if not x:
+                continue
+            r = json.loads(x)
+            holds = [f[5:] for f in r['flags'] if f.startswith('hold:')]
+            if r['id'] in overlap:
+                holds.append('reserved_overlap')
+            if r['id'] in notes:
+                r['meta']['source_note'] = notes[r['id']]
+                holds.append('source_note')
+            if r['kind'] == 'qa_item':
+                fields = r['meta'].get('fields') or {}
+                category = r['meta'].get('category_path') or ' > '.join(
+                    fields[c] for c in ('구분', '문서 구분', '문의분류', '대분류', '중분류', '소분류') if fields.get(c))
+                r['meta'].update(faq_signals(r['text'].split('\n답변: ', 1)[-1], category))
+            r['meta']['status_holds'] = holds
+            r['meta']['clean_version'] = out_version
+            part = 'held' if holds else ('documents' if r['kind'] == 'guide_document' else f"qa_{r['meta']['faq_kind']}")
+            parts[part].append(r)
+    out.mkdir(parents=True)
+    man = {}
+    for name, sel in parts.items():
+        body = ''.join(json.dumps(r, ensure_ascii=False) + '\n' for r in sel).encode()
+        (out / f'{name}.jsonl').write_bytes(body)
+        man[name] = {'rows': len(sel), 'characters': sum(len(r['text']) for r in sel), 'sha256': hashlib.sha256(body).hexdigest(),
+                     'by_institution': dict(Counter(r['provenance']['institution'] for r in sel)),
+                     'holds': dict(Counter(h for r in sel for h in r['meta']['status_holds']))}
+    manifest = {'version': out_version, 'source_version': src_version, 'code_sha256': CODE_SHA256,
+                'notes_file': notes_path, 'rows_total': sum(v['rows'] for v in man.values()), 'parts': man,
+                'note': 'parts are exclusive; not approved for training; documents carry tables (unverified)'}
+    (out / 'manifest.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=1))
+    problems = check_version(out_version)
+    print(json.dumps({**manifest, 'consumer_check': problems or 'ok'}, ensure_ascii=False, indent=1))
+    if problems:
+        raise SystemExit('consumer check failed')
+
+
+CANDIDATE_PARTS = ('qa_rule_or_procedure', 'qa_mixed', 'qa_other', 'qa_system_operation', 'documents')
+
+
+def check_version(version):
+    """What a consumer (C) relies on, checked on the written files: every id in exactly one part; no row in a
+    candidate part carries a hold, a reserved-overlap id or a reviewer note; manifest row counts and sha256 match."""
+    out = OUT / version
+    man = json.loads((out / 'manifest.json').read_text())
+    src = OUT / man['source_version']
+    rep = json.loads((src / 'overlap-148.json').read_text())
+    overlap = {m['corpus_id'] for m in rep.get('matches') or []} | {x['corpus_id'] for x in rep.get('partial_review') or []}
+    notes = set(json.loads(Path(man['notes_file']).read_text())['notes']) if man.get('notes_file') else set()
+    problems, seen = [], {}
+    for name, info in man['parts'].items():
+        body = (out / f'{name}.jsonl').read_bytes()
+        rows = [json.loads(x) for x in body.decode().split('\n') if x]
+        if len(rows) != info['rows'] or hashlib.sha256(body).hexdigest() != info['sha256']:
+            problems.append(f'{name}: manifest rows/sha do not match the file')
+        for r in rows:
+            if r['id'] in seen:
+                problems.append(f"{r['id']}: in {seen[r['id']]} and {name}")
+            seen[r['id']] = name
+            if name in CANDIDATE_PARTS and (r['meta']['status_holds'] or any(f.startswith('hold:') for f in r['flags'])
+                                            or r['id'] in overlap or r['id'] in notes):
+                problems.append(f"{r['id']}: held row in candidate part {name}")
+    expected = sum(1 for p in ('qa_items', 'documents', 'held') for x in (src / f'{p}.jsonl').read_text().split('\n') if x)
+    if len(seen) != expected:
+        problems.append(f'{len(seen)} rows written, {expected} in {src.name}')
+    return problems
 
 
 def main():
     from trid.korean_quality import PUBLIC_DOCS, assess, redact, redacted_in_url
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument('--version', required=True)
+    p.add_argument('--resplit', metavar='SRC_VERSION', help='exclusive status split of an extracted version')
+    p.add_argument('--notes', help='reviewer source notes JSON {"notes": {row id: note}}')
+    p.add_argument('--check', action='store_true', help='consumer check of a resplit version (--version); exit 1 on problems')
     args = p.parse_args()
+    if args.check:
+        problems = check_version(args.version)
+        print(json.dumps(problems or 'ok', ensure_ascii=False, indent=1))
+        raise SystemExit(1 if problems else 0)
+    if args.resplit:
+        return resplit(args.resplit, args.version, args.notes)
     out = OUT / args.version
     if (out / 'manifest.json').exists():
         raise SystemExit(f'{out} exists; versions are never overwritten')
@@ -74,14 +238,25 @@ def main():
         ds = DATASETS[s['pk']]
         path = ROOT / s['raw']
         base = {'source': s['page'], 'license': s['licence'], 'raw': s['raw'], 'raw_sha256': s['sha256'], 'collected_at': s['checked_at']}
-        if path.suffix == '.csv':
-            text_all, enc = decode(path.read_bytes())
-            items = list(csv.DictReader(io.StringIO(text_all)))
-            for n, it in enumerate(items, 1):
-                q = (it.get('질문') or it.get('제목') or '').strip()
-                a = (it.get('답변') or it.get('내용') or '').strip()
-                extra = {k: v for k, v in it.items() if k not in ('질문', '답변', '제목', '내용')}
-                rows.append((ds, base, f"data.go.kr:{s['pk']}:{n}", q, a, {'csv_row': n, 'csv_encoding': enc, 'fields': extra}))
+        if path.suffix.lower() in ('.csv', '.zip'):
+            if path.suffix.lower() == '.zip':
+                import zipfile
+                z = zipfile.ZipFile(path)
+                members = [(zip_name(i), z.read(i)) for i in z.infolist() if i.filename.lower().endswith('.csv')]
+            else:
+                members = [('', path.read_bytes())]
+            for member, raw in members:
+                text_all, enc, _ = decode(raw)
+                prefix = f"data.go.kr:{s['pk']}:" + (f'{member}:' if member else '')
+                for n, title, q, a, extra, holds in qa_from_csv(s['pk'], text_all):
+                    date = next((extra[c] for c in DATE_COLS if extra.get(c)), None)
+                    entities = len(re.findall(r'&(?:#\d+|#x[0-9a-fA-F]+|[a-zA-Z]+);', q + a))
+                    # HTML entities stored literally in the CSV (&nbsp; &#8228; ...) are markup, not wording: decoded
+                    # deterministically and counted; spelling, truncation and wording are never changed
+                    q, a = html.unescape(q).replace('\xa0', ' '), html.unescape(a).replace('\xa0', ' ')
+                    rows.append((ds, base, f'{prefix}{n}', q, a,
+                                 {'csv_row': n, 'csv_member': member or None, 'csv_encoding': enc, 'fields': extra,
+                                  'row_date': date, 'title': title, 'html_entities_decoded': entities, 'pre_holds': holds}))
         else:
             text, how = extract_text(path)
             rows.append((ds, base, f"data.go.kr:{s['pk']}", s['fields'].get('파일데이터명') or s['file_name'], text,
@@ -93,7 +268,7 @@ def main():
         text, pii = redact(text)
         plain = strip_table_markup(text)
         ok, why = assess(plain, t=PUBLIC_DOCS) if plain.strip() else (False, 'empty')
-        holds = []
+        holds = list(meta.pop('pre_holds', []))
         if is_qa and not body:
             holds.append('no_answer_content')
         if not plain.strip():

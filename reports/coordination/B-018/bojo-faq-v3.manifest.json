@@ -1,0 +1,64 @@
+{
+ "version": "bojo-faq-v3",
+ "source_version": "bojo-faq-v2",
+ "code_sha256": "2d348589cb55a4d61f6a59a38ee9c4c34abe22c91f3c4ec2f01880be02b79807",
+ "notes_file": null,
+ "rows_total": 621,
+ "parts": {
+  "qa_rule_or_procedure": {
+   "rows": 46,
+   "characters": 27513,
+   "sha256": "ca59a0c06a12c290a62cb7a1b6909ef2f674d3d67b20541621d2369df498cf7c",
+   "by_institution": {
+    "기획예산처·행정안전부 (운영: 한국재정정보원)": 46
+   },
+   "holds": {}
+  },
+  "qa_mixed": {
+   "rows": 54,
+   "characters": 37127,
+   "sha256": "d7b481d3920fd974183a6cf717610ed4c7281c162e3095a234e71e26925e2986",
+   "by_institution": {
+    "기획예산처·행정안전부 (운영: 한국재정정보원)": 54
+   },
+   "holds": {}
+  },
+  "qa_other": {
+   "rows": 284,
+   "characters": 84163,
+   "sha256": "daf2e3c177412c50e2938e339c52310fb9f0d3839c54446f95b3d5d53bda85c5",
+   "by_institution": {
+    "기획예산처·행정안전부 (운영: 한국재정정보원)": 284
+   },
+   "holds": {}
+  },
+  "qa_system_operation": {
+   "rows": 187,
+   "characters": 77967,
+   "sha256": "d99329b403b06d84dff6116d4d4ca4ccdf2aced9ffccb613b7181bdc936cedc0",
+   "by_institution": {
+    "기획예산처·행정안전부 (운영: 한국재정정보원)": 187
+   },
+   "holds": {}
+  },
+  "documents": {
+   "rows": 0,
+   "characters": 0,
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "by_institution": {},
+   "holds": {}
+  },
+  "held": {
+   "rows": 50,
+   "characters": 28590,
+   "sha256": "588b29c2b5d3197852020d16957d7409ae8e52a9fd0ad0fe3cca254498ebf278",
+   "by_institution": {
+    "기획예산처·행정안전부 (운영: 한국재정정보원)": 50
+   },
+   "holds": {
+    "answer_from_img_alt": 50
+   }
+  }
+ },
+ "note": "parts are exclusive; not approved for training; documents carry tables (unverified)"
+}

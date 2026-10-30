@@ -1,0 +1,125 @@
+{
+ "manifest_sha256": "0ed3cc079e8da0f9765e320091c88608186ef259c426f3319944c0921f7495e8",
+ "reserved_families": 148,
+ "corpus": [
+  {
+   "path": "data/public-data/guides-v5/overlap-input.jsonl",
+   "sha256": "d6c1317f13cc5ad9db48d7ca887a0899f52efff32fbd8aad55a294feb914ed42"
+  }
+ ],
+ "corpus_rows_scanned": 15948,
+ "matched_corpus_rows": 0,
+ "families_with_matches": 0,
+ "match_types": {},
+ "thresholds": {
+  "minhash_estimate": 0.5,
+  "ngram8_containment": 0.5,
+  "partial_review_min_shared_ngram8": 50
+ },
+ "per_family_matched_rows": {},
+ "matches": [],
+ "partial_review_rows": 10,
+ "partial_review_note": "rows sharing >= partial_min reserved word 8-grams below the containment threshold; evidence for manual review, not counted as matches or excluded automatically",
+ "partial_review": [
+  {
+   "corpus_id": "data.go.kr:15169354:468",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:20256": {
+     "shared_ngram8": 54,
+     "of_reserved": 6894
+    }
+   }
+  },
+  {
+   "corpus_id": "data.go.kr:15146890:800",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:28991": {
+     "shared_ngram8": 101,
+     "of_reserved": 23155
+    }
+   }
+  },
+  {
+   "corpus_id": "data.go.kr:15144457:2660",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:20256": {
+     "shared_ngram8": 53,
+     "of_reserved": 6353
+    }
+   }
+  },
+  {
+   "corpus_id": "data.go.kr:15144457:9853",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:20256": {
+     "shared_ngram8": 71,
+     "of_reserved": 6231
+    }
+   }
+  },
+  {
+   "corpus_id": "data.go.kr:15144457:10994",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:20256": {
+     "shared_ngram8": 65,
+     "of_reserved": 6231
+    }
+   }
+  },
+  {
+   "corpus_id": "data.go.kr:15144457:11077",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:20256": {
+     "shared_ngram8": 65,
+     "of_reserved": 6231
+    }
+   }
+  },
+  {
+   "corpus_id": "data.go.kr:15144457:11108",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:20256": {
+     "shared_ngram8": 65,
+     "of_reserved": 6231
+    }
+   }
+  },
+  {
+   "corpus_id": "data.go.kr:15144457:11173",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:20256": {
+     "shared_ngram8": 74,
+     "of_reserved": 6231
+    }
+   }
+  },
+  {
+   "corpus_id": "data.go.kr:15144457:12160",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:20256": {
+     "shared_ngram8": 58,
+     "of_reserved": 6231
+    }
+   }
+  },
+  {
+   "corpus_id": "data.go.kr:15144457:12598",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:20256": {
+     "shared_ngram8": 53,
+     "of_reserved": 6231
+    }
+   }
+  }
+ ]
+}

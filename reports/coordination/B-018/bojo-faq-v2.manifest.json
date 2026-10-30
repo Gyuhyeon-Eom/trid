@@ -1,0 +1,34 @@
+{
+ "version": "bojo-faq-v2",
+ "code_sha256": "e2970732aeeefe8ace272afde038509361a08962747ec981e25ae15df1a23800",
+ "rows": 621,
+ "characters": 255360,
+ "sha256": "ba85fb836341b770c362533a304193d56b6231aded6fe64737770b04d4ad1c26",
+ "faq_kind": {
+  "other": 311,
+  "mixed": 58,
+  "rule_or_procedure": 59,
+  "system_operation": 193
+ },
+ "answer_from_img_alt": 50,
+ "table_check": {
+  "no_tables": 596,
+  "unverified": 25
+ },
+ "pii_rows": 2,
+ "quality": {
+  "line_punct_ratio": 29,
+  "gopher_below_alpha_threshold": 5,
+  "ok": 512,
+  "dup_line_frac": 6,
+  "top_4_gram": 38,
+  "duplicated_5_n_grams": 1,
+  "duplicated_7_n_grams": 1,
+  "char_dup_ratio": 2,
+  "top_3_gram": 2,
+  "gopher_short_doc": 17,
+  "duplicated_10_n_grams": 4,
+  "duplicated_9_n_grams": 3,
+  "top_2_gram": 1
+ }
+}

@@ -1,0 +1,101 @@
+{
+ "version": "guides-v6",
+ "source_version": "guides-v5",
+ "code_sha256": "adb0dbd49b530f7d4d6b1484c5bd53eff305da6d09e770ccd522be784878d938",
+ "notes_file": "reports/coordination/B-018/source-notes.json",
+ "rows_total": 15948,
+ "parts": {
+  "qa_rule_or_procedure": {
+   "rows": 12438,
+   "characters": 11693198,
+   "sha256": "621020dd057aa53d25b4051b1b15cc5d9ed68ef9d1d1f9b12eb5fc1486336cb6",
+   "by_institution": {
+    "한국국제협력단": 97,
+    "한국산업기술기획평가원": 34,
+    "방위사업청": 31,
+    "국민권익위원회": 11439,
+    "조달청": 824,
+    "국가철도공단": 13
+   },
+   "holds": {}
+  },
+  "qa_mixed": {
+   "rows": 32,
+   "characters": 31813,
+   "sha256": "908266d7a5c6332bc6d5e1708c36224cf74eb423eef899cee974882dacfb70ce",
+   "by_institution": {
+    "한국국제협력단": 1,
+    "한국산업기술기획평가원": 13,
+    "방위사업청": 2,
+    "조달청": 5,
+    "국가철도공단": 1,
+    "국민권익위원회": 10
+   },
+   "holds": {}
+  },
+  "qa_other": {
+   "rows": 2881,
+   "characters": 1299126,
+   "sha256": "24bd1de53c6a8ddf33ab3a140914f3ebe9d44f7fa644811373b07a30d008f4be",
+   "by_institution": {
+    "한국국제협력단": 182,
+    "한국산업기술기획평가원": 69,
+    "방위사업청": 53,
+    "국민권익위원회": 1931,
+    "조달청": 37,
+    "한국남부발전(주)": 61,
+    "국가철도공단": 548
+   },
+   "holds": {}
+  },
+  "qa_system_operation": {
+   "rows": 139,
+   "characters": 50061,
+   "sha256": "b93d9971dc49447702cb4519b57c9a3709b955234cfd28f1e3c9f035e576648b",
+   "by_institution": {
+    "한국국제협력단": 2,
+    "한국산업기술기획평가원": 99,
+    "방위사업청": 14,
+    "한국남부발전(주)": 9,
+    "국가철도공단": 15
+   },
+   "holds": {}
+  },
+  "documents": {
+   "rows": 6,
+   "characters": 2534370,
+   "sha256": "14c65beb19a728531cf2d7cfb19264953abb3ff7ee9766cf28b20f27722ce982",
+   "by_institution": {
+    "인사혁신처": 1,
+    "행정안전부": 4,
+    "재정경제부": 1
+   },
+   "holds": {}
+  },
+  "held": {
+   "rows": 452,
+   "characters": 77127,
+   "sha256": "1322ded2c951bf9c792cd311c4c418169222700ebee16e8aaf1a97521074dd0e",
+   "by_institution": {
+    "한국국제협력단": 2,
+    "한국산업기술기획평가원": 3,
+    "국민권익위원회": 39,
+    "조달청": 1,
+    "한전KDN(주)": 5,
+    "방위사업청": 1,
+    "한국동서발전(주)": 302,
+    "국가철도공단": 99
+   },
+   "holds": {
+    "source_note": 6,
+    "reserved_overlap": 10,
+    "no_answer_content": 117,
+    "question_answer_not_separated": 302,
+    "csv_row_misaligned": 1,
+    "answer_may_be_user_comment": 3,
+    "decode_replacement": 17
+   }
+  }
+ },
+ "note": "parts are exclusive; not approved for training; documents carry tables (unverified)"
+}
