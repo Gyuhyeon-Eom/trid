@@ -526,6 +526,14 @@ class Workspace:
         ids = np.array([p.id for p in self.index.passages])
         # Hard exclusion: a privacy passage is outside the selectable set (score −inf after ranking), not just low.
         self.private_mask = np.isin(ids, list(self.private))
+        # Fail closed at startup: privacy ids that match no indexed passage mean the review and the index use different
+        # passage ids, so the passages the review protects could be served under other ids.
+        missing = len(self.private) - int(self.private_mask.sum())
+        if missing:
+            raise ValueError(f'{missing} privacy-review passage id(s) are not in the index {root}: review and index '
+                             'passage ids differ; refusing to serve')
+        if self.review_source:
+            self.review_source['value_hold_in_index'] = int(np.isin(ids, list(self.value_hold)).sum())
         # Canonical rule names ("공무원 여비 규정" from "공무원 여비 규정 [별표 0002] …"): an exact mention names the
         # rule regardless of TITLE_MIN, separately from partial title matching of ordinary sentences.
         self.rule_names = {}
@@ -642,8 +650,9 @@ class Workspace:
         """Hybrid passage scores in [0, 1] (authority-weighted), plus the raw cosines (None without dense vectors).
         Keyword: BM25 / its maximum. Meaning: bge-m3 cosine rescaled so the question's median passage is 0 and its best
         passage 1. Hybrid = LEXICAL_WEIGHT·keyword + (1−LEXICAL_WEIGHT)·meaning, times the passage's authority.
-        Privacy passages get −inf (outside every ranking, pin and fallback); with `protected` the best score they
-        would have had is returned too, so a question whose best evidence is protected is not answered from the rest."""
+        Privacy passages get −inf (outside every ranking, pin and fallback); with `protected` the scores they would
+        have had are returned too (0 elsewhere), so a question whose best evidence is protected is not answered from
+        the rest."""
         from trid.service.index import tokenize_all
         # A city in the question is also searched as its legal category (부산 → 부산 광역시): rule tables use the
         # category, and the question's own word is kept, not replaced.
@@ -660,7 +669,7 @@ class Workspace:
         else:
             hybrid = lexical
         hybrid = (hybrid * self.authority).astype(np.float32)
-        hidden = float(hybrid[self.private_mask].max(initial=0))
+        hidden = np.where(self.private_mask, hybrid, 0).astype(np.float32)
         hybrid[self.private_mask] = -np.inf
         return (hybrid, cos, tokens, hidden) if protected else (hybrid, cos, tokens)
 
@@ -844,16 +853,26 @@ class Workspace:
         scores = everywhere
         if restrict is not None:
             scores = np.where(np.isin(self.passage_doc, list(restrict)), everywhere, -np.inf)
-            if named and not titled and not pinned and scores.max() < self.WEAK * everywhere.max():
-                return {**result, 'status': 'institution_no_match'}
         order = [int(i) for i in np.argsort(-scores, kind='stable')[:60] if scores[i] > 0]
-        if not order:
-            return {**result, 'status': 'not_found'}
         by_doc = {}
         for i in order:
             by_doc.setdefault(str(self.passage_doc[i]), []).append(i)
         passing = {d: idx[:self.MAX_PASSAGES] for d, idx in by_doc.items()
                    if self.relevant(idx[:self.MAX_PASSAGES], cos, topical, bool(result.get('continued')))}
+        # Protected evidence is judged inside the searched scope (named institution, pinned or continued document):
+        # when a privacy passage would have outscored (by 1/CLOSE) every usable passage — or every passage at all when
+        # none is usable — the reply is a protected-evidence refusal, never a weaker neighbour (C-029: another table
+        # of the same statute) nor a claim that nothing relevant exists.
+        in_scope = hidden if restrict is None else np.where(np.isin(self.passage_doc, list(restrict)), hidden, 0)
+        top_hidden = float(in_scope.max(initial=0))
+        open_best = (max(float(scores[idx[0]]) for idx in passing.values()) if passing else
+                     float(scores[order[0]]) if order else 0.0)
+        if top_hidden > 0 and top_hidden * self.CLOSE >= open_best:
+            return {**result, 'status': 'not_found', 'reason': 'protected'}
+        if restrict is not None and named and not titled and not pinned and scores.max() < self.WEAK * everywhere.max():
+            return {**result, 'status': 'institution_no_match'}
+        if not order:
+            return {**result, 'status': 'not_found'}
         result['retrieval']['hits'] = [{'doc_id': str(self.passage_doc[i]), 'passage': self.index.passages[i].id,
                                         'hybrid': round(float(scores[i]), 3),
                                         'cosine': round(float(cos[i]), 3) if cos is not None else None} for i in order[:5]]
@@ -861,9 +880,6 @@ class Workspace:
             nearest = str(self.passage_doc[order[0]])
             return {**result, 'status': 'institution_no_match' if named and not titled and not pinned else 'not_found',
                     'reason': 'irrelevant', 'nearest': self.describe(nearest)}
-        if hidden > 0 and hidden >= max(float(scores[idx[0]]) for idx in passing.values()) / self.CLOSE:
-            # The question's best evidence is a privacy-protected passage: no answer from weaker neighbours.
-            return {**result, 'status': 'not_found', 'reason': 'protected'}
         best = {d: float(scores[idx[0]]) for d, idx in passing.items()}
         general = not (pinned or titled or named or result.get('continued'))
         subject = self.civil_service_subject(question)
@@ -908,6 +924,9 @@ class Workspace:
                                      self.passage_doc[i], self.index.passages[i].path,
                                      self.index.passages[i].id in self.tables, self.index.passages[i].id in self.value_hold),
                         float(everywhere[i])) for i in linked]
+        used = list(passing[applied]) + list(linked)
+        if self.private_mask[used].any():  # invariant: never reachable; fail the request rather than serve it
+            raise RuntimeError('privacy-review passage reached the answer context')
         return {**result, 'status': 'answer', 'applied': applied, 'chunks': chunks}
 
     def linked_tables(self, applied, chunks, scores, per_table=2, max_tables=2):
@@ -940,6 +959,31 @@ class Workspace:
         local, central = '지방공무원' in question, '국가공무원' in question
         return 'local_government' if local and not central else 'central_government' if central and not local else None
 
+
+
+def applicability_guard(result, applies, title):
+    """A question that is not about civil servants answered from a rule whose 제1조 limits it to 국가/지방공무원
+    (B applies_to): the rule is shown only as the civil-service rule it is. The visible answer says so first; a value
+    answer is downgraded to 'review'; model commentary sentences carrying numbers (amounts, days) are withheld so that
+    no figure reads as the asker's institution's entitlement. Verbatim quotes stay, labelled with their source."""
+    who = '국가공무원' if applies == 'central_government' else '지방공무원'
+    shown, withheld = [], 0
+    for part in re.split(r'\n+|(?<=[.!?])\s+', result.get('commentary') or ''):
+        if part.strip():
+            if _numbers(part):
+                withheld += 1
+            else:
+                shown.append(part)
+    result['commentary'] = '\n'.join(shown) or None
+    if withheld:
+        result.setdefault('commentary_notes', []).append(
+            f'이 규정의 적용 대상({who})과 질문 대상이 같다고 확인되지 않아, 금액·일수 등 숫자가 든 해설 문장 {withheld}개를 숨겼습니다.')
+    if result.get('status') == 'answer':
+        result['status'] = 'review'
+    result['answer'] = (f'「{title}」은 {who}에게 적용되는 규정입니다(제1조 목적). 질문한 대상(예: 공공기관 직원)에게 적용되는지는 '
+                        '확인되지 않았으므로, 아래 원문의 금액·기준을 그 기관의 지급액으로 보지 말고 기관 자체 규정을 확인하세요. '
+                        + (result.get('answer') or ''))
+    result['applicability'] = {'rule_scope': applies, 'question_names_civil_servants': False, 'status': 'not_confirmed'}
 
 
 def workspace_reply(workspace, selection):
@@ -1341,10 +1385,13 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                             if selection and selection['status'] != 'answer':
                                 result = workspace_reply(workspace, selection)
                             else:
+                                held_out = 0
                                 if selection:
                                     selected = selection['chunks']
                                     if version['kind'] == 'extractive' or version.get('answer_mode') != 'case':
-                                        # versions whose answer is a value: held passages' numbers are not values
+                                        # versions whose answer is a value: held passages' numbers are not values, so
+                                        # those passages are not given to the model at all
+                                        held_out = sum(c.value_hold for c, _ in selected)
                                         selected = [(c, s) for c, s in selected if not c.value_hold]
                                     if version['kind'] == 'extractive':
                                         selected = reader_windows(selected, version['tok'])
@@ -1366,6 +1413,14 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                                                                   version['context'], version['decoding'] == 'evidence_constrained',
                                                                   selected=selected)
                                 result.pop('checked', None)
+                                if held_out:
+                                    hold_note = (f'숫자 추출이 원문 쪽과 일치하지 않는 것으로 검토된 구간 {held_out}개는 값으로 답하지 않도록 '
+                                                 '모델에 넣지 않았습니다. 그 구간의 숫자는 원문(쪽)에서 직접 확인하세요.')
+                                    if not selected:
+                                        result.update(status='review', reason='value_hold', candidates=[],
+                                                      answer='관련 구간의 숫자가 원문 쪽과 일치하지 않는 것으로 검토되어 값으로 답하지 '
+                                                             '않습니다. 원문(쪽)에서 직접 확인하세요.')
+                                    result.setdefault('commentary_notes', []).append(hold_note)
                         result['intent'] = intent
                         if kind:
                             result['request_type'] = kind
@@ -1413,17 +1468,17 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                                 if m.get('limitations'):
                                     result['source_limits'] = list(m['limitations'])  # for a visible warning (UI: B)
                                 applies = workspace.applies(selection['applied']).get('scope')
-                                if (applies in ('central_government', 'local_government')
-                                        and re.search(r'공공기관|공기업|준정부기관|공단|공사', question) and '공무원' not in question):
-                                    who = '국가공무원' if applies == 'central_government' else '지방공무원'
-                                    result['scope'] += (f' 이 규정은 {who}에게 적용되는 규정(제1조 목적 기준)이며, 공공기관 직원에게 '
-                                                        '그대로 적용된다고 볼 근거는 검색 자료에 없습니다. 기관 자체 규정을 확인하세요.')
+                                if applies in ('central_government', 'local_government') and '공무원' not in question:
+                                    applicability_guard(result, applies, m['title'])
                                 if selection.get('linked_tables'):
                                     result['scope'] += (' 본문이 인용한 같은 규정의 별표 구간을 함께 넣었습니다'
                                                         f"({len(selection['linked_tables'])}건).")
                         result['model'] = version['label']
                         result['version'] = version_id
                         result['elapsed_ms'] = round((time.monotonic() - started) * 1000)
+                        if result.get('raw_output') and any('숨겼습니다' in n for n in result.get('commentary_notes') or []):
+                            # what the reply withholds is not sent in the API either
+                            result.update(raw_output=None, raw_output_withheld=True)
                         if version.get('assistant'):
                             applied_doc = (result.get('workspace') or {}).get('applied')
                             if intent == 'chat':

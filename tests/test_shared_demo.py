@@ -416,5 +416,123 @@ class ExtractiveChunkTests(unittest.TestCase):
                 read_chunk(None, None, None, '담당은 운영지원팀입니다.', '담당은?', 'cpu')
 
 
+class ProtectedPassageApiTests(unittest.TestCase):
+    """C-029: privacy-review passages never reach selection, model context or any response field, and value-hold
+    numbers are never answer values — through the real /api/ask path, for case, value (llama) and reader versions."""
+    PHONE, HELD, ALL_HELD, TABLE = '010-1111-2222', '5일', '30만원', '100,000원'
+    DOCS = [('priv', '가기관 출장 연락 지침', '가기관', None,
+             '제1조(담당자 연락처) 출장 담당자 연락처는 전화 010-1111-2222이다.\n제2조(신청) 출장 신청은 운영지원팀에 한다.'),
+            ('hold', '나기관 경조사 휴가 규정', '나기관', None,
+             '제1조(휴가일수) 본인 결혼 경조사 휴가는 5일로 한다.\n제2조(신청) 경조사 휴가는 미리 신청한다.'),
+            ('allhold', '다기관 포상 규정', '다기관', None, '제1조(포상금) 우수 직원 포상금은 30만원으로 한다.'),
+            ('law', '공무원 여비 규정', '인사혁신처', 'central_government',
+             '제1조(목적) 이 영은 국가공무원의 여비를 정한다.\n제16조(식비) 국내 출장 식비는 하루 25,000원으로 하고, 숙박비는 별표 2에 따른다.'),
+            ('t2', '공무원 여비 규정 [별표 0002] 국내 여비 지급표', '인사혁신처', None, '국내 출장 숙박비 상한 서울 100,000원')]
+
+    def setUp(self):
+        import tempfile
+        from pathlib import Path
+        from trid.service.index import Index
+        from trid.service.structure import parse_document
+        from trid.service.types import Document as ServiceDocument
+        from scripts.shared_demo import Workspace
+        docs, meta = [], {}
+        for key, title, inst, applies, text in self.DOCS:
+            d = ServiceDocument(key, title, key, {'public'}, text)
+            d.passages, d.refs = parse_document(text, key, title)
+            docs.append(d)
+            meta[key] = {'title': title, 'kind': '법령' if key == 'law' else '행정규칙', 'institution': inst, 'date': '2026-01-01',
+                         'date_type': '발령일자', 'effective_date': None, 'currency': None, 'source': 'https://example.invalid',
+                         'license': 'test', **({'applies_to': {'scope': applies, 'basis': '제1조'}} if applies else {})}
+        d = Path(tempfile.mkdtemp())
+        index = Index.build(docs)
+        index.save(d)
+        (d / 'meta.json').write_text(json.dumps(meta, ensure_ascii=False))
+        (d / 'manifest.json').write_text(json.dumps({'documents': len(docs), 'passages': len(index.passages), 'by_kind': {},
+                                                     'date_range': ['2026-01-01', '2026-01-01']}))
+        pid = lambda key, needle: next(p.id for p in index.passages if p.doc_id == key and needle in p.text)
+        self.private_ids = [pid('priv', self.PHONE), pid('t2', self.TABLE)]
+        review = [{'passage_id': i, 'value_review': {'privacy_review': True}} for i in self.private_ids]
+        review += [{'passage_id': pid('hold', self.HELD), 'value_review': {'decision': 'hold_for_value_use'}},
+                   {'passage_id': pid('allhold', self.ALL_HELD), 'value_review': {'decision': 'hold_for_value_use'}}]
+        (d / 'review.jsonl').write_text(''.join(json.dumps(r) + '\n' for r in review))
+        workspace = Workspace(d, review=d / 'review.jsonl')
+        common = dict(label='t', base_model='b', license='l', version='0', status='s', evaluation='e', limits='l',
+                      base='http://127.0.0.1:1', family='qwen3', context=4096)
+        versions = {'case': dict(common, id='case', kind='llama', answer_mode='case'),
+                    'value': dict(common, id='value', kind='llama', decoding='grammar_instructed'),
+                    'reader': dict(common, id='reader', kind='extractive', model=None, tok=CharTokenizer(), device='cpu')}
+        self.secret = 'x' * 40
+        self.state = SimpleNamespace(sessions={}, lock=threading.RLock(), work=threading.Lock(), tok=CharTokenizer(),
+                                     run='t', default='case', versions=versions, workspace=workspace)
+        self.state.prune = lambda: State.prune(self.state)
+        self.state.public_versions = lambda: State.public_versions(self.state)
+        self.server = make_server(self.state, self.secret)
+        self.thread = threading.Thread(target=lambda: self.server.serve_forever(poll_interval=.01), daemon=True)
+        self.thread.start()
+        self.addCleanup(self.close)
+
+    close, request, visitor = SharedDemoTests.close, SharedDemoTests.request, SharedDemoTests.visitor
+
+    def ask(self, question, version, generated='확인 불가', pinned=None):
+        """(response body text, response dict, texts the model was given)."""
+        h = self.visitor()
+        if pinned:
+            next(iter(self.state.sessions.values())).pinned_doc = pinned
+        seen = []
+        def complete(base, messages, *args, **kwargs):
+            seen.append('\n'.join(m['content'] for m in messages))
+            return {'generated': generated, 'truncated_output': False}
+        def reader(model, presence, tok, text, question, device):
+            seen.append(text)
+            return {'abstains': True, 'answer': '확인 불가', 'source_character_span': None, 'presence': 1}
+        with patch('scripts.shared_demo.complete', side_effect=complete), patch('scripts.shared_demo.read_chunk', side_effect=reader):
+            status, body, _ = self.request('POST', '/api/ask', {'question': question, 'scope': 'workspace', 'version': version}, h)
+        self.assertEqual(status, 200, body.decode())
+        return body.decode(), json.loads(body), '\n'.join(seen)
+
+    def test_privacy_passage_reaches_no_context_and_no_response_field(self):
+        for version in ('case', 'value', 'reader'):
+            # best evidence protected: refused without a model call
+            body, r, seen = self.ask('가기관 출장 담당자 연락처 전화', version)
+            self.assertEqual((r['status'], r['reason']), ('not_found', 'protected'), version)
+            self.assertEqual(seen, '')
+            # the same document pinned, and a statute whose cited table is protected: other passages only
+            for question, pinned in (('출장 신청은 어디에 하나요?', 'priv'), ('공무원 여비 규정 국내 출장 식비와 숙박비', None)):
+                body2, r2, seen2 = self.ask(question, version, '확인 불가', pinned)
+                self.assertEqual(r2['workspace']['selection'], 'answer', (version, question))
+                body, seen = body + body2, seen + seen2
+            for secret in (self.PHONE, self.TABLE, *self.private_ids):
+                self.assertNotIn(secret, body, version)
+                self.assertNotIn(secret, seen, version)
+
+    def test_value_hold_numbers_are_not_given_to_value_versions_nor_shown_as_answers(self):
+        for version in ('value', 'reader'):
+            body, r, seen = self.ask('나기관 경조사 휴가 일수와 신청', version, '5일 [D1]')
+            self.assertNotIn('본인 결혼 경조사 휴가는 5일', seen, version)  # held passage not in the model input
+            self.assertNotEqual(r['status'], 'answer', version)
+            self.assertTrue(any('원문(쪽)' in n for n in r['commentary_notes']), version)
+            body, r, seen = self.ask('다기관 우수 직원 포상금', version, '30만원 [D1]')  # every passage held
+            self.assertEqual((r['status'], r['reason'], seen), ('review', 'value_hold', ''), version)
+            self.assertNotIn(self.ALL_HELD, r['answer'])
+        # case version reads the passage but its numbers are neither quotes nor commentary, nor left in raw_output
+        body, r, _ = self.ask('나기관 경조사 휴가 일수와 신청', 'case', '[D1] 본인 결혼 경조사 휴가는 5일로 한다.\n따라서 휴가는 5일입니다.')
+        self.assertEqual(r['candidates'], [])
+        self.assertNotIn(self.HELD, (r['commentary'] or '') + r['answer'] + (r['raw_output'] or ''))
+
+    def test_civil_service_amount_is_not_given_as_another_population_entitlement(self):
+        question = '국내 출장 식비는 하루 얼마인가요?'  # names no population; the rule is for 국가공무원 only
+        body, r, _ = self.ask(question, 'case', '[D1] 국내 출장 식비는 하루 25,000원으로 하고, 숙박비는 별표 2에 따른다.\n'
+                                                '따라서 공공기관 직원의 식비는 하루 25,000원입니다.')
+        self.assertTrue(r['answer'].startswith('「공무원 여비 규정」은 국가공무원에게 적용되는 규정'))
+        self.assertNotIn('25,000', (r['commentary'] or '') + (r['raw_output'] or ''))
+        self.assertTrue(any('숨겼습니다' in n for n in r['commentary_notes']))
+        self.assertEqual(r['applicability']['status'], 'not_confirmed')
+        body, r, _ = self.ask(question, 'value', '25,000원 [D1]')
+        self.assertEqual(r['status'], 'review')  # the value is not presented as this population's answer
+        _, r, _ = self.ask('공무원 국내 출장 식비는 하루 얼마인가요?', 'case', '식비는 하루 25,000원입니다.')
+        self.assertNotIn('applicability', r)
+
+
 if __name__ == '__main__':
     unittest.main()
