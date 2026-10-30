@@ -1,0 +1,15 @@
+{
+ "blind": {
+  "model-P": {
+   "model": "model-repair-002 (v1r1 LoRA merged)",
+   "sha256": "21715b4f43d4d4ba9d8c91c6e0ce67b6b31fe54c2d4dedc0f46b5c906d224adc",
+   "source": "runs/model-repair-002-qwen3-1p7b/model-repair-002-qwen3-1p7b.q8_0.gguf"
+  },
+  "model-Q": {
+   "model": "original (Qwen3-1.7B rev70d244cc, re-saved through the merge path)",
+   "sha256": "29508ae00d82764d261287099ea3077dd08dcbf5cb86fe14427e9407b913c3c7",
+   "source": "runs/model-repair-002-qwen3-1p7b/qwen3-1.7b-base-resaved.q8_0.gguf"
+  }
+ },
+ "salt": "1c52b93758fc661349d4a5ca6a45931b"
+}
