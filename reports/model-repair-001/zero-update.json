@@ -1,0 +1,24 @@
+{
+ "mode": "zero-update",
+ "model": "../runs/open-weight-base/qwen3-1.7b-hf-rev70d244cc",
+ "manifest": "/tmp/model-repair-diag-manifest.json",
+ "manifest_sha256": "5395078e3d2e9d908c391547b3468745f724a8fd497c1df85471e10a0921f94f",
+ "rows": [
+  "pubdata:budget-2024-total",
+  "table:nfsa-emergency-level-2",
+  "pack:acct-05-register"
+ ],
+ "answer_tokens": [
+  130,
+  112,
+  83
+ ],
+ "device": "mps",
+ "dtype": "torch.bfloat16",
+ "versions": {
+  "torch": "2.9.1"
+ },
+ "max_abs_diff_lora": 0.0,
+ "max_abs_diff_merged": 0.0,
+ "elapsed_seconds": 10.8
+}

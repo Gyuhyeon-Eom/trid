@@ -14,6 +14,10 @@ never filters for quality. Adapters:
   - `case`: rows {"id", "question", "context": [str], "target", "task_type"} (C cases). The user turn is
     rag_prompt over the context passages as D1..Dn with CASE_SYSTEM (cases answer with conclusion, basis,
     conditions and exceptions; the value-only SYSTEM would contradict those targets); the answer is `target`.
+    Contract (MODEL-REPAIR-001, shared with B's scripts/build_case_training_view.py): the user turn demands source
+    numbers and '확인 불가', so every case target must carry a [Dn] citation of an existing passage or start with
+    '확인 불가: ', and fit --max-answer-tokens (the serving answer budget). A violating file stops training with the
+    offending ids instead of being trained (pilot-sft-001 trained 57 targets without any [Dn], 36 over 256 tokens).
 Each sample is the native chat template with the generation prompt (Qwen3: the no-thinking prefix must render)
 followed by the answer and the tokenizer's EOS (end of turn); loss covers only those answer tokens. Rows longer than
 --max-tokens are dropped and counted. No upsampling beyond the per-file epochs; the per-file share of trained answer
@@ -25,6 +29,7 @@ import hashlib
 import json
 import math
 import random
+import re
 import sys
 import time
 from pathlib import Path
@@ -72,6 +77,20 @@ def load_rows(entry, base):
         else:
             raise ValueError(f"unknown adapter {entry['adapter']}")
     return rows
+
+
+def case_contract_violation(row, answer_tokens, max_answer_tokens):
+    """Why a case row breaks the training contract, or None."""
+    target = row['answer']
+    cited = {int(n) for n in re.findall(r'\[D(\d+)\]', target)}
+    passages = len(re.findall(r'(?:^|\n)\[D\d+\] ', row['user']))
+    if not cited and not target.startswith('확인 불가: '):
+        return 'no_citation'
+    if cited and (min(cited) < 1 or max(cited) > passages):
+        return 'citation_out_of_range'
+    if max_answer_tokens and answer_tokens > max_answer_tokens:
+        return 'over_answer_budget'
+    return None
 
 
 def encode(tok, row, family, max_tokens):
@@ -133,6 +152,8 @@ def main():
     p.add_argument('--alpha', type=int, default=32)
     p.add_argument('--dropout', type=float, default=0.05)
     p.add_argument('--max-tokens', type=int, default=1536)
+    p.add_argument('--max-answer-tokens', type=int, default=256,
+                   help='case targets above this (serving answer budget, EOS included) break the contract')
     p.add_argument('--valid-every', type=int, default=50)
     p.add_argument('--seed', type=int, default=20261030)
     p.add_argument('--device', default='mps' if torch.backends.mps.is_available() else 'cuda' if torch.cuda.is_available() else 'cpu')
@@ -149,15 +170,22 @@ def main():
     pad_id = tok.pad_token_id if tok.pad_token_id is not None else tok.eos_token_id
 
     def build(entries, expand):
-        items, dropped = [], 0
+        items, dropped, violations = [], 0, []
         for entry in entries:
             for _ in range(entry.get('epochs', 1) if expand else 1):
                 for row in load_rows(entry, a.manifest.resolve().parent):
                     x = encode(tok, row, a.family, a.max_tokens)
                     if x is None:
                         dropped += 1
-                    else:
-                        items.append(x)
+                        continue
+                    if entry['adapter'] == 'case':
+                        why = case_contract_violation(row, sum(t != -100 for t in x['labels']), a.max_answer_tokens)
+                        if why:
+                            violations.append(f"{row['id']}:{why}")
+                            continue
+                    items.append(x)
+        if violations:
+            raise ValueError(f'{len(violations)} case rows break the training contract: {sorted(set(violations))[:20]}')
         return items, dropped
 
     train, dropped = build(manifest['train'], True)
@@ -224,6 +252,7 @@ def main():
         answer_token_share={f: round(n / token_total, 4) for f, n in sorted(trained_tokens.items())},
         steps=steps, batch_size=a.batch_size, micro_batch_size=a.micro_batch_size, lr=a.lr,
         lora=dict(rank=a.rank, alpha=a.alpha, dropout=a.dropout, targets=TARGETS), max_tokens=a.max_tokens,
+        max_answer_tokens=a.max_answer_tokens,
         seed=a.seed, device=a.device, dtype=str(dtype), system_prompt=SYSTEM, case_system_prompt=CASE_SYSTEM,
         versions=dict(torch=torch.__version__, transformers=transformers.__version__, peft=peft.__version__),
         history=history, elapsed_seconds=round(time.time() - started, 1), status='complete')

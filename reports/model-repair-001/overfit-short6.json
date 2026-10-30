@@ -1,0 +1,282 @@
+{
+ "mode": "overfit",
+ "model": "../runs/open-weight-base/qwen3-1.7b-hf-rev70d244cc",
+ "manifest": "/tmp/model-repair-diag-manifest.json",
+ "manifest_sha256": "5395078e3d2e9d908c391547b3468745f724a8fd497c1df85471e10a0921f94f",
+ "rows": [
+  "pubdata:budget-2024-total",
+  "pubdata:budget-current-defense",
+  "table:nfsa-emergency-level-2",
+  "table:nfsa-emergency-headcount-askback",
+  "pack:acct-05-register",
+  "pack:acct-05-mnd"
+ ],
+ "answer_tokens": [
+  130,
+  140,
+  112,
+  165,
+  83,
+  86
+ ],
+ "device": "mps",
+ "dtype": "torch.bfloat16",
+ "versions": {
+  "torch": "2.9.1"
+ },
+ "steps": 40,
+ "lr": 0.0002,
+ "history": [
+  {
+   "step": 1,
+   "loss": 3.07242,
+   "elapsed_seconds": 19.7
+  },
+  {
+   "step": 2,
+   "loss": 2.50326,
+   "elapsed_seconds": 31.4
+  },
+  {
+   "step": 3,
+   "loss": 1.85021,
+   "elapsed_seconds": 43.1
+  },
+  {
+   "step": 4,
+   "loss": 1.47261,
+   "elapsed_seconds": 54.8
+  },
+  {
+   "step": 5,
+   "loss": 1.26365,
+   "elapsed_seconds": 66.8
+  },
+  {
+   "step": 6,
+   "loss": 1.11214,
+   "elapsed_seconds": 78.7
+  },
+  {
+   "step": 7,
+   "loss": 0.96743,
+   "elapsed_seconds": 90.7
+  },
+  {
+   "step": 8,
+   "loss": 0.82195,
+   "elapsed_seconds": 102.8
+  },
+  {
+   "step": 9,
+   "loss": 0.68797,
+   "elapsed_seconds": 114.9
+  },
+  {
+   "step": 10,
+   "loss": 0.56869,
+   "elapsed_seconds": 127.1
+  },
+  {
+   "step": 11,
+   "loss": 0.45611,
+   "elapsed_seconds": 139.5
+  },
+  {
+   "step": 12,
+   "loss": 0.35987,
+   "elapsed_seconds": 151.8
+  },
+  {
+   "step": 13,
+   "loss": 0.27536,
+   "elapsed_seconds": 163.9
+  },
+  {
+   "step": 14,
+   "loss": 0.20047,
+   "elapsed_seconds": 175.8
+  },
+  {
+   "step": 15,
+   "loss": 0.14148,
+   "elapsed_seconds": 187.6
+  },
+  {
+   "step": 16,
+   "loss": 0.09696,
+   "elapsed_seconds": 199.5
+  },
+  {
+   "step": 17,
+   "loss": 0.0606,
+   "elapsed_seconds": 211.4
+  },
+  {
+   "step": 18,
+   "loss": 0.03605,
+   "elapsed_seconds": 223.3
+  },
+  {
+   "step": 19,
+   "loss": 0.0237,
+   "elapsed_seconds": 235.1
+  },
+  {
+   "step": 20,
+   "loss": 0.01222,
+   "elapsed_seconds": 246.8
+  },
+  {
+   "step": 21,
+   "loss": 0.00645,
+   "elapsed_seconds": 258.6
+  },
+  {
+   "step": 22,
+   "loss": 0.00404,
+   "elapsed_seconds": 270.5
+  },
+  {
+   "step": 23,
+   "loss": 0.00314,
+   "elapsed_seconds": 282.5
+  },
+  {
+   "step": 24,
+   "loss": 0.00252,
+   "elapsed_seconds": 294.2
+  },
+  {
+   "step": 25,
+   "loss": 0.00197,
+   "elapsed_seconds": 306.0
+  },
+  {
+   "step": 26,
+   "loss": 0.0016,
+   "elapsed_seconds": 317.9
+  },
+  {
+   "step": 27,
+   "loss": 0.00135,
+   "elapsed_seconds": 329.9
+  },
+  {
+   "step": 28,
+   "loss": 0.00111,
+   "elapsed_seconds": 341.7
+  },
+  {
+   "step": 29,
+   "loss": 0.00096,
+   "elapsed_seconds": 353.7
+  },
+  {
+   "step": 30,
+   "loss": 0.0008,
+   "elapsed_seconds": 365.4
+  },
+  {
+   "step": 31,
+   "loss": 0.00073,
+   "elapsed_seconds": 377.3
+  },
+  {
+   "step": 32,
+   "loss": 0.00066,
+   "elapsed_seconds": 389.2
+  },
+  {
+   "step": 33,
+   "loss": 0.00057,
+   "elapsed_seconds": 401.1
+  },
+  {
+   "step": 34,
+   "loss": 0.00052,
+   "elapsed_seconds": 412.9
+  },
+  {
+   "step": 35,
+   "loss": 0.00052,
+   "elapsed_seconds": 424.8
+  },
+  {
+   "step": 36,
+   "loss": 0.00043,
+   "elapsed_seconds": 436.5
+  },
+  {
+   "step": 37,
+   "loss": 0.00039,
+   "elapsed_seconds": 448.4
+  },
+  {
+   "step": 38,
+   "loss": 0.00036,
+   "elapsed_seconds": 460.2
+  },
+  {
+   "step": 39,
+   "loss": 0.00034,
+   "elapsed_seconds": 472.0
+  },
+  {
+   "step": 40,
+   "loss": 0.00031,
+   "elapsed_seconds": 484.0
+  }
+ ],
+ "generations": [
+  {
+   "id": "pubdata:budget-2024-total",
+   "exact": true,
+   "stopped_at_eos": true,
+   "generated_tokens": 130,
+   "target_tokens": 130,
+   "first_mismatch": null
+  },
+  {
+   "id": "pubdata:budget-current-defense",
+   "exact": true,
+   "stopped_at_eos": true,
+   "generated_tokens": 140,
+   "target_tokens": 140,
+   "first_mismatch": null
+  },
+  {
+   "id": "table:nfsa-emergency-level-2",
+   "exact": true,
+   "stopped_at_eos": true,
+   "generated_tokens": 112,
+   "target_tokens": 112,
+   "first_mismatch": null
+  },
+  {
+   "id": "table:nfsa-emergency-headcount-askback",
+   "exact": true,
+   "stopped_at_eos": true,
+   "generated_tokens": 165,
+   "target_tokens": 165,
+   "first_mismatch": null
+  },
+  {
+   "id": "pack:acct-05-register",
+   "exact": true,
+   "stopped_at_eos": true,
+   "generated_tokens": 83,
+   "target_tokens": 83,
+   "first_mismatch": null
+  },
+  {
+   "id": "pack:acct-05-mnd",
+   "exact": true,
+   "stopped_at_eos": true,
+   "generated_tokens": 86,
+   "target_tokens": 86,
+   "first_mismatch": null
+  }
+ ],
+ "elapsed_seconds": 529.5
+}
