@@ -370,17 +370,45 @@ class CivilServiceScopeTests(WorkspaceTests.__base__):
 
 
 class RuleTableLinkTests(WorkspaceTests.__base__):
-    """A statute body passage citing 별표 N is answered with that table of the same statute, not another table."""
-    TEXTS = {'law': ('공무원 여비 규정', '제16조(식비) 국내 출장 식비는 별표 2에 따라 지급한다.'),
-             't2': ('공무원 여비 규정 [별표 0002] 국내 여비 지급표', '국내 출장 식비 하루 25,000원'),
-             't8': ('공무원 여비 규정 [별표 0008] 상시 출장 공무원의 여비 지급 기준표', '상시 출장 식비 월 지급'),
-             'other': ('다른 여비 규정 [별표 0002] 지급표', '식비 하루 1원')}
+    """A statute body passage citing 별표 N is answered with that table of the same statute — identified by the annex id
+    in the table's own caption, never by the corpus title number ("[별표 0006]" may be 별표 6의2)."""
+    TEXTS = {'law': ('공무원 여비 규정', '제16조(식비) 국내 출장 식비는 별표 2에 따라 지급하고, 가족 여비는 별표 6의2에 따른다.'),
+             't2': ('공무원 여비 규정 [별표 0002] 국내 여비 지급표', '■ 공무원 여비 규정 [별표 2]\n국내 출장 식비 하루 25,000원'),
+             't6': ('공무원 여비 규정 [별표 0006] 가족 여비 지급표', '■ 공무원 여비 규정 [별표 6의2]\n국외 가족 여비 지급표'),
+             't6x': ('공무원 여비 규정 [별표 0006] 다른 표', '■ 공무원 여비 규정 [별표 6]\n다른 식비 표'),
+             't8': ('공무원 여비 규정 [별표 0008] 상시 출장 공무원의 여비 지급 기준표', '■ 공무원 여비 규정 [별표 8]\n상시 출장 식비 월 지급'),
+             'other': ('다른 여비 규정 [별표 0002] 지급표', '■ 다른 여비 규정 [별표 2]\n식비 하루 1원')}
     setUp = WorkspaceTests.setUp
 
-    def test_cited_table_of_the_same_rule_is_added(self):
+    def test_cited_table_of_the_same_rule_is_added_by_its_caption_annex_id(self):
+        self.assertEqual((self.ws.annex_id['t6'], self.ws.annex_id['t6x']), ('6의2', '6'))
         r = self.ws.select('국내 출장 식비 지급', pinned='law')
-        self.assertEqual(r['linked_tables'], ['t2'])
-        self.assertEqual({c.doc_id for c, _ in r['chunks']}, {'law', 't2'})
+        self.assertEqual(r['linked_tables'], ['t2', 't6'])
+        self.assertEqual({c.doc_id for c, _ in r['chunks']}, {'law', 't2', 't6'})
+
+    def test_only_visually_reviewed_rows_are_added_and_never_quoted(self):
+        from scripts.shared_demo import answer_document_case
+        from trid.pdf_documents import Document as Doc
+        row = lambda n, review, cells: {'id': f't2:t0:r{n}', 'doc_id': 't2', 'table': 0, 'review': review, 'cells': cells,
+                                         'caption': ['■ 공무원 여비 규정 [별표 2]', '국내 여비 지급표'], 'unit': '원',
+                                         'revised': '개정 2026. 9. 29.', 'statute_effective_date': '2026-10-02',
+                                         'section': None, 'notes': ['비고 1. 대통령의 식비는 실비로 한다.']}
+        path = __import__('pathlib').Path(self.dir.name) / 'rows.jsonl'
+        path.write_text(''.join(json.dumps(r, ensure_ascii=False) + '\n' for r in (
+            row(0, 'ai_visual_review_match', {'구분': '제2호', '식비(1일당)': '25,000'}),
+            {**row(1, 'candidate_unreviewed', {'구분': '제1호', '식비(1일당)': '99,999'}), 'doc_id': 't8'})))
+        loaded = __import__('scripts.shared_demo', fromlist=['Workspace']).Workspace(self.dir.name, table_rows=path)
+        self.assertEqual(set(loaded.reviewed_rows), {'t2'})  # candidate rows are never used
+        self.ws.reviewed_rows = {'t2': [row(0, 'ai_visual_review_match', {'구분': '제2호', '식비(1일당)': '25,000'})]}
+        r = self.ws.select('국내 출장 식비 지급', pinned='law')
+        derived = [c for c, _ in r['chunks'] if c.derived]
+        self.assertEqual(len(derived), 1)
+        for part in ('단위: 원', '법령 시행일 2026-10-02', '식비(1일당): 25,000', '비고 1. 대통령의 식비는 실비로 한다.'):
+            self.assertIn(part, derived[0].text)
+        document = Doc('d', [], [c for c, _ in r['chunks']], [])
+        with patch('scripts.shared_demo.complete', return_value={'generated': '구분: 제2호; 식비(1일당): 25,000', 'truncated_output': False}):
+            result = answer_document_case(document, '식비', 'http://127.0.0.1:1', 'qwen3', 4096, selected=r['chunks'])
+        self.assertEqual(result['candidates'], [])  # a line of the derived rows is not a verbatim source quote
 
 
 class ExtractiveChunkTests(unittest.TestCase):
@@ -427,7 +455,7 @@ class ProtectedPassageApiTests(unittest.TestCase):
             ('allhold', '다기관 포상 규정', '다기관', None, '제1조(포상금) 우수 직원 포상금은 30만원으로 한다.'),
             ('law', '공무원 여비 규정', '인사혁신처', 'central_government',
              '제1조(목적) 이 영은 국가공무원의 여비를 정한다.\n제16조(식비) 국내 출장 식비는 하루 25,000원으로 하고, 숙박비는 별표 2에 따른다.'),
-            ('t2', '공무원 여비 규정 [별표 0002] 국내 여비 지급표', '인사혁신처', None, '국내 출장 숙박비 상한 서울 100,000원')]
+            ('t2', '공무원 여비 규정 [별표 0002] 국내 여비 지급표', '인사혁신처', None, '■ 공무원 여비 규정 [별표 2]\n국내 출장 숙박비 상한 서울 100,000원')]
 
     def setUp(self):
         import tempfile
@@ -534,6 +562,78 @@ class ProtectedPassageApiTests(unittest.TestCase):
         _, r, _ = self.ask('공무원 국내 출장 식비는 하루 얼마인가요?', 'case', '식비는 하루 25,000원입니다.')
         self.assertNotIn('applicability', r)
 
+
+class InstitutionSnapshotApiTests(unittest.TestCase):
+    """A named institution with a separate snapshot (B: institution_rules_separate) is answered from that index only;
+    an expenditure record is never turned into a statistic or a rule; the shared index never contains the snapshot."""
+    setUp_shared = ProtectedPassageApiTests.setUp
+    close, request, visitor, ask = SharedDemoTests.close, SharedDemoTests.request, SharedDemoTests.visitor, ProtectedPassageApiTests.ask
+    PHONE, HELD, ALL_HELD, TABLE, DOCS = (ProtectedPassageApiTests.PHONE, ProtectedPassageApiTests.HELD,
+                                          ProtectedPassageApiTests.ALL_HELD, ProtectedPassageApiTests.TABLE,
+                                          ProtectedPassageApiTests.DOCS)
+
+    def setUp(self):
+        import hashlib, tempfile, time
+        from pathlib import Path
+        from scripts.build_workspace_index import separate_index
+        from scripts.shared_demo import Workspace
+        self.setUp_shared()
+        def rec(n, kind, basis, title, text, dates, note):
+            return {'source_id': f'reb.or.kr:{n}', 'version': str(n), 'content_hash': str(n), 'kind': kind, 'basis': basis,
+                    'title': title, 'text': text, 'issuer': {'id': 'C0150', 'id_scheme': 'alio_apbaId', 'name': '한국부동산원'},
+                    'applies_to': {'scope': 'institution', 'ids': ['C0150'], 'note': note}, 'dates': dates,
+                    'date_kinds': {'effective_from': '마지막 부칙의 시행일(본문 그대로)', 'spending_period': '집행월. 실제 지출'},
+                    'currency': '게시본. 이후 개정 여부는 확인하지 않았고 현행이라고 표시하지 않음', 'rights': {'license': 'test'},
+                    'location': {'url': 'https://example.invalid'}, 'structured_facts': []}
+        rows = [rec(1, 'institution_rule', 'rule_text', '한국부동산원_여비규정', '제10조(식비) 국내 출장 식비는 1일 25,000원으로 한다.',
+                    {'effective_from': '2026-07-01'}, '한국부동산원 임직원'),
+                rec(2, 'expenditure_record', 'actual_spend', '한국부동산원_2026년 9월 임원 업무추진비',
+                    '원장 업무추진비 내역: 2026-09-01 유관기관 업무 간담회 9명 340,000원. 합계 790,000원',
+                    {'spending_period': '2026-09'}, '임원의 실제 집행 내역이며 규정상 기준이 아님')]
+        rows[1]['structured_facts'] = [{'metric': '임원 업무추진비 월 집행액', 'unit': '원', 'value': 790000,
+                                        'population': '임원(원장) 1명 분', 'basis': 'actual_spending',
+                                        'not_for': '직원 1인 식비·평균, 규정상 한도로 쓰지 않음', 'verification': '두 판독기 일치',
+                                        'period': {'from': '2026-09-01', 'to': '2026-09-30'},
+                                        'subject': {'id': 'C0150', 'name': '한국부동산원'}}]
+        snap = Path(tempfile.mkdtemp()) / 'inst'
+        (snap / 'normalized').mkdir(parents=True)
+        body = ''.join(json.dumps(r, ensure_ascii=False) + '\n' for r in rows)
+        (snap / 'normalized/records-00000.jsonl').write_text(body)
+        (snap / 'manifest.json').write_text(json.dumps({
+            'snapshot_id': 'inst-test', 'index': 'institution_rules_separate', 'holds': ['evaluation', 'training'],
+            'files': [{'path': 'normalized/records-00000.jsonl', 'sha256': hashlib.sha256(body.encode()).hexdigest()}]}))
+        out = snap.parent / 'index'
+        separate_index(snap, out, time.time())
+        self.state.institution_workspaces = {'C0150': Workspace(out)}
+        self.state.versions['assist'] = dict(self.state.versions['case'], id='assist', assistant=True)
+
+    def test_named_institution_is_answered_from_its_own_snapshot_with_its_date_and_currency(self):
+        with patch('scripts.shared_demo.route', return_value='search'):
+            _, r, seen = self.ask('한국부동산원 국내 출장 식비 기준', 'assist', '[D1] 국내 출장 식비는 1일 25,000원으로 한다.')
+        self.assertEqual((r['workspace']['separate_snapshot'], r['file']), (True, '한국부동산원_여비규정'))
+        self.assertTrue(r['answer'].startswith('한국부동산원 누리집 게시 자료(「한국부동산원_여비규정」, 2026-07-01'))
+        self.assertIn('현행이라고 표시하지 않음', r['answer'])
+        self.assertNotIn('applicability', r)
+        _, r, _ = self.ask('국내 출장 식비는 하루 얼마인가요?', 'case', '확인 불가')  # names no institution: shared index
+        self.assertFalse(r['workspace']['separate_snapshot'])
+
+    def test_expenditure_records_and_officer_values_are_never_staff_statistics(self):
+        with patch('scripts.shared_demo.route', return_value='search'):
+            _, r, seen = self.ask('한국부동산원 직원 평균 식비는 얼마인가요?', 'assist')
+            self.assertEqual((r['status'], r['reason'], seen), ('not_found', 'no_structured_statistic', ''))
+            self.assertIn('임원 업무추진비 집행내역 1건(2026-09~2026-09', r['answer'])
+            self.assertNotIn('790,000', r['answer'])
+            _, r, _ = self.ask('한국부동산원 임원 업무추진비 평균은?', 'assist')  # no officer named: asked, not averaged
+            self.assertEqual((r['status'], r['reason']), ('clarify', 'officer'))
+            _, r, seen = self.ask('한국부동산원 9월 원장 업무추진비는?', 'assist')
+            self.assertEqual((r['status'], seen), ('answer_values', ''))
+            self.assertIn('2026-09 · 임원(원장) 1명 분 · 790,000원', r['answer'])
+            self.assertIn('평균·합계는 계산하지 않았습니다', r['answer'])
+            body, r, _ = self.ask('한국부동산원 9월 유관기관 간담회 내역', 'assist',
+                                  '[D1] 2026-09-01 유관기관 업무 간담회 9명 340,000원.\n따라서 1인당 평균 37,778원입니다.')
+        self.assertIn('임원 업무추진비의 실제 집행내역(2026-09 집행분', r['answer'])
+        self.assertNotIn('37,778', body)  # a computed figure appears nowhere, raw output included
+        self.assertNotEqual(r['status'], 'answer')
 
 if __name__ == '__main__':
     unittest.main()

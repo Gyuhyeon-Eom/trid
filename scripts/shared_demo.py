@@ -181,6 +181,7 @@ def answer_document_case(document, question, base, family, context, max_tokens=2
                 continue
             hit = next(((i, chunk, chunk.text.find(text, evidence_start(chunk.text))) for i, (chunk, _) in enumerate(selected)
                         if text in chunk.text[evidence_start(chunk.text):]
+                        and not getattr(chunk, 'derived', False)  # built from reviewed rows, not source text
                         and not (getattr(chunk, 'value_hold', False) and _numbers(text))), None)
             if hit:
                 i, chunk, start = hit
@@ -265,6 +266,7 @@ UNSOURCED_FACT = re.compile(r'\d[\d,.]*\s*(?:만\s*(?:\d[\d,.]*\s*)?)?(?:천\s*)
 GIVEN_VALUES = re.compile(r'\d[\d,.]*\s*(?:만\s*)?(?:원|%|일|시간|개월|년|박|명|회|시|분|km)')
 ORGANIZE = re.compile(r'정리|요약|계산|합계|합치|총\s*얼마|표로|한\s*줄|더하면')
 STATISTIC = re.compile(r'평균|통계|집행|현황|추이|실제로?\s*(?:쓴|쓰는|사용|지출)|실지출|건수')
+COMPUTED = re.compile(r'평균|통계|추이|합계|총\s*(?:액|얼마|지출)|건수|인당')  # a figure computed over records
 DEFINITION = re.compile(r'뜻|의미|개념|차이|정의|이란\b|란\s*(?:무엇|뭐)|구성(?:되|돼|요소|은|이)|요령')
 # A question about what the visitor said earlier is answered from the conversation, not searched.
 RECALL = re.compile(r'(?:아까|방금|앞에서|이전에|처음에|전에)\s*(?:제가|내가)?\s*(?:말한|말씀드린|얘기한|알려\s*드린|알려준|적은)'
@@ -413,6 +415,7 @@ class PassageChunk:
     path: tuple
     table: bool = False  # passage carries a table whose rows/columns B has not verified
     value_hold: bool = False  # B value review: its extracted numbers differ from the source page; not answer values
+    derived: bool = False  # built here from reviewed structure (not source text): never a verbatim quote or value span
 
 
 def reader_windows(selected, tok):
@@ -432,6 +435,35 @@ NORMALIZE = re.compile(r'[\s·ㆍ・「」『』()（）\[\]〈〉<>,.\-]')
 
 def _norm(text):
     return NORMALIZE.sub('', text or '')
+
+
+def _annex(text):
+    """Annex id as printed: '6의2', '2' (spaces dropped)."""
+    return re.sub(r'\s+', '', text)
+
+
+def render_rows(rows):
+    """B's visually reviewed table rows (law-byl v2-structure rows, review ai_visual_review_match) as evidence text:
+    each table's caption, unit, revision and statute dates, then one line per row pairing every value with its column
+    header, then the table's notes — numbers never travel without their conditions, unit and date."""
+    out = []
+    for table in dict.fromkeys(r['table'] for r in rows):
+        part = [r for r in rows if r['table'] == table]
+        head = part[0]
+        out.append(f"[검토된 표 행 · B AI 시각 대조, 승인·법률 자문 아님] {' '.join(head['caption'])}")
+        unit = re.sub(r'^\(?\s*단위\s*:\s*|\)$', '', head['unit'] or '').strip()
+        out.append(f"단위: {unit or '표에 표기 없음'} · {head['revised'] or '개정 표기 없음'} · 법령 시행일 "
+                   f"{head['statute_effective_date'] or '미상'}")
+        section = None
+        for r in part:
+            if r.get('section') and r['section'] != section:
+                section = r['section']
+                out.append(f'[{section}]')
+            out.append('- ' + '; '.join(f'{k}: {v}' for k, v in r['cells'].items()))
+        notes = list(dict.fromkeys(n for r in part for n in r.get('notes') or []))
+        if notes:
+            out.append(('' if notes[0].startswith('비고') else '비고: ') + ' / '.join(notes))
+    return '\n'.join(out)
 
 def _alias_ok(alias):
     return len(alias) >= 3 or bool(re.fullmatch(r'[A-Z]{2}', alias))
@@ -485,7 +517,7 @@ class Workspace:
     TOPICAL_DF = 0.02  # a question noun in at most this share of passages is topical (not 출장·공무원·기준 …)
 
     def __init__(self, directory, embedder=None, institutions=ROOT / 'data/corpus-inventory/alio-agencies.json',
-                 review=None):
+                 review=None, table_rows=ROOT / 'data/law-byl/v2-structure-001-rows-001/queryable-rows.jsonl'):
         from trid.service.index import Index
         root = Path(directory)
         self.index = Index.load(root)
@@ -543,15 +575,35 @@ class Workspace:
             base = _norm(re.split(r'\s*[\[(]|\s+-\s+', m['title'])[0])
             if len(base) >= 4 and re.search(r'(법|령|규정|규칙|지침|훈령|예규|고시|편람|기준)$', base):
                 self.rule_names.setdefault(base, set()).add(doc_id)
-        # The tables (별표) of a rule, by number, for the rule's own documents: a statute body passage that says
-        # "별표 2에 따른다" is answered together with that table of the same statute (one rule, not a mix of rules).
+        # The tables (별표) of a rule, by the annex id printed in the table's own caption ("■ 공무원 여비 규정 [별표 6의2]"):
+        # a statute body passage that says "별표 2에 따른다" is answered together with that table of the same statute
+        # (one rule, not a mix of rules). The corpus title number is not used — "[별표 0006]" may be 별표 6의2 — and a
+        # table whose caption gives no annex id is not linked.
+        annex_docs = {d for docs in self.rule_names.values() for d in docs if '별표' in self.meta[d]['title']}
+        first = {}
+        for p in self.index.passages:
+            if p.doc_id in annex_docs and (p.doc_id not in first or p.char_start < first[p.doc_id].char_start):
+                first[p.doc_id] = p
+        self.annex_id = {d: _annex(m.group(1)) for d, p in first.items()
+                         for m in [re.search(r'\[별표\s*(\d+(?:\s*의\s*\d+)?)\]', p.text[:300])] if m}
         self.rule_tables = {}
         for base, docs in self.rule_names.items():
             for d in docs:
-                n = re.search(r'\[별표\s*0*(\d+)', self.meta[d]['title'])
-                if n:
-                    self.rule_tables.setdefault(base, {})[int(n.group(1))] = d
+                if d in self.annex_id:
+                    self.rule_tables.setdefault(base, {})[self.annex_id[d]] = d
         self.rule_of = {d: base for base, docs in self.rule_names.items() for d in docs}
+        # B's table rows (law-byl v2-structure rows): only rows B compared with a rendering of the source
+        # (ai_visual_review_match) are used; candidate_unreviewed rows and not-queryable tables never are.
+        self.reviewed_rows, self.table_rows_source = {}, None
+        if table_rows and Path(table_rows).exists():
+            for line in Path(table_rows).read_text().splitlines():
+                row = json.loads(line)
+                if row.get('review') == 'ai_visual_review_match' and row['doc_id'] in self.meta:
+                    self.reviewed_rows.setdefault(row['doc_id'], []).append(row)
+            manifest = Path(table_rows).with_name('manifest.json')
+            self.table_rows_source = {'file': str(table_rows), 'reviewed_rows': sum(map(len, self.reviewed_rows.values())),
+                                      'manifest_sha256': hashlib.sha256(manifest.read_bytes()).hexdigest()
+                                      if manifest.exists() else None}
         self.dense, self.dense_info, self.embedder = None, None, embedder
         if (root / 'dense.f16.npy').exists():
             self.dense_info = json.loads((root / 'dense.json').read_text())
@@ -924,20 +976,32 @@ class Workspace:
                                      self.passage_doc[i], self.index.passages[i].path,
                                      self.index.passages[i].id in self.tables, self.index.passages[i].id in self.value_hold),
                         float(everywhere[i])) for i in linked]
+        tables = self.rule_tables.get(self.rule_of.get(applied), {})
+        inline = {_annex(n) for c, _ in chunks for n in re.findall(r'\[별표\s*(\d+(?:\s*의\s*\d+)?)\]', c.text)}
+        candidates = [d for d in dict.fromkeys([str(c.doc_id) for c, _ in chunks] + [tables[n] for n in sorted(inline) if n in tables])
+                      if d in self.reviewed_rows]
+        best_of = lambda d: float(np.max(everywhere[self.passage_doc == d], initial=0))
+        reviewed = sorted(candidates, key=best_of, reverse=True)[:2]  # the tables the question is most about
+        if reviewed:
+            # B's visually reviewed rows of these tables, with their unit, notes and dates: the row/column pairing the
+            # flattened table text loses. Derived text, so never a verbatim quote nor a value-version answer.
+            result['reviewed_rows'] = {d: len(self.reviewed_rows[d]) for d in reviewed}
+            chunks += [(PassageChunk(render_rows(self.reviewed_rows[d]), 1, 0, d, ('검토된 표 행',), derived=True), 0.0)
+                       for d in reviewed]
         used = list(passing[applied]) + list(linked)
         if self.private_mask[used].any():  # invariant: never reachable; fail the request rather than serve it
             raise RuntimeError('privacy-review passage reached the answer context')
         return {**result, 'status': 'answer', 'applied': applied, 'chunks': chunks}
 
     def linked_tables(self, applied, chunks, scores, per_table=2, max_tables=2):
-        """Passages of the tables (별표) that the chosen statute-body passages cite by number, from the same rule —
-        the best-scoring `per_table` of each (privacy passages excluded), for the `max_tables` cited tables whose best
-        passage scores highest — so "식비는 별표 2에 따른다" comes with 별표 2."""
+        """Passages of the tables (별표) that the chosen statute-body passages cite by annex id ("별표 2", "별표 6의2"),
+        from the same rule — the best-scoring `per_table` of each (privacy passages excluded), for the `max_tables`
+        cited tables whose best passage scores highest — so "식비는 별표 2에 따른다" comes with 별표 2."""
         tables = self.rule_tables.get(self.rule_of.get(applied), {})
         if not tables or applied in tables.values():
             return []
-        cited = {int(n) for c in chunks for n in re.findall(r'별표\s*(\d+)', c.text)}
-        cited -= {int(n) for c in chunks for n in re.findall(r'\[별표\s*(\d+)\]', c.text)}  # already quoted inline
+        cited = {_annex(n) for c in chunks for n in re.findall(r'별표\s*(\d+(?:\s*의\s*\d+)?)', c.text)}
+        cited -= {_annex(n) for c in chunks for n in re.findall(r'\[별표\s*(\d+(?:\s*의\s*\d+)?)\]', c.text)}  # quoted inline
         ranked = []
         for n in sorted(cited):
             doc = tables.get(n)
@@ -961,12 +1025,9 @@ class Workspace:
 
 
 
-def applicability_guard(result, applies, title):
-    """A question that is not about civil servants answered from a rule whose 제1조 limits it to 국가/지방공무원
-    (B applies_to): the rule is shown only as the civil-service rule it is. The visible answer says so first; a value
-    answer is downgraded to 'review'; model commentary sentences carrying numbers (amounts, days) are withheld so that
-    no figure reads as the asker's institution's entitlement. Verbatim quotes stay, labelled with their source."""
-    who = '국가공무원' if applies == 'central_government' else '지방공무원'
+def _withhold_figures(result, why):
+    """Model commentary sentences carrying numbers are withheld (and the raw output with them); value answers become
+    'review'. Verbatim quotes stay, labelled with their source."""
     shown, withheld = [], 0
     for part in re.split(r'\n+|(?<=[.!?])\s+', result.get('commentary') or ''):
         if part.strip():
@@ -976,16 +1037,96 @@ def applicability_guard(result, applies, title):
                 shown.append(part)
     result['commentary'] = '\n'.join(shown) or None
     if withheld:
-        result.setdefault('commentary_notes', []).append(
-            f'이 규정의 적용 대상({who})과 질문 대상이 같다고 확인되지 않아, 금액·일수 등 숫자가 든 해설 문장 {withheld}개를 숨겼습니다.')
+        result.setdefault('commentary_notes', []).append(f'{why} 금액·일수 등 숫자가 든 해설 문장 {withheld}개를 숨겼습니다.')
     if result.get('status') == 'answer':
         result['status'] = 'review'
+    if result.get('raw_output'):
+        result.update(raw_output=None, raw_output_withheld=True)
+
+
+def applicability_guard(result, applies, title):
+    """A question that is not about civil servants answered from a rule whose 제1조 limits it to 국가/지방공무원
+    (B applies_to): the rule is shown only as the civil-service rule it is. The visible answer says so first and no
+    figure of the model's reads as the asker's institution's entitlement (_withhold_figures)."""
+    who = '국가공무원' if applies == 'central_government' else '지방공무원'
+    _withhold_figures(result, f'이 규정의 적용 대상({who})과 질문 대상이 같다고 확인되지 않아,')
     result['answer'] = (f'「{title}」은 {who}에게 적용되는 규정입니다(제1조 목적). 질문한 대상(예: 공공기관 직원)에게 적용되는지는 '
                         '확인되지 않았으므로, 아래 원문의 금액·기준을 그 기관의 지급액으로 보지 말고 기관 자체 규정을 확인하세요. '
                         + (result.get('answer') or ''))
     result['applicability'] = {'rule_scope': applies, 'question_names_civil_servants': False, 'status': 'not_confirmed'}
-    if result.get('raw_output'):
-        result.update(raw_output=None, raw_output_withheld=True)  # it may state the amount as the asker's
+
+
+def expenditure_guard(result, m):
+    """An expenditure record (B: expenditure_record / actual_spend, e.g. one month of executives' 업무추진비) is a list
+    of actual payments, not a rule nor a statistic: it is shown as such, its rows only as verbatim quotes, and nothing
+    computed from it (sums, averages, per-employee figures) is given (_withhold_figures)."""
+    _withhold_figures(result, '집행내역 문서로 계산하거나 다른 의미(직원 평균·출장 식비 등)로 옮긴 값일 수 있어')
+    result['answer'] = (f"「{m['title']}」은 {m['institution']} 임원 업무추진비의 실제 집행내역({m['date']} 집행분 공개 문서)입니다. "
+                        '규정상 기준이 아니며 직원 평균 식비나 출장 식비도 아닙니다. 아래에는 원문과 일치하는 건별 내역만 보이고, '
+                        '평균·합계를 계산해 답하지 않습니다. ' + (result.get('answer') or ''))
+    result['record_kind'] = 'expenditure_record'
+
+
+def institution_indexes(state, workspace, question, context_doc):
+    """The separate snapshot index (B: index institution_rules_separate) of the institution the question names by
+    its official ALIO id — or, for a follow-up naming no institution, of the previous answer's document — else None."""
+    indexes = getattr(state, 'institution_workspaces', None) or {}
+    if not indexes:
+        return None
+    named, unknown, _, _ = workspace.constraints(question)
+    for name in named + unknown:
+        entry = workspace.institutions.get(name) or {}
+        alio = (entry.get('alio') or {}).get('id') or entry.get('alio_id')
+        if alio in indexes:
+            return indexes[alio]
+    if not named and not unknown and context_doc:
+        return next((ws for ws in indexes.values() if context_doc in ws.meta), None)
+    return None
+
+
+def institution_statistic_reply(ws, question, shown=20):
+    """A statistic question about an institution with a separate snapshot. B's structured facts there are per-officer
+    monthly totals of 임원 업무추진비 (two-reader verified; `not_for`: staff meals, averages, rule limits). They are
+    listed as they are — filtered by the officer and month the question names — only when the question is about
+    officers' 업무추진비 and not about staff, meals or travel; no average or sum is computed. Any other statistic
+    question gets what exists, told apart: rules (규정상 기준), records (실지출 문서), officer-month values."""
+    name = next(iter(ws.meta.values()))['institution']
+    roles = {r.group(1) for f in ws.facts for r in [re.search(r'\((.+?)\)', f.get('population') or '')] if r}
+    asked = [r for r in roles if r in question]
+    staff = re.search(r'직원|식비|출장|여비|1인|인당|개인', question)
+    officers = asked or re.search(r'임원|업무추진비', question)
+    month = re.search(r'(\d{1,2})\s*월', question)
+    base = {'candidates': [], 'checked_chunks': 0, 'warnings': [], 'reason': 'statistic',
+            'scope': f'모델을 실행하지 않았습니다. {name} 별도 게시 자료 색인({ws.name})의 정형 값과 문서 종류만 확인했습니다. '
+                     '평균·합계는 계산하지 않습니다.'}
+    if ws.facts and officers and not staff and not asked:
+        return {**base, 'status': 'clarify', 'reason': 'officer',
+                'answer': (f'{name}의 공개 집행액은 임원 직위별·월별 값입니다. 어느 직위의 몇 월 집행액인지 정해 주세요: '
+                           + ', '.join(sorted(roles)) + '. 여러 직위·여러 달을 묶은 평균·합계는 계산하지 않습니다.')}
+    if ws.facts and officers and not staff:
+        facts = sorted((f for f in ws.facts
+                        if (not asked or any(f'({r})' in f['population'] for r in asked))
+                        and (not month or f['period']['from'][5:7] == f'{int(month.group(1)):02d}')),
+                       key=lambda f: (f['period']['from'], f['population']))
+        if facts:
+            lines = '\n'.join(f"- {f['period']['from'][:7]} · {f['population']} · {f['value']:,}{f['unit']}" for f in facts[:shown])
+            more = f'\n(외 {len(facts) - shown}건)' if len(facts) > shown else ''
+            return {**base, 'status': 'answer_values', 'facts': facts,
+                    'answer': (f"{name} {facts[0]['metric']} 정형 값 {len(facts)}건입니다(B 검증: {facts[0].get('verification')}). "
+                               f"각 값은 해당 임원 1명의 한 달 집행액이며 {facts[0].get('not_for') or '다른 용도로 쓰지 않음'}. "
+                               f'평균·합계는 계산하지 않았습니다.\n{lines}{more}')}
+    rules = [m for m in ws.meta.values() if m.get('record_kind') == 'institution_rule']
+    spend = sorted(m['date'] for m in ws.meta.values() if m.get('record_kind') == 'expenditure_record')
+    have = [f"기관 내규 게시본 {len(rules)}건(규정상 기준: {', '.join(sorted({m['title'].split('_')[-1].split(' 일부')[0].split('(')[0] for m in rules}))})"
+            if rules else None,
+            f'임원 업무추진비 집행내역 {len(spend)}건({spend[0]}~{spend[-1]} 월별 실지출 공개 문서)' if spend else None,
+            f'임원 1명별 월 업무추진비 집행액 정형 값 {len(ws.facts)}건' if ws.facts else None]
+    answer = (f'{name}에 대해 이 질문에 맞는 계산된 통계 값(직원 평균 등)은 검색 자료에 없습니다. 있는 자료: '
+              + ', '.join(h for h in have if h) + '. '
+              + ('집행내역과 그 정형 값은 임원(원장·감사 등)의 업무추진비 지출이며 직원 평균 식비나 출장 식비가 아니므로, 이 '
+                 '자료로 평균·합계를 계산해 답하지 않습니다. ' if spend or ws.facts else '')
+              + ('출장 식비의 규정상 기준을 찾으려면 기관명과 규정명(예: 여비규정 식비)으로 물어 주세요.' if rules else ''))
+    return {**base, 'status': 'not_found', 'reason': 'no_structured_statistic', 'answer': answer}
 
 
 def workspace_reply(workspace, selection):
@@ -1362,11 +1503,14 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                         context_doc = last.get('applied_id') if last and last.get('kind') == 'search' else None
                         selected, others, selection = None, [], None
                         document = session.document
+                        ws = workspace  # the shared index, or a named institution's separate snapshot index
+                        inst_ws = institution_indexes(state, workspace, question, context_doc) if workspace_mode else None
+                        continues = ((lambda q, d: (inst_ws or workspace).continues(q, d)) if workspace_mode else None)
                         if version.get('assistant'):
                             kind = request_type(question)
                             if kind == 'organize' or (kind == 'recall' and history):
                                 intent = 'chat'  # the visitor's own figures or what they said earlier
-                            elif kind == 'explain' and workspace_mode:
+                            elif kind == 'explain' and workspace_mode and not inst_ws:
                                 # A definition is answered from the corpus when it covers the term (견책 → 징계업무편람);
                                 # only otherwise as a general explanation citing no institution.
                                 selection = workspace.select(question, session.pinned_doc, context_doc)
@@ -1374,18 +1518,29 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                                     intent, selection = 'chat', None
                             else:
                                 intent = route(version['base'], version['family'], version['context'], history, question,
-                                               workspace.continues if workspace_mode else None)
+                                               continues)
                         if intent == 'chat':
                             result = chat_reply(version['base'], version['family'], version['context'], history, question,
                                                 explain=kind == 'explain')
-                        elif kind == 'statistic' and workspace_mode:
-                            result = statistic_reply(workspace, question)
+                        elif workspace_mode and ((kind == 'statistic' and not (inst_ws and not inst_ws.facts
+                                                                               and not COMPUTED.search(question)))
+                                                 or (inst_ws and inst_ws.facts and '업무추진비' in question)):
+                            # an institution without structured facts: asking for a computed figure gets what exists
+                            # instead; asking what a record lists ("9월 집행내역") is searched in its documents
+                            result = (institution_statistic_reply(inst_ws, question) if inst_ws
+                                      else statistic_reply(workspace, question))
                         else:
                             if workspace_mode:
-                                selection = selection or workspace.select(question, session.pinned_doc, context_doc)
+                                if inst_ws:
+                                    # a named institution whose posted rules/records are a separate snapshot (B: never in
+                                    # the shared or evaluation index) is answered from that index only
+                                    ws = inst_ws
+                                    selection = inst_ws.select(question, None, context_doc if context_doc in inst_ws.meta else None)
+                                else:
+                                    selection = selection or workspace.select(question, session.pinned_doc, context_doc)
                                 others = selection['others']
                             if selection and selection['status'] != 'answer':
-                                result = workspace_reply(workspace, selection)
+                                result = workspace_reply(ws, selection)
                             else:
                                 held_out = 0
                                 if selection:
@@ -1394,10 +1549,10 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                                         # versions whose answer is a value: held passages' numbers are not values, so
                                         # those passages are not given to the model at all
                                         held_out = sum(c.value_hold for c, _ in selected)
-                                        selected = [(c, s) for c, s in selected if not c.value_hold]
+                                        selected = [(c, s) for c, s in selected if not c.value_hold and not c.derived]
                                     if version['kind'] == 'extractive':
                                         selected = reader_windows(selected, version['tok'])
-                                    document = Document(workspace.meta[selection['applied']]['title'], [],
+                                    document = Document(ws.meta[selection['applied']]['title'], [],
                                                         [c for c, _ in selected], [])
                                 if version['kind'] == 'extractive':
                                     result = answer_document(document, question, version['model'], None, version['tok'],
@@ -1408,7 +1563,7 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                                     result = answer_document_case(document, question, version['base'], version['family'],
                                                                   version['context'], selected=selected,
                                                                   topical=selection['retrieval']['topical_words'] if selection else None,
-                                                                  provenance=workspace.provenance(selection['applied'])
+                                                                  provenance=ws.provenance(selection['applied'])
                                                                   if selection and version.get('provenance_line') else None)
                                 else:
                                     result = answer_document_chat(document, question, version['base'], version['family'],
@@ -1427,28 +1582,31 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                         if kind:
                             result['request_type'] = kind
                         if selection and selection.get('retrieval'):
-                            result['retrieval'] = {**selection['retrieval'], 'index': workspace.name,
-                                                   'dense': workspace.dense_info and {k: workspace.dense_info[k] for k in ('model', 'snapshot', 'vectors_sha256')}}
+                            result['retrieval'] = {**selection['retrieval'], 'index': ws.name,
+                                                   'dense': ws.dense_info and {k: ws.dense_info[k] for k in ('model', 'snapshot', 'vectors_sha256')}}
                         if selection:
                             with state.lock:
-                                session.offered_docs = [o['doc_id'] for o in others]
+                                session.offered_docs = [o['doc_id'] for o in others] if ws is workspace else []
                             for c in result.get('candidates', []):
                                 chunk = next(ch for ch, _ in selected if ch.text == c['text'])
                                 c['source_label'] = ' · '.join(x for x in (
-                                    workspace.meta[chunk.doc_id]['institution'], workspace.meta[chunk.doc_id]['title'],
+                                    ws.meta[chunk.doc_id]['institution'], ws.meta[chunk.doc_id]['title'],
                                     ' '.join(chunk.path[1:]) or None) if x)
                                 c['page_character_span'] = [chunk.start + c['prediction']['source_character_span'][0],
                                                             chunk.start + c['prediction']['source_character_span'][1]]
                             applied = selection['applied']
-                            result['workspace'] = {'applied': workspace.describe(applied) if applied else None,
+                            result['workspace'] = {'applied': ws.describe(applied) if applied else None,
                                                    'pinned': bool(session.pinned_doc), 'others': others,
                                                    'selection': selection['status'], 'institutions': selection['institutions'],
                                                    'title_matched': selection['title_matched'],
-                                                   'continued': bool(selection.get('continued')), 'scope': workspace.scope()}
-                            result['total_chunks'] = len(workspace.index.passages)
+                                                   'continued': bool(selection.get('continued')), 'scope': ws.scope(),
+                                                   'separate_snapshot': ws.manifest.get('separate') or False}
+                            result['total_chunks'] = len(ws.index.passages)
                             if selection['status'] == 'answer' and any(c.table for c, _ in selected):
                                 result['table_warning'] = ('표가 들어 있는 구간을 썼습니다. 표의 행·열 대응은 검증되지 않았으므로 표 값을 '
-                                                           '해석하거나 계산한 내용은 근거로 쓰지 말고 원문 링크에서 표를 직접 확인하세요.')
+                                                           '해석하거나 계산한 내용은 근거로 쓰지 말고 원문 링크에서 표를 직접 확인하세요.'
+                                                           + (' 표의 〃(위와 같음) 표시는 원문 그대로이며 다른 값으로 바꿔 읽지 '
+                                                              '않았습니다.' if any('〃' in c.text for c, _ in selected) else ''))
                             if selection['status'] == 'answer':
                                 how = ('질문에 적힌 문서명' if selection['title_matched'] else
                                        f"질문에 적힌 기관({', '.join(selection['institutions'])})" if selection['institutions'] else
@@ -1456,8 +1614,8 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                                        '관련도 판정')
                                 result['scope'] = (f'{how}으로 고른 문서 1건의 구간만 모델에 넣었습니다. 다른 기관·문서의 규정을 '
                                                    '섞지 않습니다. 검색되지 않은 자료까지 정보가 없다고 보장하지 않습니다.')
-                                m = workspace.meta[selection['applied']]
-                                scope_text = workspace.applies(selection['applied']).get('note')
+                                m = ws.meta[selection['applied']]
+                                scope_text = ws.applies(selection['applied']).get('note')
                                 if scope_text:
                                     result['scope'] += f" 이 자료의 적용 범위(B 기록): {scope_text}."
                                 elif selection.get('scope_note') == 'specific':
@@ -1469,9 +1627,22 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                                     result['scope'] += ' 자료 한계: ' + note
                                 if m.get('limitations'):
                                     result['source_limits'] = list(m['limitations'])  # for a visible warning (UI: B)
-                                applies = workspace.applies(selection['applied']).get('scope')
+                                applies = ws.applies(selection['applied']).get('scope')
                                 if applies in ('central_government', 'local_government') and '공무원' not in question:
                                     applicability_guard(result, applies, m['title'])
+                                if m.get('record_kind') == 'expenditure_record':
+                                    expenditure_guard(result, m)
+                                if ws is not workspace:
+                                    typo = ('원문 부칙의 시행일 표기를 그대로 옮겼으며 오기 여부는 확인하지 않았습니다. '
+                                            if '오기' in (m.get('date_type') or '') else '')
+                                    result['answer'] = (f"{m['institution']} 누리집 게시 자료(「{m['title']}」, {m['date']} · "
+                                                        f"{m['currency']})에서 찾았습니다. {typo}" + (result.get('answer') or ''))
+                                for note in m.get('source_notes') or []:
+                                    result['scope'] += f' 출처 메모(B): {note}'
+                                if selection.get('reviewed_rows'):
+                                    result['scope'] += (' 원문 표 구간과 함께 B가 원본 렌더링과 대조한 표 행(단위·비고·시점 포함, '
+                                                        f"{sum(selection['reviewed_rows'].values())}행)을 넣었습니다. 이 행은 원문 인용으로 "
+                                                        '표시하지 않으며, 승인된 값이나 법률 자문이 아닙니다.')
                                 if selection.get('linked_tables'):
                                     result['scope'] += (' 본문이 인용한 같은 규정의 별표 구간을 함께 넣었습니다'
                                                         f"({len(selection['linked_tables'])}건).")
@@ -1527,6 +1698,10 @@ def main():
                         help='shared search index of approved public sources (scripts/build_workspace_index.py)')
     parser.add_argument('--passage-review', type=Path, default=ROOT / 'data/search-corpus-v4/passages.jsonl',
                         help="B's per-passage review metadata (value_review: hold_for_value_use, privacy_review)")
+    parser.add_argument('--institution-index', type=Path, action='append', default=None,
+                        help='separate institution snapshot index (build_workspace_index.py --separate-snapshot), served '
+                             'only for questions naming that institution (by its ALIO id); default: '
+                             'runs/workspace-index/inst-reb-002 when present')
     args = parser.parse_args()
     torch.set_num_threads(4)
     def stop_signal(*_):
@@ -1537,6 +1712,13 @@ def main():
         state = State(json.loads(args.versions.read_text()))
         state.workspace = (Workspace(args.workspace, review=args.passage_review)
                            if (args.workspace / 'manifest.json').exists() else None)
+        state.institution_workspaces = {}
+        for path in args.institution_index or [p for p in [ROOT / 'runs/workspace-index/inst-reb-002'] if p.exists()]:
+            inst = Workspace(path, embedder=state.workspace.embedder)
+            ids = {m.get('issuer_id') for m in inst.meta.values()}
+            if len(ids) != 1 or not inst.manifest.get('separate'):
+                raise ValueError(f'{path}: an institution index must be a separate snapshot of exactly one institution')
+            state.institution_workspaces[ids.pop()] = inst
         server = make_server(state, Path(args.secret_file).read_text().strip(), args.port)
         stop = threading.Event()
         def prune():

@@ -38,18 +38,25 @@ def sha256(path):
         return hashlib.file_digest(f, 'sha256').hexdigest()
 
 API_KIND = {'rule': '행정규칙', 'manual': '업무편람', 'law': '법령', 'interpretation': '법령해석·질의회신', 'faq': 'FAQ',
-            'qa_board': '질의응답 게시판', 'statistic': '통계·공시', 'press': '정책브리핑 보도자료'}
+            'qa_board': '질의응답 게시판', 'statistic': '통계·공시', 'press': '정책브리핑 보도자료',
+            'institution_rule': '기관 내규(게시본)', 'expenditure_record': '집행내역(실지출 공개)'}
+SEPARATE = 'institution_rules_separate'  # B: an institution snapshot indexed on its own, never inside the shared index
 
 
-def api_snapshot(directory, meta):
+def api_snapshot(directory, meta, separate=False):
     """(documents, structured facts, snapshot info) of one local snapshot copy. Every file listed in manifest.json must
     match its sha256; records with usage restrictions are skipped; the issuer is the document's institution and
     `applies_to` is kept separately (an issuer is not necessarily the body the rule applies to).
     A record already indexed from another input is skipped (`duplicate`): its document id is
     `<source_id prefix>:<version>` — for law.go.kr DRF records source_id carries the rule ID and version the serial
-    number (일련번호) that the law.go.kr corpus already uses as document id — or its source_id itself."""
+    number (일련번호) that the law.go.kr corpus already uses as document id — or its source_id itself.
+    A snapshot whose manifest says index == institution_rules_separate is only accepted with `separate` (its own
+    index, --separate-snapshot), so it can never enter the shared/evaluated index."""
     manifest_path = directory / 'manifest.json'
     manifest = json.loads(manifest_path.read_text())
+    if (manifest.get('index') == SEPARATE) != separate:
+        raise ValueError(f"{directory}: index '{manifest.get('index')}' must be built "
+                         + ('as its own index (--separate-snapshot)' if not separate else 'into the shared index'))
     for f in manifest['files']:
         if sha256(directory / f['path']) != f['sha256']:
             raise ValueError(f"{directory / f['path']}: sha256 differs from the snapshot manifest")
@@ -88,16 +95,22 @@ def api_snapshot(directory, meta):
             documents.append(doc)
             added.append(doc_id)
             dates, kinds, issuer = row.get('dates') or {}, row.get('date_kinds') or {}, row.get('issuer') or {}
-            shown = 'published' if dates.get('published') else 'effective_from'
+            # The date shown: publication, else effective date, else the spending month of an expenditure record —
+            # with B's own description of what that date is (copied, never corrected).
+            shown = next((k for k in ('published', 'effective_from', 'spending_period') if dates.get(k)), 'effective_from')
             meta[doc_id] = {'title': row['title'], 'kind': API_KIND.get(row['kind'], row['kind']),
                             'institution': issuer.get('name'), 'issuer_id': issuer.get('id'),
                             'issuer_id_scheme': issuer.get('id_scheme'), 'applies_to': row.get('applies_to'),
-                            'date': dates.get(shown), 'date_type': kinds.get(shown, shown),
+                            'date': dates.get(shown), 'date_type': kinds.get(shown) or shown,
                             'effective_date': dates.get('effective_from'),
-                            'currency': f"{dates.get('retrieved_at')} 수집 당시 자료이며 현행 여부는 다시 확인하지 않았음",
+                            'currency': row.get('currency') or f"{dates.get('retrieved_at')} 수집 당시 자료이며 현행 여부는 다시 확인하지 않았음",
                             'source': (row.get('location') or {}).get('url'), 'license': (row.get('rights') or {}).get('license'),
                             'attribution': manifest.get('producer'), 'source_id': row['source_id'], 'version': row['version'],
-                            'snapshot_id': manifest['snapshot_id']}
+                            'snapshot_id': manifest['snapshot_id'], 'basis': row.get('basis'), 'record_kind': row['kind']}
+            if row.get('table_check'):
+                meta[doc_id]['table_check'] = row['table_check']
+            if row.get('source_notes'):
+                meta[doc_id]['source_notes'] = [n['note'] for n in row['source_notes']]
     info = {'snapshot_id': manifest['snapshot_id'], 'manifest_sha256': sha256(manifest_path), 'indexed': len(documents),
             'added_documents': added, 'metadata_updated': len(updated), 'skipped': skipped, 'facts': len(facts),
             'producer': manifest.get('producer')}
@@ -153,6 +166,37 @@ def guides(path, meta, tables):
                        'limited': [d.doc_id for d in documents if meta[d.doc_id]['limitations']]}
 
 
+def separate_index(snapshot, out, started):
+    """An institution snapshot (B: index institution_rules_separate, holds evaluation/training) as its own index, so
+    the shared index — and the fixed evaluation snapshots built like it — never contains it. Passages carrying a
+    table are flagged (row/column pairing not verified)."""
+    meta = {}
+    documents, facts, info = api_snapshot(snapshot, meta, separate=True)
+    index = Index.build(documents)
+    index.save(out)
+    meta = {d.doc_id: meta[d.doc_id] for d in documents}
+    counts = {}
+    for m in meta.values():
+        counts[m['kind']] = counts.get(m['kind'], 0) + 1
+    dates = sorted(m['date'] for m in meta.values() if m['date'])
+    tables = sorted(p.id for d in documents for p in d.passages if '|' in p.text or '<table' in p.text)
+    source = json.loads((snapshot / 'manifest.json').read_text())
+    manifest = {'built_at_unix': time.time(), 'seconds': round(time.time() - started, 1),
+                'inputs': {f'{snapshot}/manifest.json': info['manifest_sha256']}, 'separate': True,
+                'holds': source.get('holds'), 'index': source.get('index'),
+                'documents': len(documents), 'passages': len(index.passages), 'by_kind': counts,
+                'table_passages': len(tables), 'date_range': [dates[0], dates[-1]] if dates else None,
+                'selection': f"institution snapshot {info['snapshot_id']} only ({info['indexed']} records, skipped {info['skipped']})",
+                'api_snapshots': {str(snapshot): info}, 'structured_facts': len(facts),
+                'note': 'Separate institution index for the test site; never part of the shared or evaluation index.'}
+    if facts:
+        (out / 'facts.jsonl').write_text(''.join(json.dumps(f, ensure_ascii=False) + '\n' for f in facts))
+    (out / 'tables.json').write_text(json.dumps(tables))
+    (out / 'meta.json').write_text(json.dumps(meta, ensure_ascii=False))
+    (out / 'manifest.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=1))
+    return manifest
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument('--out', type=Path, required=True)
@@ -161,10 +205,17 @@ def main():
                    help='also index a local copy of a B API-S3-001 snapshot (reports/coordination/HYBRID-RAG-001-SCHEMA.md)')
     p.add_argument('--guides', type=Path, action='append', default=[],
                    help="also index B's cleaned practice guides (data/public-data/guides-vN); see guides()")
+    p.add_argument('--separate-snapshot', type=Path,
+                   help='build ONLY this institution snapshot (manifest index institution_rules_separate) as its own index')
     a = p.parse_args()
     if a.out.exists():
         p.error('Use a new --out directory')
     started = time.time()
+    if a.separate_snapshot:
+        if a.practice or a.api_snapshot or a.guides:
+            p.error('--separate-snapshot builds an index of that snapshot alone; no other input may be mixed in')
+        print(json.dumps(separate_index(a.separate_snapshot, a.out, started), ensure_ascii=False))
+        return
     documents, meta = [], {}
     for line in RULES.read_text().splitlines():
         row = json.loads(line)

@@ -50,6 +50,15 @@ class ApiSnapshotTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             api_snapshot(d, {})
 
+    def test_separate_institution_snapshot_is_refused_by_the_shared_index(self):
+        d = self.snapshot([record('reb:rule:1', '1', '제1조 본문')])
+        manifest = json.loads((d / 'manifest.json').read_text())
+        (d / 'manifest.json').write_text(json.dumps({**manifest, 'index': 'institution_rules_separate'}))
+        with self.assertRaises(ValueError):
+            api_snapshot(d, {})
+        docs, _, _ = api_snapshot(d, {}, separate=True)
+        self.assertEqual(len(docs), 1)
+
 
 class GuidesTests(unittest.TestCase):
     def test_only_substantive_licensed_rows_are_indexed_and_figure_limits_are_carried(self):
