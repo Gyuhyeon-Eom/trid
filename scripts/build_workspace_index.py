@@ -29,6 +29,7 @@ from trid.service.types import Document  # noqa: E402
 ROOT = Path(__file__).resolve().parents[1]
 RULES = ROOT / 'data/internal-rules/v3/docs.jsonl'
 PRESS = ROOT / 'data/public-document-sft-source/documents.jsonl'
+PRACTICE = ROOT / 'data/search-corpus-v2'
 KIND = {'administrative_rule': '행정규칙', 'legal_interpretation': '법령해석례'}
 
 
@@ -40,6 +41,7 @@ def sha256(path):
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument('--out', type=Path, required=True)
+    p.add_argument('--practice', action='store_true', help=f'also index B search corpus {PRACTICE.relative_to(ROOT)}')
     a = p.parse_args()
     if a.out.exists():
         p.error('Use a new --out directory')
@@ -75,18 +77,57 @@ def main():
                            'date': row['date'], 'date_type': '발표일', 'effective_date': None,
                            'currency': '발표 당시 자료이며 현재 적용 여부는 확인하지 않았음', 'source': row['source'],
                            'license': 'KOGL-Type1', 'attribution': row.get('attribution')}
+    tables = []
+    if a.practice:
+        practice_docs = {}
+        skipped = {'no_searchable_passage': 0, 'usage_restriction': 0}
+        for line in (PRACTICE / 'documents.jsonl').read_text().splitlines():
+            row = json.loads(line)
+            if row['search_status'] != 'public_search_ok':
+                skipped['no_searchable_passage'] += 1  # B: documents with no searchable passage are left out entirely
+                continue
+            if row.get('usage_restriction'):
+                skipped['usage_restriction'] += 1  # B: not a basis for a present-tense answer (time-bound values, repeals)
+                continue
+            practice_docs[row['id']] = Document(row['id'], row['title'], row['text_sha256'], {'public'}, '')
+            meta[row['id']] = {'title': row['title'], 'kind': row['doc_type'], 'institution': row['institution'],
+                               'date': row['base_date'], 'date_type': row['date_type'], 'effective_date': None,
+                               'currency': '기준일 당시 자료이며 현재 값·현행 여부는 확인하지 않았음',
+                               'source': row['source_url'], 'license': row['license'],
+                               'attribution': row.get('collection'), 'table_check': row.get('table_check'),
+                               'applies_to': row.get('applies_to')}
+        from trid.service.types import Passage
+        import ast
+        for line in (PRACTICE / 'passages.jsonl').read_text().splitlines():
+            row = json.loads(line)
+            doc = practice_docs.get(row['doc_id'])
+            if doc is None:
+                continue
+            heading = row['heading_path']
+            heading = ast.literal_eval(heading) if isinstance(heading, str) else heading
+            doc.passages.append(Passage(row['passage_id'], row['doc_id'], row['text'], int(row['start']), int(row['end']),
+                                        (doc.title, *heading)))
+            if str(row.get('has_table')) == 'True' or meta[row['doc_id']]['table_check'] == 'unverified':
+                tables.append(row['passage_id'])
+        documents += [d for d in practice_docs.values() if d.passages]
     index = Index.build(documents)
     index.save(a.out)
+    meta = {d.doc_id: meta[d.doc_id] for d in documents}  # documents actually indexed only
     counts = {}
     for m in meta.values():
         counts[m['kind']] = counts.get(m['kind'], 0) + 1
     dates = sorted(m['date'] for m in meta.values() if m['date'])
-    manifest = {'built_at_unix': time.time(), 'seconds': round(time.time() - started, 1),
-                'inputs': {str(RULES.relative_to(ROOT)): sha256(RULES), str(PRESS.relative_to(ROOT)): sha256(PRESS)},
+    inputs = {str(RULES.relative_to(ROOT)): sha256(RULES), str(PRESS.relative_to(ROOT)): sha256(PRESS)}
+    if a.practice:
+        inputs.update({str((PRACTICE / f).relative_to(ROOT)): sha256(PRACTICE / f) for f in ('documents.jsonl', 'passages.jsonl', 'manifest.json')})
+    manifest = {'built_at_unix': time.time(), 'seconds': round(time.time() - started, 1), 'inputs': inputs,
                 'documents': len(documents), 'passages': len(index.passages), 'by_kind': counts,
-                'date_range': [dates[0], dates[-1]] if dates else None,
-                'selection': 'law.go.kr rows with split == train (B valid/test excluded); KOGL Type 1 press releases',
+                'table_passages': len(tables), 'date_range': [dates[0], dates[-1]] if dates else None,
+                'selection': 'law.go.kr rows with split == train (B valid/test excluded); KOGL Type 1 press releases'
+                             + ('; B search-corpus-v2 rows with search_status public_search_ok and no usage_restriction, '
+                                f'B passages as given (skipped {skipped})' if a.practice else ''),
                 'note': 'Search-only corpus for the test site. Not a training-approval list; training holds are separate.'}
+    (a.out / 'tables.json').write_text(json.dumps(sorted(tables)))
     (a.out / 'meta.json').write_text(json.dumps(meta, ensure_ascii=False))
     (a.out / 'manifest.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=1))
     print(json.dumps(manifest, ensure_ascii=False))

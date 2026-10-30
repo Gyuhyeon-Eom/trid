@@ -100,6 +100,7 @@ async function execute(value) {
     }
     if (result.commentary) print(`[모델 해설 · 검증 안 됨 — 원문과 대조하세요]\n${result.commentary}`, 'muted');
     for (const note of result.commentary_notes || []) print(note, note.includes('숨겼습니다') ? 'error' : 'muted');
+    if (result.table_warning) print(result.table_warning, 'error');
     if (ws?.selection === 'answer' && ws.others?.length) print('검색된 다른 문서 (참고용, 이 답변에는 쓰지 않음. 다른 기관 기준이 필요하면 질문에 기관명이나 규정명을 넣어 주세요):\n' + ws.others.slice(0, 3).map(d=>`- ${describe(d)}`).join('\n'), 'muted');
     print(result.scope, 'muted');
   });

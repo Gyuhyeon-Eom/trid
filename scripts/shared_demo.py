@@ -211,6 +211,7 @@ class PassageChunk:
     start: int
     doc_id: str
     path: tuple
+    table: bool = False  # passage carries a table whose rows/columns B has not verified
 
 
 NORMALIZE = re.compile(r'[\s·ㆍ・「」『』()（）\[\]〈〉<>,.\-]')
@@ -258,13 +259,21 @@ class Workspace:
             if len(_norm(name)) >= 3:
                 self.by_institution.setdefault(_norm(name), set()).add(doc_id)
         self.norm_titles = {doc_id: _norm(m['title']) for doc_id, m in self.meta.items()}
+        tables = root / 'tables.json'
+        self.tables = set(json.loads(tables.read_text())) if tables.exists() else set()
+        self.title_grams = {}
+        for doc_id, t in self.norm_titles.items():
+            for i in range(len(t) - self.TITLE_MIN + 1):
+                self.title_grams.setdefault(t[i:i + self.TITLE_MIN], set()).add(doc_id)
+        self.qa_docs = {d for d, m in self.meta.items() if any(x in (m['kind'] or '') for x in ('FAQ', '질의응답', '질의회신'))}
 
     def scope(self):
-        kinds = ' · '.join(f'{k} {n:,}건' for k, n in self.manifest['by_kind'].items())
+        kinds = sorted(self.manifest['by_kind'].items(), key=lambda kv: -kv[1])
+        shown = ' · '.join(f'{k} {n:,}' for k, n in kinds[:6]) + (' 등' if len(kinds) > 6 else '')
         lo, hi = self.manifest['date_range']
-        return (f"검색 자료 {self.manifest['documents']:,}건({kinds}; 기준일 {lo}~{hi}): 법제처 국가법령정보센터 "
-                f"행정규칙·법령해석례와 정책브리핑 보도자료(공공누리 1유형). 기관 내부 비공개 규정·편람은 들어 있지 않습니다. "
-                f"현행 여부는 수집 시점(2026-10-27~29) 표시 기준이며 다시 확인하지 않았습니다.")
+        return (f"검색 자료 {self.manifest['documents']:,}건·{self.manifest['passages']:,}구간({shown}; 기준일 {lo}~{hi}). "
+                "법제처 국가법령정보센터·공공데이터포털 등 공개 자료이며 기관 내부 비공개 자료가 아닙니다. 질의응답 자료는 "
+                "국민권익위원회 게시판 비중이 큽니다. 모든 값은 표시된 기준일 당시 값이며 현행 여부는 다시 확인하지 않았습니다.")
 
     def describe(self, doc_id, score=None):
         m = self.meta[doc_id]
@@ -281,22 +290,25 @@ class Workspace:
         An institution's documents are those it issues (meta) or whose title carries its name (regulations issued by
         a department of the institution)."""
         q = _norm(question)
-        named = [name for name in self.by_institution if name in q]
-        named = [n for n in named if not any(n != m and n in m for m in named)]  # keep the longest names
-        # An institution-like name is known only as a corpus institution or as the leading word of a rule's title
-        # ("해양경찰청 공무국외출장 …"); a mention inside another body's title (an interpretation about it) is not its rule.
-        unknown = [w for w in self.INSTITUTION_LIKE.findall(question)
-                   if not any(_norm(w) in n or n in _norm(w) for n in named) and _norm(w) not in self.by_institution
-                   and not any(t.startswith(_norm(w)) for t in self.norm_titles.values())]
+        mentioned = [_norm(w) for w in self.INSTITUTION_LIKE.findall(question)]
+        # An institution is known as a corpus institution or as the leading word of rule/manual titles ("해양경찰청 …");
+        # Q&A rows are excluded because their titles are visitors' questions ("국민건강보험공단 지사장께 …").
+        # A mention inside another body's title (an interpretation about it) is not its rule either.
+        leading = {w: {d for d, t in self.norm_titles.items() if t.startswith(w) and d not in self.qa_docs} for w in mentioned}
+        named = [name for name in self.by_institution if name in q] + [w for w, docs in leading.items() if docs]
+        named = list(dict.fromkeys(n for n in named if not any(n != m and n in m for m in named)))  # longest names
+        unknown = [w for w in mentioned if not any(w in n or n in w for n in named)]
         allowed = None
         if named:
-            allowed = set().union(*(self.by_institution[n] for n in named))
-            allowed |= {d for d, t in self.norm_titles.items() if any(t.startswith(n) for n in named)}
+            allowed = set().union(*(self.by_institution.get(n, set()) for n in named))
+            allowed |= {d for d, t in self.norm_titles.items() if any(t.startswith(n) for n in named) and d not in self.qa_docs}
         # Title matching ignores institution names, so naming an institution alone never counts as naming a document.
         q_title = q
-        for name in named + [_norm(w) for w in self.INSTITUTION_LIKE.findall(question)]:
+        for name in named + mentioned:
             q_title = q_title.replace(name, '|')
-        pool = allowed if allowed is not None else self.norm_titles.keys()
+        k = self.TITLE_MIN
+        near = set().union(*(self.title_grams.get(q_title[i:i + k], set()) for i in range(len(q_title) - k + 1)))
+        pool = near & allowed if allowed is not None else near
         shared = {d: _longest_shared(self.norm_titles[d], q_title) for d in pool}
         top = max(shared.values(), default=0)
         titled = {d for d, n in shared.items() if n == top} if top >= self.TITLE_MIN else None
@@ -342,7 +354,8 @@ class Workspace:
                 return {**result, 'status': 'clarify', 'institutions': options,
                         'candidates': [self.describe(applied, top)] + [self.describe(d, best[d]) for d in rivals.values()][:3]}
         chunks = [(PassageChunk(self.index.passages[i].text, 1, self.index.passages[i].char_start,
-                                self.passage_doc[i], self.index.passages[i].path), float(scores[i]))
+                                self.passage_doc[i], self.index.passages[i].path,
+                                self.index.passages[i].id in self.tables), float(scores[i]))
                   for i in order if self.passage_doc[i] == applied][:self.MAX_PASSAGES]
         return {**result, 'status': 'answer', 'applied': str(applied), 'chunks': chunks}
 
@@ -718,6 +731,9 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                                                    'selection': selection['status'], 'institutions': selection['institutions'],
                                                    'title_matched': selection['title_matched'], 'scope': workspace.scope()}
                             result['total_chunks'] = len(workspace.index.passages)
+                            if selection['status'] == 'answer' and any(c.table for c, _ in selected):
+                                result['table_warning'] = ('표가 들어 있는 구간을 썼습니다. 표의 행·열 대응은 검증되지 않았으므로 표 값을 '
+                                                           '해석하거나 계산한 내용은 근거로 쓰지 말고 원문 링크에서 표를 직접 확인하세요.')
                             if selection['status'] == 'answer':
                                 how = ('질문에 적힌 문서명' if selection['title_matched'] else
                                        f"질문에 적힌 기관({', '.join(selection['institutions'])})" if selection['institutions'] else
@@ -750,7 +766,7 @@ def main():
                         help='JSON list of served versions; the first is the default and must be extractive')
     parser.add_argument('--secret-file', required=True)
     parser.add_argument('--port', type=int, default=51873)
-    parser.add_argument('--workspace', type=Path, default=ROOT / 'runs/workspace-index/v1',
+    parser.add_argument('--workspace', type=Path, default=ROOT / 'runs/workspace-index/v2',
                         help='shared search index of approved public sources (scripts/build_workspace_index.py)')
     args = parser.parse_args()
     torch.set_num_threads(4)
