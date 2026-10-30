@@ -28,7 +28,7 @@
 - **TRID에 주는 함의 (중요):**
   - Gemma를 미세조정하거나 병합한 모델은 파생 모델이다.
   - **Gemma 출력으로 학습 데이터를 만들어 다른 모델(예: Qwen 기반 TRID)이 비슷하게 동작하도록 학습시키면, 그 모델도 파생 모델 정의에 들어갈 수 있다.**
-  - 내부 대화 비교를 넘어 Gemma 출력을 학습 데이터로 쓰는 일은 별도 결정 없이 하지 않아야 한다.
+  - 현재 범위는 내부 대화 비교뿐이다. Gemma 출력을 학습 데이터에 섞지 않는다.
   - 출력 자체는 파생 모델이 아니다. 3.3에 따라 Google은 출력에 권리를 주장하지 않고, 출력의 책임은 사용자에게 있다.
 - **(b) Distribution:** "any transmission, publication, or other sharing of Gemma or Model Derivatives to a third party". API나 웹으로 제공하는 Hosted Service도 포함한다.
   - [추정] 기관에 오프라인으로 설치해 넘기는 것도 제3자에게 공유하는 것이므로 Distribution에 해당한다.
@@ -50,9 +50,11 @@
 
 - 약관 3.2는 Prohibited Use Policy에 적힌 용도와 법령 위반 용도를 금지한다.
 - 또한 "Google reserves the right to restrict (remotely or otherwise) usage"라는 원격 제한 유보 조항이 있다.
+  - 이것은 계약상 권리 유보다. 모델이나 실행 파일에 기술적인 원격 연결이나 백도어가 있다는 증거가 아니다. 그런 기능의 유무는 이번에 확인하지 않았다.
 - **공공기관 업무 보조에서 특히 관련 있는 항목** (Prohibited Use Policy 원문):
   - "Making automated decisions in domains that affect material or individual rights or well-being (e.g., finance, legal, employment, healthcare, housing, insurance, and social welfare)"
-    - 권리·급여에 영향을 주는 자동 결정에 쓰면 안 된다. 사람이 검토하는 보조 도구로만 써야 한다.
+    - 권리·급여에 영향을 주는 결정에 쓰는 것은 금지 항목에 걸릴 수 있다.
+    - "사람이 검토함" 같은 문구를 붙인다고 해서 허용된다고 볼 수 없다. 실제 사용 흐름은 따로 검토해야 한다. 누가, 어떤 결정에, 출력을 어떻게 쓰는지, 그리고 사람이 실제로 판단하는지를 봐야 한다.
   - "Misleading claims of expertise or capability made particularly in sensitive areas (e.g. health, finance, government services, or legal)"
     - 정부 서비스·법률 분야에서 전문성·정확성을 과장해 표시하면 안 된다.
   - "Engagement in the illegal or unlicensed practice of any vocation or profession including … legal, medical, accounting, or financial professional practices"
@@ -85,14 +87,15 @@
 
 ## 6. 로컬 상태 (B 관찰, 변경 없음)
 
-- `ollama list`에는 **gemma3:4b가 없다.** gemma3:12b만 있다.
-  - "기존 설치"라는 전제와 다르다. A가 무엇을 기준으로 할지 확인이 필요하다.
-- A 경로에 `runs/baseline-compare-003/gemma3-4b-it-q4km-ollama-sha256-f06e91e1.gguf` 파일이 있다.
+- **기존 보유본:** 맥미니에 있는 gemma3:4b다. ACCESS 보고에서 `api/tags`로 확인됐다.
+  - A가 승인된 SSH로 가중치를 맥북으로 복사하는 중이다.
+  - **전송 전후 hash가 일치하는지는 A 보고로 확인해야 한다.** B는 확인하지 않았다.
+- 맥북의 `runs/baseline-compare-003/gemma3-4b-it-q4km-ollama-sha256-f06e91e1.gguf` (B가 본 시점의 상태):
   - 크기 2,499,012,288 바이트, 수정 시각 2026-10-31 02:32 KST.
+  - [추정] 위 복사본이다.
   - 텍스트 모델 GGUF뿐이다. projector는 없다.
   - GGUF 메타데이터에 `general.license`는 없다.
   - 같은 폴더에 약관 사본이나 Notice 파일이 없다.
-  - Ollama blob 폴더에서 같은 digest(f06e91e1)를 찾지 못했다. 출처 경로는 A가 기록해야 한다.
 - 내부 비교에만 쓰면 3.1의 배포 요건은 적용되지 않는다. [추정] 제3자에게 넘기지 않기 때문이다. 3.2의 금지 용도는 내부 사용에도 적용된다.
 
 ## 7. 미확인 / 법률 검토가 필요한 것
