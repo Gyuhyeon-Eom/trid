@@ -1,0 +1,54 @@
+"""별표 grid structure (scripts/structure_statute_tables.py): row splitting, merged cells, irregular grids."""
+import unittest
+import xml.etree.ElementTree as ET
+
+from scripts.structure_statute_tables import structure
+
+
+def table(rows, cols, cells):
+    """hwp5proc-like XML; cells: (row, col, rowspan, colspan, [paragraph texts])."""
+    by_row = {}
+    for r, c, rs, cs, parts in cells:
+        paras = ''.join(f'<Paragraph><LineSeg><Text>{p}</Text></LineSeg></Paragraph>' for p in parts)
+        by_row.setdefault(r, []).append(f'<TableCell row="{r}" col="{c}" rowspan="{rs}" colspan="{cs}"><ColumnSet>{paras}'
+                                        f'</ColumnSet></TableCell>')
+    body = ''.join(f'<TableRow>{"".join(by_row[r])}</TableRow>' for r in sorted(by_row))
+    return ET.fromstring(f'<TableControl><TableBody rows="{rows}" cols="{cols}">{body}</TableBody></TableControl>')
+
+
+class StructureTests(unittest.TestCase):
+    def test_parallel_paragraph_lists_become_rows_and_merged_cells_repeat(self):
+        t = structure(table(4, 3, [
+            (0, 0, 1, 3, ['국외 여비 지급표', '(단위: 달러)']),
+            (1, 0, 1, 1, ['구분']), (1, 1, 1, 1, ['등급']), (1, 2, 1, 1, ['일비']),
+            (2, 0, 1, 1, ['1. 장관급']), (2, 1, 1, 1, ['가', '나']), (2, 2, 1, 1, ['60', '50']),
+            (3, 0, 1, 3, ['비고: 실비로 한다.'])]))
+        self.assertEqual(t['caption'], ['국외 여비 지급표', '(단위: 달러)'])
+        self.assertEqual([r['cells'] for r in t['rows']], [{'구분': '1. 장관급', '등급': '가', '일비': '60'},
+                                                           {'구분': '1. 장관급', '등급': '나', '일비': '50'}])
+        self.assertEqual(t['notes'], ['비고: 실비로 한다.'])
+        self.assertTrue(t['grid']['complete'])
+
+    def test_continuation_parts_are_joined_not_split(self):
+        t = structure(table(2, 3, [
+            (0, 0, 1, 1, ['구분']), (0, 1, 1, 1, ['철도운임']), (0, 2, 1, 1, ['숙박비']),
+            (1, 0, 1, 1, ['제1호']), (1, 1, 1, 1, ['실비', '(특실)']), (1, 2, 1, 1, ['실비', '(상한액: 100,000)'])]))
+        self.assertEqual([r['cells'] for r in t['rows']],
+                         [{'구분': '제1호', '철도운임': '실비 (특실)', '숙박비': '실비 (상한액: 100,000)'}])
+
+    def test_row_merged_label_is_repeated_in_each_row_it_covers(self):
+        t = structure(table(3, 2, [
+            (0, 0, 1, 1, ['구분']), (0, 1, 1, 1, ['해당 공무원']),
+            (1, 0, 2, 1, ['제1호']), (1, 1, 1, 1, ['가. 장관']), (2, 1, 1, 1, ['나. 차관'])]))
+        self.assertEqual([r['cells']['구분'] for r in t['rows']], ['제1호', '제1호'])
+
+    def test_side_by_side_tables_in_one_grid_get_no_rows(self):
+        t = structure(table(2, 4, [
+            (0, 0, 1, 1, ['근무연수']), (0, 1, 1, 1, ['지급액']), (0, 2, 1, 1, ['근무연수']), (0, 3, 1, 1, ['지급액']),
+            (1, 0, 1, 1, ['5년 이상']), (1, 1, 1, 1, ['50%']), (1, 2, 1, 1, ['10년 이상']), (1, 3, 1, 1, ['60%'])]))
+        self.assertEqual(t['rows'], [])
+        self.assertIn('irregular_layout_rows_not_emitted', t['flags'])
+
+
+if __name__ == '__main__':
+    unittest.main()

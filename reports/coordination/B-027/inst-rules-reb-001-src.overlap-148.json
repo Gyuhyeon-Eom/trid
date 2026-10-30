@@ -1,0 +1,35 @@
+{
+ "manifest_sha256": "0ed3cc079e8da0f9765e320091c88608186ef259c426f3319944c0921f7495e8",
+ "reserved_families": 148,
+ "corpus": [
+  {
+   "path": "data/public-data/inst-rules-reb-001-src/overlap-input.jsonl",
+   "sha256": "68b2e7873dd4e674ad0e1d8f73b81ed6c18373914cdf1529fe3e7a5762086636"
+  }
+ ],
+ "corpus_rows_scanned": 13,
+ "matched_corpus_rows": 0,
+ "families_with_matches": 0,
+ "match_types": {},
+ "thresholds": {
+  "minhash_estimate": 0.5,
+  "ngram8_containment": 0.5,
+  "partial_review_min_shared_ngram8": 50
+ },
+ "per_family_matched_rows": {},
+ "matches": [],
+ "partial_review_rows": 1,
+ "partial_review_note": "rows sharing >= partial_min reserved word 8-grams below the containment threshold; evidence for manual review, not counted as matches or excluded automatically",
+ "partial_review": [
+  {
+   "corpus_id": "reb.or.kr:1244:115613:file:addc3210590c8311",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:38904": {
+     "shared_ngram8": 79,
+     "of_reserved": 6374
+    }
+   }
+  }
+ ]
+}

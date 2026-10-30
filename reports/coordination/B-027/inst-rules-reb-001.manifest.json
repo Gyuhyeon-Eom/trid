@@ -1,0 +1,58 @@
+{
+ "version": "inst-rules-reb-001",
+ "source_version": "inst-rules-reb-001-src",
+ "code_sha256": "1c5b01dff76738342df4bbcba20957c070bf3fbd3f04d38e86dff0c182557ef6",
+ "notes_file": null,
+ "rows_total": 13,
+ "parts": {
+  "qa_rule_or_procedure": {
+   "rows": 0,
+   "characters": 0,
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "by_institution": {},
+   "holds": {}
+  },
+  "qa_mixed": {
+   "rows": 0,
+   "characters": 0,
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "by_institution": {},
+   "holds": {}
+  },
+  "qa_other": {
+   "rows": 0,
+   "characters": 0,
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "by_institution": {},
+   "holds": {}
+  },
+  "qa_system_operation": {
+   "rows": 0,
+   "characters": 0,
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "by_institution": {},
+   "holds": {}
+  },
+  "documents": {
+   "rows": 12,
+   "characters": 46903,
+   "sha256": "15c528853e977ff55fef46571b7feb860ae3c319b3fbce332a8a0fae81259273",
+   "by_institution": {
+    "한국부동산원": 12
+   },
+   "holds": {}
+  },
+  "held": {
+   "rows": 1,
+   "characters": 53495,
+   "sha256": "8e55808a9a9f876c1a26243a79c61c8e752c60e27e3f4a47edd2705a7c869241",
+   "by_institution": {
+    "한국부동산원": 1
+   },
+   "holds": {
+    "reserved_overlap": 1
+   }
+  }
+ },
+ "note": "parts are exclusive; not approved for training; documents carry tables (unverified)"
+}

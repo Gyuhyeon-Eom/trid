@@ -18,6 +18,7 @@ import json
 import re
 import sys
 import unicodedata
+from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -35,27 +36,43 @@ def korean_date(text, label):
 
 
 def record(row, agencies, state):
+    """One snapshot record. A rule without '확정일/시행일' labels in its body (board postings, B-027: 한국부동산원) takes its
+    effective date from the row provenance (the last 부칙's 시행일, read by B and described in date_type). A 집행내역 row
+    is kept apart from rules: kind 'expenditure_record', basis 'actual_spend', its date is the spending month."""
     text = unicodedata.normalize('NFC', row['text']).strip()
-    inst = row['provenance']['institution']
+    prov = row['provenance']
+    inst = prov['institution']
     agency = next((a for a in agencies if a['apbaNa'] == inst), None)
-    number = re.search(r'규정\s*제\s*(\d+)\s*호', text)
+    spend = '집행내역' in (prov.get('doc_type') or '')
+    number = None if spend else re.search(r'규정\s*제\s*(\d+)\s*호', text)
     published, effective = korean_date(text, r'확\s*정\s*일'), korean_date(text, r'시\s*행\s*일')
+    effective_kind = '시행일(규정 본문)'
+    if not spend and not effective and (prov.get('date_type') or '').startswith('마지막 부칙'):
+        effective, effective_kind = prov['date'], prov['date_type']
+    if spend:
+        currency = f"{prov['date']} 집행분 공개 내역(실제 지출). 규정상 기준이 아니며, 이후 정정 여부는 확인하지 않음"
+    else:
+        currency = (f"{published or effective or prov['date']} 기준 게시본. 이후 개정 여부는 확인하지 않았고 현행이라고 표시하지 않음")
     return {
         'source_id': row['id'], 'version': f'규정 제{number.group(1)}호' if number else row['sha256'][:16],
-        'content_hash': hashlib.sha256(text.encode()).hexdigest(), 'kind': 'rule',
+        # 'institution_rule', not 'rule': A's ingester maps 'rule' to 행정규칙 (a ministry's administrative rule)
+        'content_hash': hashlib.sha256(text.encode()).hexdigest(), 'kind': 'expenditure_record' if spend else 'institution_rule',
+        'basis': 'actual_spend' if spend else 'rule_text',
         'title': row['title'] + (f' (규정 제{number.group(1)}호)' if number else ''),
         'issuer': {'id': agency['apbaId'] if agency else None, 'name': inst, 'id_scheme': 'alio_apbaId' if agency else None,
-                   'type': agency['typeNa'] if agency else row['provenance']['institution_type']},
-        'applies_to': {'scope': 'institution', 'ids': [agency['apbaId']] if agency else [], 'note': row['provenance']['applies_to']},
-        'dates': {'published': published, 'effective_from': effective, 'effective_to': None,
-                  'retrieved_at': row['collected_at'][:10]},
-        'date_kinds': {'published': '확정일(규정 본문)', 'effective_from': '시행일(규정 본문)', 'retrieved_at': '수집일'},
+                   'type': agency['typeNa'] if agency else prov['institution_type']},
+        'applies_to': {'scope': 'institution', 'ids': [agency['apbaId']] if agency else [], 'note': prov['applies_to']},
+        'dates': {'published': published, 'effective_from': None if spend else effective, 'effective_to': None,
+                  'spending_period': prov['date'] if spend else None, 'retrieved_at': row['collected_at'][:10]},
+        'date_kinds': {'published': '확정일(규정 본문)', 'effective_from': effective_kind,
+                       'spending_period': prov['date_type'] if spend else None, 'retrieved_at': '수집일'},
         'rights': {'license': row['license'], 'url': row['source'], 'restrictions': None},
         'location': {'url': state.get('provider_url') or row['source'], 'page': None, 'article_path': [],
-                     'char_start': 0, 'char_end': len(text), 'data_go_kr': row['source']},
+                     'char_start': 0, 'char_end': len(text),
+                     'data_go_kr': row['source'] if 'data.go.kr' in row['source'] else None},
         'text': text, 'structured_facts': [],
         'holds': ['evaluation', 'training'], 'index': 'institution_rules_separate',
-        'currency': f"{published or row['provenance']['date']} 확정 판(게시본). 이후 개정 여부는 확인하지 않았고 현행이라고 표시하지 않음",
+        'currency': currency,
         'pii': {'check': 'ko-pii redaction in the guides version + trid.korean_quality.PII_HINT', 'hits': len(PII_HINT.findall(text)),
                 'redactions': row['meta'].get('pii_redactions')},
         'table_check': row['meta'].get('table_check'), 'status': 'search_candidate',
@@ -70,6 +87,7 @@ def main():
     p.add_argument('--doc', nargs='+', required=True)
     p.add_argument('--snapshot-id', required=True)
     p.add_argument('--out', required=True)
+    p.add_argument('--producer', default='B', help="task id recorded in the manifest, e.g. 'B/B-027'")
     args = p.parse_args()
     out = ROOT / args.out
     if out.exists():
@@ -90,7 +108,8 @@ def main():
     body = ''.join(json.dumps(r, ensure_ascii=False, sort_keys=True) + '\n' for r in recs).encode()
     (out / 'normalized/records-00000.jsonl').write_bytes(body)
     manifest = {'snapshot_id': args.snapshot_id, 'created_at': datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
-                'producer': 'B/B-024', 'code_sha256': CODE_SHA256,
+                'producer': args.producer, 'code_sha256': CODE_SHA256,
+                'kinds': dict(Counter(r['kind'] for r in recs)),
                 'sources': [{'provider': 'data.go.kr file data / institution 사규 board', 'guides_version': args.guides,
                              'records': len(recs), 'collection': 'public_file_download, not an API call'}],
                 'files': [{'path': 'normalized/records-00000.jsonl', 'sha256': hashlib.sha256(body).hexdigest(), 'records': len(recs)}],

@@ -116,6 +116,13 @@ DATASETS = {
     '15100897': dict(institution='교육부', institution_type='중앙행정기관', area='교육 민원 질의회신', doc_type='질의회신 사례집',
                      applies_to='교육부 민원 질의·회신 사례(참고용, 유권해석 아님)', date='2021-12-31',
                      date_type='데이터셋 파일 기준일(2021년도 사례집)'),
+    # B-027: 한국부동산원 homepage boards (not data.go.kr); date/date_type/doc_type come per file from the state row
+    'reb.or.kr:1244': dict(institution='한국부동산원', institution_type='공기업(준시장형)', area='내규(여비·회계·예산)',
+                           doc_type='기관 내규(게시본)', applies_to='한국부동산원 임직원. 다른 기관에 그대로 적용되지 않음',
+                           date=None, date_type=None),
+    'reb.or.kr:1163': dict(institution='한국부동산원', institution_type='공기업(준시장형)', area='업무추진비 집행(실지출 공개)',
+                           doc_type='임원 업무추진비 집행내역(사전정보공표)', applies_to='한국부동산원 임원의 실제 집행 내역이며 규정상 기준이 아님',
+                           date=None, date_type=None),
 }
 # datasets kept as raw but not turned into Q&A rows: no answer text (title list) or a numeric table, not guidance
 NOT_QA = {'15163350': 'title_list_without_content', '15138170': 'structured_table_not_qa',
@@ -149,8 +156,9 @@ DATE_COLS = ('회신일자', '답변일자', '등록일자', '등록일', '자�
 
 def doc_id(s):
     """Document row id. guides-v6 used data.go.kr:<pk> (one file per dataset there); from guides-v7 a dataset may hold
-    several files (LH 직무설명서: 12), so the file's sha256 prefix is part of the id."""
-    return f"data.go.kr:{s['pk']}:file:{s['sha256'][:16]}"
+    several files (LH 직무설명서: 12), so the file's sha256 prefix is part of the id. Files from an institution board
+    carry their own prefix (B-027: reb.or.kr:<bbsId>:<nttSn>)."""
+    return f"{s.get('id_prefix') or 'data.go.kr:' + s['pk']}:file:{s['sha256'][:16]}"
 
 
 
@@ -294,10 +302,11 @@ def main():
     if (out / 'manifest.json').exists():
         raise SystemExit(f'{out} exists; versions are never overwritten')
     state = [json.loads(x) for name in args.state_files for x in (OUT / name).read_text().split('\n') if x]
-    stored = [s for s in state if s['status'] == 'stored']
+    # use='history_only': an older posted version of a rule, kept as raw; only the latest posted version is extracted
+    stored = [s for s in state if s['status'] == 'stored' and not s.get('use', 'extract').startswith('history_only')]
     rows = []
     for s in stored:
-        ds = DATASETS[s['pk']]
+        ds = {**DATASETS[s['pk']], **s.get('provenance', {})}  # per-file date / doc type of a board posting
         path = ROOT / s['raw']
         base = {'source': s['page'], 'license': s['licence'], 'raw': s['raw'], 'raw_sha256': s['sha256'], 'collected_at': s['checked_at']}
         if path.suffix.lower() in ('.csv', '.zip'):
