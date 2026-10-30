@@ -39,8 +39,7 @@ from trid.prompts import RAG_PREFIX, rag_prompt  # noqa: E402
 
 SYSTEM = ('주어진 근거만 사용하세요. 답은 값 [Dn] 형식으로 쓰고, 여러 값은 쉼표로 구분하세요. '
           '근거가 없으면 확인 불가, 근거가 충돌하면 근거 충돌만 출력하세요. 설명은 덧붙이지 마세요.')
-CASE_SYSTEM = ('주어진 근거만 사용하세요. 근거에 있는 결론과 그 이유·조건·예외를 빠짐없이 쓰고, 근거에 없는 내용은 '
-               '추측하지 마세요. 근거가 부족하거나 시점·대상 확인이 필요하면 그렇다고 밝히세요.')
+from trid.case_prompts import CASE_SYSTEM  # noqa: E402
 QWEN3_NO_THINK = '<think>\n\n</think>\n\n'
 TARGETS = ['q_proj', 'k_proj', 'v_proj', 'o_proj', 'gate_proj', 'up_proj', 'down_proj']
 
