@@ -67,7 +67,29 @@ DATASETS = {
                      applies_to='청탁금지법 질의(국민 질의, 기관 답변)', date=None, date_type='행별 등록일자·답변일자'),
     '15131770': dict(institution='한국동서발전(주)', institution_type='공기업', area='실적증명·SRM', doc_type='질의응답 게시글',
                      applies_to='동서발전 실적증명·협력시스템 이용 업체', date=None, date_type='행별 작성 일자'),
+    # B-019 slices (guides-v7 and later; v6 is a fixed consumer contract)
+    '15120505': dict(institution='한국자산관리공사', institution_type='공공기관(준정부기관)', area='국유재산', doc_type='FAQ',
+                     applies_to='캠코 국유재산포털 이용자(국유재산 대부·매각 등)', date=None, date_type='행별 게시일자'),
+    '15033217': dict(institution='충청남도', institution_type='지방자치단체', area='계약심사', doc_type='사례집',
+                     applies_to='충청남도 사전 계약심사(설계·산출내역·단가)', date='2019-12-31', date_type='데이터셋 파일 기준일'),
+    '15174522': dict(institution='조달청', institution_type='중앙행정기관', area='계약·조달 용어', doc_type='용어사전',
+                     applies_to='정부조달 용어', date=None, date_type='행별 입력일시'),
+    '15099914': dict(institution='인사혁신처', institution_type='중앙행정기관', area='보수·수당·여비', doc_type='업무지침(예규)',
+                     applies_to='국가공무원 보수 업무(2026년)', date='2026-01-22', date_type='데이터셋 파일 기준일, 2026년 지침'),
+    '15163350': dict(institution='제주특별자치도 감사위원회', institution_type='지방자치단체', area='사전컨설팅 감사', doc_type='사례 목록',
+                     applies_to='제주 사전컨설팅 감사', date=None, date_type='행별 작성일'),
+    '15138170': dict(institution='한국승강기안전공단', institution_type='공공기관(준정부기관)', area='출장여비', doc_type='기준 단가표',
+                     applies_to='승강기안전공단 내부 출장여비', date=None, date_type='행별 적용시작·종료일자'),
+    '15038805': dict(institution='행정안전부', institution_type='중앙행정기관', area='예산편성·기금', doc_type='훈령·예규',
+                     applies_to='지방자치단체 2026년도 예산편성·기금운용계획', date='2025-07-31',
+                     date_type='개정일(훈령 제404호, 예규 제336호)'),
+    '15086706': dict(institution='한국동서발전(주)', institution_type='공기업', area='입찰·계약', doc_type='안내자료',
+                     applies_to='동서발전 입찰·계약 참여 업체', date='2021-08-26', date_type='게시일'),
+    '15043018': dict(institution='한국토지주택공사', institution_type='공기업', area='인사(직무)', doc_type='직무설명서',
+                     applies_to='LH 업무직 채용 직무', date='2024-05-14', date_type='데이터셋 파일 기준일'),
 }
+# datasets kept as raw but not turned into Q&A rows: no answer text (title list) or a numeric table, not guidance
+NOT_QA = {'15163350': 'title_list_without_content', '15138170': 'structured_table_not_qa'}
 
 
 def decode(raw):
@@ -91,9 +113,15 @@ def zip_name(info):
     except (UnicodeEncodeError, UnicodeDecodeError):
         return info.filename
 
-Q_COLS = ('질문', '질의내용', '질문내용')
-A_COLS = ('답변', '회신내용', '정답', '답변내용')
+Q_COLS = ('질문', '질의내용', '질문내용', '조달용어명')
+A_COLS = ('답변', '회신내용', '정답', '답변내용', '조달용어설명')
 DATE_COLS = ('회신일자', '답변일자', '등록일자', '등록일', '자료발간연도', '작성 일자')
+
+def doc_id(s):
+    """Document row id. guides-v6 used data.go.kr:<pk> (one file per dataset there); from guides-v7 a dataset may hold
+    several files (LH 직무설명서: 12), so the file's sha256 prefix is part of the id."""
+    return f"data.go.kr:{s['pk']}:file:{s['sha256'][:16]}"
+
 
 
 def qa_from_csv(pk, text):
@@ -110,6 +138,8 @@ def qa_from_csv(pk, text):
             holds.append('answer_may_be_user_comment')  # dataset description: before 2016 answers were user comments
         if pk == '15131770':
             holds.append('question_answer_not_separated')  # one free-text post per row
+        if pk in NOT_QA:
+            holds.append(NOT_QA[pk])
         extra = {k: v for k, v in it.items() if k not in Q_COLS + A_COLS + ('내용',)}
         yield n, (it.get('제목') or q), q, a, extra, holds
 
@@ -221,6 +251,8 @@ def main():
     p.add_argument('--resplit', metavar='SRC_VERSION', help='exclusive status split of an extracted version')
     p.add_argument('--notes', help='reviewer source notes JSON {"notes": {row id: note}}')
     p.add_argument('--check', action='store_true', help='consumer check of a resplit version (--version); exit 1 on problems')
+    p.add_argument('--state-files', nargs='+', default=['files-state.jsonl'],
+                   help='collector state files (under data/public-data) whose stored files make up this version')
     args = p.parse_args()
     if args.check:
         problems = check_version(args.version)
@@ -231,7 +263,7 @@ def main():
     out = OUT / args.version
     if (out / 'manifest.json').exists():
         raise SystemExit(f'{out} exists; versions are never overwritten')
-    state = [json.loads(x) for x in (OUT / 'files-state.jsonl').read_text().split('\n') if x]
+    state = [json.loads(x) for name in args.state_files for x in (OUT / name).read_text().split('\n') if x]
     stored = [s for s in state if s['status'] == 'stored']
     rows = []
     for s in stored:
@@ -243,6 +275,8 @@ def main():
                 import zipfile
                 z = zipfile.ZipFile(path)
                 members = [(zip_name(i), z.read(i)) for i in z.infolist() if i.filename.lower().endswith('.csv')]
+                if not members:  # e.g. a zipped set of forms: kept as raw, not extracted
+                    rows.append((ds, base, doc_id(s), s['file_name'], '', {'extractor': 'none', 'pre_holds': ['archive_without_csv']}))
             else:
                 members = [('', path.read_bytes())]
             for member, raw in members:
@@ -259,7 +293,7 @@ def main():
                                   'row_date': date, 'title': title, 'html_entities_decoded': entities, 'pre_holds': holds}))
         else:
             text, how = extract_text(path)
-            rows.append((ds, base, f"data.go.kr:{s['pk']}", s['fields'].get('파일데이터명') or s['file_name'], text,
+            rows.append((ds, base, doc_id(s), s['fields'].get('파일데이터명') or s['file_name'], text,
                          {'extractor': how}))
     parts = {'qa_items': [], 'documents': [], 'held': []}
     for ds, base, rid, title, body, meta in rows:

@@ -1,0 +1,69 @@
+{
+ "manifest_sha256": "0ed3cc079e8da0f9765e320091c88608186ef259c426f3319944c0921f7495e8",
+ "reserved_families": 148,
+ "corpus": [
+  {
+   "path": "data/public-data/guides-v7-src/overlap-input.jsonl",
+   "sha256": "28dd5815af242bb75b7e9b09f0acb02356ed683f9e987e65c0fa8abe6200df83"
+  }
+ ],
+ "corpus_rows_scanned": 370,
+ "matched_corpus_rows": 0,
+ "families_with_matches": 0,
+ "match_types": {},
+ "thresholds": {
+  "minhash_estimate": 0.5,
+  "ngram8_containment": 0.5,
+  "partial_review_min_shared_ngram8": 50
+ },
+ "per_family_matched_rows": {},
+ "matches": [],
+ "partial_review_rows": 2,
+ "partial_review_note": "rows sharing >= partial_min reserved word 8-grams below the containment threshold; evidence for manual review, not counted as matches or excluded automatically",
+ "partial_review": [
+  {
+   "corpus_id": "data.go.kr:15099914:file:4b8c305ba5555885",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:13257": {
+     "shared_ngram8": 81,
+     "of_reserved": 4416
+    },
+    "institutions:alio-rule:15386": {
+     "shared_ngram8": 201,
+     "of_reserved": 3329
+    },
+    "institutions:alio-rule:36465": {
+     "shared_ngram8": 117,
+     "of_reserved": 3319
+    },
+    "institutions:alio-rule:20338": {
+     "shared_ngram8": 163,
+     "of_reserved": 4235
+    },
+    "institutions:alio-rule:748": {
+     "shared_ngram8": 61,
+     "of_reserved": 4203
+    }
+   }
+  },
+  {
+   "corpus_id": "data.go.kr:15038805:file:a53e94e4ff2f340d",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:36465": {
+     "shared_ngram8": 207,
+     "of_reserved": 3319
+    },
+    "institutions:alio-rule:15386": {
+     "shared_ngram8": 120,
+     "of_reserved": 2640
+    },
+    "institutions:alio-rule:54431": {
+     "shared_ngram8": 105,
+     "of_reserved": 3664
+    }
+   }
+  }
+ ]
+}

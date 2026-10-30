@@ -1,0 +1,48 @@
+{
+ "accepted_by": "B (B-019)",
+ "from": "reports/coordination/C-020/handoff-to-B.json",
+ "contract": "docs/COORDINATION.md PIPELINE-3-001 (commit 3588c3d)",
+ "builders": {
+  "scripts/build_internal_cases.py": "4695b05a05e97b749c064ffbe52625fbfe55f68476371efd14730b9ffa0f6b3e",
+  "scripts/review_records.py": "13e249d174c47e34f99f2ebc1231111383be026e032448aecc05d771297dd544",
+  "scripts/build_task_pilot.py": "0431e47a72dea1e4ec1bdf3b09d710ec1f751085afd2980fcd898b7a76fb1a99",
+  "scripts/build_table_cases.py": "7797fbe221066a60dca8ca91f4fa7b17cc4670bcb5a65772e8e11b7aeea07b8b",
+  "scripts/build_statute_cases.py": "c3af6468b4175f14d318465d4ee1229aee0f2ca4b71fb6141c4624ff1825e925",
+  "scripts/build_public_data_cases.py": "ef80f8a93ba3990a1737a7716df0cf851da1e3f35bb11a17eeef7e618b019601",
+  "scripts/build_byl_cases.py": "3ce349c62bc9172f141034ec066e59b6ac1b6cdcf21dfe286e483979f7d61fbd",
+  "scripts/build_faq_cases.py": "e758faadea1e8c18a09840c55ef1256ade8a517a4c3a40f9a753a2d58c7a8148",
+  "scripts/build_pilot_manifest.py": "cf806a82da7310e7bc24715adf0e94509e9c6c1e8efcb801b1eb3aa4270c884a"
+ },
+ "frozen_checked": {
+  "pilot_v1": {
+   "path": "reports/coordination/C-017/pilot/pilot.jsonl",
+   "sha256": "6bd0bddac4281db0ace6db68e1f2c645ee36d647b59a2ff64fe49cc65034e291",
+   "expected": "6bd0bddac4281db0ace6db68e1f2c645ee36d647b59a2ff64fe49cc65034e291",
+   "match": true
+  },
+  "pilot_v3_candidate": {
+   "path": "reports/coordination/C-019/pilot-v3-candidate/pilot.jsonl",
+   "sha256": "9d4d7b9f1c3f2b9783e968795d8ac5d909513ef5553fc0ef637c70cad8a9d2d3",
+   "expected": "9d4d7b9f1c3f2b9783e968795d8ac5d909513ef5553fc0ef637c70cad8a9d2d3",
+   "match": true
+  }
+ },
+ "checks": {
+  "tests": "tests.test_build_internal_cases test_teacher_qa_assemble test_review_records test_eval_journal test_build_task_pilot test_external_chat_eval: 31 OK",
+  "faq_rebuild": "build_faq_cases.py on C-020 spec/reviews -> 34 cases, faq-candidates.jsonl and manifest.json byte-identical to C-020/faq-batch",
+  "no_tests_for": [
+   "build_table_cases",
+   "build_statute_cases",
+   "build_public_data_cases",
+   "build_byl_cases",
+   "build_faq_cases",
+   "build_pilot_manifest"
+  ]
+ },
+ "kept_contracts": [
+  "FAQ 34 cases frozen (C-020/faq-batch)",
+  "499 AI reviews keyed by id+source_sha256; carry only on same id+hash; new holds win over old reviews",
+  "guides-v6 / bojo-faq-v3 fixed; new material from guides-v7 on"
+ ],
+ "open_items_taken": "all items in handoff-to-B.json open_items; C-020 section 5 source issues (권익위 절단 15, 매뉴얼 122, 방사청 4, KEIT 156/159, KOICA 205)"
+}

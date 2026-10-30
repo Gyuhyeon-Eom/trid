@@ -1,0 +1,74 @@
+{
+ "version": "guides-v7",
+ "source_version": "guides-v7-src",
+ "code_sha256": "f75b8bdcee0ee697c76e3079f7219d3765ef3d865328a28dcda3914e24c111f9",
+ "notes_file": null,
+ "rows_total": 370,
+ "parts": {
+  "qa_rule_or_procedure": {
+   "rows": 1,
+   "characters": 265,
+   "sha256": "2ed652526bc4be40bf08f1c207e9ff7bb34c0d0010e1de3905ab1b905daac518",
+   "by_institution": {
+    "한국자산관리공사": 1
+   },
+   "holds": {}
+  },
+  "qa_mixed": {
+   "rows": 0,
+   "characters": 0,
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "by_institution": {},
+   "holds": {}
+  },
+  "qa_other": {
+   "rows": 24,
+   "characters": 3496,
+   "sha256": "0e9223598b88ae4d159e50de30d0d78a862cb932926b83a7448b453488a68e55",
+   "by_institution": {
+    "한국자산관리공사": 14,
+    "조달청": 10
+   },
+   "holds": {}
+  },
+  "qa_system_operation": {
+   "rows": 0,
+   "characters": 0,
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "by_institution": {},
+   "holds": {}
+  },
+  "documents": {
+   "rows": 13,
+   "characters": 206905,
+   "sha256": "f697e5a65f2aa696d7d0fcaa02e0315603ccd211b3e188dbd930b6a8cb3906d9",
+   "by_institution": {
+    "충청남도": 1,
+    "한국동서발전(주)": 1,
+    "한국토지주택공사": 11
+   },
+   "holds": {}
+  },
+  "held": {
+   "rows": 332,
+   "characters": 1503790,
+   "sha256": "032153de14a15c959236acbe86d71936192da960de19bd4cddeddc85e93acddc",
+   "by_institution": {
+    "인사혁신처": 1,
+    "행정안전부": 1,
+    "제주특별자치도 감사위원회": 9,
+    "한국승강기안전공단": 320,
+    "한국토지주택공사": 1
+   },
+   "holds": {
+    "reserved_overlap": 2,
+    "title_list_without_content": 9,
+    "no_answer_content": 329,
+    "structured_table_not_qa": 320,
+    "archive_without_csv": 1,
+    "empty": 1
+   }
+  }
+ },
+ "note": "parts are exclusive; not approved for training; documents carry tables (unverified)"
+}

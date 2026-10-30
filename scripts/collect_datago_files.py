@@ -46,9 +46,13 @@ def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument('pks', nargs='+')
     p.add_argument('--interval', type=float, default=2.0)
+    p.add_argument('--state', default='files-state.jsonl',
+                   help='state file under data/public-data owned by this process (one file per parallel slice)')
     args = p.parse_args()
-    state_path = OUT / 'files-state.jsonl'
-    done = {json.loads(x)['pk'] for x in state_path.read_text().split('\n') if x} if state_path.exists() else set()
+    state_path = OUT / args.state
+    done = set()
+    for path in OUT.glob('files-state*.jsonl'):  # a dataset fetched by any slice is not fetched again
+        done |= {json.loads(x)['pk'] for x in path.read_text().split('\n') if x and json.loads(x)['status'] == 'stored'}
     client = am.Client(am.HostLimiter(args.interval, host='data.go.kr'), ROOT / 'logs/requests-data.go.kr.jsonl')
     metrics = am.Metrics()
     with open(state_path, 'a') as state:

@@ -1,0 +1,169 @@
+{
+ "code_sha256": "dd55d276a0590fe3af3d138001c77a8b804aea3cde918ee8a564e54b32a11b09",
+ "versions": [
+  "guides-v6",
+  "bojo-faq-v3"
+ ],
+ "rows": 16067,
+ "annotations_sha256": "b92bb77e58af9e80e7d1e63aba01c307f5c4b9446da7d0557b68a383a46ce540",
+ "clusters": {
+  "exact": {
+   "rows": 87,
+   "size_hist": {
+    "3": 6,
+    "2": 27,
+    "4": 1,
+    "5": 1,
+    "6": 1
+   }
+  },
+  "same_answer": {
+   "rows": 2134,
+   "size_hist": {
+    "2": 444,
+    "3": 69,
+    "8": 4,
+    "13": 2,
+    "4": 36,
+    "7": 3,
+    "10": 6,
+    "5": 10,
+    "6": 5,
+    "17": 2,
+    "11": 2,
+    "282": 1,
+    "213": 1,
+    "42": 1,
+    "9": 1,
+    "74": 1
+   }
+  },
+  "near_0.8": {
+   "rows": 325,
+   "clusters": 100
+  }
+ },
+ "rows_with_hold": 1981,
+ "dataset": {
+  "15151524": 257,
+  "15121643": 215,
+  "15118841": 100,
+  "15169354": 466,
+  "15146890": 866,
+  "15173808": 577,
+  "15144457": 12914,
+  "15152718": 25,
+  "15170150": 70,
+  "15043134": 1,
+  "15106457": 1,
+  "15038798": 1,
+  "15038493": 1,
+  "15077063": 1,
+  "15038527": 1,
+  "15099563": 571
+ },
+ "institution": {
+  "한국국제협력단": 282,
+  "한국산업기술기획평가원": 215,
+  "방위사업청": 100,
+  "국민권익위원회": 13380,
+  "조달청": 866,
+  "국가철도공단": 577,
+  "한국남부발전(주)": 70,
+  "인사혁신처": 1,
+  "행정안전부": 4,
+  "재정경제부": 1,
+  "기획예산처·행정안전부 (운영: 한국재정정보원)": 571
+ },
+ "institution_type": {
+  "공공기관(준정부기관)": 1074,
+  "중앙행정기관": 14923,
+  "공기업": 70
+ },
+ "year": {
+  "2025": 928,
+  "2026": 460,
+  "2006": 29,
+  "2014": 69,
+  "2010": 52,
+  "2011": 43,
+  "2013": 60,
+  "2023": 948,
+  "2024": 1639,
+  "2022": 832,
+  "2008": 36,
+  "2009": 27,
+  "2016": 2686,
+  "2018": 3200,
+  "2017": 2480,
+  "2019": 881,
+  "2020": 870,
+  "2021": 603,
+  "2007": 47,
+  "2015": 83,
+  "2012": 94
+ },
+ "faq_kind": {
+  "rule_or_procedure": 12484,
+  "mixed": 86,
+  "other": 3165,
+  "system_operation": 326,
+  "document": 6
+ },
+ "spans_by_dataset": {
+  "15146890:official_name": 474,
+  "15146890:petition_no": 493,
+  "15146890:named_company": 3,
+  "15144457:masked_contact": 725,
+  "15144457:official_name": 80,
+  "15144457:named_company": 54,
+  "15173808:named_company": 13,
+  "15043134:official_name": 1,
+  "15038798:official_name": 1,
+  "15038493:official_name": 1,
+  "15077063:named_company": 1,
+  "15038527:official_name": 1,
+  "15099563:masked_contact": 2
+ },
+ "holds_by_dataset": {
+  "15169354:personal_situation": 3,
+  "15146890:named_company": 3,
+  "15146890:personal_situation": 1,
+  "15146890:dup_exact_non_first": 2,
+  "15144457:masked_contact": 725,
+  "15144457:dup_exact_non_first": 40,
+  "15144457:personal_situation": 340,
+  "15144457:same_answer_over_3": 810,
+  "15144457:named_company": 54,
+  "15144457:non_answer": 465,
+  "15151524:dup_exact_non_first": 3,
+  "15118841:dup_exact_non_first": 1,
+  "15152718:personal_situation": 1,
+  "15173808:dup_exact_non_first": 4,
+  "15173808:named_company": 13,
+  "15173808:same_answer_over_3": 4,
+  "15077063:named_company": 1,
+  "15099563:masked_contact": 2,
+  "15099563:dup_exact_non_first": 1
+ },
+ "span_kinds": {
+  "official_name": 558,
+  "petition_no": 493,
+  "named_company": 71,
+  "masked_contact": 727
+ },
+ "training_hold": {
+  "personal_situation": 345,
+  "named_company": 71,
+  "dup_exact_non_first": 51,
+  "masked_contact": 727,
+  "same_answer_over_3": 814,
+  "non_answer": 465
+ },
+ "length": {
+  "<200": 944,
+  "<1000": 10308,
+  "<3000": 4746,
+  ">=3000": 69
+ }
+}
