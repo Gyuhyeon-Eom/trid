@@ -1,0 +1,83 @@
+{
+ "version": "search-corpus-v2",
+ "code_sha256": "d18c8fa0e7f2d29053b4bcdc0c341a2f7369caba1e84100463d16b3ce89e90bf",
+ "files": {
+  "documents": {
+   "rows": 14709,
+   "sha256": "1f000e09de3392be5502eb4789d8052f9f671401b1bf3e6bd12f3109db190c0a"
+  },
+  "passages": {
+   "rows": 41369,
+   "sha256": "1f438944a243495ef4367db8c5116e032072401238b82de780ee03c39e09463c"
+  },
+  "dropped": {
+   "rows": 2891,
+   "sha256": "f24dd2fc0e161bee704a9a30a2669f2d6931ce09481efdf563039395484385a7"
+  }
+ },
+ "counts": {
+  "guides:dropped:evaluation_exposure": 88,
+  "guides:docs": 19,
+  "guides:passages": 6876,
+  "admrul_attach:dropped:evaluation_exposure": 486,
+  "admrul_attach:docs": 112,
+  "admrul_attach:passages": 20901,
+  "admrul_attach:dropped:residual_identifier": 2,
+  "statute_byl:docs": 524,
+  "statute_byl:passages": 1342,
+  "statute_byl:dropped:evaluation_exposure": 113,
+  "official_faq:docs": 14054,
+  "official_faq:passages": 12250,
+  "official_faq:dropped:evaluation_exposure": 2202
+ },
+ "eval_side_checked": [
+  "data/benchmark-reserve-001",
+  "data/dialogue-eval-dev.jsonl",
+  "data/dialogue-eval-final.jsonl",
+  "data/institution-qa-frozen-01",
+  "data/korean-eval-v1",
+  "data/korean-rag-eval-v1",
+  "data/korean-rag-eval-multihop-v1-source",
+  "data/korean-rag-eval-v1-source",
+  "reports/coordination/C-010/records",
+  "reports/coordination/C-010/dev",
+  "reports/coordination/C-010/dev2"
+ ],
+ "eval_window": "20 chars, step 5, whitespace removed, HTML entities decoded",
+ "public_text_windows_not_counted": {
+  "source": "data/law-ko-source/docs.jsonl",
+  "kinds": [
+   "law"
+  ],
+  "windows": 242664,
+  "eval_windows_left": 37203185
+ },
+ "by_collection": {
+  "admrul_attach": {
+   "docs": 112,
+   "chars": 8673188,
+   "institutions": 42
+  },
+  "guides": {
+   "docs": 19,
+   "chars": 2741275,
+   "institutions": 6
+  },
+  "official_faq": {
+   "docs": 14054,
+   "chars": 11628677,
+   "institutions": 8
+  },
+  "statute_byl": {
+   "docs": 524,
+   "chars": 914891,
+   "institutions": 15
+  }
+ },
+ "not_included": [
+  "held parts of every version (reserved overlap incl. 2026 보수 지침·예산편성 기준, OCR defects, table mismatches, deleted 별표, rights holds)",
+  "internal-rules v3 법령해석례/행정규칙 본문 (not in this batch)",
+  "raw 권익위 board rows outside the training view"
+ ],
+ "contract": "search corpus only; training_status is separate and no document is approved for training; passages that share text with evaluation-side data are not included; 852 unsigned reserved families cannot be checked; public material, not an institution's internal non-public data"
+}

@@ -1,0 +1,39 @@
+{
+ "to": "A (TRID-WORKSPACE-001: question-first retrieval over all registered material)",
+ "from": "B (B-021)",
+ "path": "data/search-corpus-v2/ (local, gitignored; 3 files + manifest)",
+ "files": {
+  "documents.jsonl": "one row per document: collection, id, title, institution, institution_type, doc_type, applies_to, base_date, date_type, source_url, license, raw, raw_sha256, text_sha256, source_version, extractor, quality, table_check, pii_redactions, usage_restriction, training_status, search_status, nature, chars, passages, passages_dropped",
+  "passages.jsonl": "passage_id (doc_id#start), doc_id, collection, start/end (character offsets into the document text of its source_version), heading_path, text, sha256, has_table, title, institution, base_date, source_url",
+  "dropped.jsonl": "passages left out: evaluation_exposure (shared 20-char window with evaluation-side data, statute text excluded) or residual_identifier"
+ },
+ "manifest_sha256": "04bbfbe94592b8f69389a0b6d203919795564c27dc68682aa9a73ac780c23abb",
+ "files_sha256": {
+  "documents": {
+   "rows": 14709,
+   "sha256": "1f000e09de3392be5502eb4789d8052f9f671401b1bf3e6bd12f3109db190c0a"
+  },
+  "passages": {
+   "rows": 41369,
+   "sha256": "1f438944a243495ef4367db8c5116e032072401238b82de780ee03c39e09463c"
+  },
+  "dropped": {
+   "rows": 2891,
+   "sha256": "f24dd2fc0e161bee704a9a30a2669f2d6931ce09481efdf563039395484385a7"
+  }
+ },
+ "rules_for_A": [
+  "search use only: training_status is separate; nothing here is approved for training",
+  "show base_date/date_type with every answer; never call a value current (보수·수당·여비 값은 시점 값)",
+  "has_table or table_check=unverified: quote the passage and its source page/link; do not compute from table cells without showing them",
+  "usage_restriction rows (2026 보수인상률, future repeals): not a basis for a present-tense answer",
+  "public material from law.go.kr / data.go.kr and linked public providers; not institution-internal non-public data; do not label it so",
+  "evaluation items/answers: passages sharing text with evaluation-side data (148 signed reserved families included) are already removed; the 852 unsigned reserved families could not be checked"
+ ],
+ "page_positions": "not available in v2 (kordoc Markdown has no page markers); heading_path + character offsets only. PDF page mapping is follow-up work",
+ "excluded_upstream": [
+  "held parts of every version (reserved overlap incl. 2026 보수 지침·예산편성 기준, OCR defects, table mismatches, deleted 별표, rights holds)",
+  "internal-rules v3 법령해석례/행정규칙 본문 (not in this batch)",
+  "raw 권익위 board rows outside the training view"
+ ]
+}
