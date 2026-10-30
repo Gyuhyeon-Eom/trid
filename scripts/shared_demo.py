@@ -711,7 +711,7 @@ class Workspace:
         the official table's candidates when the alias is ambiguous there; otherwise names in which its characters
         appear in order and that end in the same kind of body (건보공단 ~ 국민건강보험공단). At most six."""
         if mention in self.ambiguous:
-            return sorted(self.ambiguous[mention])[:6]
+            return sorted(self.ambiguous[mention] - {mention})[:6]
         suffix = self.INSTITUTION_SUFFIX.search(mention)
         if len(mention) < 3 or not suffix:
             return []
@@ -947,7 +947,8 @@ def workspace_reply(workspace, selection):
     status = selection['status']
     if status == 'clarify' and selection.get('reason') == 'institution':
         names = selection['unknown_institutions']
-        options = '\n'.join(f"- {(workspace.institutions[n].get('alio') or {}).get('name') or n}" for n in selection['institutions'])
+        options = '\n'.join(f"- {((workspace.institutions.get(n) or {}).get('alio') or {}).get('name') or n}"
+                            for n in selection['institutions'])
         answer = (f"질문의 {', '.join(repr(n) for n in names)}이(가) 어느 기관인지 공식 기관 목록에서 하나로 정해지지 않습니다. "
                   f"다음 중 어느 기관인가요?\n{options}\n정식 기관명을 넣어 다시 물어봐 주세요.")
     elif status == 'clarify':

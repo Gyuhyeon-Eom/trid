@@ -333,6 +333,13 @@ class WorkspaceTests(unittest.TestCase):
         self.assertEqual((r['status'], r['unknown_institutions']), ('unknown_institution', ['기획재정부']))
         self.assertIn('재정경제부', workspace_reply(self.ws, r)['answer'])
 
+    def test_ambiguous_official_alias_is_asked_back_with_its_candidates(self):
+        from scripts.shared_demo import workspace_reply
+        r = self.ws.select('교육청 국외 출장 식비는?')  # 기관코드 table marks 교육청 ambiguous
+        self.assertEqual((r['status'], r['reason']), ('clarify', 'institution'))
+        self.assertNotIn('교육청', r['institutions'])
+        self.assertIn('경기도교육청', workspace_reply(self.ws, r)['answer'])
+
     def test_exact_short_rule_name_is_recognised(self):
         r = self.ws.select('나기관 출장 규정에서 숙박비는?')
         self.assertTrue(r['title_matched'])
