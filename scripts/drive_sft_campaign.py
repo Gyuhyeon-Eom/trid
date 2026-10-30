@@ -222,8 +222,10 @@ def step(campaign, state):
                                  'instance': free[0], 'attempts': (ev or {}).get('attempts', 0) + 1}
             if job:
                 busy.add((free[0], False))
-        s['evals_pending'] = sorted(label for label, _ in targets if (s['evals'].get(label) or {}).get('status') != 'Completed'
-                                    and (s['evals'].get(label) or {}).get('attempts', 0) < 2)
+        # A monitor launches nothing; its jobs evaluate in-job, so nothing is pending on the controller.
+        s['evals_pending'] = [] if monitor else sorted(
+            label for label, _ in targets if (s['evals'].get(label) or {}).get('status') != 'Completed'
+            and (s['evals'].get(label) or {}).get('attempts', 0) < 2)
         last = next((m for m in reversed(metrics) if 'train_loss' in m), None)
         rate = None
         if len(metrics) > 20:
