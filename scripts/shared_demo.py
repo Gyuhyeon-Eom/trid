@@ -49,7 +49,7 @@ def read_chunk(model, _presence, tok, text, question, device):
             raise DocumentError('모델의 원문 위치 검증에 실패했습니다.')
     return {**result, 'answer': answer, 'abstains': abstains, 'source_character_span': span}
 
-def answer_document_chat(document, question, base, family, context, constrained=False):
+def answer_document_chat(document, question, base, family, context, constrained=False, selected=None):
     """One completion over the retrieved chunks (as D1..Dn), with the evaluation's `grammar_instructed` system prompt
     and optionally its `evidence_constrained` grammar. `value [Dn]` and source-first `[Dn] value` are accepted (the
     evaluation's content_* reading); an answer is shown only when every value is found verbatim in the chunk it
@@ -57,7 +57,8 @@ def answer_document_chat(document, question, base, family, context, constrained=
     question = question.strip()
     if not question:
         raise DocumentError('질문을 입력해 주세요.')
-    selected = [(chunk, score) for chunk, score in retrieve(document, question) if '[D' not in chunk.text]
+    selected = [(chunk, score) for chunk, score in (retrieve(document, question) if selected is None else selected)
+                if '[D' not in chunk.text]
     result = {'file': document.name, 'candidates': [], 'checked_chunks': len(selected),
               'total_chunks': len(document.chunks), 'warnings': document.warnings, 'raw_output': None,
               'scope': '관련도 상위 최대 6개 구간을 확인한 결과입니다. 미검색 구간까지 정보가 없다고 보장하지 않습니다.'}
@@ -107,7 +108,7 @@ def _numbers(text):
     return {n.rstrip('.,').replace(',', '') for n in NUMBER.findall(text)}
 
 
-def answer_document_case(document, question, base, family, context, max_tokens=256):
+def answer_document_case(document, question, base, family, context, max_tokens=256, selected=None):
     """Serving contract of CASE-trained versions (explanatory answers, trained with CASE_SYSTEM). The model is asked
     with its training instruction; its output is never shown as a verified answer. Only output sentences that occur
     verbatim in a retrieved passage are shown as verified quotes, highlighted in the source. The rest is returned as
@@ -116,7 +117,8 @@ def answer_document_case(document, question, base, family, context, max_tokens=2
     question = question.strip()
     if not question:
         raise DocumentError('질문을 입력해 주세요.')
-    selected = [(chunk, score) for chunk, score in retrieve(document, question) if '[D' not in chunk.text]
+    selected = [(chunk, score) for chunk, score in (retrieve(document, question) if selected is None else selected)
+                if '[D' not in chunk.text]
     result = {'file': document.name, 'candidates': [], 'checked_chunks': len(selected), 'answer_mode': 'case',
               'total_chunks': len(document.chunks), 'warnings': document.warnings, 'raw_output': None,
               'commentary': None, 'commentary_verified': False, 'unsupported_numbers': [],
@@ -188,6 +190,65 @@ class Session:
     document: object = None
     document_id: str | None = None
     calls: list = field(default_factory=list)
+    pinned_doc: str | None = None
+    offered_docs: list = field(default_factory=list)
+
+
+@dataclass(frozen=True)
+class PassageChunk:
+    """A workspace passage in the shape the answer functions expect (text/page/start), plus its provenance."""
+    text: str
+    page: int
+    start: int
+    doc_id: str
+    path: tuple
+
+
+class Workspace:
+    """Questions without an uploaded document search the shared index of approved public sources
+    (scripts/build_workspace_index.py). Each answer uses passages of ONE document (the best match, or the one the
+    visitor pinned), so rules of different institutions are never mixed; close matches from other documents are
+    listed for the visitor to choose."""
+    MAX_PASSAGES = 6
+
+    def __init__(self, directory):
+        from trid.service.index import Index
+        root = Path(directory)
+        self.index = Index.load(root)
+        self.meta = json.loads((root / 'meta.json').read_text())
+        self.manifest = json.loads((root / 'manifest.json').read_text())
+        self.name = root.name
+
+    def scope(self):
+        kinds = ' · '.join(f'{k} {n:,}건' for k, n in self.manifest['by_kind'].items())
+        lo, hi = self.manifest['date_range']
+        return (f"검색 자료 {self.manifest['documents']:,}건({kinds}; 기준일 {lo}~{hi}): 법제처 국가법령정보센터 "
+                f"행정규칙·법령해석례와 정책브리핑 보도자료(공공누리 1유형). 기관 내부 비공개 규정·편람은 들어 있지 않습니다. "
+                f"현행 여부는 수집 시점(2026-10-27~29) 표시 기준이며 다시 확인하지 않았습니다.")
+
+    def describe(self, doc_id, score=None):
+        m = self.meta[doc_id]
+        return {'doc_id': doc_id, 'title': m['title'], 'institution': m['institution'], 'kind': m['kind'],
+                'date': m['date'], 'date_type': m['date_type'], 'effective_date': m['effective_date'],
+                'currency': m['currency'], 'source': m['source'], 'license': m['license'],
+                **({'score': round(score, 2)} if score is not None else {})}
+
+    def select(self, question, pinned=None):
+        """(applied document, [(PassageChunk, score)], [other documents]); applied is None when nothing matched."""
+        hits = self.index.search(question, {'public'}, k=40 if pinned else 8, hops=1)
+        if pinned:
+            hits = [h for h in hits if h.passage.doc_id == pinned]
+        if not hits:
+            return None, [], []
+        best = {}
+        for h in hits:
+            if h.via is None:
+                best[h.passage.doc_id] = max(best.get(h.passage.doc_id, 0.0), h.score)
+        applied = pinned or hits[0].passage.doc_id
+        chunks = [(PassageChunk(h.passage.text, 1, h.passage.char_start, h.passage.doc_id, h.passage.path), h.score)
+                  for h in hits if h.passage.doc_id == applied][:self.MAX_PASSAGES]
+        others = [self.describe(d, s) for d, s in sorted(best.items(), key=lambda kv: -kv[1]) if d != applied][:5]
+        return applied, chunks, others
 
 
 PUBLIC_FIELDS = ('id', 'label', 'kind', 'base_model', 'license', 'version', 'status', 'evaluation', 'limits')
@@ -337,23 +398,8 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
         raise ValueError('Proxy secret must contain at least 32 characters')
     assets = ROOT / 'trid/shared_ui'
     origin = 'https://' + hostname
-    public_sources = ROOT / 'data/public-document-sft-source'
-    public_docs = {
-        doc['id']: doc for doc in (
-            json.loads(line) for line in (public_sources / 'documents.jsonl').read_text().splitlines()
-            if line.strip()
-        ) if doc['license'] == 'KOGL-Type1'
-    }
-    public_questions = {}
-    for line in (public_sources / 'annotations.jsonl').read_text().splitlines():
-        if line.strip():
-            row = json.loads(line)
-            public_questions.setdefault(row['source_id'], []).append(row['question'])
-    public_options = ''.join(
-        # Source titles carry HTML entities (e.g. &middot;); decode once, then escape for the page.
-        f'<option value="{html.escape(key, quote=True)}">{html.escape(doc["date"] + " · " + html.unescape(doc["title"]))}</option>'
-        for key, doc in public_docs.items()
-    )
+    workspace = getattr(state, 'workspace', None)
+    workspace_scope = html.escape(workspace.scope()) if workspace else '공유 검색 자료가 없습니다. 문서를 직접 넣어 주세요.'
     version_options = ''.join(
         f'<option value="{html.escape(v["id"], quote=True)}">{html.escape(v["label"])}</option>'
         for v in state.public_versions()
@@ -434,7 +480,7 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                     .replace('MODEL_PLACEHOLDER', html.escape(state.run))
                     .replace('VERSION_OPTIONS_PLACEHOLDER', version_options)
                     .replace('VERSION_CARDS_PLACEHOLDER', version_cards)
-                    .replace('PUBLIC_OPTIONS_PLACEHOLDER', public_options))
+                    .replace('WORKSPACE_SCOPE_PLACEHOLDER', workspace_scope))
             self.respond(200, page.encode(), 'text/html; charset=utf-8', cookie=sid)
 
         def do_POST(self):
@@ -465,25 +511,8 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                         if path == '/api/load':
                             doc = parse_pdf(body, unquote(self.headers.get('X-File-Name', 'document.pdf')), state.tok)
                         elif path == '/api/sample':
-                            request = json.loads(body)
-                            if not isinstance(request, dict):
-                                raise DocumentError('문서 선택 형식을 확인해 주세요.')
-                            if 'source_id' in request:
-                                key = request['source_id']
-                                if not isinstance(key, str) or key not in public_docs:
-                                    raise DocumentError('목록에서 공개 문서를 선택해 주세요.')
-                                source = public_docs[key]
-                                content = source['text']
-                                warnings = [
-                                    f"발표일: {source['date']} · 당시 자료이며 현재 적용 여부는 확인하지 않았습니다.",
-                                    f"원문: {source['source']}",
-                                    source['attribution'] + ' · 공공누리 제1유형, 텍스트만 이용',
-                                    '학습 데이터로 선정된 문서입니다. 독립 성능 평가가 아닙니다.',
-                                ]
-                                doc = Document(html.unescape(source['title']), [content], make_chunks([content], state.tok), warnings)
-                            else:
-                                content = (ROOT / 'data/reading-demo-v3/travel-named.txt').read_text()
-                                doc = Document('가상 출장 규정 · 샘플', [content], make_chunks([content], state.tok), ['시연용 가상 자료입니다. 실제 기관 규정이 아닙니다.'])
+                            content = (ROOT / 'data/reading-demo-v3/travel-named.txt').read_text()
+                            doc = Document('가상 출장 규정 · 샘플', [content], make_chunks([content], state.tok), ['시연용 가상 자료입니다. 실제 기관 규정이 아닙니다.'])
                         else:
                             request = json.loads(body)
                             content = request.get('text') if isinstance(request, dict) else None
@@ -496,8 +525,19 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                             session.document = doc
                             session.document_id = secrets.token_urlsafe(24)
                         result = {'document_id': session.document_id, 'name': doc.name, 'pages': doc.pages, 'warnings': doc.warnings}
-                        if path == '/api/sample' and 'source_id' in request:
-                            result['suggested_questions'] = public_questions.get(request['source_id'], [])
+                    elif path == '/api/pin':
+                        if workspace is None:
+                            raise DocumentError('공유 검색 자료가 준비되지 않았습니다.')
+                        request = json.loads(body)
+                        choice = request.get('choice') if isinstance(request, dict) else None
+                        with state.lock:
+                            if choice is None:
+                                session.pinned_doc = None
+                            elif isinstance(choice, int) and 1 <= choice <= len(session.offered_docs):
+                                session.pinned_doc = session.offered_docs[choice - 1]
+                            else:
+                                raise DocumentError('직전 답변에 표시된 다른 후보 문서 번호를 골라 주세요.')
+                        result = {'pinned': workspace.describe(session.pinned_doc) if session.pinned_doc else None}
                     elif path == '/api/clear':
                         with state.lock:
                             session.document = session.document_id = None
@@ -506,7 +546,10 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                         request = json.loads(body)
                         if not isinstance(request, dict):
                             raise DocumentError('질문 형식을 확인해 주세요.')
-                        if session.document is None or request.get('document_id') != session.document_id:
+                        workspace_mode = request.get('scope') == 'workspace'
+                        if workspace_mode and workspace is None:
+                            raise DocumentError('공유 검색 자료가 준비되지 않았습니다. 문서를 직접 넣어 주세요.')
+                        if not workspace_mode and (session.document is None or request.get('document_id') != session.document_id):
                             self.respond(409, {'error': '이 브라우저에서 문서를 먼저 넣어 주세요.'}); return
                         question = request.get('question')
                         if not isinstance(question, str) or len(question) > 500:
@@ -516,19 +559,41 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                             raise DocumentError('목록에 있는 모델 버전을 선택해 주세요.')
                         version = state.versions[version_id]
                         started = time.monotonic()
+                        selected, applied, others = None, None, []
+                        document = session.document
+                        if workspace_mode:
+                            applied, selected, others = workspace.select(question, session.pinned_doc)
+                            name = workspace.meta[applied]['title'] if applied else '공유 검색 자료'
+                            document = Document(name, [], [c for c, _ in selected], [])
                         if version['kind'] == 'extractive':
-                            result = answer_document(session.document, question, version['model'], None, version['tok'],
-                                                     version['device'], reader=read_chunk)
+                            result = answer_document(document, question, version['model'], None, version['tok'],
+                                                     version['device'], reader=read_chunk, selected=selected)
                             if any(item['prediction']['presence'] == 2 for item in result['checked']):
                                 result.update(status='review', answer='모델이 근거 충돌로 판단한 구간이 있습니다. /source로 원문을 확인해 주세요.')
                         elif version.get('answer_mode') == 'case':
-                            result = answer_document_case(session.document, question, version['base'],
-                                                          version['family'], version['context'])
+                            result = answer_document_case(document, question, version['base'], version['family'],
+                                                          version['context'], selected=selected)
                         else:
-                            result = answer_document_chat(session.document, question, version['base'],
-                                                          version['family'], version['context'],
-                                                          version['decoding'] == 'evidence_constrained')
+                            result = answer_document_chat(document, question, version['base'], version['family'],
+                                                          version['context'], version['decoding'] == 'evidence_constrained',
+                                                          selected=selected)
                         result.pop('checked', None)
+                        if workspace_mode:
+                            with state.lock:
+                                session.offered_docs = [o['doc_id'] for o in others]
+                            for c in result['candidates']:
+                                chunk = next(ch for ch, _ in selected if ch.text == c['text'])
+                                c['source_label'] = ' · '.join(x for x in (
+                                    workspace.meta[chunk.doc_id]['institution'], workspace.meta[chunk.doc_id]['title'],
+                                    ' '.join(chunk.path[1:]) or None) if x)
+                                c['page_character_span'] = [chunk.start + c['prediction']['source_character_span'][0],
+                                                            chunk.start + c['prediction']['source_character_span'][1]]
+                            result['workspace'] = {'applied': workspace.describe(applied) if applied else None,
+                                                   'pinned': bool(session.pinned_doc), 'others': others,
+                                                   'scope': workspace.scope()}
+                            result['total_chunks'] = len(workspace.index.passages)
+                            result['scope'] = ('공유 검색 자료에서 관련도가 가장 높은 문서 1건의 구간만 모델에 넣었습니다. '
+                                               '다른 기관·문서의 규정을 섞지 않습니다. 검색되지 않은 자료까지 정보가 없다고 보장하지 않습니다.')
                         result['model'] = version['label']
                         result['version'] = version_id
                         result['elapsed_ms'] = round((time.monotonic() - started) * 1000)
@@ -555,6 +620,8 @@ def main():
                         help='JSON list of served versions; the first is the default and must be extractive')
     parser.add_argument('--secret-file', required=True)
     parser.add_argument('--port', type=int, default=51873)
+    parser.add_argument('--workspace', type=Path, default=ROOT / 'runs/workspace-index/v1',
+                        help='shared search index of approved public sources (scripts/build_workspace_index.py)')
     args = parser.parse_args()
     torch.set_num_threads(4)
     def stop_signal(*_):
@@ -563,6 +630,7 @@ def main():
     state = None
     try:
         state = State(json.loads(args.versions.read_text()))
+        state.workspace = Workspace(args.workspace) if (args.workspace / 'manifest.json').exists() else None
         server = make_server(state, Path(args.secret_file).read_text().strip(), args.port)
         stop = threading.Event()
         def prune():

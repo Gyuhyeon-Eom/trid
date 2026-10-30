@@ -150,6 +150,41 @@ class ChatBackendTests(unittest.TestCase):
         self.assertTrue(any('반복 2회' in n for n in result['commentary_notes']))
 
 
+class WorkspaceTests(unittest.TestCase):
+    def setUp(self):
+        import tempfile
+        from trid.service.index import Index
+        from trid.service.structure import parse_document
+        from trid.service.types import Document as ServiceDocument
+        from scripts.shared_demo import Workspace
+        texts = {'a': ('가기관 출장 규정', '제1조(식비) 국외 출장 식비는 하루 8만원으로 한다.\n제2조(숙박) 국외 출장 숙박비는 1박 25만원으로 한다.'),
+                 'b': ('나기관 출장 규정', '제1조(식비) 국외 출장 식비는 하루 6만원으로 한다.\n제2조(숙박) 숙박비는 실비로 한다.')}
+        docs, meta = [], {}
+        for key, (title, text) in texts.items():
+            d = ServiceDocument(key, title, key, {'public'}, text)
+            d.passages, d.refs = parse_document(text, key, title)
+            docs.append(d)
+            meta[key] = {'title': title, 'kind': '행정규칙', 'institution': title[:3], 'date': '2026-01-01', 'date_type': '발령일자',
+                         'effective_date': None, 'currency': None, 'source': f'https://example.invalid/{key}', 'license': 'test'}
+        self.dir = tempfile.TemporaryDirectory(); self.addCleanup(self.dir.cleanup)
+        Index.build(docs).save(self.dir.name)
+        Path = __import__('pathlib').Path
+        (Path(self.dir.name) / 'meta.json').write_text(json.dumps(meta, ensure_ascii=False))
+        (Path(self.dir.name) / 'manifest.json').write_text(json.dumps({'documents': 2, 'by_kind': {'행정규칙': 2}, 'date_range': ['2026-01-01', '2026-01-01']}))
+        self.ws = Workspace(self.dir.name)
+
+    def test_answer_passages_come_from_one_document_and_others_are_listed(self):
+        applied, chunks, others = self.ws.select('국외 출장 식비는 하루 얼마인가요?')
+        self.assertTrue(chunks)
+        self.assertEqual({c.doc_id for c, _ in chunks}, {applied})
+        self.assertEqual([o['doc_id'] for o in others], [{'a': 'b', 'b': 'a'}[applied]])
+
+    def test_pinned_document_is_the_only_source(self):
+        applied, chunks, _ = self.ws.select('국외 출장 식비는 하루 얼마인가요?', pinned='b')
+        self.assertEqual(applied, 'b')
+        self.assertEqual({c.doc_id for c, _ in chunks}, {'b'})
+
+
 class ExtractiveChunkTests(unittest.TestCase):
     def prediction(self, text, question, occurrence, presence=0):
         prompt = rag_prompt([('D1', text)], question)

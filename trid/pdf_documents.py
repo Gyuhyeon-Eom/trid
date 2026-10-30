@@ -100,13 +100,14 @@ def retrieve(document,question,limit=6):
     return [(document.chunks[i],score) for score,i in ranked[:limit]]
 
 
-def answer_document(document,question,span,presence,tok,device,reader=None):
+def answer_document(document,question,span,presence,tok,device,reader=None,selected=None):
     from .short_reader import read
     if reader is None:reader=read
     question=question.strip()
     if not question:raise DocumentError('질문을 입력해 주세요.')
     if len(tok.encode(question).ids)>96:raise DocumentError('질문을 조금 짧게 입력해 주세요. 질문 한도는 96토큰입니다.')
-    selected=retrieve(document,question)
+    # `selected`: [(chunk, score)] already retrieved elsewhere (e.g. a shared search index); chunks need text/page/start.
+    if selected is None:selected=retrieve(document,question)
     checked=[];candidates=[]
     for chunk,relevance in selected:
         r=reader(span,presence,tok,chunk.text,question,device)
