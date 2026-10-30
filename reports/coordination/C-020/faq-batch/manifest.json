@@ -1,0 +1,22 @@
+{
+ "cases": 34,
+ "sha256": "b7834e3afbe39b0c6514a5cb9a717d1f075671434c2eeb5c1712decf9973116d",
+ "by_task_type": {
+  "faq_explanation": 22,
+  "faq_lookup": 9,
+  "faq_ask_back": 3
+ },
+ "by_institution": {
+  "국민권익위원회": 14,
+  "기획예산처·행정안전부 (운영: 한국재정정보원)": 4,
+  "방위사업청": 5,
+  "한국국제협력단": 6,
+  "한국산업기술기획평가원": 5
+ },
+ "reviewed": 34,
+ "sources": {
+  "guides-v6/qa_rule_or_procedure": "621020dd057aa53d25b4051b1b15cc5d9ed68ef9d1d1f9b12eb5fc1486336cb6",
+  "bojo-faq-v3/qa_rule_or_procedure": "ca59a0c06a12c290a62cb7a1b6909ef2f674d3d67b20541621d2369df498cf7c"
+ },
+ "note": "C-020 follow-up candidate batch; not part of pilot v1/v3; AI self-review only; not production approval"
+}

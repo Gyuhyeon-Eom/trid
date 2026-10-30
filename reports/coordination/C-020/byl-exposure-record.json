@@ -1,0 +1,76 @@
+{
+ "rule": "C-019 build_byl_cases gate 2: 20-char windows (step 5, whitespace and markup removed); only the printed paper-size note of forms (regex \\d+\\s*mm\\s*×\\s*\\d+\\s*mm\\s*\\[[^\\]]*\\]) is excluded from the window check",
+ "scope_of_exception": "changes the verdict for one document only: law-byl:160396759 (재고위치카드 form; raw 3 shared windows, all inside the paper-size note → applied 0). 160396697 has 0 raw hits; tables are unaffected",
+ "eval_side": "build_pilot_manifest.EVAL_SIDE as of this commit",
+ "documents": {
+  "law-go-kr:law-byl:160396697": {
+   "title": "물품관리법 시행규칙 [서식 0009] 물품관리대장",
+   "raw_window_hits": 0,
+   "raw_hit_windows": [],
+   "applied_window_hits": 0,
+   "excluded_spans": [
+    "210mm×297mm[백상지(120g/㎡) 또는 백상지(80g/㎡)]",
+    "210mm×297mm[백상지(120g/㎡) 또는 백상지(80g/㎡)]"
+   ],
+   "raw_verdict": "none found",
+   "applied_verdict": "none found"
+  },
+  "law-go-kr:law-byl:160396759": {
+   "title": "물품관리법 시행규칙 [서식 0017] 재고위치카드",
+   "raw_window_hits": 3,
+   "raw_hit_windows": [
+    "0mm×297mm[백상지(80g/㎡)",
+    "97mm[백상지(80g/㎡)또는중질지",
+    "백상지(80g/㎡)또는중질지(80g/"
+   ],
+   "applied_window_hits": 0,
+   "excluded_spans": [
+    "210mm×297mm[백상지(80g/㎡) 또는 중질지(80g/㎡)]"
+   ],
+   "raw_verdict": "exposed",
+   "applied_verdict": "none found"
+  },
+  "law-go-kr:law-byl:161135149": {
+   "title": "선거관리위원회 공무원 수당에 관한 규칙 [별표 0003] 성과상여금 지급대상ㆍ지급등급 및 지급률표",
+   "raw_window_hits": 0,
+   "raw_hit_windows": [],
+   "applied_window_hits": 0,
+   "excluded_spans": [],
+   "raw_verdict": "none found",
+   "applied_verdict": "none found"
+  },
+  "law-go-kr:law-byl:162349615": {
+   "title": "헌법재판소공무원 수당 등에 관한 규칙 [별표 0001] 직급보조비 지급 구분표",
+   "raw_window_hits": 0,
+   "raw_hit_windows": [],
+   "applied_window_hits": 0,
+   "excluded_spans": [],
+   "raw_verdict": "none found",
+   "applied_verdict": "none found"
+  },
+  "law-go-kr:law-byl:164767093": {
+   "title": "법관 및 법원공무원수당 등에 관한 규칙 [별표 0005] 가족수당 지급 구분표",
+   "raw_window_hits": 0,
+   "raw_hit_windows": [],
+   "applied_window_hits": 0,
+   "excluded_spans": [],
+   "raw_verdict": "none found",
+   "applied_verdict": "none found"
+  },
+  "law-go-kr:law-byl:166991573": {
+   "title": "재외공무원 수당 지급 규칙 [별표 0002] 특수지 근무수당 지급대상지역과 그 지역별 구분(제3조 관련)",
+   "raw_window_hits": 0,
+   "raw_hit_windows": [],
+   "applied_window_hits": 0,
+   "excluded_spans": [],
+   "raw_verdict": "none found",
+   "applied_verdict": "none found"
+  }
+ },
+ "pilot_v3_candidate": {
+  "path": "reports/coordination/C-019/pilot-v3-candidate",
+  "sha256": "9d4d7b9f1c3f2b9783e968795d8ac5d909513ef5553fc0ef637c70cad8a9d2d3",
+  "status": "frozen as accepted by supervisor (C-020)"
+ },
+ "note": "raw verdict kept: 160396759 is \"exposed\" under the raw rule (paper-size boilerplate) and usable only under the stated exception; its 2 form cases are in pilot-v3-candidate"
+}

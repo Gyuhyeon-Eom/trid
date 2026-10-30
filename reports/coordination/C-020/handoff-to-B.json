@@ -1,0 +1,44 @@
+{
+ "from": "C (session 01a17c28)",
+ "to": "B",
+ "reason": "PIPELINE-3-001: C becomes independent testing only; training-case generation moves to B",
+ "rule": "Until B confirms ownership, neither side edits these files concurrently; C makes no further training-builder edits after commit of C-020.",
+ "builders": {
+  "scripts/build_internal_cases.py": "in: B internal-rules (v3 + footnotes1 relations), review files → out: batch-vN/{candidates,excluded,plain-candidates}.jsonl; gates: AI review status, defect/duplicate hold reasons, outdated flag",
+  "scripts/review_records.py": "review record helpers (content_sha256-keyed AI review records)",
+  "scripts/build_task_pilot.py": "older pilot task builder used by C-012..C-016 (tests/test_build_task_pilot.py)",
+  "scripts/build_table_cases.py": "C-014/C-018 hwp/attachment table cases: in spec + B attachment rows → table-candidates.jsonl; cell checks",
+  "scripts/build_statute_cases.py": "C-018 statute cases: in law.go.kr statute rows + spec → statute-candidates.jsonl; not eval source / not reserve overlap",
+  "scripts/build_public_data_cases.py": "C-015/C-016 data.go.kr CSV cases: cell values checked on raw CSV",
+  "scripts/build_byl_cases.py": "C-019 law-byl tables/forms: B status, exposure (paper-size exception), cell match vs original .hwp → byl-candidates.jsonl",
+  "scripts/build_faq_cases.py": "C-020 FAQ cases: only guides-v6/bojo-faq-v3; part sha = version manifest; C-020 per-item review; exposure 0; must_keep/number/date/edition/scope gates → faq-candidates.jsonl",
+  "scripts/build_pilot_manifest.py": "pilot assembly: --main/--plain/--table(multi)/--public/--statute/--reviews/--frozen/--official-ids → pilot.jsonl + manifest.json; frozen carry-over, group split, exposure drop"
+ },
+ "case_contract": "each case: id, kind, behavior, task_type, source_answer_present, question, context[list], target, evidence, doc, title, source, license, date, date_field, text_sha256, institution, missing, authored, synthetic_parts, content_sha256=sha256(question+\"\\n\"+target), review{status, records[reviewer_id, reviewer_type, verdict, note, scope]}, training_hold, split_hint",
+ "frozen": {
+  "pilot_v1": {
+   "path": "reports/coordination/C-017/pilot/pilot.jsonl",
+   "sha256": "6bd0bddac4281db0ace6db68e1f2c645ee36d647b59a2ff64fe49cc65034e291"
+  },
+  "pilot_v3_candidate": {
+   "path": "reports/coordination/C-019/pilot-v3-candidate",
+   "sha256": "9d4d7b9f1c3f2b9783e968795d8ac5d909513ef5553fc0ef637c70cad8a9d2d3"
+  }
+ },
+ "handed_over_outputs": [
+  "C-020/faq-cases.json",
+  "C-020/faq-batch/ (34 cases, AI self-review, not in any pilot)",
+  "C-020/review-faq-ai.jsonl (499 rows, v6/v3)",
+  "C-020/review-faq-cases-ai.jsonl",
+  "C-020/carryover-v6.json"
+ ],
+ "open_items": [
+  "footnotes2 adoption in build_internal_cases.py not done by C: contract = offsets on unchanged source text with source_sha256; never invent an appendix start; add regression test + real smoke; pilot v1/v3 hashes must stay identical",
+  "build_byl_cases.py records only the applied exposure; raw-vs-applied record for the paper-size exception is in C-020/byl-exposure-record.json — move it into the builder output if kept",
+  "FAQ batch (34) not merged into a pilot; v3 answer characters are still 88% official-answer extraction (case count share is not mitigation)",
+  "guides-v6 권익위 12,951 new rows: no bulk use; pick follow-up by institution/topic representative review; 조달청 867, KOICA 인사 25, 철도공단 676, 남부발전 70 are new sources not reviewed by C",
+  "institution-rule citations inside FAQs may come from the 852 unchecked reserve families: separate risk check needed",
+  "keep separating B-018 source format errors / dates / PII / system-operation vs rule classification",
+  "B-017/B-018 source issues found by C: see C-020.md section on B requests"
+ ]
+}

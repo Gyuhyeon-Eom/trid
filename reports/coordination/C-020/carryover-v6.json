@@ -1,0 +1,131 @@
+{
+ "note": "C-020 per-item FAQ review moved from guides-v4/bojo-faq-v2 to the B-018 formal versions guides-v6/bojo-faq-v3; old versions are not used",
+ "rule": "carried only when id and content sha256 match; B held list applied first; changed text re-reviewed",
+ "counts": {
+  "carried unchanged (same id+hash)": 468,
+  "excluded: now held by B (v6/v3)": 15,
+  "carried after re-review (entity-only change)": 31
+ },
+ "source_sha256": {
+  "guides-v6/qa_rule_or_procedure.jsonl": "621020dd057aa53d25b4051b1b15cc5d9ed68ef9d1d1f9b12eb5fc1486336cb6",
+  "guides-v6/qa_mixed.jsonl": "908266d7a5c6332bc6d5e1708c36224cf74eb423eef899cee974882dacfb70ce",
+  "guides-v6/held.jsonl": "1322ded2c951bf9c792cd311c4c418169222700ebee16e8aaf1a97521074dd0e",
+  "guides-v6/manifest.json": "41961b05634c0f0c22d3d720f503ef506620a89fc4bad7a4ce8e711e6e6bdc5c",
+  "bojo-faq-v3/qa_rule_or_procedure.jsonl": "ca59a0c06a12c290a62cb7a1b6909ef2f674d3d67b20541621d2369df498cf7c",
+  "bojo-faq-v3/held.jsonl": "588b29c2b5d3197852020d16957d7409ae8e52a9fd0ad0fe3cca254498ebf278",
+  "bojo-faq-v3/manifest.json": "00dcd12510aecc6928bd151e9b93aeb2cbd9869ac418a25df64c0b0b63b4af1b"
+ },
+ "excluded_now_held": {
+  "data.go.kr:15121643:44": [
+   []
+  ],
+  "data.go.kr:15121643:113": [
+   []
+  ],
+  "bojo.go.kr:faq:N_00245806": [
+   [
+    "hold:answer_from_img_alt"
+   ]
+  ],
+  "bojo.go.kr:faq:N_00245801": [
+   [
+    "hold:answer_from_img_alt"
+   ]
+  ],
+  "bojo.go.kr:faq:N_00248522": [
+   [
+    "hold:answer_from_img_alt"
+   ]
+  ],
+  "bojo.go.kr:faq:N_00256526": [
+   [
+    "hold:answer_from_img_alt"
+   ]
+  ],
+  "bojo.go.kr:faq:N_00248515": [
+   [
+    "hold:answer_from_img_alt"
+   ]
+  ],
+  "bojo.go.kr:faq:N_00034443": [
+   [
+    "hold:answer_from_img_alt"
+   ]
+  ],
+  "bojo.go.kr:faq:N_00239071": [
+   [
+    "hold:answer_from_img_alt"
+   ]
+  ],
+  "bojo.go.kr:faq:N_00239072": [
+   [
+    "hold:answer_from_img_alt"
+   ]
+  ],
+  "bojo.go.kr:faq:N_00239082": [
+   [
+    "hold:answer_from_img_alt"
+   ]
+  ],
+  "bojo.go.kr:faq:N_00248517": [
+   [
+    "hold:answer_from_img_alt"
+   ]
+  ],
+  "bojo.go.kr:faq:N_00206173": [
+   [
+    "hold:answer_from_img_alt"
+   ]
+  ],
+  "bojo.go.kr:faq:N_00273400": [
+   [
+    "hold:answer_from_img_alt"
+   ]
+  ],
+  "bojo.go.kr:faq:N_00256523": [
+   [
+    "hold:answer_from_img_alt"
+   ]
+  ]
+ },
+ "rereviewed_entity_only": [
+  "data.go.kr:15121643:99",
+  "data.go.kr:15118841:2",
+  "data.go.kr:15118841:3",
+  "data.go.kr:15118841:4",
+  "data.go.kr:15118841:14",
+  "data.go.kr:15118841:25",
+  "data.go.kr:15118841:28",
+  "data.go.kr:15118841:33",
+  "data.go.kr:15118841:44",
+  "data.go.kr:15118841:59",
+  "data.go.kr:15118841:61",
+  "data.go.kr:15118841:63",
+  "data.go.kr:15118841:64",
+  "data.go.kr:15118841:65",
+  "data.go.kr:15118841:66",
+  "data.go.kr:15118841:68",
+  "data.go.kr:15118841:69",
+  "data.go.kr:15118841:70",
+  "data.go.kr:15118841:72",
+  "data.go.kr:15118841:73",
+  "data.go.kr:15118841:74",
+  "data.go.kr:15118841:76",
+  "data.go.kr:15118841:77",
+  "data.go.kr:15118841:78",
+  "data.go.kr:15118841:81",
+  "data.go.kr:15118841:82",
+  "data.go.kr:15118841:83",
+  "data.go.kr:15118841:85",
+  "data.go.kr:15118841:86",
+  "data.go.kr:15118841:87",
+  "data.go.kr:15118841:90"
+ ],
+ "moved_to_qa_mixed": [
+  "data.go.kr:15118841:3",
+  "data.go.kr:15118841:33"
+ ],
+ "exposure_changed_after_decoding": [
+  "data.go.kr:15118841:59"
+ ]
+}

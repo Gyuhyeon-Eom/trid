@@ -1,0 +1,15 @@
+{
+ "note": "C-020 outputs frozen at hand-off to B; any later change is B-owned",
+ "files": {
+  "reports/coordination/C-020/byl-exposure-record.json": "064651c07a0683c0da573a2ab7eeff55fdb90f67ab033575fc53ff4cf2b6299d",
+  "reports/coordination/C-020/c-seen-training-sources.json": "dafd55a3f3694e564c23f2af0ddf366985d3c1777bdacd4fd2af391351eefc2c",
+  "reports/coordination/C-020/carryover-v6.json": "642011ed4cd0f4e7c4ed6be1d598597074556775f8045a199e7595c3daee06e7",
+  "reports/coordination/C-020/faq-batch/faq-candidates.jsonl": "b7834e3afbe39b0c6514a5cb9a717d1f075671434c2eeb5c1712decf9973116d",
+  "reports/coordination/C-020/faq-batch/manifest.json": "1a72ef265770b4633705134248894d486b1bf8814bb0806764f9bf538bdd7077",
+  "reports/coordination/C-020/faq-cases.json": "531e98786726b159c5e046141999af86b2f3f750e7ff0a9df205501a00e36f6e",
+  "reports/coordination/C-020/handoff-to-B.json": "10f8fab00cdff1d93f1079fa6992f3539a55061a5b7bf06dda3564583e19ab6c",
+  "reports/coordination/C-020/review-faq-ai.jsonl": "0919f2756cebbcc3687846f27a890f00377a067924e86a460679c740e2b8049d",
+  "reports/coordination/C-020/review-faq-cases-ai.jsonl": "dddc51197f445803eb006720b641cb90915971feb01b3783028482b7f3060b1b",
+  "scripts/build_faq_cases.py": "e758faadea1e8c18a09840c55ef1256ade8a517a4c3a40f9a753a2d58c7a8148"
+ }
+}
