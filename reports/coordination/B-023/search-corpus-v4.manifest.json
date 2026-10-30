@@ -1,0 +1,85 @@
+{
+ "version": "search-corpus-v4",
+ "source_version": "search-corpus-v2",
+ "code_sha256": "7736784c25ba7492e63c2b1555cfb4ce76413c6511d9c8549babbfa7756850e0",
+ "files": {
+  "documents": {
+   "rows": 12479,
+   "sha256": "5e341294f022ff7eadab053874d79ed7f46df20003b677d0f83e70f1870afd78"
+  },
+  "documents-zero-passage": {
+   "rows": 2230,
+   "sha256": "ff3f432038cb180d2c21663690ccd7d7c4977e7d883a94a48d2c235b3546276a"
+  },
+  "passages": {
+   "rows": 41369,
+   "sha256": "fe6987c947ab3c87a928c1b2be9194d9068a5daa1b0421d8209d3a284469441f"
+  }
+ },
+ "active_documents": 12479,
+ "zero_passage_documents": 2230,
+ "active_by_collection": {
+  "guides": 19,
+  "admrul_attach": 111,
+  "statute_byl": 464,
+  "official_faq": 11885
+ },
+ "zero_by_collection": {
+  "admrul_attach": 1,
+  "statute_byl": 60,
+  "official_faq": 2169
+ },
+ "passages": 41369,
+ "page_mapping": {
+  "pdf_mapped": 22802,
+  "values_agree": 22557,
+  "pdf_not_found": 2596,
+  "values_differ": 245,
+  "no_pages": 15971
+ },
+ "hwpx_doc_values": {
+  "data.go.kr:15038798": "differ",
+  "data.go.kr:15038493": "agree",
+  "data.go.kr:15033217:file:3dc524e955051ede": "agree",
+  "law-go-kr:admrul-file:159345655": "agree",
+  "law-go-kr:admrul-file:156743739": "agree",
+  "law-go-kr:admrul-file:126140889": "agree",
+  "law-go-kr:admrul-file:150743139": "agree",
+  "law-go-kr:admrul-file:133708917": "agree",
+  "law-go-kr:admrul-file:150423181": "agree",
+  "law-go-kr:admrul-file:122048493": "agree",
+  "law-go-kr:admrul-file:126801375": "agree",
+  "law-go-kr:admrul-file:126354295": "agree"
+ },
+ "value_review": {
+  "number:doubled_glyphs": 1,
+  "number:elsewhere_in_pdf": 71,
+  "number:elsewhere_in_pdf_short_number": 261,
+  "number:equation_object": 166,
+  "number:image_only_page": 3,
+  "number:letter_spaced": 2,
+  "number:merged_tokens": 16,
+  "number:not_in_pdf": 1,
+  "number:print_production_mark": 33,
+  "number:redaction_residue": 3,
+  "number:separator_spacing": 60,
+  "passage:hold_for_value_use": 87,
+  "passage:privacy_review": 2,
+  "passage:show_original_page": 158
+ },
+ "unchanged_from_source": "passage ids, offsets, text and sha256 are those of the source version",
+ "carried_contract": "search corpus only; training_status is separate and no document is approved for training; passages that share text with evaluation-side data are not included; 852 unsigned reserved families cannot be checked; public material, not an institution's internal non-public data",
+ "eval_side_checked": [
+  "data/benchmark-reserve-001",
+  "data/dialogue-eval-dev.jsonl",
+  "data/dialogue-eval-final.jsonl",
+  "data/institution-qa-frozen-01",
+  "data/korean-eval-v1",
+  "data/korean-rag-eval-v1",
+  "data/korean-rag-eval-multihop-v1-source",
+  "data/korean-rag-eval-v1-source",
+  "reports/coordination/C-010/records",
+  "reports/coordination/C-010/dev",
+  "reports/coordination/C-010/dev2"
+ ]
+}
