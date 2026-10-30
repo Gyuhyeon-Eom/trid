@@ -1867,6 +1867,11 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                                     result['scope'] += (f" 질문이 가리키는 {', '.join(selection['table_rows_not_in_evidence'])} 구간이 검색 근거에 "
                                                         '없어 그 표의 검토된 행을 넣지 않았고, 다른 별표의 행으로 대신하지도 않았습니다. 정보가 '
                                                         '부족합니다. 별표 번호나 표 이름을 넣어 다시 물어 주세요.')
+                                lacking = (selection.get('table_rows_not_in_evidence') or []) + (selection.get('table_rows_unlinked') or [])
+                                if lacking and not selection.get('reviewed_rows'):
+                                    result['answer'] = (result.get('answer') or '') + (
+                                        f" {', '.join(dict.fromkeys(lacking))}의 표 값은 이번 근거에 확인된 형태로 들어 있지 않아 정보가 "
+                                        '부족합니다. 다른 별표 값으로 대신 답하지 않았으니 원문 표를 확인하세요.')
                                 for note in result.get('context_notes') or []:
                                     result['scope'] += ' ' + note
                                 if selection.get('linked_tables'):
