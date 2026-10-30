@@ -1,0 +1,637 @@
+{
+ "user_flow": [
+  {
+   "q": "부동산원 평균 식비",
+   "http": 200,
+   "intent": "search",
+   "type": "statistic",
+   "status": "not_found",
+   "reason": "statistic",
+   "answer": "이 질문은 한국부동산원의 실제 지출의 평균·통계를 묻는 것으로 보입니다. 검색 자료에는 실제 지출 통계 값이 없어 답할 수 없습니다. 규정에 정해진 지급 기준(정액·상한)은 실제 평균 지출과 다른 값입니다. 규정상 지급 기준을 찾으려면 '…출장 식비 지급 기준'처럼 물어 주세요.",
+   "applied": null,
+   "quotes": [],
+   "commentary": "",
+   "notes": null,
+   "retrieval": null,
+   "hits": [],
+   "dense": null,
+   "secs": 0.2
+  },
+  {
+   "q": "그러면 공공기관의 출장비",
+   "http": 200,
+   "intent": "search",
+   "type": null,
+   "status": "clarify",
+   "reason": null,
+   "answer": "이 질문은 여러 기관의 규정에서 비슷하게 검색됩니다. 기관마다 기준이 다를 수 있어 임의로 한 곳을 고르지 않았습니다.\n- 국방부: 국방부 공무국외출장 훈령\n- 헌법재판소: 헌법재판소 공무국외출장 내규\n어느 기관(또는 어떤 규정) 기준인지 질문에 기관명이나 규정명을 넣어 다시 물어봐 주세요.",
+   "applied": null,
+   "quotes": [],
+   "commentary": "",
+   "notes": null,
+   "retrieval": {
+    "mode": "hybrid",
+    "topical_words": [
+     "출장비",
+     "공공기관"
+    ],
+    "best_cosine": 0.693
+   },
+   "hits": [
+    {
+     "doc_id": "law-go-kr:admrul:2100000202773",
+     "passage": "law-go-kr:admrul:2100000202773:0021",
+     "hybrid": 0.812,
+     "cosine": 0.69
+    },
+    {
+     "doc_id": "law-go-kr:admrul:2100000186033",
+     "passage": "law-go-kr:admrul:2100000186033:0012",
+     "hybrid": 0.81,
+     "cosine": 0.693
+    }
+   ],
+   "dense": "da7b5be504fb",
+   "secs": 1.3
+  }
+ ],
+ "alias_rule": [
+  {
+   "q": "부동산원 출장 식비 기준은?",
+   "http": 200,
+   "intent": "search",
+   "type": null,
+   "status": "unknown_institution",
+   "reason": null,
+   "answer": "한국부동산원(공기업(준시장형), 주무부처 국토교통부)의 규정은 현재 검색 자료에 없습니다. 다른 기관의 규정으로 대신 답하지 않습니다. 해당 기관 규정 문서를 첨부(＋)로 넣으면 그 문서에서 찾을 수 있습니다. 기관을 정하지 않고 공공기관 일반 기준을 찾으려면 기관명 없이 물어 주세요.",
+   "applied": null,
+   "quotes": [],
+   "commentary": "",
+   "notes": null,
+   "retrieval": null,
+   "hits": [],
+   "dense": null,
+   "secs": 0.2
+  }
+ ],
+ "similar_new": [
+  {
+   "q": "한국전력공사 출장 숙박비 기준",
+   "http": 200,
+   "intent": "search",
+   "type": null,
+   "status": "unknown_institution",
+   "reason": null,
+   "answer": "한국전력공사(공기업(시장형), 주무부처 기후에너지환경부)의 규정은 현재 검색 자료에 없습니다. 다른 기관의 규정으로 대신 답하지 않습니다. 해당 기관 규정 문서를 첨부(＋)로 넣으면 그 문서에서 찾을 수 있습니다. 기관을 정하지 않고 공공기관 일반 기준을 찾으려면 기관명 없이 물어 주세요.",
+   "applied": null,
+   "quotes": [],
+   "commentary": "",
+   "notes": null,
+   "retrieval": null,
+   "hits": [],
+   "dense": null,
+   "secs": 0.2
+  },
+  {
+   "q": "공무원 국내 출장 식비는 하루 얼마야?",
+   "http": 200,
+   "intent": "search",
+   "type": null,
+   "status": "clarify",
+   "reason": null,
+   "answer": "이 질문은 여러 기관의 규정에서 비슷하게 검색됩니다. 기관마다 기준이 다를 수 있어 임의로 한 곳을 고르지 않았습니다.\n- 법원행정처: 법원공무원 여비 규칙 [별표 0002] 국내 여비 지급표(제10조부터 제13조까지 및 제16조제1항 관련)\n- 인사혁신처: 공무원 여비 규정 [별표 0002] 국내 여비 지급표(제10조부터 제13조까지 및 제16조제1항 관련)\n- 행정안전부: 행정안전부 공무국외출장 운영지침\n- 법제처(질의: 민원인): 행정안전부ㆍ민원인 - 대통령령 제33312호 「공무원 여비 규정」 시행 전에 국내 교육훈련이 시작",
+   "applied": null,
+   "quotes": [],
+   "commentary": "",
+   "notes": null,
+   "retrieval": {
+    "mode": "hybrid",
+    "topical_words": [
+     "국내",
+     "하루",
+     "식비"
+    ],
+    "best_cosine": 0.703
+   },
+   "hits": [
+    {
+     "doc_id": "law-go-kr:law-byl:155902177",
+     "passage": "law-go-kr:law-byl:155902177#0",
+     "hybrid": 0.882,
+     "cosine": 0.672
+    },
+    {
+     "doc_id": "law-go-kr:law-byl:169708641",
+     "passage": "law-go-kr:law-byl:169708641#0",
+     "hybrid": 0.859,
+     "cosine": 0.669
+    }
+   ],
+   "dense": "da7b5be504fb",
+   "secs": 0.3
+  },
+  {
+   "q": "법원공무원 국내 출장 식비는 하루 얼마야?",
+   "http": 200,
+   "intent": "search",
+   "type": null,
+   "status": "quoted",
+   "reason": null,
+   "answer": "원문과 글자가 일치하는 문장 1건을 아래에 표시합니다. 질문에 대한 답인지는 원문 맥락에서 확인하세요. 모델 해설은 검증되지 않았습니다.",
+   "applied": [
+    "법원행정처",
+    "법원공무원 여비 규칙 [별표 0002] 국내 여비 지급표(제10조부터 제13조까지 및 제1"
+   ],
+   "quotes": [
+    "■ 법원공무원 여비 규칙 [별표 2] <개정 2023."
+   ],
+   "commentary": "[D1] ■ 법원공무원 여비 규칙 [별표 2] <개정 2023.\n4.\n27.>\n국내 여비 지급표(제10조부터 제13조까지 및 제16조제1항 관련)에 따르면, 식비(1일당)은 25,000 원입니다.\n이 근거에 따르면, 법원공무원 국내 출장 식비는 하루 25,000 원입니다.",
+   "notes": [],
+   "retrieval": {
+    "mode": "hybrid",
+    "topical_words": [
+     "법원",
+     "국내",
+     "하루",
+     "식비"
+    ],
+    "best_cosine": 0.712
+   },
+   "hits": [
+    {
+     "doc_id": "law-go-kr:law-byl:155902177",
+     "passage": "law-go-kr:law-byl:155902177#0",
+     "hybrid": 0.966,
+     "cosine": 0.712
+    },
+    {
+     "doc_id": "law-go-kr:admrul:2200000108739",
+     "passage": "law-go-kr:admrul:2200000108739:0071",
+     "hybrid": 0.778,
+     "cosine": 0.684
+    }
+   ],
+   "dense": "da7b5be504fb",
+   "secs": 3.2
+  },
+  {
+   "q": "상시 출장하는 공무원 여비는 어떻게 지급돼?",
+   "http": 200,
+   "intent": "search",
+   "type": null,
+   "status": "unverified",
+   "reason": null,
+   "answer": "원문과 글자 그대로 일치하는 인용이 없어 검증된 답이 없습니다. 아래 모델 해설은 검증되지 않았습니다.",
+   "applied": [
+    "인사혁신처",
+    "공무원 여비 규정 [별표 0008] 상시 출장 공무원의 여비 지급 기준표(제29조제2항 관"
+   ],
+   "quotes": [],
+   "commentary": "[D1] 상시 출장하는 공무원의 여비는 **「축산물 위생관리법」 제13조에 따른 검사관으로서 축산물검사 업무에 직접 종사하는 공무원** 및 **과학기술정보통신부 현업기관 공무원**의 여비에 해당하며, 이들의 여비는 **출장일수에 따라 일액 여비를 지급한다**.\n- **지급 방법**: 출장일수에 따라 일액 여비를 지급한다.\n- **지급 대상**: 상시 출장 ",
+   "notes": [
+    "모델 출력이 길이 한도(256토큰)에서 잘렸습니다."
+   ],
+   "retrieval": {
+    "mode": "hybrid",
+    "topical_words": [
+     "상시",
+     "여비"
+    ],
+    "best_cosine": 0.784
+   },
+   "hits": [
+    {
+     "doc_id": "law-go-kr:law-byl:169708689",
+     "passage": "law-go-kr:law-byl:169708689#0",
+     "hybrid": 0.987,
+     "cosine": 0.784
+    },
+    {
+     "doc_id": "law-go-kr:admrul:2100000271816",
+     "passage": "law-go-kr:admrul:2100000271816:0004",
+     "hybrid": 0.833,
+     "cosine": 0.753
+    }
+   ],
+   "dense": "da7b5be504fb",
+   "secs": 6.1
+  }
+ ],
+ "user_numbers": [
+  {
+   "q": "반갑습니다. 저는 3년 차 주무관이고 이번 달 연차가 2일 남았어요.",
+   "http": 200,
+   "intent": "chat",
+   "type": null,
+   "status": "chat",
+   "reason": null,
+   "answer": "안녕하세요! 반갑습니다. 3년 차 주무관이시군요. 이번 달 연차가 2일 남았으니, 연차를 사용하시려면 해당 기관의 연차 사용 규정을 확인하시고, 필요하시면 도움을 드릴 수 있습니다.",
+   "applied": null,
+   "quotes": [],
+   "commentary": "",
+   "notes": [],
+   "retrieval": null,
+   "hits": [],
+   "dense": null,
+   "secs": 1.7
+  },
+  {
+   "q": "방금 말한 제 연차 남은 일수를 다시 말해 줄래요?",
+   "http": 200,
+   "intent": "chat",
+   "type": null,
+   "status": "chat",
+   "reason": null,
+   "answer": "제가 말한 연차 남은 일수는 2일입니다.",
+   "applied": null,
+   "quotes": [],
+   "commentary": "",
+   "notes": [],
+   "retrieval": null,
+   "hits": [],
+   "dense": null,
+   "secs": 0.7
+  },
+  {
+   "q": "회의는 오후 3시, 출장비 예산은 20만원이에요. 한 줄로 정리해 주세요.",
+   "http": 200,
+   "intent": "chat",
+   "type": "organize",
+   "status": "chat",
+   "reason": null,
+   "answer": "회의는 오후 3시이며, 출장비 예산은 20만원입니다.",
+   "applied": null,
+   "quotes": [],
+   "commentary": "",
+   "notes": [],
+   "retrieval": null,
+   "hits": [],
+   "dense": null,
+   "secs": 0.6
+  }
+ ],
+ "explain": [
+  {
+   "q": "여비와 출장비는 무슨 차이야?",
+   "http": 200,
+   "intent": "search",
+   "type": "explain",
+   "status": "clarify",
+   "reason": null,
+   "answer": "이 질문은 여러 기관의 규정에서 비슷하게 검색됩니다. 기관마다 기준이 다를 수 있어 임의로 한 곳을 고르지 않았습니다.\n- 인사혁신처: 공무원 여비 규정 [별표 0008] 상시 출장 공무원의 여비 지급 기준표(제29조제2항 관련)\n- 방위사업청: 국제계약지원단 운영규정\n- 교육부: 지방자치단체 교육비특별회계 세출예산 집행기준 - 지방자치단체 교육비특별회계 세출예산 집행기준 일부개정예규(전문).pdf\n- 국가데이터처: 국가데이터처 소속 상시출장공무원 여비지급 규정\n어느 기관(또는 어떤 규정) 기준인지 질문에 기관명이나 규정명을 넣어 ",
+   "applied": null,
+   "quotes": [],
+   "commentary": "",
+   "notes": null,
+   "retrieval": {
+    "mode": "hybrid",
+    "topical_words": [
+     "여비",
+     "출장비"
+    ],
+    "best_cosine": 0.656
+   },
+   "hits": [
+    {
+     "doc_id": "law-go-kr:law-byl:169708689",
+     "passage": "law-go-kr:law-byl:169708689#0",
+     "hybrid": 0.91,
+     "cosine": 0.642
+    },
+    {
+     "doc_id": "law-go-kr:admrul:2100000284496",
+     "passage": "law-go-kr:admrul:2100000284496:0022",
+     "hybrid": 0.852,
+     "cosine": 0.656
+    }
+   ],
+   "dense": "da7b5be504fb",
+   "secs": 0.1
+  },
+  {
+   "q": "견책이 무슨 뜻이야?",
+   "http": 200,
+   "intent": "chat",
+   "type": "explain",
+   "status": "chat",
+   "reason": null,
+   "answer": "견책은 공공기관에서 직원들이 비상시에 사용하는 비용을 의미합니다. 이 비용은 긴급한 상황에서 필요한 물품이나 서비스를 제공하기 위해 발생하는 비용으로, 일반적으로 예산 내에서 관리됩니다.",
+   "applied": null,
+   "quotes": [],
+   "commentary": "",
+   "notes": [],
+   "retrieval": null,
+   "hits": [],
+   "dense": null,
+   "secs": 1.4
+  },
+  {
+   "q": "보고서 요약을 잘 쓰는 요령 알려줘",
+   "http": 200,
+   "intent": "chat",
+   "type": "explain",
+   "status": "chat",
+   "reason": null,
+   "answer": "보고서 요약을 잘 쓰는 요령은 다음과 같습니다:\n\n1. **핵심 내용을 정리**: 보고서의 주요 내용과 핵심 데이터를 요약하여 간결하게 정리합니다.\n2. **목적을 명확히**: 보고서의 목적이나 사용 목적을 명확히 하여 요약을 편하게 작성합니다.\n3. **구조를 명확히**: 요약을 구조화하여 흐름을 따라가기 쉽게 합니다. 예를 들어, \"1. [내용], 2. [내용], 3. [내용]\" 형식으로 작성합니다.\n4. **간결하고 명확하게**: 복잡한 용어나 긴 문장을 단순화하여 이해하기 쉽게 작성합니다.\n5. **정확성과 신뢰성**: 실제",
+   "applied": null,
+   "quotes": [],
+   "commentary": "",
+   "notes": [],
+   "retrieval": null,
+   "hits": [],
+   "dense": null,
+   "secs": 5.0
+  }
+ ],
+ "memory_after_search": [
+  {
+   "q": "인사혁신처 징계업무편람에서 견책의 효력은?",
+   "http": 200,
+   "intent": "search",
+   "type": null,
+   "status": "quoted",
+   "reason": null,
+   "answer": "원문과 글자가 일치하는 문장 1건을 아래에 표시합니다. 질문에 대한 답인지는 원문 맥락에서 확인하세요. 모델 해설은 검증되지 않았습니다.",
+   "applied": [
+    "인사혁신처",
+    "인사혁신처_징계업무편람 정보_20220901"
+   ],
+   "quotes": [
+    "- ● 다만, 공무원보수규정 제15조에 따라 견책·감봉·정직·강등처분이 말소된 경우, 징계처분기간을 제외한 승급제한기간은 다시 회복되므로 승급기"
+   ],
+   "commentary": "[D1] # (1) 기성(旣成)효과의 회복문제\n- ● 인사기록카드상의 징계기록이 말소되었다고 하여 징계등 처분으로 받은 기성의 효과에는 영향을 미치지 않으므로, 징계등 처분으로 인하여 받은 법령상의 각종 불이익이나 제한사항이 완전히 회복되는 것은 아님.\n→ 출처: D1\n- ● 다만, 공무원보수규정 제15조에 따라 견책·감봉·정직·강등처분이 말소된 경우, 징",
+   "notes": [
+    "같은 문장 반복 1회를 생략했습니다.",
+    "모델 출력이 길이 한도(256토큰)에서 잘렸습니다."
+   ],
+   "retrieval": {
+    "mode": "hybrid",
+    "topical_words": [
+     "편람",
+     "견책",
+     "효력"
+    ],
+    "best_cosine": 0.65
+   },
+   "hits": [
+    {
+     "doc_id": "data.go.kr:15043134",
+     "passage": "data.go.kr:15043134#177519",
+     "hybrid": 0.858,
+     "cosine": 0.65
+    },
+    {
+     "doc_id": "data.go.kr:15043134",
+     "passage": "data.go.kr:15043134#173575",
+     "hybrid": 0.827,
+     "cosine": 0.635
+    }
+   ],
+   "dense": "da7b5be504fb",
+   "secs": 7.2
+  },
+  {
+   "q": "보고서 요약을 잘 쓰는 요령을 세 가지만 알려 주세요.",
+   "http": 200,
+   "intent": "chat",
+   "type": "explain",
+   "status": "chat",
+   "reason": null,
+   "answer": "1. **핵심 내용을 정리**: 보고서의 주요 내용을 간결하게 요약하여, 핵심 정보를 빠르게 파악할 수 있도록 합니다.  \n2. **구조를 명확히 하다**: 보고서의 구성(서문, 본문, 결론 등)을 명확히 하여, 어떤 내용이 어떤 목적으로 작성되었는지 파악할 수 있도록 합니다.  \n3. **데이터와 수치를 명확히 표시**: 중요한 데이터나 수치를 구체적으로 표시하여, 보고서의 내용을 더 명확하게 전달할 수 있도록 합니다.",
+   "applied": null,
+   "quotes": [],
+   "commentary": "",
+   "notes": [],
+   "retrieval": null,
+   "hits": [],
+   "dense": null,
+   "secs": 3.2
+  }
+ ],
+ "no_evidence": [
+  {
+   "q": "자동차 보험료 할인 조건",
+   "http": 200,
+   "intent": "search",
+   "type": null,
+   "status": "not_found",
+   "reason": "irrelevant",
+   "answer": "검색 자료에서 이 질문에 답할 만큼 관련된 구간을 찾지 못했습니다(핵심어 '자동차', '보험료', '할인'을 충분히 다루는 구간 없음). 관련 없는 문서로 대신 답하지 않습니다. 기관명이나 규정명을 넣거나 다른 표현으로 물어 주세요.",
+   "applied": null,
+   "quotes": [],
+   "commentary": "",
+   "notes": null,
+   "retrieval": {
+    "mode": "hybrid",
+    "topical_words": [
+     "자동차",
+     "보험료",
+     "할인"
+    ],
+    "best_cosine": 0.606
+   },
+   "hits": [
+    {
+     "doc_id": "law-go-kr:admrul-file:161109603",
+     "passage": "law-go-kr:admrul-file:161109603#459705",
+     "hybrid": 0.834,
+     "cosine": 0.606
+    },
+    {
+     "doc_id": "law-go-kr:admrul:2100000272304",
+     "passage": "law-go-kr:admrul:2100000272304:0015",
+     "hybrid": 0.797,
+     "cosine": 0.582
+    }
+   ],
+   "dense": "da7b5be504fb",
+   "secs": 0.3
+  },
+  {
+   "q": "국민건강보험공단 직원 출장 일비는 얼마인가요?",
+   "http": 200,
+   "intent": "search",
+   "type": null,
+   "status": "unknown_institution",
+   "reason": null,
+   "answer": "국민건강보험공단(준정부기관(위탁집행형), 주무부처 보건복지부)의 규정은 현재 검색 자료에 없습니다. 다른 기관의 규정으로 대신 답하지 않습니다. 해당 기관 규정 문서를 첨부(＋)로 넣으면 그 문서에서 찾을 수 있습니다. 기관을 정하지 않고 공공기관 일반 기준을 찾으려면 기관명 없이 물어 주세요.",
+   "applied": null,
+   "quotes": [],
+   "commentary": "",
+   "notes": null,
+   "retrieval": null,
+   "hits": [],
+   "dense": null,
+   "secs": 0.2
+  }
+ ],
+ "followup": [
+  {
+   "q": "인사혁신처 징계업무편람에서 견책의 효력은?",
+   "http": 200,
+   "intent": "search",
+   "type": null,
+   "status": "quoted",
+   "reason": null,
+   "answer": "원문과 글자가 일치하는 문장 1건을 아래에 표시합니다. 질문에 대한 답인지는 원문 맥락에서 확인하세요. 모델 해설은 검증되지 않았습니다.",
+   "applied": [
+    "인사혁신처",
+    "인사혁신처_징계업무편람 정보_20220901"
+   ],
+   "quotes": [
+    "- ● 다만, 공무원보수규정 제15조에 따라 견책·감봉·정직·강등처분이 말소된 경우, 징계처분기간을 제외한 승급제한기간은 다시 회복되므로 승급기"
+   ],
+   "commentary": "[D1] # (1) 기성(旣成)효과의 회복문제\n- ● 인사기록카드상의 징계기록이 말소되었다고 하여 징계등 처분으로 받은 기성의 효과에는 영향을 미치지 않으므로, 징계등 처분으로 인하여 받은 법령상의 각종 불이익이나 제한사항이 완전히 회복되는 것은 아님.\n→ 출처: D1\n- ● 다만, 공무원보수규정 제15조에 따라 견책·감봉·정직·강등처분이 말소된 경우, 징",
+   "notes": [
+    "같은 문장 반복 1회를 생략했습니다.",
+    "모델 출력이 길이 한도(256토큰)에서 잘렸습니다."
+   ],
+   "retrieval": {
+    "mode": "hybrid",
+    "topical_words": [
+     "편람",
+     "견책",
+     "효력"
+    ],
+    "best_cosine": 0.65
+   },
+   "hits": [
+    {
+     "doc_id": "data.go.kr:15043134",
+     "passage": "data.go.kr:15043134#177519",
+     "hybrid": 0.858,
+     "cosine": 0.65
+    },
+    {
+     "doc_id": "data.go.kr:15043134",
+     "passage": "data.go.kr:15043134#173575",
+     "hybrid": 0.827,
+     "cosine": 0.635
+    }
+   ],
+   "dense": "da7b5be504fb",
+   "secs": 7.1
+  },
+  {
+   "q": "그럼 감봉은 어떻게 되나요?",
+   "http": 200,
+   "intent": "search",
+   "type": null,
+   "status": "not_found",
+   "reason": "irrelevant",
+   "answer": "검색 자료에서 이 질문에 답할 만큼 관련된 구간을 찾지 못했습니다(핵심어 '감봉'을 충분히 다루는 구간 없음). 관련 없는 문서로 대신 답하지 않습니다. 기관명이나 규정명을 넣거나 다른 표현으로 물어 주세요.",
+   "applied": null,
+   "quotes": [],
+   "commentary": "",
+   "notes": null,
+   "retrieval": {
+    "mode": "hybrid",
+    "topical_words": [
+     "감봉"
+    ],
+    "best_cosine": 0.61
+   },
+   "hits": [
+    {
+     "doc_id": "data.go.kr:15043134",
+     "passage": "data.go.kr:15043134#211931",
+     "hybrid": 0.782,
+     "cosine": 0.581
+    },
+    {
+     "doc_id": "data.go.kr:15043134",
+     "passage": "data.go.kr:15043134#162009",
+     "hybrid": 0.557,
+     "cosine": 0.516
+    }
+   ],
+   "dense": "da7b5be504fb",
+   "secs": 0.4
+  },
+  {
+   "q": "상시 출장하는 공무원 여비는 어떻게 지급돼?",
+   "http": 200,
+   "intent": "search",
+   "type": null,
+   "status": "unverified",
+   "reason": null,
+   "answer": "원문과 글자 그대로 일치하는 인용이 없어 검증된 답이 없습니다. 아래 모델 해설은 검증되지 않았습니다.",
+   "applied": [
+    "인사혁신처",
+    "공무원 여비 규정 [별표 0008] 상시 출장 공무원의 여비 지급 기준표(제29조제2항 관"
+   ],
+   "quotes": [],
+   "commentary": "[D1] 상시 출장하는 공무원의 여비는 **「축산물 위생관리법」 제13조에 따른 검사관으로서 축산물검사 업무에 직접 종사하는 공무원** 및 **과학기술정보통신부 현업기관 공무원**의 여비에 해당하며, 이들의 여비는 **출장일수에 따라 일액 여비를 지급한다**.\n- **지급 방법**: 출장일수에 따라 일액 여비를 지급한다.\n- **지급 대상**: 상시 출장 ",
+   "notes": [
+    "모델 출력이 길이 한도(256토큰)에서 잘렸습니다."
+   ],
+   "retrieval": {
+    "mode": "hybrid",
+    "topical_words": [
+     "상시",
+     "여비"
+    ],
+    "best_cosine": 0.784
+   },
+   "hits": [
+    {
+     "doc_id": "law-go-kr:law-byl:169708689",
+     "passage": "law-go-kr:law-byl:169708689#0",
+     "hybrid": 0.987,
+     "cosine": 0.784
+    },
+    {
+     "doc_id": "law-go-kr:admrul:2100000271816",
+     "passage": "law-go-kr:admrul:2100000271816:0004",
+     "hybrid": 0.833,
+     "cosine": 0.753
+    }
+   ],
+   "dense": "da7b5be504fb",
+   "secs": 6.1
+  }
+ ],
+ "reader_m1": [
+  {
+   "q": "인사혁신처 징계업무편람에서 견책의 효력은?",
+   "http": 200,
+   "intent": "search",
+   "type": null,
+   "status": "not_found",
+   "reason": null,
+   "answer": "확인한 문서 구간에서 답을 찾지 못했습니다.",
+   "applied": [
+    "인사혁신처",
+    "인사혁신처_징계업무편람 정보_20220901"
+   ],
+   "quotes": [],
+   "commentary": "",
+   "notes": null,
+   "retrieval": {
+    "mode": "hybrid",
+    "topical_words": [
+     "편람",
+     "견책",
+     "효력"
+    ],
+    "best_cosine": 0.65
+   },
+   "hits": [
+    {
+     "doc_id": "data.go.kr:15043134",
+     "passage": "data.go.kr:15043134#177519",
+     "hybrid": 0.858,
+     "cosine": 0.65
+    },
+    {
+     "doc_id": "data.go.kr:15043134",
+     "passage": "data.go.kr:15043134#173575",
+     "hybrid": 0.827,
+     "cosine": 0.635
+    }
+   ],
+   "dense": "da7b5be504fb",
+   "secs": 0.7
+  }
+ ]
+}

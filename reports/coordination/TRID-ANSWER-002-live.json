@@ -1,0 +1,198 @@
+[
+ {
+  "q": "부동산원 평균 식비",
+  "intent": "search",
+  "request_type": "statistic",
+  "status": "not_found",
+  "reason": "statistic",
+  "applied": null,
+  "quotes": [],
+  "retrieval": null,
+  "elapsed_ms": 196,
+  "shown": "trid:\n이 질문은 한국부동산원의 실제 지출의 평균·통계를 묻는 것으로 보입니다. 검색 자료에는 실제 지출 통계 값이 없어 답할 수 없습니다. 규정에 정해진 지급 기준(정액·상한)은 실제 평균 지출과 다른 값입니다. 규정상 지급 기준을 찾으려면 '…출장 식비 지급 기준'처럼 물어 주세요.\n근거 못 찾음\n자세히"
+ },
+ {
+  "q": "그러면 공공기관의 출장비",
+  "intent": "search",
+  "status": "clarify",
+  "reason": null,
+  "applied": null,
+  "continued": false,
+  "quotes": [],
+  "retrieval": {
+   "mode": "hybrid",
+   "best_cosine": 0.693,
+   "topical": [
+    "출장비",
+    "공공기관"
+   ],
+   "hit": {
+    "doc_id": "law-go-kr:admrul:2100000202773",
+    "passage": "law-go-kr:admrul:2100000202773:0021",
+    "hybrid": 0.812,
+    "cosine": 0.69
+   },
+   "dense": "da7b5be504fb"
+  },
+  "elapsed_ms": 2170,
+  "shown": "trid:\n이 질문은 여러 기관의 규정에서 비슷하게 검색됩니다. 기관마다 기준이 다를 수 있어 임의로 한 곳을 고르지 않았습니다.\n- 국방부: 국방부 공무국외출장 훈령\n- 헌법재판소: 헌법재판소 공무국외출장 내규\n어느 기관(또는 어떤 규정) 기준인지 질문에 기관명이나 규정명을 넣어 다시 물어봐 주세요.\n되묻기\n자세히"
+ },
+ {
+  "q": "부동산원 출장 식비 기준은?",
+  "intent": "search",
+  "status": "unknown_institution",
+  "reason": null,
+  "applied": null,
+  "continued": false,
+  "quotes": [],
+  "retrieval": null,
+  "elapsed_ms": 190,
+  "shown": "trid:\n한국부동산원(공기업(준시장형), 주무부처 국토교통부)의 규정은 현재 검색 자료에 없습니다. 다른 기관의 규정으로 대신 답하지 않습니다. 해당 기관 규정 문서를 첨부(＋)로 넣으면 그 문서에서 찾을 수 있습니다. 기관을 정하지 않고 공공기관 일반 기준을 찾으려면 기관명 없이 물어 주세요.\n해당 기관 자료 없음\n자세히"
+ },
+ {
+  "q": "반갑습니다. 저는 3년 차 주무관이고 이번 달 연차가 2일 남았어요.",
+  "intent": "chat",
+  "status": "chat",
+  "applied": null,
+  "quotes": [],
+  "retrieval": null,
+  "elapsed_ms": 1587,
+  "shown": "trid:\n안녕하세요! 반갑습니다. 3년 차 주무관이시군요. 이번 달 연차가 2일 남았으니, 연차를 사용하시려면 해당 기관의 연차 사용 규정을 확인하시고, 필요하시면 도움을 드릴 수 있습니다.\n일반 대화 · 문서 근거 없음 · 검증 대상 아님\n자세히"
+ },
+ {
+  "q": "방금 말한 제 연차 남은 일수를 다시 말해 줄래요?",
+  "intent": "chat",
+  "status": "chat",
+  "applied": null,
+  "quotes": [],
+  "retrieval": null,
+  "elapsed_ms": 648,
+  "shown": "trid:\n제가 말한 연차 남은 일수는 2일입니다.\n일반 대화 · 문서 근거 없음 · 검증 대상 아님\n자세히"
+ },
+ {
+  "q": "회의는 오후 3시, 출장비 예산은 20만원이에요. 한 줄로 정리해 주세요.",
+  "intent": "chat",
+  "request_type": "organize",
+  "status": "chat",
+  "applied": null,
+  "quotes": [],
+  "retrieval": null,
+  "elapsed_ms": 622,
+  "shown": "trid:\n회의는 오후 3시이며, 출장비 예산은 20만원입니다.\n일반 대화 · 문서 근거 없음 · 검증 대상 아님\n자세히"
+ },
+ {
+  "q": "인사혁신처 징계업무편람에서 견책의 효력은?",
+  "intent": "search",
+  "status": "quoted",
+  "applied": "인사혁신처 · 인사혁신처_징계업무편람 정보_20220901",
+  "continued": false,
+  "quotes": [
+   "- ● 다만, 공무원보수규정 제15조에 따라 견책·감봉·정직·강등처분이 말소된 경우, 징계처분기간을 제외한 승급제한기간은 다시 회복되므로 승급기"
+  ],
+  "retrieval": {
+   "mode": "hybrid",
+   "best_cosine": 0.65,
+   "topical": [
+    "편람",
+    "견책",
+    "효력"
+   ],
+   "hit": {
+    "doc_id": "data.go.kr:15043134",
+    "passage": "data.go.kr:15043134#177519",
+    "hybrid": 0.858,
+    "cosine": 0.65
+   },
+   "dense": "da7b5be504fb"
+  },
+  "elapsed_ms": 6694,
+  "shown": "trid:\n원문과 글자가 일치하는 문장 1건을 아래에 표시합니다. 질문에 대한 답인지는 원문 맥락에서 확인하세요. 모델 해설은 검증되지 않았습니다.\n원문 인용 확인됨\n표가 들어 있는 구간을 썼습니다. 표의 행·열 대응은 검증되지 않았으므로 표 값을 해석하거나 계산한 내용은 근거로 쓰지 말고 원문 링크에서 표를 직접 확인하세요.\n원문 인용 · 인사혁신처 · 인사혁신처_징계업무편람 정보_20220901 · (1) 기성(旣成)효과의 회복문제\n- ● 다만, 공무원보수규정 제15조에 따라 견책·감봉·정직·강등처분이 말소된 경우, 징계처분기간"
+ },
+ {
+  "q": "그럼 감봉은 어떻게 되나요?",
+  "intent": "search",
+  "status": "unverified",
+  "applied": "인사혁신처 · 인사혁신처_징계업무편람 정보_20220901",
+  "continued": true,
+  "quotes": [],
+  "retrieval": {
+   "mode": "hybrid",
+   "best_cosine": 0.61,
+   "topical": [
+    "감봉"
+   ],
+   "hit": {
+    "doc_id": "data.go.kr:15043134",
+    "passage": "data.go.kr:15043134#211931",
+    "hybrid": 0.782,
+    "cosine": 0.581
+   },
+   "dense": "da7b5be504fb"
+  },
+  "elapsed_ms": 6333,
+  "shown": "trid:\n원문과 글자 그대로 일치하는 인용이 없어 검증된 답이 없습니다. 아래 모델 해설은 검증되지 않았습니다.\n검증 안 됨 · 해설만\n표가 들어 있는 구간을 썼습니다. 표의 행·열 대응은 검증되지 않았으므로 표 값을 해석하거나 계산한 내용은 근거로 쓰지 말고 원문 링크에서 표를 직접 확인하세요.\n출처 · 인사혁신처"
+ },
+ {
+  "q": "보고서 요약을 잘 쓰는 요령을 세 가지만 알려 주세요.",
+  "intent": "chat",
+  "request_type": "explain",
+  "status": "chat",
+  "applied": null,
+  "quotes": [],
+  "retrieval": null,
+  "elapsed_ms": 2173,
+  "shown": "trid:\n1. **주요 내용을 정리**: 보고서의 핵심 내용을 간결하게 요약하여 명확히 표현합니다.  \n2. **데이터를 정리**: 숫자나 통계를 포함한 구체적인 내용을 정리하여 이해하기 쉽게 합니다.  \n3. **목표와 결론 명확히 표기**: 보고서의 목적과 결론을 명확히 기술하여 독자의 이해를 돕습니다.\n일반 대화 · 문서 근거 없음 · 검증 대상 아님\n자세히"
+ },
+ {
+  "q": "상시 출장하는 공무원 여비는 어떻게 지급돼?",
+  "intent": "search",
+  "status": "unverified",
+  "applied": "인사혁신처 · 공무원 여비 규정 [별표 0008] 상시 출장 공무원의 여비 지급 기준표(제29조제2항 관련)",
+  "continued": false,
+  "quotes": [],
+  "retrieval": {
+   "mode": "hybrid",
+   "best_cosine": 0.784,
+   "topical": [
+    "상시",
+    "여비"
+   ],
+   "hit": {
+    "doc_id": "law-go-kr:law-byl:169708689",
+    "passage": "law-go-kr:law-byl:169708689#0",
+    "hybrid": 0.987,
+    "cosine": 0.784
+   },
+   "dense": "da7b5be504fb"
+  },
+  "elapsed_ms": 5685,
+  "shown": "trid:\n원문과 글자 그대로 일치하는 인용이 없어 검증된 답이 없습니다. 아래 모델 해설은 검증되지 않았습니다.\n검증 안 됨 · 해설만\n표가 들어 있는 구간을 썼습니다. 표의 행·열 대응은 검증되지 않았으므로 표 값을 해석하거나 계산한 내용은 근거로 쓰지 말고 원문 링크에서 표를 직접 확인하세요.\n출처 · 인사혁신처"
+ },
+ {
+  "q": "자동차 보험료 할인 조건",
+  "intent": "search",
+  "status": "not_found",
+  "reason": "irrelevant",
+  "applied": null,
+  "continued": false,
+  "quotes": [],
+  "retrieval": {
+   "mode": "hybrid",
+   "best_cosine": 0.606,
+   "topical": [
+    "자동차",
+    "보험료",
+    "할인"
+   ],
+   "hit": {
+    "doc_id": "law-go-kr:admrul-file:161109603",
+    "passage": "law-go-kr:admrul-file:161109603#459705",
+    "hybrid": 0.834,
+    "cosine": 0.606
+   },
+   "dense": "da7b5be504fb"
+  },
+  "elapsed_ms": 295,
+  "shown": "trid:\n검색 자료에서 이 질문에 답할 만큼 관련된 구간을 찾지 못했습니다(핵심어 '자동차', '보험료', '할인'을 충분히 다루는 구간 없음). 관련 없는 문서로 대신 답하지 않습니다. 기관명이나 규정명을 넣거나 다른 표현으로 물어 주세요.\n근거 못 찾음\n자세히"
+ }
+]

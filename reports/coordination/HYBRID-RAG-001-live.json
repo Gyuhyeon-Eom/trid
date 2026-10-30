@@ -1,0 +1,221 @@
+[
+ {
+  "q": "위법한 공무국외출장을 한 지방자치단체 공무원은 어떻게 처리하나요?",
+  "intent": "search",
+  "status": "unverified",
+  "applied": {
+   "inst": "행정안전부",
+   "title": "위법한 공무국외출장에 대한 지방자치단체 처리기준",
+   "date_type": "발령일자",
+   "date": "2026-06-19",
+   "source_id": "law-go-kr:admrul:97563",
+   "snapshot_id": "api-drf-admrul-travel-002",
+   "issuer_id": "1741000"
+  },
+  "continued": false,
+  "quotes": [],
+  "retrieval": {
+   "index": "v3",
+   "mode": "hybrid",
+   "best_cosine": 0.752,
+   "topical": [
+    "위법",
+    "국외",
+    "지방자치단체"
+   ],
+   "hit": {
+    "doc_id": "law-go-kr:admrul:2100000281038",
+    "passage": "law-go-kr:admrul:2100000281038:0001",
+    "hybrid": 0.9,
+    "cosine": 0.752
+   },
+   "dense": "8e553e0eb498"
+  },
+  "privacy_text_leak": false,
+  "elapsed_ms": 6215,
+  "shown": "trid:\n원문과 글자 그대로 일치하는 인용이 없어 검증된 답이 없습니다. 아래 모델 해설은 검증되지 않았습니다.\n검증 안 됨 · 해설만\n출처 · 행정안전부"
+ },
+ {
+  "q": "농림축산검역본부 상시출장공무원 여비 지급 기준",
+  "intent": "search",
+  "status": "quoted",
+  "applied": {
+   "inst": "농림축산검역본부",
+   "title": "농림축산검역본부 소속 상시출장공무원 여비지급 규정",
+   "date_type": "발령일자",
+   "date": "2023-12-19",
+   "source_id": "law-go-kr:admrul:48540",
+   "snapshot_id": "api-drf-admrul-travel-002",
+   "issuer_id": "1543000"
+  },
+  "continued": false,
+  "quotes": [
+   "농림축산검역본부 소속 상시출장공무원 여비지급 규정",
+   "제1조(목적) 이 훈령은 「공무원 여비 규정」 제29조제2항 및 별표 8에 따라 농림축산검역본부 소속 상시출장공무원의 여비 지급에 관한 사항을 "
+  ],
+  "retrieval": {
+   "index": "v3",
+   "mode": "hybrid",
+   "best_cosine": 0.791,
+   "topical": [
+    "상시",
+    "여비"
+   ],
+   "hit": {
+    "doc_id": "law-go-kr:admrul:2100000232996",
+    "passage": "law-go-kr:admrul:2100000232996:0001",
+    "hybrid": 0.887,
+    "cosine": 0.785
+   },
+   "dense": "8e553e0eb498"
+  },
+  "privacy_text_leak": false,
+  "elapsed_ms": 5458,
+  "shown": "trid:\n원문과 글자가 일치하는 문장 2건을 아래에 표시합니다. 질문에 대한 답인지는 원문 맥락에서 확인하세요. 모델 해설은 검증되지 않았습니다.\n원문 인용 확인됨\n원문 인용 · 농림축산검역본부 · 농림축산검역본부 소속 상시출장공무원 여비지급 규정 · 전문\n농림축산검역본부 소속 상시출장공무원 여비지급 규정\n원문 인용 · 농림축산검역본부 · 농림축산검역본부 소속 상시출장공무원 여비지급 규정 · 제1조\n제1조(목적) 이 훈령은 「공무원 여비 규정」 제29조제2항 "
+ },
+ {
+  "q": "항공기 사고 재난 피해자 유해 수습 매뉴얼에서 유가족 연락처는?",
+  "intent": "search",
+  "status": "unverified",
+  "applied": {
+   "inst": "소방청",
+   "title": "항공기 사고 재난 피해자 유해 수습 매뉴얼 - ★항공기 사고 재난 피해자 유해 수습 매뉴얼(총괄).pdf",
+   "date_type": "발령일자 (rule header)",
+   "date": "2026-08-07"
+  },
+  "continued": false,
+  "quotes": [],
+  "retrieval": {
+   "index": "v3",
+   "mode": "hybrid",
+   "best_cosine": 0.753,
+   "topical": [
+    "항공기",
+    "재난",
+    "피해자",
+    "유해",
+    "수습",
+    "매뉴얼",
+    "유가족",
+    "연락처"
+   ],
+   "hit": {
+    "doc_id": "law-go-kr:admrul-file:168423963",
+    "passage": "law-go-kr:admrul-file:168423963#24196",
+    "hybrid": 0.855,
+    "cosine": 0.753
+   },
+   "dense": "8e553e0eb498"
+  },
+  "privacy_text_leak": false,
+  "elapsed_ms": 1469,
+  "shown": "trid:\n원문과 글자 그대로 일치하는 인용이 없어 검증된 답이 없습니다. 아래 모델 해설은 검증되지 않았습니다.\n검증 안 됨 · 해설만\n표가 들어 있는 구간을 썼습니다. 표의 행·열 대응은 검증되지 않았으므로 표 값을 해석하거나 계산한 내용은 근거로 쓰지 말고 원문 링크에서 표를 직접 확인하세요.\n출처 · 소방청"
+ },
+ {
+  "q": "부동산원 평균 식비",
+  "intent": "search",
+  "request_type": "statistic",
+  "status": "not_found",
+  "reason": "statistic",
+  "applied": null,
+  "quotes": [],
+  "retrieval": null,
+  "privacy_text_leak": false,
+  "elapsed_ms": 215,
+  "shown": "trid:\n이 질문은 한국부동산원의 실제 지출의 평균·통계를 묻는 것으로 보입니다. 검색 자료에는 실제 지출 통계 값이 없어 답할 수 없습니다. 규정에 정해진 지급 기준(정액·상한)은 실제 평균 지출과 다른 값입니다. 규정상 지급 기준을 찾으려면 '…출장 식비 지급 기준'처럼 물어 주세요.\n근거 못 찾음\n자세히"
+ },
+ {
+  "q": "그러면 공공기관의 출장비",
+  "intent": "search",
+  "status": "clarify",
+  "reason": null,
+  "applied": null,
+  "continued": false,
+  "quotes": [],
+  "retrieval": {
+   "index": "v3",
+   "mode": "hybrid",
+   "best_cosine": 0.693,
+   "topical": [
+    "출장비",
+    "공공기관"
+   ],
+   "hit": {
+    "doc_id": "law-go-kr:admrul:2100000202773",
+    "passage": "law-go-kr:admrul:2100000202773:0021",
+    "hybrid": 0.812,
+    "cosine": 0.69
+   },
+   "dense": "8e553e0eb498"
+  },
+  "privacy_text_leak": false,
+  "elapsed_ms": 251,
+  "shown": "trid:\n이 질문은 여러 기관의 규정에서 비슷하게 검색됩니다. 기관마다 기준이 다를 수 있어 임의로 한 곳을 고르지 않았습니다.\n- 국방부: 국방부 공무국외출장 훈령\n- 헌법재판소: 헌법재판소 공무국외출장 내규\n어느 기관(또는 어떤 규정) 기준인지 질문에 기관명이나 규정명을 넣어 다시 물어봐 주세요.\n되묻기\n자세히"
+ },
+ {
+  "q": "인사혁신처 징계업무편람에서 견책의 효력은?",
+  "intent": "search",
+  "status": "quoted",
+  "applied": {
+   "inst": "인사혁신처",
+   "title": "인사혁신처_징계업무편람 정보_20220901",
+   "date_type": "데이터셋 파일 기준일(편람 2022년판)",
+   "date": "2022-09-01"
+  },
+  "continued": false,
+  "quotes": [
+   "- ● 다만, 공무원보수규정 제15조에 따라 견책·감봉·정직·강등처분이 말소된 경우, 징계처분기간을 제외한 승급제한기간은 다시 회복되므로 승급기"
+  ],
+  "retrieval": {
+   "index": "v3",
+   "mode": "hybrid",
+   "best_cosine": 0.65,
+   "topical": [
+    "편람",
+    "견책",
+    "효력"
+   ],
+   "hit": {
+    "doc_id": "data.go.kr:15043134",
+    "passage": "data.go.kr:15043134#177519",
+    "hybrid": 0.858,
+    "cosine": 0.65
+   },
+   "dense": "8e553e0eb498"
+  },
+  "privacy_text_leak": false,
+  "elapsed_ms": 6686,
+  "shown": "trid:\n원문과 글자가 일치하는 문장 1건을 아래에 표시합니다. 질문에 대한 답인지는 원문 맥락에서 확인하세요. 모델 해설은 검증되지 않았습니다.\n원문 인용 확인됨\n표가 들어 있는 구간을 썼습니다. 표의 행·열 대응은 검증되지 않았으므로 표 값을 해석하거나 계산한 내용은 근거로 쓰지 말고 원문 링크에서 표를 직접 확인하세요.\n원문 인용 · 인사혁신처 · 인사혁신처_징계업무편람 정보_20220901 · (1) 기성(旣成)효과의 회복문제\n- ● 다만, 공무원보수규"
+ },
+ {
+  "q": "그럼 감봉은 어떻게 되나요?",
+  "intent": "search",
+  "status": "unverified",
+  "applied": {
+   "inst": "인사혁신처",
+   "title": "인사혁신처_징계업무편람 정보_20220901",
+   "date_type": "데이터셋 파일 기준일(편람 2022년판)",
+   "date": "2022-09-01"
+  },
+  "continued": true,
+  "quotes": [],
+  "retrieval": {
+   "index": "v3",
+   "mode": "hybrid",
+   "best_cosine": 0.61,
+   "topical": [
+    "감봉"
+   ],
+   "hit": {
+    "doc_id": "data.go.kr:15043134",
+    "passage": "data.go.kr:15043134#211931",
+    "hybrid": 0.782,
+    "cosine": 0.581
+   },
+   "dense": "8e553e0eb498"
+  },
+  "privacy_text_leak": false,
+  "elapsed_ms": 6111,
+  "shown": "trid:\n원문과 글자 그대로 일치하는 인용이 없어 검증된 답이 없습니다. 아래 모델 해설은 검증되지 않았습니다.\n검증 안 됨 · 해설만\n표가 들어 있는 구간을 썼습니다. 표의 행·열 대응은 검증되지 않았으므로 표 값을 해석하거나 계산한 내용은 근거로 쓰지 말고 원문 링크에서 표를 직접 확인하세요.\n출처 · 인사혁신처"
+ }
+]
