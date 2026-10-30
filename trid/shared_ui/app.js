@@ -39,7 +39,7 @@ function loaded(data) {
   for (const warning of data.warnings) print(warning.replace('추출 문서 보기에서 확인해 주세요.', '/source로 원문을 확인해 주세요.'), 'muted');
 }
 function help() {
-  print('질문을 그대로 입력하면 등록된 공개 자료 전체에서 근거를 찾습니다.\n/doc 번호  직전 답변의 "다른 후보 문서" 중 하나로 다음 질문 고정\n/doc       문서 고정 해제(자동 선택)\n/workspace 업로드 문서 대신 공유 자료 검색으로 돌아가기\n/pdf       텍스트 PDF 열기 (2MB · 20페이지 · 5만 자 이하, OCR 미지원)\n/paste     문서 직접 붙여넣기 (5,000자 이하)\n/sample    가상 출장 규정 불러오기\n/source    현재 문서(또는 직전 답변의 적용 문서 원문 링크) 보기\n/clear     서버 문서와 이 화면의 기록 지우기\n/help      도움말\n\n이전 질문을 이어서 이해하는 대화 모드가 아니라, 질문마다 근거를 새로 찾습니다.\n↑ / ↓ 이전 명령 선택 · Enter 실행', 'muted');
+  print('질문을 그대로 입력하면 등록된 공개 자료 전체에서 근거를 찾습니다.\n/doc 번호  (고급) 직전 답변의 참고 문서 중 하나로 다음 질문 고정, /doc 해제\n/workspace 업로드 문서 대신 공유 자료 검색으로 돌아가기\n/pdf       텍스트 PDF 열기 (2MB · 20페이지 · 5만 자 이하, OCR 미지원)\n/paste     문서 직접 붙여넣기 (5,000자 이하)\n/sample    가상 출장 규정 불러오기\n/source    현재 문서(또는 직전 답변의 적용 문서 원문 링크) 보기\n/clear     서버 문서와 이 화면의 기록 지우기\n/help      도움말\n\n이전 질문을 이어서 이해하는 대화 모드가 아니라, 질문마다 근거를 새로 찾습니다.\n↑ / ↓ 이전 명령 선택 · Enter 실행', 'muted');
 }
 function describe(d) {
   return [d.institution, d.title, d.kind, d.date ? `${d.date_type || '기준일'} ${d.date}` : null, d.effective_date ? `시행 ${d.effective_date}` : null].filter(Boolean).join(' · ');
@@ -101,7 +101,7 @@ async function execute(value) {
     }
     if (result.commentary) print(`[모델 해설 · 검증 안 됨 — 원문과 대조하세요]\n${result.commentary}`, 'muted');
     for (const note of result.commentary_notes || []) print(note, note.includes('숨겼습니다') ? 'error' : 'muted');
-    if (ws?.others?.length) print('다른 후보 문서 (다른 기관·문서의 규정일 수 있음. 해당 문서로 다시 물으려면 /doc 번호):\n' + ws.others.map((d,i)=>`${i+1}. ${describe(d)}`).join('\n'), 'muted');
+    if (ws?.selection === 'answer' && ws.others?.length) print('검색된 다른 문서 (참고용, 이 답변에는 쓰지 않음. 다른 기관 기준이 필요하면 질문에 기관명이나 규정명을 넣어 주세요):\n' + ws.others.slice(0, 3).map(d=>`- ${describe(d)}`).join('\n'), 'muted');
     print(result.scope, 'muted');
   });
 }

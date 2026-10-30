@@ -16,6 +16,7 @@ import threading
 import time
 from urllib.parse import urlsplit, unquote
 
+import numpy as np
 import torch
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from evaluate_external_chat import GRAMMAR, MAX_TOKENS, SYSTEM, complete, digest, evidence_grammar, request as llama_request
@@ -131,6 +132,14 @@ def answer_document_case(document, question, base, family, context, max_tokens=2
     if r.get('skipped_context'):
         raise DocumentError('검색된 문서 구간이 모델 문맥 한도를 넘었습니다. 질문을 더 구체적으로 입력해 주세요.')
     output = r['generated']
+    # Echoing the question or the instructions back is a failed answer (a known defect of the pilot), not a quote.
+    flat = _norm(output)
+    echoed = (len(_norm(question)) >= 8 and _norm(question) in flat) or any(
+        _norm(text) in flat for text in ('제공된 근거로만 답하세요', '근거에 있는 결론과 그 이유', '근거에 없는 내용은 추측하지'))
+    if echoed or output.lstrip().startswith('질문:'):
+        return {**result, 'raw_output': output, 'status': 'model_failure',
+                'answer': '모델이 질문이나 지시문을 그대로 옮겨 적어 답변에 실패했습니다. 이 출력은 표시하지 않습니다 '
+                          '(TRID 1.7B 실험판에서 확인된 결함).'}
     segments, seen, repeats = [], set(), 0
     for part in re.split(r'(?<=[.!?])\s+|\n+', output):
         part = part.strip()
@@ -204,12 +213,36 @@ class PassageChunk:
     path: tuple
 
 
+NORMALIZE = re.compile(r'[\s·ㆍ・「」『』()（）\[\]〈〉<>,.\-]')
+
+
+def _norm(text):
+    return NORMALIZE.sub('', text or '')
+
+
+def _longest_shared(a, b):
+    """Length of the longest substring of `a` that also occurs in `b` (both normalised)."""
+    best = 0
+    for i in range(len(a)):
+        for j in range(len(a), i + best, -1):
+            if a[i:j] in b:
+                best = j - i
+                break
+    return best
+
+
 class Workspace:
     """Questions without an uploaded document search the shared index of approved public sources
-    (scripts/build_workspace_index.py). Each answer uses passages of ONE document (the best match, or the one the
-    visitor pinned), so rules of different institutions are never mixed; close matches from other documents are
-    listed for the visitor to choose."""
-    MAX_PASSAGES = 4  # CPU prompt processing dominates latency; four 550-char passages keep answers under ~30 s
+    (scripts/build_workspace_index.py). Selection uses the question's own metadata before ranking:
+      1. an institution named in the question restricts the search to that institution's documents; when the corpus
+         has none, the reply says so (no fallback to another institution);
+      2. a document title (or a long part of one) named in the question restricts it to those documents;
+      3. otherwise, when the best matches belong to different institutions with comparable scores, the reply asks in
+         plain language which institution's rule is meant instead of picking one.
+    Each answer uses passages of ONE document, so rules of different institutions are never mixed."""
+    MAX_PASSAGES = 4  # CPU prompt processing dominates latency; four 550-char passages keep answers short
+    TITLE_MIN = 8      # normalised characters shared with a title to count as naming that document
+    CLOSE = 0.85       # another institution's best score within this ratio of the top makes the question ambiguous
 
     def __init__(self, directory):
         from trid.service.index import Index
@@ -218,6 +251,13 @@ class Workspace:
         self.meta = json.loads((root / 'meta.json').read_text())
         self.manifest = json.loads((root / 'manifest.json').read_text())
         self.name = root.name
+        self.passage_doc = np.array([p.doc_id for p in self.index.passages])
+        self.by_institution = {}
+        for doc_id, m in self.meta.items():
+            name = (m['institution'] or '').split('(질의')[0]
+            if len(_norm(name)) >= 3:
+                self.by_institution.setdefault(_norm(name), set()).add(doc_id)
+        self.norm_titles = {doc_id: _norm(m['title']) for doc_id, m in self.meta.items()}
 
     def scope(self):
         kinds = ' · '.join(f'{k} {n:,}건' for k, n in self.manifest['by_kind'].items())
@@ -233,22 +273,93 @@ class Workspace:
                 'currency': m['currency'], 'source': m['source'], 'license': m['license'],
                 **({'score': round(score, 2)} if score is not None else {})}
 
+    INSTITUTION_LIKE = re.compile(r'[가-힣]{2,}(?:공사|공단|위원회|재단|진흥원|연구원|은행|센터|청|처|부)(?![가-힣])')
+    WEAK = 0.6  # best score inside the named institution below this share of the corpus-wide best: no relevant rule
+
+    def constraints(self, question):
+        """(named institutions, unknown institution-like names, allowed doc ids or None, named document ids or None).
+        An institution's documents are those it issues (meta) or whose title carries its name (regulations issued by
+        a department of the institution)."""
+        q = _norm(question)
+        named = [name for name in self.by_institution if name in q]
+        named = [n for n in named if not any(n != m and n in m for m in named)]  # keep the longest names
+        unknown = [w for w in self.INSTITUTION_LIKE.findall(question)
+                   if not any(_norm(w) in n or n in _norm(w) for n in named) and _norm(w) not in self.by_institution
+                   and not any(_norm(w) in t for t in self.norm_titles.values())]
+        allowed = None
+        if named:
+            allowed = set().union(*(self.by_institution[n] for n in named))
+            allowed |= {d for d, t in self.norm_titles.items() if any(n in t for n in named)}
+        pool = allowed if allowed is not None else self.norm_titles.keys()
+        shared = {d: _longest_shared(self.norm_titles[d], q) for d in pool}
+        top = max(shared.values(), default=0)
+        titled = {d for d, n in shared.items() if n == top} if top >= self.TITLE_MIN else None
+        return named, unknown, allowed, titled
+
     def select(self, question, pinned=None):
-        """(applied document, [(PassageChunk, score)], [other documents]); applied is None when nothing matched."""
-        hits = self.index.search(question, {'public'}, k=40 if pinned else 8, hops=1)
-        if pinned:
-            hits = [h for h in hits if h.passage.doc_id == pinned]
-        if not hits:
-            return None, [], []
+        """dict(status, applied, chunks, others, institutions, ...). status: 'answer' | 'clarify' | 'unknown_institution'
+        | 'institution_no_match' | 'not_found'."""
+        from trid.service.index import tokenize_all
+        named, unknown, allowed, titled = self.constraints(question)
+        result = {'applied': None, 'chunks': [], 'others': [], 'institutions': named, 'unknown_institutions': unknown,
+                  'title_matched': bool(titled)}
+        if unknown and not named and not pinned:
+            return {**result, 'status': 'unknown_institution'}
+        restrict = {pinned} if pinned else (titled or allowed)
+        tokens = tokenize_all([question])[0]
+        if not tokens:
+            return {**result, 'status': 'not_found'}
+        everywhere = self.index.bm25.get_scores(tokens)
+        scores = everywhere
+        if restrict is not None:
+            scores = np.where(np.isin(self.passage_doc, list(restrict)), everywhere, -np.inf)
+            if named and not titled and not pinned and scores.max() < self.WEAK * everywhere.max():
+                return {**result, 'status': 'institution_no_match'}
+        order = [int(i) for i in np.argsort(-scores, kind='stable')[:60] if scores[i] > 0]
+        if not order:
+            return {**result, 'status': 'not_found'}
         best = {}
-        for h in hits:
-            if h.via is None:
-                best[h.passage.doc_id] = max(best.get(h.passage.doc_id, 0.0), h.score)
-        applied = pinned or hits[0].passage.doc_id
-        chunks = [(PassageChunk(h.passage.text, 1, h.passage.char_start, h.passage.doc_id, h.passage.path), h.score)
-                  for h in hits if h.passage.doc_id == applied][:self.MAX_PASSAGES]
-        others = [self.describe(d, s) for d, s in sorted(best.items(), key=lambda kv: -kv[1]) if d != applied][:5]
-        return applied, chunks, others
+        for i in order:
+            best.setdefault(str(self.passage_doc[i]), float(scores[i]))
+        applied = str(self.passage_doc[order[0]])
+        others = [self.describe(d, s) for d, s in best.items() if d != applied][:5]
+        result.update(others=others)
+        if not (pinned or titled or named):
+            inst = lambda d: (self.meta[d]['institution'] or self.meta[d]['title']).split('(질의')[0]
+            top = best[applied]
+            rivals = {}
+            for d, s in best.items():
+                if inst(d) != inst(applied) and s >= self.CLOSE * top:
+                    rivals.setdefault(inst(d), d)
+            if rivals:
+                options = [inst(applied)] + list(rivals)[:3]
+                return {**result, 'status': 'clarify', 'institutions': options,
+                        'candidates': [self.describe(applied, top)] + [self.describe(d, best[d]) for d in rivals.values()][:3]}
+        chunks = [(PassageChunk(self.index.passages[i].text, 1, self.index.passages[i].char_start,
+                                self.passage_doc[i], self.index.passages[i].path), float(scores[i]))
+                  for i in order if self.passage_doc[i] == applied][:self.MAX_PASSAGES]
+        return {**result, 'status': 'answer', 'applied': str(applied), 'chunks': chunks}
+
+
+
+def workspace_reply(workspace, selection):
+    """Reply without a model call when the question cannot be tied to one institution's rule in the corpus."""
+    status = selection['status']
+    if status == 'clarify':
+        options = '\n'.join(f"- {c['institution'] or '기관 표기 없음'}: {c['title']}" for c in selection['candidates'])
+        answer = ('이 질문은 여러 기관의 규정에서 비슷하게 검색됩니다. 기관마다 기준이 다를 수 있어 임의로 한 곳을 고르지 '
+                  f'않았습니다.\n{options}\n어느 기관(또는 어떤 규정) 기준인지 질문에 기관명이나 규정명을 넣어 다시 물어봐 주세요.')
+    elif status == 'unknown_institution':
+        names = ', '.join(selection['unknown_institutions'])
+        answer = (f"질문에 적힌 '{names}'의 규정은 현재 검색 자료에 없습니다. 다른 기관의 규정으로 대신 답하지 않습니다. "
+                  '해당 기관 규정을 /pdf 또는 /paste로 넣으면 그 문서에서 찾을 수 있습니다.')
+    elif status == 'institution_no_match':
+        names = ', '.join(selection['institutions'])
+        answer = (f"'{names}' 자료에서 이 질문과 관련된 규정을 찾지 못했습니다. 다른 기관의 규정으로 대신 답하지 않습니다.")
+    else:
+        answer = '검색 자료에서 질문과 관련된 구간을 찾지 못했습니다. 질문을 바꾸거나 기관명·규정명을 넣어 주세요.'
+    return {'status': status, 'answer': answer, 'candidates': [], 'checked_chunks': 0, 'warnings': [],
+            'scope': '모델을 실행하지 않았습니다. 검색 자료와 질문의 기관·규정명을 확인한 결과입니다.'}
 
 
 PUBLIC_FIELDS = ('id', 'label', 'kind', 'base_model', 'license', 'version', 'status', 'evaluation', 'limits')
@@ -560,41 +671,53 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                             raise DocumentError('목록에 있는 모델 버전을 선택해 주세요.')
                         version = state.versions[version_id]
                         started = time.monotonic()
-                        selected, applied, others = None, None, []
+                        selected, others, selection = None, [], None
                         document = session.document
                         if workspace_mode:
-                            applied, selected, others = workspace.select(question, session.pinned_doc)
-                            name = workspace.meta[applied]['title'] if applied else '공유 검색 자료'
-                            document = Document(name, [], [c for c, _ in selected], [])
-                        if version['kind'] == 'extractive':
-                            result = answer_document(document, question, version['model'], None, version['tok'],
-                                                     version['device'], reader=read_chunk, selected=selected)
-                            if any(item['prediction']['presence'] == 2 for item in result['checked']):
-                                result.update(status='review', answer='모델이 근거 충돌로 판단한 구간이 있습니다. /source로 원문을 확인해 주세요.')
-                        elif version.get('answer_mode') == 'case':
-                            result = answer_document_case(document, question, version['base'], version['family'],
-                                                          version['context'], selected=selected)
+                            selection = workspace.select(question, session.pinned_doc)
+                            others = selection['others']
+                        if selection and selection['status'] != 'answer':
+                            result = workspace_reply(workspace, selection)
                         else:
-                            result = answer_document_chat(document, question, version['base'], version['family'],
-                                                          version['context'], version['decoding'] == 'evidence_constrained',
-                                                          selected=selected)
-                        result.pop('checked', None)
-                        if workspace_mode:
+                            if selection:
+                                selected = selection['chunks']
+                                document = Document(workspace.meta[selection['applied']]['title'], [],
+                                                    [c for c, _ in selected], [])
+                            if version['kind'] == 'extractive':
+                                result = answer_document(document, question, version['model'], None, version['tok'],
+                                                         version['device'], reader=read_chunk, selected=selected)
+                                if any(item['prediction']['presence'] == 2 for item in result['checked']):
+                                    result.update(status='review', answer='모델이 근거 충돌로 판단한 구간이 있습니다. /source로 원문을 확인해 주세요.')
+                            elif version.get('answer_mode') == 'case':
+                                result = answer_document_case(document, question, version['base'], version['family'],
+                                                              version['context'], selected=selected)
+                            else:
+                                result = answer_document_chat(document, question, version['base'], version['family'],
+                                                              version['context'], version['decoding'] == 'evidence_constrained',
+                                                              selected=selected)
+                            result.pop('checked', None)
+                        if selection:
                             with state.lock:
                                 session.offered_docs = [o['doc_id'] for o in others]
-                            for c in result['candidates']:
+                            for c in result.get('candidates', []):
                                 chunk = next(ch for ch, _ in selected if ch.text == c['text'])
                                 c['source_label'] = ' · '.join(x for x in (
                                     workspace.meta[chunk.doc_id]['institution'], workspace.meta[chunk.doc_id]['title'],
                                     ' '.join(chunk.path[1:]) or None) if x)
                                 c['page_character_span'] = [chunk.start + c['prediction']['source_character_span'][0],
                                                             chunk.start + c['prediction']['source_character_span'][1]]
+                            applied = selection['applied']
                             result['workspace'] = {'applied': workspace.describe(applied) if applied else None,
                                                    'pinned': bool(session.pinned_doc), 'others': others,
-                                                   'scope': workspace.scope()}
+                                                   'selection': selection['status'], 'institutions': selection['institutions'],
+                                                   'title_matched': selection['title_matched'], 'scope': workspace.scope()}
                             result['total_chunks'] = len(workspace.index.passages)
-                            result['scope'] = ('공유 검색 자료에서 관련도가 가장 높은 문서 1건의 구간만 모델에 넣었습니다. '
-                                               '다른 기관·문서의 규정을 섞지 않습니다. 검색되지 않은 자료까지 정보가 없다고 보장하지 않습니다.')
+                            if selection['status'] == 'answer':
+                                how = ('질문에 적힌 문서명' if selection['title_matched'] else
+                                       f"질문에 적힌 기관({', '.join(selection['institutions'])})" if selection['institutions'] else
+                                       '관련도')
+                                result['scope'] = (f'{how}으로 고른 문서 1건의 구간만 모델에 넣었습니다. 다른 기관·문서의 규정을 '
+                                                   '섞지 않습니다. 검색되지 않은 자료까지 정보가 없다고 보장하지 않습니다.')
                         result['model'] = version['label']
                         result['version'] = version_id
                         result['elapsed_ms'] = round((time.monotonic() - started) * 1000)

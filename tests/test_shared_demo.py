@@ -149,6 +149,12 @@ class ChatBackendTests(unittest.TestCase):
         self.assertEqual(result['commentary'], '식비는 하루 3만 원입니다.')
         self.assertTrue(any('반복 2회' in n for n in result['commentary_notes']))
 
+    def test_case_mode_reports_question_echo_as_failure(self):
+        result, _ = self.case('질문: 식비는 얼마?\n식비는 하루 3만 원입니다.')
+        self.assertEqual(result['status'], 'model_failure')
+        self.assertEqual(result['candidates'], [])
+
+
 
 class WorkspaceTests(unittest.TestCase):
     def setUp(self):
@@ -173,16 +179,27 @@ class WorkspaceTests(unittest.TestCase):
         (Path(self.dir.name) / 'manifest.json').write_text(json.dumps({'documents': 2, 'by_kind': {'행정규칙': 2}, 'date_range': ['2026-01-01', '2026-01-01']}))
         self.ws = Workspace(self.dir.name)
 
-    def test_answer_passages_come_from_one_document_and_others_are_listed(self):
-        applied, chunks, others = self.ws.select('국외 출장 식비는 하루 얼마인가요?')
-        self.assertTrue(chunks)
-        self.assertEqual({c.doc_id for c, _ in chunks}, {applied})
-        self.assertEqual([o['doc_id'] for o in others], [{'a': 'b', 'b': 'a'}[applied]])
+    def test_ambiguous_institution_is_asked_back_instead_of_picked(self):
+        r = self.ws.select('국외 출장 식비는 하루 얼마인가요?')
+        self.assertEqual(r['status'], 'clarify')
+        self.assertEqual(r['chunks'], [])
+        self.assertEqual(set(r['institutions']), {'가기관', '나기관'})
+
+    def test_named_institution_restricts_passages_to_its_document(self):
+        r = self.ws.select('나기관 국외 출장 식비는 하루 얼마인가요?')
+        self.assertEqual(r['status'], 'answer')
+        self.assertEqual(r['applied'], 'b')
+        self.assertEqual({c.doc_id for c, _ in r['chunks']}, {'b'})
+
+    def test_institution_missing_from_corpus_does_not_fall_back(self):
+        r = self.ws.select('다라공단 국외 출장 식비는 하루 얼마인가요?')
+        self.assertEqual(r['status'], 'unknown_institution')
+        self.assertEqual(r['chunks'], [])
 
     def test_pinned_document_is_the_only_source(self):
-        applied, chunks, _ = self.ws.select('국외 출장 식비는 하루 얼마인가요?', pinned='b')
-        self.assertEqual(applied, 'b')
-        self.assertEqual({c.doc_id for c, _ in chunks}, {'b'})
+        r = self.ws.select('국외 출장 식비는 하루 얼마인가요?', pinned='b')
+        self.assertEqual(r['applied'], 'b')
+        self.assertEqual({c.doc_id for c, _ in r['chunks']}, {'b'})
 
 
 class ExtractiveChunkTests(unittest.TestCase):
