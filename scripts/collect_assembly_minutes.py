@@ -607,7 +607,6 @@ def main():
     p.add_argument('--per-shard', type=int, default=200)
     p.add_argument('--limit', type=int, help='fetch at most this many meetings (pilot)')
     p.add_argument('--seed', help='fetch order: seeded, alternating meeting classes (default: ascending id)')
-    p.add_argument('--from-version', default='clean-v1', help='reprocess: rebuild this version\'s meetings from raw')
     args = p.parse_args()
     s3, metrics = s3_client(), Metrics()
     host = BASE.split('://', 1)[1].split('/', 1)[0]
@@ -619,7 +618,7 @@ def main():
     elif args.action == 'fetch':
         fetch(client, s3, args.index, args.per_shard, args.workers, args.limit, metrics, args.seed, set(args.classes))
     elif args.action == 'reprocess':
-        reprocess(s3, args.from_version, args.index, args.per_shard, metrics)
+        reprocess(s3, args.index, args.per_shard, metrics)
     else:
         aggregate(s3, args.index)
 
