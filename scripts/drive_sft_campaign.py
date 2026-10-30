@@ -95,10 +95,37 @@ def prune(arm):
     return sorted(keep), len(doomed)
 
 
+def running_job(run):
+    """An in-progress job launched for this run (launcher names jobs trid-pt-<run>-<stamp>), e.g. after a driver restart."""
+    prefix = f'trid-pt-{run}'[:48].rstrip('-')
+    jobs = json.loads(aws('sagemaker', 'list-training-jobs', '--status-equals', 'InProgress', '--name-contains', prefix,
+                          '--max-results', '10').stdout)['TrainingJobSummaries']
+    return jobs[0]['TrainingJobName'] if jobs else None
+
+
+def spent_usd(state, prices):
+    """Billable seconds (elapsed seconds while running) x the configured hourly price, over every campaign job."""
+    total = 0.0
+    for a in state['arms'].values():
+        for j in [*a['segments'], *a['evals'].values()]:
+            if not j.get('job'):
+                continue
+            d = json.loads(aws('sagemaker', 'describe-training-job', '--training-job-name', j['job']).stdout)
+            seconds = d.get('BillableTimeInSeconds') or d.get('TrainingTimeInSeconds') or 0
+            if d['TrainingJobStatus'] == 'InProgress':
+                start = d.get('TrainingStartTime') or d['CreationTime']
+                seconds = max(seconds, (datetime.datetime.now(datetime.timezone.utc)
+                                        - datetime.datetime.fromisoformat(str(start))).total_seconds())
+            total += seconds / 3600 * prices[d['ResourceConfig']['InstanceType']]
+    return total
+
+
 def step(campaign, state):
     now = datetime.datetime.now().isoformat(timespec='seconds')
     common = campaign['common']
     busy = busy_types()
+    cap, prices = common.get('cost_cap_usd'), common.get('prices_usd_per_hour', {})
+    state['spent_usd'] = round(spent_usd(state, prices), 2) if cap else None
     for name, arm in campaign['arms'].items():
         s = state['arms'].setdefault(name, {'segments': [], 'consecutive_failures': 0, 'evals': {}, 'halted': None, 'done': False})
         run_s3 = f"{arm['checkpoint_s3']}{arm['run']}/sft/"
@@ -120,6 +147,12 @@ def step(campaign, state):
                 s['halted'] = f'{now}: segment limit {limit} reached (smoke/limited campaign)'
             elif s['consecutive_failures'] >= 2:
                 s['halted'] = f"{now}: two consecutive failed segments; last: {seg.get('failure') if seg else None}"
+            elif cap and state['spent_usd'] + common['max_runtime'] / 3600 * prices[arm['instance']] > cap:
+                s['halted'] = f"{now}: cost cap {cap} USD: spent {state['spent_usd']} + next segment worst case exceeds it"
+            elif running_job(arm['run']):
+                adopted = running_job(arm['run'])
+                s['segments'].append({'job': adopted, 'status': 'InProgress', 'failure': None, 'launched_at': now,
+                                      'adopted': True, 'from_step': training.get('completed_steps')})
             else:
                 session_steps = arm.get('session_steps', common.get('session_steps'))
                 env = {'INIT_S3': arm['init_s3'], 'INIT_STEP': arm['init_step'], 'SFT_STEPS': common['steps'],
@@ -156,7 +189,7 @@ def step(campaign, state):
             if ev and (ev['status'] == 'Completed' or ev.get('attempts', 0) >= 2):
                 continue
             free = [i for i in common['eval_instances'] if (i, False) not in busy]
-            if not free:
+            if not free or (cap and state['spent_usd'] + common['eval_max_runtime'] / 3600 * prices[free[0]] > cap):
                 continue
             job, err = launch('sm_eval_weights.sh', f"{arm['run']}-eval", arm['config'], free[0], common['eval_max_runtime'],
                               common['data_s3'], f"{arm['checkpoint_s3']}{arm['run']}-eval/",
