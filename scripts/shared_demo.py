@@ -152,7 +152,7 @@ def answer_document_case(document, question, base, family, context, max_tokens=2
     if echoed or output.lstrip().startswith('질문:'):
         return {**result, 'raw_output': output, 'status': 'model_failure',
                 'answer': '모델이 질문이나 지시문을 그대로 옮겨 적어 답변에 실패했습니다. 이 출력은 표시하지 않습니다 '
-                          '(TRID 1.7B 실험판에서 확인된 결함).'}
+                          '(모델 출력 결함).'}
     segments, seen, repeats = [], set(), 0
     for part in re.split(r'(?<=[.!?])\s+|\n+', output):
         part = part.strip()
@@ -214,6 +214,79 @@ class Session:
     calls: list = field(default_factory=list)
     pinned_doc: str | None = None
     offered_docs: list = field(default_factory=list)
+    history: list = field(default_factory=list)  # [{'role', 'content', 'kind'}] of this browser session only
+
+
+HISTORY_TURNS = 6  # user+assistant messages kept as conversation context (session memory only, cleared by /clear)
+ROUTER_SYSTEM = (
+    '당신은 입력 분류기입니다. 사용자의 마지막 입력을 처리할 방법을 하나 고르세요.\n'
+    '검색: 공공기관의 규정·지침·법령·질의회신 문서에 근거해야 답할 수 있는 업무 사실(금액, 기한, 비율, 절차, 자격, '
+    '기준, 처분의 효력, 해석)을 묻는 경우. 앞선 업무 질문을 이어서 묻는 경우도 포함합니다.\n'
+    '대화: 인사, 감사 표현, 이 서비스가 무엇을 할 수 있는지에 대한 문의, 잡담, 의견, 글쓰기·문장 다듬기·요약 요청, '
+    '앞선 대화 내용에 대한 질문처럼 기관 문서를 찾지 않아도 되는 경우.\n'
+    '분류 예: 인사말 → 대화 / 서비스 사용법 문의 → 대화 / 문장 다듬기 요청 → 대화 / 업무 기준 금액 문의 → 검색 / '
+    '징계 처분의 효력 문의 → 검색 / 앞선 업무 질문에 이어 다른 직급·사례를 묻는 말 → 검색.\n'
+    '답은 "검색" 또는 "대화" 한 단어만 쓰세요.')
+ROUTER_GRAMMAR = 'root ::= "검색" | "대화"'
+CHAT_SYSTEM = (
+    '당신은 TRID입니다. 대한민국 공공기관 직원의 업무를 돕는 실험용 AI 비서이며, Alibaba의 공개 모델 Qwen3-1.7B를 '
+    '업무 특화 학습 없이 그대로 사용합니다. 인사, 사용 안내, 일반 대화, 글 다듬기 요청에는 자연스럽고 간결한 한국어로 '
+    '답하세요. 특정 기관의 규정·금액·기한·비율·법령 조문 같은 사실은 기억으로 답하지 말고, 기관명이나 규정명을 넣어 '
+    '물으면 등록된 공개 자료(법령정보·공공데이터 FAQ·업무편람)에서 근거를 찾아 답한다고 안내하세요. 모르는 것은 '
+    '모른다고 말하세요. 실시간 정보, 인터넷 검색, 기관 내부 시스템 조회는 할 수 없습니다. 중국어·영어를 섞지 말고 '
+    '반드시 한국어로만 답하세요.')
+# A digit followed by a unit of rules (money, rates, periods, articles): such claims need a retrieved source.
+UNSOURCED_FACT = re.compile(r'\d[\d,.]*\s*(?:만\s*)?(?:원|%|퍼센트|일|시간|개월|년|주|조|항|호|배|명|회)')
+
+
+def _messages(system, history, user):
+    return ([{'role': 'system', 'content': system}]
+            + [{'role': h['role'], 'content': h['content']} for h in history[-HISTORY_TURNS:]]
+            + [{'role': 'user', 'content': user}])
+
+
+def _classify(base, family, context, text):
+    r = complete(base, [{'role': 'system', 'content': ROUTER_SYSTEM}, {'role': 'user', 'content': text}],
+                 family, 4, context, ROUTER_GRAMMAR)
+    return 'search' if (r.get('generated') or '').strip() == '검색' else 'chat'
+
+
+def route(base, family, context, history, question):
+    """'search' or 'chat', decided by the serving model itself under a two-word grammar (no keyword rules). The input
+    is classified on its own; when that says chat but the previous turn was a search, a second classification with
+    the recent transcript decides whether it is a follow-up of that search (e.g. "그럼 감봉은?")."""
+    if _classify(base, family, context, f'분류할 입력: {question}') == 'search':
+        return 'search'
+    last = next((h for h in reversed(history) if h['role'] == 'assistant'), None)
+    if not last or last.get('kind') != 'search':
+        return 'chat'
+    recent = '\n'.join(f"{'사용자' if h['role'] == 'user' else 'TRID'}: {h['content'][:200]}" for h in history[-4:])
+    return _classify(base, family, context, f'직전 대화:\n{recent}\n\n분류할 입력: {question}')
+
+
+def chat_reply(base, family, context, history, question, max_tokens=320):
+    """General conversation with the model's native chat template. Not grounded: sentences stating rule-like numeric
+    facts are withheld, since such facts must come from retrieved sources."""
+    r = complete(base, _messages(CHAT_SYSTEM, history, question), family, max_tokens, context)
+    output = (r.get('generated') or '').strip()
+    # Sentences end at . ! ? not preceded by a digit (list numbers like "1." stay attached) or at line breaks; the
+    # model's own layout (lists, line breaks) is kept and only withheld sentences are removed.
+    pieces = re.split(r'((?<=[^\d][.!?])[ \t]+|\n)', output)
+    kept, withheld = [], 0
+    for i in range(0, len(pieces), 2):
+        if UNSOURCED_FACT.search(pieces[i]):
+            withheld += 1
+        else:
+            kept.append(pieces[i] + (pieces[i + 1] if i + 1 < len(pieces) else ''))
+    notes = []
+    if withheld:
+        notes.append(f'근거 없이 수치·기한·조문을 말한 문장 {withheld}개를 숨겼습니다. 업무 사실은 기관명이나 규정명을 넣어 질문해 주세요.')
+    if r.get('truncated_output'):
+        notes.append(f'응답이 길이 한도({max_tokens}토큰)에서 잘렸습니다.')
+    text = re.sub(r'\n{3,}', '\n\n', ''.join(kept)).strip() or '죄송합니다. 이 질문에는 근거 없이 답할 수 있는 내용이 없습니다.'
+    return {'status': 'chat', 'answer': text, 'answer_mode': 'chat', 'candidates': [], 'checked_chunks': 0,
+            'commentary_notes': notes, 'warnings': [],
+            'scope': '일반 대화 응답입니다. 문서 근거를 검색하지 않았고 검증 대상이 아닙니다.'}
 
 
 @dataclass(frozen=True)
@@ -321,15 +394,17 @@ class Workspace:
             q_title = q_title.replace(name, '|')
         k = self.TITLE_MIN
         near = set().union(*(self.title_grams.get(q_title[i:i + k], set()) for i in range(len(q_title) - k + 1)))
-        pool = near & allowed if allowed is not None else near
+        pool = (near & allowed if allowed is not None else near) - self.qa_docs  # Q&A titles are visitors' questions
         shared = {d: _longest_shared(self.norm_titles[d], q_title) for d in pool}
         top = max(shared.values(), default=0)
         titled = {d for d, n in shared.items() if n == top} if top >= self.TITLE_MIN else None
         return named, unknown, allowed, titled
 
-    def select(self, question, pinned=None):
+    def select(self, question, pinned=None, context_doc=None):
         """dict(status, applied, chunks, others, institutions, ...). status: 'answer' | 'clarify' | 'unknown_institution'
-        | 'institution_no_match' | 'not_found'."""
+        | 'institution_no_match' | 'not_found'. `context_doc` (the document applied in the previous turn of the
+        conversation) is searched instead of the whole corpus when the question names no institution or document and
+        that document scores at least WEAK of the corpus-wide best (`continued` in the result); otherwise ignored."""
         from trid.service.index import tokenize_all
         named, unknown, allowed, titled = self.constraints(question)
         result = {'applied': None, 'chunks': [], 'others': [], 'institutions': named, 'unknown_institutions': unknown,
@@ -342,6 +417,10 @@ class Workspace:
             return {**result, 'status': 'not_found'}
         everywhere = self.index.bm25.get_scores(tokens)
         scores = everywhere
+        if (context_doc in self.meta and restrict is None and not unknown
+                and everywhere[self.passage_doc == context_doc].max(initial=0) >= self.WEAK * everywhere.max() > 0):
+            restrict = {context_doc}
+            result['continued'] = True
         if restrict is not None:
             scores = np.where(np.isin(self.passage_doc, list(restrict)), everywhere, -np.inf)
             if named and not titled and not pinned and scores.max() < self.WEAK * everywhere.max():
@@ -355,7 +434,7 @@ class Workspace:
         applied = str(self.passage_doc[order[0]])
         others = [self.describe(d, s) for d, s in best.items() if d != applied][:5]
         result.update(others=others)
-        if not (pinned or titled or named):
+        if not (pinned or titled or named or result.get('continued')):
             inst = lambda d: (self.meta[d]['institution'] or self.meta[d]['title']).split('(질의')[0]
             top = best[applied]
             rivals = {}
@@ -398,12 +477,14 @@ PUBLIC_FIELDS = ('id', 'label', 'kind', 'base_model', 'license', 'version', 'sta
 
 
 class State:
-    """Serves the versions listed in a versions file. The first `extractive` entry also supplies the chunking
-    tokenizer; `llama` entries talk to a loopback llama.cpp server whose model file hash must match the file."""
+    """Serves the versions listed in a versions file. The first `extractive` entry supplies the chunking tokenizer for
+    uploaded documents; `llama` entries talk to a loopback llama.cpp server whose model file hash must match the
+    file (versions on the same model file share one server). The entry marked `"default": true` (else the first) is
+    preselected on the page."""
     def __init__(self, versions):
-        self.versions, self.children = {}, []
-        if not versions or versions[0]['kind'] != 'extractive':
-            raise ValueError('첫 버전은 추출 독해기여야 합니다(문서 구간 분할 토크나이저).')
+        self.versions, self.children, servers = {}, [], {}
+        if not any(v['kind'] == 'extractive' for v in versions):
+            raise ValueError('추출 독해기 버전이 하나는 있어야 합니다(업로드 문서 구간 분할 토크나이저).')
         try:
             for meta in versions:
                 if meta['kind'] == 'extractive':
@@ -413,14 +494,17 @@ class State:
                     model, tok, device = load_reader(ROOT / meta['run'], device='cpu')
                     self.versions[meta['id']] = dict(meta, model=model, tok=tok, device=device)
                 elif meta['kind'] == 'llama':
-                    self.versions[meta['id']] = dict(meta, **self.start_llama(meta))
+                    key = (meta['model_file'], meta['llama_server'], meta['context'])
+                    if key not in servers:
+                        servers[key] = self.start_llama(meta)
+                    self.versions[meta['id']] = dict(meta, **servers[key])
                 else:
                     raise ValueError(f"unknown version kind {meta['kind']}")
         except BaseException:
             self.close()
             raise
-        self.tok = self.versions[versions[0]['id']]['tok']
-        self.default = versions[0]['id']
+        self.tok = next(v['tok'] for v in self.versions.values() if v['kind'] == 'extractive')
+        self.default = next((v['id'] for v in versions if v.get('default')), versions[0]['id'])
         self.run = self.versions[self.default]['label']
         self.sessions = {}
         self.lock = threading.RLock()
@@ -545,7 +629,8 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
     workspace = getattr(state, 'workspace', None)
     workspace_scope = html.escape(workspace.scope()) if workspace else '공유 검색 자료가 없습니다. 문서를 직접 넣어 주세요.'
     version_options = ''.join(
-        f'<option value="{html.escape(v["id"], quote=True)}">{html.escape(v["label"])}</option>'
+        f'<option value="{html.escape(v["id"], quote=True)}"{" selected" if v["id"] == state.default else ""}>'
+        f'{html.escape(v["label"])}</option>'
         for v in state.public_versions()
     )
     version_cards = ''.join(
@@ -685,6 +770,7 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                     elif path == '/api/clear':
                         with state.lock:
                             session.document = session.document_id = None
+                            session.history.clear()
                         result = {'cleared': True}
                     elif path == '/api/ask':
                         request = json.loads(body)
@@ -703,31 +789,41 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                             raise DocumentError('목록에 있는 모델 버전을 선택해 주세요.')
                         version = state.versions[version_id]
                         started = time.monotonic()
+                        history = list(session.history)
+                        intent = 'search'
+                        if version.get('assistant'):
+                            intent = route(version['base'], version['family'], version['context'], history, question)
+                        last = next((h for h in reversed(history) if h['role'] == 'assistant'), None)
+                        context_doc = last.get('applied_id') if last and last.get('kind') == 'search' else None
                         selected, others, selection = None, [], None
                         document = session.document
-                        if workspace_mode:
-                            selection = workspace.select(question, session.pinned_doc)
-                            others = selection['others']
-                        if selection and selection['status'] != 'answer':
-                            result = workspace_reply(workspace, selection)
+                        if intent == 'chat':
+                            result = chat_reply(version['base'], version['family'], version['context'], history, question)
                         else:
-                            if selection:
-                                selected = selection['chunks']
-                                document = Document(workspace.meta[selection['applied']]['title'], [],
-                                                    [c for c, _ in selected], [])
-                            if version['kind'] == 'extractive':
-                                result = answer_document(document, question, version['model'], None, version['tok'],
-                                                         version['device'], reader=read_chunk, selected=selected)
-                                if any(item['prediction']['presence'] == 2 for item in result['checked']):
-                                    result.update(status='review', answer='모델이 근거 충돌로 판단한 구간이 있습니다. /source로 원문을 확인해 주세요.')
-                            elif version.get('answer_mode') == 'case':
-                                result = answer_document_case(document, question, version['base'], version['family'],
-                                                              version['context'], selected=selected)
+                            if workspace_mode:
+                                selection = workspace.select(question, session.pinned_doc, context_doc)
+                                others = selection['others']
+                            if selection and selection['status'] != 'answer':
+                                result = workspace_reply(workspace, selection)
                             else:
-                                result = answer_document_chat(document, question, version['base'], version['family'],
-                                                              version['context'], version['decoding'] == 'evidence_constrained',
-                                                              selected=selected)
-                            result.pop('checked', None)
+                                if selection:
+                                    selected = selection['chunks']
+                                    document = Document(workspace.meta[selection['applied']]['title'], [],
+                                                        [c for c, _ in selected], [])
+                                if version['kind'] == 'extractive':
+                                    result = answer_document(document, question, version['model'], None, version['tok'],
+                                                             version['device'], reader=read_chunk, selected=selected)
+                                    if any(item['prediction']['presence'] == 2 for item in result['checked']):
+                                        result.update(status='review', answer='모델이 근거 충돌로 판단한 구간이 있습니다. /source로 원문을 확인해 주세요.')
+                                elif version.get('answer_mode') == 'case':
+                                    result = answer_document_case(document, question, version['base'], version['family'],
+                                                                  version['context'], selected=selected)
+                                else:
+                                    result = answer_document_chat(document, question, version['base'], version['family'],
+                                                                  version['context'], version['decoding'] == 'evidence_constrained',
+                                                                  selected=selected)
+                                result.pop('checked', None)
+                        result['intent'] = intent
                         if selection:
                             with state.lock:
                                 session.offered_docs = [o['doc_id'] for o in others]
@@ -742,7 +838,8 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                             result['workspace'] = {'applied': workspace.describe(applied) if applied else None,
                                                    'pinned': bool(session.pinned_doc), 'others': others,
                                                    'selection': selection['status'], 'institutions': selection['institutions'],
-                                                   'title_matched': selection['title_matched'], 'scope': workspace.scope()}
+                                                   'title_matched': selection['title_matched'],
+                                                   'continued': bool(selection.get('continued')), 'scope': workspace.scope()}
                             result['total_chunks'] = len(workspace.index.passages)
                             if selection['status'] == 'answer' and any(c.table for c, _ in selected):
                                 result['table_warning'] = ('표가 들어 있는 구간을 썼습니다. 표의 행·열 대응은 검증되지 않았으므로 표 값을 '
@@ -750,12 +847,23 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                             if selection['status'] == 'answer':
                                 how = ('질문에 적힌 문서명' if selection['title_matched'] else
                                        f"질문에 적힌 기관({', '.join(selection['institutions'])})" if selection['institutions'] else
+                                       '앞선 대화에서 쓴 문서(질문에 기관·문서명이 없어 이어서 찾음)' if selection.get('continued') else
                                        '관련도')
                                 result['scope'] = (f'{how}으로 고른 문서 1건의 구간만 모델에 넣었습니다. 다른 기관·문서의 규정을 '
                                                    '섞지 않습니다. 검색되지 않은 자료까지 정보가 없다고 보장하지 않습니다.')
                         result['model'] = version['label']
                         result['version'] = version_id
                         result['elapsed_ms'] = round((time.monotonic() - started) * 1000)
+                        if version.get('assistant'):
+                            applied_doc = (result.get('workspace') or {}).get('applied')
+                            said = result['answer'] if intent == 'chat' else (
+                                f"[근거 검색 결과] {result['answer']}"
+                                + (f" (적용 문서: {applied_doc['institution'] or ''} {applied_doc['title']})" if applied_doc else ''))
+                            with state.lock:
+                                session.history += [{'role': 'user', 'content': question, 'kind': intent},
+                                                    {'role': 'assistant', 'content': said[:600], 'kind': intent,
+                                                     'applied_id': applied_doc['doc_id'] if applied_doc else None}]
+                                del session.history[:-2 * HISTORY_TURNS]
                     else:
                         self.respond(404, {'error': '없는 기능입니다.'}); return
                 finally:

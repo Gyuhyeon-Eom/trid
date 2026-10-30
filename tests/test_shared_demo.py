@@ -162,6 +162,15 @@ class ChatBackendTests(unittest.TestCase):
                 result = answer_document_chat(document, '상한은?', 'http://127.0.0.1:1', 'qwen3', 4096)
             self.assertEqual(result['status'], status, generated)
 
+    def test_chat_reply_withholds_unsourced_rule_facts(self):
+        from scripts.shared_demo import chat_reply
+        with patch('scripts.shared_demo.complete', return_value={'generated': '안녕하세요. 출장 식비는 하루 3만 원입니다.\n무엇을 도와드릴까요?'}):
+            r = chat_reply('http://127.0.0.1:1', 'qwen3', 4096, [], '안녕')
+        self.assertEqual(r['status'], 'chat')
+        self.assertNotIn('3만', r['answer'])
+        self.assertIn('무엇을 도와드릴까요?', r['answer'])
+        self.assertTrue(any('1개를 숨겼습니다' in n for n in r['commentary_notes']))
+
 
 
 class WorkspaceTests(unittest.TestCase):
@@ -208,6 +217,22 @@ class WorkspaceTests(unittest.TestCase):
         r = self.ws.select('국외 출장 식비는 하루 얼마인가요?', pinned='b')
         self.assertEqual(r['applied'], 'b')
         self.assertEqual({c.doc_id for c, _ in r['chunks']}, {'b'})
+
+    def test_follow_up_without_names_continues_previous_document(self):
+        r = self.ws.select('그럼 숙박비는요?', context_doc='b')
+        self.assertEqual(r['status'], 'answer')
+        self.assertTrue(r['continued'])
+        self.assertEqual({c.doc_id for c, _ in r['chunks']}, {'b'})
+
+    def test_named_institution_overrides_previous_document(self):
+        r = self.ws.select('가기관 숙박비는 얼마인가요?', context_doc='b')
+        self.assertEqual(r['applied'], 'a')
+        self.assertNotIn('continued', r)
+
+    def test_previous_document_without_relevant_text_is_not_continued(self):
+        r = self.ws.select('국외 출장 숙박비 1박 상한', context_doc='b')
+        self.assertNotIn('continued', r)
+        self.assertEqual(r['applied'], 'a')
 
 
 class ExtractiveChunkTests(unittest.TestCase):

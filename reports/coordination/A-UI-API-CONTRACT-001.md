@@ -66,9 +66,11 @@
   - `clarify`: 기관 되묻기. `answer`에 자연어 질문이 들어 있다.
   - `unknown_institution`, `institution_no_match`: 대체 답을 하지 않는다는 안내
   - `model_failure`: 모델이 질문이나 지시문을 복사함
-- `search_query`(선택): 앞선 대화를 반영한 검색어. 있으면 작게 보여 준다.
+- `scope`: 문서 선택 방식 설명(한 줄). 출처 블록에 넣는다.
 - `workspace`(공개 자료 검색일 때):
-  - `{applied: {title, institution, kind, date, date_type, effective_date, currency, source(URL), license} | null, others:[같은 형식], selection, institutions, title_matched}`
+  - `{applied: {doc_id, title, institution, kind, date, date_type, effective_date, currency, source(URL), license} | null, others:[같은 형식], selection, institutions, title_matched, continued, pinned}`
+  - `continued: true`이면 질문에 기관·문서명이 없어 **앞선 대화에서 쓴 문서에서 이어서 찾은 것**이다. "앞선 대화의 문서에서 이어서 찾음 · 다른 기관이면 기관명을 넣어 주세요"를 보이게 표시한다.
+  - (변경 — `c8b148b` app.js가 읽는 `search_query`는 더 이상 오지 않는다. 검색어는 질문 그대로다.)
   - **출처 블록 요구사항:** `applied`의 기관·문서명·종류·기준일(`date_type` 포함)·원문 링크·`currency`를 각 답변에 접힌 상태로 보여 준다. "현행"이라고 표시하지 않는다.
 - `candidates`: 확인된 인용 목록. 각 항목에서 쓰는 필드:
   - `text`: 구간 원문
