@@ -1,0 +1,95 @@
+{
+ "tables": {
+  "all": {
+   "P": {
+    "n": 50,
+    "concl": 22,
+    "unsup": 11,
+    "beh": 27,
+    "cond_n": 9,
+    "cond": 3
+   },
+   "Q": {
+    "n": 50,
+    "concl": 31,
+    "unsup": 18,
+    "beh": 44,
+    "cond_n": 11,
+    "cond": 4
+   }
+  },
+  "pilot_dev18": {
+   "P": {
+    "n": 18,
+    "concl": 4,
+    "unsup": 2,
+    "beh": 5,
+    "cond_n": 1,
+    "cond": 1
+   },
+   "Q": {
+    "n": 18,
+    "concl": 7,
+    "unsup": 9,
+    "beh": 14,
+    "cond_n": 3,
+    "cond": 1
+   }
+  },
+  "c027_fixed32": {
+   "P": {
+    "n": 32,
+    "concl": 18,
+    "unsup": 9,
+    "beh": 22,
+    "cond_n": 8,
+    "cond": 2
+   },
+   "Q": {
+    "n": 32,
+    "concl": 24,
+    "unsup": 9,
+    "beh": 30,
+    "cond_n": 8,
+    "cond": 3
+   }
+  },
+  "c027 answer25": {
+   "P": {
+    "n": 25,
+    "concl": 14,
+    "unsup": 8,
+    "beh": 18,
+    "cond_n": 8,
+    "cond": 2
+   },
+   "Q": {
+    "n": 25,
+    "concl": 18,
+    "unsup": 7,
+    "beh": 24,
+    "cond_n": 8,
+    "cond": 3
+   }
+  },
+  "c027 no_evidence7": {
+   "P": {
+    "n": 7,
+    "concl": 4,
+    "unsup": 1,
+    "beh": 4
+   },
+   "Q": {
+    "n": 7,
+    "concl": 6,
+    "unsup": 2,
+    "beh": 6
+   }
+  }
+ },
+ "conclusion_discordant": {
+  "P": 2,
+  "Q": 11
+ },
+ "p_exact": 0.0224609375
+}
