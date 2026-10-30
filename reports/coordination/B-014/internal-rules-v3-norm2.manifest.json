@@ -1,0 +1,29 @@
+{
+ "source": "v3",
+ "out": "v3-norm2",
+ "code_sha256": "ef2d1a43952cca3a0e3070d42e55006fe9ca830fb98af3243804d829594b89a8",
+ "parts": {
+  "docs": {
+   "rows": 592,
+   "sha256": "cf01a0c0130d0f88be309fa8e1702a818b2703fdd352e2d7afb1dfb24f2181c9"
+  },
+  "quality_held": {
+   "rows": 86,
+   "sha256": "0de7a9eae0a5eeacf9c0e30d2022861622e91efffbf4e4bc815e5bc42ee95f79"
+  },
+  "quarantine": {
+   "rows": 8,
+   "sha256": "411c038a1699dd2dfff03d5ec10eb878088055d52294e57c0a2bf617462df634"
+  }
+ },
+ "edit_counts": {
+  "footnote": 1086,
+  "linebreak_unknown_kept": 1027,
+  "rows_changed": 528,
+  "entity": 53,
+  "linebreak_join": 285,
+  "linebreak_space": 307
+ },
+ "scope": "legal interpretations (expc) only",
+ "status": "unverified: edits are applied only after C/B review of review-samples.json per rule"
+}
