@@ -442,27 +442,34 @@ def _annex(text):
     return re.sub(r'\s+', '', text)
 
 
-def render_rows(rows):
-    """B's visually reviewed table rows (law-byl v2-structure rows, review ai_visual_review_match) as evidence text:
-    each table's caption, unit, revision and statute dates, then one line per row pairing every value with its column
-    header, then the table's notes — numbers never travel without their conditions, unit and date."""
+def render_rows(rows, limit=1400):
+    """B's visually reviewed table rows (law-byl v2-structure rows, review ai_visual_review_match) as evidence text of
+    at most `limit` characters: each table's caption, unit, revision and statute dates, one line per row pairing every
+    value with its column header, then the table's notes — numbers never travel without their conditions, unit and
+    date. Rows that do not fit are dropped with a stated count; notes cut short say so."""
     out = []
     for table in dict.fromkeys(r['table'] for r in rows):
         part = [r for r in rows if r['table'] == table]
         head = part[0]
-        out.append(f"[검토된 표 행 · B AI 시각 대조, 승인·법률 자문 아님] {' '.join(head['caption'])}")
         unit = re.sub(r'^\(?\s*단위\s*:\s*|\)$', '', head['unit'] or '').strip()
-        out.append(f"단위: {unit or '표에 표기 없음'} · {head['revised'] or '개정 표기 없음'} · 법령 시행일 "
-                   f"{head['statute_effective_date'] or '미상'}")
-        section = None
-        for r in part:
-            if r.get('section') and r['section'] != section:
-                section = r['section']
-                out.append(f'[{section}]')
-            out.append('- ' + '; '.join(f'{k}: {v}' for k, v in r['cells'].items()))
+        header = [f"[검토된 표 행 · B AI 시각 대조, 승인·법률 자문 아님] {' '.join(head['caption'])}",
+                  f"단위: {unit or '표에 표기 없음'} · {head['revised'] or '개정 표기 없음'} · 법령 시행일 "
+                  f"{head['statute_effective_date'] or '미상'}"]
         notes = list(dict.fromkeys(n for r in part for n in r.get('notes') or []))
-        if notes:
-            out.append(('' if notes[0].startswith('비고') else '비고: ') + ' / '.join(notes))
+        note = (('' if notes[0].startswith('비고') else '비고: ') + ' / '.join(notes)) if notes else ''
+        budget = limit - len('\n'.join(out + header)) - min(len(note), limit // 3) - 40
+        lines, section = [], None
+        for r in part:
+            line = ('' if not r.get('section') or r['section'] == section else f"[{r['section']}]\n") \
+                + '- ' + '; '.join(f'{k}: {v}' for k, v in r['cells'].items())
+            if len('\n'.join(lines + [line])) > budget:
+                lines.append(f'(이 표의 나머지 {len(part) - len(lines)}행은 생략했습니다. 원문 표를 확인하세요.)')
+                break
+            section = r.get('section') or section
+            lines.append(line)
+        if len(note) > limit // 3:
+            note = note[:limit // 3] + ' …(비고 일부 생략, 원문 확인)'
+        out += header + lines + ([note] if note else [])
     return '\n'.join(out)
 
 def _alias_ok(alias):
@@ -491,6 +498,7 @@ class Workspace:
          plain language which institution's rule is meant instead of picking one.
     Each answer uses passages of ONE document, so rules of different institutions are never mixed."""
     MAX_PASSAGES = 4  # CPU prompt processing dominates latency; four 550-char passages keep answers short
+    CONTEXT_CHARS = 3600  # evidence characters that fit the 4,096-token window (3,643 answered; 5,013 overflowed live)
     TITLE_MIN = 8      # normalised characters shared with a title to count as naming that document
     CLOSE = 0.85       # another institution's best score within this ratio of the top makes the question ambiguous
     # Hybrid ranking (HYBRID-RAG-001 dev measurement, 14 labelled questions: dense ranks the target document far
@@ -981,13 +989,32 @@ class Workspace:
         candidates = [d for d in dict.fromkeys([str(c.doc_id) for c, _ in chunks] + [tables[n] for n in sorted(inline) if n in tables])
                       if d in self.reviewed_rows]
         best_of = lambda d: float(np.max(everywhere[self.passage_doc == d], initial=0))
-        reviewed = sorted(candidates, key=best_of, reverse=True)[:2]  # the tables the question is most about
+        top_of = lambda d: [int(i) for i in np.flatnonzero(self.passage_doc == d)[
+            np.argsort(-everywhere[self.passage_doc == d], kind='stable')][:self.MAX_PASSAGES]]
+        candidates = [d for d in candidates if self.relevant(top_of(d), cos, topical)]  # a table about the question
+        reviewed = sorted(candidates, key=best_of, reverse=True)[:1]  # the table the question is most about
         if reviewed:
-            # B's visually reviewed rows of these tables, with their unit, notes and dates: the row/column pairing the
-            # flattened table text loses. Derived text, so never a verbatim quote nor a value-version answer.
-            result['reviewed_rows'] = {d: len(self.reviewed_rows[d]) for d in reviewed}
-            chunks += [(PassageChunk(render_rows(self.reviewed_rows[d]), 1, 0, d, ('검토된 표 행',), derived=True), 0.0)
-                       for d in reviewed]
+            # B's visually reviewed rows of that table, with their unit, notes and dates: the row/column pairing the
+            # flattened table text loses. Derived text, so never a verbatim quote nor a value-version answer. A linked
+            # table's flattened passages give way to its rows; the applied document's own passages stay (quotes).
+            d = reviewed[0]
+            result['reviewed_rows'] = {d: len(self.reviewed_rows[d])}
+            if d != applied:
+                chunks = [(c, s) for c, s in chunks if str(c.doc_id) != d]
+            chunks.append((PassageChunk(render_rows(self.reviewed_rows[d]), 1, 0, d, ('검토된 표 행',), derived=True), 0.0))
+        # The model's window (4,096 tokens incl. instructions and answer): linked table passages go first, then the
+        # applied document's weakest passages, keeping its best one and the reviewed rows.
+        while sum(len(c.text) for c, _ in chunks) > self.CONTEXT_CHARS and len(chunks) > 1:
+            linked_at = [i for i, (c, _) in enumerate(chunks) if str(c.doc_id) != applied and not c.derived]
+            own_at = [i for i, (c, _) in enumerate(chunks) if str(c.doc_id) == applied and not c.derived][1:]
+            if not (linked_at or own_at):
+                break
+            del chunks[(linked_at or own_at)[-1]]
+        kept_linked = sorted({str(c.doc_id) for c, _ in chunks if str(c.doc_id) != applied and not c.derived})
+        if kept_linked:
+            result['linked_tables'] = kept_linked
+        else:
+            result.pop('linked_tables', None)
         used = list(passing[applied]) + list(linked)
         if self.private_mask[used].any():  # invariant: never reachable; fail the request rather than serve it
             raise RuntimeError('privacy-review passage reached the answer context')
