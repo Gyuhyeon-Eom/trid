@@ -1,6 +1,6 @@
 const HOST = 'test.tridatum.co';
 const GET_PATHS = new Set(['/', '/app.js', '/healthz']);
-const POST_PATHS = new Set(['/api/sample', '/api/text', '/api/load', '/api/ask', '/api/clear']);
+const POST_PATHS = new Set(['/api/sample', '/api/text', '/api/load', '/api/ask', '/api/clear', '/api/pin']);
 
 function error(status, message) {
   return Response.json({error: message}, {status, headers: {'Cache-Control': 'no-store'}});
@@ -36,7 +36,8 @@ export default {
       if (body && body.byteLength > 2 * 1024 * 1024) return error(413, '입력은 2MB 이하로 넣어 주세요.');
       const upstream = await fetch(new URL(url.pathname, env.ORIGIN_URL), {
         method: request.method, headers, body,
-        redirect: 'manual', signal: AbortSignal.timeout(22000),
+        // CPU generation over retrieved passages can take tens of seconds.
+        redirect: 'manual', signal: AbortSignal.timeout(120000),
       });
       if (upstream.status >= 300 && upstream.status < 400) throw new Error('Origin redirect refused');
       if (upstream.status >= 500 && !upstream.headers.get('content-type')?.includes('application/json'))

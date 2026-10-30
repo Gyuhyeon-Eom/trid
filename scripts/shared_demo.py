@@ -209,7 +209,7 @@ class Workspace:
     (scripts/build_workspace_index.py). Each answer uses passages of ONE document (the best match, or the one the
     visitor pinned), so rules of different institutions are never mixed; close matches from other documents are
     listed for the visitor to choose."""
-    MAX_PASSAGES = 6
+    MAX_PASSAGES = 4  # CPU prompt processing dominates latency; four 550-char passages keep answers under ~30 s
 
     def __init__(self, directory):
         from trid.service.index import Index
@@ -295,7 +295,8 @@ class State:
             pass
         log = open(ROOT / '.shared-demo' / f"llama-{meta['id']}.log", 'wb') if (ROOT / '.shared-demo').is_dir() else subprocess.DEVNULL
         child = subprocess.Popen([str(ROOT / meta['llama_server']), '-m', str(model_file), '--host', '127.0.0.1', '--port', str(port),
-                                  '-c', str(meta['context']), '-np', '1', '-t', '4', '-tb', '4', '--jinja'],
+                                  '-c', str(meta['context']), '-np', '1', '-t', str(meta.get('threads', 4)),
+                                  '-tb', str(meta.get('threads', 4)), '--jinja'],
                                  stdout=log, stderr=log)
         self.children.append(child)
         base = f'http://127.0.0.1:{port}'
