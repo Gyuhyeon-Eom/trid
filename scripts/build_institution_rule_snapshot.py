@@ -35,11 +35,91 @@ def korean_date(text, label):
     return f'{m.group(1)}-{int(m.group(2)):02d}-{int(m.group(3)):02d}' if m else None
 
 
+SPEND_HEAD = re.compile(r"[‘'](\d{2})년\s*(\d{1,2})월\s*(\S+)\s+업무추진비\s*집행내역")
+
+
+def spend_sections(text, raw_pdf):
+    """Officer sections of a 한국부동산원 임원 업무추진비 집행내역 PDF, each checked by two readers: the kordoc table rows
+    (date, 내역, 사용처, 대상, 인원, 금액 + 합계 row) and pdftotext -layout lines (a dated line ends with 인원 and 금액; the
+    합계 line ends with the total). A section is verified when both readers give the same (date, 인원, 금액) rows and the
+    rows add up to the printed 합계 in both. -> [{year, month, position, rows, total, verified, problems}]"""
+    import subprocess
+    layout = subprocess.run(['pdftotext', '-layout', str(raw_pdf), '-'], capture_output=True, text=True).stdout
+    num = lambda s: int(s.replace(',', ''))
+
+    def split(t):
+        heads = list(SPEND_HEAD.finditer(t))
+        return [(h, t[h.end():heads[i + 1].start() if i + 1 < len(heads) else len(t)]) for i, h in enumerate(heads)]
+    pdf = {(h.group(1), h.group(2), h.group(3)): body for h, body in split(layout)}
+    out = []
+    for h, body in split(text):
+        key = (h.group(1), h.group(2), h.group(3))
+        rows, total, problems = [], None, []
+        for tr in re.findall(r'<tr>(.*?)</tr>', body, re.S):
+            cells = [re.sub(r'<br\s*/?>', ' ', c).strip() for c in re.findall(r'<td[^>]*>(.*?)</td>', tr, re.S)]
+            if len(cells) == 6 and re.fullmatch(r'\d{4}-\d\d-\d\d', cells[0]):
+                rows.append({'date': cells[0], '내역': cells[1], '사용처': cells[2], '대상': cells[3],
+                             '인원': num(cells[4]), '금액': num(cells[5])})
+            elif any(re.sub(r'\s', '', c) == '합계' for c in cells):
+                total = num(cells[-1])
+        other = pdf.get(key)
+        if other is None:
+            problems.append('section_missing_in_pdftotext')
+        else:
+            lines = [re.search(r'(\d{4}-\d\d-\d\d)\s.*?\s(\d+)\s+([\d,]+)\s*$', l) for l in other.splitlines()]
+            pdf_rows = sorted((m.group(1), int(m.group(2)), num(m.group(3))) for m in lines if m)
+            pdf_total = re.search(r'합\s*계\s+([\d,]+)', other)
+            if pdf_rows != sorted((r['date'], r['인원'], r['금액']) for r in rows):
+                problems.append('rows_differ_between_readers')
+            if not pdf_total or num(pdf_total.group(1)) != total:
+                problems.append('total_differs_between_readers')
+        if total is None or sum(r['금액'] for r in rows) != total:
+            problems.append('rows_do_not_add_up_to_total')
+        out.append({'year': 2000 + int(h.group(1)), 'month': int(h.group(2)), 'position': h.group(3), 'rows': rows,
+                    'total': total, 'verified': not problems, 'problems': problems})
+    return out
+
+
+def spend_view(sections, title):
+    """Text shown to the model: every row with 사용일자·내역·대상·인원·금액; 사용처(업소명) is left out (kept in raw)."""
+    lines = [title, '(사용처 업소명은 원문 PDF에 있으나 이 사본에서는 뺐습니다. 금액 단위: 원. 임원 직위별 실제 집행 내역이며 '
+                    '규정상 기준이나 직원 1인 식비·평균이 아닙니다.)']
+    for s in sections:
+        lines += ['', f"## {s['year']}년 {s['month']}월 {s['position']} 업무추진비 집행내역",
+                  '| 사용일자 | 내역 | 대상 | 인원(명) | 금액(원) |', '| --- | --- | --- | --- | --- |']
+        lines += [f"| {r['date']} | {r['내역']} | {r['대상']} | {r['인원']} | {r['금액']:,} |" for r in s['rows']]
+        lines.append(f"| 합계 |  |  |  | {s['total']:,} |" if s['total'] is not None else '| 합계 | (원문에서 읽지 못함) |  |  |  |')
+    return '\n'.join(lines)
+
+
+def spend_facts(sections, agency, url, raw_sha256):
+    """One fact per verified officer-month (HYBRID-RAG-001 structured_facts shape plus population / expense_type)."""
+    import calendar
+    facts = []
+    for s in sections:
+        if not s['verified']:
+            continue
+        last = calendar.monthrange(s['year'], s['month'])[1]
+        facts.append({'metric': '임원 업무추진비 월 집행액', 'value': s['total'], 'unit': '원',
+                      'period': {'from': f"{s['year']}-{s['month']:02d}-01", 'to': f"{s['year']}-{s['month']:02d}-{last:02d}"},
+                      'subject': {'id': agency['apbaId'] if agency else None, 'name': agency['apbaNa'] if agency else None},
+                      'population': f"임원({s['position']}) 1명 분", 'expense_type': '업무추진비(임원 업무추진비성 경비)',
+                      'executions': len(s['rows']), 'basis': 'actual_spending',
+                      'not_for': '직원 1인 식비·평균, 규정상 한도로 쓰지 않음',
+                      'location': {'url': url, 'raw_sha256': raw_sha256, 'section': f"{s['month']}월 {s['position']}"},
+                      'verification': '표 행 합 = 표기 합계, kordoc 표 행과 pdftotext 행(일자·인원·금액) 일치'})
+    return facts
+
+
 def record(row, agencies, state):
     """One snapshot record. A rule without '확정일/시행일' labels in its body (board postings, B-027: 한국부동산원) takes its
     effective date from the row provenance (the last 부칙's 시행일, read by B and described in date_type). A 집행내역 row
     is kept apart from rules: kind 'expenditure_record', basis 'actual_spend', its date is the spending month."""
     text = unicodedata.normalize('NFC', row['text']).strip()
+    sections = None
+    if '집행내역' in (row['provenance'].get('doc_type') or ''):
+        sections = spend_sections(text, ROOT / row['raw'])
+        text = spend_view(sections, row['title'])
     prov = row['provenance']
     inst = prov['institution']
     agency = next((a for a in agencies if a['apbaNa'] == inst), None)
@@ -70,7 +150,10 @@ def record(row, agencies, state):
         'location': {'url': state.get('provider_url') or row['source'], 'page': None, 'article_path': [],
                      'char_start': 0, 'char_end': len(text),
                      'data_go_kr': row['source'] if 'data.go.kr' in row['source'] else None},
-        'text': text, 'structured_facts': [],
+        'text': text,
+        'structured_facts': (spend_facts(sections, agency, state.get('provider_url') or row['source'], row['raw_sha256'])
+                             if sections is not None else []),
+        'source_notes': state.get('source_notes', []),
         'holds': ['evaluation', 'training'], 'index': 'institution_rules_separate',
         'currency': currency,
         'pii': {'check': 'ko-pii redaction in the guides version + trid.korean_quality.PII_HINT', 'hits': len(PII_HINT.findall(text)),
@@ -78,6 +161,11 @@ def record(row, agencies, state):
         'table_check': row['meta'].get('table_check'), 'status': 'search_candidate',
         'collection': 'public_file_download (data.go.kr page / institution board), not an API call',
         'raw': row['raw'], 'raw_sha256': row['raw_sha256'],
+        **({'spend_check': {'sections': len(sections), 'verified': sum(s['verified'] for s in sections),
+                            'problems': {f"{s['month']}월 {s['position']}": s['problems'] for s in sections if s['problems']},
+                            'withheld_from_text': ['사용처'],
+                            'population': '임원(직위별)', 'expense_type': '업무추진비(임원 업무추진비성 경비)', 'unit': '원'}}
+           if sections is not None else {}),
     }
 
 
