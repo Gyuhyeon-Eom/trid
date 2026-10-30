@@ -7,7 +7,7 @@ Isolated environment (the project venv pins transformers 5.x and has no peft):
       --model <hf dir> --model-id Qwen/Qwen3-1.7B --model-revision <sha> --manifest <manifest.json> --out runs/<name>
 
 Manifest (JSON): {"id": str, "train": [file...], "valid": [file...]} with file = {"path", "sha256", "adapter",
-"epochs" (default 1)}. Every file hash is verified before training; the manifest decides eligibility, this script
+"epochs" (default 1), "split" (optional: use only rows whose `split` equals it)}. Every file hash is verified before training; the manifest decides eligibility, this script
 never filters for quality. Adapters:
   - `prompt_answer`: rows {"prompt", "answer", "task"?, "id"?} (trid curricula). RAG prompts (trid.prompts.rag_prompt
     format) get the evaluation's grammar_instructed system prompt; other rows get none.
@@ -57,6 +57,8 @@ def load_rows(entry, base):
         if not line.strip():
             continue
         row = json.loads(line)
+        if entry.get('split') and row.get('split') != entry['split']:
+            continue  # one pinned file may hold several splits; only the named one is used
         if entry['adapter'] == 'prompt_answer':
             system = SYSTEM if row['prompt'].startswith(RAG_PREFIX) else None
             rows.append(dict(id=row.get('id'), task=row.get('task', 'unknown'), system=system,

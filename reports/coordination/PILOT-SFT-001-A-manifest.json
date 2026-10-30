@@ -1,0 +1,21 @@
+{
+ "id": "pilot-sft-001-a-qwen3-1.7b",
+ "source": "reports/coordination/C-017/pilot/manifest.json (C017, conditionally approved for development training: train split only)",
+ "train": [
+  {
+   "path": "pilot.jsonl",
+   "sha256": "6bd0bddac4281db0ace6db68e1f2c645ee36d647b59a2ff64fe49cc65034e291",
+   "adapter": "case",
+   "split": "train",
+   "epochs": 2
+  }
+ ],
+ "valid": [
+  {
+   "path": "pilot.jsonl",
+   "sha256": "6bd0bddac4281db0ace6db68e1f2c645ee36d647b59a2ff64fe49cc65034e291",
+   "adapter": "case",
+   "split": "pilot_dev"
+  }
+ ]
+}

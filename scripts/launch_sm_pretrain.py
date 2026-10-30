@@ -82,7 +82,7 @@ def main():
     p.add_argument('--cpu', action='store_true', help='CPU training image (observer jobs)')
     p.add_argument('--entry', default='sm_pretrain.sh',
                    choices=['sm_pretrain.sh', 'sm_sft_eval.sh', 'sm_span_eval.sh', 'sm_sft_campaign.sh', 'sm_eval_weights.sh',
-                            'sm_bench_sft.sh', 'sm_observe_s3.sh'],
+                            'sm_bench_sft.sh', 'sm_observe_s3.sh', 'sm_lora_pilot.sh'],
                    help='entrypoint under scripts/: pretraining, SFT + evaluation, span diagnostic, SFT campaign segment, '
                         'evaluation of saved weights, SFT speed benchmark, in-cloud S3 observer')
     a = p.parse_args()

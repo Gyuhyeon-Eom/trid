@@ -16,10 +16,11 @@ python -c "import sys; from huggingface_hub import snapshot_download; snapshot_d
 OUT=/opt/ml/checkpoints/$RUN
 [ ! -e "$OUT/DONE.json" ] || { echo "already complete"; exit 0; }
 rm -rf "$OUT/train"
+mkdir -p "$OUT"
 # shellcheck disable=SC2086
 python scripts/train_open_weight_lora.py --model /opt/base --model-id "$MODEL_ID" --model-revision "$REV" \
   --manifest "/opt/ml/input/data/data/$MANIFEST" --out "$OUT/train" --device cuda --merge ${TRAIN_ARGS:-} \
-  2>&1 | tee /opt/ml/checkpoints/train.log
+  2>&1 | tee "$OUT/train.log"
 python - "$OUT" <<'PY'
 import hashlib, json, sys, time
 from pathlib import Path
