@@ -1,0 +1,194 @@
+{
+ "version": "guides-v1",
+ "code_sha256": "fdf3dfd9c5b1ef54b0a2111ea6ad4700ad672608bd073894bf768f609ca825dc",
+ "datasets": {
+  "15043134": {
+   "institution": "인사혁신처",
+   "institution_type": "중앙행정기관",
+   "area": "인사·징계",
+   "doc_type": "업무편람",
+   "applies_to": "국가공무원 징계 업무",
+   "date": "2022-09-01",
+   "date_type": "데이터셋 파일 기준일(편람 2022년판)"
+  },
+  "15038493": {
+   "institution": "행정안전부",
+   "institution_type": "중앙행정기관",
+   "area": "문서·결재",
+   "doc_type": "업무편람",
+   "applies_to": "행정기관 행정업무(행정업무의 운영 및 혁신에 관한 규정)",
+   "date": "2025-12-17",
+   "date_type": "편람 최종본 날짜(파일명), 게시 2026-01-02"
+  },
+  "15106457": {
+   "institution": "행정안전부",
+   "institution_type": "중앙행정기관",
+   "area": "공용차량 관리",
+   "doc_type": "매뉴얼",
+   "applies_to": "행정기관 공용차량 관리·운영",
+   "date": "2024-11-25",
+   "date_type": "데이터셋 파일 기준일"
+  },
+  "15151524": {
+   "institution": "한국국제협력단",
+   "institution_type": "공공기관(준정부기관)",
+   "area": "계약·조달",
+   "doc_type": "질의응답 세트",
+   "applies_to": "KOICA 원조조달 계약(답변 출처: 원조조달 업무 매뉴얼). 다른 기관에 그대로 적용되지 않음",
+   "date": "2025-10-31",
+   "date_type": "데이터셋 파일 기준일"
+  },
+  "15121643": {
+   "institution": "한국산업기술기획평가원",
+   "institution_type": "공공기관(준정부기관)",
+   "area": "연구비 집행·회계",
+   "doc_type": "FAQ",
+   "applies_to": "산업기술 R&D 과제 연구비(RCMS) 집행",
+   "date": "2026-07-13",
+   "date_type": "데이터셋 파일 기준일"
+  },
+  "15064076": {
+   "institution": "한전KDN(주)",
+   "institution_type": "공기업",
+   "area": "전자입찰 시스템",
+   "doc_type": "FAQ 목록",
+   "applies_to": "한전KDN 전자입찰시스템 이용자",
+   "date": "2024-12-31",
+   "date_type": "데이터셋 파일 기준일"
+  },
+  "15118841": {
+   "institution": "방위사업청",
+   "institution_type": "중앙행정기관",
+   "area": "전자조달 시스템",
+   "doc_type": "FAQ",
+   "applies_to": "국방전자조달시스템 이용 업체·담당자",
+   "date": null,
+   "date_type": "행별 등록일·수정일"
+  },
+  "15169354": {
+   "institution": "국민권익위원회",
+   "institution_type": "중앙행정기관",
+   "area": "복무·청탁금지",
+   "doc_type": "질의응답",
+   "applies_to": "청탁금지법상 공직자등(공공기관 임직원 포함)",
+   "date": null,
+   "date_type": "행별 자료발간연도"
+  },
+  "15038798": {
+   "institution": "행정안전부",
+   "institution_type": "중앙행정기관",
+   "area": "지방재정·회계",
+   "doc_type": "해설사례집",
+   "applies_to": "지방자치단체 재정 운영",
+   "date": "2019-09-11",
+   "date_type": "데이터셋 파일 기준일(2019년판, 이후 개정 미반영)"
+  }
+ },
+ "not_collected": [
+  {
+   "pk": "15038493",
+   "status": "no_download_button",
+   "licence": "이용허락범위 제한 없음",
+   "title": "행정안전부_행정업무운영 편람_20251217"
+  },
+  {
+   "pk": "15099563",
+   "status": "no_download_button",
+   "licence": "이용허락범위 제한 없음",
+   "title": "기획예산처_국고보조금 자주묻는질문 정보_20260915"
+  },
+  {
+   "pk": "15151944",
+   "status": "no_download_button",
+   "licence": "이용허락범위 제한 없음",
+   "title": "서울특별시교육청_교육행정지원 질문답변 사례집_20251111"
+  },
+  {
+   "pk": "15144617",
+   "status": "rights_hold",
+   "licence": "공공저작물 : 출처표시, 상업적 이용금지, 변경금지 (제 4유형)",
+   "title": "서울특별시교육청_교육공무원인사실무매뉴얼_20250310"
+  },
+  {
+   "pk": "15077063",
+   "status": "no_download_button",
+   "licence": "이용허락범위 제한 없음",
+   "title": "재정경제부_공공기관 경영평가 편람_20260123"
+  },
+  {
+   "pk": "15123249",
+   "status": "rights_hold",
+   "licence": "공공저작물 : 출처표시, 상업적 이용금지, 변경금지 (제 4유형)",
+   "title": "국민권익위원회_이해충돌방지법 업무 편람_20251127"
+  },
+  {
+   "pk": "15123408",
+   "status": "rights_hold",
+   "licence": "공공저작물 : 출처표시, 상업적 이용금지, 변경금지 (제 4유형)",
+   "title": "국민권익위원회_공무원 행동강령 업무 편람_20251231"
+  }
+ ],
+ "parts": {
+  "qa_items": {
+   "rows": 1045,
+   "characters": 399235,
+   "sha256": "639b23345ab3d745e5c5d9f9587e7d4757cdefddb98437ad01b88d1c596895cf",
+   "by_dataset": {
+    "15151524": 259,
+    "15121643": 218,
+    "15118841": 100,
+    "15169354": 468
+   },
+   "quality": {
+    "ok": 852,
+    "top_4_gram": 26,
+    "gopher_short_doc": 18,
+    "line_punct_ratio": 128,
+    "hangul_ratio": 9,
+    "latin_ratio": 1,
+    "gopher_below_alpha_threshold": 2,
+    "top_3_gram": 9
+   },
+   "pii_rows": 3,
+   "table_check": {
+    "no_tables": 1045
+   }
+  },
+  "documents": {
+   "rows": 4,
+   "characters": 846184,
+   "sha256": "2388c30ee4066e9196b030461a555a3263d8bec43610b22bcf95f2b650a44366",
+   "by_dataset": {
+    "15043134": 1,
+    "15106457": 1,
+    "15038798": 1,
+    "15038493": 1
+   },
+   "quality": {
+    "ok": 4
+   },
+   "pii_rows": 4,
+   "table_check": {
+    "unverified": 4
+   }
+  },
+  "held": {
+   "rows": 6,
+   "characters": 151,
+   "sha256": "3f7b81e174e9a79bb24e7bb9a4c2beedb649aa6d6cc3f4adbfbd6e13ac6c9bdb",
+   "by_dataset": {
+    "15064076": 5,
+    "15118841": 1
+   },
+   "quality": {
+    "top_4_gram": 1,
+    "top_3_gram": 5
+   },
+   "pii_rows": 0,
+   "table_check": {
+    "no_tables": 6
+   }
+  }
+ },
+ "note": "not approved for training; tables unverified; run check_reserved_overlap.py on overlap-input.jsonl"
+}

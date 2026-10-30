@@ -10,7 +10,17 @@ section - C-014), this records, per source row:
 Offsets refer to the unchanged source text (row sha256 recorded); C decides how a case shows a footnote (e.g. inside
 the section that references it).
 
-  .venv/bin/python scripts/extract_footnote_relations.py --source v3 --out v3-footnotes1
+v3-footnotes2 (B-017, C-016 requests), all from the source, nothing inferred:
+  ordinal    1-based document order of the footnote. The source restarts numbering inside a section in 7 rows, so 'n'
+             alone is ambiguous there; rows carry numbering_restarts=true.
+  irregular  'space_before_inline' for the one source row (expc:339505) written '…제10조의7)1) 1) 법제처 …' — marker and
+             duplicate separated by a space; the next footnote is 2, so this is footnote 1 (law.go.kr's own HTML view
+             renders it as '제10조의(각주: 1) …', dropping the '7)'). Every other footnote has no space there.
+  related_law_heading  where the raw XML 이유 places '<관계 법령>': before_text (heading, then the quoted articles; the
+             '관계법령' section above), trailing_only (the quoted articles come first and the heading closes the field, so
+             the source does not mark where they start: appendix_start stays null), none.
+
+  .venv/bin/python scripts/extract_footnote_relations.py --source v3 --out v3-footnotes2
 """
 import argparse
 import hashlib
@@ -22,7 +32,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 CODE_SHA256 = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()  # as loaded
 BASE = ROOT / 'data/internal-rules'
-FOOTNOTE = re.compile(r'(\d{1,2})\)(\1\)[ \t]?([^\n]*)\n)')
+RAW_EXPC = ROOT / 'data/law-ko-source/raw/expc'
+FOOTNOTE = re.compile(r'(\d{1,2})\)(([ \t]?)\1\)[ \t]?([^\n]*)\n)')
+HEADING = re.compile(r'<\s*관계\s*법령\s*>')
 SECTION = re.compile(r'【(질의요지|회답|이유|관계법령)】|\n<\s*관계\s*법령\s*>|\n※\s*법령정비')
 
 
@@ -48,6 +60,15 @@ def kind(body):
     return 'other'
 
 
+def related_law_heading(row_id):
+    raw = (RAW_EXPC / f"{row_id.rsplit(':', 1)[1]}.xml").read_text(encoding='utf-8')
+    m = re.search(r'<이유>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?</이유>', raw, re.S)
+    hs = list(HEADING.finditer(m.group(1) if m else ''))
+    if not hs:
+        return 'none'
+    return 'trailing_only' if len(hs) == 1 and not m.group(1)[hs[0].end():].strip() else 'before_text'
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument('--source', required=True)
@@ -69,17 +90,30 @@ def main():
             sec_of = lambda pos: next((s['name'] for s in secs if s['src_start'] <= pos < s['src_end']), None)
             fns = []
             for m in FOOTNOTE.finditer(text):
-                body = m.group(3).strip()
-                fn = {'n': int(m.group(1)), 'marker': [m.start(), m.start() + len(m.group(1)) + 1],
+                body = m.group(4).strip()
+                fn = {'n': int(m.group(1)), 'ordinal': len(fns) + 1, 'marker': [m.start(), m.start() + len(m.group(1)) + 1],
                       'inline': [m.start(2), m.end(2)], 'text': body, 'section': sec_of(m.start()), 'kind': kind(body)}
+                if m.group(3):
+                    fn['irregular'] = 'space_before_inline'
+                    c['irregular:space_before_inline'] += 1
                 fns.append(fn)
                 c[f"section:{fn['section']}"] += 1
                 c[f"kind:{fn['kind']}"] += 1
+            last, restarts = {}, False
+            for fn in fns:
+                restarts |= fn['n'] <= last.get(fn['section'], 0)
+                last[fn['section']] = fn['n']
+            heading = related_law_heading(r['id'])
             c['rows'] += 1
             c['rows_with_footnotes'] += bool(fns)
+            c['rows_numbering_restarts'] += restarts
+            c[f'related_law_heading:{heading}'] += 1
             c['footnotes'] += len(fns)
-            lines.append(json.dumps({'id': r['id'], 'source_version': args.source, 'source_sha256': r['sha256'],
-                                     'sections': secs, 'footnotes': fns}, ensure_ascii=False))
+            rel = {'id': r['id'], 'source_version': args.source, 'source_sha256': r['sha256'], 'sections': secs,
+                   'footnotes': fns, 'numbering_restarts': restarts, 'related_law_heading': heading}
+            if heading == 'trailing_only':
+                rel['appendix_start'] = None  # not marked in the source; not guessed
+            lines.append(json.dumps(rel, ensure_ascii=False))
         body = ('\n'.join(lines) + '\n').encode() if lines else b''
         (out / f'{part}.relations.jsonl').write_bytes(body)
         man[part] = {'sha256': hashlib.sha256(body).hexdigest(), **dict(c)}

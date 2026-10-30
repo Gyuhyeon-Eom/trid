@@ -1,0 +1,37 @@
+{
+ "request": "C-016 requests_to_b (footnote renumbering 7, broken marker 1, untitled related-statute appendix 18)",
+ "numbering_restarts": {
+  "rows": [
+   "law-go-kr:expc:326805",
+   "law-go-kr:expc:327529",
+   "law-go-kr:expc:328683",
+   "law-go-kr:expc:329861",
+   "law-go-kr:expc:330783",
+   "law-go-kr:expc:331335",
+   "law-go-kr:expc:335487"
+  ],
+  "source_check": "raw XML 이유/질의요지 text numbers footnotes this way; law.go.kr HTML shows footnotes inline as (각주: ...) without numbers",
+  "resolution": "v3-footnotes2 adds ordinal (document order) per footnote; n is kept as written"
+ },
+ "broken_marker_339505": {
+  "raw_xml": "…하고 있는(제10조의7)1) 1) 법제처 2018. 6. 12. 회신 18-0205 해석례 참조\\n 등 국가기관등에…",
+  "law_go_kr_html_view": "…하고 있는(제10조의(각주: 1) 법제처 2018. 6. 12. … 참조) …  (the site view drops the article number 7)",
+  "reading": "marker 1) after (제10조의7), inline \" 1) …\\n\"; the only footnote in the corpus with a space between marker and duplicate; next footnote is 2",
+  "resolution": "v3-footnotes2 records it as footnote 1, ordinal 1, irregular=space_before_inline; C may still skip it"
+ },
+ "related_law_appendix": {
+  "raw_xml_이유_heading_placement_docs": {
+   "before_text": 159,
+   "trailing_only": 64,
+   "none": 369
+  },
+  "c019_rows_flagged_with_appendix": 14,
+  "of_which_trailing_only": 14,
+  "examples": {
+   "law-go-kr:expc:338889": "raw 이유 ends: …(생  략)\\n<관계 법령>]]></이유> ; quoted articles start right after the conclusion with a law-name line, no heading before them",
+   "law-go-kr:expc:342855": "raw 이유 ends: …⑤ ～ ⑨ (생  략)\\n<관계 법령>]]></이유>"
+  },
+  "law_go_kr_html_view_338889": "quoted articles follow the conclusion inside 【이유】 with no heading; no separate block",
+  "resolution": "start of the appendix is not marked in the source: not added. v3-footnotes2 marks related_law_heading=trailing_only and appendix_start=null so C can hold or cut those rows by its own rule"
+ }
+}
