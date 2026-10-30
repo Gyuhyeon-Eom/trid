@@ -50,7 +50,7 @@ class AssemblyMinutesTests(unittest.TestCase):
                           '2026-10-30T00:00:00+00:00')
         self.assertNotIn('02-123-4567', row['text'])
         self.assertEqual(dict(pii), {'PHONE': 1})
-        self.assertEqual((row['clean_version'], row['provenance']['institution']), ('clean-v4', '국회'))
+        self.assertEqual((row['clean_version'], row['provenance']['institution']), ('clean-v5', '국회'))
         self.assertIn(row['split'], ('train', 'valid', 'test'))
         self.assertEqual(row['id'], 'assembly-minutes:55958')
         self.assertEqual(row['kind'], 'assembly_plenary')
@@ -81,6 +81,23 @@ class AssemblyMinutesTests(unittest.TestCase):
         ceremony = VIEWER.replace('제22대국회 제430회 (임시회) 제1차 국회본회의 (2025.12.11.)', '제22대국회 제429회 (정기회) 개회식 국회본회의 (2025.09.01.)')
         row, _ = row_of({'id': 55273, 'class': '1'}, ceremony, 't')
         self.assertEqual((row['title'], row['date']), ('제22대국회 제429회 개회식 국회본회의', '2025-09-01'))
+
+    def test_joint_meeting_heading_without_minutes_word_starts_the_text(self):
+        joint = VIEWER.replace('<h1>국회본회의회의록</h1></div><div>제1호</div>',
+                               '<h1>교육<div class="tit_s"><span>보건복지위원회와 </span><span>연석회의</span></div>위원회</h1>'
+                               '<p class="tit_sm">(의학교육소위원회)</p></div></div><p class="num">제1호</p>')
+        meta, text = extract(joint)
+        self.assertEqual(meta['date'], '2025-12-11')
+        self.assertTrue(text.startswith('교육'), text[:40])
+        for ui in ('NATIONAL ASSEMBLY MINUTES', '가짜회의록'):
+            self.assertNotIn(ui, text)
+
+    def test_redaction_inside_url_and_listed_overlap_quarantine(self):
+        url = VIEWER.replace('개의하겠습니다.', '개의하겠습니다. https://example.go.kr/view?no=02-123-4567')
+        row, _ = row_of({'id': 4, 'class': '1'}, url, 't')
+        self.assertIn('quarantine:pii_redaction_inside_url', row['flags'])
+        row, _ = row_of({'id': 4, 'class': '1'}, VIEWER, 't', listed='reserved_overlap_partial')
+        self.assertIn('quarantine:reserved_overlap_partial', row['flags'])
 
     def test_discover_resumes_the_walk_without_repeating_finished_list_requests(self):
         import json as _json

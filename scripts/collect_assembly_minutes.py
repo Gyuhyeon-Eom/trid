@@ -42,7 +42,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 BUCKET = 'trid-training-148761639313'
 SOURCE = 'assembly-minutes'
-VERSION = 'clean-v4'  # v1 (B-006): old redact; v2: audit header gap; v3 (B-007): no URL-damage/listed quarantine
+VERSION = 'clean-v5'  # v1 (B-006): old redact; v2: audit header gap; v3 (B-007): no URL-damage/listed quarantine;
+# v4 (B-008 fetch of the remaining 1,142): joint-meeting headings (<h1> without 회의록) not found -> viewer UI kept
 BASE = 'https://record.assembly.go.kr/assembly'
 UA = 'Mozilla/5.0 (compatible; trid-collector/0.1; +public-sector research corpus)'
 LICENSE = 'KOGL-Type1'
@@ -124,9 +125,22 @@ def minute_ids(page):
     return sorted({int(i) for i in MINUTE_LINK.findall(page)})
 
 
+def heading_starts(page):
+    """Start offsets of the minutes title <h1>: its text contains 회의록, or it is directly followed (after an optional
+    subcommittee subtitle <p class="tit_sm">) by the issue number <p class="num">제N호, as in joint meetings
+    ("<h1>과학기술정보방송통신<div>…연석회의</div>위원회</h1>")."""
+    starts = []
+    after = re.compile(r'\s*(?:</div>\s*|<p class="tit_sm">[^<]*</p>\s*)*<p class="num">')
+    for m in re.finditer(r'<h1>(.*?)</h1>', page, re.S):
+        title = re.sub(r'<[^>]+>', '', m.group(1)).strip()
+        if title and ('회의록' in title or after.match(page, m.end(), m.end() + 300)):
+            starts.append(m.start())
+    return starts
+
+
 def extract(page):
-    """Viewer HTML -> (header metadata dict, minutes text). Text starts at the document <h1>…회의록 heading."""
-    starts = [m.start() for m in re.finditer(r'<h1>[^<]*회의록', page)]
+    """Viewer HTML -> (header metadata dict, minutes text). Text starts at the document title heading."""
+    starts = heading_starts(page)
     head_text = re.sub(r'\s+', ' ', html.unescape(re.sub(r'<[^>]+>', ' ', page[:starts[-1] if starts else 0])))
     body = page[starts[-1]:] if starts else page
     body = re.sub(r'(?is)<(script|style|noscript|button)\b.*?</\1>', ' ', body)
