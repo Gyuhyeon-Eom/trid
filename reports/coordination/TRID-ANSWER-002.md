@@ -53,4 +53,9 @@
 6. **C-025 C5, C6, N1, N2, M1 재확인**
 7. **BM25 대비 retrieval recall과 최종 정답성을 분리해** 같은 조건에서 측정
 
-READY TRID-ANSWER-002
+**상태:** 부분 완료.
+- **완료:** 수정 배포와 실 UI 확인
+- **남은 실패:** 3절 기록
+- **대기:** C026 독립 검증
+
+SUPERVISION_REPORT_READY TRID-ANSWER-002

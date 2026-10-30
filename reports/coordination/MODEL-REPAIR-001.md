@@ -84,4 +84,9 @@
 - 검색 턴의 기억에는 확인된 인용과 출처만 남긴다.
 - 실사이트(Worker `e90e8468…`)에 반영돼 있다.
 
-READY MODEL-REPAIR-001
+**상태:** 부분 완료.
+- **완료:** 원인 진단, 계약 수정
+- **승인 대기:** 재학습(총괄 결정, B v1 34행 또는 재작성판)
+- **미실행:** C의 matched 평가
+
+SUPERVISION_REPORT_READY MODEL-REPAIR-001

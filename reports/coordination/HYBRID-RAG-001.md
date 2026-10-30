@@ -93,4 +93,9 @@
   - "그러면 공공기관의 출장비"는 공공기관 공통 여비 자료가 색인에 없어 기관 되묻기로 끝난다.
   - UI의 "원문 인용 확인됨" 라벨은 B 소유다. 백엔드 문구는 "글자가 일치하는 문장 · 답인지 원문에서 확인"으로 바꿨다.
 
-READY HYBRID-RAG-001
+**상태:** 부분 완료.
+- **완료:** 로컬 hybrid 검색, 서비스 통합, 실배포, 기존 스냅샷 신규 5건 연결
+- **blocked:** 새 API 수집과 S3 업로드(B, API 키와 비root writer 없음)
+- **미검증:** 정형 통계 조회(structured_facts 0건)
+
+SUPERVISION_REPORT_READY HYBRID-RAG-001
