@@ -1,0 +1,5 @@
+{"Version":"2012-10-17","Statement":[
+{"Effect":"Allow","Action":["s3:GetObject","s3:PutObject","s3:DeleteObject"],"Resource":["arn:aws:s3:::trid-training-148761639313/c009/*","arn:aws:s3:::trid-training-148761639313/teacher-models/c009/*"]},
+{"Effect":"Allow","Action":["s3:ListBucket"],"Resource":"arn:aws:s3:::trid-training-148761639313","Condition":{"StringLike":{"s3:prefix":["c009/*","teacher-models/c009/*"]}}},
+{"Effect":"Allow","Action":["logs:CreateLogGroup","logs:CreateLogStream","logs:PutLogEvents","logs:DescribeLogStreams","cloudwatch:PutMetricData"],"Resource":"*"},
+{"Effect":"Allow","Action":["ecr:GetAuthorizationToken","ecr:BatchGetImage","ecr:GetDownloadUrlForLayer","ecr:BatchCheckLayerAvailability"],"Resource":"*"}]}
