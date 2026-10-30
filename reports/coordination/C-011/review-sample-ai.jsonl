@@ -1,0 +1,41 @@
+{"id": "official:law-go-kr:expc:311556", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "self_authored": false, "semantic_correct": true, "note": "", "in_rebuilt_batch": true}
+{"id": "official:law-go-kr:expc:311947", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "self_authored": false, "semantic_correct": true, "note": "", "in_rebuilt_batch": true}
+{"id": "official:law-go-kr:expc:312456", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "self_authored": false, "semantic_correct": true, "note": "", "in_rebuilt_batch": true}
+{"id": "official:law-go-kr:expc:313176", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "self_authored": false, "semantic_correct": true, "note": "", "in_rebuilt_batch": true}
+{"id": "official:law-go-kr:expc:313445", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "self_authored": false, "semantic_correct": true, "note": "", "in_rebuilt_batch": true}
+{"id": "official:law-go-kr:expc:313801", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "self_authored": false, "semantic_correct": true, "note": "", "in_rebuilt_batch": true}
+{"id": "official:law-go-kr:expc:314662", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "self_authored": false, "semantic_correct": true, "note": "", "in_rebuilt_batch": true}
+{"id": "official:law-go-kr:expc:321533", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "self_authored": false, "semantic_correct": true, "note": "", "in_rebuilt_batch": true}
+{"id": "official:law-go-kr:expc:321687", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "self_authored": false, "semantic_correct": true, "note": "", "in_rebuilt_batch": true}
+{"id": "official:law-go-kr:expc:322441", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "self_authored": false, "semantic_correct": true, "note": "", "in_rebuilt_batch": true}
+{"id": "official:law-go-kr:expc:322885", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "self_authored": false, "semantic_correct": true, "note": "", "in_rebuilt_batch": true}
+{"id": "official:law-go-kr:expc:323509", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "self_authored": false, "semantic_correct": false, "note": "결론(2010년)과 근거(2007년) 날짜가 다름: 원문 오기 가능성, 사람 확인 필요", "in_rebuilt_batch": true}
+{"id": "official:law-go-kr:expc:323903", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "self_authored": false, "semantic_correct": true, "note": "", "in_rebuilt_batch": true}
+{"id": "official:law-go-kr:expc:324341", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "self_authored": false, "semantic_correct": true, "note": "", "in_rebuilt_batch": true}
+{"id": "official:law-go-kr:expc:324343", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "self_authored": false, "semantic_correct": true, "note": "", "in_rebuilt_batch": true}
+{"id": "official:law-go-kr:expc:324401", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "self_authored": false, "semantic_correct": true, "note": "", "in_rebuilt_batch": true}
+{"id": "official:law-go-kr:expc:324421", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "self_authored": false, "semantic_correct": true, "note": "", "in_rebuilt_batch": true}
+{"id": "official:law-go-kr:expc:324839", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "self_authored": false, "semantic_correct": true, "note": "", "in_rebuilt_batch": true}
+{"id": "official:law-go-kr:expc:324943", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "self_authored": false, "semantic_correct": true, "note": "", "in_rebuilt_batch": true}
+{"id": "official:law-go-kr:expc:325337", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "self_authored": false, "semantic_correct": false, "note": "질문이 \"여기에서\"로 시작해 대상이 질문 밖에 있음", "in_rebuilt_batch": false}
+{"id": "official:law-go-kr:expc:334369", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "self_authored": false, "semantic_correct": true, "note": "", "in_rebuilt_batch": false}
+{"id": "official:law-go-kr:expc:335093", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "self_authored": false, "semantic_correct": true, "note": "", "in_rebuilt_batch": true}
+{"id": "official:law-go-kr:expc:335283", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "self_authored": false, "semantic_correct": true, "note": "", "in_rebuilt_batch": true}
+{"id": "official:law-go-kr:expc:336453", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "self_authored": false, "semantic_correct": false, "note": "질문에 원문 각주 혼입(추출 잡음)", "in_rebuilt_batch": false}
+{"id": "official:law-go-kr:expc:340373", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "self_authored": false, "semantic_correct": false, "note": "질문에 원문 각주 혼입(추출 잡음)", "in_rebuilt_batch": false}
+{"id": "official:law-go-kr:expc:341049", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "self_authored": false, "semantic_correct": true, "note": "", "in_rebuilt_batch": true}
+{"id": "official:law-go-kr:expc:342897", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "self_authored": false, "semantic_correct": true, "note": "근거에 각주 혼입(경미, 의미는 맞음)", "in_rebuilt_batch": false}
+{"id": "official:law-go-kr:expc:343137", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "self_authored": false, "semantic_correct": true, "note": "", "in_rebuilt_batch": true}
+{"id": "official:law-go-kr:expc:343991", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "self_authored": false, "semantic_correct": true, "note": "", "in_rebuilt_batch": true}
+{"id": "official:law-go-kr:expc:344033", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "self_authored": false, "semantic_correct": true, "note": "", "in_rebuilt_batch": true}
+{"id": "pack:acct-05-askback", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "self_authored": true, "semantic_correct": true, "note": "", "in_rebuilt_batch": true}
+{"id": "pack:acct-05-mnd", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "self_authored": true, "semantic_correct": true, "note": "", "in_rebuilt_batch": true}
+{"id": "pack:acct-05-register", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "self_authored": true, "semantic_correct": true, "note": "", "in_rebuilt_batch": true}
+{"id": "pack:acct-05-status", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "self_authored": true, "semantic_correct": true, "note": "", "in_rebuilt_batch": true}
+{"id": "pack:treasury-03-art31", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "self_authored": true, "semantic_correct": true, "note": "", "in_rebuilt_batch": true}
+{"id": "pack:treasury-03-fund", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "self_authored": true, "semantic_correct": true, "note": "", "in_rebuilt_batch": true}
+{"id": "pack:treasury-03-fundlist", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "self_authored": true, "semantic_correct": true, "note": "", "in_rebuilt_batch": true}
+{"id": "pack:treasury-03-pfmf", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "self_authored": true, "semantic_correct": true, "note": "", "in_rebuilt_batch": true}
+{"id": "pack:treasury-20-lookup", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "self_authored": true, "semantic_correct": true, "note": "", "in_rebuilt_batch": true}
+{"id": "pack:treasury-20-rule", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "self_authored": true, "semantic_correct": true, "note": "", "in_rebuilt_batch": true}
+{"id": "pack:treasury-20-time", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "self_authored": true, "semantic_correct": true, "note": "", "in_rebuilt_batch": true}
