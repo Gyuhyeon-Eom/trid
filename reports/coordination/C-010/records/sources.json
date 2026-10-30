@@ -1,0 +1,44 @@
+{
+  "seed": "c010",
+  "per_type": 400,
+  "pool_sizes": {
+    "condition": 84848,
+    "exception": 47420,
+    "combine": 24788,
+    "explanation": 515
+  },
+  "distinct_docs": {
+    "condition": 14484,
+    "exception": 12435,
+    "combine": 7157,
+    "explanation": 515
+  },
+  "selected": {
+    "explanation": 400,
+    "combine": 400,
+    "exception": 400,
+    "condition": 400,
+    "table": 390,
+    "numeric_change": 390
+  },
+  "law_docs_scanned": {
+    "law": 5528,
+    "admrul": 20239,
+    "expc": 7836
+  },
+  "skipped": {
+    "excluded": 918
+  },
+  "excluded_ids": 32728,
+  "reserve_partial_rows": 1076,
+  "exclude": [
+    "/tmp/c009/c008-docs.txt",
+    "/tmp/c006/qa-01/selected.jsonl",
+    "/tmp/c006/qa-02/selected.jsonl",
+    "reports/coordination/C-002/pilot-spec.json",
+    "reports/coordination/C-007/pilot60/pilot60.json",
+    "reports/coordination/C-008/quarantine-docs.txt",
+    "/tmp/c010/reserve-partial-docs.txt"
+  ],
+  "korea_candidates": "/tmp/c009/main/candidates.jsonl"
+}

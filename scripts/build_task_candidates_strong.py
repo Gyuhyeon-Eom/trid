@@ -31,9 +31,9 @@ TYPE_DEF = {
                   '정답은 그 요건 구간만이다. 포부·소감, 근거 법령, 일시, 경위, 정의 문장 전체는 조건 문제가 아니다.'),
     'exception': ('예외: 문단에 원칙과 그 원칙이 적용되지 않는 경우(다만·제외·면제·예외·단서)가 함께 있을 때, 원칙이 적용되지 않는 대상·경우를 묻는 문제. '
                   '질문에 원칙을 밝히고, 정답은 예외 대상·경우 구간만이다(위반 여부·결과 서술 등 덧붙은 부분 제외). 문단에 없는 예외 전제를 만들면 안 된다.'),
-    'explanation': ('설명: 정책·조치의 목적이나 이유를 묻고 근거와 함께 설명하게 하는 문제. 결론은 목적·이유를 말하는 구간이고(조치 내용 자체는 결론이 아님), '
-                    '근거는 결론과 다른 문장으로, 그것만 읽어도 왜 그런 목적·이유가 나오는지 알 수 있는 사실(배경·현황·문제·수치)이다. '
-                    '근거가 행사 내용·참석자·일정처럼 목적을 뒷받침하지 않으면 설명 문제가 아니다.'),
+    'explanation': ('설명: 문서가 명시한 결론(정책·조치의 목적·이유, 또는 법령해석의 결론)과 그 결론을 뒷받침하는 근거를 함께 설명하게 하는 문제. '
+                    '근거는 결론과 다른 문장으로, 그것만 읽어도 왜 그런 결론이 나오는지 알 수 있는 사실·규정·논리다. '
+                    '근거가 행사 내용·참석자·일정처럼 결론을 뒷받침하지 않거나, 질문이 결론과 반대되는 전제를 깔면 설명 문제가 아니다.'),
     'numeric_change': ('수치변화: 문단의 수치 하나를 바꾼 반사실 문단에서 바뀐 값을 묻는 문제. 편집된 문단 안에 원래 값이 남거나, '
                        '제목·요약줄·합계·비율·증감이 바뀐 값과 모순되면 안 된다.'),
     'combine': ('다중근거: 질문 하나에 대한 답 하나를 내려면 두 문단의 사실을 결합해야 하는 문제. 허용 형태는 둘이다. '
@@ -83,13 +83,15 @@ JUDGE = ('문서, 질문, 답안 A(검토 대상), 답안 B(다른 검토자가 
          'question_ok: 질문이 지시 대상 없이도 분명하고, 답을 노출하지 않으며, 문서에 없는 전제를 깔지 않는다\n'
          'consistent: 문서 안의 숫자·제목·요약줄·합계·비율이 서로 모순되지 않는다{edits}\n'
          'agrees: A와 B가 같은 내용이다(표현 차이는 무시)\n'
-         'span_tight: A가 질문이 묻는 부분만 담고, 결과·배경·다른 사실 등 묻지 않은 내용을 덧붙이지 않았다\n'
+         'span_tight: A가 질문이 묻는 부분만 담고, 결과·배경·다른 사실 등 묻지 않은 내용을 덧붙이지 않았다'
+         '(다중근거의 "대상 특정 근거", 설명의 "근거"는 형식상 요구되는 부분이므로 군더더기로 보지 않는다)\n'
          '{extra}\n\n{context}\n\n질문: {question}\n답안 A: {candidate}\n답안 B: {independent}')
 EXTRA = {
-    'combine': ('both_needed: 질문이 하위 질문 두 개로 나뉘지 않는 하나의 질문이고, 그 답을 내려면 A에 든 두 사실을 결합해야 한다'
-                '(하나는 대상을 특정하고 다른 하나가 값을 주거나, 두 값을 비교·계산). 두 질문·두 사례의 나열이면 no'),
-    'explanation': ('both_needed: A의 결론이 문서에 목적·이유로 명시되어 있고(조치 내용 자체가 아님), 결론과 다른 근거 문장만 읽어도 '
-                    '그 목적·이유가 왜 나오는지 알 수 있다. 근거가 행사 내용·참석자·일정처럼 결론을 뒷받침하지 않으면 no'),
+    'combine': ('both_needed: A의 "답"은 질문에 대한 답이고 "대상 특정 근거"는 질문이 가리키는 대상을 정하는 다른 문단의 사실이다. '
+                '그 근거 없이는 질문의 대상을 정할 수 없고, 답은 다른 문단에서만 나온다(하나는 대상을 특정하고 다른 하나가 값을 주거나, 두 값을 비교·계산). '
+                '질문이 조문 번호만으로 대상을 가리켜 근거 문단이 필요 없거나, 서로 무관한 두 질문·두 사례의 나열이면 no'),
+    'explanation': ('both_needed: A의 결론이 문서에 명시되어 있고(목적·이유 또는 해석 결론), 결론과 다른 근거 문장만 읽어도 '
+                    '그 결론이 왜 나오는지 알 수 있다. 근거가 결론을 뒷받침하지 않거나 질문의 전제가 결론과 반대이면 no'),
 }
 JUDGE_KEYS = ('type_ok', 'supported', 'complete', 'condition_ok', 'target_ok', 'unique', 'question_ok', 'consistent', 'agrees',
               'span_tight')
@@ -128,14 +130,17 @@ def draft_schema(kind, ids):
 
 
 def changed_values(edits):
-    """Number+unit tokens (e.g. '20명', '8.2%') of the original spans that the edits replaced."""
+    """Number+unit tokens (e.g. '20명', '8.2%') of the original spans that the edits replaced, plus the bare number when it
+    is distinctive (3+ digits or a decimal): tables repeat values without their unit ('458개' in text, '458' in a table)."""
     out = []
     for old, new in edits:
         for m in re.finditer(r'\d[\d,]*(?:\.\d+)?', old):
             unit = old[m.end():m.end() + 1].strip()
-            key = m.group(0) + (unit if unit and not unit.isdigit() else '')
-            if key not in new and key not in out:
-                out.append(key)
+            bare = m.group(0)
+            for key in (bare + (unit if unit and not unit.isdigit() else ''), bare):
+                distinctive = key != bare or len(bare.replace(',', '')) >= 3 or '.' in bare
+                if distinctive and not value_in(key, new) and key not in out:
+                    out.append(key)
     return out
 
 
@@ -169,8 +174,10 @@ def repeated_values(passage, title, doc_text):
     keys = []
     for m in re.finditer(r'\d[\d,]*(?:\.\d+)?', passage):
         unit = passage[m.end():m.end() + 1].strip()
-        key = m.group(0) + (unit if unit and not unit.isdigit() else '')
-        if key not in keys and value_in(key, outside):
+        bare = m.group(0)
+        key = bare + (unit if unit and not unit.isdigit() else '')
+        distinctive = len(bare.replace(',', '')) >= 3 or '.' in bare
+        if key not in keys and (value_in(key, outside) or (distinctive and value_in(bare, outside))):
             keys.append(key)
     return keys
 
@@ -189,7 +196,9 @@ def edit_target(cand):
             key = m.group(0).replace(' ', '')
             num = re.match(r'\d[\d,]*(?:\.\d+)?', key).group(0)
             unit = key[len(num):len(num) + 1]
-            if num + unit in rep.get(i, []) or p.count(m.group(0)) != 1:
+            distinctive = len(num.replace(',', '')) >= 3 or '.' in num
+            repeats_bare = distinctive and len(re.findall(r'(?<![\d.,])' + re.escape(num) + r'(?![\d])', p)) > 1   # e.g. the same value in a table row
+            if num + unit in rep.get(i, []) or p.count(m.group(0)) != 1 or repeats_bare:
                 continue
             options.append((m.start(), m.group(0)))
         if options:
@@ -409,7 +418,7 @@ def candidate_text(b):
     if kind == 'explanation':
         return f"결론: {item['conclusion']} / 근거: {item['evidence']}" + (f" / 적용 조건: {item['condition']}" if item['condition'] else '')
     if kind == 'combine':
-        return f"{item['parts'][0][2]} / {item['parts'][1][2]}"
+        return f"답: {item['parts'][1][2]} (대상 특정 근거: {item['parts'][0][2]})"
     return item['answer']
 
 
