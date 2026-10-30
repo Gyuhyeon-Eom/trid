@@ -2,42 +2,35 @@
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "TrainingJobsOfTrid",
+      "Sid": "DescribeS1Jobs",
       "Effect": "Allow",
-      "Action": ["sagemaker:CreateTrainingJob", "sagemaker:DescribeTrainingJob", "sagemaker:StopTrainingJob", "sagemaker:AddTags"],
-      "Resource": "arn:aws:sagemaker:ap-northeast-2:148761639313:training-job/trid-pt-*"
+      "Action": "sagemaker:DescribeTrainingJob",
+      "Resource": "arn:aws:sagemaker:ap-northeast-2:148761639313:training-job/trid-pt-s1-*"
     },
     {
-      "Sid": "ListJobsForDuplicateCheck",
+      "Sid": "ListJobsToFindTheRunningJobOfARun",
       "Effect": "Allow",
-      "Action": ["sagemaker:ListTrainingJobs"],
+      "Action": "sagemaker:ListTrainingJobs",
       "Resource": "*"
     },
     {
-      "Sid": "PassOnlyTheExistingTrainingRole",
+      "Sid": "ReadS1Outputs",
       "Effect": "Allow",
-      "Action": "iam:PassRole",
-      "Resource": "arn:aws:iam::148761639313:role/trid-sagemaker-lora",
-      "Condition": {"StringEquals": {"iam:PassedToService": "sagemaker.amazonaws.com"}}
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::trid-training-148761639313/corpus/runs/s1/*"
     },
     {
-      "Sid": "CorpusPrefixOnly",
-      "Effect": "Allow",
-      "Action": ["s3:GetObject", "s3:PutObject", "s3:DeleteObject"],
-      "Resource": "arn:aws:s3:::trid-training-148761639313/corpus/*"
-    },
-    {
-      "Sid": "ListCorpusPrefix",
+      "Sid": "ListS1Prefix",
       "Effect": "Allow",
       "Action": "s3:ListBucket",
       "Resource": "arn:aws:s3:::trid-training-148761639313",
-      "Condition": {"StringLike": {"s3:prefix": ["corpus/*"]}}
+      "Condition": {"StringLike": {"s3:prefix": ["corpus/runs/s1/*"]}}
     },
     {
-      "Sid": "ReadTrainingLogs",
+      "Sid": "WriteOnlyTheControllerStatusObject",
       "Effect": "Allow",
-      "Action": ["logs:DescribeLogStreams", "logs:GetLogEvents"],
-      "Resource": "arn:aws:logs:ap-northeast-2:148761639313:log-group:/aws/sagemaker/TrainingJobs*"
+      "Action": "s3:PutObject",
+      "Resource": "arn:aws:s3:::trid-training-148761639313/corpus/runs/s1/controller-status.json"
     }
   ]
 }

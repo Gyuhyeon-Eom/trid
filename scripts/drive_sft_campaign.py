@@ -14,6 +14,7 @@ checkpoint sync never deletes). Milestones, best-valid weights and A-003/A-004 r
 import argparse
 import datetime
 import json
+import os
 import subprocess
 import time
 from pathlib import Path
@@ -23,6 +24,9 @@ REGION = 'ap-northeast-2'
 
 
 def aws(*args, check=True):
+    if os.environ.get('TRID_AWS_TRACE'):  # records every AWS call (for least-privilege policy review)
+        with open(os.environ['TRID_AWS_TRACE'], 'a') as f:
+            f.write(json.dumps(args) + '\n')
     out = subprocess.run(['aws', '--region', REGION, *args], capture_output=True, text=True)
     if check and out.returncode:
         raise RuntimeError(f'aws {" ".join(args[:3])}: {out.stderr.strip()}')
@@ -123,7 +127,8 @@ def spent_usd(state, prices):
 def step(campaign, state):
     now = datetime.datetime.now().isoformat(timespec='seconds')
     common = campaign['common']
-    busy = busy_types()
+    monitor = bool(common.get('monitor_only'))
+    busy = set() if monitor else busy_types()
     cap, prices = common.get('cost_cap_usd'), common.get('prices_usd_per_hour', {})
     state['spent_usd'] = round(spent_usd(state, prices), 2) if cap else None
     for name, arm in campaign['arms'].items():
@@ -184,8 +189,9 @@ def step(campaign, state):
                         busy.add((arm['instance'], spot))
                     else:
                         s['consecutive_failures'] += 1
-        kept, deleted = prune(arm)
-        s['recovery_kept'], s['recovery_pruned_objects'] = kept, s.get('recovery_pruned_objects', 0) + deleted
+        if not monitor:  # pruning deletes S3 objects; a monitor never writes outside its status key
+            kept, deleted = prune(arm)
+            s['recovery_kept'], s['recovery_pruned_objects'] = kept, s.get('recovery_pruned_objects', 0) + deleted
         # Milestones and, at the end, the validation-selected weights get one evaluation job each.
         _, keys = s3_keys(run_s3 + 'milestones/')
         ready = sorted({k.split('/milestones/')[1].split('/')[0] for k in keys if k.endswith('/state.json')})

@@ -1,0 +1,37 @@
+{
+  "Version": "2012-10-17",
+  "Comment": "NOT FOR NOW. Separate policy for a later approved stage in which the Mac mini controller launches jobs. Attach only after supervisor approval of that stage; narrow <campaign> to the approved prefix.",
+  "Statement": [
+    {
+      "Sid": "LaunchAndStopTridJobs",
+      "Effect": "Allow",
+      "Action": ["sagemaker:CreateTrainingJob", "sagemaker:AddTags", "sagemaker:StopTrainingJob", "sagemaker:DescribeTrainingJob"],
+      "Resource": "arn:aws:sagemaker:ap-northeast-2:148761639313:training-job/trid-pt-*"
+    },
+    {
+      "Sid": "PassOnlyTheExistingTrainingRole",
+      "Effect": "Allow",
+      "Action": "iam:PassRole",
+      "Resource": "arn:aws:iam::148761639313:role/trid-sagemaker-lora",
+      "Condition": {"StringEquals": {"iam:PassedToService": "sagemaker.amazonaws.com"}}
+    },
+    {
+      "Sid": "UploadCodeSnapshots",
+      "Effect": "Allow",
+      "Action": "s3:PutObject",
+      "Resource": "arn:aws:s3:::trid-training-148761639313/corpus/code/pretrain/*"
+    },
+    {
+      "Sid": "CampaignOutputs",
+      "Effect": "Allow",
+      "Action": ["s3:GetObject", "s3:PutObject"],
+      "Resource": "arn:aws:s3:::trid-training-148761639313/corpus/runs/<campaign>/*"
+    },
+    {
+      "Sid": "PruneOnlyOldRecoveryCheckpoints",
+      "Effect": "Allow",
+      "Action": "s3:DeleteObject",
+      "Resource": "arn:aws:s3:::trid-training-148761639313/corpus/runs/<campaign>/*/sft/checkpoints/*"
+    }
+  ]
+}
