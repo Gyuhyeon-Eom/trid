@@ -1,0 +1,20 @@
+{
+ "fixture": "service Workspace on runs/workspace-index/v3 (manifest 8afc0384…), review file replaced by 1-2 synthetic rows marking public statute tables",
+ "privacy_marked": "law-go-kr:law-byl:169708641#0",
+ "hold_marked": "law-go-kr:law-byl:169703569#0",
+ "privacy": {
+  "unmarked": {"rank": 1, "score": 0.959, "status": "answer", "in_hits": true, "context_chunks": ["169708641@0", "169708641@1040"]},
+  "marked": {"rank": 76265, "score": 0.0, "status": "answer", "in_hits": false, "context_chunks": ["169708675@0 (별표6 국외 가족여비 — substitute document)"]},
+  "marked_pinned_doc": {"score": 0.0, "status": "answer", "hits": ["169708641#1040"], "context_contains_marked": false},
+  "note": "score-0 down-ranking, not set exclusion"
+ },
+ "hold": {
+  "select_value_hold_flag": true,
+  "case_answer_status": "unverified",
+  "verified_quotes": 0,
+  "commentary_notes": ["검색된 원문과 질문에 없는 숫자가 들어 있는 해설 문장 5개를 숨겼습니다.", "숫자 추출이 원문 쪽과 일치하지 않는 구간 1개를 썼습니다. 이 구간의 숫자는 답 값으로 쓰지 않으니 원문(쪽)에서 직접 확인하세요."],
+  "remaining_commentary_has_value": false
+ },
+ "model": "llama-server :51912 (default version model), case mode, 256 tokens",
+ "run": "2026-10-30, C local CPU"
+}
