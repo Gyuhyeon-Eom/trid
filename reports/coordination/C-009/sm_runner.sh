@@ -37,8 +37,10 @@ for spec in "Qwen3-32B-Q8_0.gguf 2c50eb8aad05047dbf24fa014eb621adf552e14176cabe0
   echo "$2  models/$1" | sha256sum -c
 done
 log "models verified"
-CUDA_VISIBLE_DEVICES=0,1 bin/llama-server -m models/Qwen3-32B-Q8_0.gguf --host 127.0.0.1 --port 18475 -c 65536 -np 16 -ngl 99 -fa on --jinja > gen.log 2>&1 &
-CUDA_VISIBLE_DEVICES=2,3 bin/llama-server -m models/gpt-oss-120b-MXFP4.gguf --host 127.0.0.1 --port 18476 -c 65536 -np 16 -ngl 99 -fa on --jinja > verify.log 2>&1 &
+# slot context = ctx / np (8192 with the defaults: thinking-mode drafts and reasoning judges need more than 4096)
+GEN_NP=${GEN_NP:-8}; VER_NP=${VER_NP:-8}
+CUDA_VISIBLE_DEVICES=0,1 bin/llama-server -m models/Qwen3-32B-Q8_0.gguf --host 127.0.0.1 --port 18475 -c 65536 -np $GEN_NP -ngl 99 -fa on --jinja > gen.log 2>&1 &
+CUDA_VISIBLE_DEVICES=2,3 bin/llama-server -m models/gpt-oss-120b-MXFP4.gguf --host 127.0.0.1 --port 18476 -c 65536 -np $VER_NP -ngl 99 -fa on --jinja > verify.log 2>&1 &
 for port in 18475 18476; do
   for i in $(seq 1 120); do curl -s 127.0.0.1:$port/health | grep -q ok && break; sleep 10; done
   curl -s 127.0.0.1:$port/health | grep -q ok || { log "server $port not healthy"; exit 1; }
@@ -53,10 +55,10 @@ run_item() {   # $1 queue entry name; draft and verify run on separate GPU pairs
   for f in build_task_candidates.py build_task_candidates_strong.py build_teacher_qa.py; do aws s3 cp $B/code/$f code/$STAGE/scripts/ --only-show-errors; done
   aws s3 sync $B/work/$NAME $W --delete --only-show-errors
   sha256sum code/$STAGE/scripts/*.py > $W/$STAGE.code-sha256
-  if [ "$STAGE" = draft ]; then URL=http://127.0.0.1:18475; else URL=http://127.0.0.1:18476; fi
+  if [ "$STAGE" = draft ]; then URL=http://127.0.0.1:18475; N=$GEN_NP; else URL=http://127.0.0.1:18476; N=$VER_NP; fi
   log "run $NAME $STAGE"
   ( while true; do sleep 60; aws s3 sync $W $B/work/$NAME --only-show-errors; done ) & SYNC=$!
-  python3 -u code/$STAGE/scripts/build_task_candidates.py $STAGE --profile strong --work $W --url $URL --workers 16 > $W/$STAGE.log 2>&1 || echo "exit $?" >> $W/$STAGE.log
+  python3 -u code/$STAGE/scripts/build_task_candidates.py $STAGE --profile strong --work $W --url $URL --workers $N > $W/$STAGE.log 2>&1 || echo "exit $?" >> $W/$STAGE.log
   kill $SYNC
   date -u > $W/$STAGE.done
   aws s3 sync $W $B/work/$NAME --only-show-errors
@@ -66,7 +68,11 @@ run_item() {   # $1 queue entry name; draft and verify run on separate GPU pairs
 }
 idle=0
 while true; do
-  aws s3 ls $B/sm/queue/stop >/dev/null 2>&1 && { log "stop marker"; wait; break; }
+  if aws s3 ls $B/sm/queue/stop >/dev/null 2>&1; then   # finish running stage items only (not the log loop), then exit
+    log "stop marker"
+    while [ -n "$(ls run | grep -v '^started-')" ]; do sleep 10; done
+    break
+  fi
   started=0
   for q in $(aws s3 ls $B/sm/queue/ | awk '{print $NF}' | sort); do
     STAGE=${q##*-}

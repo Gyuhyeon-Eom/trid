@@ -36,6 +36,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / 'scripts'))
 from build_teacher_qa import EXCLUDE, SOURCE, append_jsonl, model_id, norm, passages, read_jsonl  # noqa: E402
+import build_task_candidates_strong as S  # noqa: E402
 
 TYPES = ('condition', 'exception', 'table', 'combine', 'numeric_change', 'explanation')
 PATTERNS = {
@@ -138,7 +139,7 @@ def number_list(text):
     return out[:30]
 
 
-META = re.compile(r'구간|번호|질문|묻는|만드세요|작성|다음과 같')
+META = re.compile(r'구간|번호|질문|묻는|만드세요|작성|다음과 같|편집된|수정된')
 MARKERS = {
     'condition': re.compile(r'경우|이상|이하|미만|초과|대상|자격|요건|해당|충족|이면|라면|한하|기준|이내|부터|까지'),
     'exception': re.compile(r'제외|다만|예외|면제|않|아니|불가|단,'),
@@ -146,8 +147,9 @@ MARKERS = {
 }
 
 
-def form_check(item, text=''):
-    """Deterministic question/answer form rules applied to every item (model-drafted or carried over)."""
+def form_check(item, text='', markers=True):
+    """Deterministic question/answer form rules applied to every item (model-drafted or carried over). The type-marker
+    regexes belong to the small-generator profile only; strong-profile items are judged by the verifier instead."""
     kind, q = item['type'], item['question']
     if META.search(q) or not 8 <= len(q) <= 200:
         raise ValueError('question form: meta text or length')
@@ -158,7 +160,7 @@ def form_check(item, text=''):
     if kind in ('condition', 'exception') and answer in text:
         at = text.find(answer)
         window = text[max(0, at - 40):at + len(answer) + 40]   # the marker may sit next to the answer (e.g. '…은 면제')
-    if kind in MARKERS and not MARKERS[kind].search(window):
+    if markers and kind in MARKERS and not MARKERS[kind].search(window):
         raise ValueError(f'{kind} answer has no {kind} marker')
     if kind == 'numeric_change' and not re.search(r'\d', answer):
         raise ValueError('numeric answer has no number')
@@ -211,7 +213,10 @@ def excluded_ids(extra):
     return ids
 
 
-def find_table(text):
+def find_table(text, aligned=True):
+    """First run of >= 4 one-row-per-line numeric rows. Also returns the raw block from the header/caption lines above the
+    rows down to the 8th row, verbatim (header hierarchy kept), with start/end lines that locate it uniquely.
+    aligned=True (small-generator profile) additionally requires a single header line aligned with the row width."""
     lines = text.split('\n')
     run = []
     for k, line in enumerate(lines + ['']):
@@ -224,24 +229,38 @@ def find_table(text):
             widths = Counter(len(r) for _, r in run)
             width, count = widths.most_common(1)[0]
             rows = [r for _, r in run if len(r) == width]
-            header_line = lines[run[0][0] - 1].split() if run[0][0] > 0 else []
-            caption = next((lines[j].strip() for j in range(run[0][0] - 2, max(-1, run[0][0] - 5), -1)
+            first = run[0][0]
+            header_line = lines[first - 1].split() if first > 0 else []
+            caption = next((lines[j].strip() for j in range(first - 2, max(-1, first - 5), -1)
                             if j >= 0 and lines[j].strip()), '')
-            if count >= 4 and len(header_line) in (width - 1, width) and len(rows) == len(run):
-                return dict(caption=caption, header_raw=lines[run[0][0] - 1].strip(), rows=rows[:8], width=width)
+            top = first
+            while top > 0 and first - top < 5 and lines[top - 1].strip() and len(lines[top - 1]) < 160 \
+                    and not (top < first and lines[top].lstrip().startswith(('<', '[', '【'))):   # caption line reached
+                top -= 1
+            last = run[min(7, len(run) - 1)][0]
+            start, end = lines[top].strip(), lines[last].strip()
+            offset = sum(len(x) + 1 for x in lines[:top]) + lines[top].find(start)
+            located = top < first and text.find(start) == offset and text.find(end) >= offset and \
+                text.find(end) == sum(len(x) + 1 for x in lines[:last]) + lines[last].find(end)
+            ok = count >= 4 and len(rows) == len(run) and len(header_line) in (width - 1, width) if aligned \
+                else count >= 4 and located
+            if ok:
+                return dict(caption=caption, header_raw=lines[first - 1].strip(), rows=rows[:8], width=width,
+                            raw_start=start, raw_end=end, raw_block='\n'.join(lines[top:last + 1]) if located else None)
         run = []
     return None
 
 
-def select(work, per_type, seed, extra_exclude):
+def select(work, per_type, seed, extra_exclude, profile='small', only=None):
     excluded = excluded_ids(extra_exclude)
+    allowed = excluded_ids([only]) if only else None
     dev_text = re.sub(r'\s+', '', ''.join(r['prompt'] for p in DEV_PROMPTS if p.exists() for r in json.loads(p.read_text())['results']))
     pools, skipped = defaultdict(list), Counter()
     with SOURCE.open() as f:
         for line in f:
             doc = json.loads(line)
-            if doc['id'] in excluded:
-                skipped['excluded'] += 1
+            if doc['id'] in excluded or (allowed is not None and doc['id'] not in allowed):
+                skipped['excluded' if doc['id'] in excluded else 'not_in_only'] += 1
                 continue
             cut = passages(doc['text'])
             if any(re.sub(r'\s+', '', p)[:80] in dev_text for p in cut):
@@ -249,7 +268,7 @@ def select(work, per_type, seed, extra_exclude):
                 continue
             h = int(hashlib.sha256((seed + doc['id']).encode()).hexdigest(), 16)
             base = dict(doc=doc['id'], title=doc['title'], source=doc['source'], key=h)
-            table = find_table(doc['text'])
+            table = find_table(doc['text'], aligned=profile == 'small')
             if table:
                 pools['table'].append(dict(base, table=table))
             if not cut:
@@ -272,13 +291,27 @@ def select(work, per_type, seed, extra_exclude):
             picked += 1
             if picked == per_type:
                 break
+    if profile == 'strong':
+        add_repeated(out)
     work.mkdir(parents=True, exist_ok=True)
     (work / 'candidates.jsonl').write_text(''.join(json.dumps({k: v for k, v in c.items() if k != 'key'}, ensure_ascii=False) + '\n' for c in out))
-    meta = dict(seed=seed, per_type=per_type, pool_sizes={k: len(v) for k, v in pools.items()},
+    meta = dict(seed=seed, per_type=per_type, profile=profile, pool_sizes={k: len(v) for k, v in pools.items()},
                 selected=dict(Counter(c['type'] for c in out)), skipped=dict(skipped), excluded_ids=len(excluded),
-                extra_exclude=[str(p) for p in extra_exclude])
+                extra_exclude=[str(p) for p in extra_exclude], only=str(only) if only else None)
     (work / 'select.json').write_text(json.dumps(meta, ensure_ascii=False, indent=2))
     print(json.dumps(meta, ensure_ascii=False))
+
+
+def add_repeated(cands):
+    """Strong profile, numeric_change: per passage, the values that also appear in the title or elsewhere in the document
+    (second pass over the source; see build_task_candidates_strong.repeated_values)."""
+    want = {c['doc']: c for c in cands if c['type'] == 'numeric_change'}
+    with SOURCE.open() as f:
+        for line in f:
+            doc = json.loads(line)
+            c = want.get(doc['id'])
+            if c:
+                c['repeated'] = {i: S.repeated_values(p, doc.get('title', ''), doc['text']) for i, p in c['passages'].items()}
 
 
 def edit_number(span):
@@ -352,15 +385,16 @@ def settled(path):
     return {c for c, r in latest(path).items() if not r.get('transient')}
 
 
-def draft(work, url, workers):
+def draft(work, url, workers, profile='small'):
     out = work / 'drafts.jsonl'
     done = settled(out)
     gen = model_id(url)
     jobs = [c for c in read_jsonl(work / 'candidates.jsonl') if c['cid'] not in done]
+    one = S.draft_one if profile == 'strong' else draft_one
 
     def run(cand):
         try:
-            result, meta = draft_one(url, cand)
+            result, meta = one(url, cand)
             return dict(cid=cand['cid'], type=cand['type'], generator=gen, error=None, draft=result, call=meta)
         except (ValueError, OSError, KeyError, IndexError) as exc:
             return dict(cid=cand['cid'], type=cand['type'], generator=gen, error=f'{type(exc).__name__}: {exc}', draft=None,
@@ -454,7 +488,7 @@ def to_item(cand, d):
     return dict(id=iid, type='table', table=key, question=q, answer=d['answer']), (key, table)
 
 
-def check(work, distractor_ids, dev_mod, include_spec):
+def check(work, distractor_ids, dev_mod, include_spec, profile='small'):
     """Per-item C-002 builder rules; writes built.jsonl (one built row per passing item) and check.jsonl."""
     from tokenizers import Tokenizer
     import build_task_pilot as B
@@ -489,7 +523,7 @@ def check(work, distractor_ids, dev_mod, include_spec):
         if r['state'] != 'pending':
             continue
         try:
-            item, table = to_item(cands[r['cid']], r['draft'])
+            item, table = (S.to_item if profile == 'strong' else to_item)(cands[r['cid']], r['draft'])
             if table:
                 spec['tables'][table[0]] = table[1]
             items.append((r, item))
@@ -523,7 +557,14 @@ def check(work, distractor_ids, dev_mod, include_spec):
                     B.require(old, original, 'Edited original')
                     text = text.replace(old, new)
                 targets.append((item['doc'], text, original if item.get('edits') else None))
-            form_check(item, targets[0][1])
+                if profile == 'strong' and item.get('edits'):
+                    # The counterfactual must not contradict the rest of the document (title, summary lines, other passages,
+                    # tables): an original value found outside the edited passage makes the edit unsafe, so the item is skipped.
+                    outside = S.outside_text(original, docs[item['doc']].get('title', ''), docs[item['doc']]['text'])
+                    found = [k for k in S.changed_values(item['edits']) if S.value_in(k, outside)]
+                    if found:
+                        raise ValueError(f'unsafe counterfactual: original value {found} also appears elsewhere in the document')
+            form_check(item, targets[0][1], markers=profile == 'small')
             split = split_of(targets[0][0])
             pool = [(d, cut[d][i]) for d, i in distractors[split] if d not in {t[0] for t in targets}]
             random.Random(item['id']).shuffle(pool)
@@ -537,7 +578,8 @@ def check(work, distractor_ids, dev_mod, include_spec):
             if row is None:
                 raise ValueError('does not fit 1024 tokens with any distractor')
             r.update(state='checked', item=item)
-            built.append(dict(cid=r['cid'], type=kind, item=item, row=row))
+            built.append(dict(cid=r['cid'], type=kind, item=item, row=row,
+                              doc_title=docs[targets[0][0]].get('title', '')))
         except (ValueError, KeyError, IndexError) as exc:
             r.update(state='check_reject', reason=str(exc)[:200])
     (work / 'spec-tables.json').write_text(json.dumps(spec, ensure_ascii=False, indent=1))
@@ -555,11 +597,18 @@ def candidate_text(b):
     return item['answer']
 
 
-def verify(work, url, workers):
+def verify(work, url, workers, profile='small'):
     out = work / 'verified.jsonl'
     done = settled(out)
     checker = model_id(url)
     jobs = [b for b in read_jsonl(work / 'built.jsonl') if b['cid'] not in done]
+
+    def run_strong(b):
+        try:
+            return dict(cid=b['cid'], type=b['type'], verifier=checker, **S.verify_one(url, b))
+        except (ValueError, OSError, KeyError) as exc:
+            return dict(cid=b['cid'], type=b['type'], verifier=checker, state='verify_error',
+                        error=f'{type(exc).__name__}: {exc}', transient=isinstance(exc, TRANSIENT))
 
     def run(b):
         body, question = b['row']['prompt'].rsplit('\n질문: ', 1)
@@ -592,7 +641,7 @@ def verify(work, url, workers):
                     state=state, calls=calls)
 
     with ThreadPoolExecutor(workers) as pool:
-        for n, row in enumerate(pool.map(run, jobs), 1):
+        for n, row in enumerate(pool.map(run_strong if profile == 'strong' else run, jobs), 1):
             append_jsonl(out, [row])
             if n % 50 == 0:
                 print(f'verified {n}/{len(jobs)}', flush=True)
@@ -635,10 +684,13 @@ def main():
     p.add_argument('stage', choices=['select', 'draft', 'check', 'verify', 'status', 'export'])
     p.add_argument('--work', type=Path, required=True)
     p.add_argument('--url', default='http://127.0.0.1:18473')
+    p.add_argument('--profile', choices=['small', 'strong'], default='small',
+                   help='small: C-008 Kanana/Qwen-1.7B numbered-span path; strong: C-009 >= 32B generator and verifier')
     p.add_argument('--workers', type=int, default=16)
     p.add_argument('--per-type', type=int, default=300)
     p.add_argument('--seed', default='c008')
     p.add_argument('--exclude', type=Path, action='append', default=[])
+    p.add_argument('--only', type=Path, help='restrict selection to these documents (id list / jsonl / spec)')
     p.add_argument('--distractors', type=Path)
     p.add_argument('--dev-mod', type=int, default=1)
     p.add_argument('--include-spec', type=Path)
@@ -646,13 +698,13 @@ def main():
     p.add_argument('--purpose', default='C-008 six-type training candidates; model-drafted, independently model-verified, not human-reviewed.')
     a = p.parse_args()
     if a.stage == 'select':
-        select(a.work, a.per_type, a.seed, a.exclude)
+        select(a.work, a.per_type, a.seed, a.exclude, a.profile, a.only)
     elif a.stage == 'draft':
-        draft(a.work, a.url.rstrip('/'), a.workers)
+        draft(a.work, a.url.rstrip('/'), a.workers, a.profile)
     elif a.stage == 'check':
-        check(a.work, a.distractors, a.dev_mod, a.include_spec)
+        check(a.work, a.distractors, a.dev_mod, a.include_spec, a.profile)
     elif a.stage == 'verify':
-        verify(a.work, a.url.rstrip('/'), a.workers)
+        verify(a.work, a.url.rstrip('/'), a.workers, a.profile)
     elif a.stage == 'status':
         status(a.work)
     else:
