@@ -181,7 +181,45 @@
 | 0.6B 기준선 | GGUF rev `23749fef…`, RAG310 sha `5187c9f5…`, probe, protocol | 2.1, 2.2, 2.3의 결과 파일, 커밋 `4ac68ee` | 0 | 없음 | 특화 후 같은 조건으로 재측정 |
 | 1.7B 기준선 | GGUF rev `90862c4b…` | 기존 파일 재사용, 해시·template·build 일치 확인 | 0 | 없음 | 같음 |
 | test 배포 | `versions.json`, 코드 `4ac68ee` | `shared-demo-release-test-001.json` | 0 | 맥북 호스팅 | 특화 버전이 생기면 manifest에 추가. 학습 manifest 해시, 코드, 평가를 함께 기록 |
-| 맥미니 감시 | 정책 `d98abf5`, 보고 `f1c79a2` 이후 갱신 | IAM 시뮬레이션 | 0 | 인증 | 부모의 `aws login` 승인 뒤 preflight와 launchd 등록 |
+| 맥미니 감시 | 코드 `636cd61`, `cd27844` | MACMINI-DEPLOY-002 (13:15 독립 주기, S3와 SageMaker 직접 조회 일치) | 0 | root 임시 세션(최대 12시간). 자동 발행과 사이트 이관은 미완 | 만료되면 사용자 재인증. 발행에는 최소 권한 역할 필요 |
+| 특화 학습 파이프라인 | `scripts/train_open_weight_lora.py` (`12d1212`) | 아래 10절 스모크 | 0 | 적격 manifest 없음 | manifest를 받으면 사전 등록 후 학습 |
 | 방향 문서 | RESEARCH_LOG, SHARING | `454dae5`, `ca4a8c7` | 0 | 없음 | 상태가 바뀔 때만 갱신 |
+
+## 10. 특화 학습 파이프라인 준비 (학습 아님)
+
+**기존 스크립트 부재:** 기존 LoRA 스크립트(`scripts/train_open_weight_lora.py`)는 저장소에도 S3 code snapshot에도 없었다. 그래서 같은 프로토콜로 새로 작성했다.
+
+**새 스크립트의 동작:**
+- **입력 고정:** 데이터는 manifest로 고정한다. 파일마다 sha256을 검사하며, 품질 필터링은 하지 않는다(적격 여부는 manifest가 정한다).
+- **입력 형식:** 두 가지를 받는다.
+  - C 사례: `question`, `context`, `target`, `task_type`
+  - 기존 trid 곡선 형식: `prompt`, `answer`
+- **학습 방식:**
+  - 평가와 같은 시스템 지시를 쓴다.
+  - Qwen3 no-think 템플릿이 렌더링됐는지 확인한다.
+  - loss는 답 토큰에만 건다.
+  - 파일별 epoch 외에는 반복하지 않는다(overfit guard).
+- **기록:** 파일별 답 토큰 점유율, task별 검증 손실을 남긴다. 어느 쪽도 선택에 쓰지 않는다.
+- **산출:** adapter를 저장하고, 원하면 병합 모델도 만든다.
+
+**맥북 MPS 스모크** (총 28행: 학습 24, 검증 4. 기존 곡선 16행 + C-014 사례 8행, 검증은 기존 곡선 4행. 4단계. **학습용 아님, 산출물 삭제함**):
+- Qwen3-1.7B (HF rev `70d244cc…`, bf16) + LoRA r16: 4단계 28.5초. 환경은 torch 2.9.1, transformers 4.57.6, peft 0.17.1.
+- 이어서 확인한 경로: 병합 → `convert_hf_to_gguf.py` Q8_0 변환(28초) → llama.cpp 서빙 → `evaluate_external_chat.py` 1문항 실행.
+- 결과: 학습 → 서빙 → 평가 전 경로가 0원으로 동작한다.
+- **학습 시간 추정 [INFERENCE]:** 배치 8, 250단계면 맥북에서 약 1시간이다.
+
+**C 인터페이스에서 발견한 문제** (A는 C 파일을 수정하지 않고, 이 기록과 메시지로 전달한다):
+
+| task_type | 행 수 | 토큰 중앙값 | 토큰 최대 | 1,536 이하 | 4,096 이하 |
+|---|---|---|---|---|---|
+| official_answer_extraction | 18 | 2,302 | 4,035 | 2 | 18 |
+| statute_application | 11 | 370 | 560 | 11 | 11 |
+| table_lookup | 9 | 4,086 | 4,106 | 0 | 6 |
+
+- 대상: C-014 고관련 38행. Qwen3 토크나이저 기준이며 템플릿 여유 80토큰을 포함한다.
+- 기존 `max_tokens` 1,536으로는 공식 해석례 대부분과 표 사례 전부가 탈락한다. 스모크에서도 C 사례 8행이 모두 탈락했다.
+- **특화 학습 설정:** `--max-tokens 4096`을 사전 등록 값으로 쓴다(서빙 문맥 4096과 같다).
+- **C에 요청할 것:** 표 사례 3건은 4,096을 넘는다. 근거 구간을 줄이거나 분할해 달라고 요청한다.
+- **추가로 확인된 데이터 공백:** 근거 충돌 사례가 0건이다. 현재 원본 모델의 최대 결함이 보류·충돌이므로, C에 충돌과 근거 부족 사례를 요청한다.
 
 SUPERVISION_REPORT_READY TRID-BASE-CUTOVER-001
