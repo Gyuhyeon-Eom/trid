@@ -39,7 +39,7 @@ function loaded(data) {
   for (const warning of data.warnings) print(warning.replace('추출 문서 보기에서 확인해 주세요.', '/source로 원문을 확인해 주세요.'), 'muted');
 }
 function help() {
-  print('질문을 그대로 입력하면 등록된 공개 자료 전체에서 근거를 찾습니다.\n/doc 번호  (고급) 직전 답변의 참고 문서 중 하나로 다음 질문 고정, /doc 해제\n/workspace 업로드 문서 대신 공유 자료 검색으로 돌아가기\n/pdf       텍스트 PDF 열기 (2MB · 20페이지 · 5만 자 이하, OCR 미지원)\n/paste     문서 직접 붙여넣기 (5,000자 이하)\n/sample    가상 출장 규정 불러오기\n/source    현재 문서(또는 직전 답변의 적용 문서 원문 링크) 보기\n/clear     서버 문서와 이 화면의 기록 지우기\n/help      도움말\n\n이전 질문을 이어서 이해하는 대화 모드가 아니라, 질문마다 근거를 새로 찾습니다.\n↑ / ↓ 이전 명령 선택 · Enter 실행', 'muted');
+  print('말을 걸거나 질문하세요. 업무 규정·기준 질문은 등록된 공개 자료에서 근거를 찾습니다.\n/doc 번호  (고급) 직전 답변의 참고 문서 중 하나로 다음 질문 고정, /doc 해제\n/workspace 업로드 문서 대신 공유 자료 검색으로 돌아가기\n/pdf       텍스트 PDF 열기 (2MB · 20페이지 · 5만 자 이하, OCR 미지원)\n/paste     문서 직접 붙여넣기 (5,000자 이하)\n/sample    가상 출장 규정 불러오기\n/source    현재 문서(또는 직전 답변의 적용 문서 원문 링크) 보기\n/clear     대화 기억·서버 문서·화면 기록 지우기\n/help      도움말\n\n기본 엔진은 최근 대화 몇 턴을 기억합니다(이 브라우저 세션, /clear로 삭제). 업무 사실은 매번 공개 자료에서 근거를 새로 찾습니다.\n↑ / ↓ 이전 명령 선택 · Enter 실행', 'muted');
 }
 function describe(d) {
   return [d.institution, d.title, d.kind, d.date ? `${d.date_type || '기준일'} ${d.date}` : null, d.effective_date ? `시행 ${d.effective_date}` : null].filter(Boolean).join(' · ');
@@ -74,7 +74,7 @@ async function execute(value) {
       await jsonApi('/api/clear', {});
       documentId = null; pages = []; documentName = ''; commandHistory = []; historyIndex = 0; draft = '';
       el('file').value = ''; el('document-text').value = ''; el('output').replaceChildren();
-      print('trid > 문서와 화면 기록을 지웠습니다. 질문을 입력하면 공유 자료에서 찾습니다.');
+      print('TRID > 대화 기억, 문서, 화면 기록을 지웠습니다.');
     }); return;
   }
   if (value.startsWith('/')) {print('trid > 알 수 없는 명령입니다. /help로 명령어를 확인하세요.', 'muted'); return;}
@@ -83,7 +83,14 @@ async function execute(value) {
     const request = documentId ? {question:value, document_id:documentId, version:el('version').value}
                                : {question:value, scope:'workspace', version:el('version').value};
     const result = await jsonApi('/api/ask', request);
-    print(`trid [${result.model}] > ${result.answer}`, 'reply');
+    if (result.intent === 'chat') {
+      print(`TRID > ${result.answer}`, 'reply');
+      print(`[일반 대화 · 문서 근거 없음 · 검증 대상 아님 · ${result.model} · ${result.elapsed_ms}ms]`, 'muted');
+      for (const note of result.commentary_notes || []) print(note, 'error');
+      return;
+    }
+    print(`TRID [근거 검색 · ${result.model}] > ${result.answer}`, 'reply');
+    if (result.search_query) print(`[앞선 대화를 반영한 검색어] ${result.search_query}`, 'muted');
     const ws = result.workspace;
     if (ws) {
       lastApplied = ws.applied;
@@ -141,4 +148,4 @@ el('document-text').addEventListener('keydown', event=>{
   if (event.key === 'Escape') {event.preventDefault(); el('cancel-text').click();}
   if (event.key === 'Enter' && (event.ctrlKey || event.metaKey)) {event.preventDefault(); el('save-text').click();}
 });
-print('trid > 업무 질문을 입력하세요. 등록된 공개 자료에서 근거를 찾아 출처와 함께 답합니다. 내 문서에서만 찾으려면 /pdf 또는 /paste.');
+print('TRID > 안녕하세요. 무엇을 도와드릴까요? 업무 규정이나 기준을 물으시면 공개 자료에서 근거를 찾아 드립니다.', 'muted');
