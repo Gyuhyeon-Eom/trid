@@ -53,10 +53,11 @@ def job_status(name):
     return d['TrainingJobStatus'], d.get('FailureReason')
 
 
-def launch(entry, run, config, instance, max_runtime, data_s3, checkpoint_s3, env, purpose):
+def launch(entry, run, config, instance, max_runtime, data_s3, checkpoint_s3, env, purpose, spot=False):
     out = subprocess.run(['.venv/bin/python', 'scripts/launch_sm_pretrain.py', '--entry', entry, '--run', run, '--config', config,
                           '--steps', '0', '--instance-type', instance, '--max-runtime', str(max_runtime), '--data-s3', data_s3,
-                          '--checkpoint-s3', checkpoint_s3, '--env', *[f'{k}={v}' for k, v in env.items()], '--purpose', purpose],
+                          '--checkpoint-s3', checkpoint_s3, '--env', *[f'{k}={v}' for k, v in env.items()], '--purpose', purpose,
+                          *(['--spot'] if spot else [])],
                          cwd=ROOT, capture_output=True, text=True)
     if out.returncode:
         return None, out.stderr.strip()[-400:]
@@ -64,10 +65,14 @@ def launch(entry, run, config, instance, max_runtime, data_s3, checkpoint_s3, en
 
 
 def busy_types():
-    """Instance types of every in-progress training job in the account (quota is 1 per type for g6e)."""
+    """(instance type, managed spot) of every in-progress training job in the account; on-demand and spot quotas
+    are separate and 1 per g6e type."""
     names = json.loads(aws('sagemaker', 'list-training-jobs', '--status-equals', 'InProgress', '--max-results', '100').stdout)
-    return {json.loads(aws('sagemaker', 'describe-training-job', '--training-job-name', j['TrainingJobName']).stdout)
-            ['ResourceConfig']['InstanceType'] for j in names['TrainingJobSummaries']}
+    busy = set()
+    for j in names['TrainingJobSummaries']:
+        d = json.loads(aws('sagemaker', 'describe-training-job', '--training-job-name', j['TrainingJobName']).stdout)
+        busy.add((d['ResourceConfig']['InstanceType'], bool(d.get('EnableManagedSpotTraining'))))
+    return busy
 
 
 def quota_wait(err):
@@ -120,18 +125,19 @@ def step(campaign, state):
                 env = {'INIT_S3': arm['init_s3'], 'INIT_STEP': arm['init_step'], 'SFT_STEPS': common['steps'],
                        'SAVE_STEPS': ','.join(map(str, common['save_steps'])), 'CHECKPOINT_EVERY': common['checkpoint_every'],
                        **({'SESSION_STEPS': session_steps} if session_steps else {'SEGMENT_SECONDS': common['segment_seconds']})}
-                if arm['instance'] in busy:
+                spot = bool(arm.get('spot', common.get('spot')))
+                if (arm['instance'], spot) in busy:
                     s['waiting'] = f'{now}: {arm["instance"]} busy; segment launch deferred'
                     job, err = None, 'deferred'
                 else:
                     job, err = launch('sm_sft_campaign.sh', arm['run'], arm['config'], arm['instance'], common['max_runtime'],
                                       common['data_s3'], arm['checkpoint_s3'], env,
-                                      f"{campaign['id']} {name} segment {len(s['segments']) + 1} (resume from S3)")
+                                      f"{campaign['id']} {name} segment {len(s['segments']) + 1} (resume from S3)", spot)
                 if job or not (err == 'deferred' or quota_wait(err)):
                     s['segments'].append({'job': job, 'status': 'InProgress' if job else 'LaunchFailed', 'failure': err,
                                           'launched_at': now, 'from_step': training.get('completed_steps')})
                     if job:
-                        busy.add(arm['instance'])
+                        busy.add((arm['instance'], spot))
                     else:
                         s['consecutive_failures'] += 1
         kept, deleted = prune(arm)
@@ -149,7 +155,7 @@ def step(campaign, state):
                 continue
             if ev and (ev['status'] == 'Completed' or ev.get('attempts', 0) >= 2):
                 continue
-            free = [i for i in common['eval_instances'] if i not in busy]
+            free = [i for i in common['eval_instances'] if (i, False) not in busy]
             if not free:
                 continue
             job, err = launch('sm_eval_weights.sh', f"{arm['run']}-eval", arm['config'], free[0], common['eval_max_runtime'],
@@ -160,7 +166,7 @@ def step(campaign, state):
             s['evals'][label] = {'job': job, 'status': 'InProgress' if job else 'LaunchFailed', 'failure': err,
                                  'instance': free[0], 'attempts': (ev or {}).get('attempts', 0) + 1}
             if job:
-                busy.add(free[0])
+                busy.add((free[0], False))
         s['evals_pending'] = sorted(label for label, _ in targets if (s['evals'].get(label) or {}).get('status') != 'Completed'
                                     and (s['evals'].get(label) or {}).get('attempts', 0) < 2)
         last = next((m for m in reversed(metrics) if 'train_loss' in m), None)

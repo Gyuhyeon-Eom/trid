@@ -1,0 +1,31 @@
+{
+ "id": "A-006-spot-smoke",
+ "purpose": "Managed spot resume smoke: 91M production schedule (1,200,000 steps), ml.g6e.xlarge spot, two 300-step segments plus a forced stop/resume in segment 2; billing measured from TrainingTime/BillableTime.",
+ "common": {
+  "steps": 1200000,
+  "save_steps": [
+   300,
+   600
+  ],
+  "checkpoint_every": 200,
+  "segment_seconds": 72000,
+  "max_runtime": 3600,
+  "eval_max_runtime": 3600,
+  "eval_instances": [],
+  "data_s3": "s3://trid-training-148761639313/corpus/eval-inputs/a003/",
+  "spot": true
+ },
+ "status_s3": "s3://trid-training-148761639313/corpus/runs/sft-campaign-spot-smoke/status.json",
+ "arms": {
+  "spot": {
+   "run": "a006-spot-smoke-91m",
+   "config": "korean-medium-91m.json",
+   "instance": "ml.g6e.xlarge",
+   "init_s3": "s3://trid-training-148761639313/corpus/runs/pretrain/a003-1b-91m-mha/a003-1b-91m-mha/",
+   "init_step": 15259,
+   "checkpoint_s3": "s3://trid-training-148761639313/corpus/runs/sft-campaign-spot-smoke/",
+   "session_steps": 300,
+   "max_segments": 2
+  }
+ }
+}
