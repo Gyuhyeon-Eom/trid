@@ -1,0 +1,12 @@
+# C group 69995 before
+69996 69995 Fri Oct 30 23:08:22 2026 /bin/bash .eval-logs/c028/runQ.sh
+69998 69995 Fri Oct 30 23:08:23 2026 /bin/bash scripts/eval_open_weight_suite.sh runs/model-repair-002-blind/model-Q.q8_0.gguf blind-Q blind blind-Q 51923 repor
+70001 69995 Fri Oct 30 23:08:23 2026 runs/tools/llama.cpp-8ca4060/llama-server -m runs/model-repair-002-blind/model-Q.q8_0.gguf --host 127.0.0.1 --port 51923 -c
+80136 69995 Fri Oct 30 23:55:15 2026 .venv/bin/python scripts/evaluate_external_chat.py --url http://127.0.0.1:51923 --model-file runs/model-repair-002-blind/mo
+23:57:10 stop start
+Stopping temporary demo. Domain will show the offline page.
+Demo is stopped (supervisor and model server process group exited).
+23:57:16 stop returned
+# old supervisor group 72735 after stop
+# listeners
+llama-ser 70001 127.0.0.1:51923

@@ -1,0 +1,26 @@
+2026-10-30 23:57:03 KST
+# live (A) processes
+72735     1 72735 Fri Oct 30 23:14:51 2026 /Users/eomgyuhyeon/사업/trid/.venv/bin/python /Users/eomgyuhyeon/사업/trid/scripts/share_demo_control.py supervise --hours 24.0
+72736 72735 72735 Fri Oct 30 23:14:51 2026 /Users/eomgyuhyeon/사업/trid/.venv/bin/python /Users/eomgyuhyeon/사업/trid/scripts/shared_demo.py --secret-file /Users/eomgyuhyeon/사업/trid/.shared-demo/proxy-secret --port 51873
+72750 72736 72735 Fri Oct 30 23:14:53 2026 /Users/eomgyuhyeon/사업/trid/runs/tools/llama.cpp-8ca4060-metal/llama-server -m /Users/eomgyuhyeon/사업/trid/runs/open-weight-base/Qwen3-1.7B-Q8_0.gguf --host 127.0.0.1 --port 51912 -c 4096 -np 1
+72759 72736 72735 Fri Oct 30 23:14:57 2026 /Users/eomgyuhyeon/사업/trid/runs/tools/llama.cpp-8ca4060-metal/llama-server -m /Users/eomgyuhyeon/사업/trid/runs/pilot-sft-001-a-qwen3-1p7b/pilot-sft-001-a-qwen3-1p7b.q8_0.gguf --host 127.0.0.1 
+72766 72736 72735 Fri Oct 30 23:15:00 2026 /Users/eomgyuhyeon/사업/trid/runs/tools/llama.cpp-8ca4060-metal/llama-server -m /Users/eomgyuhyeon/사업/trid/runs/model-repair-002-qwen3-1p7b/model-repair-002-qwen3-1p7b.q8_0.gguf --host 127.0.0.
+# supervisor process group members
+72735     1 72735 Fri Oct 30 23:14:51 2026 /Users/eomgyuhyeon/사업/trid/.venv/bin/python /Users/eomgyuhyeon/사업/trid/scripts/share_demo_control.py supervise --hours 24.0
+72736 72735 72735 Fri Oct 30 23:14:51 2026 /Users/eomgyuhyeon/사업/trid/.venv/bin/python /Users/eomgyuhyeon/사업/trid/scripts/shared_demo.py --secret-file /Users/eomgyuhyeon/사업/trid/.shared-demo/proxy-secret --port 51873
+72750 72736 72735 Fri Oct 30 23:14:53 2026 /Users/eomgyuhyeon/사업/trid/runs/tools/llama.cpp-8ca4060-metal/llama-server -m /Users/eomgyuhyeon/사업/trid/runs/open-weight-base/Qwen3-1.7B-Q8_0.gguf --host 127.0.0.1 --port 51912 -c 4096 -np 1
+72759 72736 72735 Fri Oct 30 23:14:57 2026 /Users/eomgyuhyeon/사업/trid/runs/tools/llama.cpp-8ca4060-metal/llama-server -m /Users/eomgyuhyeon/사업/trid/runs/pilot-sft-001-a-qwen3-1p7b/pilot-sft-001-a-qwen3-1p7b.q8_0.gguf --host 127.0.0.1 
+72766 72736 72735 Fri Oct 30 23:15:00 2026 /Users/eomgyuhyeon/사업/trid/runs/tools/llama.cpp-8ca4060-metal/llama-server -m /Users/eomgyuhyeon/사업/trid/runs/model-repair-002-qwen3-1p7b/model-repair-002-qwen3-1p7b.q8_0.gguf --host 127.0.0.
+72820 72736 72735 Fri Oct 30 23:15:13 2026 /Users/eomgyuhyeon/사업/trid/.venv/bin/python -c from multiprocessing.resource_tracker import main;main(4)
+72830 72735 72735 Fri Oct 30 23:15:16 2026 /opt/homebrew/bin/cloudflared tunnel --no-autoupdate --protocol http2 --metrics 127.0.0.1:20241 --url http://127.0.0.1:51873
+72858 72735 72735 Fri Oct 30 23:15:24 2026 /usr/bin/caffeinate -i -w 72735
+# C-028 group (must stay)
+70001 69998 69995 Fri Oct 30 23:08:23 2026 runs/tools/llama.cpp-8ca4060/llama-server -m runs/model-repair-002-blind/model-Q.q8_0.gguf --host 127.0.0.1 --port 51923 -c 4096 -np 1 -t 4 -tb 4 --jinja
+# listeners
+llama-ser 70001 127.0.0.1:51923
+python3.1 72736 127.0.0.1:51873
+llama-ser 72750 127.0.0.1:51912
+llama-ser 72759 127.0.0.1:51917
+llama-ser 72766 127.0.0.1:51918
+# state.json
+{'status': 'running', 'supervisor_pid': 72735, 'backend_pid': 72736, 'backend_pgid': None, 'tunnel_url': None, 'connection_status': 'ready', 'expires_at': 1793456091.894621}
