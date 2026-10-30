@@ -37,7 +37,7 @@ def aws(*args, capture=True):
 def code_files():
     files = sorted(p for p in (ROOT / 'trid').rglob('*.py') if '__pycache__' not in p.parts)
     files += [ROOT / f'scripts/{name}' for name in ('train_medium_cpt_gpu.py', 'sm_pretrain.sh', 'sm_sft_eval.sh',
-                                                     'train_public_dialogue.py', 'evaluate_rag_eval.py',
+                                                     'sm_span_eval.sh', 'train_public_dialogue.py', 'evaluate_rag_eval.py',
                                                      'evaluate_question_sensitivity.py')]
     files += sorted((ROOT / 'configs').glob('*.json'))
     return files
@@ -74,8 +74,8 @@ def main():
     p.add_argument('--purpose', default='')
     p.add_argument('--log', type=Path, default=ROOT / 'reports/coordination/sm-jobs-A.jsonl')
     p.add_argument('--wait', action='store_true')
-    p.add_argument('--entry', default='sm_pretrain.sh', choices=['sm_pretrain.sh', 'sm_sft_eval.sh'],
-                   help='entrypoint under scripts/: pretraining or SFT + development evaluation')
+    p.add_argument('--entry', default='sm_pretrain.sh', choices=['sm_pretrain.sh', 'sm_sft_eval.sh', 'sm_span_eval.sh'],
+                   help='entrypoint under scripts/: pretraining, SFT + development evaluation, or span diagnostic')
     a = p.parse_args()
     checkpoint = a.checkpoint_s3 or f's3://{BUCKET}/corpus/runs/pretrain/{a.run}/'
     prefix, key, head, dirty = upload_code()
