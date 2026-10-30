@@ -57,7 +57,7 @@ def eval_exclusions():
     for name in EVAL_FILES:
         for f in files_of(name):
             used.append(str(f.relative_to(ROOT)))
-            for line in f.read_text().splitlines():
+            for line in f.read_text().split('\n'):  # not splitlines(): U+2028/U+0085 occur inside JSON strings
                 ids.update(PRESS_ID.findall(line))
                 if line.strip():
                     row = json.loads(line)
@@ -119,7 +119,7 @@ def main():
     built_at = datetime.datetime.now(datetime.timezone.utc).isoformat(timespec='seconds')
     eval_ids, eval_keys, eval_used = eval_exclusions()
     prior = prior_training_ids()
-    lines = INPUT.read_text().splitlines()
+    lines = [line for line in INPUT.read_text().split('\n') if line.strip()]
     seen, kept, held, reasons, pii_total = set(), [], [], Counter(), Counter()
     with Pool(args.workers) as pool:
         for row, key, d in pool.imap(clean, ((line, built_at) for line in lines), chunksize=200):

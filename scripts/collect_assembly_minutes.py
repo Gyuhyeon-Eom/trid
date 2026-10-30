@@ -42,7 +42,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 BUCKET = 'trid-training-148761639313'
 SOURCE = 'assembly-minutes'
-VERSION = 'clean-v2'  # clean-v1 (B-006): no private-name quarantine, no restored list metadata, older redact
+VERSION = 'clean-v3'  # v1 (B-006): older redact, no quarantine; v2 (B-007 run): 개회식 header form left metadata_incomplete
 BASE = 'https://record.assembly.go.kr/assembly'
 UA = 'Mozilla/5.0 (compatible; trid-collector/0.1; +public-sector research corpus)'
 LICENSE = 'KOGL-Type1'
@@ -52,6 +52,7 @@ TERMS = [str(n) for n in range(1, 23)] + ['10.5']
 MINUTE_LINK = re.compile(r'viewer/minutes/xml\.do\?id=(\d+)&(?:amp;)?type=view')
 HEADER = re.compile(r'제(\d+(?:\.\d+)?)대국회\s*제(\d+)회\s*\(([^)]*)\)\s*제(\d+)차\s*(.+?)\s*\((\d{4})\.\s*(\d{1,2})\.\s*(\d{1,2})\.\)')
 AUDIT_HEADER = re.compile(r'제(\d+(?:\.\d+)?)대국회\s*(\d{4})년도\s*(국정감사|국정조사)\s*(.+?)\s*\((\d{4})\.\s*(\d{1,2})\.\s*(\d{1,2})\.\)')
+CEREMONY_HEADER = re.compile(r'제(\d+(?:\.\d+)?)대국회\s*제(\d+)회\s*\(([^)]*)\)\s*(개회식|폐회식|개원식)\s*(.+?)\s*\((\d{4})\.\s*(\d{1,2})\.\s*(\d{1,2})\.\)')
 UI_TAIL = {'top', 'down', '발언 저장', '발언 인쇄'}
 SPLITS = (('test', 50), ('valid', 100))  # per-10,000 bucket bounds; dev splits, not an independent final test
 # Private persons named in minutes (B-006 review): the representative petitioner of a 국민동의청원 ("홍길동 외 52,585인")
@@ -146,6 +147,11 @@ def extract(page):
         term, year, kind, meeting, y, mo, d = a.groups()
         meta = {'term': term, 'audit_year': int(year), 'session_kind': kind, 'meeting': meeting,
                 'date': f'{int(y):04d}-{int(mo):02d}-{int(d):02d}', 'title': f'제{term}대국회 {year}년도 {kind} {meeting}'}
+    elif c := CEREMONY_HEADER.search(head_text):  # "제22대국회 제429회 (정기회) 개회식 국회본회의 (2025.09.01.)"
+        term, session, session_kind, ceremony, meeting, y, mo, d = c.groups()
+        meta = {'term': term, 'session': int(session), 'session_kind': session_kind, 'ceremony': ceremony,
+                'meeting': meeting, 'date': f'{int(y):04d}-{int(mo):02d}-{int(d):02d}',
+                'title': f'제{term}대국회 제{session}회 {ceremony} {meeting}'}
     return meta, unicodedata.normalize('NFC', '\n'.join(lines))
 
 
@@ -229,6 +235,7 @@ class HostLimiter:
                     f.seek(0)
                     f.truncate()
                     f.write(repr(self.next_start))
+                    f.flush()  # must reach the file before the lock is released, or another process reads a stale start
                 finally:
                     fcntl.flock(f, fcntl.LOCK_UN)
             return start, now

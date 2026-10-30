@@ -50,7 +50,7 @@ class AssemblyMinutesTests(unittest.TestCase):
                           '2026-10-30T00:00:00+00:00')
         self.assertNotIn('02-123-4567', row['text'])
         self.assertEqual(dict(pii), {'PHONE': 1})
-        self.assertEqual((row['clean_version'], row['provenance']['institution']), ('clean-v2', '국회'))
+        self.assertEqual((row['clean_version'], row['provenance']['institution']), ('clean-v3', '국회'))
         self.assertIn(row['split'], ('train', 'valid', 'test'))
         self.assertEqual(row['id'], 'assembly-minutes:55958')
         self.assertEqual(row['kind'], 'assembly_plenary')
@@ -78,6 +78,57 @@ class AssemblyMinutesTests(unittest.TestCase):
         row, _ = row_of({'id': 52032, 'class': '5'}, audit, 't')
         self.assertEqual((row['title'], row['date'], row['kind']), ('제22대국회 2024년도 국정감사 문화체육관광위원회', '2024-10-24', 'assembly_audit'))
         self.assertNotIn('quarantine:metadata_incomplete', row['flags'])
+        ceremony = VIEWER.replace('제22대국회 제430회 (임시회) 제1차 국회본회의 (2025.12.11.)', '제22대국회 제429회 (정기회) 개회식 국회본회의 (2025.09.01.)')
+        row, _ = row_of({'id': 55273, 'class': '1'}, ceremony, 't')
+        self.assertEqual((row['title'], row['date']), ('제22대국회 제429회 개회식 국회본회의', '2025-09-01'))
+
+    def test_discover_resumes_the_walk_without_repeating_finished_list_requests(self):
+        import json as _json
+        from scripts import collect_assembly_minutes as am
+
+        class S3:
+            def __init__(self):
+                self.objects = {}
+
+            def put_object(self, Bucket, Key, Body):
+                self.objects[Key] = Body
+
+            def get_object(self, Bucket, Key):
+                import io
+                return {'Body': io.BytesIO(self.objects[Key])}
+
+        class Missing(Exception):
+            pass
+        S3.exceptions = type('E', (), {'NoSuchKey': Missing})
+
+        def node(sess):
+            return (f'<a class="tit sess" data-id="" data-sess="{sess}" data-th="22" data-class="1" data-chk1="" '
+                    f'data-chk2="" data-chk3="" data-chk4="" data-year="">x</a>')
+        root = ''.join(node(s) for s in range(400, 430))
+
+        class Client:
+            def __init__(self, fail_after):
+                self.calls, self.fail_after = [], fail_after
+
+            def request(self, method, url, metrics, data=None, headers=None):
+                if self.fail_after is not None and len(self.calls) >= self.fail_after:
+                    raise RuntimeError('stopped')
+                self.calls.append(data and data['sess_sch'])
+                text = root if method == 'GET' else f'<a href="/assembly/viewer/minutes/xml.do?id={data["sess_sch"]}&type=view">v</a>'
+                return type('R', (), {'text': text})()
+
+        s3 = S3()
+        s3.objects['corpus/state/assembly-minutes/idx.json'] = _json.dumps({'done': [], 'meetings': {}}).encode()
+        first = Client(fail_after=28)  # 1 list page + 27 session requests, checkpoint after 25
+        with self.assertRaises(RuntimeError):
+            am.discover(first, s3, ['22'], ['1'], 'idx.json', am.Metrics())
+        second = Client(fail_after=None)
+        am.discover(second, s3, ['22'], ['1'], 'idx.json', am.Metrics())
+        state = _json.loads(s3.objects['corpus/state/assembly-minutes/idx.json'])
+        self.assertEqual(state['done'], ['22/1'])
+        self.assertEqual(len(state['meetings']), 30)
+        self.assertNotIn(None, second.calls)  # the root list page was not requested again
+        self.assertEqual(len(second.calls), 30 - 25)  # only sessions after the last checkpoint
 
     def test_host_limiter_spaces_starts_across_threads_and_backs_off(self):
         limiter, waits = HostLimiter(0.05), []
