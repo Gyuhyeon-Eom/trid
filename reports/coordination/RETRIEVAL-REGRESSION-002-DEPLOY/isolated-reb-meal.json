@@ -1,0 +1,22 @@
+{
+ "note": "isolated instance (port 51974, code before a0e5bcc refinements; same selection), not the live response",
+ "question": "한국부동산원 국내 출장 식비는 얼마야?",
+ "status": "unverified",
+ "commentary": "D1에 따르면 국내출장 시 식비는 별도로 지급하지 않으며, D4에 따르면 식비는 1식당 12,500 원으로 지급된다.\n따라서 한국부동산원 국내 출장 식비는 12,500 원이다.",
+ "candidates": 0,
+ "source": {
+  "D1_rule_article": "제9조(국내출장) ① 국내출장 시 여비는 운임, 일비, 숙박비 및 식비를 지급한다.\n\n② 시내지역의 경우 식비는 별도로 지급 하지 아니한다.",
+  "reviewed_rows_식비_1식": [
+   [
+    "임원",
+    "12,500",
+    "원"
+   ],
+   [
+    "직원",
+    "12,500",
+    "원"
+   ]
+  ]
+ }
+}
