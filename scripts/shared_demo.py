@@ -7,6 +7,7 @@ import hmac
 import hashlib
 import html
 import json
+import os
 from pathlib import Path
 import re
 import secrets
@@ -788,6 +789,14 @@ class Workspace:
                     continue
                 text = self.doc_text(target)
                 s, e = span or (0, len(text))
+                if method == 'statute_body_segment':
+                    # Two "[별표 N]" sections in one statute body (an old and a new wording): which one is current is not
+                    # established by the text, so neither is used (a guess is not promoted to the current table).
+                    headers = len(re.findall(r'\[별표\s*' + r'\s*'.join(map(re.escape, annex)) + r'\]', text))
+                    if headers != 1:
+                        self.row_unlinked[key] = (f'the statute body holds {headers} "[별표 {annex}]" sections; which one '
+                                                  'is the current text is unconfirmed')
+                        continue
                 repeated = lambda r: set(r.get('repeated') or [])
                 cells = [marker(v) for r in part if not deleted(r) for k, v in r['cells'].items() if k not in repeated(r)]
                 numbers = set().union(set(), *map(_numbers, cells))
@@ -1445,7 +1454,8 @@ class State:
             raise RuntimeError(f"{meta['id']}: port {port} is already serving; refusing to adopt an unmanaged server")
         except OSError:
             pass
-        log = open(ROOT / '.shared-demo' / f"llama-{meta['id']}.log", 'wb') if (ROOT / '.shared-demo').is_dir() else subprocess.DEVNULL
+        runtime = Path(os.environ.get('TRID_DEMO_RUNTIME', ROOT / '.shared-demo'))  # an isolated instance logs apart
+        log = open(runtime / f"llama-{meta['id']}.log", 'wb') if runtime.is_dir() else subprocess.DEVNULL
         child = subprocess.Popen([str(ROOT / meta['llama_server']), '-m', str(model_file), '--host', '127.0.0.1', '--port', str(port),
                                   '-c', str(meta['context']), '-np', '1', '-t', str(meta.get('threads', 4)),
                                   '-tb', str(meta.get('threads', 4)), '--jinja'],
@@ -1467,14 +1477,19 @@ class State:
     def public_versions(self):
         return [{k: v[k] for k in PUBLIC_FIELDS} for v in self.versions.values()]
 
-    def close(self):
-        for child in self.children:
-            if child.poll() is None:
-                child.terminate()
-                try:
-                    child.wait(timeout=5)
-                except subprocess.TimeoutExpired:
-                    child.kill()
+    def close(self, grace=10):
+        """Stop the llama.cpp servers: all are signalled at once and share one `grace` period (sequential waits used
+        to outlast the supervisor's wait for this process), then any still running is killed and reaped."""
+        running = [c for c in self.children if c.poll() is None]
+        for child in running:
+            child.terminate()
+        deadline = time.monotonic() + grace
+        for child in running:
+            try:
+                child.wait(timeout=max(0.1, deadline - time.monotonic()))
+            except subprocess.TimeoutExpired:
+                child.kill()
+                child.wait()
 
     def prune(self):
         with self.lock:

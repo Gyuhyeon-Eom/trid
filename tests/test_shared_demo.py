@@ -377,7 +377,9 @@ class RuleTableLinkTests(WorkspaceTests.__base__):
     BODY = ('제16조(식비) 국내 출장 식비는 별표 2에 따라 지급하고, 가족 여비는 별표 6의2에 따른다.\n'
             '제17조(국외) 국외 여비는 별표 4에 따른다.\n'
             '■ 공무원 여비 규정 [별표 4]\n국외 여비 지급표 가 60 실비(상한액: 471) 186\n'
-            '■ 공무원 여비 규정 [별표 5]\n이전비 지급 기준표 실비')
+            '■ 공무원 여비 규정 [별표 5]\n이전비 지급 기준표 실비 390,000\n'
+            '■ 공무원 여비 규정 [별표 5]\n이전비 지급 기준표 실비 포함 390,000\n'
+            '■ 공무원 여비 규정 [별표 7]\n기타 지급 100')
     TEXTS = {LAW: ('공무원 여비 규정', BODY),
              't2': ('공무원 여비 규정 [별표 0002] 국내 여비 지급표', '■ 공무원 여비 규정 [별표 2]\n국내 출장 식비 하루 25,000원'),
              't6': ('공무원 여비 규정 [별표 0006] 가족 여비 지급표', '■ 공무원 여비 규정 [별표 6의2]\n국외 가족 여비 지급표'),
@@ -423,18 +425,21 @@ class RuleTableLinkTests(WorkspaceTests.__base__):
              ('byl4', '4', [{'등급': '가', '일비': '60', '숙박비': '실비(상한액: 471)', '식비': '186'},
                             {'구분': '6. 삭제 <2021. 5. 25.>'}], 'ai_visual_review_match', {}),
              ('byl5', '5', [{'구분': '국내 이전비', '지급액': '390,000'}], 'ai_visual_review_match', {}),
+             ('byl7', '7', [{'구분': '기타', '지급액': '200'}], 'ai_visual_review_match', {}),
              ('t6', '6의2', [{'지급 사유': '부임', '지급액': '3분의 2'}], 'ai_visual_review_match', {'kordoc_text_sha256': 'stale'}),
              ('byl11', '11', [{'호봉': '1', '금액': '7'}], 'ai_visual_review_match', {}),
              ('t6x', '6', [{'구분': '다른', '식비': '없음'}], 'ai_visual_review_match', {'kordoc_text_sha256': 't6x'})],
             [self.link('t2', '2', in_index='t2'), self.link('t8', '8', in_index='t8'),
              self.link('byl4', '4', span=self.span(4)), self.link('byl5', '5', span=self.span(5)),
+             self.link('byl7', '7', span=self.span(7)),
              self.link('t6', '6의2', in_index='t6'), self.link('byl11', '11', status='mismatch'),
              self.link('t6x', '6', status='mismatch', in_index='t6x')])
         self.assertEqual(ws.row_links[('공무원여비규정', '2')]['method'], 'same_source_hash')       # same document, same hash
         self.assertEqual(ws.row_links[('공무원여비규정', '4')]['method'], 'statute_body_segment')  # B span, values verified
         self.assertEqual(ws.row_links[('공무원여비규정', '4')]['segment'], self.span(4))
         self.assertNotIn(('공무원여비규정', '8'), ws.row_links)                                   # render_check_pass rows never
-        self.assertIn('numbers not in the linked span', ws.row_unlinked[('공무원여비규정', '5')])
+        self.assertIn('2 "[별표 5]" sections', ws.row_unlinked[('공무원여비규정', '5')])  # B's pick of one is not promoted
+        self.assertIn('numbers not in the linked span', ws.row_unlinked[('공무원여비규정', '7')])
         self.assertIn('hash differs', ws.row_unlinked[('공무원여비규정', '6의2')])
         self.assertIn('mismatch', ws.row_unlinked[('공무원여비규정', '11')])
         self.assertEqual(ws.row_links[('공무원여비규정', '6')]['method'], 'same_source_hash')  # body span mismatch, same doc hash

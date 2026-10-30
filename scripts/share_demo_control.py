@@ -14,9 +14,13 @@ import sys
 import time
 
 ROOT = Path(__file__).resolve().parents[1]
-RUNTIME = ROOT / '.shared-demo'
+# An isolated instance (own runtime dir, port, versions file, no tunnel) can run beside the live one, e.g. to test the
+# lifecycle; the defaults are the live demo.
+RUNTIME = Path(os.environ.get('TRID_DEMO_RUNTIME', ROOT / '.shared-demo'))
 DEPLOY = ROOT / 'deploy/shared-demo'
-PORT = 51873
+PORT = int(os.environ.get('TRID_DEMO_PORT', 51873))
+VERSIONS = os.environ.get('TRID_DEMO_VERSIONS')
+TUNNEL = os.environ.get('TRID_DEMO_TUNNEL', '1') != '0'
 WORKER = 'trid-model-test'
 
 
@@ -50,6 +54,37 @@ def stop_child(child):
             child.wait(timeout=5)
         except subprocess.TimeoutExpired:
             child.kill(); child.wait()
+
+
+def group_members(pgid):
+    """[(pid, start time, command)] of the processes in process group `pgid` (the model server and the llama.cpp
+    servers it started, which inherit its group). A group id is not reused while any member lives, so members of a
+    group this script created are this demo's processes."""
+    if not pgid:
+        return []
+    out = subprocess.run(['/bin/ps', '-axo', 'pid=,pgid=,stat=,lstart=,command='], capture_output=True, text=True).stdout
+    members = []
+    for line in out.splitlines():
+        parts = line.split(None, 8)  # pid pgid stat weekday month day time year command
+        if len(parts) == 9 and parts[1] == str(pgid) and not parts[2].startswith('Z'):  # exited, not yet reaped
+            members.append((int(parts[0]), ' '.join(parts[3:8]), parts[8]))
+    return members
+
+
+def stop_group(pgid, grace=20):
+    """SIGTERM the process group, wait up to `grace` seconds for every member to exit, then SIGKILL what is left and
+    wait again. Returns the members still alive afterwards (normally none)."""
+    for sig, wait in ((signal.SIGTERM, grace), (signal.SIGKILL, 5)):
+        if not group_members(pgid):
+            return []
+        try:
+            os.killpg(pgid, sig)
+        except ProcessLookupError:
+            return []
+        deadline = time.monotonic() + wait
+        while time.monotonic() < deadline and group_members(pgid):
+            time.sleep(.25)
+    return group_members(pgid)
 
 
 def tunnel_ready():
@@ -119,10 +154,18 @@ def supervise(hours):
     signal.signal(signal.SIGINT, stop)
     info = {'supervisor_pid': os.getpid(), 'expires_at': time.time() + hours * 3600, 'status': 'starting'}
     save('state.json', info)
+    backend = None
     try:
         with (RUNTIME / 'server.log').open('wb') as log:
-            backend = subprocess.Popen([sys.executable, str(ROOT / 'scripts/shared_demo.py'), '--secret-file', str(secret_path), '--port', str(PORT)], cwd=ROOT, stdout=log, stderr=log)
+            # Its own process group: the llama.cpp servers it starts inherit it, so stopping the group stops them all
+            # even if the model server itself dies or is killed first (no orphaned llama-server holding a port).
+            backend = subprocess.Popen([sys.executable, str(ROOT / 'scripts/shared_demo.py'), '--secret-file', str(secret_path),
+                                        '--port', str(PORT)] + (['--versions', VERSIONS] if VERSIONS else []),
+                                       cwd=ROOT, stdout=log, stderr=log, start_new_session=True)
         children.append(backend)
+        leader = group_members(backend.pid)
+        info.update(backend_pid=backend.pid, backend_pgid=backend.pid, backend_started=leader[0][1] if leader else None)
+        save('state.json', info)
         secret = secret_path.read_text().strip()
         ready = False
         for _ in range(240):  # versions file may start llama.cpp servers and hash their model files
@@ -139,11 +182,11 @@ def supervise(hours):
             time.sleep(.5)
         if not ready:
             raise RuntimeError('Model server readiness timeout')
-        tunnel, origin = start_tunnel(children, secret)
+        tunnel, origin = start_tunnel(children, secret) if TUNNEL else (None, None)
         caffeine = subprocess.Popen(['/usr/bin/caffeinate', '-i', '-w', str(os.getpid())], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         children.append(caffeine)
-        info.update(status='running', origin_url=origin, backend_pid=backend.pid, tunnel_pid=tunnel.pid,
-                    connection_status='ready', recoveries=0, last_health_at=time.time())
+        info.update(status='running', origin_url=origin, backend_pid=backend.pid, tunnel_pid=tunnel and tunnel.pid,
+                    connection_status='ready' if TUNNEL else 'local_only', recoveries=0, last_health_at=time.time())
         save('state.json', info)
         failures = 0
         next_check = time.monotonic() + 30
@@ -151,7 +194,7 @@ def supervise(hours):
         while time.time() < info['expires_at']:
             if backend.poll() is not None or caffeine.poll() is not None:
                 raise RuntimeError('Model server or sleep prevention process exited')
-            if time.monotonic() >= next_check:
+            if TUNNEL and time.monotonic() >= next_check:
                 healthy = tunnel.poll() is None and tunnel_ready() and external_ready(origin, secret)
                 failures = 0 if healthy else failures + 1
                 info.update(last_health_at=time.time(), connection_status='ready' if healthy else 'unhealthy')
@@ -183,7 +226,14 @@ def supervise(hours):
         pass
     finally:
         for child in reversed(children):
-            stop_child(child)
+            if child is backend:
+                info['stop_leftover'] = [list(m) for m in stop_group(child.pid)]  # the model server and its llama servers
+                try:
+                    child.wait(timeout=5)
+                except subprocess.TimeoutExpired:
+                    pass
+            else:
+                stop_child(child)
         info['status'] = 'stopped'
         save('state.json', info)
 
@@ -214,6 +264,16 @@ def deploy(put_secret=True):
     print('https://test.tridatum.co', flush=True)
 
 
+def owned_group(info):
+    """Members of the recorded model-server process group that belong to the recorded instance: if the group leader
+    is alive its start time must equal the recorded one (otherwise the id was reused by another process group); if
+    the leader is gone, remaining members still hold the id, which cannot be reused while they live."""
+    pgid = info.get('backend_pgid')
+    members = group_members(pgid)
+    leader = [m for m in members if m[0] == pgid]
+    return [] if leader and leader[0][1] != info.get('backend_started') else members
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('command', choices=['start', 'stop', 'status', 'deploy', 'supervise'])
@@ -231,6 +291,11 @@ def main():
         info = status()
         if alive(info.get('supervisor_pid')):
             print('Demo supervisor is already running.'); return
+        left = owned_group(info)
+        if left:
+            # processes of the previous instance (its own process group) still run: never start beside them
+            raise RuntimeError('Previous model server processes are still running (run stop again): '
+                               + '; '.join(f'{pid} (started {start}) {cmd[:80]}' for pid, start, cmd in left))
         RUNTIME.mkdir(mode=0o700, exist_ok=True)
         with (RUNTIME / 'supervisor.log').open('wb') as log:
             p = subprocess.Popen([sys.executable, str(Path(__file__).resolve()), 'supervise', '--hours', str(args.hours)], cwd=ROOT, stdin=subprocess.DEVNULL, stdout=log, stderr=log, start_new_session=True)
@@ -249,9 +314,19 @@ def main():
             if 'share_demo_control.py supervise' not in command:
                 raise RuntimeError('PID belongs to another process; refusing to stop it')
             os.kill(pid, signal.SIGTERM)
-            print('Stopping temporary demo. Domain will show the offline page.')
-        else:
-            print('Demo is stopped.')
+            print('Stopping temporary demo. Domain will show the offline page.', flush=True)
+        # Wait until the supervisor has exited and the model server's process group (llama servers included) is
+        # empty, so a following start never meets a port still held by this instance.
+        deadline = time.monotonic() + 90
+        while time.monotonic() < deadline and (alive(pid) or owned_group(info)):
+            time.sleep(.5)
+        left = owned_group(info)
+        if alive(pid) or left:
+            # The supervisor stops the group itself (SIGTERM, then SIGKILL); members still here after 90 s are
+            # reported with their start time for the operator, not killed by guess.
+            raise RuntimeError('Stop incomplete: ' + ('supervisor still running; ' if alive(pid) else '')
+                               + '; '.join(f'{p} (started {s}) {c[:80]}' for p, s, c in left))
+        print('Demo is stopped (supervisor and model server process group exited).')
     else:
         deploy()
 

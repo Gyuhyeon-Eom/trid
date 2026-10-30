@@ -72,6 +72,19 @@ PDF와 질문은 Cloudflare HTTPS 중계를 거쳐 운영자의 Mac으로 전송
 
 새 실행마다 터널 주소가 바뀌므로 `deploy`까지 실행해야 도메인이 새 서버로 연결됩니다. 시작이 실패하면 `.shared-demo/server.log`, `supervisor.log`, `tunnel.log`를 확인합니다. 비밀키는 `.shared-demo/proxy-secret`(0600)에 있고 Cloudflare Worker secret으로도 저장됩니다. 이 폴더를 공유하지 마세요. Cloudflare OAuth 자격 증명은 기존 Wrangler 저장소를 사용하며 프로젝트에 복사하지 않습니다.
 
+**정지·시작 수명 주기 (CONTROL-LIFECYCLE-001):**
+- 모델 서버는 자체 프로세스 그룹으로 실행된다. 그 서버가 띄운 llama-server들도 같은 그룹에 들어간다.
+- `stop`이 하는 일:
+  1. supervisor가 그룹 전체에 SIGTERM을 보내고 20초 기다린다. 그 뒤에도 남은 것이 있으면 SIGKILL을 보낸다.
+  2. `stop` 명령은 supervisor 종료와 그룹이 빌 때까지 최대 90초 기다린다. 그 뒤에 "Demo is stopped"를 출력한다.
+  3. 그래도 남은 프로세스는 PID와 시작 시각을 출력하고 실패로 끝난다. 포트 점유자를 추측해서 종료하지 않는다.
+- `start` 동작: 기록된 이전 그룹이 아직 살아 있으면 시작을 거부한다. 그룹 리더의 시작 시각이 기록과 다르면 이전 그룹으로 보지 않는다.
+- 격리 인스턴스: 실서비스와 별도로 띄우려면 환경 변수 네 개를 함께 지정한다.
+  - `TRID_DEMO_RUNTIME` (런타임 폴더, 0700)
+  - `TRID_DEMO_PORT`
+  - `TRID_DEMO_VERSIONS` (다른 llama 포트를 쓰는 versions 파일)
+  - `TRID_DEMO_TUNNEL=0` (터널 없음)
+
 2026-10-27 연결 복구: 터널 프로세스가 살아 있어도 실제 연결이 0개인 상태가 발생했습니다. 이제 시작 시 터널의 `/ready`와 외부 HTTPS 모델 응답을 모두 확인하며, 실행 중에는 30초마다 검사합니다. 두 번 연속 실패하면 모델 서버를 유지한 채 터널을 재시작하고 Worker의 연결 주소를 재배포합니다. 새 터널의 DNS 음성 캐시를 피하기 위해 외부 상태 검사는 요청별 DNS-over-HTTPS를 사용하며 Mac의 DNS 설정은 변경하지 않습니다. 복구 중 잠시 중단될 수 있고, 네트워크·Cloudflare 인증 문제가 지속되면 자동 복구도 완료되지 않을 수 있습니다. `status`의 `connection_status`, `last_health_at`, `recoveries`로 확인할 수 있습니다.
 
 서버는 127.0.0.1에만 바인딩하며 인터넷 터널 직접 접근은 프록시 비밀키 없이 거절합니다. 요청 원본과 CSRF 토큰을 검사하고, 브라우저가 보내는 프록시 신원 헤더는 Worker가 덮어씁니다. Worker는 IP별 분당 30회, 서버는 세션별 분당 20회를 제한합니다. 최대 32개 세션, HTTP 작업 8개, 모델·PDF 처리 1개를 허용합니다. PDF는 별도 프로세스에서 15초 제한 및 CPU/메모리 감시하에 읽습니다. 이 조치들은 정식 보안 심사나 운영용 격리 환경을 대신하지 않습니다.
