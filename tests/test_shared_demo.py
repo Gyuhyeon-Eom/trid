@@ -184,6 +184,17 @@ class ChatBackendTests(unittest.TestCase):
         self.assertEqual((r['candidates'], r['commentary']), ([], None))
         self.assertTrue(any('원문(쪽)에서 직접 확인' in n for n in r['commentary_notes']))
 
+    def test_long_workspace_passage_is_windowed_for_the_reader(self):
+        from scripts.shared_demo import PassageChunk, reader_windows
+        source = '가' * 50 + ''.join(f'제{i}조 출장 식비는 하루 {i}만원으로 한다. ' for i in range(1, 40))
+        chunk = PassageChunk(source[50:], 1, 50, 'd', ('d',), False, True)
+        windows = reader_windows([(chunk, 0.9)], CharTokenizer())
+        self.assertGreater(len(windows), 1)
+        for w, score in windows:
+            self.assertLessEqual(len(w.text), 128)  # CharTokenizer: one token per character
+            self.assertEqual(source[w.start:w.start + len(w.text)], w.text)
+            self.assertEqual((w.doc_id, w.value_hold, score), ('d', True, 0.9))
+
     def test_chat_keeps_numbers_the_visitor_gave(self):
         from scripts.shared_demo import chat_reply
         history = [{'role': 'user', 'content': '이번 달 연차가 2일 남았어요.'}, {'role': 'assistant', 'content': '알겠습니다.'}]
@@ -192,12 +203,23 @@ class ChatBackendTests(unittest.TestCase):
         self.assertIn('2일 남으셨어요', r['answer'])
         self.assertNotIn('21일', r['answer'])
 
+    def test_chat_keeps_arithmetic_of_visitor_figures_but_not_other_numbers(self):
+        from scripts.shared_demo import chat_reply
+        history = [{'role': 'user', 'content': '숙박비 8만원, 식비 2만원이에요.'}, {'role': 'assistant', 'content': '네.'}]
+        reply = '합계는 10만원입니다. 하루 일비는 2만5천원입니다.'
+        with patch('scripts.shared_demo.complete', return_value={'generated': reply}):
+            r = chat_reply('http://127.0.0.1:1', 'qwen3', 4096, history, '둘을 더하면 얼마예요?')
+        self.assertIn('합계는 10만원입니다.', r['answer'])
+        self.assertNotIn('일비', r['answer'])
+        self.assertTrue(any('계산 결과는 직접' in n for n in r['commentary_notes']))
+
     def test_request_type_markers(self):
         from scripts.shared_demo import request_type
         self.assertEqual(request_type('회의는 오후 3시, 예산은 20만원이에요. 한 줄로 정리해 주세요.'), 'organize')
         self.assertEqual(request_type('직원들이 실제로 쓴 평균 식비는?'), 'statistic')
         self.assertEqual(request_type('여비와 출장비는 무슨 차이야?'), 'explain')
         self.assertIsNone(request_type('국내 출장 식비 지급 기준은?'))
+        self.assertEqual(request_type('아까 제가 말한 출장비 예산이 얼마였죠?'), 'recall')
 
 
 
@@ -291,6 +313,17 @@ class WorkspaceTests(unittest.TestCase):
         r = statistic_reply(self.ws, '직원 평균 출장 식비는?')
         self.assertEqual(r['status'], 'answer_values')
         self.assertIn('25,000원', r['answer'])
+
+    def test_short_form_resolves_to_official_institution_instead_of_no_data(self):
+        from scripts.shared_demo import workspace_reply
+        r = self.ws.select('건보공단 직원 출장 식비는?')
+        self.assertIn('국민건강보험공단', r['unknown_institutions'])
+        self.assertIn('국민건강보험공단', workspace_reply(self.ws, r)['answer'])
+
+    def test_exact_short_rule_name_is_recognised(self):
+        r = self.ws.select('나기관 출장 규정에서 숙박비는?')
+        self.assertTrue(r['title_matched'])
+        self.assertEqual(r['applied'], 'b')
 
     def test_privacy_review_passages_are_never_retrieved(self):
         from scripts.shared_demo import Workspace

@@ -15,6 +15,7 @@ import subprocess
 import sys
 import threading
 import time
+import traceback
 from urllib.parse import urlsplit, unquote
 
 import numpy as np
@@ -256,7 +257,7 @@ EXPLAIN_SYSTEM = (
     '기준은 기관명이나 규정명을 넣어 물으면 공개 자료에서 근거를 찾는다고 한 문장으로 안내하세요. 반드시 한국어로만 답하세요.')
 # A digit followed by a unit of rules (money, rates, periods, articles): such claims need a retrieved source, unless
 # every number in the sentence was given by the visitor in this conversation (their own schedule, budget, leave).
-UNSOURCED_FACT = re.compile(r'\d[\d,.]*\s*(?:만\s*)?(?:원|%|퍼센트|일|시간|개월|년|주|조|항|호|배|명|회)')
+UNSOURCED_FACT = re.compile(r'\d[\d,.]*\s*(?:만\s*(?:\d[\d,.]*\s*)?)?(?:천\s*)?(?:원|%|퍼센트|일|시간|개월|년|주|조|항|호|배|명|회)')
 # Request types the 1.7B model does not tell apart reliably (measured in reports/coordination/TRID-ANSWER-002.md):
 # markers of the request itself, never of a particular question. Visitor-given numbers + an organise/compute verb →
 # conversation; actual-spending/statistics words → structured values, not rule passages; definition words → a general
@@ -265,17 +266,53 @@ GIVEN_VALUES = re.compile(r'\d[\d,.]*\s*(?:만\s*)?(?:원|%|일|시간|개월|�
 ORGANIZE = re.compile(r'정리|요약|계산|합계|합치|총\s*얼마|표로|한\s*줄|더하면')
 STATISTIC = re.compile(r'평균|통계|집행|현황|추이|실제로?\s*(?:쓴|쓰는|사용|지출)|실지출|건수')
 DEFINITION = re.compile(r'뜻|의미|개념|차이|정의|이란\b|란\s*(?:무엇|뭐)|구성(?:되|돼|요소|은|이)|요령')
+# A question about what the visitor said earlier is answered from the conversation, not searched.
+RECALL = re.compile(r'(?:아까|방금|앞에서|이전에|처음에|전에)\s*(?:제가|내가)?\s*(?:말한|말씀드린|얘기한|알려\s*드린|알려준|적은)'
+                    r'|(?:제가|내가)\s*(?:말한|말씀드린|얘기한|알려\s*드린|알려준|적은)')
+ASKING = re.compile(r'\?|얼마|몇|무엇|뭐|어떻게|언제|어디|누가|나요|까요|인가|습니까|는지|알려|궁금')
 
 
 def request_type(question):
-    """'organize' | 'statistic' | 'explain' | None (see the marker comment above)."""
-    if GIVEN_VALUES.search(question) and ORGANIZE.search(question):
-        return 'organize'
+    """'organize' | 'recall' | 'statistic' | 'explain' | None (see the marker comments above)."""
+    if GIVEN_VALUES.search(question) and (ORGANIZE.search(question) or not ASKING.search(question)):
+        return 'organize'  # the visitor's own figures: to organise, or just stated ("숙박비 8만원 들었어요")
+    if RECALL.search(question):
+        return 'recall'
     if STATISTIC.search(question):
         return 'statistic'
     if DEFINITION.search(question):
         return 'explain'
     return None
+
+
+AMOUNT = re.compile(r'(\d[\d,]*(?:\.\d+)?)\s*(?:(만)\s*(?:(\d[\d,]*)\s*(천)?)?|(천))?')
+
+
+def _values(text):
+    """Numeric values in text with Korean units read ("8만 원", "80,000원" → 80000; "2만5천원" → 25000)."""
+    out = set()
+    for digits, man, rest, rest_thousand, thousand in AMOUNT.findall(text):
+        try:
+            value = float(digits.replace(',', ''))
+            if man:
+                value = value * 10000 + (float(rest.replace(',', '')) * (1000 if rest_thousand else 1) if rest else 0)
+            elif thousand:
+                value *= 1000
+        except ValueError:
+            continue
+        out.add(round(value, 6))
+    return out
+
+
+def _derived(values):
+    """Results of plain arithmetic on the visitor's own numbers (sum of all; sum, difference, product of any two) —
+    computed here, never by evaluating text — so a correct total of their figures is not mistaken for an unsourced fact."""
+    vals = sorted(values)[:30]
+    out = {round(sum(vals), 6)}
+    for i, a in enumerate(vals):
+        for b in vals[i + 1:]:
+            out |= {round(a + b, 6), round(abs(a - b), 6), round(a * b, 6)}
+    return out
 
 
 def _messages(system, history, user):
@@ -309,20 +346,29 @@ def chat_reply(base, family, context, history, question, max_tokens=320, explain
     given by the visitor in this conversation (their own facts may be repeated or organised)."""
     r = complete(base, _messages(EXPLAIN_SYSTEM if explain else CHAT_SYSTEM, history, question), family, max_tokens, context)
     output = (r.get('generated') or '').strip()
-    given = _numbers(' '.join([question] + [h['content'] for h in history if h['role'] == 'user']))
+    given_text = ' '.join([question] + [h['content'] for h in history if h['role'] == 'user'])
+    given, given_values = _numbers(given_text), _values(given_text)
+    derived = _derived(given_values) - given_values
     # Sentences end at . ! ? not preceded by a digit (list numbers like "1." stay attached) or at line breaks; the
     # model's own layout (lists, line breaks) is kept and only withheld sentences are removed.
     pieces = re.split(r'((?<=[^\d][.!?])[ \t]+|\n)', output)
-    kept, withheld = [], 0
+    kept, withheld, computed = [], 0, 0
     for i in range(0, len(pieces), 2):
-        if UNSOURCED_FACT.search(pieces[i]) and not _numbers(pieces[i]) <= given:
+        values = _values(pieces[i])
+        own = _numbers(pieces[i]) <= given or values <= given_values
+        calculated = not own and values and values <= given_values | derived
+        if UNSOURCED_FACT.search(pieces[i]) and not own and not calculated:
             withheld += 1
         else:
+            computed += bool(calculated and UNSOURCED_FACT.search(pieces[i]))
             kept.append(pieces[i] + (pieces[i + 1] if i + 1 < len(pieces) else ''))
     notes = []
     if withheld:
-        notes.append(f'근거 없이 수치·기한·조문을 말한 문장 {withheld}개를 숨겼습니다(사용자가 말한 숫자는 숨기지 않음). '
+        notes.append(f'근거 없이 수치·기한·조문을 말한 문장 {withheld}개를 숨겼습니다(사용자가 말한 숫자와 그 계산 결과는 숨기지 않음). '
                      '업무 기준은 기관명이나 규정명을 넣어 질문해 주세요.')
+    if computed:
+        notes.append(f'사용자가 준 숫자를 더하거나 빼거나 곱한 값과 일치하는 문장 {computed}개를 그대로 보였습니다. 계산 결과는 직접 '
+                     '확인하세요.')
     if r.get('truncated_output'):
         notes.append(f'응답이 길이 한도({max_tokens}토큰)에서 잘렸습니다.')
     text = re.sub(r'\n{3,}', '\n\n', ''.join(kept)).strip() or '죄송합니다. 이 질문에는 근거 없이 답할 수 있는 내용이 없습니다.'
@@ -367,6 +413,18 @@ class PassageChunk:
     path: tuple
     table: bool = False  # passage carries a table whose rows/columns B has not verified
     value_hold: bool = False  # B value review: its extracted numbers differ from the source page; not answer values
+
+
+def reader_windows(selected, tok):
+    """Workspace passages cut into the reader's token windows (trid.pdf_documents.make_chunks: 128 tokens, 32 overlap),
+    keeping provenance and absolute offsets. Uploaded documents are already chunked this way; whole workspace passages
+    (B passages run to 1,600+ characters) overflow the 91M reader's context, which raised ValueError → HTTP 422."""
+    out = []
+    for chunk, score in selected:
+        for w in make_chunks([chunk.text], tok):
+            out.append((PassageChunk(w.text, chunk.page, chunk.start + w.start, chunk.doc_id, chunk.path,
+                                     chunk.table, chunk.value_hold), score))
+    return out
 
 
 NORMALIZE = re.compile(r'[\s·ㆍ・「」『』()（）\[\]〈〉<>,.\-]')
@@ -462,7 +520,17 @@ class Workspace:
             self.review_source = {'file': str(review), 'manifest_sha256': hashlib.sha256(manifest.read_bytes()).hexdigest()
                                   if manifest.exists() else None, 'privacy': len(self.private), 'value_hold': len(self.value_hold)}
         ids = np.array([p.id for p in self.index.passages])
-        self.authority[np.isin(ids, list(self.private))] = 0.0  # zero hybrid score: never in any ranking
+        # Hard exclusion: a privacy passage is outside the selectable set (score −inf after ranking), not just low.
+        self.private_mask = np.isin(ids, list(self.private))
+        # Canonical rule names ("공무원 여비 규정" from "공무원 여비 규정 [별표 0002] …"): an exact mention names the
+        # rule regardless of TITLE_MIN, separately from partial title matching of ordinary sentences.
+        self.rule_names = {}
+        for doc_id, m in self.meta.items():
+            if doc_id in self.qa_docs:
+                continue
+            base = _norm(re.split(r'\s*[\[(]|\s+-\s+', m['title'])[0])
+            if len(base) >= 4 and re.search(r'(법|령|규정|규칙|지침|훈령|예규|고시|편람|기준)$', base):
+                self.rule_names.setdefault(base, set()).add(doc_id)
         self.dense, self.dense_info, self.embedder = None, None, embedder
         if (root / 'dense.f16.npy').exists():
             self.dense_info = json.loads((root / 'dense.json').read_text())
@@ -474,6 +542,15 @@ class Workspace:
                 model, _ = load_model('cpu')
                 self.embedder = lambda text: model.encode([text], normalize_embeddings=True)[0].astype(np.float32)
         self.registry = self._registry(Path(institutions))
+        # A rule whose title starts with an institution's name is that institution's own (or its staff's) rule; a
+        # question naming no institution prefers common rules over it (issuer ≠ the population a rule applies to).
+        prefixes = {name for name in self.institutions if len(name) >= 3}
+        self.specific = {d for d, t in self.norm_titles.items()
+                         if d not in self.qa_docs and any(t[:k] in prefixes for k in range(3, min(len(t), 30) + 1))}
+        areas = ROOT / 'trid/service/reference/admin-areas.json'
+        # City → its legal category (서울 → 특별시, 부산 → 광역시) for reading rule tables; '도' is too common to use.
+        self.area_category = ({k: v for k, v in json.loads(areas.read_text())['areas'].items() if len(v) >= 3}
+                              if areas.exists() else {})
         facts = root / 'facts.jsonl'  # structured_facts of API snapshot records (HYBRID-RAG-001-SCHEMA.md)
         self.facts = [json.loads(line) for line in facts.read_text().splitlines()] if facts.exists() else []
 
@@ -511,11 +588,16 @@ class Workspace:
             entry['docs'] |= {d for d, t in self.norm_titles.items() if t.startswith(name) and d not in self.qa_docs}
         return {alias: next(iter(owners)) for alias, owners in aliases.items() if len(owners) == 1 and len(alias) >= 3}
 
-    def scores(self, question):
+    def scores(self, question, protected=False):
         """Hybrid passage scores in [0, 1] (authority-weighted), plus the raw cosines (None without dense vectors).
         Keyword: BM25 / its maximum. Meaning: bge-m3 cosine rescaled so the question's median passage is 0 and its best
-        passage 1. Hybrid = LEXICAL_WEIGHT·keyword + (1−LEXICAL_WEIGHT)·meaning, times the passage's authority."""
+        passage 1. Hybrid = LEXICAL_WEIGHT·keyword + (1−LEXICAL_WEIGHT)·meaning, times the passage's authority.
+        Privacy passages get −inf (outside every ranking, pin and fallback); with `protected` the best score they
+        would have had is returned too, so a question whose best evidence is protected is not answered from the rest."""
         from trid.service.index import tokenize_all
+        # A city in the question is also searched as its legal category (부산 → 부산 광역시): rule tables use the
+        # category, and the question's own word is kept, not replaced.
+        question = question + ''.join(f' {self.area_category[a]}' for a in self.area_category if a in question)
         tokens = tokenize_all([question])[0]
         bm = self.index.bm25.get_scores(tokens) if tokens else np.zeros(len(self.passage_doc), np.float32)
         lexical = bm / bm.max() if bm.max() > 0 else bm
@@ -527,7 +609,10 @@ class Workspace:
             hybrid = self.LEXICAL_WEIGHT * lexical + (1 - self.LEXICAL_WEIGHT) * semantic
         else:
             hybrid = lexical
-        return (hybrid * self.authority).astype(np.float32), cos, tokens
+        hybrid = (hybrid * self.authority).astype(np.float32)
+        hidden = float(hybrid[self.private_mask].max(initial=0))
+        hybrid[self.private_mask] = -np.inf
+        return (hybrid, cos, tokens, hidden) if protected else (hybrid, cos, tokens)
 
     QUESTION_WORDS = {'얼마', '무엇', '어디', '언제', '누구', '어떻게', '정도', '경우', '관련', '내용', '기준', '규정',
                       '뜻', '의미', '차이', '개념', '정의', '요령', '방법'}  # question and request words, not topics
@@ -565,7 +650,21 @@ class Workspace:
         if (best is not None and best >= self.STRONG_COS) or not topical:
             return True
         texts = ' '.join(self.index.passages[i].text for i in indices)
-        return sum(w for t, w in topical.items() if t in texts) >= self.COVERAGE * sum(topical.values())
+        # A city named in the question is covered by its legal category in a rule table (부산 → 광역시).
+        present = lambda t: t in texts or (t in self.area_category and self.area_category[t] in texts)
+        return sum(w for t, w in topical.items() if present(t)) >= self.COVERAGE * sum(topical.values())
+
+    INSTITUTION_SUFFIX = re.compile(r'(공사|공단|위원회|재단|진흥원|연구원|은행|센터|청|처|부)$')
+
+    def institution_candidates(self, mention):
+        """Official institutions an unregistered short form may stand for: its characters appear in order in the
+        official name and both end in the same kind of body (건보공단 → 국민건강보험공단, 인사처 → 인사혁신처). A guess
+        to confirm (one candidate) or ask about (several), never a silent substitution."""
+        suffix = self.INSTITUTION_SUFFIX.search(mention)
+        if len(mention) < 3 or not suffix:
+            return []
+        pattern = re.compile('.*?'.join(map(re.escape, mention)))
+        return sorted(n for n in self.institutions if n != mention and n.endswith(suffix.group(1)) and pattern.search(n))
 
     def scope(self):
         kinds = sorted(self.manifest['by_kind'].items(), key=lambda kv: -kv[1])
@@ -609,13 +708,28 @@ class Workspace:
         mentioned = [w for w in mentioned if not any(w in a or a in w for a in found)]
         # Unregistered names count when rules/manuals start with them ("해양경찰청 …"); Q&A titles are visitors'
         # questions ("국민건강보험공단 지사장께 …") and a mention inside another body's title is not its rule either.
+        # A short form matching exactly one official name is read as that institution.
+        resolved = {w: c[0] for w in mentioned for c in [self.institution_candidates(w)] if len(c) == 1}
+        official += [n for n in resolved.values() if n not in official]
+        mentioned = [w for w in mentioned if w not in resolved]
+        named = [n for n in official if self.institutions[n]['docs']]
+        unknown = [n for n in official if not self.institutions[n]['docs']]
         leading = {w: {d for d, t in self.norm_titles.items() if t.startswith(w) and d not in self.qa_docs} for w in mentioned}
-        named = [n for n in official if self.institutions[n]['docs']] + [w for w, docs in leading.items() if docs]
-        unknown = [n for n in official if not self.institutions[n]['docs']] + [w for w, docs in leading.items() if not docs]
+        named += [w for w, docs in leading.items() if docs]
+        unknown += [w for w, docs in leading.items() if not docs]
         allowed = None
         if named:
             allowed = set().union(*((self.institutions[n]['docs'] if n in self.institutions else leading[n]) for n in named))
-        mentioned = found + mentioned
+        mentioned = found + mentioned + list(resolved)
+        # An exact canonical rule name ("공무원 여비 규정") names the rule whatever its length; only otherwise are
+        # shared title fragments of TITLE_MIN+ characters read as naming a document.
+        exact = [n for n in self.rule_names if len(n) >= 6 and n in q]
+        exact = [n for n in exact if not any(n != m and n in m for m in exact)]
+        titled = set().union(*(self.rule_names[n] for n in exact)) if exact else None
+        if titled and allowed is not None:
+            titled = titled & allowed or None
+        if titled:
+            return named, unknown, allowed, titled
         # Title matching ignores institution names, so naming an institution alone never counts as naming a document.
         q_title = q
         for name in named + mentioned:
@@ -654,9 +768,18 @@ class Workspace:
         result = {'applied': None, 'chunks': [], 'others': [], 'institutions': named, 'unknown_institutions': unknown,
                   'title_matched': bool(titled)}
         if unknown and not named and not pinned:
+            # An official institution without documents: say so. A name not in the official list: offer the official
+            # institutions it may stand for, or ask for the official name — never assert that its rules are absent.
+            informal = [w for w in unknown if w not in self.institutions]
+            if informal:
+                options = sorted({n for w in informal for n in self.institution_candidates(w)})
+                if options:
+                    return {**result, 'status': 'clarify', 'reason': 'institution', 'institutions': options[:6],
+                            'candidates': []}
+                return {**result, 'status': 'unknown_institution', 'reason': 'unrecognized'}
             return {**result, 'status': 'unknown_institution'}
         restrict = {pinned} if pinned else (titled or allowed)
-        everywhere, cos, tokens = self.scores(question)
+        everywhere, cos, tokens, hidden = self.scores(question, protected=True)
         topical = self.topical(question, named + unknown)
         result['retrieval'] = {'mode': 'hybrid' if cos is not None else 'bm25', 'topical_words': list(topical),
                                'best_cosine': round(float(cos.max()), 3) if cos is not None else None}
@@ -685,16 +808,28 @@ class Workspace:
             nearest = str(self.passage_doc[order[0]])
             return {**result, 'status': 'institution_no_match' if named and not titled and not pinned else 'not_found',
                     'reason': 'irrelevant', 'nearest': self.describe(nearest)}
-        applied = next(iter(passing))
+        if hidden > 0 and hidden >= max(float(scores[idx[0]]) for idx in passing.values()) / self.CLOSE:
+            # The question's best evidence is a privacy-protected passage: no answer from weaker neighbours.
+            return {**result, 'status': 'not_found', 'reason': 'protected'}
         best = {d: float(scores[idx[0]]) for d, idx in passing.items()}
+        applied = next(iter(passing))
+        general = not (pinned or titled or named or result.get('continued'))
+        if general and applied in self.specific:
+            # A question naming no institution: a common rule as good as (CLOSE) the top institution's own rule wins.
+            common = [d for d in best if d not in self.specific and best[d] >= self.CLOSE * best[applied]]
+            if common:
+                applied = common[0]
+        if general and applied in self.specific:
+            result['scope_note'] = 'specific'
         others = [self.describe(d, s) for d, s in best.items() if d != applied][:5]
         result.update(others=others)
-        if not (pinned or titled or named or result.get('continued')):
+        if general:
             inst = lambda d: (self.meta[d]['institution'] or self.meta[d]['title']).split('(질의')[0]
             top = best[applied]
             rivals = {}
             for d, s in best.items():
-                if inst(d) != inst(applied) and s >= self.CLOSE * top:
+                if (inst(d) != inst(applied) and s >= self.CLOSE * top
+                        and (applied in self.specific or d not in self.specific)):  # own rules don't rival a common one
                     rivals.setdefault(inst(d), d)
             if rivals:
                 options = [inst(applied)] + list(rivals)[:3]
@@ -712,10 +847,22 @@ class Workspace:
 def workspace_reply(workspace, selection):
     """Reply without a model call when the question cannot be tied to one institution's rule in the corpus."""
     status = selection['status']
-    if status == 'clarify':
+    if status == 'clarify' and selection.get('reason') == 'institution':
+        names = selection['unknown_institutions']
+        options = '\n'.join(f"- {(workspace.institutions[n].get('alio') or {}).get('name') or n}" for n in selection['institutions'])
+        answer = (f"질문의 {', '.join(repr(n) for n in names)}이(가) 어느 기관인지 공식 기관 목록에서 하나로 정해지지 않습니다. "
+                  f"다음 중 어느 기관인가요?\n{options}\n정식 기관명을 넣어 다시 물어봐 주세요.")
+    elif status == 'clarify':
         options = '\n'.join(f"- {c['institution'] or '기관 표기 없음'}: {c['title']}" for c in selection['candidates'])
         answer = ('이 질문은 여러 기관의 규정에서 비슷하게 검색됩니다. 기관마다 기준이 다를 수 있어 임의로 한 곳을 고르지 '
                   f'않았습니다.\n{options}\n어느 기관(또는 어떤 규정) 기준인지 질문에 기관명이나 규정명을 넣어 다시 물어봐 주세요.')
+    elif status == 'unknown_institution' and selection.get('reason') == 'unrecognized':
+        answer = (f"질문의 {', '.join(repr(n) for n in selection['unknown_institutions'])}을(를) 공식 기관 목록과 검색 자료에서 "
+                  '찾지 못했습니다. 자료가 없다는 뜻은 아닐 수 있으니 정식 기관명으로 다시 물어봐 주세요. 다른 기관의 규정으로 '
+                  '대신 답하지 않습니다.')
+    elif status == 'not_found' and selection.get('reason') == 'protected':
+        answer = ('이 질문과 가장 관련된 구간은 개인정보 검토로 공개 대상에서 제외되어 있어 답하지 않습니다. 같은 문서의 다른 '
+                  '구간이나 다른 자료로 대신 답하지 않습니다.')
     elif status == 'unknown_institution':
         described = []
         for name in selection['unknown_institutions']:
@@ -993,7 +1140,10 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                     self.respond(429, {'error': '요청이 많습니다. 1분 뒤 다시 시도해 주세요.'}); return
                 session.calls.append(now)
             try:
-                size = int(self.headers.get('Content-Length', '-1'))
+                try:
+                    size = int(self.headers.get('Content-Length', '-1'))
+                except ValueError:
+                    size = -1
                 if self.headers.get('Transfer-Encoding') or not 0 <= size <= MAX_BODY:
                     self.respond(413, {'error': '입력은 2MB 이하로 넣어 주세요.'}); return
                 body = self.rfile.read(size)
@@ -1064,8 +1214,8 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                         document = session.document
                         if version.get('assistant'):
                             kind = request_type(question)
-                            if kind == 'organize':
-                                intent = 'chat'
+                            if kind == 'organize' or (kind == 'recall' and history):
+                                intent = 'chat'  # the visitor's own figures or what they said earlier
                             elif kind == 'explain' and workspace_mode:
                                 # A definition is answered from the corpus when it covers the term (견책 → 징계업무편람);
                                 # only otherwise as a general explanation citing no institution.
@@ -1092,6 +1242,8 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                                     if version['kind'] == 'extractive' or version.get('answer_mode') != 'case':
                                         # versions whose answer is a value: held passages' numbers are not values
                                         selected = [(c, s) for c, s in selected if not c.value_hold]
+                                    if version['kind'] == 'extractive':
+                                        selected = reader_windows(selected, version['tok'])
                                     document = Document(workspace.meta[selection['applied']]['title'], [],
                                                         [c for c, _ in selected], [])
                                 if version['kind'] == 'extractive':
@@ -1143,6 +1295,11 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                                        '관련도')
                                 result['scope'] = (f'{how}으로 고른 문서 1건의 구간만 모델에 넣었습니다. 다른 기관·문서의 규정을 '
                                                    '섞지 않습니다. 검색되지 않은 자료까지 정보가 없다고 보장하지 않습니다.')
+                                if selection.get('scope_note') == 'specific':
+                                    m = workspace.meta[selection['applied']]
+                                    result['scope'] += (f" 이 문서는 {m['institution'] or '특정 기관'}의 자체 규정(또는 그 소속·특정 대상 "
+                                                        '규정)입니다. 질문에 기관을 정하지 않았고 공통 규정은 찾지 못했으므로, 질문한 대상에 '
+                                                        '이 규정이 적용되는지는 확인되지 않았습니다.')
                         result['model'] = version['label']
                         result['version'] = version_id
                         result['elapsed_ms'] = round((time.monotonic() - started) * 1000)
@@ -1170,12 +1327,14 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                 self.respond(200, result, cookie=sid)
             except DocumentError as error:
                 self.respond(422, {'error': str(error)})
-            except (ValueError, UnicodeError):
+            except (json.JSONDecodeError, UnicodeError):
                 self.respond(422, {'error': '입력 형식을 확인해 주세요.'})
             except (ConnectionError, TimeoutError):
                 self.close_connection = True
             except Exception:
-                self.respond(500, {'error': '처리에 실패했습니다. 작은 문서로 다시 시도해 주세요.'})
+                # A server-side failure is not the visitor's input: logged for the operator, reported as such.
+                traceback.print_exc()
+                self.respond(500, {'error': '서버 처리 중 오류가 발생했습니다. 운영자가 확인해야 하는 문제입니다.'})
 
     return BoundedServer(('127.0.0.1', port), Handler)
 
