@@ -122,12 +122,13 @@ def _numbers(text):
     return {n.rstrip('.,').replace(',', '') for n in NUMBER.findall(text)}
 
 
-def answer_document_case(document, question, base, family, context, max_tokens=256, selected=None):
+def answer_document_case(document, question, base, family, context, max_tokens=256, selected=None, topical=None):
     """Serving contract of CASE-trained versions (explanatory answers, trained with CASE_SYSTEM). The model is asked
-    with its training instruction; its output is never shown as a verified answer. Only output sentences that occur
-    verbatim in a retrieved passage are shown as verified quotes, highlighted in the source. The rest is returned as
-    `commentary` explicitly marked unverified, with numbers that appear in no retrieved passage nor the question listed
-    as warnings (a warning list, not a truth check). Repeated sentences are collapsed."""
+    with its training instruction; its output is never shown as a verified answer. Output sentences that occur verbatim
+    in a retrieved passage and contain one of the question's `topical` words (when given) are shown as quotes,
+    highlighted in the source: a quote proves the wording exists in the source, not that it answers the question.
+    The rest is `commentary` explicitly marked unverified; sentences with numbers that appear in no retrieved passage
+    nor the question are withheld. Repeated sentences are collapsed."""
     question = question.strip()
     if not question:
         raise DocumentError('질문을 입력해 주세요.')
@@ -168,7 +169,7 @@ def answer_document_case(document, question, base, family, context, max_tokens=2
     for part in segments[:-1] if r.get('truncated_output') and segments else segments:
         quote = LEADING_TAGS.sub('', part).strip()
         for text in (quote, quote.rstrip('.')):
-            if len(text) < MIN_QUOTE_CHARS or text in quoted:
+            if len(text) < MIN_QUOTE_CHARS or text in quoted or (topical and not any(t in text for t in topical)):
                 continue
             hit = next(((i, chunk, chunk.text.find(text, evidence_start(chunk.text))) for i, (chunk, _) in enumerate(selected)
                         if text in chunk.text[evidence_start(chunk.text):]), None)
@@ -199,7 +200,8 @@ def answer_document_case(document, question, base, family, context, max_tokens=2
                   unsupported_numbers=sorted(_numbers(output) - support), candidates=candidates)
     if candidates:
         return {**result, 'status': 'quoted',
-                'answer': f'원문과 글자 그대로 일치하는 인용 {len(candidates)}건을 아래에 표시합니다. 모델 해설은 검증되지 않았습니다.'}
+                'answer': f'원문과 글자가 일치하는 문장 {len(candidates)}건을 아래에 표시합니다. 질문에 대한 답인지는 원문 '
+                          '맥락에서 확인하세요. 모델 해설은 검증되지 않았습니다.'}
     return {**result, 'status': 'unverified',
             'answer': '원문과 글자 그대로 일치하는 인용이 없어 검증된 답이 없습니다. 아래 모델 해설은 검증되지 않았습니다.'}
 
@@ -235,8 +237,32 @@ CHAT_SYSTEM = (
     '물으면 등록된 공개 자료(법령정보·공공데이터 FAQ·업무편람)에서 근거를 찾아 답한다고 안내하세요. 모르는 것은 '
     '모른다고 말하세요. 실시간 정보, 인터넷 검색, 기관 내부 시스템 조회는 할 수 없습니다. 중국어·영어를 섞지 말고 '
     '반드시 한국어로만 답하세요.')
-# A digit followed by a unit of rules (money, rates, periods, articles): such claims need a retrieved source.
+EXPLAIN_SYSTEM = (
+    '당신은 TRID입니다. 공공기관 업무 용어·개념·일반적인 요령을 쉬운 한국어로 짧게 설명하세요. 특정 기관 규정의 금액·'
+    '한도·기한·조문 번호는 말하지 말고, 어느 기관의 규정이나 자료에 따른 설명인 것처럼 기관명을 내세우지 마세요. 구체적인 '
+    '기준은 기관명이나 규정명을 넣어 물으면 공개 자료에서 근거를 찾는다고 한 문장으로 안내하세요. 반드시 한국어로만 답하세요.')
+# A digit followed by a unit of rules (money, rates, periods, articles): such claims need a retrieved source, unless
+# every number in the sentence was given by the visitor in this conversation (their own schedule, budget, leave).
 UNSOURCED_FACT = re.compile(r'\d[\d,.]*\s*(?:만\s*)?(?:원|%|퍼센트|일|시간|개월|년|주|조|항|호|배|명|회)')
+# Request types the 1.7B model does not tell apart reliably (measured in reports/coordination/TRID-ANSWER-002.md):
+# markers of the request itself, never of a particular question. Visitor-given numbers + an organise/compute verb →
+# conversation; actual-spending/statistics words → structured values, not rule passages; definition words → a general
+# explanation that cites no institution.
+GIVEN_VALUES = re.compile(r'\d[\d,.]*\s*(?:만\s*)?(?:원|%|일|시간|개월|년|박|명|회|시|분|km)')
+ORGANIZE = re.compile(r'정리|요약|계산|합계|합치|총\s*얼마|표로|한\s*줄|더하면')
+STATISTIC = re.compile(r'평균|통계|집행|현황|추이|실제로?\s*(?:쓴|쓰는|사용|지출)|실지출|건수')
+DEFINITION = re.compile(r'뜻|의미|개념|차이|정의|이란\b|란\s*(?:무엇|뭐)|구성(?:되|돼|요소|은|이)|요령')
+
+
+def request_type(question):
+    """'organize' | 'statistic' | 'explain' | None (see the marker comment above)."""
+    if GIVEN_VALUES.search(question) and ORGANIZE.search(question):
+        return 'organize'
+    if STATISTIC.search(question):
+        return 'statistic'
+    if DEFINITION.search(question):
+        return 'explain'
+    return None
 
 
 def _messages(system, history, user):
@@ -264,29 +290,58 @@ def route(base, family, context, history, question, continues=None):
     return 'chat'
 
 
-def chat_reply(base, family, context, history, question, max_tokens=320):
-    """General conversation with the model's native chat template. Not grounded: sentences stating rule-like numeric
-    facts are withheld, since such facts must come from retrieved sources."""
-    r = complete(base, _messages(CHAT_SYSTEM, history, question), family, max_tokens, context)
+def chat_reply(base, family, context, history, question, max_tokens=320, explain=False):
+    """General conversation (or, with `explain`, a general explanation citing no institution) with the model's native
+    chat template. Not grounded: a sentence stating a rule-like number is withheld unless every number in it was
+    given by the visitor in this conversation (their own facts may be repeated or organised)."""
+    r = complete(base, _messages(EXPLAIN_SYSTEM if explain else CHAT_SYSTEM, history, question), family, max_tokens, context)
     output = (r.get('generated') or '').strip()
+    given = _numbers(' '.join([question] + [h['content'] for h in history if h['role'] == 'user']))
     # Sentences end at . ! ? not preceded by a digit (list numbers like "1." stay attached) or at line breaks; the
     # model's own layout (lists, line breaks) is kept and only withheld sentences are removed.
     pieces = re.split(r'((?<=[^\d][.!?])[ \t]+|\n)', output)
     kept, withheld = [], 0
     for i in range(0, len(pieces), 2):
-        if UNSOURCED_FACT.search(pieces[i]):
+        if UNSOURCED_FACT.search(pieces[i]) and not _numbers(pieces[i]) <= given:
             withheld += 1
         else:
             kept.append(pieces[i] + (pieces[i + 1] if i + 1 < len(pieces) else ''))
     notes = []
     if withheld:
-        notes.append(f'근거 없이 수치·기한·조문을 말한 문장 {withheld}개를 숨겼습니다. 업무 사실은 기관명이나 규정명을 넣어 질문해 주세요.')
+        notes.append(f'근거 없이 수치·기한·조문을 말한 문장 {withheld}개를 숨겼습니다(사용자가 말한 숫자는 숨기지 않음). '
+                     '업무 기준은 기관명이나 규정명을 넣어 질문해 주세요.')
     if r.get('truncated_output'):
         notes.append(f'응답이 길이 한도({max_tokens}토큰)에서 잘렸습니다.')
     text = re.sub(r'\n{3,}', '\n\n', ''.join(kept)).strip() or '죄송합니다. 이 질문에는 근거 없이 답할 수 있는 내용이 없습니다.'
-    return {'status': 'chat', 'answer': text, 'answer_mode': 'chat', 'candidates': [], 'checked_chunks': 0,
-            'commentary_notes': notes, 'warnings': [],
-            'scope': '일반 대화 응답입니다. 문서 근거를 검색하지 않았고 검증 대상이 아닙니다.'}
+    return {'status': 'chat', 'answer': text, 'answer_mode': 'explain' if explain else 'chat', 'candidates': [],
+            'checked_chunks': 0, 'commentary_notes': notes, 'warnings': [],
+            'scope': ('일반 설명입니다. 특정 기관 규정을 검색하지 않았고 검증 대상이 아닙니다.' if explain else
+                      '일반 대화 응답입니다. 문서 근거를 검색하지 않았고 검증 대상이 아닙니다.')}
+
+
+def statistic_reply(workspace, question):
+    """Actual-spending / statistics questions: answered only from structured values (`workspace.facts`, B's
+    structured_facts with basis actual_spending|statistic), aggregated here, never from rule passages or embeddings.
+    Without such values the reply says so and separates them from rule payment limits."""
+    named, unknown, _, _ = workspace.constraints(question) if workspace else ([], [], None, None)
+    facts = workspace.matching_facts(question, named + unknown) if workspace else []
+    base = {'candidates': [], 'checked_chunks': 0, 'warnings': [], 'reason': 'statistic',
+            'scope': '정형 값(통계·실지출)만 조회했습니다. 규정 문서나 임베딩 유사도로 평균을 계산하지 않습니다.'}
+    if facts:
+        unit = facts[0]['unit']
+        values = [f['value'] for f in facts if f['unit'] == unit]
+        lines = '\n'.join(f"- {f['subject']['name']} · {f['metric']} {f['value']:,}{unit} ({f['period']['from']}~{f['period']['to']}, "
+                          f"{f['source_id']})" for f in facts if f['unit'] == unit)
+        mean = sum(values) / len(values)
+        return {**base, 'status': 'answer_values', 'facts': facts,
+                'answer': f'정형 값 {len(values)}건의 평균은 {mean:,.0f}{unit}입니다(단순 평균).\n{lines}'}
+    who = ''
+    if named or unknown:
+        who = f"{', '.join(named + unknown)}의 "
+    return {**base, 'status': 'not_found',
+            'answer': (f'이 질문은 {who}실제 지출의 평균·통계를 묻는 것으로 보입니다. 검색 자료에는 실제 지출 통계 값이 없어 답할 수 '
+                       '없습니다. 규정에 정해진 지급 기준(정액·상한)은 실제 평균 지출과 다른 값입니다. 규정상 지급 기준을 '
+                       "찾으려면 '…출장 식비 지급 기준'처럼 물어 주세요.")}
 
 
 @dataclass(frozen=True)
@@ -330,8 +385,30 @@ class Workspace:
     MAX_PASSAGES = 4  # CPU prompt processing dominates latency; four 550-char passages keep answers short
     TITLE_MIN = 8      # normalised characters shared with a title to count as naming that document
     CLOSE = 0.85       # another institution's best score within this ratio of the top makes the question ambiguous
+    # Hybrid ranking (HYBRID-RAG-001 dev measurement, 14 labelled questions: dense ranks the target document far
+    # higher than BM25, whose kiwi split of questions like "식비는" → 식/비 loses the key word; 0.1 keyword + 0.9
+    # meaning had the best doc@1/@5). Authority: laws and their tables apply generally and come first; rules, manuals
+    # and official interpretations next; FAQs; citizens' Q&A boards answer one asker's situation and come last.
+    LEXICAL_WEIGHT = 0.1
 
-    def __init__(self, directory):
+    @staticmethod
+    def authority_of(kind):
+        kind = kind or ''
+        if kind.startswith('법령') and '해석' not in kind:
+            return 1.0
+        if '질의응답' in kind or '사내 FAQ' in kind:
+            return 0.7
+        return 0.85 if 'FAQ' in kind else 0.9
+
+    # Evidence must be about the question before any model runs. Dev calibration (best-passage bge-m3 cosine): 0.62–0.79
+    # for answerable questions, 0.48–0.61 for questions the corpus does not cover, so cosine alone cannot separate them.
+    # Below RELEVANT_COS nothing passes; between it and STRONG_COS the passages must also contain one of the
+    # question's topical nouns (the uncovered questions' nouns — 아파트 관리비, 동호회 활동비 — occur nowhere).
+    RELEVANT_COS = 0.6
+    STRONG_COS = 0.7
+    TOPICAL_DF = 0.02  # a question noun in at most this share of passages is topical (not 출장·공무원·기준 …)
+
+    def __init__(self, directory, embedder=None, institutions=ROOT / 'data/corpus-inventory/alio-agencies.json'):
         from trid.service.index import Index
         root = Path(directory)
         self.index = Index.load(root)
@@ -352,6 +429,110 @@ class Workspace:
             for i in range(len(t) - self.TITLE_MIN + 1):
                 self.title_grams.setdefault(t[i:i + self.TITLE_MIN], set()).add(doc_id)
         self.qa_docs = {d for d, m in self.meta.items() if any(x in (m['kind'] or '') for x in ('FAQ', '질의응답', '질의회신'))}
+        self.authority = np.array([self.authority_of(self.meta[str(d)]['kind']) for d in self.passage_doc], np.float32)
+        self.dense, self.dense_info, self.embedder = None, None, embedder
+        if (root / 'dense.f16.npy').exists():
+            self.dense_info = json.loads((root / 'dense.json').read_text())
+            self.dense = np.load(root / 'dense.f16.npy').astype(np.float32)
+            if len(self.dense) != len(self.index.passages):
+                raise ValueError('dense.f16.npy does not match the index passages; rerun scripts/build_embeddings.py')
+            if self.embedder is None:
+                from trid.service.embed import load_model
+                model, _ = load_model('cpu')
+                self.embedder = lambda text: model.encode([text], normalize_embeddings=True)[0].astype(np.float32)
+        self.registry = self._registry(Path(institutions))
+        facts = root / 'facts.jsonl'  # structured_facts of API snapshot records (HYBRID-RAG-001-SCHEMA.md)
+        self.facts = [json.loads(line) for line in facts.read_text().splitlines()] if facts.exists() else []
+
+    FACT_COS = 0.6  # metric name ↔ question similarity for a structured value to count as asked for
+
+    def matching_facts(self, question, institutions):
+        """Actual-spending / statistic structured values whose metric matches the question (bge-m3 cosine ≥ FACT_COS),
+        limited to the named institutions when any are named."""
+        pool = [f for f in self.facts if f.get('basis') in ('actual_spending', 'statistic')]
+        if institutions:
+            pool = [f for f in pool if self.registry.get(_norm(f['subject']['name']), _norm(f['subject']['name'])) in institutions]
+        if not pool or self.embedder is None:
+            return []
+        q = self.embedder(question)
+        return [f for f in pool if float(self.embedder(f['metric']) @ q) >= self.FACT_COS]
+
+    def _registry(self, path):
+        """alias -> official name, from the corpus issuers and the official ALIO list of public institutions. Aliases are
+        derived generically (the name; without a (사)/(재) prefix; without a leading 한국/국립/대한 when ≥3 characters
+        remain); an alias claimed by two institutions is dropped. Each official name records its corpus documents
+        (issued by it, or rules/manuals whose title starts with its name) and its ALIO type and ministry."""
+        self.institutions = {}
+        names = [(n, None) for n in self.by_institution]
+        if path.exists():
+            names += [(_norm(re.sub(r'^\((사|재|주)\)', '', a['apbaNa'])), a) for a in json.loads(path.read_text())['agencies']]
+        aliases = {}
+        for name, alio in names:
+            entry = self.institutions.setdefault(name, {'name': name, 'alio': None, 'docs': set()})
+            if alio:
+                entry['alio'] = {'id': alio['apbaId'], 'name': alio['apbaNa'], 'type': alio['typeNa'], 'ministry': alio['jidtNa']}
+            entry['docs'] |= self.by_institution.get(name, set())
+            for alias in {name} | {name[len(p):] for p in ('한국', '국립', '대한') if name.startswith(p) and len(name) - len(p) >= 3}:
+                aliases.setdefault(alias, set()).add(name)
+        for name, entry in self.institutions.items():
+            entry['docs'] |= {d for d, t in self.norm_titles.items() if t.startswith(name) and d not in self.qa_docs}
+        return {alias: next(iter(owners)) for alias, owners in aliases.items() if len(owners) == 1 and len(alias) >= 3}
+
+    def scores(self, question):
+        """Hybrid passage scores in [0, 1] (authority-weighted), plus the raw cosines (None without dense vectors).
+        Keyword: BM25 / its maximum. Meaning: bge-m3 cosine rescaled so the question's median passage is 0 and its best
+        passage 1. Hybrid = LEXICAL_WEIGHT·keyword + (1−LEXICAL_WEIGHT)·meaning, times the passage's authority."""
+        from trid.service.index import tokenize_all
+        tokens = tokenize_all([question])[0]
+        bm = self.index.bm25.get_scores(tokens) if tokens else np.zeros(len(self.passage_doc), np.float32)
+        lexical = bm / bm.max() if bm.max() > 0 else bm
+        cos = None
+        if self.dense is not None:
+            cos = self.dense @ self.embedder(question)
+            floor, top = float(np.median(cos)), float(cos.max())
+            semantic = np.clip((cos - floor) / max(top - floor, 1e-6), 0, 1)
+            hybrid = self.LEXICAL_WEIGHT * lexical + (1 - self.LEXICAL_WEIGHT) * semantic
+        else:
+            hybrid = lexical
+        return (hybrid * self.authority).astype(np.float32), cos, tokens
+
+    QUESTION_WORDS = {'얼마', '무엇', '어디', '언제', '누구', '어떻게', '정도', '경우', '관련', '내용', '기준', '규정',
+                      '뜻', '의미', '차이', '개념', '정의', '요령', '방법'}  # question and request words, not topics
+    JOSA = re.compile(r'(?:에서는|에서|으로는|으로|에게|까지|부터|이나|이란|란|은|는|이|가|을|를|의|에|로|와|과|도|만|요)$')
+
+    def topical(self, question, named):
+        """{noun: idf} for nouns that carry the question's topic: in at most TOPICAL_DF of the passages (at least one
+        passage), not part of an institution name, not a question word. A kiwi noun found in no passage at all is
+        topical too (nothing in the corpus is about it) and weighs most. Words with their particle removed are added
+        when the corpus knows them, since kiwi splits some questions' nouns ("식비는" → 식/비)."""
+        from trid.korean_quality import kiwi
+        n = len(self.passage_doc)
+        limit = max(1, int(self.TOPICAL_DF * n))
+        df = lambda t: int(np.count_nonzero(self.index.bm25.get_scores([t])))
+        nouns = [t.form.lower() for t in kiwi().tokenize(question) if t.tag in ('NNG', 'NNP', 'SL', 'SH')]
+        words = [self.JOSA.sub('', w) for w in re.findall(r'[가-힣]{2,}', question)]
+        out = {}
+        for t in dict.fromkeys(nouns + [w for w in words if len(w) >= 2 and w not in nouns]):
+            if len(t) < 2 or t in self.QUESTION_WORDS or any(t in name for name in named):
+                continue
+            f = df(t)
+            if (f <= limit and t in nouns) or 0 < f <= limit:
+                out[t] = float(np.log((n + 1) / (f + 1)))
+        return out
+
+    COVERAGE = 0.4  # dev calibration: uncovered questions 0.34 of topical-noun idf present, answerable 0.42–1.0
+
+    def relevant(self, indices, cos, topical, continued=False):
+        """Whether these passages can answer the question: best cosine ≥ RELEVANT_COS; below STRONG_COS the passages
+        must also hold ≥ COVERAGE of the question's topical-noun idf mass (without dense vectors only the noun check).
+        A short follow-up of the previous document ("그럼 감봉은?") embeds poorly on its own: only the noun check."""
+        best = max(float(cos[i]) for i in indices) if cos is not None and not continued else None
+        if best is not None and best < self.RELEVANT_COS:
+            return False
+        if (best is not None and best >= self.STRONG_COS) or not topical:
+            return True
+        texts = ' '.join(self.index.passages[i].text for i in indices)
+        return sum(w for t, w in topical.items() if t in texts) >= self.COVERAGE * sum(topical.values())
 
     def scope(self):
         kinds = sorted(self.manifest['by_kind'].items(), key=lambda kv: -kv[1])
@@ -372,22 +553,26 @@ class Workspace:
     WEAK = 0.6  # best score inside the named institution below this share of the corpus-wide best: no relevant rule
 
     def constraints(self, question):
-        """(named institutions, unknown institution-like names, allowed doc ids or None, named document ids or None).
-        An institution's documents are those it issues (meta) or whose title carries its name (regulations issued by
-        a department of the institution)."""
+        """(named institutions, unknown institution names, allowed doc ids or None, named document ids or None).
+        Institutions are recognised through the registry (official names and generic aliases, e.g. 부동산원 →
+        한국부동산원) and, for unregistered names, INSTITUTION_LIKE. A registered institution without documents in the
+        corpus, or an unregistered name, is unknown (the reply says the corpus lacks its rules). An institution's
+        documents are those it issues or rules/manuals whose title starts with its name."""
         q = _norm(question)
+        found = [a for a in self.registry if a in q]
+        found = [a for a in found if not any(a != b and a in b for b in found)]  # longest aliases
+        official = list(dict.fromkeys(self.registry[a] for a in found))
         mentioned = [_norm(w) for w in self.INSTITUTION_LIKE.findall(question)]
-        # An institution is known as a corpus institution or as the leading word of rule/manual titles ("해양경찰청 …");
-        # Q&A rows are excluded because their titles are visitors' questions ("국민건강보험공단 지사장께 …").
-        # A mention inside another body's title (an interpretation about it) is not its rule either.
+        mentioned = [w for w in mentioned if not any(w in a or a in w for a in found)]
+        # Unregistered names count when rules/manuals start with them ("해양경찰청 …"); Q&A titles are visitors'
+        # questions ("국민건강보험공단 지사장께 …") and a mention inside another body's title is not its rule either.
         leading = {w: {d for d, t in self.norm_titles.items() if t.startswith(w) and d not in self.qa_docs} for w in mentioned}
-        named = [name for name in self.by_institution if name in q] + [w for w, docs in leading.items() if docs]
-        named = list(dict.fromkeys(n for n in named if not any(n != m and n in m for m in named)))  # longest names
-        unknown = [w for w in mentioned if not any(w in n or n in w for n in named)]
+        named = [n for n in official if self.institutions[n]['docs']] + [w for w, docs in leading.items() if docs]
+        unknown = [n for n in official if not self.institutions[n]['docs']] + [w for w, docs in leading.items() if not docs]
         allowed = None
         if named:
-            allowed = set().union(*(self.by_institution.get(n, set()) for n in named))
-            allowed |= {d for d, t in self.norm_titles.items() if any(t.startswith(n) for n in named) and d not in self.qa_docs}
+            allowed = set().union(*((self.institutions[n]['docs'] if n in self.institutions else leading[n]) for n in named))
+        mentioned = found + mentioned
         # Title matching ignores institution names, so naming an institution alone never counts as naming a document.
         q_title = q
         for name in named + mentioned:
@@ -401,38 +586,43 @@ class Workspace:
         return named, unknown, allowed, titled
 
     def _context_relevant(self, everywhere, context_doc):
+        # Hybrid scores are dense near the top, so a follow-up continues the previous document only when that document
+        # is about as good as anything (CLOSE): "그럼 감봉은?" after 징계업무편람 0.90, a self-contained new question such as
+        # "상시 출장하는 공무원 여비는?" after 법원공무원 여비 규칙 0.76 (dev measurement).
         return (context_doc in self.meta
-                and everywhere[self.passage_doc == context_doc].max(initial=0) >= self.WEAK * everywhere.max() > 0)
+                and everywhere[self.passage_doc == context_doc].max(initial=0) >= self.CLOSE * everywhere.max() > 0)
 
     def continues(self, question, context_doc):
         """True when a question that names no institution or document is answered by `context_doc` (the document
-        applied in the previous conversation turn) at least WEAK as well as by the best passage anywhere."""
-        from trid.service.index import tokenize_all
+        applied in the previous conversation turn) at least CLOSE as well as by the best passage anywhere."""
         named, unknown, allowed, titled = self.constraints(question)
-        tokens = tokenize_all([question])[0]
-        if named or unknown or titled or allowed is not None or not tokens:
+        if named or unknown or titled or allowed is not None or context_doc not in self.meta:
             return False
-        return self._context_relevant(self.index.bm25.get_scores(tokens), context_doc)
+        return self._context_relevant(self.scores(question)[0], context_doc)
 
     def select(self, question, pinned=None, context_doc=None):
-        """dict(status, applied, chunks, others, institutions, ...). status: 'answer' | 'clarify' | 'unknown_institution'
-        | 'institution_no_match' | 'not_found'. `context_doc` (the previous turn's document) is searched instead of the
-        whole corpus when `continues(question, context_doc)` holds (`continued` in the result); otherwise ignored."""
-        from trid.service.index import tokenize_all
+        """dict(status, applied, chunks, others, institutions, retrieval, ...). status: 'answer' | 'clarify' |
+        'unknown_institution' | 'institution_no_match' | 'not_found' (reason 'irrelevant' when passages were found but
+        none can answer: no passage of a candidate document reaches RELEVANT_COS or contains a topical question word).
+        Candidate documents, the ask-back list and the other-documents list only contain documents passing that check.
+        `context_doc` (the previous turn's document) is searched instead of the whole corpus when it scores at least
+        CLOSE of the corpus-wide best for a question naming no institution or document (`continued`)."""
         named, unknown, allowed, titled = self.constraints(question)
         result = {'applied': None, 'chunks': [], 'others': [], 'institutions': named, 'unknown_institutions': unknown,
                   'title_matched': bool(titled)}
         if unknown and not named and not pinned:
             return {**result, 'status': 'unknown_institution'}
         restrict = {pinned} if pinned else (titled or allowed)
-        tokens = tokenize_all([question])[0]
-        if not tokens:
+        everywhere, cos, tokens = self.scores(question)
+        topical = self.topical(question, named + unknown)
+        result['retrieval'] = {'mode': 'hybrid' if cos is not None else 'bm25', 'topical_words': list(topical),
+                               'best_cosine': round(float(cos.max()), 3) if cos is not None else None}
+        if everywhere.max() <= 0:
             return {**result, 'status': 'not_found'}
-        everywhere = self.index.bm25.get_scores(tokens)
-        scores = everywhere
         if restrict is None and not unknown and self._context_relevant(everywhere, context_doc):
             restrict = {context_doc}
             result['continued'] = True
+        scores = everywhere
         if restrict is not None:
             scores = np.where(np.isin(self.passage_doc, list(restrict)), everywhere, -np.inf)
             if named and not titled and not pinned and scores.max() < self.WEAK * everywhere.max():
@@ -440,10 +630,20 @@ class Workspace:
         order = [int(i) for i in np.argsort(-scores, kind='stable')[:60] if scores[i] > 0]
         if not order:
             return {**result, 'status': 'not_found'}
-        best = {}
+        by_doc = {}
         for i in order:
-            best.setdefault(str(self.passage_doc[i]), float(scores[i]))
-        applied = str(self.passage_doc[order[0]])
+            by_doc.setdefault(str(self.passage_doc[i]), []).append(i)
+        passing = {d: idx[:self.MAX_PASSAGES] for d, idx in by_doc.items()
+                   if self.relevant(idx[:self.MAX_PASSAGES], cos, topical, bool(result.get('continued')))}
+        result['retrieval']['hits'] = [{'doc_id': str(self.passage_doc[i]), 'passage': self.index.passages[i].id,
+                                        'hybrid': round(float(scores[i]), 3),
+                                        'cosine': round(float(cos[i]), 3) if cos is not None else None} for i in order[:5]]
+        if not passing:
+            nearest = str(self.passage_doc[order[0]])
+            return {**result, 'status': 'institution_no_match' if named and not titled and not pinned else 'not_found',
+                    'reason': 'irrelevant', 'nearest': self.describe(nearest)}
+        applied = next(iter(passing))
+        best = {d: float(scores[idx[0]]) for d, idx in passing.items()}
         others = [self.describe(d, s) for d, s in best.items() if d != applied][:5]
         result.update(others=others)
         if not (pinned or titled or named or result.get('continued')):
@@ -460,8 +660,8 @@ class Workspace:
         chunks = [(PassageChunk(self.index.passages[i].text, 1, self.index.passages[i].char_start,
                                 self.passage_doc[i], self.index.passages[i].path,
                                 self.index.passages[i].id in self.tables), float(scores[i]))
-                  for i in order if self.passage_doc[i] == applied][:self.MAX_PASSAGES]
-        return {**result, 'status': 'answer', 'applied': str(applied), 'chunks': chunks}
+                  for i in passing[applied]]
+        return {**result, 'status': 'answer', 'applied': applied, 'chunks': chunks}
 
 
 
@@ -473,16 +673,27 @@ def workspace_reply(workspace, selection):
         answer = ('이 질문은 여러 기관의 규정에서 비슷하게 검색됩니다. 기관마다 기준이 다를 수 있어 임의로 한 곳을 고르지 '
                   f'않았습니다.\n{options}\n어느 기관(또는 어떤 규정) 기준인지 질문에 기관명이나 규정명을 넣어 다시 물어봐 주세요.')
     elif status == 'unknown_institution':
-        names = ', '.join(selection['unknown_institutions'])
-        answer = (f"질문에 적힌 '{names}'의 규정은 현재 검색 자료에 없습니다. 다른 기관의 규정으로 대신 답하지 않습니다. "
-                  '해당 기관 규정 문서를 첨부(＋)로 넣으면 그 문서에서 찾을 수 있습니다.')
+        described = []
+        for name in selection['unknown_institutions']:
+            alio = (workspace.institutions.get(name) or {}).get('alio')
+            described.append(f"{alio['name']}({alio['type']}, 주무부처 {alio['ministry']})" if alio else f"'{name}'")
+        answer = (f"{', '.join(described)}의 규정은 현재 검색 자료에 없습니다. 다른 기관의 규정으로 대신 답하지 않습니다. "
+                  '해당 기관 규정 문서를 첨부(＋)로 넣으면 그 문서에서 찾을 수 있습니다. 기관을 정하지 않고 공공기관 '
+                  '일반 기준을 찾으려면 기관명 없이 물어 주세요.')
+    elif selection.get('reason') == 'irrelevant':
+        words = ', '.join(f"'{w}'" for w in selection['retrieval']['topical_words'])
+        where = f"'{', '.join(selection['institutions'])}' 자료" if status == 'institution_no_match' else '검색 자료'
+        answer = (f"{where}에서 이 질문에 답할 만큼 관련된 구간을 찾지 못했습니다"
+                  + (f"(핵심어 {words}을 충분히 다루는 구간 없음)" if words else '') + '. '
+                  '관련 없는 문서로 대신 답하지 않습니다. 기관명이나 규정명을 넣거나 다른 표현으로 물어 주세요.')
     elif status == 'institution_no_match':
         names = ', '.join(selection['institutions'])
         answer = (f"'{names}' 자료에서 이 질문과 관련된 규정을 찾지 못했습니다. 다른 기관의 규정으로 대신 답하지 않습니다.")
     else:
         answer = '검색 자료에서 질문과 관련된 구간을 찾지 못했습니다. 질문을 바꾸거나 기관명·규정명을 넣어 주세요.'
     return {'status': status, 'answer': answer, 'candidates': [], 'checked_chunks': 0, 'warnings': [],
-            'scope': '모델을 실행하지 않았습니다. 검색 자료와 질문의 기관·규정명을 확인한 결과입니다.'}
+            'reason': selection.get('reason'), 'retrieval': selection.get('retrieval'),
+            'scope': '모델을 실행하지 않았습니다. 검색 자료와 질문의 기관·규정명, 근거 적합성을 확인한 결과입니다.'}
 
 
 PUBLIC_FIELDS = ('id', 'label', 'kind', 'base_model', 'license', 'version', 'status', 'evaluation', 'limits')
@@ -802,19 +1013,32 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                         version = state.versions[version_id]
                         started = time.monotonic()
                         history = list(session.history)
-                        intent = 'search'
-                        if version.get('assistant'):
-                            intent = route(version['base'], version['family'], version['context'], history, question,
-                                           workspace.continues if workspace_mode else None)
+                        intent, kind = 'search', None
                         last = next((h for h in reversed(history) if h['role'] == 'assistant'), None)
                         context_doc = last.get('applied_id') if last and last.get('kind') == 'search' else None
                         selected, others, selection = None, [], None
                         document = session.document
+                        if version.get('assistant'):
+                            kind = request_type(question)
+                            if kind == 'organize':
+                                intent = 'chat'
+                            elif kind == 'explain' and workspace_mode:
+                                # A definition is answered from the corpus when it covers the term (견책 → 징계업무편람);
+                                # only otherwise as a general explanation citing no institution.
+                                selection = workspace.select(question, session.pinned_doc, context_doc)
+                                if selection['status'] not in ('answer', 'clarify'):
+                                    intent, selection = 'chat', None
+                            else:
+                                intent = route(version['base'], version['family'], version['context'], history, question,
+                                               workspace.continues if workspace_mode else None)
                         if intent == 'chat':
-                            result = chat_reply(version['base'], version['family'], version['context'], history, question)
+                            result = chat_reply(version['base'], version['family'], version['context'], history, question,
+                                                explain=kind == 'explain')
+                        elif kind == 'statistic' and workspace_mode:
+                            result = statistic_reply(workspace, question)
                         else:
                             if workspace_mode:
-                                selection = workspace.select(question, session.pinned_doc, context_doc)
+                                selection = selection or workspace.select(question, session.pinned_doc, context_doc)
                                 others = selection['others']
                             if selection and selection['status'] != 'answer':
                                 result = workspace_reply(workspace, selection)
@@ -830,13 +1054,19 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                                         result.update(status='review', answer='모델이 근거 충돌로 판단한 구간이 있습니다. 원문을 직접 확인해 주세요.')
                                 elif version.get('answer_mode') == 'case':
                                     result = answer_document_case(document, question, version['base'], version['family'],
-                                                                  version['context'], selected=selected)
+                                                                  version['context'], selected=selected,
+                                                                  topical=selection['retrieval']['topical_words'] if selection else None)
                                 else:
                                     result = answer_document_chat(document, question, version['base'], version['family'],
                                                                   version['context'], version['decoding'] == 'evidence_constrained',
                                                                   selected=selected)
                                 result.pop('checked', None)
                         result['intent'] = intent
+                        if kind:
+                            result['request_type'] = kind
+                        if selection and selection.get('retrieval'):
+                            result['retrieval'] = {**selection['retrieval'], 'index': workspace.name,
+                                                   'dense': workspace.dense_info and {k: workspace.dense_info[k] for k in ('model', 'snapshot', 'vectors_sha256')}}
                         if selection:
                             with state.lock:
                                 session.offered_docs = [o['doc_id'] for o in others]
@@ -869,9 +1099,16 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                         result['elapsed_ms'] = round((time.monotonic() - started) * 1000)
                         if version.get('assistant'):
                             applied_doc = (result.get('workspace') or {}).get('applied')
-                            said = result['answer'] if intent == 'chat' else (
-                                f"[근거 검색 결과] {result['answer']}"
-                                + (f" (적용 문서: {applied_doc['institution'] or ''} {applied_doc['title']})" if applied_doc else ''))
+                            if intent == 'chat':
+                                said = result['answer']
+                            else:
+                                # Memory keeps only what is verified, with its provenance: verified quotes and the
+                                # document they come from. Unverified commentary, ask-back lists and institution
+                                # listings are not remembered, so the conversation model cannot replay them as facts.
+                                quotes = ' '.join(f"“{c['prediction']['answer']}”" for c in result.get('candidates', [])[:3])
+                                said = ('[문서 검색 답변] ' + (
+                                    f"{applied_doc['institution'] or ''} 「{applied_doc['title']}」의 확인된 원문: {quotes}"
+                                    if applied_doc and quotes else '확인된 원문 인용 없음'))
                             with state.lock:
                                 session.history += [{'role': 'user', 'content': question, 'kind': intent},
                                                     {'role': 'assistant', 'content': said[:600], 'kind': intent,

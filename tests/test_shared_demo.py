@@ -174,6 +174,22 @@ class ChatBackendTests(unittest.TestCase):
         self.assertIn('무엇을 도와드릴까요?', r['answer'])
         self.assertTrue(any('1개를 숨겼습니다' in n for n in r['commentary_notes']))
 
+    def test_chat_keeps_numbers_the_visitor_gave(self):
+        from scripts.shared_demo import chat_reply
+        history = [{'role': 'user', 'content': '이번 달 연차가 2일 남았어요.'}, {'role': 'assistant', 'content': '알겠습니다.'}]
+        with patch('scripts.shared_demo.complete', return_value={'generated': '연차가 2일 남으셨어요. 연가는 연 21일입니다.'}):
+            r = chat_reply('http://127.0.0.1:1', 'qwen3', 4096, history, '제 연차 며칠 남았죠?')
+        self.assertIn('2일 남으셨어요', r['answer'])
+        self.assertNotIn('21일', r['answer'])
+
+    def test_request_type_markers(self):
+        from scripts.shared_demo import request_type
+        self.assertEqual(request_type('회의는 오후 3시, 예산은 20만원이에요. 한 줄로 정리해 주세요.'), 'organize')
+        self.assertEqual(request_type('직원들이 실제로 쓴 평균 식비는?'), 'statistic')
+        self.assertEqual(request_type('여비와 출장비는 무슨 차이야?'), 'explain')
+        self.assertIsNone(request_type('국내 출장 식비 지급 기준은?'))
+
+
 
 
 class WorkspaceTests(unittest.TestCase):
@@ -236,10 +252,35 @@ class WorkspaceTests(unittest.TestCase):
         self.assertFalse(self.ws.continues('가기관 숙박비는 얼마인가요?', 'b'))
 
     def test_previous_document_without_relevant_text_is_not_continued(self):
-        r = self.ws.select('국외 출장 숙박비 1박 상한', context_doc='b')
+        r = self.ws.select('국외 출장 숙박비 1박', context_doc='b')
         self.assertNotIn('continued', r)
         self.assertEqual(r['applied'], 'a')
-        self.assertFalse(self.ws.continues('국외 출장 숙박비 1박 상한', 'b'))
+        self.assertFalse(self.ws.continues('국외 출장 숙박비 1박', 'b'))
+
+    def test_official_alias_without_documents_is_named_not_substituted(self):
+        from scripts.shared_demo import workspace_reply
+        r = self.ws.select('부동산원 국외 출장 식비는 하루 얼마인가요?')
+        self.assertEqual(r['status'], 'unknown_institution')
+        self.assertEqual(r['unknown_institutions'], ['한국부동산원'])
+        self.assertIn('한국부동산원(공기업', workspace_reply(self.ws, r)['answer'])
+
+    def test_question_about_absent_topic_lists_no_unrelated_documents(self):
+        from scripts.shared_demo import workspace_reply
+        r = self.ws.select('국외 출장 항공권 좌석 등급은?')
+        self.assertEqual((r['status'], r.get('reason')), ('not_found', 'irrelevant'))
+        self.assertEqual((r['chunks'], r['others']), ([], []))
+        self.assertNotIn('기관 출장 규정', workspace_reply(self.ws, r)['answer'])
+
+    def test_statistic_question_uses_only_structured_values(self):
+        from scripts.shared_demo import statistic_reply
+        self.assertEqual(statistic_reply(self.ws, '직원 평균 출장 식비는?')['status'], 'not_found')
+        self.ws.facts = [{'metric': '출장 식비 실지출 평균', 'value': v, 'unit': '원', 'basis': 'actual_spending', 'source_id': f's{v}',
+                          'subject': {'id': None, 'name': n}, 'period': {'from': '2025-01', 'to': '2025-12'}}
+                         for n, v in (('가기관', 20000), ('나기관', 30000))]
+        self.ws.embedder = lambda text: __import__('numpy').ones(4) / 2  # every metric matches
+        r = statistic_reply(self.ws, '직원 평균 출장 식비는?')
+        self.assertEqual(r['status'], 'answer_values')
+        self.assertIn('25,000원', r['answer'])
 
 
 class ExtractiveChunkTests(unittest.TestCase):

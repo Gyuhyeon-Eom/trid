@@ -37,11 +37,58 @@ def sha256(path):
     with open(path, 'rb') as f:
         return hashlib.file_digest(f, 'sha256').hexdigest()
 
+API_KIND = {'rule': '행정규칙', 'manual': '업무편람', 'law': '법령', 'interpretation': '법령해석·질의회신', 'faq': 'FAQ',
+            'qa_board': '질의응답 게시판', 'statistic': '통계·공시', 'press': '정책브리핑 보도자료'}
+
+
+def api_snapshot(directory, meta):
+    """(documents, structured facts, snapshot info) of one local snapshot copy. Every file listed in manifest.json must
+    match its sha256; records with usage restrictions are skipped; the issuer is the document's institution and
+    `applies_to` is kept separately (an issuer is not necessarily the body the rule applies to)."""
+    manifest_path = directory / 'manifest.json'
+    manifest = json.loads(manifest_path.read_text())
+    for f in manifest['files']:
+        if sha256(directory / f['path']) != f['sha256']:
+            raise ValueError(f"{directory / f['path']}: sha256 differs from the snapshot manifest")
+    documents, facts, skipped = [], [], {'restricted': 0, 'empty': 0}
+    for f in manifest['files']:
+        if not f['path'].startswith('normalized/'):
+            continue
+        for line in (directory / f['path']).read_text().splitlines():
+            row = json.loads(line)
+            if (row.get('rights') or {}).get('restrictions'):
+                skipped['restricted'] += 1
+                continue
+            for fact in row.get('structured_facts') or []:
+                facts.append({**fact, 'source_id': row['source_id'], 'version': row['version'],
+                              'source_url': (row.get('location') or {}).get('url')})
+            if not (row.get('text') or '').strip():
+                skipped['empty'] += 1
+                continue
+            doc_id = f"{row['source_id']}@{row['version']}"
+            doc = Document(doc_id, row['title'], row['content_hash'], {'public'}, row['text'])
+            doc.passages, doc.refs = parse_document(row['text'], doc_id, row['title'])
+            documents.append(doc)
+            dates = row.get('dates') or {}
+            meta[doc_id] = {'title': row['title'], 'kind': API_KIND.get(row['kind'], row['kind']),
+                            'institution': (row.get('issuer') or {}).get('name'), 'issuer_id': (row.get('issuer') or {}).get('id'),
+                            'applies_to': row.get('applies_to'), 'date': dates.get('published') or dates.get('effective_from'),
+                            'date_type': '공표일' if dates.get('published') else '시행일', 'effective_date': dates.get('effective_from'),
+                            'currency': f"{dates.get('retrieved_at')} 수집 당시 자료이며 현행 여부는 다시 확인하지 않았음",
+                            'source': (row.get('location') or {}).get('url'), 'license': (row.get('rights') or {}).get('license'),
+                            'attribution': manifest.get('producer'), 'source_id': row['source_id'], 'version': row['version'],
+                            'snapshot_id': manifest['snapshot_id']}
+    info = {'snapshot_id': manifest['snapshot_id'], 'manifest_sha256': sha256(manifest_path), 'indexed': len(documents),
+            'skipped': skipped, 'facts': len(facts), 'producer': manifest.get('producer')}
+    return documents, facts, info
+
 
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument('--out', type=Path, required=True)
     p.add_argument('--practice', action='store_true', help=f'also index B search corpus {PRACTICE.relative_to(ROOT)}')
+    p.add_argument('--api-snapshot', type=Path, action='append', default=[],
+                   help='also index a local copy of a B API-S3-001 snapshot (reports/coordination/HYBRID-RAG-001-SCHEMA.md)')
     a = p.parse_args()
     if a.out.exists():
         p.error('Use a new --out directory')
@@ -110,6 +157,11 @@ def main():
             if str(row.get('has_table')) == 'True' or meta[row['doc_id']]['table_check'] == 'unverified':
                 tables.append(row['passage_id'])
         documents += [d for d in practice_docs.values() if d.passages]
+    facts, snapshots = [], {}
+    for snap in a.api_snapshot:
+        docs, rows_facts, snapshots[str(snap)] = api_snapshot(snap, meta)
+        documents += docs
+        facts += rows_facts
     index = Index.build(documents)
     index.save(a.out)
     meta = {d.doc_id: meta[d.doc_id] for d in documents}  # documents actually indexed only
@@ -120,13 +172,19 @@ def main():
     inputs = {str(RULES.relative_to(ROOT)): sha256(RULES), str(PRESS.relative_to(ROOT)): sha256(PRESS)}
     if a.practice:
         inputs.update({str((PRACTICE / f).relative_to(ROOT)): sha256(PRACTICE / f) for f in ('documents.jsonl', 'passages.jsonl', 'manifest.json')})
+    inputs.update({f'{s}/manifest.json': info['manifest_sha256'] for s, info in snapshots.items()})
     manifest = {'built_at_unix': time.time(), 'seconds': round(time.time() - started, 1), 'inputs': inputs,
                 'documents': len(documents), 'passages': len(index.passages), 'by_kind': counts,
                 'table_passages': len(tables), 'date_range': [dates[0], dates[-1]] if dates else None,
                 'selection': 'law.go.kr rows with split == train (B valid/test excluded); KOGL Type 1 press releases'
                              + ('; B search-corpus-v2 rows with search_status public_search_ok and no usage_restriction, '
-                                f'B passages as given (skipped {skipped})' if a.practice else ''),
+                                f'B passages as given (skipped {skipped})' if a.practice else '')
+                             + ''.join(f"; API snapshot {info['snapshot_id']} ({info['indexed']} records, skipped "
+                                       f"{info['skipped']})" for info in snapshots.values()),
+                'api_snapshots': snapshots, 'structured_facts': len(facts),
                 'note': 'Search-only corpus for the test site. Not a training-approval list; training holds are separate.'}
+    if facts:
+        (a.out / 'facts.jsonl').write_text(''.join(json.dumps(f, ensure_ascii=False) + '\n' for f in facts))
     (a.out / 'tables.json').write_text(json.dumps(sorted(tables)))
     (a.out / 'meta.json').write_text(json.dumps(meta, ensure_ascii=False))
     (a.out / 'manifest.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=1))
