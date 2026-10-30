@@ -131,25 +131,37 @@ def find_row(g, path):
     return None
 
 
-def check_case(case, g_ext, g_orig, table_text):
+def check_case(case, g_ext, g_orig, table_text, doc_text):
+    """Each row spec names a row (cell path) and either the column carrying the ○ mark ('column') or expected cell
+    values by header ('cells'); both grids must agree. Quoted spans must be verbatim in the table ('evidence') or in
+    the document text ('doc_evidence')."""
     header = g_ext[0]
     for spec in case['rows']:
-        col = header.index(spec['column'])
         for name, g in (('extracted', g_ext), ('original', g_orig)):
             i = find_row(g, spec['path'])
             if i is None:
                 raise ValueError(f"{case['id']}: row {spec['path']} not found in {name} table")
-            marked = [j for j, x in enumerate(g[i]) if x == '○']
-            if marked != [col]:
-                raise ValueError(f"{case['id']}: {name} row {spec['path']} marks columns {marked}, case says {spec['column']}")
+            if 'column' in spec:
+                marked = [j for j, x in enumerate(g[i]) if x == '○']
+                if marked != [header.index(spec['column'])]:
+                    raise ValueError(f"{case['id']}: {name} row {spec['path']} marks columns {marked}, case says {spec['column']}")
+            for col, value in spec.get('cells', {}).items():
+                got = g[i][[squash(h) for h in header].index(squash(col))]
+                if squash(got) != squash(value):
+                    raise ValueError(f"{case['id']}: {name} row {spec['path']} column {col} is {got!r}, case says {value!r}")
     for span in case['evidence']:
         if span not in table_text:
             raise ValueError(f"{case['id']}: evidence not verbatim in the table text: {span[:40]!r}")
+    for span in case.get('doc_evidence', []):
+        if span not in doc_text:
+            raise ValueError(f"{case['id']}: doc_evidence not verbatim in the document: {span[:40]!r}")
 
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument('--out', type=Path, required=True)
+    ap.add_argument('--cases', type=Path, action='append', default=[],
+                    help=f'case spec file(s); default {CASES.relative_to(ROOT)}')
     ap.add_argument('--reviews', type=Path, action='append', default=[],
                     help='review records (jsonl: id, content_sha256, verdict, …); applied only on a content_sha256 match')
     a = ap.parse_args()
@@ -157,7 +169,11 @@ def main():
     for path in a.reviews:
         for rec in map(json.loads, path.resolve().open()):
             reviews.setdefault(rec['id'], []).append(dict(rec, file=str(path.resolve().relative_to(ROOT))))
-    spec = json.loads(CASES.read_text())
+    spec = dict(compare=[], cases=[])
+    for path in a.cases or [CASES]:
+        s = json.loads(path.resolve().read_text())
+        spec['compare'] += [d for d in s['compare'] if d not in spec['compare']]
+        spec['cases'] += s['cases']
     rows = {json.loads(l)['id']: json.loads(l) for l in V4.open()}
     comparisons, cases = {}, []
     for doc in spec['compare']:
@@ -175,15 +191,18 @@ def main():
             raise ValueError(f"{c['id']}: table {c['table']} does not match the original exactly; not usable")
         fid = c['doc'].rsplit(':', 1)[1]
         orig = hwpx_tables(RAW / r['group'].split(':')[1] / f'{fid}.hwpx')
-        start, end = table_spans(r['text'])[c['table']]
-        heading_start = r['text'].rfind('<u>', 0, start)
+        spans = table_spans(r['text'])
+        start, end = spans[c['table']]
+        prev_end = spans[c['table'] - 1][1] if c['table'] else 0
+        heading_start = max(prev_end, start - 300)     # heading text between the previous table and this one
         context = r['text'][heading_start:end]
-        check_case(c, grid(html_tables(r['text'])[c['table']]), grid(orig[c['table']]), r['text'][start:end])
+        check_case(c, grid(html_tables(r['text'])[c['table']]), grid(orig[c['table']]), r['text'][start:end], r['text'])
+        context = [context] + c.get('doc_evidence', [])
         cases.append(dict(id=c['id'], kind='table_behavior', behavior=c['behavior'], task_type='table_lookup',
                           source_answer_present=c['behavior'] in ('answer_with_condition', 'answer_with_exception', 'answer'),
-                          question=c['question'], context=[context], target=c['target'],
-                          evidence=dict(spans=c['evidence'], rows=c['rows'], table=c['table'],
-                                        context_offsets=[heading_start, end]),
+                          question=c['question'], context=context, target=c['target'],
+                          evidence=dict(spans=c['evidence'], doc_spans=c.get('doc_evidence', []), rows=c['rows'],
+                                        table=c['table'], context_offsets=[heading_start, end]),
                           doc=c['doc'], title=r['title'], source=r['source'], license=r['license'], date=r['date'],
                           date_field='B v4 row date (attachment rule header)', text_sha256=r['sha256'],
                           institution=r['provenance']['institution'], missing=c.get('missing', []),

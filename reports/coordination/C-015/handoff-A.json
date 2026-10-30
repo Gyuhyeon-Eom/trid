@@ -1,0 +1,169 @@
+{
+  "note": "C-015 hand-off to A. AI review only, single reviewer, not independent (table/public-data/statute/plain are C self-review). Not training approval.",
+  "rules": [
+    "current_official: high/medium relevance, interpretation date >= 2015, no outdated flag; usable in general current-answer training with its fixed 시점 line",
+    "historical_dated_official: interpretations before 2015 or citing abolished/renamed rules; keep the 시점 line; do NOT mix into general current-answer training without that time framing",
+    "table_lookup / code_unit_lookup / statute_application: snapshot dates in each target; institution-specific tables (목포·경북·중앙소방학교) must not be generalised to other institutions",
+    "footnote cases in C-015/batch-footnotes are NOT handed over until B confirms the footnote contract"
+  ],
+  "overfit_guard": [
+    "small set: no upsampling; at most the same epochs as the rest of the mix; report its token share",
+    "evaluate per task_type; do not score final evaluation on these documents; existing evaluation sets are not pruned by C lists"
+  ],
+  "limits": [
+    "official cases expose the official answer in context (task_type official_answer_extraction): not evidence of independent legal reasoning",
+    "table contexts can be long (경북권 table ~11k chars); token length depends on A tokenizer",
+    "852 reserve families unchecked; conflict cases 0",
+    "budget unit 조원 rests on the dataset description (B-015 transcription), not a column definition"
+  ],
+  "bundles": {
+    "current_official": [
+      "official:law-go-kr:expc:315313",
+      "official:law-go-kr:expc:315192",
+      "official:law-go-kr:expc:315394",
+      "official:law-go-kr:expc:334949",
+      "official:law-go-kr:expc:315149",
+      "official:law-go-kr:expc:326559",
+      "official:law-go-kr:expc:331063",
+      "official:law-go-kr:expc:315182",
+      "official:law-go-kr:expc:327923",
+      "official:law-go-kr:expc:315135",
+      "official:law-go-kr:expc:330153",
+      "official:law-go-kr:expc:315121",
+      "official:law-go-kr:expc:329921",
+      "official:law-go-kr:expc:314786",
+      "official:law-go-kr:expc:328283"
+    ],
+    "historical_dated_official": [
+      "official:law-go-kr:expc:324903",
+      "official:law-go-kr:expc:314521",
+      "official:law-go-kr:expc:323199",
+      "official:law-go-kr:expc:312489",
+      "official:law-go-kr:expc:324291",
+      "official:law-go-kr:expc:344033",
+      "official:law-go-kr:expc:312544",
+      "official:law-go-kr:expc:312846",
+      "official:law-go-kr:expc:312452",
+      "official:law-go-kr:expc:323225",
+      "official:law-go-kr:expc:344093"
+    ],
+    "low_relevance_official": [
+      "official:law-go-kr:expc:329291",
+      "official:law-go-kr:expc:325323",
+      "official:law-go-kr:expc:312554",
+      "official:law-go-kr:expc:314929",
+      "official:law-go-kr:expc:323813",
+      "official:law-go-kr:expc:315517",
+      "official:law-go-kr:expc:330363",
+      "official:law-go-kr:expc:330915",
+      "official:law-go-kr:expc:315172",
+      "official:law-go-kr:expc:323903",
+      "official:law-go-kr:expc:315380",
+      "official:law-go-kr:expc:315442"
+    ],
+    "unrated_official_c012": [
+      "official:law-go-kr:expc:312532",
+      "official:law-go-kr:expc:328667",
+      "official:law-go-kr:expc:324381",
+      "official:law-go-kr:expc:313155",
+      "official:law-go-kr:expc:313010",
+      "official:law-go-kr:expc:323305",
+      "official:law-go-kr:expc:323411",
+      "official:law-go-kr:expc:314104",
+      "official:law-go-kr:expc:312609",
+      "official:law-go-kr:expc:322503",
+      "official:law-go-kr:expc:324047",
+      "official:law-go-kr:expc:327309",
+      "official:law-go-kr:expc:315361",
+      "official:law-go-kr:expc:324357",
+      "official:law-go-kr:expc:330735",
+      "official:law-go-kr:expc:328275",
+      "official:law-go-kr:expc:325147",
+      "official:law-go-kr:expc:326767",
+      "official:law-go-kr:expc:322959",
+      "official:law-go-kr:expc:321503",
+      "official:law-go-kr:expc:311515",
+      "official:law-go-kr:expc:312605",
+      "official:law-go-kr:expc:344075",
+      "official:law-go-kr:expc:323593",
+      "official:law-go-kr:expc:325361",
+      "official:law-go-kr:expc:323331",
+      "official:law-go-kr:expc:330509",
+      "official:law-go-kr:expc:313172",
+      "official:law-go-kr:expc:312064"
+    ],
+    "statute_application": [
+      "pack:treasury-03-fund",
+      "pack:treasury-03-pfmf",
+      "pack:treasury-20-rule",
+      "pack:treasury-20-lookup",
+      "pack:acct-05-register",
+      "pack:acct-05-mnd",
+      "pack:acct-05-status",
+      "pack:acct-05-askback",
+      "pack:treasury-03-fundlist",
+      "pack:treasury-20-time",
+      "pack:treasury-03-art31"
+    ],
+    "table_lookup": [
+      "table:mokpo-common-budget-1500",
+      "table:mokpo-common-budget-900",
+      "table:mokpo-common-leave-6",
+      "table:mokpo-common-overseas-trip",
+      "table:mokpo-common-complaint-return",
+      "table:mokpo-common-design-threshold",
+      "table:mokpo-common-leave-askback",
+      "table:mokpo-common-info-disclosure",
+      "table:mokpo-common-time",
+      "table:gb-kdca-purchase-2500",
+      "table:gb-kdca-purchase-4000",
+      "table:gb-kdca-trip-rank",
+      "table:gb-kdca-outside-lecture",
+      "table:gb-kdca-outside-lecture-askback",
+      "table:gb-kdca-duty-swap",
+      "table:gb-kdca-disclosure",
+      "table:gb-kdca-side-job",
+      "table:gb-kdca-expense-approval",
+      "table:nfsa-emergency-level-2",
+      "table:nfsa-emergency-headcount-askback",
+      "table:nfsa-emergency-level-4",
+      "table:nfsa-emergency-duty-suspend"
+    ],
+    "code_unit_lookup": [
+      "pubdata:budget-2024-total",
+      "pubdata:budget-current-defense",
+      "pubdata:account-rail-vehicle-askback",
+      "pubdata:account-rail-vehicle-public-use",
+      "pubdata:parking-units",
+      "pubdata:parking-type-allowed",
+      "pubdata:parking-24h-start"
+    ],
+    "plain_explanations_current": [
+      "plain:law-go-kr:expc:327309",
+      "plain:law-go-kr:expc:330509"
+    ],
+    "plain_explanations_historical_dated": [
+      "plain:law-go-kr:expc:314104",
+      "plain:law-go-kr:expc:324381",
+      "plain:law-go-kr:expc:321503",
+      "plain:law-go-kr:expc:323305"
+    ]
+  },
+  "counts": {
+    "current_official": 15,
+    "historical_dated_official": 11,
+    "low_relevance_official": 12,
+    "unrated_official_c012": 29,
+    "statute_application": 11,
+    "table_lookup": 22,
+    "code_unit_lookup": 7,
+    "plain_explanations_current": 2,
+    "plain_explanations_historical_dated": 4
+  },
+  "files": {
+    "official": "reports/coordination/C-014/batch-v3/candidates.jsonl",
+    "plain": "reports/coordination/C-014/batch-v3/plain-candidates.jsonl",
+    "table": "reports/coordination/C-015/table-batch/table-candidates.jsonl",
+    "public_data": "reports/coordination/C-015/public-data-batch/public-data-candidates.jsonl"
+  }
+}
