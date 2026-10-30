@@ -1,0 +1,192 @@
+{
+ "top5_by_characters": [
+  {
+   "id": "korea-kr-briefing:156079389",
+   "shard_key": "corpus/clean/korea-kr-briefing/clean-v3/docs-00000.jsonl.gz",
+   "shard_line_index_0based": 14294,
+   "characters": 4871020,
+   "row_sha256_field": "6c6990854fc6492d04b050f5c1fc508fee294c78b267fb114c9664ca61a6cef2",
+   "text_sha256_recomputed": "6c6990854fc6492d04b050f5c1fc508fee294c78b267fb114c9664ca61a6cef2",
+   "tokens_8192bpe": 5304833,
+   "title": "국민건강보험공단, 건강보험심사평가원 『2014년 건강보험통계연보』공동발간",
+   "source": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156079389",
+   "newlines": 270029,
+   "distinct_lines_ratio": 0.3136,
+   "row_keys": [
+    "attribution",
+    "clean_version",
+    "collected_at",
+    "date",
+    "extractor",
+    "flags",
+    "group",
+    "id",
+    "kind",
+    "license",
+    "meta",
+    "provenance",
+    "sha256",
+    "source",
+    "split",
+    "text",
+    "title"
+   ],
+   "meta_keys": [
+    "news_id",
+    "pii_redactions",
+    "source_doc_sha256"
+   ]
+  },
+  {
+   "id": "korea-kr-briefing:156044892",
+   "shard_key": "corpus/clean/korea-kr-briefing/clean-v3/docs-00000.jsonl.gz",
+   "shard_line_index_0based": 5095,
+   "characters": 1898787,
+   "row_sha256_field": "4122c372f1352dd7471687205c77f53a85f734a066975a60b7de53682301ef0a",
+   "text_sha256_recomputed": "4122c372f1352dd7471687205c77f53a85f734a066975a60b7de53682301ef0a",
+   "tokens_8192bpe": 1566279,
+   "title": "지역사회건강조사 2014년 지역건강통계 결과 발표",
+   "source": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156044892",
+   "newlines": 181561,
+   "distinct_lines_ratio": 0.2931,
+   "row_keys": [
+    "attribution",
+    "clean_version",
+    "collected_at",
+    "date",
+    "extractor",
+    "flags",
+    "group",
+    "id",
+    "kind",
+    "license",
+    "meta",
+    "provenance",
+    "sha256",
+    "source",
+    "split",
+    "text",
+    "title"
+   ],
+   "meta_keys": [
+    "news_id",
+    "pii_redactions",
+    "source_doc_sha256"
+   ]
+  },
+  {
+   "id": "korea-kr-briefing:156606485",
+   "shard_key": "corpus/clean/korea-kr-briefing/clean-v3/docs-00010.jsonl.gz",
+   "shard_line_index_0based": 3868,
+   "characters": 849663,
+   "row_sha256_field": "40e69bfe1b8e93d2537c2896e12e7ca983970b92053a4ec33304123cd3ceb727",
+   "text_sha256_recomputed": "40e69bfe1b8e93d2537c2896e12e7ca983970b92053a4ec33304123cd3ceb727",
+   "tokens_8192bpe": 472366,
+   "title": "「베트남 노동분야 법령 및 주요 사례연구」 발간",
+   "source": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156606485",
+   "newlines": 15666,
+   "distinct_lines_ratio": 0.6556,
+   "row_keys": [
+    "attribution",
+    "clean_version",
+    "collected_at",
+    "date",
+    "extractor",
+    "flags",
+    "group",
+    "id",
+    "kind",
+    "license",
+    "meta",
+    "provenance",
+    "sha256",
+    "source",
+    "split",
+    "text",
+    "title"
+   ],
+   "meta_keys": [
+    "news_id",
+    "pii_redactions",
+    "source_doc_sha256"
+   ]
+  },
+  {
+   "id": "korea-kr-briefing:156581182",
+   "shard_key": "corpus/clean/korea-kr-briefing/clean-v3/docs-00009.jsonl.gz",
+   "shard_line_index_0based": 12331,
+   "characters": 787420,
+   "row_sha256_field": "c295e00e1451774b861568790f436165fff62ffd01b4218984fb20da7857eebd",
+   "text_sha256_recomputed": "c295e00e1451774b861568790f436165fff62ffd01b4218984fb20da7857eebd",
+   "tokens_8192bpe": 407543,
+   "title": "엘리엇 국제투자분쟁(ISDS) 사건 판정문 공개",
+   "source": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156581182",
+   "newlines": 11499,
+   "distinct_lines_ratio": 0.4783,
+   "row_keys": [
+    "attribution",
+    "clean_version",
+    "collected_at",
+    "date",
+    "extractor",
+    "flags",
+    "group",
+    "id",
+    "kind",
+    "license",
+    "meta",
+    "provenance",
+    "sha256",
+    "source",
+    "split",
+    "text",
+    "title"
+   ],
+   "meta_keys": [
+    "news_id",
+    "pii_redactions",
+    "source_doc_sha256"
+   ]
+  },
+  {
+   "id": "korea-kr-briefing:156274120",
+   "shard_key": "corpus/clean/korea-kr-briefing/clean-v3/docs-00003.jsonl.gz",
+   "shard_line_index_0based": 7968,
+   "characters": 752717,
+   "row_sha256_field": "c1ac13f1a8ef441356d62e21027c2af0bfee7e2534e92f7769d41bfd2ee61dd1",
+   "text_sha256_recomputed": "c1ac13f1a8ef441356d62e21027c2af0bfee7e2534e92f7769d41bfd2ee61dd1",
+   "tokens_8192bpe": 425970,
+   "title": "역사교과서 국정화 진상조사 완료",
+   "source": "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156274120",
+   "newlines": 26078,
+   "distinct_lines_ratio": 0.3573,
+   "row_keys": [
+    "attribution",
+    "clean_version",
+    "collected_at",
+    "date",
+    "extractor",
+    "flags",
+    "group",
+    "id",
+    "kind",
+    "license",
+    "meta",
+    "provenance",
+    "sha256",
+    "source",
+    "split",
+    "text",
+    "title"
+   ],
+   "meta_keys": [
+    "news_id",
+    "pii_redactions",
+    "source_doc_sha256"
+   ]
+  }
+ ],
+ "prior_flag_paths_found": {
+  "flags": 39412
+ }
+}

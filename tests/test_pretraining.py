@@ -2,6 +2,7 @@ import contextlib
 import io
 import json
 import math
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -412,6 +413,34 @@ class PretrainingTests(unittest.TestCase):
                 torch.testing.assert_close(value, actual[key], atol=1e-9, rtol=1e-6)
             metadata = json.loads((output / "training.json").read_text())
             self.assertEqual(metadata["initial_weights_sha256"], sha256(base / "model.safetensors"))
+
+    def test_dialogue_training_split_into_sessions_matches_one_run(self):
+        with tempfile.TemporaryDirectory() as tmp, contextlib.redirect_stdout(io.StringIO()):
+            root = Path(tmp)
+            base, data = root / "base", root / "dialogue"
+            base.mkdir(); data.mkdir()
+            rows = [{"prompt": f"질문 {i}", "answer": f"답 {i}"} for i in range(6)]
+            tok = train_tokenizer(rows, base / "tokenizer.json", 300)
+            cfg = Config(vocab_size=tok.get_vocab_size(), dim=32, layers=1, heads=4, hidden_dim=64, context_length=64)
+            torch.manual_seed(0)
+            write_json(base / "config.json", asdict(cfg))
+            save_file(Trid(cfg).state_dict(), str(base / "model.safetensors"))
+            (data / "train.jsonl").write_text("".join(json.dumps(r, ensure_ascii=False) + "\n" for r in rows[:5]), encoding="utf-8")
+            (data / "valid.jsonl").write_text(json.dumps(rows[5], ensure_ascii=False), encoding="utf-8")
+            args = dict(steps=7, batch_size=2, micro_batch_size=1, lr=1e-2, device="cpu", init_run=base, eval_every=2, seed=7,
+                        save_steps=(2, 7), checkpoint_every=3, resume=True)
+            full, cut = root / "full", root / "cut"
+            self.assertEqual(train(data, full, **args)["status"], "complete")
+            # Session 1 ends after step 4 with a recovery checkpoint; session 2 restores it and finishes.
+            self.assertEqual(train(data, cut, session_steps=4, **args)["status"], "checkpointed")
+            self.assertEqual(sorted(p.name for p in (cut / "checkpoints").iterdir()), ["step-00000003", "step-00000004"])
+            meta = train(data, cut, **args)
+            self.assertEqual((meta["status"], meta["resumed_from_step"], meta["completed_steps"]), ("complete", 4, 7))
+            for name in ("last-model.safetensors", "model.safetensors", "milestones/step-00000002/model.safetensors",
+                         "milestones/step-00000007/model.safetensors"):
+                self.assertEqual(sha256(full / name), sha256(cut / name), name)
+            strip = lambda path: [{k: v for k, v in m.items() if k != "elapsed_seconds"} for m in json.loads(path.read_text())]
+            self.assertEqual(strip(full / "metrics.json"), strip(cut / "metrics.json"))
 
 
 if __name__ == "__main__":

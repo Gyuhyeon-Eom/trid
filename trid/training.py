@@ -3,12 +3,13 @@ import hashlib
 import json
 import math
 import random
+import shutil
 import time
 from pathlib import Path
 
 import torch
 from torch.nn import functional as F
-from safetensors.torch import save_file
+from safetensors.torch import load_file, save_file
 
 from .model import Config, Trid
 from .runtime import device_for, sync
@@ -89,7 +90,14 @@ def validation_loss(model, examples, pad, device, batch_size, intents=None, inte
 
 def train(data_dir, output, steps=300, batch_size=24, lr=0.0005, device="auto", seed=42, init_run=None,
           eval_every=100, validation_limit=256, intent_weight=0.0, context_length=None, loss_normalization="token",
-          micro_batch_size=4):
+          micro_batch_size=4, save_steps=(), checkpoint_every=0, keep_recovery=2, resume=False,
+          session_steps=None, max_seconds=None):
+    """Long runs. checkpoint_every: full recovery checkpoints (weights, optimizer, sampling RNG, best-so-far,
+    metrics) under checkpoints/step-NNNNNNNN/, the newest `keep_recovery` kept; last-model.safetensors is then
+    written with them instead of at every validation. save_steps: milestone weights under milestones/step-NNNNNNNN/.
+    resume: continue from the newest recovery checkpoint in `output` (same data and arguments); without one, start
+    fresh. session_steps / max_seconds: end this call after that many steps / seconds with a recovery checkpoint
+    and status "checkpointed"; the schedule always spans `steps`."""
     if loss_normalization not in {"token", "example"}:
         raise ValueError("loss_normalization must be token or example")
     if steps < 1 or batch_size < 1 or lr <= 0 or eval_every < 1 or validation_limit < 0 or intent_weight < 0:
@@ -101,8 +109,13 @@ def train(data_dir, output, steps=300, batch_size=24, lr=0.0005, device="auto", 
     if context_length is not None and context_length < 1:
         raise ValueError("문맥 길이는 양수여야 합니다.")
     root, data = Path(output), Path(data_dir)
-    if root.exists() and any(root.iterdir()):
+    if root.exists() and any(root.iterdir()) and not resume:
         raise ValueError("출력 폴더에 기존 파일이 있습니다. 새 경로를 사용하세요.")
+    save_steps = sorted(set(save_steps))
+    if any(s < 1 or s > steps for s in save_steps) or checkpoint_every < 0 or keep_recovery < 1:
+        raise ValueError("save_steps는 1..steps 범위, checkpoint_every ≥ 0, keep_recovery ≥ 1이어야 합니다.")
+    if (session_steps or max_seconds) and not checkpoint_every:
+        raise ValueError("세션을 나누려면 checkpoint_every가 필요합니다.")
     training = read_rows(data / "train.jsonl")
     valid = read_rows(data / "valid.jsonl")
     def example_key(r):
@@ -175,14 +188,52 @@ def train(data_dir, output, steps=300, batch_size=24, lr=0.0005, device="auto", 
     (root / "training.json").write_text(json.dumps(metadata, ensure_ascii=False, indent=2))
     print(f"trid: {metadata['parameters']:,} parameters | {device} | {metadata['initialization']}", flush=True)
     sync(device)
-    started, best, best_step = time.perf_counter(), float("inf"), 0
-    initial = validation_loss(model, valid_examples, pad, device, micro_batch_size, valid_intents,intent_weight,loss_normalization)
-    # A worsening fine-tune must not replace a better initial checkpoint.
-    best = initial
-    save_file({k: v.detach().cpu().contiguous() for k, v in model.state_dict().items()}, str(root / "model.safetensors"))
-    print(f"step 0 | validation loss {initial:.4f}", flush=True)
-    metrics = [{"step": 0, "valid_loss": initial}]
-    for step in range(1, steps + 1):
+    started, best, best_step, start_step, prior_seconds = time.perf_counter(), float("inf"), 0, 0, 0.0
+    saved = sorted((root / "checkpoints").glob("step-[0-9]*[0-9]")) if resume else []
+    if saved:
+        # Exact continuation: weights, optimizer moments, sampling RNG, best-so-far and metrics of the saved step.
+        state = json.loads((saved[-1] / "state.json").read_text())
+        model.load_state_dict(load_file(str(saved[-1] / "model.safetensors")))
+        # CPU map: load_state_dict moves moments to each parameter's device and keeps `step` where AdamW expects it.
+        optimizer.load_state_dict(torch.load(saved[-1] / "optimizer.pt", map_location="cpu", weights_only=True))
+        rng.setstate((state["rng"][0], tuple(state["rng"][1]), state["rng"][2]))
+        initial, best, best_step, start_step = state["initial"], state["best"], state["best_step"], state["step"]
+        prior_seconds = state.get("training_seconds", 0.0)
+        metrics = json.loads((saved[-1] / "metrics.json").read_text())
+        print(f"resumed from {saved[-1].name} | best {best:.4f} at step {best_step}", flush=True)
+    else:
+        initial = validation_loss(model, valid_examples, pad, device, micro_batch_size, valid_intents,intent_weight,loss_normalization)
+        # A worsening fine-tune must not replace a better initial checkpoint.
+        best = initial
+        save_file({k: v.detach().cpu().contiguous() for k, v in model.state_dict().items()}, str(root / "model.safetensors"))
+        print(f"step 0 | validation loss {initial:.4f}", flush=True)
+        metrics = [{"step": 0, "valid_loss": initial}]
+
+    def weights_to(path):
+        tmp = path.with_name(path.name + ".tmp")
+        save_file({k: v.detach().cpu().contiguous() for k, v in model.state_dict().items()}, str(tmp))
+        tmp.replace(path)
+
+    def seconds():
+        return round(prior_seconds + time.perf_counter() - started, 2)
+
+    def recovery_checkpoint(step):
+        folder = root / "checkpoints" / f"step-{step:08d}"
+        pending = folder.with_name(folder.name + ".tmp")
+        pending.mkdir(parents=True, exist_ok=True)
+        save_file({k: v.detach().cpu().contiguous() for k, v in model.state_dict().items()}, str(pending / "model.safetensors"))
+        torch.save(optimizer.state_dict(), pending / "optimizer.pt")
+        version, internal, gauss = rng.getstate()
+        (pending / "state.json").write_text(json.dumps({"step": step, "initial": initial, "best": best, "best_step": best_step,
+                                                        "training_seconds": seconds(), "rng": [version, list(internal), gauss]}))
+        (pending / "metrics.json").write_text(json.dumps(metrics, indent=2))
+        pending.rename(folder)
+        weights_to(root / "last-model.safetensors")
+        for old in sorted((root / "checkpoints").glob("step-[0-9]*[0-9]"))[:-keep_recovery]:
+            shutil.rmtree(old)
+
+    step, session_end = start_step, False
+    for step in range(start_step + 1, steps + 1):
         warmup = min(20, max(1, steps // 10))
         ratio = step / warmup if step <= warmup else .1 + .9 * .5 * (1 + math.cos(math.pi * (step - warmup) / max(1, steps - warmup)))
         for group in optimizer.param_groups:
@@ -214,24 +265,33 @@ def train(data_dir, output, steps=300, batch_size=24, lr=0.0005, device="auto", 
         if step % eval_every == 0 or step == steps:
             score = validation_loss(model, valid_examples, pad, device, micro_batch_size,valid_intents,intent_weight,loss_normalization)
             sync(device)
-            entry = {"step": step, "train_loss": loss.item(), "valid_loss": score,
-                     "elapsed_seconds": round(time.perf_counter() - started, 2)}
+            entry = {"step": step, "train_loss": loss.item(), "valid_loss": score, "elapsed_seconds": seconds()}
             metrics.append(entry)
             print(f"step {step}/{steps} | train {loss.item():.4f} | valid {score:.4f} | {entry['elapsed_seconds']:.1f}s", flush=True)
             if score < best:
                 best, best_step = score, step
-                tmp=root/'best.tmp.safetensors'
-                save_file({k: v.detach().cpu().contiguous() for k, v in model.state_dict().items()},str(tmp))
-                tmp.replace(root/'model.safetensors')
-            last_tmp=root/'last.tmp.safetensors'
-            save_file({k:v.detach().cpu().contiguous() for k,v in model.state_dict().items()},str(last_tmp))
-            last_tmp.replace(root/'last-model.safetensors')
+                weights_to(root / "model.safetensors")
+            if not checkpoint_every:
+                weights_to(root / "last-model.safetensors")
             (root / "metrics.json").write_text(json.dumps(metrics, indent=2))
+        if step in save_steps:
+            folder = root / "milestones" / f"step-{step:08d}"
+            folder.mkdir(parents=True, exist_ok=True)
+            weights_to(folder / "model.safetensors")
+            (folder / "state.json").write_text(json.dumps({"step": step, "best": best, "best_step": best_step}))
+        session_end = (session_steps and step - start_step >= session_steps) or (max_seconds and time.perf_counter() - started >= max_seconds)
+        if checkpoint_every and (step % checkpoint_every == 0 or step == steps or session_end):
+            recovery_checkpoint(step)
+        if session_end and step < steps:
+            break
     sync(device)
-    metadata.update(status="complete", best_validation_loss=best, initial_validation_loss=initial,
-                    best_step=best_step, completed_steps=steps,
-                    training_seconds=round(time.perf_counter() - started, 2),
+    complete = step >= steps
+    metadata.update(status="complete" if complete else "checkpointed", best_validation_loss=best, initial_validation_loss=initial,
+                    best_step=best_step, completed_steps=step, training_seconds=seconds(),
                     weight_bytes=(root / "model.safetensors").stat().st_size,
-                    note="Checkpoint selected by validation loss. Optimizer state is not saved; rerun training into a new directory.")
+                    resumed_from_step=start_step or None, save_steps=save_steps, checkpoint_every=checkpoint_every,
+                    note="Checkpoint selected by validation loss. With checkpoint_every, checkpoints/ holds exact-resume state "
+                         "(rerun with resume=True); without it, rerun into a new directory.")
     (root / "training.json").write_text(json.dumps(metadata, ensure_ascii=False, indent=2))
-    print(f"Saved: {root / 'model.safetensors'}", flush=True)
+    print(f"{'Saved' if complete else 'Checkpointed'}: {root / 'model.safetensors'} | step {step}/{steps}", flush=True)
+    return metadata
