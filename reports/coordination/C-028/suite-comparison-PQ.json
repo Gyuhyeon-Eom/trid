@@ -1,0 +1,372 @@
+{
+ "rag310": {
+  "prompt_only": {
+   "summary_P_Q": {
+    "total": [
+     310,
+     310
+    ],
+    "strict_product": [
+     0,
+     0
+    ],
+    "content_strict": [
+     0,
+     6
+    ],
+    "content_value": [
+     0,
+     6
+    ],
+    "mentions_gold": [
+     171,
+     183
+    ],
+    "abstained": [
+     0,
+     0
+    ],
+    "format_error": [
+     297,
+     294
+    ],
+    "truncated_output": [
+     212,
+     58
+    ],
+    "errors": [
+     0,
+     0
+    ],
+    "unans_abstain": [
+     0,
+     0
+    ],
+    "unans_n": 82
+   },
+   "discordant_P_only_Q_only_p": {
+    "strict_product": [
+     0,
+     0,
+     1.0
+    ],
+    "content_strict": [
+     0,
+     6,
+     0.0312
+    ]
+   },
+   "literal_conflict_output": {
+    "P": 0,
+    "Q": 0
+   }
+  },
+  "grammar_instructed": {
+   "summary_P_Q": {
+    "total": [
+     310,
+     310
+    ],
+    "strict_product": [
+     0,
+     2
+    ],
+    "content_strict": [
+     14,
+     98
+    ],
+    "content_value": [
+     14,
+     98
+    ],
+    "mentions_gold": [
+     180,
+     165
+    ],
+    "abstained": [
+     0,
+     7
+    ],
+    "format_error": [
+     309,
+     303
+    ],
+    "truncated_output": [
+     175,
+     8
+    ],
+    "errors": [
+     0,
+     0
+    ],
+    "unans_abstain": [
+     0,
+     7
+    ],
+    "unans_n": 82
+   },
+   "discordant_P_only_Q_only_p": {
+    "strict_product": [
+     0,
+     2,
+     0.5
+    ],
+    "content_strict": [
+     4,
+     88,
+     0.0
+    ]
+   },
+   "literal_conflict_output": {
+    "P": 0,
+    "Q": 5
+   }
+  },
+  "evidence_constrained": {
+   "summary_P_Q": {
+    "total": [
+     310,
+     310
+    ],
+    "strict_product": [
+     56,
+     19
+    ],
+    "content_strict": [
+     56,
+     19
+    ],
+    "content_value": [
+     56,
+     19
+    ],
+    "mentions_gold": [
+     93,
+     70
+    ],
+    "abstained": [
+     188,
+     54
+    ],
+    "format_error": [
+     12,
+     1
+    ],
+    "truncated_output": [
+     16,
+     1
+    ],
+    "errors": [
+     0,
+     0
+    ],
+    "unans_abstain": [
+     60,
+     31
+    ],
+    "unans_n": 82
+   },
+   "discordant_P_only_Q_only_p": {
+    "strict_product": [
+     48,
+     11,
+     0.0
+    ],
+    "content_strict": [
+     48,
+     11,
+     0.0
+    ]
+   },
+   "literal_conflict_output": {
+    "P": 0,
+    "Q": 47
+   }
+  }
+ },
+ "probe": {
+  "prompt_only": {
+   "summary_P_Q": {
+    "total": [
+     40,
+     40
+    ],
+    "strict_product": [
+     0,
+     0
+    ],
+    "content_strict": [
+     0,
+     2
+    ],
+    "content_value": [
+     0,
+     2
+    ],
+    "mentions_gold": [
+     21,
+     22
+    ],
+    "abstained": [
+     0,
+     0
+    ],
+    "format_error": [
+     39,
+     40
+    ],
+    "truncated_output": [
+     29,
+     13
+    ],
+    "errors": [
+     0,
+     0
+    ],
+    "unans_abstain": [
+     0,
+     0
+    ],
+    "unans_n": 10
+   },
+   "discordant_P_only_Q_only_p": {
+    "strict_product": [
+     0,
+     0,
+     1.0
+    ],
+    "content_strict": [
+     0,
+     2,
+     0.5
+    ]
+   },
+   "literal_conflict_output": {
+    "P": 0,
+    "Q": 0
+   }
+  },
+  "grammar_instructed": {
+   "summary_P_Q": {
+    "total": [
+     40,
+     40
+    ],
+    "strict_product": [
+     0,
+     0
+    ],
+    "content_strict": [
+     4,
+     13
+    ],
+    "content_value": [
+     4,
+     16
+    ],
+    "mentions_gold": [
+     21,
+     24
+    ],
+    "abstained": [
+     0,
+     0
+    ],
+    "format_error": [
+     40,
+     40
+    ],
+    "truncated_output": [
+     24,
+     2
+    ],
+    "errors": [
+     0,
+     0
+    ],
+    "unans_abstain": [
+     0,
+     0
+    ],
+    "unans_n": 10
+   },
+   "discordant_P_only_Q_only_p": {
+    "strict_product": [
+     0,
+     0,
+     1.0
+    ],
+    "content_strict": [
+     1,
+     10,
+     0.0117
+    ]
+   },
+   "literal_conflict_output": {
+    "P": 0,
+    "Q": 0
+   }
+  },
+  "evidence_constrained": {
+   "summary_P_Q": {
+    "total": [
+     40,
+     40
+    ],
+    "strict_product": [
+     12,
+     0
+    ],
+    "content_strict": [
+     12,
+     0
+    ],
+    "content_value": [
+     12,
+     0
+    ],
+    "mentions_gold": [
+     14,
+     5
+    ],
+    "abstained": [
+     27,
+     8
+    ],
+    "format_error": [
+     2,
+     0
+    ],
+    "truncated_output": [
+     2,
+     0
+    ],
+    "errors": [
+     0,
+     0
+    ],
+    "unans_abstain": [
+     9,
+     5
+    ],
+    "unans_n": 10
+   },
+   "discordant_P_only_Q_only_p": {
+    "strict_product": [
+     12,
+     0,
+     0.0005
+    ],
+    "content_strict": [
+     12,
+     0,
+     0.0005
+    ]
+   },
+   "literal_conflict_output": {
+    "P": 0,
+    "Q": 8
+   }
+  }
+ }
+}
