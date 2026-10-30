@@ -528,8 +528,9 @@ class ProtectedPassageApiTests(unittest.TestCase):
         self.assertNotIn('25,000', (r['commentary'] or '') + (r['raw_output'] or ''))
         self.assertTrue(any('숨겼습니다' in n for n in r['commentary_notes']))
         self.assertEqual(r['applicability']['status'], 'not_confirmed')
-        body, r, _ = self.ask(question, 'value', '25,000원 [D1]')
+        body, r, _ = self.ask(question, 'value', '하루 25,000원입니다.')
         self.assertEqual(r['status'], 'review')  # the value is not presented as this population's answer
+        self.assertNotIn('25,000', body)  # not in any field, raw model output included
         _, r, _ = self.ask('공무원 국내 출장 식비는 하루 얼마인가요?', 'case', '식비는 하루 25,000원입니다.')
         self.assertNotIn('applicability', r)
 

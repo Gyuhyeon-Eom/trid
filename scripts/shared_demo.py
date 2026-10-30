@@ -984,6 +984,8 @@ def applicability_guard(result, applies, title):
                         '확인되지 않았으므로, 아래 원문의 금액·기준을 그 기관의 지급액으로 보지 말고 기관 자체 규정을 확인하세요. '
                         + (result.get('answer') or ''))
     result['applicability'] = {'rule_scope': applies, 'question_names_civil_servants': False, 'status': 'not_confirmed'}
+    if result.get('raw_output'):
+        result.update(raw_output=None, raw_output_withheld=True)  # it may state the amount as the asker's
 
 
 def workspace_reply(workspace, selection):
