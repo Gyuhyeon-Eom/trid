@@ -1,0 +1,49 @@
+{
+ "code_sha256": "e043d695997e06546ff0e3133ca5fd6b745dc9e1f6ff065c70bfa71d6934d2ce",
+ "train": {
+  "path": "data/case-training-view-v2/train.jsonl",
+  "rows": 117,
+  "sha256": "fc1957df99ce2f2bcf1e57baf0ce7069b1788d531e804dcd14705f70e2b52492"
+ },
+ "prior": {
+  "path": "reports/coordination/MODEL-REPAIR-002/train-review-v2.jsonl",
+  "sha256": "2f6aba821ecc4a8ccd2b548a05b6f3e0ba3a833d55be9f604441ba707a2291df"
+ },
+ "judgements": {
+  "path": "reports/coordination/B-031/manual-judgements.json",
+  "sha256": "a732da66f6123f268109ed0e4a9fc588419d52328144d5641608a5afa4a78bff"
+ },
+ "review_kind": {
+  "reused": 34,
+  "full_manual": 83
+ },
+ "decision_by_kind": {
+  "full_manual": {
+   "pass": 81,
+   "fix_proposed": 2
+  },
+  "reused": {
+   "pass": 28,
+   "fix_applied": 6
+  }
+ },
+ "issues": {
+  "source_typo_copied": 1,
+  "minor_redundancy": 2,
+  "secondary_reason_only": 2,
+  "weak_reason": 1,
+  "condition_omitted": 1,
+  "premise_from_question": 4,
+  "wrong_relation": 1
+ },
+ "heuristic_flags": {
+  "implicit_subject": 21
+ },
+ "heuristic_rows_flagged": 21,
+ "fix_proposals": 2,
+ "outputs": {
+  "ledger": "eb59ea362f1ad7af57db3244392a5e5a219c0d6c010a3c47da2e67d2caeb66c2",
+  "fix_proposals": "747d2db9d0d063c2118c67b84f82e0025ea74976212b7b30a6149eeb3b11ab51"
+ },
+ "reviewer": "B (AI, one reviewer; not human or independent review). Heuristics are diagnostics, not review."
+}
