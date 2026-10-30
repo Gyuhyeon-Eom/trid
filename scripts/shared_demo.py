@@ -27,7 +27,8 @@ ROOT = Path(__file__).resolve().parents[1]
 TTL = 15 * 60
 MAX_BODY = 2 * 1024 * 1024
 MAX_SESSIONS = 32
-SOURCE_FIRST_ANSWER = re.compile(r'\[(D[1-9])\]\s*([^\[\],\n]+?)\.?')
+# Source-first answers, one or two pairs like the value-first GRAMMAR: "[D1] 값" or "[D1] 값, [D2] 값".
+SOURCE_FIRST_ANSWER = re.compile(r'\[(D[1-9])\]\s*([^\[\],\n]+?)(?:\s*,\s*\[(D[1-9])\]\s*([^\[\],\n]+?))?\.?')
 
 def read_chunk(model, _presence, tok, text, question, device):
     """Adapt prompt-relative extractive spans to the document reader's chunk offsets."""
@@ -75,7 +76,7 @@ def answer_document_chat(document, question, base, family, context, constrained=
     match = GRAMMAR.fullmatch(output)
     source_first = None if match else SOURCE_FIRST_ANSWER.fullmatch(output)
     pairs = ([(match[1], match[2]), (match[3], match[4])] if match
-             else [(source_first[2], source_first[1])] if source_first else [])
+             else [(source_first[2], source_first[1]), (source_first[4], source_first[3])] if source_first else [])
     candidates = []
     for value, sid in pairs:
         if value is None:
@@ -265,7 +266,8 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
             row = json.loads(line)
             public_questions.setdefault(row['source_id'], []).append(row['question'])
     public_options = ''.join(
-        f'<option value="{html.escape(key, quote=True)}">{html.escape(doc["date"] + " · " + doc["title"])}</option>'
+        # Source titles carry HTML entities (e.g. &middot;); decode once, then escape for the page.
+        f'<option value="{html.escape(key, quote=True)}">{html.escape(doc["date"] + " · " + html.unescape(doc["title"]))}</option>'
         for key, doc in public_docs.items()
     )
     version_options = ''.join(
@@ -394,7 +396,7 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                                     source['attribution'] + ' · 공공누리 제1유형, 텍스트만 이용',
                                     '학습 데이터로 선정된 문서입니다. 독립 성능 평가가 아닙니다.',
                                 ]
-                                doc = Document(source['title'], [content], make_chunks([content], state.tok), warnings)
+                                doc = Document(html.unescape(source['title']), [content], make_chunks([content], state.tok), warnings)
                             else:
                                 content = (ROOT / 'data/reading-demo-v3/travel-named.txt').read_text()
                                 doc = Document('가상 출장 규정 · 샘플', [content], make_chunks([content], state.tok), ['시연용 가상 자료입니다. 실제 기관 규정이 아닙니다.'])

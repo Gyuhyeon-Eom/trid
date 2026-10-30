@@ -106,6 +106,13 @@ class ChatBackendTests(unittest.TestCase):
             start, end = result['candidates'][0]['page_character_span']
             self.assertEqual(text[start:end], '3만 원')
 
+    def test_two_source_first_pairs_are_each_verified(self):
+        result, text = self.ask('[D1] 3만 원, [D1] 운영지원팀')
+        self.assertEqual(result['status'], 'answer')
+        self.assertEqual([text[a:b] for a, b in (c['page_character_span'] for c in result['candidates'])], ['3만 원', '운영지원팀'])
+        result, _ = self.ask('[D1] 3만 원, [D1] 9만 원')  # one unverifiable value withholds the whole answer
+        self.assertNotEqual(result['status'], 'answer')
+
     def test_value_absent_from_cited_passage_is_not_an_answer(self):
         for generated in ('5만 원 [D1]', '3만 원 [D2]', '3만 원', '[D1] 식비는 하루 3만 원이고 담당은 운영지원팀입니다, 확인'):
             result, _ = self.ask(generated)

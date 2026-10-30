@@ -55,7 +55,7 @@ async function execute(value) {
   if (value === '/pdf') {el('file').value = ''; el('file').click(); return;}
   if (value === '/paste') {pastePanel(true); return;}
   if (value === '/source') {
-    print(documentId ? `${documentName}\n\n${pages.map((p,i)=>`[${i+1}페이지]\n${p}`).join('\n\n')}` : 'trid > 먼저 /sample, /pdf 또는 /paste로 문서를 넣어 주세요.', 'muted');
+    print(documentId ? `${documentName}\n\n${pages.map((p,i)=>`[${i+1}페이지]\n${p}`).join('\n\n')}` : 'trid > 먼저 위의 공개 문서 불러오기, /sample, /pdf 또는 /paste로 문서를 넣어 주세요.', 'muted');
     return;
   }
   if (value === '/sample') {await task(async()=>loaded(await jsonApi('/api/sample', {}))); return;}
@@ -68,7 +68,7 @@ async function execute(value) {
     }); return;
   }
   if (value.startsWith('/')) {print('trid > 알 수 없는 명령입니다. /help로 명령어를 확인하세요.', 'muted'); return;}
-  if (!documentId) {print('trid > 먼저 /sample, /pdf 또는 /paste로 문서를 넣어 주세요.'); return;}
+  if (!documentId) {print('trid > 먼저 위의 공개 문서 불러오기, /sample, /pdf 또는 /paste로 문서를 넣어 주세요.'); return;}
   await task(async()=>{
     const started = performance.now();
     const result = await jsonApi('/api/ask', {question:value, document_id:documentId, version:el('version').value});
