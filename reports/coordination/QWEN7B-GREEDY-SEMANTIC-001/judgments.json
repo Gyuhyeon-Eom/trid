@@ -1,0 +1,659 @@
+{
+ "note": "C post-hoc semantic review of QWEN7B-GREEDY-001 (Qwen2.5-7B temperature 0, repeat_penalty 1.05, single run) with the BASELINE-SEMANTIC rubric; not blind; single AI judge; no new inference",
+ "judgments": [
+  {
+   "model": "qwen2.5-7b-greedy",
+   "scenario": "S3",
+   "seed": 1,
+   "turn": 2,
+   "verdict": "violation",
+   "note": "\"비빔밥이나 라면\"을 \"소스 따로·매운 맛 아닌 옵션\" 단서와 함께 추천(단서 붙은 매운 요리 규칙 적용; 경계 사례)"
+  },
+  {
+   "model": "qwen2.5-7b-greedy",
+   "scenario": "S3",
+   "seed": 1,
+   "turn": 3,
+   "verdict": "ok_concrete",
+   "note": "과일 샌드위치·과일 젤리·크림 케이크"
+  },
+  {
+   "model": "qwen2.5-7b-greedy",
+   "scenario": "S3",
+   "seed": 1,
+   "turn": 5,
+   "verdict": "ok_concrete",
+   "note": "스프·국수 보양식·과일 디저트(\"스ープ\" 가나 섞임)"
+  },
+  {
+   "model": "qwen2.5-7b-greedy",
+   "scenario": "S3",
+   "seed": 1,
+   "turn": 4,
+   "verdict": "both"
+  },
+  {
+   "model": "qwen2.5-7b-greedy",
+   "scenario": "S4",
+   "seed": 1,
+   "turn": 1,
+   "verdict": "✓"
+  },
+  {
+   "model": "qwen2.5-7b-greedy",
+   "scenario": "S4",
+   "seed": 1,
+   "turn": 2,
+   "verdict": "✗"
+  },
+  {
+   "model": "qwen2.5-7b-greedy",
+   "scenario": "S4",
+   "seed": 1,
+   "turn": 3,
+   "verdict": "✗"
+  },
+  {
+   "model": "qwen2.5-7b-greedy",
+   "scenario": "S4",
+   "seed": 1,
+   "turn": 4,
+   "verdict": "✗"
+  },
+  {
+   "model": "qwen2.5-7b-greedy",
+   "scenario": "S4",
+   "seed": 1,
+   "turn": 0,
+   "note": "t2 \"내일까지 주세요\"(공손함 하락·대상 생략), t3 \"메일을 받았습니다\"(의미 오류), t4 t2 반환. 002 t=0.7 s3과 글자까지 같음"
+  },
+  {
+   "model": "qwen2.5-7b-greedy",
+   "scenario": "S5",
+   "seed": 1,
+   "turn": 2,
+   "verdict": "✓"
+  },
+  {
+   "model": "qwen2.5-7b-greedy",
+   "scenario": "S5",
+   "seed": 1,
+   "turn": 3,
+   "verdict": "✓"
+  },
+  {
+   "model": "qwen2.5-7b-greedy",
+   "scenario": "S5",
+   "seed": 1,
+   "turn": 4,
+   "verdict": "✓"
+  },
+  {
+   "model": "qwen2.5-7b-greedy",
+   "scenario": "S5",
+   "seed": 1,
+   "turn": 0,
+   "note": "t2 일부 부정확(\"비가 오면 더 빨리 증발\")하나 주제 유지, t4 두 번째 \"시야·안전\" 상술"
+  },
+  {
+   "model": "qwen2.5-7b-greedy",
+   "scenario": "P2",
+   "seed": 1,
+   "turn": 1,
+   "verdict": "✓"
+  },
+  {
+   "model": "qwen2.5-7b-greedy",
+   "scenario": "P2",
+   "seed": 1,
+   "turn": 2,
+   "verdict": "✗"
+  },
+  {
+   "model": "qwen2.5-7b-greedy",
+   "scenario": "P2",
+   "seed": 1,
+   "turn": 3,
+   "verdict": "✓"
+  },
+  {
+   "model": "qwen2.5-7b-greedy",
+   "scenario": "P2",
+   "seed": 1,
+   "turn": 0,
+   "note": "t2 \"전해드리iéndo요\" 조각 섞임"
+  },
+  {
+   "model": "qwen2.5-7b-greedy",
+   "scenario": "S8",
+   "seed": 1,
+   "turn": 4,
+   "verdict": "confused",
+   "note": "\"말씀해 주셨는데\" 뒤 무관한 중국어(\"创新\" 단어 정의). 002 s2 t4와 글자까지 같음"
+  },
+  {
+   "model": "qwen2.5-7b-greedy",
+   "scenario": "S8",
+   "seed": 1,
+   "turn": 5,
+   "verdict": "unknown",
+   "note": "기억 못 함을 밝힘"
+  },
+  {
+   "model": "qwen2.5-7b-greedy",
+   "scenario": "S6-work",
+   "seed": 1,
+   "turn": 2,
+   "verdict": "none",
+   "note": "거리 기준 설명 뒤 중국어 전환, 수치 없음"
+  },
+  {
+   "model": "qwen2.5-7b-greedy",
+   "scenario": "S7-work",
+   "seed": 1,
+   "turn": 2,
+   "verdict": "fabricated",
+   "note": "\"5·7·10·12·15·20일\" 근속표"
+  }
+ ],
+ "language": [
+  {
+   "model": "qwen2.5-7b-greedy",
+   "dialogue": "B-S2#s1",
+   "turn": 2,
+   "class": "partial",
+   "han": 0,
+   "latin": [
+    "particular한"
+   ],
+   "note": "particular한"
+  },
+  {
+   "model": "qwen2.5-7b-greedy",
+   "dialogue": "B-S3#s1",
+   "turn": 5,
+   "class": "partial",
+   "han": 2,
+   "latin": [],
+   "note": "스ープ"
+  },
+  {
+   "model": "qwen2.5-7b-greedy",
+   "dialogue": "B-S5#s1",
+   "turn": 2,
+   "class": "legit_term",
+   "han": 0,
+   "latin": [
+    "GPS나"
+   ],
+   "note": "GPS"
+  },
+  {
+   "model": "qwen2.5-7b-greedy",
+   "dialogue": "B-S5#s1",
+   "turn": 3,
+   "class": "legit_term",
+   "han": 0,
+   "latin": [
+    "GPS나"
+   ],
+   "note": "GPS"
+  },
+  {
+   "model": "qwen2.5-7b-greedy",
+   "dialogue": "B-S5#s1",
+   "turn": 4,
+   "class": "legit_term",
+   "han": 0,
+   "latin": [
+    "GPS나",
+    "GPS나",
+    "GPS나",
+    "GPS나"
+   ],
+   "note": "GPS"
+  },
+  {
+   "model": "qwen2.5-7b-greedy",
+   "dialogue": "B-S6#s1",
+   "turn": 2,
+   "class": "switch",
+   "han": 212,
+   "latin": [],
+   "note": "문장 단위 중국어"
+  },
+  {
+   "model": "qwen2.5-7b-greedy",
+   "dialogue": "B-S8#s1",
+   "turn": 1,
+   "class": "switch",
+   "han": 36,
+   "latin": [],
+   "note": "문장 단위 중국어, \"TRID로 해결\" 엉뚱한 내용"
+  },
+  {
+   "model": "qwen2.5-7b-greedy",
+   "dialogue": "B-S8#s1",
+   "turn": 4,
+   "class": "switch",
+   "han": 56,
+   "latin": [
+    "TRID입"
+   ],
+   "note": "무관한 \"创新\" 단어 정의(무관 내용 동반)"
+  },
+  {
+   "model": "qwen2.5-7b-greedy",
+   "dialogue": "P1#s1",
+   "turn": 2,
+   "class": "partial",
+   "han": 0,
+   "latin": [
+    "이tree"
+   ],
+   "note": "이tree"
+  },
+  {
+   "model": "qwen2.5-7b-greedy",
+   "dialogue": "P2#s1",
+   "turn": 2,
+   "class": "partial",
+   "han": 0,
+   "latin": [
+    "리iéndo"
+   ],
+   "note": "iéndo"
+  },
+  {
+   "model": "qwen2.5-7b-greedy",
+   "dialogue": "P2#s1",
+   "turn": 3,
+   "class": "requested",
+   "han": 13,
+   "latin": [],
+   "note": ""
+  },
+  {
+   "model": "qwen2.5-7b-greedy",
+   "dialogue": "P3#s1",
+   "turn": 2,
+   "class": "partial",
+   "han": 1,
+   "latin": [],
+   "note": "盧미에"
+  },
+  {
+   "model": "qwen2.5-7b-greedy",
+   "dialogue": "D2#s1",
+   "turn": 1,
+   "class": "partial",
+   "han": 0,
+   "latin": [
+    "루CHED"
+   ],
+   "note": "루CHED"
+  },
+  {
+   "model": "qwen2.5-7b-greedy",
+   "dialogue": "D2#s1",
+   "turn": 3,
+   "class": "switch",
+   "han": 87,
+   "latin": [],
+   "note": "문장 단위 중국어"
+  }
+ ],
+ "summary_all_models": {
+  "qwen3-1.7b": {
+   "S3": {
+    "ok_poor": 6,
+    "ok_concrete": 3
+   },
+   "recall": {
+    "partial": 1,
+    "both": 2
+   },
+   "S4": {
+    "1": [
+     1,
+     1
+    ],
+    "2": [
+     1,
+     0
+    ],
+    "3": [
+     0,
+     0
+    ],
+    "4": [
+     0,
+     0
+    ]
+   },
+   "S5": {
+    "2": [
+     2,
+     0
+    ],
+    "3": [
+     0,
+     1
+    ],
+    "4": [
+     0,
+     1
+    ]
+   },
+   "P2": {
+    "1": [
+     0,
+     0
+    ],
+    "2": [
+     0,
+     0
+    ],
+    "3": [
+     0,
+     1
+    ]
+   },
+   "S8": {
+    "confused": 2,
+    "unknown": 3,
+    "fabricated": 1
+   },
+   "work": {
+    "none": 3,
+    "fabricated": 3
+   },
+   "lang": {
+    "partial": 4,
+    "legit_term": 10,
+    "requested": 3
+   },
+   "turns": 144
+  },
+  "qwen2.5-7b": {
+   "S3": {
+    "violation": 3,
+    "ok_concrete": 6
+   },
+   "recall": {
+    "both": 3
+   },
+   "S4": {
+    "1": [
+     2,
+     0
+    ],
+    "2": [
+     1,
+     1
+    ],
+    "3": [
+     1,
+     0
+    ],
+    "4": [
+     0,
+     0
+    ]
+   },
+   "S5": {
+    "2": [
+     3,
+     0
+    ],
+    "3": [
+     3,
+     0
+    ],
+    "4": [
+     3,
+     0
+    ]
+   },
+   "P2": {
+    "1": [
+     3,
+     0
+    ],
+    "2": [
+     1,
+     0
+    ],
+    "3": [
+     3,
+     0
+    ]
+   },
+   "S8": {
+    "unknown": 4,
+    "fabricated": 1,
+    "confused": 1
+   },
+   "work": {
+    "none": 2,
+    "fabricated": 4
+   },
+   "lang": {
+    "switch": 24,
+    "partial": 5,
+    "legit_term": 7,
+    "requested": 3
+   },
+   "turns": 144
+  },
+  "qwen2.5-7b-greedy": {
+   "S3": {
+    "violation": 1,
+    "ok_concrete": 2
+   },
+   "recall": {
+    "both": 1
+   },
+   "S4": {
+    "1": [
+     1,
+     0
+    ],
+    "2": [
+     0,
+     0
+    ],
+    "3": [
+     0,
+     0
+    ],
+    "4": [
+     0,
+     0
+    ]
+   },
+   "S5": {
+    "2": [
+     1,
+     0
+    ],
+    "3": [
+     1,
+     0
+    ],
+    "4": [
+     1,
+     0
+    ]
+   },
+   "P2": {
+    "1": [
+     1,
+     0
+    ],
+    "2": [
+     0,
+     0
+    ],
+    "3": [
+     1,
+     0
+    ]
+   },
+   "S8": {
+    "confused": 1,
+    "unknown": 1
+   },
+   "work": {
+    "none": 1,
+    "fabricated": 1
+   },
+   "lang": {
+    "partial": 6,
+    "legit_term": 3,
+    "switch": 4,
+    "requested": 1
+   },
+   "turns": 48
+  },
+  "gemma3-4b": {
+   "S3": {
+    "ok_concrete": 5,
+    "violation": 1,
+    "ok_poor": 3
+   },
+   "recall": {
+    "both": 1,
+    "partial": 1,
+    "wrong": 1
+   },
+   "S4": {
+    "1": [
+     2,
+     0
+    ],
+    "2": [
+     1,
+     0
+    ],
+    "3": [
+     0,
+     2
+    ],
+    "4": [
+     0,
+     3
+    ]
+   },
+   "S5": {
+    "2": [
+     2,
+     1
+    ],
+    "3": [
+     2,
+     1
+    ],
+    "4": [
+     3,
+     0
+    ]
+   },
+   "P2": {
+    "1": [
+     3,
+     0
+    ],
+    "2": [
+     2,
+     0
+    ],
+    "3": [
+     3,
+     0
+    ]
+   },
+   "S8": {
+    "fabricated": 6
+   },
+   "work": {
+    "none": 3,
+    "fabricated": 3
+   },
+   "lang": {
+    "legit_term": 20,
+    "requested": 3
+   },
+   "turns": 144
+  },
+  "gemma3-4b-t0.2": {
+   "S3": {
+    "ok_poor": 3,
+    "ok_concrete": 5,
+    "violation": 1
+   },
+   "recall": {
+    "both": 2,
+    "partial": 1
+   },
+   "S4": {
+    "1": [
+     2,
+     0
+    ],
+    "2": [
+     2,
+     0
+    ],
+    "3": [
+     0,
+     2
+    ],
+    "4": [
+     0,
+     3
+    ]
+   },
+   "S5": {
+    "2": [
+     2,
+     1
+    ],
+    "3": [
+     2,
+     0
+    ],
+    "4": [
+     2,
+     1
+    ]
+   },
+   "P2": {
+    "1": [
+     3,
+     0
+    ],
+    "2": [
+     0,
+     0
+    ],
+    "3": [
+     3,
+     0
+    ]
+   },
+   "S8": {
+    "fabricated": 6
+   },
+   "work": {
+    "none": 2,
+    "fabricated": 4
+   },
+   "lang": {
+    "legit_term": 15,
+    "requested": 3
+   },
+   "turns": 144
+  }
+ }
+}
