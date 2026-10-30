@@ -252,13 +252,69 @@ def run(row):
             'note': 'HWP grid structure of the whole 별표; not chosen per question; not an answer check'}
 
 
+def split(structured, review, out):
+    """Queryable rows apart from everything else. A row is queryable only from a 'structured' 별표 (grid complete,
+    numbers agree), from a table that is regular and has no nested table. Every queryable row is a candidate,
+    'unreviewed', unless the 별표 is in the review file with result 'match' (an AI visual review against a rendering of
+    the same HWP; not a human approval). Everything else is listed in not-queryable.jsonl with the reason."""
+    reviewed = {}
+    for x in (ROOT / review).read_text().splitlines() if review else []:
+        r = json.loads(x)
+        reviewed[r['id']] = r
+    rows, held, c = [], [], Counter()
+    for line in (ROOT / structured / 'structured.jsonl').read_text().splitlines():
+        d = json.loads(line)
+        tables = d.get('tables') or []
+        if d['status'] != 'structured' and d['status'] != 'partly_structured_irregular_table':
+            held.append({'id': d['id'], 'title': d.get('title'), 'table': None, 'reason': d['status']})
+            c[f"doc:{d['status']}"] += 1
+            continue
+        rv = reviewed.get(d['id'])
+        for i, t in enumerate(tables):
+            why = [f for f in t['flags'] if f in ('irregular_layout_rows_not_emitted', 'nested_table_text_not_included',
+                                                  'no_header_row')]
+            if why or not t['rows']:
+                held.append({'id': d['id'], 'title': d['title'], 'table': i, 'reason': why or ['no_rows']})
+                c['table:not_queryable'] += 1
+                continue
+            state = ('ai_visual_review_match' if rv and rv['result'] == 'match' and i in rv['tables_reviewed']
+                     else 'candidate_unreviewed')
+            c[f'rows:{state}'] += len(t['rows'])
+            for n, r in enumerate(t['rows']):
+                rows.append({'id': f"{d['id']}:t{i}:r{n}", 'doc_id': d['id'], 'title': d['title'], 'table': i,
+                             'caption': t['caption'], 'unit': d['unit'], 'revised': d['revised'],
+                             'statute_effective_date': d['statute_effective_date'], 'section': r['section'],
+                             'cells': r['cells'], 'notes': t['notes'], 'review': state,
+                             'review_ref': rv.get('review_ref') if rv and state != 'candidate_unreviewed' else None})
+    out = ROOT / out
+    if (out / 'manifest.json').exists():
+        raise SystemExit(f'{out} exists; versions are never overwritten')
+    out.mkdir(parents=True)
+    files = {}
+    for name, sel in (('queryable-rows', rows), ('not-queryable', held)):
+        body = ''.join(json.dumps(r, ensure_ascii=False) + '\n' for r in sel).encode()
+        (out / f'{name}.jsonl').write_bytes(body)
+        files[name] = {'rows': len(sel), 'sha256': hashlib.sha256(body).hexdigest()}
+    manifest = {'source': f'{structured}/structured.jsonl',
+                'source_sha256': hashlib.sha256((ROOT / structured / 'structured.jsonl').read_bytes()).hexdigest(),
+                'review': str(review) if review else None, 'code_sha256': CODE_SHA256, 'files': files, 'counts': dict(c),
+                'note': ('queryable-rows are candidates; only rows marked ai_visual_review_match were compared with a '
+                         'rendering, by an AI reviewer. Nothing here is approved, and no row was chosen per question.')}
+    (out / 'manifest.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=1))
+    print(json.dumps(manifest, ensure_ascii=False, indent=1))
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument('--version', default='v2', help='data/law-byl/<version>/extracted.jsonl')
     p.add_argument('--out', required=True)
     p.add_argument('--ids', nargs='*', help='only these rows (smoke runs)')
     p.add_argument('--workers', type=int, default=4)
+    p.add_argument('--split', metavar='STRUCTURED_DIR', help='write queryable / not-queryable rows of a structure version')
+    p.add_argument('--review', help='AI visual review file (jsonl: id, result, tables_reviewed, review_ref) for --split')
     args = p.parse_args()
+    if args.split:
+        return split(args.split, args.review, args.out)
     out = ROOT / args.out
     if (out / 'manifest.json').exists():
         raise SystemExit(f'{out} exists; versions are never overwritten')

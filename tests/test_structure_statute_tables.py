@@ -1,8 +1,11 @@
 """별표 grid structure (scripts/structure_statute_tables.py): row splitting, merged cells, irregular grids."""
+import json
+import tempfile
 import unittest
 import xml.etree.ElementTree as ET
+from pathlib import Path
 
-from scripts.structure_statute_tables import structure
+from scripts.structure_statute_tables import split, structure
 
 
 def table(rows, cols, cells):
@@ -48,6 +51,30 @@ class StructureTests(unittest.TestCase):
             (1, 0, 1, 1, ['5년 이상']), (1, 1, 1, 1, ['50%']), (1, 2, 1, 1, ['10년 이상']), (1, 3, 1, 1, ['60%'])]))
         self.assertEqual(t['rows'], [])
         self.assertIn('irregular_layout_rows_not_emitted', t['flags'])
+
+
+class SplitTests(unittest.TestCase):
+    def test_only_regular_tables_of_checked_docs_are_queryable_and_review_is_per_doc(self):
+        def doc(i, status, flags, rows):
+            return {'id': i, 'title': i, 'status': status, 'unit': None, 'revised': None, 'statute_effective_date': None,
+                    'tables': [{'flags': flags, 'caption': [], 'notes': [], 'rows': rows}]}
+        row = [{'section': None, 'cells': {'구분': '제1호', '일비': '25,000'}}]
+        with tempfile.TemporaryDirectory() as d:
+            src, out = Path(d) / 'src', Path(d) / 'out'
+            src.mkdir()
+            (src / 'structured.jsonl').write_text(''.join(json.dumps(x) + '\n' for x in (
+                doc('ok', 'structured', [], row), doc('seen', 'structured', [], row),
+                doc('odd', 'partly_structured_irregular_table', ['irregular_layout_rows_not_emitted'], []),
+                doc('nest', 'structured', ['nested_table_text_not_included'], row),
+                doc('diff', 'structured_check_differs', [], row))))
+            review = Path(d) / 'review.jsonl'
+            review.write_text(json.dumps({'id': 'seen', 'result': 'match', 'tables_reviewed': [0], 'review_ref': 'r'}) + '\n')
+            split(src, review, out)
+            rows = [json.loads(x) for x in (out / 'queryable-rows.jsonl').read_text().splitlines()]
+            held = [json.loads(x) for x in (out / 'not-queryable.jsonl').read_text().splitlines()]
+        self.assertEqual([(r['doc_id'], r['review']) for r in rows],
+                         [('ok', 'candidate_unreviewed'), ('seen', 'ai_visual_review_match')])
+        self.assertEqual(sorted(h['id'] for h in held), ['diff', 'nest', 'odd'])
 
 
 if __name__ == '__main__':
