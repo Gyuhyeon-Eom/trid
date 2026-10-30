@@ -30,18 +30,25 @@ else
 fi
 export LD_LIBRARY_PATH=$R/bin:${LD_LIBRARY_PATH:-}
 log "llama-server $(bin/llama-server --version 2>&1 | grep -m1 version)"
-for spec in "Qwen3-32B-Q8_0.gguf 2c50eb8aad05047dbf24fa014eb621adf552e14176cabe0c5db4ef38c91e2169" \
-            "gpt-oss-120b-MXFP4.gguf 582bd40f6886200101f4c4ed9f25f3fe80cc14c86e9e2b37746cd8904a0c622d"; do
-  set -- $spec
-  aws s3 cp $T/$1 models/$1 --only-show-errors
-  echo "$2  models/$1" | sha256sum -c
+# SERVERS=verify loads only the verifier (e.g. a verify-only job): no generator download, no generator server.
+SERVERS=${SERVERS:-both}
+MODELS="gpt-oss-120b-MXFP4.gguf:582bd40f6886200101f4c4ed9f25f3fe80cc14c86e9e2b37746cd8904a0c622d"
+[ "$SERVERS" = both ] && MODELS="Qwen3-32B-Q8_0.gguf:2c50eb8aad05047dbf24fa014eb621adf552e14176cabe0c5db4ef38c91e2169 $MODELS"
+for spec in $MODELS; do
+  f=${spec%%:*}; h=${spec##*:}
+  aws s3 cp $T/$f models/$f --only-show-errors
+  echo "$h  models/$f" | sha256sum -c
 done
-log "models verified"
+log "models verified ($SERVERS)"
 # slot context = ctx / np (8192 with the defaults: thinking-mode drafts and reasoning judges need more than 4096)
 GEN_NP=${GEN_NP:-8}; VER_NP=${VER_NP:-8}
-CUDA_VISIBLE_DEVICES=0,1 bin/llama-server -m models/Qwen3-32B-Q8_0.gguf --host 127.0.0.1 --port 18475 -c 65536 -np $GEN_NP -ngl 99 -fa on --jinja > gen.log 2>&1 &
+PORTS=18476
+if [ "$SERVERS" = both ]; then
+  CUDA_VISIBLE_DEVICES=0,1 bin/llama-server -m models/Qwen3-32B-Q8_0.gguf --host 127.0.0.1 --port 18475 -c 65536 -np $GEN_NP -ngl 99 -fa on --jinja > gen.log 2>&1 &
+  PORTS="18475 18476"
+fi
 CUDA_VISIBLE_DEVICES=2,3 bin/llama-server -m models/gpt-oss-120b-MXFP4.gguf --host 127.0.0.1 --port 18476 -c 65536 -np $VER_NP -ngl 99 -fa on --jinja > verify.log 2>&1 &
-for port in 18475 18476; do
+for port in $PORTS; do
   for i in $(seq 1 120); do curl -s 127.0.0.1:$port/health | grep -q ok && break; sleep 10; done
   curl -s 127.0.0.1:$port/health | grep -q ok || { log "server $port not healthy"; exit 1; }
 done
