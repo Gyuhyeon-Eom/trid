@@ -38,8 +38,8 @@ def code_files():
     files = sorted(p for p in (ROOT / 'trid').rglob('*.py') if '__pycache__' not in p.parts)
     files += [ROOT / f'scripts/{name}' for name in ('train_medium_cpt_gpu.py', 'sm_pretrain.sh', 'sm_sft_eval.sh',
                                                      'sm_span_eval.sh', 'sm_sft_campaign.sh', 'sm_eval_weights.sh',
-                                                     'train_public_dialogue.py', 'evaluate_rag_eval.py',
-                                                     'evaluate_question_sensitivity.py')]
+                                                     'sm_bench_sft.sh', 'bench_sft_speed.py', 'train_public_dialogue.py',
+                                                     'evaluate_rag_eval.py', 'evaluate_question_sensitivity.py')]
     files += sorted((ROOT / 'configs').glob('*.json'))
     return files
 
@@ -75,10 +75,12 @@ def main():
     p.add_argument('--purpose', default='')
     p.add_argument('--log', type=Path, default=ROOT / 'reports/coordination/sm-jobs-A.jsonl')
     p.add_argument('--wait', action='store_true')
+    p.add_argument('--spot', action='store_true', help='SageMaker managed spot; resumes from CheckpointConfig after interruption')
     p.add_argument('--entry', default='sm_pretrain.sh',
-                   choices=['sm_pretrain.sh', 'sm_sft_eval.sh', 'sm_span_eval.sh', 'sm_sft_campaign.sh', 'sm_eval_weights.sh'],
+                   choices=['sm_pretrain.sh', 'sm_sft_eval.sh', 'sm_span_eval.sh', 'sm_sft_campaign.sh', 'sm_eval_weights.sh',
+                            'sm_bench_sft.sh'],
                    help='entrypoint under scripts/: pretraining, SFT + evaluation, span diagnostic, SFT campaign segment, '
-                        'evaluation of saved weights')
+                        'evaluation of saved weights, SFT speed benchmark')
     a = p.parse_args()
     checkpoint = a.checkpoint_s3 or f's3://{BUCKET}/corpus/runs/pretrain/{a.run}/'
     prefix, key, head, dirty = upload_code()
@@ -97,13 +99,14 @@ def main():
         'InputDataConfig': [channel('code', f's3://{BUCKET}/{prefix}'), channel('data', a.data_s3)],
         'OutputDataConfig': {'S3OutputPath': f's3://{BUCKET}/corpus/sm-output/'},
         'ResourceConfig': {'InstanceType': a.instance_type, 'InstanceCount': 1, 'VolumeSizeInGB': 100},
-        'StoppingCondition': {'MaxRuntimeInSeconds': a.max_runtime},
+        'StoppingCondition': {'MaxRuntimeInSeconds': a.max_runtime, **({'MaxWaitTimeInSeconds': 2 * a.max_runtime} if a.spot else {})},
+        **({'EnableManagedSpotTraining': True} if a.spot else {}),
         'CheckpointConfig': {'S3Uri': checkpoint, 'LocalPath': '/opt/ml/checkpoints'},
         'Environment': env,
         'Tags': [{'Key': 'trid-owner', 'Value': 'A'}, {'Key': 'trid-run', 'Value': a.run}],
     }
     aws('sagemaker', 'create-training-job', '--cli-input-json', json.dumps(spec))
-    record = {'job': name, 'owner': a.owner, 'purpose': a.purpose, 'entry': a.entry, 'run': a.run, 'config': a.config, 'steps': a.steps,
+    record = {'job': name, 'owner': a.owner, 'purpose': a.purpose, 'entry': a.entry, 'spot': a.spot, 'run': a.run, 'config': a.config, 'steps': a.steps,
               'instance_type': a.instance_type, 'stop_condition': f'run complete, MAX_SESSIONS={a.max_sessions} or '
               f'MaxRuntimeInSeconds={a.max_runtime}; instance terminates when the job ends', 'checkpoint_s3': checkpoint,
               'data_s3': a.data_s3, 'code_s3': f's3://{BUCKET}/{prefix}', 'code_sha': key, 'git_head': head,
