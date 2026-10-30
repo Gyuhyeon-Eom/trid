@@ -1,0 +1,4048 @@
+{
+ "code_sha256": "a6cfd3f61ba7b00103d3e5a51fcf621dda011d59c38c6813a2b317bc844c1b4d",
+ "corpus": "data/search-corpus-v3",
+ "pdf_differ_passages": 245,
+ "number_classes": {
+  "whitespace_split": 212,
+  "elsewhere_in_pdf_short_number": 135,
+  "elsewhere_in_pdf": 78,
+  "not_in_pdf": 36,
+  "equation_object": 125,
+  "print_production_mark": 31
+ },
+ "passage_classes": {
+  "whitespace_split": 62,
+  "elsewhere_in_pdf": 27,
+  "not_in_pdf": 20,
+  "elsewhere_in_pdf_short_number": 42,
+  "equation_object": 64,
+  "print_production_mark": 30
+ },
+ "passages": [
+  {
+   "passage_id": "data.go.kr:15043134#56955",
+   "doc_id": "data.go.kr:15043134",
+   "pages": [
+    63,
+    63
+   ],
+   "numbers": {
+    "18": "whitespace_split",
+    "6": "whitespace_split",
+    "12": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "821b0ff4cd93e8235e40d3262fe9fdc0131dc719b96e8f2c8a008b135586ba11",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "data.go.kr:15043134#143025",
+   "doc_id": "data.go.kr:15043134",
+   "pages": [
+    146,
+    146
+   ],
+   "numbers": {
+    "1.1": "elsewhere_in_pdf_short_number",
+    "234": "elsewhere_in_pdf"
+   },
+   "passage_class": "elsewhere_in_pdf",
+   "sha256": "0182d7bdcd8ce6ea54628fa8d8624e1eda9038db85f982fb91644e4026f16131",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "data.go.kr:15043134#173147",
+   "doc_id": "data.go.kr:15043134",
+   "pages": [
+    177,
+    177
+   ],
+   "numbers": {
+    "2015.5": "whitespace_split",
+    "2015.6": "whitespace_split",
+    "2015.3": "whitespace_split",
+    "11": "whitespace_split",
+    "12": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "be045db4b1bda04aa517f9ec9b91206920135d65a57d50ed5521777865923ca8",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "data.go.kr:15043134#184568",
+   "doc_id": "data.go.kr:15043134",
+   "pages": [
+    193,
+    193
+   ],
+   "numbers": {
+    "1": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "75c138b5469d82443c3be1adbb9245492fa510a3530829dd07df10eeba3ef283",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "data.go.kr:15043134#188418",
+   "doc_id": "data.go.kr:15043134",
+   "pages": [
+    203,
+    203
+   ],
+   "numbers": {
+    "2": "whitespace_split",
+    "2200": "not_in_pdf"
+   },
+   "passage_class": "not_in_pdf",
+   "sha256": "904574ca9c58c77e2c6b341766619d7c82774a47520fa59e92cbc1a6135ca071",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "data.go.kr:15043134#221495",
+   "doc_id": "data.go.kr:15043134",
+   "pages": [
+    237,
+    237
+   ],
+   "numbers": {
+    "4": "elsewhere_in_pdf_short_number"
+   },
+   "passage_class": "elsewhere_in_pdf_short_number",
+   "sha256": "d4005b501b5f1206a0902ec1633a93330d51d4844506e86d70f1a9993c5b657f",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "data.go.kr:15106457#49",
+   "doc_id": "data.go.kr:15106457",
+   "pages": [
+    1,
+    4
+   ],
+   "numbers": {
+    "2024.11": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "97c5eb006d9c68ff4c76fa5dc4f75b23444e4f3be39f963c758c3bf781e4c872",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "data.go.kr:15106457#115",
+   "doc_id": "data.go.kr:15106457",
+   "pages": [
+    1,
+    4
+   ],
+   "numbers": {
+    "2024.11": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "9c31d558b7645cea0bf0aa0cf09e9b53ae8dc736d7c08fb509401d7ee0c278a1",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "data.go.kr:15077063#39068",
+   "doc_id": "data.go.kr:15077063",
+   "pages": [
+    51,
+    52
+   ],
+   "numbers": {
+    "80": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "26b74f02f65f96e51fd10e973df1f7d6e1324ce0433aedc312d7cb44c3b52c25",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "data.go.kr:15077063#41009",
+   "doc_id": "data.go.kr:15077063",
+   "pages": [
+    53,
+    53
+   ],
+   "numbers": {
+    "2": "whitespace_split",
+    "4": "whitespace_split",
+    "1": "whitespace_split",
+    "3": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "e37220ba741eee599c2c882f1fa628325f0c825813022a15e4ba649dbd7a9ee7",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "data.go.kr:15077063#42288",
+   "doc_id": "data.go.kr:15077063",
+   "pages": [
+    54,
+    55
+   ],
+   "numbers": {
+    "80": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "f13d219f521f22d9678100b4a93c2b90973bbced59e2c0ab27468f42011b55f8",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "data.go.kr:15077063#45308",
+   "doc_id": "data.go.kr:15077063",
+   "pages": [
+    57,
+    58
+   ],
+   "numbers": {
+    "40.682": "whitespace_split",
+    "59.318": "whitespace_split",
+    "76.027": "whitespace_split",
+    "88.072": "whitespace_split",
+    "95.053": "whitespace_split",
+    "23.978": "equation_object",
+    "97.527": "whitespace_split"
+   },
+   "passage_class": "equation_object",
+   "sha256": "168bcd1b0102f9f7512d2ada49e2656d7c132cf5f58962490640fd58e728b432",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "data.go.kr:15077063#46855",
+   "doc_id": "data.go.kr:15077063",
+   "pages": [
+    58,
+    58
+   ],
+   "numbers": {
+    "11.928": "whitespace_split",
+    "4.947": "whitespace_split",
+    "23.978": "equation_object",
+    "2.474": "whitespace_split"
+   },
+   "passage_class": "equation_object",
+   "sha256": "51154ed5325a0c75da1cf5d0344e0047ed87eeaade4f4d136e54344ca960c87e",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "data.go.kr:15077063#48054",
+   "doc_id": "data.go.kr:15077063",
+   "pages": [
+    61,
+    61
+   ],
+   "numbers": {
+    "100": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "4f6b4bdcdf757ebfdad0f28c2ee65c88f9cd4b3b595f9518e3f568ace1ef4983",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "data.go.kr:15077063#49577",
+   "doc_id": "data.go.kr:15077063",
+   "pages": [
+    62,
+    62
+   ],
+   "numbers": {
+    "100": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "e11e79f36fcaa320278b250d51eed068f5a9d8bd52dceeaa86ed2f2e69e0f7b2",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "data.go.kr:15077063#199146",
+   "doc_id": "data.go.kr:15077063",
+   "pages": [
+    217,
+    219
+   ],
+   "numbers": {
+    "0.5": "equation_object",
+    "80": "equation_object",
+    "20": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "13c10b118f3999f1ad176d18c1d46ce420c1cdf7b2f5b08cf526a1e342d472bf",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "data.go.kr:15077063#202235",
+   "doc_id": "data.go.kr:15077063",
+   "pages": [
+    219,
+    219
+   ],
+   "numbers": {
+    "0.5": "equation_object",
+    "20": "equation_object",
+    "80": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "3dd62f12c3df416a915a23b52ad0b1d81cffd6679f60c71c619c6fee96536177",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "data.go.kr:15077063#334999",
+   "doc_id": "data.go.kr:15077063",
+   "pages": [
+    375,
+    375
+   ],
+   "numbers": {
+    "8": "elsewhere_in_pdf_short_number",
+    "3.5": "elsewhere_in_pdf_short_number",
+    "11": "whitespace_split",
+    "16": "elsewhere_in_pdf_short_number"
+   },
+   "passage_class": "elsewhere_in_pdf_short_number",
+   "sha256": "e6ea7a12019a0e91f03f6aa62827923e014a2b299976b231eabdec73862a06d8",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "data.go.kr:15077063#339782",
+   "doc_id": "data.go.kr:15077063",
+   "pages": [
+    347,
+    348
+   ],
+   "numbers": {
+    "20": "whitespace_split",
+    "80": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "546f3d5c0b13f643ead30fa9ddeb36a2ad4eb1b5409a3b094ddf2a4bbca2bb55",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "data.go.kr:15077063#370014",
+   "doc_id": "data.go.kr:15077063",
+   "pages": [
+    690,
+    690
+   ],
+   "numbers": {
+    "5": "whitespace_split",
+    "2": "whitespace_split",
+    "33": "elsewhere_in_pdf_short_number"
+   },
+   "passage_class": "elsewhere_in_pdf_short_number",
+   "sha256": "a958e9dc02a5455087a11f47c4af5d3215e6cf0a4e13377cc22c423830ed8f6a",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "data.go.kr:15077063#477073",
+   "doc_id": "data.go.kr:15077063",
+   "pages": [
+    469,
+    470
+   ],
+   "numbers": {
+    "812017.2": "whitespace_split",
+    "14002020.09": "whitespace_split",
+    "2622022.03": "whitespace_split",
+    "2022.05": "not_in_pdf"
+   },
+   "passage_class": "not_in_pdf",
+   "sha256": "8a1557b078fcb6f2a78a3e32a6be353cc7c957b1c664e221a2b569b8c5ddb763",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "data.go.kr:15077063#616252",
+   "doc_id": "data.go.kr:15077063",
+   "pages": [
+    126,
+    1189
+   ],
+   "numbers": {
+    "25811": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "3f73d118b6ad9c0d4839f4431c1d379ddd92178c128a204e05e322ccdf87a68f",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "data.go.kr:15077063#632152",
+   "doc_id": "data.go.kr:15077063",
+   "pages": [
+    617,
+    617
+   ],
+   "numbers": {
+    "6": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "603fd366d93ecdd2c606b60e7857f55dd1a8855a567217749125baea42e2fe3a",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "data.go.kr:15077063#811595",
+   "doc_id": "data.go.kr:15077063",
+   "pages": [
+    800,
+    801
+   ],
+   "numbers": {
+    "20": "equation_object",
+    "0.5": "whitespace_split"
+   },
+   "passage_class": "equation_object",
+   "sha256": "b50d5a9aa5bff0ca5f71e4144e139d29a6fa2cbdea0b4122961131f333d926ff",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "data.go.kr:15077063#936460",
+   "doc_id": "data.go.kr:15077063",
+   "pages": [
+    936,
+    936
+   ],
+   "numbers": {
+    "1": "whitespace_split",
+    "2": "whitespace_split",
+    "1.5": "elsewhere_in_pdf_short_number",
+    "2.5": "elsewhere_in_pdf_short_number",
+    "5.5": "elsewhere_in_pdf_short_number",
+    "4": "whitespace_split",
+    "15.5": "elsewhere_in_pdf",
+    "8": "elsewhere_in_pdf_short_number",
+    "11": "elsewhere_in_pdf_short_number",
+    "23.5": "elsewhere_in_pdf"
+   },
+   "passage_class": "elsewhere_in_pdf",
+   "sha256": "d4769201371fa68e07400a829d8fca5e3f4bb83728722210914c85508c5c3c6a",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "data.go.kr:15077063#1094280",
+   "doc_id": "data.go.kr:15077063",
+   "pages": [
+    1088,
+    1089
+   ],
+   "numbers": {
+    "100": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "139e8c6ca555000f6b45977222d8ba35a4f705d1d803a9683907e825d61c7e25",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "data.go.kr:15077063#1097171",
+   "doc_id": "data.go.kr:15077063",
+   "pages": [
+    1090,
+    1091
+   ],
+   "numbers": {
+    "12": "whitespace_split",
+    "1": "whitespace_split",
+    "100": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "ba71a4c1602877ad17b8a277b36f28808ed7477f3cc4c997b67a6e8257a4a7c3",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "data.go.kr:15077063#1170123",
+   "doc_id": "data.go.kr:15077063",
+   "pages": [
+    1174,
+    1174
+   ],
+   "numbers": {
+    "2": "whitespace_split",
+    "1": "whitespace_split",
+    "1.5": "elsewhere_in_pdf_short_number",
+    "2.5": "elsewhere_in_pdf_short_number",
+    "5.5": "elsewhere_in_pdf_short_number",
+    "0.5": "elsewhere_in_pdf_short_number",
+    "15.5": "elsewhere_in_pdf",
+    "8": "whitespace_split",
+    "23.5": "elsewhere_in_pdf",
+    "16.5": "elsewhere_in_pdf"
+   },
+   "passage_class": "elsewhere_in_pdf",
+   "sha256": "78dee7043020437323a0abb3f842f0708ffca90c210caf1bf2d1fa0badeaa5f6",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "data.go.kr:15038527#8308",
+   "doc_id": "data.go.kr:15038527",
+   "pages": [
+    20,
+    20
+   ],
+   "numbers": {
+    "91.7": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "421c7bf0850e864259b60dffda9f0e5dc2833527786eb26354e990b5d62acd56",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "data.go.kr:15038527#11652",
+   "doc_id": "data.go.kr:15038527",
+   "pages": [
+    25,
+    25
+   ],
+   "numbers": {
+    "12.7": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "b905f4b4ed2f061dbf4d2a934c43d6ad16e27c9cf41c67f4457a27a33bf61cec",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "data.go.kr:15038527#290676",
+   "doc_id": "data.go.kr:15038527",
+   "pages": [
+    324,
+    324
+   ],
+   "numbers": {
+    "2018.1": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "ccca83f02a5341a9781349f3adc70459d3b7bdc2ef43c5ef0125b53a481c618d",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "data.go.kr:15038527#343974",
+   "doc_id": "data.go.kr:15038527",
+   "pages": [
+    383,
+    384
+   ],
+   "numbers": {
+    "60": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "fb693b9370c77d963dd8c9e0b12817fcc61de4023ac241ef9f258ba0bee4060b",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "data.go.kr:15038527#482279",
+   "doc_id": "data.go.kr:15038527",
+   "pages": [
+    517,
+    517
+   ],
+   "numbers": {
+    "197": "elsewhere_in_pdf",
+    "117": "elsewhere_in_pdf",
+    "118": "elsewhere_in_pdf",
+    "25": "elsewhere_in_pdf_short_number",
+    "36": "elsewhere_in_pdf_short_number",
+    "125": "elsewhere_in_pdf",
+    "135": "elsewhere_in_pdf",
+    "06.1": "not_in_pdf",
+    "1": "whitespace_split",
+    "162": "elsewhere_in_pdf"
+   },
+   "passage_class": "not_in_pdf",
+   "sha256": "3b23fb651b63fce2a161770e0cdedee4641a9ca4f2adbc9cf21328df698c58a1",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "data.go.kr:15086706:file:e4a577f8834d68e6#28111",
+   "doc_id": "data.go.kr:15086706:file:e4a577f8834d68e6",
+   "pages": [
+    21,
+    21
+   ],
+   "numbers": {
+    "2021": "not_in_pdf",
+    "4": "whitespace_split",
+    "29": "not_in_pdf",
+    "26": "elsewhere_in_pdf_short_number",
+    "1": "whitespace_split",
+    "21": "whitespace_split",
+    "6": "whitespace_split",
+    "60": "elsewhere_in_pdf_short_number",
+    "88": "elsewhere_in_pdf_short_number",
+    "5": "whitespace_split"
+   },
+   "passage_class": "not_in_pdf",
+   "sha256": "b75023b42b433ca4bd2990883608e76446e8ca0fd665a714d4ccf71866b3fe19",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:161080245#16281",
+   "doc_id": "law-go-kr:admrul-file:161080245",
+   "pages": [
+    22,
+    22
+   ],
+   "numbers": {
+    "2006": "elsewhere_in_pdf"
+   },
+   "passage_class": "elsewhere_in_pdf",
+   "sha256": "1c747b3e2c24fad63a92fafb23ab6f8e4ad89d70f2bed6cb0fd634f28db66dac",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:161080193#16383",
+   "doc_id": "law-go-kr:admrul-file:161080193",
+   "pages": [
+    23,
+    24
+   ],
+   "numbers": {
+    "1": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "2a35d52d61ec0b3e02bd492cf20c133203a08855e095f38a33f3baa0105db52e",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:169846039#44",
+   "doc_id": "law-go-kr:admrul-file:169846039",
+   "pages": [
+    3,
+    3
+   ],
+   "numbers": {
+    "2026": "whitespace_split",
+    "9": "elsewhere_in_pdf_short_number"
+   },
+   "passage_class": "elsewhere_in_pdf_short_number",
+   "sha256": "e5a207614fbb27c0ea9b5e874982f64be7f9c4ea3614c61157275b0bc2665285",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:169846039#34862",
+   "doc_id": "law-go-kr:admrul-file:169846039",
+   "pages": [
+    41,
+    41
+   ],
+   "numbers": {
+    "24": "whitespace_split",
+    "32": "elsewhere_in_pdf_short_number",
+    "35": "elsewhere_in_pdf_short_number",
+    "23": "whitespace_split",
+    "27": "whitespace_split",
+    "34": "elsewhere_in_pdf_short_number",
+    "26": "whitespace_split",
+    "14.4": "elsewhere_in_pdf"
+   },
+   "passage_class": "elsewhere_in_pdf",
+   "sha256": "96547d57f6a1f84253fbbf900bac498e7627634c59aba2d77319e6bc07666424",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:169846039#36381",
+   "doc_id": "law-go-kr:admrul-file:169846039",
+   "pages": [
+    45,
+    46
+   ],
+   "numbers": {
+    "22": "elsewhere_in_pdf_short_number",
+    "23": "whitespace_split",
+    "11": "whitespace_split",
+    "14.2": "elsewhere_in_pdf"
+   },
+   "passage_class": "elsewhere_in_pdf",
+   "sha256": "efb809d16ac7efd9b365cf856f49803e51296237620379c15087c97e9fade718",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:169846039#52852",
+   "doc_id": "law-go-kr:admrul-file:169846039",
+   "pages": [
+    60,
+    61
+   ],
+   "numbers": {
+    "23": "whitespace_split",
+    "24": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "a08244eb0973eba24273d68a0bc03e5596b82f986b9e3524ac1903bf93b489ce",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:169846039#54402",
+   "doc_id": "law-go-kr:admrul-file:169846039",
+   "pages": [
+    61,
+    61
+   ],
+   "numbers": {
+    "26": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "24206e1fb3a15eb4b2d736cd1ec4b8ac6e0faa5de1684ffdfbbbf865cacfa3de",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:169846039#78358",
+   "doc_id": "law-go-kr:admrul-file:169846039",
+   "pages": [
+    80,
+    80
+   ],
+   "numbers": {
+    "9": "elsewhere_in_pdf_short_number"
+   },
+   "passage_class": "elsewhere_in_pdf_short_number",
+   "sha256": "c2bf0f16eadd87f96d2b197f8f533fc5d017e6f18cab32e8f678179891c80acc",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:169846039#101947",
+   "doc_id": "law-go-kr:admrul-file:169846039",
+   "pages": [
+    104,
+    104
+   ],
+   "numbers": {
+    "2": "whitespace_split",
+    "1": "whitespace_split",
+    "102": "elsewhere_in_pdf",
+    "86.1": "elsewhere_in_pdf"
+   },
+   "passage_class": "elsewhere_in_pdf",
+   "sha256": "b8c38273365dbe7559f176939f706ac01938e95fca1e9e67f230fc626867f028",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:169846039#276044",
+   "doc_id": "law-go-kr:admrul-file:169846039",
+   "pages": [
+    276,
+    278
+   ],
+   "numbers": {
+    "15": "elsewhere_in_pdf_short_number"
+   },
+   "passage_class": "elsewhere_in_pdf_short_number",
+   "sha256": "68c46acfea6500ac83cda08302aafe6121b97f679b44f9ae07f2b1ebeb789c6f",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:169846039#497704",
+   "doc_id": "law-go-kr:admrul-file:169846039",
+   "pages": [
+    474,
+    475
+   ],
+   "numbers": {
+    "1": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "5a4303458bb58ef8125f2bafa236705a0b14e81460eea90af40f19b8749cf4d8",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:152909373#152573",
+   "doc_id": "law-go-kr:admrul-file:152909373",
+   "pages": [
+    160,
+    160
+   ],
+   "numbers": {
+    "500": "elsewhere_in_pdf",
+    "1": "whitespace_split",
+    "6": "whitespace_split",
+    "7": "whitespace_split",
+    "8": "whitespace_split",
+    "9": "whitespace_split",
+    "10": "whitespace_split",
+    "11": "whitespace_split",
+    "15": "whitespace_split",
+    "210": "elsewhere_in_pdf"
+   },
+   "passage_class": "elsewhere_in_pdf",
+   "sha256": "5c433bfa855b1ee659ae87dc4ae62f3dda72f539813c3a6fec9f8beae6508e16",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:152909373#199247",
+   "doc_id": "law-go-kr:admrul-file:152909373",
+   "pages": [
+    203,
+    203
+   ],
+   "numbers": {
+    "12": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "afce0e92464d90c4584cd37d1384334fec5e8d2a0819bbc8f65b9d0ab5e570ab",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:152909373#202351",
+   "doc_id": "law-go-kr:admrul-file:152909373",
+   "pages": [
+    205,
+    207
+   ],
+   "numbers": {
+    "3431": "equation_object",
+    "40": "equation_object",
+    "36": "equation_object",
+    "0.215": "equation_object",
+    "60": "equation_object",
+    "1.0": "equation_object",
+    "1.5": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "9da893ed3e71b3af0afd9bddd9e81a4de9968f92108cb3a317a973e59c6b25d3",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:152909373#203858",
+   "doc_id": "law-go-kr:admrul-file:152909373",
+   "pages": [
+    209,
+    209
+   ],
+   "numbers": {
+    "0": "equation_object",
+    "90": "equation_object",
+    "295": "elsewhere_in_pdf",
+    "6.1": "elsewhere_in_pdf_short_number",
+    "0.008": "elsewhere_in_pdf",
+    "80": "elsewhere_in_pdf_short_number",
+    "265": "elsewhere_in_pdf",
+    "0.033": "equation_object",
+    "0.05": "equation_object",
+    "3": "whitespace_split"
+   },
+   "passage_class": "equation_object",
+   "sha256": "584c2565e9fccc38f2eb45b1b3f6d66a5f2d8f4ebf2625dfee04e47fcb8caa3c",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:152909373#205444",
+   "doc_id": "law-go-kr:admrul-file:152909373",
+   "pages": [
+    210,
+    212
+   ],
+   "numbers": {
+    "0.6": "equation_object",
+    "98": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "b713dc2133d38185b9fd1177449438b829ce9c1387c76fc00761003fbf4e29c9",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:152909373#313406",
+   "doc_id": "law-go-kr:admrul-file:152909373",
+   "pages": [
+    303,
+    312
+   ],
+   "numbers": {
+    "2.2": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "7bf513cf6b8cfab3b412842caf0fb504eca97bf41c901838932546cbb2f9bff7",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:152909373#320242",
+   "doc_id": "law-go-kr:admrul-file:152909373",
+   "pages": [
+    312,
+    312
+   ],
+   "numbers": {
+    "4.6": "elsewhere_in_pdf_short_number",
+    "4.5": "elsewhere_in_pdf_short_number",
+    "7": "whitespace_split"
+   },
+   "passage_class": "elsewhere_in_pdf_short_number",
+   "sha256": "c3f0b07e8091146391c9283c0f3357d4a52d5da20a02651162ec1363c66232d6",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:152909373#336717",
+   "doc_id": "law-go-kr:admrul-file:152909373",
+   "pages": [
+    303,
+    312
+   ],
+   "numbers": {
+    "5.1": "whitespace_split",
+    "5.2": "whitespace_split",
+    "5.3": "whitespace_split",
+    "45": "elsewhere_in_pdf_short_number",
+    "180": "elsewhere_in_pdf",
+    "80": "elsewhere_in_pdf_short_number",
+    "260": "elsewhere_in_pdf"
+   },
+   "passage_class": "elsewhere_in_pdf",
+   "sha256": "a30bedc2449d33911a9616f98b3ba6f05e38f1023e38c42997d0e77cf3962cee",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:152909373#338911",
+   "doc_id": "law-go-kr:admrul-file:152909373",
+   "pages": [
+    303,
+    312
+   ],
+   "numbers": {
+    "5.4": "whitespace_split",
+    "5.5": "whitespace_split",
+    "5.6": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "dba1eec19d080ccded549245d04ae0fd39ea0de877702b9ac0182a8a8587c064",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:152909373#341231",
+   "doc_id": "law-go-kr:admrul-file:152909373",
+   "pages": [
+    303,
+    312
+   ],
+   "numbers": {
+    "5.7": "whitespace_split",
+    "5.8": "elsewhere_in_pdf_short_number"
+   },
+   "passage_class": "elsewhere_in_pdf_short_number",
+   "sha256": "6239a137d2f57a38e9bd8049de313013244fb870b9f0e581d9f486c073775f79",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:152909373#349895",
+   "doc_id": "law-go-kr:admrul-file:152909373",
+   "pages": [
+    304,
+    304
+   ],
+   "numbers": {
+    "3.2": "whitespace_split",
+    "3.1": "whitespace_split",
+    "4.1": "whitespace_split",
+    "1.2": "whitespace_split",
+    "4.5": "whitespace_split",
+    "4.6": "whitespace_split",
+    "44.4": "whitespace_split",
+    "1.8": "whitespace_split",
+    "1.9": "elsewhere_in_pdf_short_number",
+    "1.10": "elsewhere_in_pdf"
+   },
+   "passage_class": "elsewhere_in_pdf",
+   "sha256": "40b592ce234148d460b34382bd6d7eb7501c64bec67baa531819bf6e6dffc50c",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:152909373#364951",
+   "doc_id": "law-go-kr:admrul-file:152909373",
+   "pages": [
+    340,
+    340
+   ],
+   "numbers": {
+    "12345": "not_in_pdf"
+   },
+   "passage_class": "not_in_pdf",
+   "sha256": "0f765414500a5ff8c090e45da002b5866ec597addcbfafc6cdf0768b9b9547be",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:152909373#367774",
+   "doc_id": "law-go-kr:admrul-file:152909373",
+   "pages": [
+    341,
+    341
+   ],
+   "numbers": {
+    "12345": "not_in_pdf"
+   },
+   "passage_class": "not_in_pdf",
+   "sha256": "5d5342eb3f50ee92b815eea1c3412419f7266fc19c524a5fe3fa593c7de29d78",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:9704371#5650",
+   "doc_id": "law-go-kr:admrul-file:9704371",
+   "pages": [
+    12,
+    14
+   ],
+   "numbers": {
+    "12.4": "print_production_mark"
+   },
+   "passage_class": "print_production_mark",
+   "sha256": "e9a0e3a43fd4d156434f30b32d8e5493f642b531a2dbaea215da620b276649b2",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:9704371#59240",
+   "doc_id": "law-go-kr:admrul-file:9704371",
+   "pages": [
+    65,
+    65
+   ],
+   "numbers": {
+    "12.4": "print_production_mark"
+   },
+   "passage_class": "print_production_mark",
+   "sha256": "f221cc9e0ff76b1aa89214542b6468df2fbf97fae4e3f5bb0da877d2c15f83b6",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:9704371#64770",
+   "doc_id": "law-go-kr:admrul-file:9704371",
+   "pages": [
+    73,
+    73
+   ],
+   "numbers": {
+    "12.4": "print_production_mark"
+   },
+   "passage_class": "print_production_mark",
+   "sha256": "0baa89f13fc8b8c4939d1dea6d66b1298794018128d916d3631efede452a2d94",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:9704371#99448",
+   "doc_id": "law-go-kr:admrul-file:9704371",
+   "pages": [
+    113,
+    113
+   ],
+   "numbers": {
+    "12.4": "print_production_mark"
+   },
+   "passage_class": "print_production_mark",
+   "sha256": "0b66e6edd68ab8041862675567781aa5aa5fbf669ea58ab3a9e3f9831bb0289b",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:9704371#114144",
+   "doc_id": "law-go-kr:admrul-file:9704371",
+   "pages": [
+    126,
+    126
+   ],
+   "numbers": {
+    "12.4": "print_production_mark"
+   },
+   "passage_class": "print_production_mark",
+   "sha256": "b86fe6d909fd585d7500fa730063503c23530a058e402ca04ead9be4fd9b18bc",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:9704371#130455",
+   "doc_id": "law-go-kr:admrul-file:9704371",
+   "pages": [
+    143,
+    144
+   ],
+   "numbers": {
+    "12.4": "print_production_mark"
+   },
+   "passage_class": "print_production_mark",
+   "sha256": "b6605e7c4ae995ff0171c5c7de9240b27eda4e5427f99b70aeecacd62d3ff717",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:9704371#160070",
+   "doc_id": "law-go-kr:admrul-file:9704371",
+   "pages": [
+    171,
+    171
+   ],
+   "numbers": {
+    "12.4": "print_production_mark"
+   },
+   "passage_class": "print_production_mark",
+   "sha256": "c518eb20c5574548c2c77494f4dfa835c025c132508cd6adadc69eb65991fadd",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:9704371#185427",
+   "doc_id": "law-go-kr:admrul-file:9704371",
+   "pages": [
+    199,
+    200
+   ],
+   "numbers": {
+    "12.0": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "445666ff838807f57aaa34b1da6680e455adc58458f540c0fd411987c76b4721",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:9704371#200892",
+   "doc_id": "law-go-kr:admrul-file:9704371",
+   "pages": [
+    215,
+    215
+   ],
+   "numbers": {
+    "12.4": "print_production_mark"
+   },
+   "passage_class": "print_production_mark",
+   "sha256": "4dbdbce194bd3a8512914625cfa637097d3dfb478dd19135874dac2c29b2269e",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:9704371#214760",
+   "doc_id": "law-go-kr:admrul-file:9704371",
+   "pages": [
+    231,
+    232
+   ],
+   "numbers": {
+    "12.4": "print_production_mark"
+   },
+   "passage_class": "print_production_mark",
+   "sha256": "babf96d1ff151916767b9c594139acb47c6fb8aa82cc79963d9578b4f7f33906",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:9704371#274502",
+   "doc_id": "law-go-kr:admrul-file:9704371",
+   "pages": [
+    309,
+    310
+   ],
+   "numbers": {
+    "12.4": "print_production_mark"
+   },
+   "passage_class": "print_production_mark",
+   "sha256": "628ff47238b3975a5c23f2154656a8171ac6ecd8a230b308f28133ccc71b79f5",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:9704371#305572",
+   "doc_id": "law-go-kr:admrul-file:9704371",
+   "pages": [
+    339,
+    339
+   ],
+   "numbers": {
+    "12.4": "print_production_mark"
+   },
+   "passage_class": "print_production_mark",
+   "sha256": "0e32a7390327d34c99fca1e2890d4568839f79dbc69ee6a9b39f984154643d3b",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:9704371#307879",
+   "doc_id": "law-go-kr:admrul-file:9704371",
+   "pages": [
+    340,
+    341
+   ],
+   "numbers": {
+    "12.4": "print_production_mark"
+   },
+   "passage_class": "print_production_mark",
+   "sha256": "a6c20003ddbda3ab33ea7c0f2c578cb219e318b6dbb57596501f3a4fc5b95db5",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:9704371#355399",
+   "doc_id": "law-go-kr:admrul-file:9704371",
+   "pages": [
+    357,
+    386
+   ],
+   "numbers": {
+    "12.4": "print_production_mark"
+   },
+   "passage_class": "print_production_mark",
+   "sha256": "c1b0d4593d87789f1960d364285a8b3ee36ce7104870acfee18e02b0a7b3d785",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:9704371#358152",
+   "doc_id": "law-go-kr:admrul-file:9704371",
+   "pages": [
+    389,
+    389
+   ],
+   "numbers": {
+    "12.4": "print_production_mark"
+   },
+   "passage_class": "print_production_mark",
+   "sha256": "6368c1e97f943e6167b972f267a396fbf9df5ebec11eb42fa58e0faf0c342361",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:9704371#360213",
+   "doc_id": "law-go-kr:admrul-file:9704371",
+   "pages": [
+    392,
+    392
+   ],
+   "numbers": {
+    "12.4": "print_production_mark"
+   },
+   "passage_class": "print_production_mark",
+   "sha256": "c1ffd6ab0c7a0ed4e1cdaa897993c5e2bee4ad06040a004b2e40196aa6a989d4",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:9704371#361478",
+   "doc_id": "law-go-kr:admrul-file:9704371",
+   "pages": [
+    394,
+    394
+   ],
+   "numbers": {
+    "12.4": "print_production_mark"
+   },
+   "passage_class": "print_production_mark",
+   "sha256": "dbec944583f9d42a21e74901fc006ce19391c9a0da8e5344ab8369235e262586",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:9704371#372926",
+   "doc_id": "law-go-kr:admrul-file:9704371",
+   "pages": [
+    408,
+    408
+   ],
+   "numbers": {
+    "12.4": "print_production_mark"
+   },
+   "passage_class": "print_production_mark",
+   "sha256": "79930f3a75d7e4fbd5e972c6698903a8541b5580e79a12cdbc191d4728457f7d",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:9704371#383921",
+   "doc_id": "law-go-kr:admrul-file:9704371",
+   "pages": [
+    5,
+    427
+   ],
+   "numbers": {
+    "12.4": "print_production_mark"
+   },
+   "passage_class": "print_production_mark",
+   "sha256": "a72b48912e8b3c78983d9be2c1f7839fe83223748543821eae52a41bc8d54d1d",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:9704371#413073",
+   "doc_id": "law-go-kr:admrul-file:9704371",
+   "pages": [
+    460,
+    460
+   ],
+   "numbers": {
+    "2.1": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "0587133f5413f819f17a23617d7a03ae7dcecb62c1a9c3c37e321a6f0eb68355",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:9704371#416258",
+   "doc_id": "law-go-kr:admrul-file:9704371",
+   "pages": [
+    461,
+    462
+   ],
+   "numbers": {
+    "12.4": "print_production_mark",
+    "2826": "not_in_pdf",
+    "164": "elsewhere_in_pdf"
+   },
+   "passage_class": "not_in_pdf",
+   "sha256": "3a01fd1dc15513404338ed844e6227bc1933b06a9da5eb409b0c827a3e89275a",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:9704371#461249",
+   "doc_id": "law-go-kr:admrul-file:9704371",
+   "pages": [
+    509,
+    509
+   ],
+   "numbers": {
+    "12.4": "not_in_pdf"
+   },
+   "passage_class": "not_in_pdf",
+   "sha256": "9393914363abdb3e421585fd978154a711267ba8bbf4d19c24a18ad074aecb9b",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:169016571#8857",
+   "doc_id": "law-go-kr:admrul-file:169016571",
+   "pages": [
+    18,
+    18
+   ],
+   "numbers": {
+    "4.30": "whitespace_split",
+    "4.24": "elsewhere_in_pdf"
+   },
+   "passage_class": "elsewhere_in_pdf",
+   "sha256": "f66ff362081e3ff0ddf895722d181b51c8a4572d292d997b4e50b338e984dfcd",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:169016571#24065",
+   "doc_id": "law-go-kr:admrul-file:169016571",
+   "pages": [
+    36,
+    36
+   ],
+   "numbers": {
+    "1": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "9a99e83f2395d438ed770e36f5f42bf1faf9dd55953c434d26f3cef122bda9b8",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:169016571#25231",
+   "doc_id": "law-go-kr:admrul-file:169016571",
+   "pages": [
+    41,
+    41
+   ],
+   "numbers": {
+    "2": "whitespace_split",
+    "7": "whitespace_split",
+    "8": "elsewhere_in_pdf_short_number",
+    "10": "elsewhere_in_pdf_short_number",
+    "11": "elsewhere_in_pdf_short_number",
+    "12": "elsewhere_in_pdf_short_number",
+    "47": "elsewhere_in_pdf_short_number"
+   },
+   "passage_class": "elsewhere_in_pdf_short_number",
+   "sha256": "ba271470f0da23dd1c32b9c307b8deef2b79b66e3a1715bb77458140e109ccb5",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:169016571#65501",
+   "doc_id": "law-go-kr:admrul-file:169016571",
+   "pages": [
+    88,
+    88
+   ],
+   "numbers": {
+    "95": "elsewhere_in_pdf_short_number"
+   },
+   "passage_class": "elsewhere_in_pdf_short_number",
+   "sha256": "097a772c88e890f81dc5a17752fdab200294fb2f55a67202f1514943f5a21a8d",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:169016571#78204",
+   "doc_id": "law-go-kr:admrul-file:169016571",
+   "pages": [
+    99,
+    100
+   ],
+   "numbers": {
+    "1": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "0ed069a531199bc51a18465d130763f7038e64ee1736fdd0b53f5d646a4c4fc3",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:10400182#71829",
+   "doc_id": "law-go-kr:admrul-file:10400182",
+   "pages": [
+    39,
+    39
+   ],
+   "numbers": {
+    "08.6": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "7550dd69ae2afd0c3b07bc954e802f306163d88d605804ebc6f0884802aea4c5",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:159082295#156590",
+   "doc_id": "law-go-kr:admrul-file:159082295",
+   "pages": [
+    194,
+    195
+   ],
+   "numbers": {
+    "0033921": "not_in_pdf"
+   },
+   "passage_class": "not_in_pdf",
+   "sha256": "dcc85c165a890f014862bec06301b7d55711f3166805bc5feffad43837135753",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:159082295#363326",
+   "doc_id": "law-go-kr:admrul-file:159082295",
+   "pages": [
+    453,
+    453
+   ],
+   "numbers": {
+    "8": "elsewhere_in_pdf_short_number"
+   },
+   "passage_class": "elsewhere_in_pdf_short_number",
+   "sha256": "e96e3467784823e9da8881d62db7a35554bd5b446466eca38c4dfa67add11e6d",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:159082295#399219",
+   "doc_id": "law-go-kr:admrul-file:159082295",
+   "pages": [
+    496,
+    501
+   ],
+   "numbers": {
+    "9": "elsewhere_in_pdf_short_number"
+   },
+   "passage_class": "elsewhere_in_pdf_short_number",
+   "sha256": "5626e3f5b501a6c27ee80639598b94522e35b7877a3e738e88644358f946cabf",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:159082295#415765",
+   "doc_id": "law-go-kr:admrul-file:159082295",
+   "pages": [
+    529,
+    529
+   ],
+   "numbers": {
+    "10": "elsewhere_in_pdf_short_number"
+   },
+   "passage_class": "elsewhere_in_pdf_short_number",
+   "sha256": "943024633e19df0660623a1a9ebee95a9caaa355e522591940a1bc22fe62521c",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:9704109#41927",
+   "doc_id": "law-go-kr:admrul-file:9704109",
+   "pages": [
+    61,
+    61
+   ],
+   "numbers": {
+    "12.4": "print_production_mark"
+   },
+   "passage_class": "print_production_mark",
+   "sha256": "ac18d66fdd5064ee26160bbb4c43bbbd79cb737ae5d4e769e4812057e85eac2f",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:9704109#54457",
+   "doc_id": "law-go-kr:admrul-file:9704109",
+   "pages": [
+    76,
+    77
+   ],
+   "numbers": {
+    "12.4": "print_production_mark"
+   },
+   "passage_class": "print_production_mark",
+   "sha256": "f8e1d38e2985195d13b6f700dabea1b0b58c5f3f4d6dc1bc2a0297dcda90aebf",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:9704109#79239",
+   "doc_id": "law-go-kr:admrul-file:9704109",
+   "pages": [
+    109,
+    109
+   ],
+   "numbers": {
+    "12.4": "print_production_mark"
+   },
+   "passage_class": "print_production_mark",
+   "sha256": "1ddbef4eb96d5bda0744ac798ea9cb688caf467047cbf57656a9a3bd56e00dfd",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:9704109#80953",
+   "doc_id": "law-go-kr:admrul-file:9704109",
+   "pages": [
+    113,
+    113
+   ],
+   "numbers": {
+    "12.4": "print_production_mark"
+   },
+   "passage_class": "print_production_mark",
+   "sha256": "dac6eba15cc0b194def077c08d8deab326be44014af5dc00901385958bca6acf",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:9704109#130197",
+   "doc_id": "law-go-kr:admrul-file:9704109",
+   "pages": [
+    179,
+    179
+   ],
+   "numbers": {
+    "12.4": "print_production_mark"
+   },
+   "passage_class": "print_production_mark",
+   "sha256": "1a55a23b2f16219e821f3e6c548c3c0e9d729f804dcbf4532fcdbb558506f1a5",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:9704109#148755",
+   "doc_id": "law-go-kr:admrul-file:9704109",
+   "pages": [
+    207,
+    207
+   ],
+   "numbers": {
+    "12.4": "print_production_mark"
+   },
+   "passage_class": "print_production_mark",
+   "sha256": "286de2c15f1cb7a003d7bac7114a79ea6720ae3ca22d9c2852a5d63f1a0b93b1",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:9704109#165214",
+   "doc_id": "law-go-kr:admrul-file:9704109",
+   "pages": [
+    227,
+    227
+   ],
+   "numbers": {
+    "12.4": "print_production_mark"
+   },
+   "passage_class": "print_production_mark",
+   "sha256": "09dd9565fd34001f1c9f0b053021c53aab6fb95b40218731a9e6341228fdc118",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:9704109#188458",
+   "doc_id": "law-go-kr:admrul-file:9704109",
+   "pages": [
+    254,
+    254
+   ],
+   "numbers": {
+    "12.4": "print_production_mark"
+   },
+   "passage_class": "print_production_mark",
+   "sha256": "ac994e487387f69b6f88afa51e695c40ec6b7e0e6eb3a335bcd48386b450a90c",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:9704109#189666",
+   "doc_id": "law-go-kr:admrul-file:9704109",
+   "pages": [
+    255,
+    256
+   ],
+   "numbers": {
+    "12.4": "print_production_mark"
+   },
+   "passage_class": "print_production_mark",
+   "sha256": "bb970bfa96aec9a2b7e31eb00830227a76d5dd2afd4e53be7b5f2f33542fb1c4",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:9704109#208871",
+   "doc_id": "law-go-kr:admrul-file:9704109",
+   "pages": [
+    281,
+    282
+   ],
+   "numbers": {
+    "11": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "7bbf96267a45de9f92e399f3c77fe1cb9c2bdc9068244b258d025edd514755df",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:9704109#244443",
+   "doc_id": "law-go-kr:admrul-file:9704109",
+   "pages": [
+    331,
+    331
+   ],
+   "numbers": {
+    "12.4": "print_production_mark"
+   },
+   "passage_class": "print_production_mark",
+   "sha256": "f8f03c24762727c2551e2f525246c1116a5e2193da34d20e99e651d87b318cc9",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:9704109#258253",
+   "doc_id": "law-go-kr:admrul-file:9704109",
+   "pages": [
+    353,
+    354
+   ],
+   "numbers": {
+    "12.4": "print_production_mark"
+   },
+   "passage_class": "print_production_mark",
+   "sha256": "da3a61cf253ac4696884d922f2611a30f7b20c48a4e23eaee8fc8a6945623785",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:9704109#259617",
+   "doc_id": "law-go-kr:admrul-file:9704109",
+   "pages": [
+    355,
+    355
+   ],
+   "numbers": {
+    "12.4": "print_production_mark"
+   },
+   "passage_class": "print_production_mark",
+   "sha256": "5f372119c59a86c7aef3693b6007f3af6191ae261ec2aff4cd377d4cc61efedb",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:9704109#268476",
+   "doc_id": "law-go-kr:admrul-file:9704109",
+   "pages": [
+    368,
+    368
+   ],
+   "numbers": {
+    "12.4": "not_in_pdf"
+   },
+   "passage_class": "not_in_pdf",
+   "sha256": "4fc101463519068107c4e3e20bc05dfe0e48bea4577b3c852446f7e9b3e77447",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:153642589#1373",
+   "doc_id": "law-go-kr:admrul-file:153642589",
+   "pages": [
+    36,
+    36
+   ],
+   "numbers": {
+    "37": "elsewhere_in_pdf_short_number",
+    "18": "elsewhere_in_pdf_short_number",
+    "33": "elsewhere_in_pdf_short_number",
+    "19": "elsewhere_in_pdf_short_number",
+    "36": "elsewhere_in_pdf_short_number",
+    "20": "elsewhere_in_pdf_short_number",
+    "22": "elsewhere_in_pdf_short_number",
+    "38": "elsewhere_in_pdf_short_number"
+   },
+   "passage_class": "elsewhere_in_pdf_short_number",
+   "sha256": "d30df99e96a0d52392cbca713ebcfa2299cfc30ee884d166506b2aceffe333d0",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:153642589#2344",
+   "doc_id": "law-go-kr:admrul-file:153642589",
+   "pages": [
+    125,
+    125
+   ],
+   "numbers": {
+    "126": "elsewhere_in_pdf",
+    "119": "whitespace_split",
+    "51": "elsewhere_in_pdf_short_number",
+    "122": "elsewhere_in_pdf",
+    "52": "elsewhere_in_pdf_short_number",
+    "125": "elsewhere_in_pdf",
+    "53": "elsewhere_in_pdf_short_number",
+    "54": "elsewhere_in_pdf_short_number",
+    "55": "elsewhere_in_pdf_short_number",
+    "127": "elsewhere_in_pdf"
+   },
+   "passage_class": "elsewhere_in_pdf",
+   "sha256": "643955c3ee1ef542ae2cd213eb23f58f2c0835dcf5efbdb4d64af0813c38dc64",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:153642589#3384",
+   "doc_id": "law-go-kr:admrul-file:153642589",
+   "pages": [
+    189,
+    191
+   ],
+   "numbers": {
+    "183": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "0cff5d609f1b21d91c58d1fec56c0e298b0d3b49a0e93c3bc43c186f87d7d740",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:153642589#3448",
+   "doc_id": "law-go-kr:admrul-file:153642589",
+   "pages": [
+    189,
+    191
+   ],
+   "numbers": {
+    "185": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "2eaeb75abc6790baec51f0188c36b19e4cedeaf7f78e4b7ea3334a6d2a046dd2",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:153642589#18242",
+   "doc_id": "law-go-kr:admrul-file:153642589",
+   "pages": [
+    24,
+    24
+   ],
+   "numbers": {
+    "1": "whitespace_split",
+    "30": "equation_object",
+    "10": "whitespace_split",
+    "60": "whitespace_split"
+   },
+   "passage_class": "equation_object",
+   "sha256": "46ca80c5f2dc8a1f299b68f88e69eba21edf613b20f0c616226074effb89fd2c",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:153642589#38682",
+   "doc_id": "law-go-kr:admrul-file:153642589",
+   "pages": [
+    32,
+    32
+   ],
+   "numbers": {
+    "2343": "elsewhere_in_pdf",
+    "2342": "elsewhere_in_pdf"
+   },
+   "passage_class": "elsewhere_in_pdf",
+   "sha256": "a9f78b7f259b9165fd9156199087f7a744c77cce3d5362b53882976aea655f6c",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:153642589#48741",
+   "doc_id": "law-go-kr:admrul-file:153642589",
+   "pages": [
+    40,
+    40
+   ],
+   "numbers": {
+    "12": "elsewhere_in_pdf_short_number"
+   },
+   "passage_class": "elsewhere_in_pdf_short_number",
+   "sha256": "fb714622e69c9d6da01146b897e82b8b77b1a20b9843d7caeb22fa50dbaee720",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:153642589#52570",
+   "doc_id": "law-go-kr:admrul-file:153642589",
+   "pages": [
+    44,
+    44
+   ],
+   "numbers": {
+    "1": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "a784871d0144592aa547e9d3380aafb98524f6c3cace7a421a71f7d068105d82",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:153642589#55858",
+   "doc_id": "law-go-kr:admrul-file:153642589",
+   "pages": [
+    47,
+    47
+   ],
+   "numbers": {
+    "208": "whitespace_split",
+    "209": "elsewhere_in_pdf",
+    "211": "elsewhere_in_pdf",
+    "304": "elsewhere_in_pdf",
+    "306": "elsewhere_in_pdf",
+    "401": "elsewhere_in_pdf"
+   },
+   "passage_class": "elsewhere_in_pdf",
+   "sha256": "8908e2bec7fa2ebaf394b9ed87626644a5505007295f9ed0f4e5d146971227a4",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:153642589#71992",
+   "doc_id": "law-go-kr:admrul-file:153642589",
+   "pages": [
+    56,
+    57
+   ],
+   "numbers": {
+    "345": "not_in_pdf"
+   },
+   "passage_class": "not_in_pdf",
+   "sha256": "0ad75f6998921b405c6329548af5ac889ecb25b7fa56d8353385fd4e82bc73c8",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:153642589#80030",
+   "doc_id": "law-go-kr:admrul-file:153642589",
+   "pages": [
+    61,
+    67
+   ],
+   "numbers": {
+    "15": "elsewhere_in_pdf_short_number",
+    "20": "elsewhere_in_pdf_short_number",
+    "40": "elsewhere_in_pdf_short_number"
+   },
+   "passage_class": "elsewhere_in_pdf_short_number",
+   "sha256": "da406dc2df1927274b8e46e40ba47ee52d7d869350b316751fd3dd3486956c6d",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:153642589#89160",
+   "doc_id": "law-go-kr:admrul-file:153642589",
+   "pages": [
+    86,
+    87
+   ],
+   "numbers": {
+    "1": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "757a4617377149417ce7fa47d8c26b93000f46dc8dd7279b74c9b33aec8dd50c",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:153642589#90733",
+   "doc_id": "law-go-kr:admrul-file:153642589",
+   "pages": [
+    87,
+    88
+   ],
+   "numbers": {
+    "1": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "027a46e3bd4025e1beeb0b9435d71c6644bf9aa75883decd3d159be32e593b0b",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:153642589#94552",
+   "doc_id": "law-go-kr:admrul-file:153642589",
+   "pages": [
+    92,
+    92
+   ],
+   "numbers": {
+    "8": "elsewhere_in_pdf_short_number"
+   },
+   "passage_class": "elsewhere_in_pdf_short_number",
+   "sha256": "964dcdf26a8ea51e611d16de554b5c71b039ec3be667012caecdf6bd55cecb42",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:153642589#102282",
+   "doc_id": "law-go-kr:admrul-file:153642589",
+   "pages": [
+    99,
+    99
+   ],
+   "numbers": {
+    "32": "elsewhere_in_pdf_short_number"
+   },
+   "passage_class": "elsewhere_in_pdf_short_number",
+   "sha256": "88777f3bbb4bd9eaa8da67b6e548a5f9884582adf7e3c85de36edb7d2b82d860",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:153642589#105077",
+   "doc_id": "law-go-kr:admrul-file:153642589",
+   "pages": [
+    102,
+    102
+   ],
+   "numbers": {
+    "1": "whitespace_split",
+    "2.5": "equation_object",
+    "64": "elsewhere_in_pdf_short_number",
+    "9.2": "elsewhere_in_pdf_short_number",
+    "234": "elsewhere_in_pdf",
+    "1.5": "elsewhere_in_pdf_short_number",
+    "40": "elsewhere_in_pdf_short_number",
+    "100": "elsewhere_in_pdf"
+   },
+   "passage_class": "equation_object",
+   "sha256": "6c9b79d8ae154dfe7978a19baea10c56e5dc3cfcb3da9d3ee5ea8aa333361846",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:153642589#106881",
+   "doc_id": "law-go-kr:admrul-file:153642589",
+   "pages": [
+    104,
+    104
+   ],
+   "numbers": {
+    "1.00": "elsewhere_in_pdf",
+    "0.75": "whitespace_split",
+    "1.0": "whitespace_split",
+    "0.35": "elsewhere_in_pdf",
+    "0.50": "elsewhere_in_pdf",
+    "0.51": "elsewhere_in_pdf",
+    "0.76": "elsewhere_in_pdf",
+    "0.85": "elsewhere_in_pdf",
+    "0.86": "elsewhere_in_pdf",
+    "0.80": "elsewhere_in_pdf"
+   },
+   "passage_class": "elsewhere_in_pdf",
+   "sha256": "a704b1b561eae4a401d7eb148599bff8318fdfddfc536c2ccbbebc67b3d4c081",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:153642589#120054",
+   "doc_id": "law-go-kr:admrul-file:153642589",
+   "pages": [
+    113,
+    115
+   ],
+   "numbers": {
+    "1": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "ef3ee6dc0baabea979679e9d4254f8bfa4032c8009f121e5aa9f242141c08487",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:153642589#123895",
+   "doc_id": "law-go-kr:admrul-file:153642589",
+   "pages": [
+    123,
+    123
+   ],
+   "numbers": {
+    "1": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "a6cdc044dacdb77f89d47db8acb4d9a47d0aa887ab8290df6cf452ac56cbba8c",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:153642589#143553",
+   "doc_id": "law-go-kr:admrul-file:153642589",
+   "pages": [
+    143,
+    143
+   ],
+   "numbers": {
+    "1": "whitespace_split",
+    "20": "elsewhere_in_pdf_short_number"
+   },
+   "passage_class": "elsewhere_in_pdf_short_number",
+   "sha256": "bd1b2b49b9a7065c652ac9820db725e64531a1a0d610e49b6179bf93594c01d7",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:153642589#156827",
+   "doc_id": "law-go-kr:admrul-file:153642589",
+   "pages": [
+    157,
+    157
+   ],
+   "numbers": {
+    "1": "whitespace_split",
+    "102": "elsewhere_in_pdf",
+    "8": "whitespace_split"
+   },
+   "passage_class": "elsewhere_in_pdf",
+   "sha256": "5bfbe2dda7f821d255512c8e41a9884c196b254c8922b9f2b076dd801d89f5fd",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:137691407#24634",
+   "doc_id": "law-go-kr:admrul-file:137691407",
+   "pages": [
+    43,
+    43
+   ],
+   "numbers": {
+    "29": "elsewhere_in_pdf_short_number"
+   },
+   "passage_class": "elsewhere_in_pdf_short_number",
+   "sha256": "fa25374450eb1f1f51978a0bac9650d8d80c9dbf7549928fd62488f02b503b1c",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:137691407#99796",
+   "doc_id": "law-go-kr:admrul-file:137691407",
+   "pages": [
+    109,
+    109
+   ],
+   "numbers": {
+    "0.90": "whitespace_split",
+    "12": "elsewhere_in_pdf_short_number",
+    "2": "elsewhere_in_pdf_short_number",
+    "605": "whitespace_split",
+    "60": "whitespace_split",
+    "6": "whitespace_split",
+    "0.66": "whitespace_split",
+    "1.20": "whitespace_split",
+    "0.05": "elsewhere_in_pdf",
+    "1210": "elsewhere_in_pdf"
+   },
+   "passage_class": "elsewhere_in_pdf",
+   "sha256": "0b039a06f330e199da6f76a44f71709573a98e8ede20796f9743670e3fa3283b",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:137691407#112680",
+   "doc_id": "law-go-kr:admrul-file:137691407",
+   "pages": [
+    120,
+    120
+   ],
+   "numbers": {
+    "100": "whitespace_split",
+    "80": "whitespace_split",
+    "20": "whitespace_split",
+    "21": "elsewhere_in_pdf_short_number",
+    "40": "elsewhere_in_pdf_short_number",
+    "60": "elsewhere_in_pdf_short_number",
+    "61": "whitespace_split",
+    "81": "elsewhere_in_pdf_short_number"
+   },
+   "passage_class": "elsewhere_in_pdf_short_number",
+   "sha256": "2efc5132d2d83642c27137b364a862f81df2b071b8711ad0b32f8c9dbae58190",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:137691407#136838",
+   "doc_id": "law-go-kr:admrul-file:137691407",
+   "pages": [
+    148,
+    150
+   ],
+   "numbers": {
+    "2": "whitespace_split",
+    "3.6": "elsewhere_in_pdf_short_number",
+    "0.6": "whitespace_split",
+    "3.7": "whitespace_split",
+    "3": "whitespace_split"
+   },
+   "passage_class": "elsewhere_in_pdf_short_number",
+   "sha256": "59f70a2ee96ef2b4a0c917943bc04ca93f67ca508098f6f581a1d5de30fa1381",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:137691407#155107",
+   "doc_id": "law-go-kr:admrul-file:137691407",
+   "pages": [
+    163,
+    166
+   ],
+   "numbers": {
+    "3": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "f70c929034807f61014f9b58fdd8d82370c3e9dfcfb5d17291a2f235b4c5c5d9",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:137691407#184313",
+   "doc_id": "law-go-kr:admrul-file:137691407",
+   "pages": [
+    179,
+    179
+   ],
+   "numbers": {
+    "4": "elsewhere_in_pdf_short_number",
+    "2": "whitespace_split",
+    "5": "elsewhere_in_pdf_short_number",
+    "6": "elsewhere_in_pdf_short_number",
+    "7": "elsewhere_in_pdf_short_number"
+   },
+   "passage_class": "elsewhere_in_pdf_short_number",
+   "sha256": "8354e467d2c09ee64127b470cfaf2370606926ed37efa573b26635ea56a1d592",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:158786813#200999",
+   "doc_id": "law-go-kr:admrul-file:158786813",
+   "pages": [
+    280,
+    280
+   ],
+   "numbers": {
+    "1": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "f485d5bd861307efe3833c78cef1fd9a2d65629e059de057fe36062d06d89808",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:158786813#310959",
+   "doc_id": "law-go-kr:admrul-file:158786813",
+   "pages": [
+    428,
+    429
+   ],
+   "numbers": {
+    "2.1": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "f41befd9354d1b4d6b3759d2fad54ddf688984264eb37c9db970307b3718766a",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:158786813#317247",
+   "doc_id": "law-go-kr:admrul-file:158786813",
+   "pages": [
+    440,
+    440
+   ],
+   "numbers": {
+    "7": "elsewhere_in_pdf_short_number",
+    "8": "elsewhere_in_pdf_short_number"
+   },
+   "passage_class": "elsewhere_in_pdf_short_number",
+   "sha256": "4bc6b17e05429f105660f02acebd8bf5d71dac27d256d3a8e22b78e8e8b1c110",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:10398280#43",
+   "doc_id": "law-go-kr:admrul-file:10398280",
+   "pages": [
+    3,
+    3
+   ],
+   "numbers": {
+    "02.29": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "4736e5e7ce61f10eae65f7e416a2c953951520ab0cf5701985a078f14ada6e8e",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:10398280#58722",
+   "doc_id": "law-go-kr:admrul-file:10398280",
+   "pages": [
+    126,
+    126
+   ],
+   "numbers": {
+    "3": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "10b6ab686f71e321493747b33408dfaad072104b1b621022888c32c7c7552a11",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:10398280#74788",
+   "doc_id": "law-go-kr:admrul-file:10398280",
+   "pages": [
+    177,
+    177
+   ],
+   "numbers": {
+    "12": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "acc57cef9e8c38c91b4ed026d13470ce46698f8bdadddda0f98d29136a212038",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:162887313#102697",
+   "doc_id": "law-go-kr:admrul-file:162887313",
+   "pages": [
+    57,
+    58
+   ],
+   "numbers": {
+    "55": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "6e0b336a426b3f97f902d8cf9da6979631946f2cd0750f89a0b92aa02ceefc07",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:162887313#105948",
+   "doc_id": "law-go-kr:admrul-file:162887313",
+   "pages": [
+    60,
+    63
+   ],
+   "numbers": {
+    "8": "whitespace_split",
+    "9": "whitespace_split",
+    "10": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "ba2fee285862e9f3f677d20b604b288b859628e8020680f1d807faaa40921ffb",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:162887313#108579",
+   "doc_id": "law-go-kr:admrul-file:162887313",
+   "pages": [
+    69,
+    69
+   ],
+   "numbers": {
+    "3600": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "63465f485d053c73af97500e3a6fe00905be7895a20f5951e405ff83b57a21a7",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:162887313#167598",
+   "doc_id": "law-go-kr:admrul-file:162887313",
+   "pages": [
+    140,
+    144
+   ],
+   "numbers": {
+    "8": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "0c367e7c725c93d618ea9916fc331a4fb0c527718471e1851fcfc4d1f9b57e6f",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:162887313#194878",
+   "doc_id": "law-go-kr:admrul-file:162887313",
+   "pages": [
+    178,
+    185
+   ],
+   "numbers": {
+    "0.027": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "9a6f4c13779c638ad5f1efe7c645cb357c360482f190a47078f7895fe4eecc91",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:162887313#196408",
+   "doc_id": "law-go-kr:admrul-file:162887313",
+   "pages": [
+    179,
+    180
+   ],
+   "numbers": {
+    "0.027": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "f58ae92fd6635c4d19e4858b7e65b99562053d9abc97db19a0cbf7b40a8a5e2a",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:162887313#203653",
+   "doc_id": "law-go-kr:admrul-file:162887313",
+   "pages": [
+    180,
+    185
+   ],
+   "numbers": {
+    "0.027": "equation_object",
+    "222": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "b64f96463f279f11422a6487219c26ca7ae0f8ba37c462b9cfee1f349bcb940c",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:162887313#223142",
+   "doc_id": "law-go-kr:admrul-file:162887313",
+   "pages": [
+    195,
+    196
+   ],
+   "numbers": {
+    "0.1346": "not_in_pdf"
+   },
+   "passage_class": "not_in_pdf",
+   "sha256": "09c962b6e4e8ef69194ec056cbce1b93b5c2a3968d8d4499e438088d1615d52e",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:162887313#224733",
+   "doc_id": "law-go-kr:admrul-file:162887313",
+   "pages": [
+    196,
+    197
+   ],
+   "numbers": {
+    "0.03433": "not_in_pdf"
+   },
+   "passage_class": "not_in_pdf",
+   "sha256": "a74665ce531efc2e49e0d7e9d96f7278c7b687ddb336acb5c3c226bf86b7da16",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:162887313#227938",
+   "doc_id": "law-go-kr:admrul-file:162887313",
+   "pages": [
+    199,
+    214
+   ],
+   "numbers": {
+    "20": "elsewhere_in_pdf_short_number",
+    "11": "whitespace_split",
+    "1": "whitespace_split",
+    "15": "whitespace_split",
+    "5": "whitespace_split",
+    "26": "elsewhere_in_pdf_short_number",
+    "125": "elsewhere_in_pdf",
+    "33": "elsewhere_in_pdf_short_number",
+    "12.73": "elsewhere_in_pdf",
+    "6.93": "elsewhere_in_pdf"
+   },
+   "passage_class": "elsewhere_in_pdf",
+   "sha256": "081ef993891593223e1380d092c4429fcc6c05cbebc26d09c9cdea845d08a633",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:162887313#302688",
+   "doc_id": "law-go-kr:admrul-file:162887313",
+   "pages": [
+    317,
+    318
+   ],
+   "numbers": {
+    "30": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "5ec17930792448bf407690427548b33722c3c59968aa86d5dea87be9ca9a1ee7",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:162887313#325968",
+   "doc_id": "law-go-kr:admrul-file:162887313",
+   "pages": [
+    351,
+    352
+   ],
+   "numbers": {
+    "900": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "ee7a0306d3ba02f360cecaeee5ace50b8d7b5fd161051d7b34fa573bee13a162",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:162887313#327865",
+   "doc_id": "law-go-kr:admrul-file:162887313",
+   "pages": [
+    352,
+    353
+   ],
+   "numbers": {
+    "900": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "9a60ed81d4080922d2595b3eb1523bfbbbaaca7c4a38195049594632b2bc0615",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:162887313#332314",
+   "doc_id": "law-go-kr:admrul-file:162887313",
+   "pages": [
+    360,
+    360
+   ],
+   "numbers": {
+    "0.0239": "equation_object",
+    "0.0092": "equation_object",
+    "50": "equation_object",
+    "0.1": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "d7506344036280d8253081e9c3891b3f3d3c175e4318abd30cab1e2b72f74c59",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:162887313#334316",
+   "doc_id": "law-go-kr:admrul-file:162887313",
+   "pages": [
+    362,
+    363
+   ],
+   "numbers": {
+    "1000": "whitespace_split",
+    "0.001": "equation_object",
+    "6076": "equation_object",
+    "0.0001646": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "75bf988225e9bfc5a5acbec9795868139b3787d9cb9a80de6efc26cc898e3251",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:162887313#357720",
+   "doc_id": "law-go-kr:admrul-file:162887313",
+   "pages": [
+    398,
+    398
+   ],
+   "numbers": {
+    "60": "equation_object",
+    "1.9": "equation_object",
+    "2.8": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "1b8704ccaf3ec7db19594d6c803df9d049f6a5d34e4a61e0e237a8788d37e51c",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:162887313#363304",
+   "doc_id": "law-go-kr:admrul-file:162887313",
+   "pages": [
+    404,
+    404
+   ],
+   "numbers": {
+    "1.9": "whitespace_split",
+    "0.1": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "19a45c8926c14b64922c1cd8b21383e5d901e300eca314207076ec1b9b5f2996",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:162887313#363694",
+   "doc_id": "law-go-kr:admrul-file:162887313",
+   "pages": [
+    404,
+    404
+   ],
+   "numbers": {
+    "1.0": "equation_object",
+    "0.1": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "15d826950cdf9782e5025d404233dfe113d8f816392fe99fd2ee7f5f37c6d45d",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:162887313#369103",
+   "doc_id": "law-go-kr:admrul-file:162887313",
+   "pages": [
+    413,
+    413
+   ],
+   "numbers": {
+    "12": "equation_object",
+    "87": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "d62f9d0831c83834ccb9ac53330452a471b60bd196172f6d84c437ebe25e49e9",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:162887313#369310",
+   "doc_id": "law-go-kr:admrul-file:162887313",
+   "pages": [
+    413,
+    413
+   ],
+   "numbers": {
+    "47": "equation_object",
+    "1000": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "248029133d41bedbee41c61bbe9577b807845341e8326eb5c0c5ce232168bdfd",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:162887313#369637",
+   "doc_id": "law-go-kr:admrul-file:162887313",
+   "pages": [
+    413,
+    414
+   ],
+   "numbers": {
+    "165": "whitespace_split",
+    "9.00": "whitespace_split",
+    "33.54": "equation_object",
+    "61.04": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "0eac3828068469442de1b72f4ef8872a00d5865b1a7828d502fe5bfa7091511e",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:162887313#370702",
+   "doc_id": "law-go-kr:admrul-file:162887313",
+   "pages": [
+    414,
+    414
+   ],
+   "numbers": {
+    "4.13": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "7b0570a92a252bcb01bd829fdca6e3887c84aa2c28bfdea47772c8210c7a9230",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:162887313#371022",
+   "doc_id": "law-go-kr:admrul-file:162887313",
+   "pages": [
+    415,
+    415
+   ],
+   "numbers": {
+    "1.23": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "de0702959bafdd629b9bf69071296ab9f5f56685863390f150b4541612577afc",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:162887313#388887",
+   "doc_id": "law-go-kr:admrul-file:162887313",
+   "pages": [
+    443,
+    443
+   ],
+   "numbers": {
+    "87": "equation_object",
+    "47": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "fe6a746cf255eeccb94ca082f08b5b66feaf7e5c630d090680349020dafa35dc",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:162887313#389457",
+   "doc_id": "law-go-kr:admrul-file:162887313",
+   "pages": [
+    444,
+    444
+   ],
+   "numbers": {
+    "102.06": "equation_object",
+    "0.00067515": "equation_object",
+    "60": "equation_object",
+    "03": "equation_object",
+    "0": "equation_object",
+    "25": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "87a09e097119d29737a2a58c0d03cbb8f384fd7a78a1346ec80db12276d0d595",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:162887313#389709",
+   "doc_id": "law-go-kr:admrul-file:162887313",
+   "pages": [
+    447,
+    447
+   ],
+   "numbers": {
+    "1": "whitespace_split",
+    "2": "whitespace_split",
+    "15": "elsewhere_in_pdf_short_number",
+    "0.055": "equation_object",
+    "0.164": "equation_object",
+    "55": "equation_object",
+    "55.1088": "equation_object",
+    "0.0023157": "equation_object",
+    "17": "whitespace_split",
+    "50": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "6e77ba25471eac8ad479d19974dd31b966eb5e1b231354b5a286c8aab6246e83",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:162887313#392771",
+   "doc_id": "law-go-kr:admrul-file:162887313",
+   "pages": [
+    451,
+    451
+   ],
+   "numbers": {
+    "312.6": "elsewhere_in_pdf",
+    "317.4": "elsewhere_in_pdf",
+    "322.2": "elsewhere_in_pdf",
+    "1000": "elsewhere_in_pdf",
+    "2000": "elsewhere_in_pdf",
+    "3000": "elsewhere_in_pdf",
+    "4000": "elsewhere_in_pdf",
+    "5000": "elsewhere_in_pdf",
+    "177.0": "elsewhere_in_pdf",
+    "179.4": "elsewhere_in_pdf"
+   },
+   "passage_class": "elsewhere_in_pdf",
+   "sha256": "0ceaf6a5efa567552ff84e66e52a906b067d385991f2836aa97fccbf8f09d37a",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:162887313#394285",
+   "doc_id": "law-go-kr:admrul-file:162887313",
+   "pages": [
+    454,
+    457
+   ],
+   "numbers": {
+    "22": "elsewhere_in_pdf_short_number"
+   },
+   "passage_class": "elsewhere_in_pdf_short_number",
+   "sha256": "2d815b435ec88cb8267357feaf4799d368f1c282323b05b201ce532686ba80c5",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:162887313#432217",
+   "doc_id": "law-go-kr:admrul-file:162887313",
+   "pages": [
+    485,
+    485
+   ],
+   "numbers": {
+    "22": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "8a40432f6d2063e116ca0d957b116fefc1521871c0fdcdf1a1b10adae3aad9dd",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:162887313#432553",
+   "doc_id": "law-go-kr:admrul-file:162887313",
+   "pages": [
+    486,
+    486
+   ],
+   "numbers": {
+    "1.5": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "928e1dd7d76bb387e18efc98a8155734a9042310afcbbffb0e39df2125792a7e",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:162887313#442927",
+   "doc_id": "law-go-kr:admrul-file:162887313",
+   "pages": [
+    494,
+    494
+   ],
+   "numbers": {
+    "2222": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "c9b51e64d079f60208ac83fa02bb77fb8180827526467478d83648273269b34b",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:162887313#443469",
+   "doc_id": "law-go-kr:admrul-file:162887313",
+   "pages": [
+    494,
+    495
+   ],
+   "numbers": {
+    "12": "equation_object",
+    "22": "equation_object",
+    "1.5": "whitespace_split"
+   },
+   "passage_class": "equation_object",
+   "sha256": "a55497844807d459e68a7816cb43ece369b0933bc5036722fc9a9f410cfc2433",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:162887313#444136",
+   "doc_id": "law-go-kr:admrul-file:162887313",
+   "pages": [
+    495,
+    497
+   ],
+   "numbers": {
+    "5": "whitespace_split",
+    "33": "elsewhere_in_pdf_short_number"
+   },
+   "passage_class": "elsewhere_in_pdf_short_number",
+   "sha256": "0748c86a0da5262c1a1713035c8ed38b2150d63fe8c382a8c6f92b6fb7d63d62",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:162887313#456126",
+   "doc_id": "law-go-kr:admrul-file:162887313",
+   "pages": [
+    530,
+    530
+   ],
+   "numbers": {
+    "127094": "equation_object",
+    "68626": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "82a65353583ded10c8f63fc23653fc53e43f3f960cea90b0f1210a2b2685f828",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:162887313#460785",
+   "doc_id": "law-go-kr:admrul-file:162887313",
+   "pages": [
+    547,
+    547
+   ],
+   "numbers": {
+    "2": "whitespace_split",
+    "10": "elsewhere_in_pdf_short_number",
+    "12": "elsewhere_in_pdf_short_number",
+    "2.5": "elsewhere_in_pdf_short_number"
+   },
+   "passage_class": "elsewhere_in_pdf_short_number",
+   "sha256": "fb0988f8d9d82e0e61154b67220b6e7ffd388e07c8464ec143619c38b6d2def2",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:162887313#534047",
+   "doc_id": "law-go-kr:admrul-file:162887313",
+   "pages": [
+    641,
+    641
+   ],
+   "numbers": {
+    "0.0239": "equation_object",
+    "0.0092": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "1a59927e2b90e22d1f83cdc999a97d010d72d75f2ceeb61dd2923b0344513519",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:162887313#570093",
+   "doc_id": "law-go-kr:admrul-file:162887313",
+   "pages": [
+    675,
+    682
+   ],
+   "numbers": {
+    "6": "whitespace_split",
+    "5": "elsewhere_in_pdf_short_number",
+    "90": "elsewhere_in_pdf_short_number",
+    "6.4": "elsewhere_in_pdf_short_number",
+    "8": "elsewhere_in_pdf_short_number",
+    "9": "elsewhere_in_pdf_short_number",
+    "10": "elsewhere_in_pdf_short_number",
+    "11": "elsewhere_in_pdf_short_number",
+    "12": "elsewhere_in_pdf_short_number"
+   },
+   "passage_class": "elsewhere_in_pdf_short_number",
+   "sha256": "bec47e1c63047cd67c3a4d5a5b8a4bf04c7fea0a247dee1a9fe1ac81df6a11dc",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:162887313#575877",
+   "doc_id": "law-go-kr:admrul-file:162887313",
+   "pages": [
+    689,
+    690
+   ],
+   "numbers": {
+    "11": "whitespace_split",
+    "20": "equation_object",
+    "90": "equation_object",
+    "105": "equation_object",
+    "15": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "c93703d6df9911f32f4d60223b7a07fc8f9032ffb06f53d3e048d4b81167450e",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:162887313#581240",
+   "doc_id": "law-go-kr:admrul-file:162887313",
+   "pages": [
+    702,
+    702
+   ],
+   "numbers": {
+    "8": "elsewhere_in_pdf_short_number",
+    "123": "elsewhere_in_pdf"
+   },
+   "passage_class": "elsewhere_in_pdf",
+   "sha256": "8e2bab0e5568583818009eb3420d9054cac71cdb60e2052e3924a0bba27f758e",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:162887313#613670",
+   "doc_id": "law-go-kr:admrul-file:162887313",
+   "pages": [
+    737,
+    737
+   ],
+   "numbers": {
+    "0.1": "elsewhere_in_pdf_short_number"
+   },
+   "passage_class": "elsewhere_in_pdf_short_number",
+   "sha256": "e111003d066824e42f1aab7ac0dc62416e25a35552e1468e4a9a90838b015407",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:162887313#647189",
+   "doc_id": "law-go-kr:admrul-file:162887313",
+   "pages": [
+    18,
+    793
+   ],
+   "numbers": {
+    "222222": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "94dc79e4b538dfdeca0ba4627eb7a38daf0a098fbaea48f614735923d0887dcd",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:162887313#651085",
+   "doc_id": "law-go-kr:admrul-file:162887313",
+   "pages": [
+    790,
+    790
+   ],
+   "numbers": {
+    "2": "whitespace_split",
+    "4": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "9fc27970fc8a97d1288734e5e1b221ed56bd281eed4a8070dbb00a0eb777004c",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:168423963#28",
+   "doc_id": "law-go-kr:admrul-file:168423963",
+   "pages": [
+    1,
+    3
+   ],
+   "numbers": {
+    "2026.08": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "69a71b8f788237dab20408feff8b741a0e9fc09aa4aafb503fd061a6c38d88cf",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:168423963#26957",
+   "doc_id": "law-go-kr:admrul-file:168423963",
+   "pages": [
+    44,
+    44
+   ],
+   "numbers": {
+    "4039": "not_in_pdf",
+    "3183": "not_in_pdf"
+   },
+   "passage_class": "not_in_pdf",
+   "sha256": "2a79431cad8bc5c390157f7362c4815db28dd80dddb7788d4d05c5b3ab506d01",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:168423963#34162",
+   "doc_id": "law-go-kr:admrul-file:168423963",
+   "pages": [
+    48,
+    48
+   ],
+   "numbers": {
+    "21172119": "not_in_pdf"
+   },
+   "passage_class": "not_in_pdf",
+   "sha256": "6e135fb33bc5ec2c2b56f40ba6e8985970231453d448bd048425c6368f96c474",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:24094471#997",
+   "doc_id": "law-go-kr:admrul-file:24094471",
+   "pages": [
+    5,
+    5
+   ],
+   "numbers": {
+    "3": "whitespace_split",
+    "238": "elsewhere_in_pdf"
+   },
+   "passage_class": "elsewhere_in_pdf",
+   "sha256": "7b7459c23249deeda9c690911480f01a61192c40fb47b34ebaf81713815e7f98",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:24094471#23533",
+   "doc_id": "law-go-kr:admrul-file:24094471",
+   "pages": [
+    26,
+    26
+   ],
+   "numbers": {
+    "2015.5": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "063c2c924b9d945e894c09cddd9dfd069b3806da1939fd742a608d03b3b874a5",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:24094471#164978",
+   "doc_id": "law-go-kr:admrul-file:24094471",
+   "pages": [
+    209,
+    209
+   ],
+   "numbers": {
+    "2015.1": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "d68bfb111a39ed28a43ad5b9e0be9854ccec729c5f46c152c1b8ca53a198501a",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:161080273#20585",
+   "doc_id": "law-go-kr:admrul-file:161080273",
+   "pages": [
+    29,
+    29
+   ],
+   "numbers": {
+    "2007": "whitespace_split",
+    "81": "elsewhere_in_pdf_short_number",
+    "5": "whitespace_split",
+    "28": "whitespace_split",
+    "6": "whitespace_split",
+    "1981": "elsewhere_in_pdf"
+   },
+   "passage_class": "elsewhere_in_pdf",
+   "sha256": "855aaa5f89f2748f950c523c96e049ca5c43f8e5c8642a76132fd3d8e471fb86",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:161080273#40922",
+   "doc_id": "law-go-kr:admrul-file:161080273",
+   "pages": [
+    56,
+    56
+   ],
+   "numbers": {
+    "6.25": "elsewhere_in_pdf"
+   },
+   "passage_class": "elsewhere_in_pdf",
+   "sha256": "aa6cca2c7accae2713a3e2e39d85ba9d7a6d511c317dd1b165b66d1f7f58f2e2",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:161080273#41327",
+   "doc_id": "law-go-kr:admrul-file:161080273",
+   "pages": [
+    57,
+    57
+   ],
+   "numbers": {
+    "10": "whitespace_split",
+    "38": "whitespace_split",
+    "27": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "128a5e3afd85aca76d164d6a5639ec5427286ebf1e922469e30f9cfc0e9f2171",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:161080273#46506",
+   "doc_id": "law-go-kr:admrul-file:161080273",
+   "pages": [
+    64,
+    65
+   ],
+   "numbers": {
+    "2008.8": "not_in_pdf",
+    "11": "elsewhere_in_pdf_short_number"
+   },
+   "passage_class": "not_in_pdf",
+   "sha256": "a37fea20f4c699322151d7296b8e79144910846d51d68aaca56e13d914dd0fe1",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:161080209#5911",
+   "doc_id": "law-go-kr:admrul-file:161080209",
+   "pages": [
+    9,
+    9
+   ],
+   "numbers": {
+    "2": "whitespace_split",
+    "4.3": "whitespace_split",
+    "3": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "3b3f19be77f5406d1b4f0758a0290e15267b2268155bbf3f2090d4b5c6ee1b04",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:9704480#6947",
+   "doc_id": "law-go-kr:admrul-file:9704480",
+   "pages": [
+    18,
+    18
+   ],
+   "numbers": {
+    "13": "elsewhere_in_pdf_short_number"
+   },
+   "passage_class": "elsewhere_in_pdf_short_number",
+   "sha256": "dc0e9cc61988392f13fa94dc421792e36b06d0a5ebe3f3169db6db6aada588b7",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:139485639#6546",
+   "doc_id": "law-go-kr:admrul-file:139485639",
+   "pages": [
+    15,
+    15
+   ],
+   "numbers": {
+    "6": "elsewhere_in_pdf_short_number"
+   },
+   "passage_class": "elsewhere_in_pdf_short_number",
+   "sha256": "4b2cea3262259cfc0c726ac5fb10bc6ecb4e6cbea874ee41871ef7abe648729b",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:139485639#16527",
+   "doc_id": "law-go-kr:admrul-file:139485639",
+   "pages": [
+    32,
+    32
+   ],
+   "numbers": {
+    "6": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "8731349ff13f780da06bafbdc3ef3d5c6dd35f1b063ecaa42e6421bf7ae6845f",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:139485639#26146",
+   "doc_id": "law-go-kr:admrul-file:139485639",
+   "pages": [
+    48,
+    48
+   ],
+   "numbers": {
+    "6": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "6bb158805479ec09d4aa44538f28bf6e3f36191ce0a1130bbfdf5160fa281f6c",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:161080221#34819",
+   "doc_id": "law-go-kr:admrul-file:161080221",
+   "pages": [
+    35,
+    35
+   ],
+   "numbers": {
+    "7.1": "elsewhere_in_pdf_short_number",
+    "4": "elsewhere_in_pdf_short_number"
+   },
+   "passage_class": "elsewhere_in_pdf_short_number",
+   "sha256": "f4d5d1cd60828dfe7d1c42d69eb4c043836e28c5274d41c77ed2c2e8e586602b",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:161080221#36338",
+   "doc_id": "law-go-kr:admrul-file:161080221",
+   "pages": [
+    37,
+    37
+   ],
+   "numbers": {
+    "6": "elsewhere_in_pdf_short_number"
+   },
+   "passage_class": "elsewhere_in_pdf_short_number",
+   "sha256": "83232fe80b2839a7272255cf6bc311da80f234f5c9c8868dcfb459f2184c4bea",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:161080221#50259",
+   "doc_id": "law-go-kr:admrul-file:161080221",
+   "pages": [
+    98,
+    98
+   ],
+   "numbers": {
+    "6": "whitespace_split",
+    "7.3": "elsewhere_in_pdf_short_number",
+    "2.4": "whitespace_split",
+    "29": "elsewhere_in_pdf_short_number"
+   },
+   "passage_class": "elsewhere_in_pdf_short_number",
+   "sha256": "bdbfb6a57c8edd370f2942bea88425a52e466d553e280399005d5c5225a54b6d",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:161109603#33141",
+   "doc_id": "law-go-kr:admrul-file:161109603",
+   "pages": [
+    52,
+    53
+   ],
+   "numbers": {
+    "84": "whitespace_split",
+    "44": "elsewhere_in_pdf_short_number"
+   },
+   "passage_class": "elsewhere_in_pdf_short_number",
+   "sha256": "74db487f46806593b957f548699e98760869b3b2fcab45df669ddec11784a44c",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:161109603#66714",
+   "doc_id": "law-go-kr:admrul-file:161109603",
+   "pages": [
+    96,
+    96
+   ],
+   "numbers": {
+    "1": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "506be4016a159bf3b5799874e4bb74f331ce078f455f817784a7eae257a6d07b",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:161109603#207198",
+   "doc_id": "law-go-kr:admrul-file:161109603",
+   "pages": [
+    255,
+    255
+   ],
+   "numbers": {
+    "2": "whitespace_split",
+    "0": "elsewhere_in_pdf_short_number"
+   },
+   "passage_class": "elsewhere_in_pdf_short_number",
+   "sha256": "55dd02ca614f393a014aec1dbe51338205ccb0ac143d9de8027beff64413ed4e",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:161109603#345095",
+   "doc_id": "law-go-kr:admrul-file:161109603",
+   "pages": [
+    346,
+    346
+   ],
+   "numbers": {
+    "304": "whitespace_split",
+    "02": "elsewhere_in_pdf_short_number",
+    "01": "elsewhere_in_pdf_short_number",
+    "303": "whitespace_split",
+    "300": "elsewhere_in_pdf",
+    "307": "whitespace_split",
+    "03": "elsewhere_in_pdf_short_number"
+   },
+   "passage_class": "elsewhere_in_pdf",
+   "sha256": "ff801f6f30191a2d84ea011ad1f92d84647980945b10bf44313b8212ef3bf5c2",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:161109603#404691",
+   "doc_id": "law-go-kr:admrul-file:161109603",
+   "pages": [
+    380,
+    386
+   ],
+   "numbers": {
+    "1": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "2156d5bd866cff9dcc5b7cdab3eaeec1f48eb74c3c98822ccd9487529fba444e",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:161109603#468888",
+   "doc_id": "law-go-kr:admrul-file:161109603",
+   "pages": [
+    396,
+    398
+   ],
+   "numbers": {
+    "116": "elsewhere_in_pdf",
+    "418": "elsewhere_in_pdf"
+   },
+   "passage_class": "elsewhere_in_pdf",
+   "sha256": "37b221b42fe8086253a7956aa79f6526baa896f95cee4940df539ca15c9f5a84",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:104615465#22",
+   "doc_id": "law-go-kr:admrul-file:104615465",
+   "pages": [
+    1,
+    1
+   ],
+   "numbers": {
+    "2021.1": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "3bc746cb7cb80231f0f5d2c0a2c266a29b588d9a6cd47c0a1bf146221c774557",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:104615465#40050",
+   "doc_id": "law-go-kr:admrul-file:104615465",
+   "pages": [
+    54,
+    54
+   ],
+   "numbers": {
+    "4": "elsewhere_in_pdf_short_number"
+   },
+   "passage_class": "elsewhere_in_pdf_short_number",
+   "sha256": "1daa97d0317bf449ed78f539b1120184820ee791c5072bf6cded6fa816fd04fc",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:104615465#108555",
+   "doc_id": "law-go-kr:admrul-file:104615465",
+   "pages": [
+    161,
+    161
+   ],
+   "numbers": {
+    "1.180": "whitespace_split",
+    "1.270": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "73d83b1494e610692b166d3972c1f890f503838977db0c1a4205ac2d6e3812f2",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:104615465#128974",
+   "doc_id": "law-go-kr:admrul-file:104615465",
+   "pages": [
+    179,
+    179
+   ],
+   "numbers": {
+    "12": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "20069ef55027aa1d21df54ec9cbb8cbd8c0388d5271e639c9e96c55a2e2824cb",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:104615465#160191",
+   "doc_id": "law-go-kr:admrul-file:104615465",
+   "pages": [
+    209,
+    210
+   ],
+   "numbers": {
+    "273": "equation_object",
+    "22.4": "equation_object",
+    "760": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "d6ea6ce2333b92dc748fc1c4f8bfc132b7d89b097efc501b6f85d87abf9180cd",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:104615465#164587",
+   "doc_id": "law-go-kr:admrul-file:104615465",
+   "pages": [
+    214,
+    214
+   ],
+   "numbers": {
+    "2005.10": "not_in_pdf",
+    "23": "elsewhere_in_pdf_short_number"
+   },
+   "passage_class": "not_in_pdf",
+   "sha256": "2b7cea909c6f567c861cff68157799e80a761ed3139932f282a8e16a9fa3184a",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:104615465#164752",
+   "doc_id": "law-go-kr:admrul-file:104615465",
+   "pages": [
+    214,
+    214
+   ],
+   "numbers": {
+    "2005.10": "not_in_pdf",
+    "23": "elsewhere_in_pdf_short_number"
+   },
+   "passage_class": "not_in_pdf",
+   "sha256": "6192540212a74fcd9dec7e2998efcb5a31405489a69e98f9323f73195cbe9261",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:104615465#236837",
+   "doc_id": "law-go-kr:admrul-file:104615465",
+   "pages": [
+    289,
+    289
+   ],
+   "numbers": {
+    "1000": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "411e0cafb37e454a66fd605de2dad583269d8110dd726d361f6c4462d8a4b939",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:104615465#243450",
+   "doc_id": "law-go-kr:admrul-file:104615465",
+   "pages": [
+    297,
+    297
+   ],
+   "numbers": {
+    "2": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "3775fd2564b7ae81ff264dafb4f997416b88884cdb3d046d679d3ae46240758c",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:104615465#283323",
+   "doc_id": "law-go-kr:admrul-file:104615465",
+   "pages": [
+    347,
+    348
+   ],
+   "numbers": {
+    "14.7": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "376f4102ca23af64f9f7838173a28c34f37cd54745dfec6dcb4da24e8266167e",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:104615465#291518",
+   "doc_id": "law-go-kr:admrul-file:104615465",
+   "pages": [
+    356,
+    571
+   ],
+   "numbers": {
+    "0.021": "equation_object",
+    "0.606": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "ce4ad2766e9b91090ef59110bd2da945d83d0f8a3b3e45ddddaabd752480875f",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:104615465#369460",
+   "doc_id": "law-go-kr:admrul-file:104615465",
+   "pages": [
+    453,
+    453
+   ],
+   "numbers": {
+    "197": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "550f2302c8cb3fa1d47d75644ffddb781f478b4ce254f31ff23b9af11e61e3ce",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:104615465#376324",
+   "doc_id": "law-go-kr:admrul-file:104615465",
+   "pages": [
+    356,
+    571
+   ],
+   "numbers": {
+    "0.021": "equation_object",
+    "0.606": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "27fb9e4ed0c8c99177210a9577eae80ea592c423b512df76ddf254809bb37760",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:104615465#389871",
+   "doc_id": "law-go-kr:admrul-file:104615465",
+   "pages": [
+    356,
+    571
+   ],
+   "numbers": {
+    "0.021": "equation_object",
+    "0.606": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "1c1544ab71f4861afe0220698048c04d5a56eef5775403a889fa82a5da335396",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:104615465#403279",
+   "doc_id": "law-go-kr:admrul-file:104615465",
+   "pages": [
+    356,
+    571
+   ],
+   "numbers": {
+    "0.021": "equation_object",
+    "0.606": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "545728c6ee2e81827142c2b68c0f510253803680181e3ba965ee0286079eb1ea",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:104615465#416909",
+   "doc_id": "law-go-kr:admrul-file:104615465",
+   "pages": [
+    356,
+    571
+   ],
+   "numbers": {
+    "0.021": "equation_object",
+    "0.606": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "059b02d9e670fe5ece67f6cd08ab6034e9f66629c29ecc1d7031bf662da3942d",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:104615465#431454",
+   "doc_id": "law-go-kr:admrul-file:104615465",
+   "pages": [
+    356,
+    571
+   ],
+   "numbers": {
+    "0.021": "equation_object",
+    "0.606": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "3211cb6e6158aee5412cc75fdc7477c41921d954b1ffd8040d67010bc9ddfd32",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:104615465#459940",
+   "doc_id": "law-go-kr:admrul-file:104615465",
+   "pages": [
+    275,
+    651
+   ],
+   "numbers": {
+    "0100": "not_in_pdf",
+    "0101": "not_in_pdf",
+    "0102": "not_in_pdf",
+    "0103": "not_in_pdf",
+    "0104": "not_in_pdf",
+    "0105": "not_in_pdf",
+    "0106": "not_in_pdf",
+    "0107": "not_in_pdf",
+    "0108": "whitespace_split"
+   },
+   "passage_class": "not_in_pdf",
+   "sha256": "c99198cd55f7885c780f29319729c3b310951ca98c32101db71b9a0a88c37da5",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:104615465#466945",
+   "doc_id": "law-go-kr:admrul-file:104615465",
+   "pages": [
+    356,
+    571
+   ],
+   "numbers": {
+    "0.021": "equation_object",
+    "0.606": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "7dcbbef7428fc78a9a01bdcb51bd270e438982b031269798ef43f56906fb292d",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:104615465#528644",
+   "doc_id": "law-go-kr:admrul-file:104615465",
+   "pages": [
+    637,
+    637
+   ],
+   "numbers": {
+    "01": "whitespace_split",
+    "02": "elsewhere_in_pdf_short_number",
+    "03": "elsewhere_in_pdf_short_number"
+   },
+   "passage_class": "elsewhere_in_pdf_short_number",
+   "sha256": "2cd961ba7cee4bda8857307cf58401ade9edf02e4397ec62e035c07344433488",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:10400504#103185",
+   "doc_id": "law-go-kr:admrul-file:10400504",
+   "pages": [
+    148,
+    148
+   ],
+   "numbers": {
+    "4": "elsewhere_in_pdf_short_number"
+   },
+   "passage_class": "elsewhere_in_pdf_short_number",
+   "sha256": "908b61225bf3fb21c58404419eaad26c0df5c6f2fb6120296fd1d913be9da5b4",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:160988979#9638",
+   "doc_id": "law-go-kr:admrul-file:160988979",
+   "pages": [
+    23,
+    23
+   ],
+   "numbers": {
+    "3": "whitespace_split",
+    "1": "whitespace_split",
+    "4": "elsewhere_in_pdf_short_number",
+    "5": "elsewhere_in_pdf_short_number",
+    "2": "whitespace_split",
+    "22": "elsewhere_in_pdf_short_number",
+    "87": "elsewhere_in_pdf_short_number",
+    "91": "elsewhere_in_pdf_short_number",
+    "63": "elsewhere_in_pdf_short_number"
+   },
+   "passage_class": "elsewhere_in_pdf_short_number",
+   "sha256": "9314b648ecfc662cee8836b1fd124391a883c64914df9e2536e86cef4a48270b",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:121518899#18008",
+   "doc_id": "law-go-kr:admrul-file:121518899",
+   "pages": [
+    26,
+    27
+   ],
+   "numbers": {
+    "100": "whitespace_split",
+    "70": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "03cd7bf848338c46e3a249a63226d83c50d49eb44ee7725e5fcd97a325941227",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:121518899#80474",
+   "doc_id": "law-go-kr:admrul-file:121518899",
+   "pages": [
+    117,
+    117
+   ],
+   "numbers": {
+    "3": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "91f421493cfc5e70ae60fc59387b1877892e5ed42c1944394643592cf89a55d5",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:121518899#106103",
+   "doc_id": "law-go-kr:admrul-file:121518899",
+   "pages": [
+    162,
+    163
+   ],
+   "numbers": {
+    "1.180": "whitespace_split",
+    "1.270": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "fd29bfc3bfdf59834722c77a5540b43e8173633bbf3ee4bafbdd70700d76958e",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:121518899#107425",
+   "doc_id": "law-go-kr:admrul-file:121518899",
+   "pages": [
+    164,
+    165
+   ],
+   "numbers": {
+    "10000": "elsewhere_in_pdf",
+    "15000": "elsewhere_in_pdf",
+    "20000": "elsewhere_in_pdf",
+    "40000": "elsewhere_in_pdf",
+    "20": "elsewhere_in_pdf_short_number",
+    "10": "whitespace_split",
+    "70000": "elsewhere_in_pdf",
+    "110000": "elsewhere_in_pdf",
+    "30": "elsewhere_in_pdf_short_number",
+    "50": "elsewhere_in_pdf_short_number"
+   },
+   "passage_class": "elsewhere_in_pdf",
+   "sha256": "967dd1bf01c7105251f3a6357c567bc3200e95523568cb4999e362db39719d56",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:121518899#127106",
+   "doc_id": "law-go-kr:admrul-file:121518899",
+   "pages": [
+    183,
+    183
+   ],
+   "numbers": {
+    "12": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "80a7ef1ae671edeb549e53f414324d7bad6600d5880461826020c0dd42b8f06e",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:121518899#157343",
+   "doc_id": "law-go-kr:admrul-file:121518899",
+   "pages": [
+    212,
+    213
+   ],
+   "numbers": {
+    "273": "equation_object",
+    "22.4": "equation_object",
+    "760": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "a56289bfeac37c67834b036e910b1888e4a9aadfd69089121403564561858744",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:121518899#281181",
+   "doc_id": "law-go-kr:admrul-file:121518899",
+   "pages": [
+    351,
+    352
+   ],
+   "numbers": {
+    "14.7": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "125ca31cc2ed742e696dd4960cc43a377e966a92ea9c25799882006ebb105758",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:121518899#289474",
+   "doc_id": "law-go-kr:admrul-file:121518899",
+   "pages": [
+    361,
+    576
+   ],
+   "numbers": {
+    "0.021": "equation_object",
+    "0.606": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "ce4ad2766e9b91090ef59110bd2da945d83d0f8a3b3e45ddddaabd752480875f",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:121518899#367079",
+   "doc_id": "law-go-kr:admrul-file:121518899",
+   "pages": [
+    458,
+    458
+   ],
+   "numbers": {
+    "197": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "4a62708f3327dfd78263b5333eb4da3504b26cd807a342e176488f3d24175b0e",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:121518899#373861",
+   "doc_id": "law-go-kr:admrul-file:121518899",
+   "pages": [
+    361,
+    576
+   ],
+   "numbers": {
+    "0.021": "equation_object",
+    "0.606": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "3f1a67302a12aaf29e028423a665412b811251afdcc6c2d4adbe1c4fb97847ec",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:121518899#387373",
+   "doc_id": "law-go-kr:admrul-file:121518899",
+   "pages": [
+    361,
+    576
+   ],
+   "numbers": {
+    "0.021": "equation_object",
+    "0.606": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "25b74ef321dc6bbf74cef1381de7a5eb480271f8882edd6252c22afe0d979b0a",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:121518899#400505",
+   "doc_id": "law-go-kr:admrul-file:121518899",
+   "pages": [
+    361,
+    576
+   ],
+   "numbers": {
+    "0.021": "equation_object",
+    "0.606": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "9bb485737c9024794ebae1f935ee24863b464980902dfdcf1c163e69087b0e6d",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:121518899#413896",
+   "doc_id": "law-go-kr:admrul-file:121518899",
+   "pages": [
+    361,
+    576
+   ],
+   "numbers": {
+    "0.021": "equation_object",
+    "0.606": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "cc4add5f012a3ed277717184f5cb78e208440eb4c15a5c97bd66bb63ae712539",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:121518899#428142",
+   "doc_id": "law-go-kr:admrul-file:121518899",
+   "pages": [
+    361,
+    576
+   ],
+   "numbers": {
+    "0.021": "equation_object",
+    "0.606": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "4a41ca792237ae531626d65e4f2593859755ee2a3fc46672d97f316dc2a284af",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:121518899#455733",
+   "doc_id": "law-go-kr:admrul-file:121518899",
+   "pages": [
+    275,
+    659
+   ],
+   "numbers": {
+    "0100": "not_in_pdf",
+    "0101": "not_in_pdf",
+    "0102": "not_in_pdf",
+    "0103": "not_in_pdf",
+    "0104": "not_in_pdf",
+    "0105": "not_in_pdf",
+    "0106": "not_in_pdf",
+    "0107": "not_in_pdf",
+    "0108": "whitespace_split"
+   },
+   "passage_class": "not_in_pdf",
+   "sha256": "f580730443d48904a6c6d9312a0c209fe6b8c7d61af20703b4fc32ea26933f40",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:121518899#462746",
+   "doc_id": "law-go-kr:admrul-file:121518899",
+   "pages": [
+    361,
+    576
+   ],
+   "numbers": {
+    "0.021": "equation_object",
+    "0.606": "equation_object"
+   },
+   "passage_class": "equation_object",
+   "sha256": "303f9badcb9070693fd091abe61524b1a5a5b9d4e9515c45295ea069e7d35004",
+   "decision": "hold_for_value_use"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:121518899#541025",
+   "doc_id": "law-go-kr:admrul-file:121518899",
+   "pages": [
+    649,
+    649
+   ],
+   "numbers": {
+    "3": "whitespace_split",
+    "20": "whitespace_split"
+   },
+   "passage_class": "whitespace_split",
+   "sha256": "88f2b6e3c5805590221e0f930fe2aa106df80aea275e88b82039b741a19f6029",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:121518899#552885",
+   "doc_id": "law-go-kr:admrul-file:121518899",
+   "pages": [
+    664,
+    674
+   ],
+   "numbers": {
+    "55": "elsewhere_in_pdf_short_number",
+    "1510": "elsewhere_in_pdf"
+   },
+   "passage_class": "elsewhere_in_pdf",
+   "sha256": "319c52cf3897caefb015fb7bd2ab49589c0a6fb6fee9808b8474182b2b1d6ad1",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:170001959#71158",
+   "doc_id": "law-go-kr:admrul-file:170001959",
+   "pages": [
+    79,
+    80
+   ],
+   "numbers": {
+    "79": "elsewhere_in_pdf_short_number"
+   },
+   "passage_class": "elsewhere_in_pdf_short_number",
+   "sha256": "581ebe266a7c5a8b12675c19f9fbb9d7b7d11494e76f6de938b3350ce4fdb8cb",
+   "decision": "show_original_page"
+  },
+  {
+   "passage_id": "law-go-kr:admrul-file:170001959#74243",
+   "doc_id": "law-go-kr:admrul-file:170001959",
+   "pages": [
+    79,
+    80
+   ],
+   "numbers": {
+    "9": "elsewhere_in_pdf_short_number",
+    "18": "elsewhere_in_pdf_short_number",
+    "81": "elsewhere_in_pdf_short_number"
+   },
+   "passage_class": "elsewhere_in_pdf_short_number",
+   "sha256": "3723ce8064458be30f7eb6866d7ddabdc8a0f9be4e1f7e4e1767a8702e60aa93",
+   "decision": "show_original_page"
+  }
+ ],
+ "hwpx_documents": [
+  {
+   "doc_id": "data.go.kr:15038798",
+   "title": "행정안전부_지방재정제도 해설사례집_20190911",
+   "missing_numbers": 1502,
+   "classes": {
+    "not_in_xml": 952,
+    "list_numbering": 145,
+    "toc_page_reference": 405
+   },
+   "not_in_xml_examples": {
+    "2015": [
+     "2015. 12.",
+     "○ 개정된 ｢지방재정법｣ 제32조의2 제2항에 따라 지방자치단체는 2015회계연도부터 법령에 명시적 근거가 있는 경우에 한하여 "
+    ],
+    "12": [
+     "2015. 12.",
+     "12"
+    ],
+    "1": [
+     "    제 1 편",
+     "  제1절      예산편성 일반  "
+    ],
+    "2": [
+     "  제2절      예산과목 구분  ",
+     "    제 2 편"
+    ],
+    "3": [
+     "  제3절      예산변경제도  ",
+     "를 당사자로 하는 계약에 관한 법률｣ (이하 “지방계약법” 이라 한다) 제8조제1항 및 제3항에 따르면, 지방자치단체의 장은 관할 행정구역 안의 "
+    ],
+    "01": [
+     "01 예산총계주의 원칙(세계잉여금, 세입세출외현금, 수입대",
+     "01"
+    ],
+    "11": [
+     "있는지 여부 11",
+     "11"
+    ],
+    "25": [
+     "경비보조 가능 여부 25",
+     "재정정책과-4535(2015.8.25.)"
+    ],
+    "17": [
+     "9. 공사상 소방공무원 지원조례의 지방재정법 제17조 위배 여부 39",
+     "있도록 하는 경우에도 보조사업 지원여부는 자치단체의 소관에 속하는 사무인지, 지방재정법 제17조제1항 제4호의 보조금을 지출하지 아니하면 사업의 수"
+    ],
+    "03": [
+     "03 지방자치단체장의 예산편성권과 지방의회의 심의･의결"
+    ],
+    "04": [
+     "04 특별회계예산 편성 및 운용",
+     "04"
+    ],
+    "05": [
+     "05 채무부담행위",
+     "05"
+    ],
+    "98": [
+     "계약이 “예산 외의 의무부담”인지 아니면 “채무부담행위”인지 여부 98"
+    ],
+    "13": [
+     "의결을 다시 받아야 하는지(지방재정법 제13조 관련) 101",
+     "○ ｢지방자치법｣ 제104조 및 ｢행정권한의 위임 및 위탁에 관한 규정｣ 제12조 및 제13조 규정에 의거 민간위탁하고 있는 재활용품 선별장 수탁"
+    ],
+    "101": [
+     "의결을 다시 받아야 하는지(지방재정법 제13조 관련) 101",
+     "시를 위한 재정적 투자능력의 한계를 자발적으로 보완하기 위해(2009.4.30 2005헌바101 전원재판부) 법률이 정하는 요건 하에 그 설치를 허용"
+    ]
+   }
+  },
+  {
+   "doc_id": "data.go.kr:15038493",
+   "title": "행정안전부_행정업무운영 편람_20251217",
+   "missing_numbers": 268,
+   "classes": {
+    "not_in_xml": 151,
+    "toc_page_reference": 88,
+    "list_numbering": 29
+   },
+   "not_in_xml_examples": {
+    "1991": [
+     "이 편람은 1991년 ｢사무관리규정｣(현 ｢행정업무의 운영 및 혁신에 관"
+    ],
+    "1": [
+     "제1절 행정업무 혁신 177",
+     "1"
+    ],
+    "5": [
+     "제5장 질의 및 답변 269",
+     "마. 전자정부 구현을 위한 기반 구축: 1996. 5.\\~2003. 12."
+    ],
+    "301": [
+     "부 록 301"
+    ],
+    "303": [
+     "■ 행정업무의 운영 및 혁신에 관한 규정·시행규칙 303"
+    ],
+    "2002": [
+     "서관리제도를 대폭 도입하여 현행 행정업무의 운영 및 혁신에 관한 규정의 근간을 이루었다. 2002년 이후 전자정부의 구현을 촉진하기 위하여 정부의 사무",
+     "명’(1999. 8. 7.) ⇒ ‘전자관인’(2001. 2. 14.) ⇒ ‘행정전자서명’(2002. 12. 26.)"
+    ],
+    "1961": [
+     "가. 일제시대 및 미군정의 사무관리제도 활용: 1948.\\~1961. 9."
+    ],
+    "15": [
+     "는 일제 총독부와 미군정의 사무관리제도를 활용하던 시기로 ｢정부처무규정｣(1949. 7. 15. 대통령훈령 제1호)과 ｢공문서규정｣(1950. 3.",
+     "다만, ｢행정절차법｣ 제15조제3항에서 “제14조제4항의 경우 다른 법령 등에 특"
+    ],
+    "13": [
+     "1961년에 ｢정부공문서규정｣(1961. 9. 13. 각령 제137호)을 제정하여 공문서의 횡서, 한글전",
+     "계기준과는 별개로, 큰글자 서식에 적용할 수 있는 설계기준을 마련하였으며, 글자크기 확대(13pt) 및 글자체변경(맑은고딕), 작성란 확대 등을 통"
+    ],
+    "12": [
+     "마. 전자정부 구현을 위한 기반 구축: 1996. 5.\\~2003. 12."
+    ],
+    "2001": [
+     "전자결재제도 도입 및 전자문서유통 근거 마련, 전자문서의 보안 및 전자서명(2001. 2. ‘전자관인’으로 명칭 변경) 인증제 도입, “"
+    ],
+    "1999": [
+     "► ‘전자서명’(1999. 8. 7.) ⇒ ‘전자관인’(2001. 2. 14.",
+     "※ 1999년에 공공기관의 기록물관리에 관한 법령이 제정되면서 사"
+    ],
+    "8": [
+     "► ‘전자서명’(1999. 8. 7.) ⇒ ‘전자관인’(2001. 2. 14.) ⇒",
+     "차. 디자인 개념 도입, 서식설계기준 개선: 2010. 8. 4."
+    ],
+    "14": [
+     "► ‘전자서명’(1999. 8. 7.) ⇒ ‘전자관인’(2001. 2. 14.) ⇒ ‘행정전자서명’(2002. 12. 26.)",
+     "다만, ｢행정절차법｣ 제15조제3항에서 “제14조제4항의 경우 다른 법령 등에 특별한 규정이 없으면 "
+    ],
+    "22": [
+     "카. 관인의 글꼴 개선: 2011. 3. 22.",
+     "나. 시스템의 구성(영 제22조제1항)"
+    ]
+   }
+  },
+  {
+   "doc_id": "data.go.kr:15033217:file:3dc524e955051ede",
+   "title": "충청남도_계약심사 사례집 정보_20191231",
+   "missing_numbers": 524,
+   "classes": {
+    "not_in_xml": 354,
+    "list_numbering": 81,
+    "toc_page_reference": 89
+   },
+   "not_in_xml_examples": {
+    "2019": [
+     "2019 계약심사 사례집",
+     "❍ 2019. 1 : 「계약심사 업무처리 규칙」전부 개정 제338"
+    ],
+    "2": [
+     "3. 제2장 예정가격 작성요령 149",
+     "2"
+    ],
+    "3": [
+     "4. 제3장 계약심사 운영요령 191",
+     "가. 계약심사제도는 「지방재정법 」제3조에 따라 지방자치단체 재정을 건전하고 효율적으로 운영"
+    ],
+    "1": [
+     "1",
+     "⇨ 용역비 2억 원 이상에서 1억 원 이상으로 확대"
+    ],
+    "10": [
+     "나. 지방자치단체의 장이나 계약담당자는 「지방계약법 시행령」제10조 제3항과 제74조 제8항에 따라 예정가격(기초금액 ",
+     "「지방계약법 시행령」제10조에 따라 예정가격을 결정하여야 하는 경우 원가계산 전"
+    ],
+    "74": [
+     "나. 지방자치단체의 장이나 계약담당자는 「지방계약법 시행령」제10조 제3항과 제74조 제8항에 따라 예정가격(기초금액 포함)과 설계변경 ",
+     "⇨ 계약금액 증액조정 시 적절성과 적법성을 심사(시행령 제74조 제8항)"
+    ],
+    "8": [
+     "나. 지방자치단체의 장이나 계약담당자는 「지방계약법 시행령」제10조 제3항과 제74조 제8항에 따라 예정가격(기초금액 포함)과 설계변경 증감금액",
+     "⇨ 계약금액 증액조정 시 적절성과 적법성을 심사(시행령 제74조 제8항)"
+    ],
+    "2008": [
+     "❍ 2008. 3 : 시도별 《계약심사과》 설치 기본계획 마련(행"
+    ],
+    "5": [
+     "❍ 2008. 5 : 《지방자치단체 조직개편 계획》 시․도 통보(행정안",
+     "❍ 2010. 5 : 계약심사 업무처리 지침 개정(행정안전부)"
+    ],
+    "7": [
+     "❍ 2008. 7 : 계약심사업무 담당부서 설치(감사담당관실) ",
+     "❍ 2014. 7 : 계약심사업무 담당부서 신설 및 명칭변경(충청남도감"
+    ],
+    "3033": [
+     "⇨ 「충청남도 행정기구설치조례 시행규칙」제3033호(2008.07.01)"
+    ],
+    "2008.07": [
+     "⇨ 「충청남도 행정기구설치조례 시행규칙」제3033호(2008.07.01)"
+    ],
+    "01": [
+     "⇨ 「충청남도 행정기구설치조례 시행규칙」제3033호(2008.07.01)"
+    ],
+    "2010": [
+     "❍ 2010. 3 : 「충청남도 계약심사 업무처리 규칙」개정 제3",
+     "❍ 2010. 5 : 계약심사 업무처리 지침 개정(행정안전부)"
+    ],
+    "3086": [
+     "❍ 2010. 3 : 「충청남도 계약심사 업무처리 규칙」개정 제3086호(2010.03.10.)"
+    ]
+   }
+  },
+  {
+   "doc_id": "law-go-kr:admrul-file:156743739",
+   "title": "토지의 적성평가에 관한 지침 - 토지의_적성평가에_관한_지침_개정전문(1).hwpx",
+   "missing_numbers": 4,
+   "classes": {
+    "not_in_xml": 2,
+    "equation_object": 2
+   },
+   "not_in_xml_examples": {
+    "100": [
+     "나. 격자단위의 평가시 격자크기는 100m×100m이하로 한다."
+    ],
+    "53.3": [
+     "의 평균개별공시지가 최대값인 B리의 평균개별공시지가가 15천원/㎡일때, A리의 지가수준은 53.3%이라 할 수 있다."
+    ]
+   }
+  }
+ ],
+ "note": "report only; a number found in the original does not verify its table row/column; nothing corrected"
+}
