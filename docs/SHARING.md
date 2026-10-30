@@ -4,7 +4,7 @@
 
 이 배포는 Cloudflare Worker → 임시 Cloudflare Tunnel → 이 Mac의 CPU 모델 서버로 연결됩니다. 별도 클라우드 머신으로 모델을 옮긴 배포가 아닙니다. Mac 전원과 인터넷 연결이 필요하며 덮개를 닫거나 재부팅하면 중단될 수 있습니다. 화면은 꺼져도 되도록 `caffeinate -i`를 서버 실행 동안에만 사용합니다.
 
-**2026-10-30 21:24 재배포 (RETRIEVAL-DECISION-001 + MODEL-REPAIR-002).** Worker `d6feb400…`, 색인 `runs/workspace-index/v3`, B 검토 메타데이터 search-corpus-v4. 24시간 실행하며 자동 종료 예정은 **2026-10-31 21:24 KST**다. 중단되면 도메인은 임시 서버 종료 안내를 표시한다. 소규모 테스트용이며 운영 서비스의 가용성을 보장하지 않는다.
+**2026-10-30 22:09 재배포 (SOURCE-CONNECT-002).** Worker `d4359b17…`, 색인 `runs/workspace-index/v5`, B 검토 메타데이터 search-corpus-v4. 24시간 실행하며 자동 종료 예정은 **2026-10-31 22:09 KST**다. 중단되면 도메인은 임시 서버 종료 안내를 표시한다. 소규모 테스트용이며 운영 서비스의 가용성을 보장하지 않는다. C-027 고정 평가 색인 `v3`는 바꾸지 않았다.
 
 ## 제공 버전 (`deploy/shared-demo/versions.json`)
 
@@ -31,7 +31,10 @@
   - 근거 검색을 하지 않으며 "일반 대화 · 검증 대상 아님"으로 표시한다.
   - 숫자+단위(원, %, 일, 조 등)가 들어간 문장은 근거가 없으므로 숨기고 숨긴 개수를 알린다. API 응답에도 남기지 않는다.
 - **근거 검색:**
-  - 공유 색인 `runs/workspace-index/v3`(14,672건 / 101,119구간; v2 + B API 스냅샷 신규 5건)에서 hybrid 검색(bge-m3 0.9 + BM25 0.1, 권위 가중치)으로 문서 1건을 고른다. 근거 적합성(코사인 + 핵심 명사)을 통과한 문서만 쓴다. B search-corpus-v4 검토를 질의 단계에서 적용한다(개인정보 2구간 제외, 값 보류 87구간은 숫자를 답으로 쓰지 않음). 다시 만드는 순서: `build_workspace_index.py --practice --api-snapshot …` → `build_embeddings.py`(변경분만 임베딩). 상세는 `reports/coordination/HYBRID-RAG-001.md`.
+  - 공유 색인 `runs/workspace-index/v5`(14,689건 / 104,134구간)에서 hybrid 검색(bge-m3 0.9 + BM25 0.1, 권위 가중치)으로 문서 1건을 고른다. 구성: v3 입력 + B travel-003(76건, 중복 71건은 본문 그대로 두고 `applies_to` 메타데이터만 갱신) + 공통 공무원 법령 civil-service-002(대통령령 7건) + guides-v11 실무 자료 10건(표지 2건 제외). 근거 적합성(코사인 + 핵심 명사)을 통과한 문서만 쓴다. B search-corpus-v4 검토를 질의 단계에서 적용한다(개인정보 2구간 제외, 값 보류 87구간은 숫자를 답으로 쓰지 않음). 다시 만드는 순서: `build_workspace_index.py --practice --api-snapshot …travel-003 --api-snapshot …civil-service-002 --guides data/public-data/guides-v11` → `build_embeddings.py`(변경분만 임베딩). 상세는 `reports/coordination/SOURCE-CONNECT-002.md`.
+  - 기관명은 B agency-aliases-v1(공식 근거 있는 별칭)로 인식한다. 모호한 별칭(예: 교육청)과 공식 근거 없는 약칭(예: 국토부)은 확정하지 않고 되묻는다. 옛 기관명은 현 기관 규정으로 대신 답하지 않는다.
+  - 법령 본문 구간이 같은 법령의 "별표 N"을 인용하면 그 별표 구간을 함께 넣는다(최대 2개 별표). 질문이 지방공무원/국가공무원 중 하나만 말하면 다른 쪽에만 적용되는 법령(B `applies_to`, 제1조 근거)은 쓰지 않는다. 공무원 법령을 공공기관 직원 질문에 쓰면 그대로 적용된다고 볼 근거가 없다고 표시한다.
+  - 실무 자료는 B가 기록한 적용 범위와 추출 한계(예: 행안부 자치법규 매뉴얼 그림 423곳 [그림 생략])를 `scope`와 `source_limits`로 함께 낸다.
   - 원문과 글자 그대로 일치하는 인용만 확인된 근거로 표시하고, 모델 해설은 "검증 안 됨"으로 표시한다.
   - 기관이 모호하면 되묻는다.
   - 자료에 없는 기관이거나 일치하는 문서가 없으면 모델을 실행하지 않고 그렇다고 답한다. 이때 일반 대화로 넘기지 않는다.
