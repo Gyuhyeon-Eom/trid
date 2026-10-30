@@ -61,32 +61,80 @@
 
 ## 4. 블로커: 사용자 조치가 필요한 인증 (키를 채팅이나 코드에 넣지 마세요)
 
-이 계정에서 키를 대신 만들면 비밀 정보를 옮겨야 하므로 A는 만들지 않았다.
+A는 장기 키를 자동으로 만들지 않았다. 맥북의 기존 자격 증명도 복사하지 않았다.
 
-1. **AWS 콘솔(IAM) → 사용자 → `trid-controller` 생성**
-   - 콘솔 로그인 없이 만든다.
-   - 인라인 정책으로 `deploy/macmini-controller/iam-policy-trid-controller.json`을 붙인다. 맥미니의 `~/trid-controller/repo/deploy/macmini-controller/`에도 같은 파일이 있다.
-   - 정책 범위:
-     - `trid-pt-*` training job의 생성·조회·중지·태그, job 목록 조회
-     - 기존 역할 `trid-sagemaker-lora`만 PassRole
-     - S3 `corpus/*` 읽기·쓰기·삭제와 목록
-     - SageMaker 로그 읽기
-2. 같은 사용자 → 보안 자격 증명 → **액세스 키 생성(CLI 용도)**
-3. **맥미니 터미널에서 사용자가 직접 입력:**
+### 4.1 감시 전용 최소 권한 (지금 붙일 것)
+
+정책 파일: `deploy/macmini-controller/iam-policy-trid-controller.json` (맥미니에도 같은 파일 있음)
+
+**권한을 정한 근거: 실제 호출 기록.** 감시 모드 driver를 `TRID_AWS_TRACE`로 한 번 실행해 실제로 나가는 AWS 호출을 모두 기록했다.
+- `sagemaker describe-training-job` ×2 (S1 job 두 개)
+- `s3 cp` (`corpus/runs/s1/<run>/sft/training.json`, `metrics.json` 읽기)
+- `s3api list-objects-v2` (`corpus/runs/s1/<run>/sft/milestones/` 목록)
+- `s3 cp` (`corpus/runs/s1/controller-status.json` 쓰기)
+- job이 끝난 뒤 재시작했을 때만 `list-training-jobs --name-contains`
+
+**허용하는 것은 이 다섯 가지뿐이다.**
+
+| 동작 | 대상 |
+|---|---|
+| `sagemaker:DescribeTrainingJob` | `training-job/trid-pt-s1-*` |
+| `sagemaker:ListTrainingJobs` | `*` (이 API는 리소스 단위로 제한할 수 없다) |
+| `s3:GetObject` | `corpus/runs/s1/*` |
+| `s3:ListBucket` | prefix 조건 `corpus/runs/s1/*` |
+| `s3:PutObject` | `corpus/runs/s1/controller-status.json` 한 객체만 |
+
+**없는 권한:** 삭제, 다른 prefix 읽기·쓰기, job 생성·중지, PassRole, 로그 읽기.
+
+**driver 변경:** 감시 모드에서는 다른 job의 인스턴스 종류 조회와 S3 recovery 정리(삭제)를 하지 않게 고쳤다(커밋 `d98abf5`).
+
+**검증 (IAM `simulate-custom-policy`):**
+- allowed:
+  - S1 job Describe
+  - ListTrainingJobs
+  - `s1/…/training.json` Get
+  - prefix `corpus/runs/s1/…/milestones/` List
+  - `controller-status.json` Put
+- implicitDeny:
+  - 다른 세션 job(`trid-c010-…`) Describe
+  - CreateTrainingJob
+  - `pretrain/` Get
+  - prefix `corpus/runs/pretrain/` List
+  - `s1/…/model.safetensors` Put, Delete
+  - PassRole
+
+**preflight:** `preflight.sh`가 위 호출을 그대로 점검한다. 맥북의 root 자격으로 로직만 확인했을 때 모두 PASS였다. 맥미니에서는 프로필이 없어서 FAIL이다(정상).
+
+### 4.2 이후 job을 띄우는 단계용 정책 (지금 붙이지 않음)
+
+파일: `iam-policy-trid-controller-publish-FUTURE.json`
+- 다음 승인 단계에서만 따로 붙인다.
+- 내용:
+  - `trid-pt-*` job의 생성·중지·태그
+  - 역할 `trid-sagemaker-lora`만 PassRole
+  - `corpus/code/pretrain/*` 쓰기
+  - 승인된 캠페인 prefix만 읽기·쓰기
+  - 같은 캠페인의 `sft/checkpoints/*`만 삭제(recovery 정리용)
+
+### 4.3 사용자가 직접 할 최소 설정
+
+1. AWS 콘솔 IAM → 사용자 생성 `trid-controller`. 콘솔 접근 없이 만든다.
+2. 인라인 정책 → JSON → `iam-policy-trid-controller.json` 내용을 붙여넣는다.
+3. 해당 사용자 → 보안 자격 증명 → 액세스 키 생성(사용 사례: CLI). 키는 저장하지 말고 다음 단계에서 바로 입력한다.
+4. 맥미니 터미널에서 직접 입력:
    `~/trid-controller/repo/.venv/bin/aws configure --profile trid-controller`
    (region `ap-northeast-2`, output `json`)
-4. 확인: `bash ~/trid-controller/repo/deploy/macmini-controller/preflight.sh` → 모두 PASS
-5. A에게 알려주면 A가 다음을 진행한다.
-   - plist를 `~/Library/LaunchAgents/`에 복사하고 `launchctl bootstrap gui/$(id -u) …`로 등록
-   - SSH 접속을 끊은 뒤 다시 접속해서 확인:
-     - `launchctl print`로 상태
+5. 확인: `bash ~/trid-controller/repo/deploy/macmini-controller/preflight.sh` → 6개 모두 PASS
+6. A에게 "preflight PASS"만 알려주면 된다. 그러면 A가 다음을 진행한다.
+   - plist 등록과 `launchctl bootstrap`
+   - SSH 접속을 끊었다가 다시 접속해 확인:
+     - `launchctl print`
      - `state.json` 갱신
      - S3 `controller-status.json`
-     - 실제 SageMaker job 조회 결과
-   - 확인 결과를 이 문서에 추가한다.
+     - S1 job 상태 대조
+   - 결과를 이 문서에 기록한다.
 
-- 장기 키 대신 IAM Identity Center(SSO)를 쓰고 싶다면 맥미니에서 `aws configure sso`로 설정할 수 있다.
-  - 단 SSO 토큰이 만료되면 사용자가 다시 로그인해야 한다. 무인 상시 제어에는 불리하다.
+- SSO(`aws configure sso`)도 쓸 수 있다. 다만 토큰이 만료되면 사람이 다시 로그인해야 해서 무인 감시에는 불리하다.
 
 ## 5. 현재 영향
 - 승인된 S1 학습은 막히지 않았다. 두 job은 job 안 평가로 끝나고, 결과는 S3에 저장된다.
