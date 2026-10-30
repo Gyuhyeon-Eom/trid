@@ -1,0 +1,187 @@
+{
+ "version": "case-structural-context-candidates-v1",
+ "code_sha256": "8ab7ff7a6f91d072da63e4fb0150e7f49059d8f9fc738a37d0d78c5620e48224",
+ "source_view": "data/case-training-view-v2",
+ "max_total_tokens": 4096,
+ "candidates": 13,
+ "sha256": "03327c9e1176120dd5b7cb3b587a3fa49ad4017e9b55648f0d03c597130de010",
+ "failed": [],
+ "per_row": {
+  "table:mokpo-common-budget-1500": {
+   "units_total": 20,
+   "units_kept": 19,
+   "cited_unit": 6,
+   "protected_units": [
+    6
+   ],
+   "kept_range": [
+    0,
+    18
+   ],
+   "total_tokens": 4030
+  },
+  "table:mokpo-common-budget-900": {
+   "units_total": 20,
+   "units_kept": 19,
+   "cited_unit": 6,
+   "protected_units": [
+    6
+   ],
+   "kept_range": [
+    0,
+    18
+   ],
+   "total_tokens": 4011
+  },
+  "table:mokpo-common-leave-6": {
+   "units_total": 20,
+   "units_kept": 19,
+   "cited_unit": 11,
+   "protected_units": [
+    11
+   ],
+   "kept_range": [
+    1,
+    19
+   ],
+   "total_tokens": 4001
+  },
+  "table:mokpo-common-overseas-trip": {
+   "units_total": 20,
+   "units_kept": 19,
+   "cited_unit": 11,
+   "protected_units": [
+    11
+   ],
+   "kept_range": [
+    1,
+    19
+   ],
+   "total_tokens": 3991
+  },
+  "table:mokpo-common-complaint-return": {
+   "units_total": 20,
+   "units_kept": 19,
+   "cited_unit": 8,
+   "protected_units": [
+    8
+   ],
+   "kept_range": [
+    0,
+    18
+   ],
+   "total_tokens": 3980
+  },
+  "table:mokpo-common-design-threshold": {
+   "units_total": 20,
+   "units_kept": 19,
+   "cited_unit": 6,
+   "protected_units": [
+    6
+   ],
+   "kept_range": [
+    0,
+    18
+   ],
+   "total_tokens": 4033
+  },
+  "table:mokpo-common-leave-askback": {
+   "units_total": 20,
+   "units_kept": 19,
+   "cited_unit": 11,
+   "protected_units": [
+    11
+   ],
+   "kept_range": [
+    1,
+    19
+   ],
+   "total_tokens": 3976
+  },
+  "table:mokpo-common-info-disclosure": {
+   "units_total": 20,
+   "units_kept": 19,
+   "cited_unit": 18,
+   "protected_units": [
+    18
+   ],
+   "kept_range": [
+    1,
+    19
+   ],
+   "total_tokens": 3943
+  },
+  "table:mokpo-common-time": {
+   "units_total": 20,
+   "units_kept": 19,
+   "cited_unit": 2,
+   "protected_units": [
+    2,
+    11,
+    15
+   ],
+   "kept_range": [
+    0,
+    18
+   ],
+   "total_tokens": 3996
+  },
+  "table:nobti-overseas-trip-grade5": {
+   "units_total": 27,
+   "units_kept": 21,
+   "cited_unit": 16,
+   "protected_units": [
+    7,
+    16
+   ],
+   "kept_range": [
+    6,
+    26
+   ],
+   "total_tokens": 4016
+  },
+  "table:nobti-overseas-trip-gap": {
+   "units_total": 27,
+   "units_kept": 21,
+   "cited_unit": 16,
+   "protected_units": [
+    7,
+    16
+   ],
+   "kept_range": [
+    6,
+    26
+   ],
+   "total_tokens": 4076
+  },
+  "table:nobti-appointment-grade6": {
+   "units_total": 27,
+   "units_kept": 24,
+   "cited_unit": 7,
+   "protected_units": [
+    7,
+    16
+   ],
+   "kept_range": [
+    0,
+    23
+   ],
+   "total_tokens": 4054
+  },
+  "table:nobti-validity-time": {
+   "units_total": 27,
+   "units_kept": 21,
+   "cited_unit": 16,
+   "protected_units": [
+    7,
+    16
+   ],
+   "kept_range": [
+    6,
+    26
+   ],
+   "total_tokens": 4032
+  }
+ },
+ "note": "not part of any training manifest; needs review before use"
+}

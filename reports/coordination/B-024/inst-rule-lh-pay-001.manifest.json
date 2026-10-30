@@ -1,0 +1,32 @@
+{
+ "snapshot_id": "inst-rule-lh-pay-001",
+ "created_at": "2026-10-30T12:10:01Z",
+ "producer": "B/B-024",
+ "code_sha256": "7e82aa7a608ec003b42325dd55299f46791bd1ff738a3c2e6463d67f95bcbf98",
+ "sources": [
+  {
+   "provider": "data.go.kr file data / institution 사규 board",
+   "guides_version": "guides-v8",
+   "records": 1,
+   "collection": "public_file_download, not an API call"
+  }
+ ],
+ "files": [
+  {
+   "path": "normalized/records-00000.jsonl",
+   "sha256": "f2f04758124ae404e76d924b7ba2cbaec8376ab4ea33a48d75beb84056b220d2",
+   "records": 1
+  }
+ ],
+ "records_total": 1,
+ "holds": [
+  "evaluation",
+  "training"
+ ],
+ "index": "institution_rules_separate",
+ "registry": {
+  "path": "data/corpus-inventory/alio-agencies.json",
+  "sha256": "5e79c5339f9f59d0ca575f1c98936505539a7b89ae5902e0aec9d8df46ed1cb5"
+ },
+ "notes": "publicly posted institution rules; not non-public internal data; nothing labelled current"
+}

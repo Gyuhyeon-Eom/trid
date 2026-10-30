@@ -93,6 +93,20 @@ DATASETS = {
     '15110681': dict(institution='한국토지주택공사', institution_type='공기업', area='보수', doc_type='기관 내부규정(사규)',
                      applies_to='LH 직원 보수 (규정 제299호, 2023-12-27 개정). 다른 기관에 그대로 적용되지 않음',
                      date='2023-12-27', date_type='규정 개정일(파일명)'),
+    # B-024 (types left as '공공기관' where the subtype was not checked)
+    '15152480': dict(institution='주택도시보증공사', institution_type='공공기관', area='보증 심사(PF보증)', doc_type='심사실무 사례집',
+                     applies_to='HUG PF보증 심사 실무. 다른 기관에 그대로 적용되지 않음', date='2025-11-10',
+                     date_type='사례집 기준일(파일명), 포털 등록 2025-11-17'),
+    '15136239': dict(institution='한전케이피에스주식회사', institution_type='공공기관', area='정보화(정보시스템 개발·운영)',
+                     doc_type='기관 절차서', applies_to='한전KPS 정보화 사업 관리·개발·운영 절차. 다른 기관에 그대로 적용되지 않음',
+                     date='2024-07-31', date_type='절차서 기준일(파일명)'),
+    '15039340': dict(institution='행정안전부', institution_type='중앙행정기관', area='자치법규 입법절차', doc_type='업무매뉴얼',
+                     applies_to='지방자치단체 자치법규(조례·규칙) 제정·개정 업무', date='2022-02-23', date_type='매뉴얼 기준일(파일명)'),
+    '15156787': dict(institution='국토교통부', institution_type='중앙행정기관', area='해외건설 세무', doc_type='업무매뉴얼',
+                     applies_to='해외건설 사업자의 세무 업무(국내세법·해외 세무 안내)', date='2022-04-04', date_type='매뉴얼 기준일(파일명)'),
+    '15040179': dict(institution='한국환경공단', institution_type='공공기관', area='공사감독(환경시설 설치공사)', doc_type='업무매뉴얼',
+                     applies_to='한국환경공단 환경기초시설 설치공사 감독업무. 다른 기관에 그대로 적용되지 않음', date='2016-12-14',
+                     date_type='매뉴얼 기준일(파일명), 장별 HWP 묶음'),
 }
 # datasets kept as raw but not turned into Q&A rows: no answer text (title list) or a numeric table, not guidance
 NOT_QA = {'15163350': 'title_list_without_content', '15138170': 'structured_table_not_qa',

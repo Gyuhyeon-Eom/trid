@@ -1,0 +1,32 @@
+{
+ "version": "agency-aliases-v1",
+ "code_sha256": "db76b458d324a486a1f51e9e5d4a639123751c820a047263c70486202ab5bc94",
+ "rows": 46626,
+ "sha256": "4e75f11f50f240bc66e44ac9fcc8d3c43a8e5585aa6322b82b59a6622ed4fd73",
+ "by_kind": {
+  "official_name": 22114,
+  "official_full_name": 22114,
+  "alio_name": 355,
+  "predecessor_name": 976,
+  "statutory_abbreviation": 1067
+ },
+ "ambiguous_aliases": 1359,
+ "statutory_abbreviations": {
+  "kept": 294,
+  "below_min_docs": 356,
+  "ambiguous": 773
+ },
+ "inputs": {
+  "codes": {
+   "path": "data/public-data/raw/15092039/33c7a66a73db18cf.zip",
+   "member": "기관코드 전체자료(유형분류 의미추가).txt",
+   "sha256": "33c7a66a73db18cf6ba90cc2487b989664d481fb9677cdd44453e0d37f7a6e31"
+  },
+  "alio": {
+   "path": "data/corpus-inventory/alio-agencies.json",
+   "sha256": "5e79c5339f9f59d0ca575f1c98936505539a7b89ae5902e0aec9d8df46ed1cb5"
+  },
+  "law": "data/law-ko-source/docs.jsonl"
+ },
+ "rules": "aliases only from official name lists, rename links and statute/rule texts that define the short form; ambiguous aliases are not resolved automatically; no alias from user questions"
+}

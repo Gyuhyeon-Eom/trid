@@ -1,0 +1,521 @@
+{
+ "snapshot_id": "api-drf-admrul-travel-003",
+ "created_at": "2026-10-30T12:15:51Z",
+ "producer": "B/API-S3-001",
+ "code_sha256": "655072d550b5917c0a6f41d0ca6d292d5162910fdd4faa69e0d635d980164972",
+ "sources": [
+  {
+   "provider": "법제처 국가법령정보센터 Open API (DRF)",
+   "endpoint": "http://www.law.go.kr/DRF/lawService.do?target=admrul",
+   "records": 76,
+   "license": "KR-Copyright-Act-Art7 (law.go.kr)",
+   "collection": "existing_collection_no_new_api_call",
+   "retrieved_at": "per record dates.retrieved_at (raw response file time)",
+   "source_dir": "data/law-ko-source"
+  }
+ ],
+ "selection": {
+  "target": "admrul",
+  "title_regex": "출장|(?<!급)여비",
+  "excluded_reserved_overlap": 0,
+  "held_pii": 4,
+  "overlap_list": "reports/coordination/B-022/v3-overlap-index-separation.jsonl",
+  "span_check": "reports/coordination/B-023/overlap-102-span-check.jsonl"
+ },
+ "files": [
+  {
+   "path": "normalized/records-00000.jsonl",
+   "sha256": "eab88a514c8c7001380703574280be385a5e95fb89509eeab1fd881e1b96313a",
+   "records": 76,
+   "bytes": 1096507
+  },
+  {
+   "path": "raw/admrul/1106031000.xml",
+   "sha256": "5277f1e05ff46ec2bcefc478c80a03f7f88ac3ff6fe3b797175d896fb06a4231",
+   "bytes": 36393
+  },
+  {
+   "path": "raw/admrul/2000000022699.xml",
+   "sha256": "9a037459666c0f20718b7c77da25a435d09dc457391e6fc14311460ea1313253",
+   "bytes": 3807
+  },
+  {
+   "path": "raw/admrul/2000000056478.xml",
+   "sha256": "36c684f8cc778ae8d878639ecd3900d4111cb8aea60edbb319ca3140632ce04c",
+   "bytes": 14431
+  },
+  {
+   "path": "raw/admrul/2100000005971.xml",
+   "sha256": "0c2446918910999a623db2822baedd1d9f2a917500020470308f9c1b107affcc",
+   "bytes": 3982
+  },
+  {
+   "path": "raw/admrul/2100000017062.xml",
+   "sha256": "84139f8cd476d3b0062f2a0a9bd90c19b5b966c878890ccf43b3440d3ce5054d",
+   "bytes": 12456
+  },
+  {
+   "path": "raw/admrul/2100000071526.xml",
+   "sha256": "781f2efd20b0c0164e45b70990fe1ab3fa26e7ca986e9962c61960b7f3ccefd3",
+   "bytes": 12363
+  },
+  {
+   "path": "raw/admrul/2100000095051.xml",
+   "sha256": "e9aa99f353644cf5db156f63cff9ece2285c2eb3610d383e977666a4c8764b69",
+   "bytes": 6955
+  },
+  {
+   "path": "raw/admrul/2100000133909.xml",
+   "sha256": "c5b7fe05851baeb3ddec10f9dee908ad730237f61944fd2b2f8f2a4c26f0fa1e",
+   "bytes": 8232
+  },
+  {
+   "path": "raw/admrul/2100000174409.xml",
+   "sha256": "e720fb6393eae76e83452a822da34ba21cb5aee0d5b06c7cb8db68512ff4a538",
+   "bytes": 42499
+  },
+  {
+   "path": "raw/admrul/2100000175296.xml",
+   "sha256": "66b3685b2c06e0b4baa8e00204eff532f56107de6695539a71e16edba8735bcf",
+   "bytes": 28953
+  },
+  {
+   "path": "raw/admrul/2100000177414.xml",
+   "sha256": "6c4187e711de1be55e5144b8d2750a81b40476c991428d46f6e3fe26f2131a4b",
+   "bytes": 5462
+  },
+  {
+   "path": "raw/admrul/2100000178997.xml",
+   "sha256": "fe4cdea08638791de9824ae8f9a06d4a7d22a4c41c3bf140a9d47db204ef4dcc",
+   "bytes": 38995
+  },
+  {
+   "path": "raw/admrul/2100000186033.xml",
+   "sha256": "c14179d47b2494ac6be1cc37ade0ed79fb8c64853e673e8af33982de1e37bc1c",
+   "bytes": 34784
+  },
+  {
+   "path": "raw/admrul/2100000186999.xml",
+   "sha256": "e0628908fc8d1fcbcf08e78ebd33db1666f50999cb6de64bf3d3479e1cb00b7a",
+   "bytes": 35183
+  },
+  {
+   "path": "raw/admrul/2100000187731.xml",
+   "sha256": "cb899ea7f4088f733a0607ff8332b5a7c0dfb197b31ea011e88a84aef538a758",
+   "bytes": 52583
+  },
+  {
+   "path": "raw/admrul/2100000188312.xml",
+   "sha256": "470354ac394fda1ab61ea5bc760a1e117ac20e4c39dc6eab418cda83ad189200",
+   "bytes": 16598
+  },
+  {
+   "path": "raw/admrul/2100000189020.xml",
+   "sha256": "ce16f3e13f8c23c3a7643fe14d2a1f634369b9ae49e99bcd15e2caf12d5060ec",
+   "bytes": 45970
+  },
+  {
+   "path": "raw/admrul/2100000190380.xml",
+   "sha256": "382ec126a2478be695fe569e01b51d9da6d1dda96b806e8d3039caea0b69ae37",
+   "bytes": 51736
+  },
+  {
+   "path": "raw/admrul/2100000192836.xml",
+   "sha256": "27ad59e5b4b73cc401dd7d8b131d36eadb1bd7cacde5813ad76b0a50819cbfbb",
+   "bytes": 49556
+  },
+  {
+   "path": "raw/admrul/2100000192906.xml",
+   "sha256": "c5609a4878257da10bfbd9a54c0efb79863dac9025e4fd843584f8b8f54fcffe",
+   "bytes": 6793
+  },
+  {
+   "path": "raw/admrul/2100000193042.xml",
+   "sha256": "03e3711a091caa6d03644262a32fc2525a09bdc392a7859a2032d0ac05dda836",
+   "bytes": 10483
+  },
+  {
+   "path": "raw/admrul/2100000196140.xml",
+   "sha256": "cbc1f1c5d7d87ca8535c8608fae46e21703439ce11c92a0556702b1b5d3155b5",
+   "bytes": 33466
+  },
+  {
+   "path": "raw/admrul/2100000197542.xml",
+   "sha256": "ad595487df745a4f0a838caf3d0c8c4bcc7c4cfb6fd7fe8e63bdf831e38660a4",
+   "bytes": 7212
+  },
+  {
+   "path": "raw/admrul/2100000198323.xml",
+   "sha256": "3954a4e33dc19724aa94cce05062ea500ada98919006be79cfe2e645e387a343",
+   "bytes": 25815
+  },
+  {
+   "path": "raw/admrul/2100000198528.xml",
+   "sha256": "7c6a8454e4af502e50206082552bc17f91e92cf3f5cb0eb7a9500775d06073ea",
+   "bytes": 6210
+  },
+  {
+   "path": "raw/admrul/2100000199692.xml",
+   "sha256": "335047f57c5fd8ee6f91d6a6b821cf5b98d54e93d5ce5c5516090df90b44213a",
+   "bytes": 103164
+  },
+  {
+   "path": "raw/admrul/2100000201903.xml",
+   "sha256": "bbf376577dae6311ad9d5a486ea47a120eb50d73d9e49a5aff631e896f8c4bd9",
+   "bytes": 63988
+  },
+  {
+   "path": "raw/admrul/2100000202773.xml",
+   "sha256": "41e6cfbefa2e4229fd4e5707f7e132f7dbcdd3104f78eb07f0f79e71ba21697d",
+   "bytes": 32477
+  },
+  {
+   "path": "raw/admrul/2100000202981.xml",
+   "sha256": "f30deecfbbbe7aef6f98b2c2aa01628a2aeb3f55d4b5d689bcca4ed4900a107b",
+   "bytes": 62546
+  },
+  {
+   "path": "raw/admrul/2100000218493.xml",
+   "sha256": "ded8a25f1c3f8ece4465a6d72e59f6a4f255fb6f616c0a9b4de131e74780c58a",
+   "bytes": 23030
+  },
+  {
+   "path": "raw/admrul/2100000224954.xml",
+   "sha256": "6e9518314e362e39177946601fedca559531f3d706c34625181517245b375931",
+   "bytes": 60494
+  },
+  {
+   "path": "raw/admrul/2100000232028.xml",
+   "sha256": "5926a4fa7d5b45404cb1df664448e5cf555ade98be31f25bebbf1b78d0732c39",
+   "bytes": 76585
+  },
+  {
+   "path": "raw/admrul/2100000232996.xml",
+   "sha256": "414e79c5a4aba49bbedd581d85e8b0db04e4723aa31653a1bd0d3fbfbf98ca99",
+   "bytes": 14009
+  },
+  {
+   "path": "raw/admrul/2100000233272.xml",
+   "sha256": "68e75b263b21606ebb6cfb4544fe527acfc4ab0107ff12de52fa8acb90d6ee17",
+   "bytes": 39834
+  },
+  {
+   "path": "raw/admrul/2100000234324.xml",
+   "sha256": "a8b77d94b7a99c864e0d9c5e9927613c6507d6ee63aa882d39faca74b189ea60",
+   "bytes": 24719
+  },
+  {
+   "path": "raw/admrul/2100000234572.xml",
+   "sha256": "98fde60863b2451330b9fe9497ce6a7a4e7dc4554afe7330df4bb6423a31e509",
+   "bytes": 39734
+  },
+  {
+   "path": "raw/admrul/2100000237576.xml",
+   "sha256": "481f5ea3eaa962b961bd742ce799f1b59a3357a30909cbc5ef61e610b1c39b14",
+   "bytes": 121578
+  },
+  {
+   "path": "raw/admrul/2100000238124.xml",
+   "sha256": "2bac66e5319b11071ce53cf52ad679aec536c1300dc68cf5dae41fb97af56806",
+   "bytes": 11285
+  },
+  {
+   "path": "raw/admrul/2100000238902.xml",
+   "sha256": "aa432fab7d195d3adabec40ce44c011199903eefdfa2f080379cfcfa0783dd49",
+   "bytes": 73232
+  },
+  {
+   "path": "raw/admrul/2100000239716.xml",
+   "sha256": "0faf7d2da08ae5517821317aa4574aac1e9097d53801805c46798b18d4b1a920",
+   "bytes": 50404
+  },
+  {
+   "path": "raw/admrul/2100000246308.xml",
+   "sha256": "1949a9f164a5035fd28909594c7a76fd37c18ddf71a11625bd2bacd3834a1915",
+   "bytes": 47479
+  },
+  {
+   "path": "raw/admrul/2100000250018.xml",
+   "sha256": "3b356705754f685034f085b290ad1377bb2866ce63142abc6f521e179ceb1c67",
+   "bytes": 53014
+  },
+  {
+   "path": "raw/admrul/2100000251186.xml",
+   "sha256": "817b5b2b751f718f073649983ba71825788b3d825a5f67a4500e1d74a617c099",
+   "bytes": 40774
+  },
+  {
+   "path": "raw/admrul/2100000255514.xml",
+   "sha256": "f68f8e2ffd7a7c37aee9b2293ea35cdbed0fb26e70e1897b5a0325f44945267f",
+   "bytes": 13803
+  },
+  {
+   "path": "raw/admrul/2100000256196.xml",
+   "sha256": "c4f64e7620f10963ab18e17a2bfb8a41cdc9ca41f68720cbcd5e6e298a57eb2a",
+   "bytes": 41955
+  },
+  {
+   "path": "raw/admrul/2100000257632.xml",
+   "sha256": "4cd1171a2e327a5c0cfe07c4e83187643f63d468123ec16360629e755ee05b08",
+   "bytes": 48519
+  },
+  {
+   "path": "raw/admrul/2100000259118.xml",
+   "sha256": "22b0c01a2ec4d167bf8e7f176bf887854e5e63c51ad18e244f8b7b4af5f1b5fe",
+   "bytes": 11051
+  },
+  {
+   "path": "raw/admrul/2100000259166.xml",
+   "sha256": "5a49d76eeba816532fec25f416e7593230a4d1afe7fbe01c38207e99fe49001b",
+   "bytes": 83757
+  },
+  {
+   "path": "raw/admrul/2100000260664.xml",
+   "sha256": "4a9c9a8c12ce8fbcc08e05b4858b8d6d77dba07385a08f6af779ba4770fcee57",
+   "bytes": 37893
+  },
+  {
+   "path": "raw/admrul/2100000261584.xml",
+   "sha256": "94ada8ccf48929af8134538680ac28453435101c5bac9b98fc595c25755be6b1",
+   "bytes": 73007
+  },
+  {
+   "path": "raw/admrul/2100000262388.xml",
+   "sha256": "af4da02f80ca564feb11357ee3e75ba231ab383e68c28b265b1f61d6fe58c58e",
+   "bytes": 71130
+  },
+  {
+   "path": "raw/admrul/2100000262524.xml",
+   "sha256": "b269dcdfe301f653d190d487574efb41ed47112ff01e53dd2f3cbd363248f6dd",
+   "bytes": 40889
+  },
+  {
+   "path": "raw/admrul/2100000262840.xml",
+   "sha256": "9e8c2939d5b8259b8d4149a4d58df64a2f69c0e446c58b05101fa48d73a0ccaa",
+   "bytes": 70475
+  },
+  {
+   "path": "raw/admrul/2100000266176.xml",
+   "sha256": "ed93e98e6da25de6316b946e5f14a358c1647c5aa4f80a0b30ffb2a81346ab47",
+   "bytes": 59193
+  },
+  {
+   "path": "raw/admrul/2100000267800.xml",
+   "sha256": "0c56f6d05948fdca3db237f8b38094986b9b8de28503d369bd174962e23bbcd3",
+   "bytes": 14609
+  },
+  {
+   "path": "raw/admrul/2100000268346.xml",
+   "sha256": "f20e7a28250da69fe9d4e31a63cf45285f1815099d94625cb9951fa9441961b0",
+   "bytes": 66243
+  },
+  {
+   "path": "raw/admrul/2100000270888.xml",
+   "sha256": "5c5653fcc7498009a575be752c94af7b0c3972c15e35af0b832426a5a56b148b",
+   "bytes": 65954
+  },
+  {
+   "path": "raw/admrul/2100000271734.xml",
+   "sha256": "8f1d91d6c420f91736f0b5e9ac6a78142e68a3bdc5b69d717b3ea9af3e127927",
+   "bytes": 29830
+  },
+  {
+   "path": "raw/admrul/2100000271816.xml",
+   "sha256": "bb975ee70053d1bc21bd18885043812033698dccd17e51cb544d7aef540ccf8d",
+   "bytes": 33322
+  },
+  {
+   "path": "raw/admrul/2100000273178.xml",
+   "sha256": "4593dce24eb5277bb4b65b1b4aa1032de111d5b340d324c178cf75d746a87c70",
+   "bytes": 50576
+  },
+  {
+   "path": "raw/admrul/2100000274414.xml",
+   "sha256": "3835e7ae22701ecb684eb1f67c5e9419716f96cebe758c2e3192753cd3fe05b2",
+   "bytes": 84049
+  },
+  {
+   "path": "raw/admrul/2100000274792.xml",
+   "sha256": "1431d657c8846bed036f9e0db97f0adbb5cad1a868b91217f19f0b2f388ad159",
+   "bytes": 23155
+  },
+  {
+   "path": "raw/admrul/2100000275940.xml",
+   "sha256": "08dbb734b6e4287dd5abe11c416ac780e7fdb6650eda5d727a70eb4b3c2bae79",
+   "bytes": 50062
+  },
+  {
+   "path": "raw/admrul/2100000276824.xml",
+   "sha256": "6a030d1fdeb494e20bdd73b3327b58a6acd203c9ba39ef685f43dd8e61bc31c3",
+   "bytes": 32619
+  },
+  {
+   "path": "raw/admrul/2100000280348.xml",
+   "sha256": "5b8358de6507c23708ae5fd6657ee8785dd9e155d49a9cd9b8e97b2d887d4304",
+   "bytes": 5876
+  },
+  {
+   "path": "raw/admrul/2100000281038.xml",
+   "sha256": "57a22f440c92912c227530a9e8861e1561fa0b91d5f777776a5b7a2f146e4a11",
+   "bytes": 3802
+  },
+  {
+   "path": "raw/admrul/2100000281282.xml",
+   "sha256": "adb52c94d07bd25dca30c56880277f53adff65dfc7d587b38b36c868cd0f6c41",
+   "bytes": 168528
+  },
+  {
+   "path": "raw/admrul/2100000281720.xml",
+   "sha256": "27578ff78323bf091d9994efceaa789f752fb9537dadf0af291569cf9afdf27e",
+   "bytes": 1642958
+  },
+  {
+   "path": "raw/admrul/2100000281758.xml",
+   "sha256": "0f962ea716fcfa08a9fc5f5049b6d4c37b3eaf476dfa5bcb7219a2be80f86b64",
+   "bytes": 73857
+  },
+  {
+   "path": "raw/admrul/2100000286226.xml",
+   "sha256": "d33ed89b608871b930a6de95f97b2976e6e8bfaba154b217eb51515b75d576a3",
+   "bytes": 10854
+  },
+  {
+   "path": "raw/admrul/2100000287292.xml",
+   "sha256": "e0c0fc8bd3663b02192d5c37cd848e00672aad0c48d466b23b480613b3cc32ed",
+   "bytes": 59468
+  },
+  {
+   "path": "raw/admrul/2200000078335.xml",
+   "sha256": "c3065dfb80a4bdb60045415259ea2a1ea97791f1495addd63dcb13729cd53059",
+   "bytes": 44219
+  },
+  {
+   "path": "raw/admrul/2200000092243.xml",
+   "sha256": "9112b6dc6eb1eb3f053ef355e01839d89d2a259033911288c2cbd66cc2b1fb75",
+   "bytes": 3422
+  },
+  {
+   "path": "raw/admrul/2200000101583.xml",
+   "sha256": "2b1b056d042f8f25a8c5b9674b5a8c26713411aece075fca89e7154d87232c52",
+   "bytes": 5168
+  },
+  {
+   "path": "raw/admrul/2200000101693.xml",
+   "sha256": "1e81f3cf2c852939875b622acdfcc8813b981a75f8120881f7fa35edf2d2fb1b",
+   "bytes": 3155
+  },
+  {
+   "path": "raw/admrul/2200000103261.xml",
+   "sha256": "ae1e4a2766833eec55ed95715750b24ee99ffe50f8de27a79a7ab85d59b2cc7e",
+   "bytes": 16013
+  },
+  {
+   "path": "raw/admrul/2200000103499.xml",
+   "sha256": "c67afe16e0d287454d45204923ee0d7b98d8cfc873789d715ed16d42276da1cc",
+   "bytes": 2223
+  },
+  {
+   "path": "raw/admrul/2200000104059.xml",
+   "sha256": "7276a00b250ce6b9618eaaa1456d6dc1bdade0ac3abc85c82a3f8535e8015952",
+   "bytes": 9024
+  },
+  {
+   "path": "raw/admrul/2200000105397.xml",
+   "sha256": "f6052e0c2d382a4b286fecf50e8afd9870c210c2d79ecc44c6ebbb6315109c56",
+   "bytes": 21525
+  },
+  {
+   "path": "raw/admrul/2200000107069.xml",
+   "sha256": "0a6a173892d0d6de1f24e636c0dc204b7c3a3a20ae082c0369b43d722fd85f72",
+   "bytes": 24089
+  }
+ ],
+ "records_total": 76,
+ "raw_bytes": 4625535,
+ "delta": {
+  "previous": "runs/api-snapshots/api-drf-admrul-travel-002",
+  "new": [],
+  "changed": [],
+  "metadata_changed": [
+   "law-go-kr:admrul:10912",
+   "law-go-kr:admrul:110603",
+   "law-go-kr:admrul:20073",
+   "law-go-kr:admrul:20151",
+   "law-go-kr:admrul:2035931",
+   "law-go-kr:admrul:2036530",
+   "law-go-kr:admrul:2036588",
+   "law-go-kr:admrul:2036660",
+   "law-go-kr:admrul:2036780",
+   "law-go-kr:admrul:2044670",
+   "law-go-kr:admrul:2047555",
+   "law-go-kr:admrul:2049836",
+   "law-go-kr:admrul:2069865",
+   "law-go-kr:admrul:2082846",
+   "law-go-kr:admrul:2082971",
+   "law-go-kr:admrul:2083010",
+   "law-go-kr:admrul:2083094",
+   "law-go-kr:admrul:2084686",
+   "law-go-kr:admrul:2089032",
+   "law-go-kr:admrul:2111397",
+   "law-go-kr:admrul:2111399",
+   "law-go-kr:admrul:2112025",
+   "law-go-kr:admrul:2112585",
+   "law-go-kr:admrul:2113477",
+   "law-go-kr:admrul:2114305",
+   "law-go-kr:admrul:2114797",
+   "law-go-kr:admrul:2118515",
+   "law-go-kr:admrul:23387",
+   "law-go-kr:admrul:24199",
+   "law-go-kr:admrul:24226",
+   "law-go-kr:admrul:24503",
+   "law-go-kr:admrul:25255",
+   "law-go-kr:admrul:25263",
+   "law-go-kr:admrul:25839",
+   "law-go-kr:admrul:27221",
+   "law-go-kr:admrul:27489",
+   "law-go-kr:admrul:27870",
+   "law-go-kr:admrul:27983",
+   "law-go-kr:admrul:28775",
+   "law-go-kr:admrul:29070",
+   "law-go-kr:admrul:29692",
+   "law-go-kr:admrul:35310",
+   "law-go-kr:admrul:36167",
+   "law-go-kr:admrul:36791",
+   "law-go-kr:admrul:37829",
+   "law-go-kr:admrul:38043",
+   "law-go-kr:admrul:39274",
+   "law-go-kr:admrul:41720",
+   "law-go-kr:admrul:41888",
+   "law-go-kr:admrul:42532",
+   "law-go-kr:admrul:44734",
+   "law-go-kr:admrul:45764",
+   "law-go-kr:admrul:45977",
+   "law-go-kr:admrul:45981",
+   "law-go-kr:admrul:48540",
+   "law-go-kr:admrul:51523",
+   "law-go-kr:admrul:58530",
+   "law-go-kr:admrul:59484",
+   "law-go-kr:admrul:60133",
+   "law-go-kr:admrul:61471",
+   "law-go-kr:admrul:61670",
+   "law-go-kr:admrul:61754",
+   "law-go-kr:admrul:66119",
+   "law-go-kr:admrul:66529",
+   "law-go-kr:admrul:68101",
+   "law-go-kr:admrul:72082",
+   "law-go-kr:admrul:73509",
+   "law-go-kr:admrul:73924",
+   "law-go-kr:admrul:78246",
+   "law-go-kr:admrul:87227",
+   "law-go-kr:admrul:87312",
+   "law-go-kr:admrul:87460",
+   "law-go-kr:admrul:91015",
+   "law-go-kr:admrul:91242",
+   "law-go-kr:admrul:96446",
+   "law-go-kr:admrul:97563"
+  ],
+  "unchanged": 0,
+  "removed": []
+ },
+ "notes": "Not a new API collection. No value is called current; listed_current_at_retrieval is the 현행여부 flag of the response at retrieval time. Public statutory material, not an institution's non-public data."
+}

@@ -1,0 +1,63 @@
+{
+ "version": "guides-v9",
+ "source_version": "guides-v9-src",
+ "code_sha256": "1000299abb04a6c67280d5958a25a9ecf5db7f47a35bf22d4cad210252bd69ac",
+ "notes_file": null,
+ "rows_total": 12,
+ "parts": {
+  "qa_rule_or_procedure": {
+   "rows": 0,
+   "characters": 0,
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "by_institution": {},
+   "holds": {}
+  },
+  "qa_mixed": {
+   "rows": 0,
+   "characters": 0,
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "by_institution": {},
+   "holds": {}
+  },
+  "qa_other": {
+   "rows": 0,
+   "characters": 0,
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "by_institution": {},
+   "holds": {}
+  },
+  "qa_system_operation": {
+   "rows": 0,
+   "characters": 0,
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "by_institution": {},
+   "holds": {}
+  },
+  "documents": {
+   "rows": 10,
+   "characters": 743515,
+   "sha256": "939d1613224092bae64295bc421ec37d03b3f156b3dd41dada5ecbe306897ce1",
+   "by_institution": {
+    "주택도시보증공사": 1,
+    "한전케이피에스주식회사": 1,
+    "국토교통부": 1,
+    "한국환경공단": 7
+   },
+   "holds": {}
+  },
+  "held": {
+   "rows": 2,
+   "characters": 16215,
+   "sha256": "4d16845359c8939587a1ea5b38a355befc20a4e4f7773b6ee39e968fcbe3b8f3",
+   "by_institution": {
+    "한국환경공단": 1,
+    "행정안전부": 1
+   },
+   "holds": {
+    "reserved_overlap": 1,
+    "empty": 1
+   }
+  }
+ },
+ "note": "parts are exclusive; not approved for training; documents carry tables (unverified)"
+}

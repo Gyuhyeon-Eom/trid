@@ -61,27 +61,57 @@ def excluded_ids():
     return {json.loads(x)['corpus_id'] for x in OVERLAP.read_text().splitlines() if x} - ok
 
 
-def record(doc, xml, retrieved_at):
+def applies_to(title, issuer):
+    """Who the rule governs, only when its title says so; otherwise unknown (never 'all public institutions' by guess).
+      institution       the title names the issuing agency itself ('농림축산검역본부 공무국외출장관리규정'): that agency
+      local_government  the title addresses 지방자치단체 ('위법한 공무국외출장에 대한 지방자치단체 처리기준')"""
+    t = re.sub(r'\s+', '', title)
+    if issuer['name'] and re.sub(r'\s+', '', issuer['name']) in t:
+        return {'scope': 'institution', 'ids': [issuer['id']], 'basis': 'title names the issuing agency'}
+    if '지방자치단체' in t:
+        return {'scope': 'local_government', 'ids': [], 'basis': "title addresses '지방자치단체'"}
+    return {'scope': 'unknown', 'ids': [], 'basis': 'not stated in the title; not inferred'}
+
+
+def statute_applies_to(text):
+    """Statutes: who they govern, from 제1조(목적) only; otherwise unknown."""
+    m = re.search(r'제1조\([^)]*\)(.{0,200})', text)
+    purpose = m.group(1) if m else ''
+    if '국가공무원' in purpose and '지방공무원' not in purpose:
+        return {'scope': 'central_government', 'ids': [], 'basis': '제1조(목적) names 국가공무원'}
+    if '지방공무원' in purpose and '국가공무원' not in purpose:
+        return {'scope': 'local_government', 'ids': [], 'basis': '제1조(목적) names 지방공무원'}
+    return {'scope': 'unknown', 'ids': [], 'basis': '제1조(목적) does not name one group; not inferred'}
+
+
+def record(doc, xml, retrieved_at, target):
     text = unicodedata.normalize('NFC', doc['text']).strip()
-    serial = field(xml, '행정규칙일련번호')
-    published, effective = iso(field(xml, '발령일자')), iso(field(xml, '시행일자'))
     pii_hits = len(PII_HINT.findall(text))
+    if target == 'law':
+        published, effective = iso(field(xml, '공포일자')), iso(field(xml, '시행일자'))
+        specific = {'source_id': f"law-go-kr:law:{field(xml, '법령ID')}", 'version': re.search(r'MST=(\d+)', doc['source']).group(1),
+                    'kind': 'law', 'title': field(xml, '법령명_한글'), 'applies_to': statute_applies_to(text),
+                    'date_kinds': {'published': '공포일자', 'effective_from': '시행일자', 'retrieved_at': 'raw response file time (UTC)'},
+                    'rule_kind': re.search(r'법종구분[^>]*>([^<]+)<', xml).group(1) if re.search(r'법종구분[^>]*>([^<]+)<', xml) else None,
+                    'amendment': field(xml, '제개정구분'), 'issue_no': field(xml, '공포번호'),
+                    'statute_abbreviation': field(xml, '법령명약칭') or None}
+    else:
+        published, effective = iso(field(xml, '발령일자')), iso(field(xml, '시행일자'))
+        specific = {'source_id': f"law-go-kr:admrul:{field(xml, '행정규칙ID')}", 'version': field(xml, '행정규칙일련번호'),
+                    'kind': 'rule', 'title': field(xml, '행정규칙명'),
+                    'applies_to': applies_to(field(xml, '행정규칙명'), {'id': field(xml, '소관부처코드'), 'name': field(xml, '소관부처명')}),
+                    'date_kinds': {'published': '발령일자', 'effective_from': '시행일자', 'retrieved_at': 'raw response file time (UTC)'},
+                    'rule_kind': field(xml, '행정규칙종류'), 'amendment': field(xml, '제개정구분명'), 'issue_no': field(xml, '발령번호'),
+                    'listed_current_at_retrieval': field(xml, '현행여부') == 'Y'}
     return {
-        'source_id': f"law-go-kr:admrul:{field(xml, '행정규칙ID')}",
-        'version': serial,
+        **specific,
         'content_hash': sha256_bytes(text.encode()),
-        'kind': 'rule',
-        'title': field(xml, '행정규칙명'),
         'issuer': {'id': field(xml, '소관부처코드'), 'name': field(xml, '소관부처명'), 'id_scheme': '행정기관코드'},
-        'applies_to': {'scope': 'unknown', 'ids': []},
         'dates': {'published': published, 'effective_from': effective, 'effective_to': None, 'retrieved_at': retrieved_at},
-        'date_kinds': {'published': '발령일자', 'effective_from': '시행일자', 'retrieved_at': 'raw response file time (UTC)'},
         'rights': {'license': LICENSE, 'url': 'https://www.law.go.kr/LSW/infoUse.do', 'restrictions': None},
         'location': {'url': doc['source'], 'page': None, 'article_path': [], 'char_start': 0, 'char_end': len(text)},
         'text': text,
         'structured_facts': [],
-        'rule_kind': field(xml, '행정규칙종류'), 'amendment': field(xml, '제개정구분명'), 'issue_no': field(xml, '발령번호'),
-        'listed_current_at_retrieval': field(xml, '현행여부') == 'Y',
         'pii': {'check': 'trid.korean_quality.PII_HINT', 'hits': pii_hits},
         'status': 'held_pii' if pii_hits else 'ok',
         'collection': 'existing_collection_no_new_api_call',
@@ -93,38 +123,43 @@ def build(args):
     if out.exists():
         raise SystemExit(f'{out} exists; snapshots are never overwritten')
     title = re.compile(args.title_regex)
+    titles = set(args.titles or [])
     skip = excluded_ids()
     rows, held, excluded, raw_files = [], 0, 0, []
+    prefix = f'{{"id": "law-go-kr:{args.target}:'
     with open(SOURCE / 'docs.jsonl') as f:
         for line in f:
-            if not line.startswith('{"id": "law-go-kr:admrul:'):
+            if not line.startswith(prefix):
                 continue
             doc = json.loads(line)
-            if not title.search(doc['title']):
+            if not (doc['title'] in titles if titles else title.search(doc['title'])):
                 continue
             if doc['id'] in skip:
                 excluded += 1
                 continue
-            serial = re.search(r'ID=(\d+)', doc['source']).group(1)
-            raw = SOURCE / f'raw/admrul/{serial}.xml'
+            serial = re.search(r'(?:ID|MST)=(\d+)', doc['source']).group(1)
+            raw = SOURCE / f'raw/{args.target}/{serial}.xml'
             xml = raw.read_text(encoding='utf-8')
             retrieved = datetime.fromtimestamp(raw.stat().st_mtime, timezone.utc).strftime('%Y-%m-%d')
-            r = record(doc, xml, retrieved)
+            r = record(doc, xml, retrieved, args.target)
             raw_files.append(raw)
             if r['status'] != 'ok':
                 held += 1
                 continue
             rows.append(r)
+    if titles and len(rows) + held != len(titles):
+        found = {r['title'] for r in rows}
+        raise SystemExit(f'titles not found: {sorted(titles - found)}')
     rows.sort(key=lambda r: r['source_id'])
     (out / 'normalized').mkdir(parents=True)
-    (out / 'raw/admrul').mkdir(parents=True)
+    (out / f'raw/{args.target}').mkdir(parents=True)
     body = ''.join(json.dumps(r, ensure_ascii=False, sort_keys=True) + '\n' for r in rows).encode()
     (out / 'normalized/records-00000.jsonl').write_bytes(body)
     files = [{'path': 'normalized/records-00000.jsonl', 'sha256': sha256_bytes(body), 'records': len(rows), 'bytes': len(body)}]
     for raw in sorted(raw_files):
-        dest = out / 'raw/admrul' / raw.name
+        dest = out / f'raw/{args.target}' / raw.name
         shutil.copyfile(raw, dest)
-        files.append({'path': f'raw/admrul/{raw.name}', 'sha256': sha256_bytes(dest.read_bytes()), 'bytes': dest.stat().st_size})
+        files.append({'path': f'raw/{args.target}/{raw.name}', 'sha256': sha256_bytes(dest.read_bytes()), 'bytes': dest.stat().st_size})
     delta = None
     if args.previous:
         prev_dir = ROOT / args.previous
@@ -133,20 +168,22 @@ def build(args):
             if f['path'].startswith('normalized/'):
                 for x in (prev_dir / f['path']).read_text().splitlines():
                     p = json.loads(x)
-                    prev[p['source_id']] = (p['version'], p['content_hash'])
-        cur = {r['source_id']: (r['version'], r['content_hash']) for r in rows}
+                    prev[p['source_id']] = (p['version'], p['content_hash'], json.dumps(p.get('applies_to'), sort_keys=True))
+        cur = {r['source_id']: (r['version'], r['content_hash'], json.dumps(r['applies_to'], sort_keys=True)) for r in rows}
         delta = {'previous': args.previous, 'new': sorted(cur.keys() - prev.keys()),
-                 'changed': sorted(k for k in cur.keys() & prev.keys() if cur[k] != prev[k]),
+                 'changed': sorted(k for k in cur.keys() & prev.keys() if cur[k][:2] != prev[k][:2]),
+                 'metadata_changed': sorted(k for k in cur.keys() & prev.keys() if cur[k][:2] == prev[k][:2] and cur[k] != prev[k]),
                  'unchanged': sum(1 for k in cur.keys() & prev.keys() if cur[k] == prev[k]),
                  'removed': sorted(prev.keys() - cur.keys())}
     manifest = {
         'snapshot_id': args.snapshot_id, 'created_at': datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
         'producer': 'B/API-S3-001', 'code_sha256': CODE_SHA256,
-        'sources': [{'provider': '법제처 국가법령정보센터 Open API (DRF)', 'endpoint': ENDPOINT, 'records': len(rows),
-                     'license': LICENSE, 'collection': 'existing_collection_no_new_api_call',
+        'sources': [{'provider': '법제처 국가법령정보센터 Open API (DRF)', 'endpoint': ENDPOINT.replace('admrul', args.target),
+                     'records': len(rows), 'license': LICENSE, 'collection': 'existing_collection_no_new_api_call',
                      'retrieved_at': 'per record dates.retrieved_at (raw response file time)',
                      'source_dir': str(SOURCE.relative_to(ROOT))}],
-        'selection': {'target': 'admrul', 'title_regex': args.title_regex, 'excluded_reserved_overlap': excluded,
+        'selection': {'target': args.target, 'title_regex': None if titles else args.title_regex, 'titles': sorted(titles) or None,
+                      'excluded_reserved_overlap': excluded,
                       'held_pii': held, 'overlap_list': str(OVERLAP.relative_to(ROOT)), 'span_check': str(SPAN_CHECK.relative_to(ROOT))},
         'files': files, 'records_total': len(rows), 'raw_bytes': sum(f['bytes'] for f in files[1:]), 'delta': delta,
         'notes': 'Not a new API collection. No value is called current; listed_current_at_retrieval is the 현행여부 flag '
@@ -171,6 +208,8 @@ def main():
     p.add_argument('--previous')
     # '급여비용' (요양급여비용 등) contains '여비' but is not travel expense
     p.add_argument('--title-regex', default='출장|(?<!급)여비')
+    p.add_argument('--target', choices=('admrul', 'law'), default='admrul')
+    p.add_argument('--titles', nargs='+', help='exact titles instead of --title-regex (each must be found)')
     p.add_argument('--verify', help='only verify an existing snapshot directory')
     args = p.parse_args()
     if args.verify:
