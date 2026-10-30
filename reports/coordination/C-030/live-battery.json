@@ -1,0 +1,1545 @@
+{
+ "info": "정보와 도움말\n×\n이용 안내\n실험 서비스입니다. 답이 틀릴 수 있으니 업무 판단 전에 원문을 확인하세요.\n입력은 Cloudflare를 거쳐 운영자의 Mac에서 처리됩니다. 공개해도 되는 내용만 입력하세요.\n대화와 문서는 운영자 Mac의 서버 메모리에 이 브라우저 세션 단위로 보관되고, 15분 동안 쓰지 않으면 삭제됩니다. ✎(새 대화)를 누르면 바로 지웁니다.\n모델\nTRID 기본 · Qwen3-1.7B 원본 (업무 특화 학습 없음) · assistant-0 · 2026-10-30 · 원본 가중치 그대로(튜닝 없음) · 입력마다 같은 모델이 \"대화/근거 검색\"을 고름 · 대화: 모델 기본 chat template, 최근 대화 6개 메시지 유지 · 업무 질문: 공개 자료 검색 후 원문 인용 확인 · llama.cpp 8ca4060 Metal 빌드, greedy, 사고 모드 끔 · 실험 서비스 · 원본 모델(미특화) · 품질 기준 미달\n기반: Qwen/Qwen3-1.7B-GGUF Q8_0, revision 90862c4b9d2787eaed51d12237eafdfe7c5f6077 (Alibaba Qwen) · 라이선스: Apache-2.0\n실측: 이 서비스 조건 그대로의 측정은 아직 없음. 참고(조건이 다름): 같은 원본 파일의 RAG310(값 형식 지시·고정 근거) 답 있는 228문항 중 104, 보류해야 할 82문항 중 바르게 보류 2. C-023 pilot_dev(설명형 지시, 같은 가중치의 다른 변환 파일) 결론 정확 9/18.\n한계: 일반 대화 응답은 문서 근거가 없고 검증 대상이 아님(수치·기한·조문을 말한 문장은 숨김). 업무 질문은 공개 자료에서 찾은 원문 중 글자 그대로 일치하는 문장만 \"확인된 인용\"이며 해설은 검증 안 됨. 대화/검색 선택을 모델이 하므로 잘못 고를 수 있음. 근거를 찾지 못한 업무 질문에 기억으로 답하지 않음.\n검색 자료와 답변 표시\n\n검색 자료 14,689건·104,134구간(질의응답 게시판 9,127 · 행정규칙 1,586 · FAQ 878 · 질의회신 해석사례 593 · 법령해석례 590 · FAQ·질의응답 556 등; 기준일 1961-03-22~2026-10-26). 법제처 국가법령정보센터·공공데이터포털 등 공개 자료이며 기관 내부 비공개 자료가 아닙니다. 질의응답 자료는 국민권익위원회 게시판 비중이 큽니다. 모든 값은 표시된 기준일 당시 값이며 현행 여부는 다시 확인하지 않았습니다.\n\n질문에 기관명이나 규정명이 있으면 그 기관·규정 자료에서만 찾고, 없으면 다른 기관 규정으로 대신 답하지 않습니다. 기관이 정해지지 않았는데 여러 기관 규정이 비슷하게 검색되면 어느 기관 기준인지 되묻습니다. 한 답변에는 문서 1건만 씁니다.\n\n원문과 글자 그대로 일치하는 문장은 \"원문 일치 · 정답 검증 아님\"으로 표시합니다. 원문에 그대로 있다는 뜻일 뿐, 질문에 맞는 정답이라는 확인은 아닙니다. 나머지 설명은 \"모델 해설 · 검증 안 됨\"이며, 검색 원문에 없는 숫자가 든 해설 문장은 숨깁니다. 일반 대화 응답은 문서 근거가 없는 답으로 표시합니다. 근거 없이 수치·기한·조문을 말한 문장은 숨기지만, 사용자가 말한 숫자와 그 숫자로 한 계산은 그대로 둡니다(계산 결과는 검증된 값이 아닙니다).\n\n사용법\nEnter 전송 · Shift+Enter 줄바꿈 (한글 조합 중 Enter는 전송하지 않습니다)\n＋ 첨부: PDF(2MB·20쪽·5만 자 이하, 텍스트 PDF) 또는 문서 붙여넣기(5,000자 이하). 첨부하면 질문은 그 문서에서만 찾습니다.\n답변 아래 \"출처\"를 누르면 적용 문서·기준일·원문 링크와 인용 구간을 볼 수 있습니다.\n입력창에서 /clear, /pdf, /paste, /source, /sample, /workspace 명령도 쓸 수 있습니다.",
+ "R": [
+  {
+   "tag": "S2 (regression flow)",
+   "q": "한국도로공사 출장 숙박비 기준 알려 주세요.",
+   "reply": "나:\n한국도로공사 출장 숙박비 기준 알려 주세요.\n---\ntrid:\n한국도로공사(공기업(시장형), 주무부처 국토교통부)의 규정은 현재 검색 자료에 없습니다. 다른 기관의 규정으로 대신 답하지 않습니다. 해당 기관 규정 문서를 첨부(＋)로 넣으면 그 문서에서 찾을 수 있습니다. 기관을 정하지 않고 공공기관 일반 기준을 찾으려면 기관명 없이 물어 주세요.\n해당 기관 자료 없음\n자세히",
+   "api": [
+    {
+     "s": 200,
+     "j": {
+      "status": "unknown_institution",
+      "answer": "한국도로공사(공기업(시장형), 주무부처 국토교통부)의 규정은 현재 검색 자료에 없습니다. 다른 기관의 규정으로 대신 답하지 않습니다. 해당 기관 규정 문서를 첨부(＋)로 넣으면 그 문서에서 찾을 수 있습니다. 기관을 정하지 않고 공공기관 일반 기준을 찾으려면 기관명 없이 물어 주세요.",
+      "candidates": [],
+      "checked_chunks": 0,
+      "warnings": [],
+      "reason": null,
+      "retrieval": null,
+      "scope": "모델을 실행하지 않았습니다. 검색 자료와 질문의 기관·규정명, 근거 적합성을 확인한 결과입니다.",
+      "intent": "search",
+      "workspace": {
+       "applied": null,
+       "pinned": false,
+       "others": [],
+       "selection": "unknown_institution",
+       "institutions": [],
+       "title_matched": false,
+       "continued": false,
+       "scope": "검색 자료 14,689건·104,134구간(질의응답 게시판 9,127 · 행정규칙 1,586 · FAQ 878 · 질의회신 해석사례 593 · 법령해석례 590 · FAQ·질의응답 556 등; 기준일 1961-03-22~2026-10-26). 법제처 국가법령정보센터·공공데이터포털 등 공개 자료이며 기관 내부 비공개 자료가 아닙니다. 질의응답 자료는 국민권익위원회 게시판 비중이 큽니다. 모든 값은 표시된 기준일 당시 값이며 현행 여부는 다시 확인하지 않았습니다.",
+       "separate_snapshot": false
+      },
+      "total_chunks": 104134,
+      "model": "TRID 기본 · Qwen3-1.7B 원본 (업무 특화 학습 없음)",
+      "version": "trid-assistant-qwen3-1.7b",
+      "elapsed_ms": 2587
+     }
+    }
+   ]
+  },
+  {
+   "tag": "S3 scope widen",
+   "q": "그럼 국가공무원은 숙박비 기준이 어떻게 돼요?",
+   "reply": "나:\n그럼 국가공무원은 숙박비 기준이 어떻게 돼요?\n---\ntrid:\n원문과 글자 그대로 일치하는 인용이 없어 검증된 답이 없습니다. 아래 모델 해설은 검증되지 않았습니다.\n검증 안 됨 · 해설만\n출처 · 인사혁신처",
+   "api": [
+    {
+     "s": 200,
+     "j": {
+      "file": "국가공무원 복무규정",
+      "candidates": [],
+      "checked_chunks": 1,
+      "answer_mode": "case",
+      "total_chunks": 104134,
+      "warnings": [],
+      "raw_output": "근거에 없는 내용입니다. 국가공무원의 숙박비 기준은 제공된 근거에 없습니다.",
+      "commentary": "근거에 없는 내용입니다.\n국가공무원의 숙박비 기준은 제공된 근거에 없습니다.",
+      "commentary_verified": false,
+      "unsupported_numbers": [],
+      "scope": "관련도 판정으로 고른 문서 1건의 구간만 모델에 넣었습니다. 다른 기관·문서의 규정을 섞지 않습니다. 검색되지 않은 자료까지 정보가 없다고 보장하지 않습니다.",
+      "commentary_notes": [],
+      "status": "unverified",
+      "answer": "원문과 글자 그대로 일치하는 인용이 없어 검증된 답이 없습니다. 아래 모델 해설은 검증되지 않았습니다.",
+      "intent": "search",
+      "retrieval": {
+       "mode": "hybrid",
+       "topical_words": [
+        "숙박비",
+        "국가공무원"
+       ],
+       "best_cosine": 0.698,
+       "hits": [
+        {
+         "doc_id": "law-go-kr:law:290313",
+         "passage": "law-go-kr:law:290313:0055",
+         "hybrid": 0.905,
+         "cosine": 0.672
+        },
+        {
+         "doc_id": "law-go-kr:law:290313",
+         "passage": "law-go-kr:law:290313:0019",
+         "hybrid": 0.893,
+         "cosine": 0.672
+        },
+        {
+         "doc_id": "law-go-kr:law:290313",
+         "passage": "law-go-kr:law:290313:0052",
+         "hybrid": 0.877,
+         "cosine": 0.674
+        },
+        {
+         "doc_id": "law-go-kr:expc:337307",
+         "passage": "law-go-kr:expc:337307:0002",
+         "hybrid": 0.85,
+         "cosine": 0.694
+        },
+        {
+         "doc_id": "law-go-kr:law:290313",
+         "passage": "law-go-kr:law:290313:0051",
+         "hybrid": 0.845,
+         "cosine": 0.667
+        }
+       ],
+       "index": "v5",
+       "dense": {
+        "model": "BAAI/bge-m3",
+        "snapshot": "5617a9f61b028005a4858fdac845db406aefb181",
+        "vectors_sha256": "87d973bdc2e8fcdf91de27d0c1357c9c0d5329069fdc4e1cb49fe2515356908e"
+       }
+      },
+      "workspace": {
+       "applied": {
+        "doc_id": "law-go-kr:law:290349",
+        "title": "국가공무원 복무규정",
+        "institution": "인사혁신처",
+        "kind": "법령",
+        "date": "2026-09-29",
+        "date_type": "공포일자",
+        "effective_date": "2026-10-02",
+        "currency": "2026-10-27 수집 당시 자료이며 현행 여부는 다시 확인하지 않았음",
+        "source": "http://www.law.go.kr/DRF/lawService.do?target=law&MST=290349&type=HTML&efYd=20261002",
+        "license": "KR-Copyright-Act-Art7 (law.go.kr)",
+        "source_id": "law-go-kr:law:002643",
+        "snapshot_id": "api-drf-law-civil-service-002",
+        "issuer_id": "1760000",
+        "issuer_id_scheme": "행정기관코드"
+       },
+       "pinned": false,
+       "others": [
+        {
+         "doc_id": "law-go-kr:expc:337307",
+         "title": "행정안전부ㆍ민원인 - 대통령령 제33312호 「공무원 여비 규정」 시행 전에 국내 교육훈련이 시작된 공무원에게 지급하는 여비의 지급 기준(대통령령 제33312호 「공무원 여비 규정」 부칙 제2조 등 관련)",
+         "institution": "법제처(질의: 민원인)",
+         "kind": "법령해석례",
+         "date": "2023-10-13",
+         "date_type": "해석일자",
+         "effective_date": null,
+         "currency": "interpretation of the law in force at its date",
+         "source": "http://www.law.go.kr/DRF/lawService.do?target=expc&ID=337307&type=HTML",
+         "license": "KR-Copyright-Act-Art7 (law.go.kr)",
+         "score": 0.85
+        },
+        {
+         "doc_id": "law-go-kr:admrul-file:170001959",
+         "title": "국가공무원 복무·징계 관련 예규 - 「국가공무원 복무·징계 관련 예규」(인사혁신처 예규 제225호).pdf",
+         "institution": "인사혁신처",
+         "kind": "행정규칙 첨부(예규)",
+         "date": "2026-10-01",
+         "date_type": "발령일자 (rule header)",
+         "effective_date": null,
+         "currency": "기준일 당시 자료이며 현재 값·현행 여부는 확인하지 않았음",
+         "source": "https://www.law.go.kr/flDownload.do?flSeq=170001959",
+         "license": "KR-Copyright-Act-Art7 (law.go.kr)",
+         "score": 0.74
+        },
+        {
+         "doc_id": "law-go-kr:law:290323",
+         "title": "공무원수당 등에 관한 규정",
+         "institution": "인사혁신처",
+         "kind": "법령",
+         "date": "2026-09-29",
+         "date_type": "공포일자",
+         "effective_date": "2026-10-02",
+         "currency": "2026-10-27 수집 당시 자료이며 현행 여부는 다시 확인하지 않았음",
+         "source": "http://www.law.go.kr/DRF/lawService.do?target=law&MST=290323&type=HTML&efYd=20261002",
+         "license": "KR-Copyright-Act-Art7 (law.go.kr)",
+         "source_id": "law-go-kr:law:002303",
+         "snapshot_id": "api-drf-law-civil-service-002",
+         "issuer_id": "1760000",
+         "issuer_id_scheme": "행정기관코드",
+         "score": 0.73
+        },
+        {
+         "doc_id": "law-go-kr:law-byl:169703575",
+         "title": "국가공무원 복무규정 [별표 0003] 시간선택제공무원등에 대한 휴가 기준(제24조의3 관련)",
+         "institution": "인사혁신처",
+         "kind": "법령 별표",
+         "date": "2026-09-29",
+         "date_type": "공포일자 (statute header)",
+         "effective_date": null,
+         "currency": "기준일 당시 자료이며 현재 값·현행 여부는 확인하지 않았음",
+         "source": "https://www.law.go.kr/LSW/flDownload.do?flSeq=169703575",
+         "license": "KR-Copyright-Act-Art7 (law.go.kr)",
+         "score": 0.72
+        }
+       ],
+       "selection": "answer",
+       "institutions": [],
+       "title_matched": false,
+       "continued": false,
+       "scope": "검색 자료 14,689건·104,134구간(질의응답 게시판 9,127 · 행정규칙 1,586 · FAQ 878 · 질의회신 해석사례 593 · 법령해석례 590 · FAQ·질의응답 556 등; 기준일 1961-03-22~2026-10-26). 법제처 국가법령정보센터·공공데이터포털 등 공개 자료이며 기관 내부 비공개 자료가 아닙니다. 질의응답 자료는 국민권익위원회 게시판 비중이 큽니다. 모든 값은 표시된 기준일 당시 값이며 현행 여부는 다시 확인하지 않았습니다.",
+       "separate_snapshot": false
+      },
+      "model": "TRID 기본 · Qwen3-1.7B 원본 (업무 특화 학습 없음)",
+      "version": "trid-assistant-qwen3-1.7b",
+      "elapsed_ms": 4304
+     }
+    }
+   ]
+  },
+  {
+   "tag": "S4 general explanation",
+   "q": "공무원 출장비에는 보통 어떤 돈이 포함되나요?",
+   "reply": "나:\n공무원 출장비에는 보통 어떤 돈이 포함되나요?\n---\ntrid:\n원문과 글자 그대로 일치하는 인용이 없어 검증된 답이 없습니다. 아래 모델 해설은 검증되지 않았습니다.\n검증 안 됨 · 해설만\n자료 한계: 표 행·열 대응 미검증 — 자세한 내용은 아래 출처에서 확인하세요\n출처 · 인사혁신처",
+   "api": [
+    {
+     "s": 200,
+     "j": {
+      "file": "공무원 여비 규정",
+      "candidates": [],
+      "checked_chunks": 6,
+      "answer_mode": "case",
+      "total_chunks": 104134,
+      "warnings": [],
+      "raw_output": "공무원 출장비에는 다음과 같은 내용이 포함됩니다:\n\n1. **일비(日費)**: 출장 일수에 따라 지급되는 비용으로, 일반적으로 1일 25,000 원 이상의 금액이 지급됩니다. 이는 철도운임, 선박운임, 항공운임, 자동차 일비 등에 따라 차등적으로 지급됩니다.\n\n2. **숙박비**: 출장 기간에 사용되는 숙박비로, 일반적으로 1박 25,000 원 이상의 금액이 지급됩니다. 이는 지역에 따라 차등적으로 지급됩니다(예: 서울특별시 100,000 원, 광역시 80,000 원, 그 밖의 지역 70,000 원).\n\n3. **식비**: 출장 기간에 사용되는 식비로, 일반적으로 1일 25,000 원 이상의 금액이 지급됩니다. 이는 지역에 따라 차등적으로 지급됩니다.\n\n4. **항공운임**:",
+      "commentary": "공무원 출장비에는 다음과 같은 내용이 포함됩니다:\n1.\n**일비(日費)**: 출장 일수에 따라 지급되는 비용으로, 일반적으로 1일 25,000 원 이상의 금액이 지급됩니다.\n이는 철도운임, 선박운임, 항공운임, 자동차 일비 등에 따라 차등적으로 지급됩니다.\n2.\n**숙박비**: 출장 기간에 사용되는 숙박비로, 일반적으로 1박 25,000 원 이상의 금액이 지급됩니다.\n이는 지역에 따라 차등적으로 지급됩니다(예: 서울특별시 100,000 원, 광역시 80,000 원, 그 밖의 지역 70,000 원).\n3.\n**식비**: 출장 기간에 사용되는 식비로, 일반적으로 1일 25,000 원 이상의 금액이 지급됩니다.\n이는 지역에 따라 차등적으로 지급됩니다.\n4.\n**항공운임**:",
+      "commentary_verified": false,
+      "unsupported_numbers": [],
+      "scope": "관련도 판정으로 고른 문서 1건의 구간만 모델에 넣었습니다. 다른 기관·문서의 규정을 섞지 않습니다. 검색되지 않은 자료까지 정보가 없다고 보장하지 않습니다. 원문 표 구간과 함께 B가 원본 렌더링과 대조한 표 행(단위·비고·시점 포함, 8행)을 넣었습니다. 이 행은 원문 인용으로 표시하지 않으며, 승인된 값이나 법률 자문이 아닙니다. 본문이 인용한 같은 규정의 별표 구간을 함께 넣었습니다(1건).",
+      "commentary_notes": [
+       "모델 출력이 길이 한도(256토큰)에서 잘렸습니다."
+      ],
+      "status": "unverified",
+      "answer": "원문과 글자 그대로 일치하는 인용이 없어 검증된 답이 없습니다. 아래 모델 해설은 검증되지 않았습니다.",
+      "intent": "search",
+      "retrieval": {
+       "mode": "hybrid",
+       "topical_words": [
+        "출장비",
+        "보통"
+       ],
+       "best_cosine": 0.735,
+       "hits": [
+        {
+         "doc_id": "law-go-kr:law:290313",
+         "passage": "law-go-kr:law:290313:0022",
+         "hybrid": 0.926,
+         "cosine": 0.735
+        },
+        {
+         "doc_id": "law-go-kr:law-byl:169708689",
+         "passage": "law-go-kr:law-byl:169708689#0",
+         "hybrid": 0.812,
+         "cosine": 0.683
+        },
+        {
+         "doc_id": "law-go-kr:admrul-file:170001959",
+         "passage": "law-go-kr:admrul-file:170001959#116448",
+         "hybrid": 0.757,
+         "cosine": 0.697
+        },
+        {
+         "doc_id": "law-go-kr:law:289957",
+         "passage": "law-go-kr:law:289957:0032",
+         "hybrid": 0.751,
+         "cosine": 0.662
+        },
+        {
+         "doc_id": "law-go-kr:law:290313",
+         "passage": "law-go-kr:law:290313:0062",
+         "hybrid": 0.75,
+         "cosine": 0.656
+        }
+       ],
+       "index": "v5",
+       "dense": {
+        "model": "BAAI/bge-m3",
+        "snapshot": "5617a9f61b028005a4858fdac845db406aefb181",
+        "vectors_sha256": "87d973bdc2e8fcdf91de27d0c1357c9c0d5329069fdc4e1cb49fe2515356908e"
+       }
+      },
+      "workspace": {
+       "applied": {
+        "doc_id": "law-go-kr:law:290313",
+        "title": "공무원 여비 규정",
+        "institution": "인사혁신처",
+        "kind": "법령",
+        "date": "2026-09-29",
+        "date_type": "공포일자",
+        "effective_date": "2026-10-02",
+        "currency": "2026-10-27 수집 당시 자료이며 현행 여부는 다시 확인하지 않았음",
+        "source": "http://www.law.go.kr/DRF/lawService.do?target=law&MST=290313&type=HTML&efYd=20261002",
+        "license": "KR-Copyright-Act-Art7 (law.go.kr)",
+        "source_id": "law-go-kr:law:009402",
+        "snapshot_id": "api-drf-law-civil-service-002",
+        "issuer_id": "1760000",
+        "issuer_id_scheme": "행정기관코드"
+       },
+       "pinned": false,
+       "others": [
+        {
+         "doc_id": "law-go-kr:law-byl:169708689",
+         "title": "공무원 여비 규정 [별표 0008] 상시 출장 공무원의 여비 지급 기준표(제29조제2항 관련)",
+         "institution": "인사혁신처",
+         "kind": "법령 별표",
+         "date": "2026-09-29",
+         "date_type": "공포일자 (statute header)",
+         "effective_date": null,
+         "currency": "기준일 당시 자료이며 현재 값·현행 여부는 확인하지 않았음",
+         "source": "https://www.law.go.kr/LSW/flDownload.do?flSeq=169708689",
+         "license": "KR-Copyright-Act-Art7 (law.go.kr)",
+         "score": 0.81
+        },
+        {
+         "doc_id": "law-go-kr:law:290323",
+         "title": "공무원수당 등에 관한 규정",
+         "institution": "인사혁신처",
+         "kind": "법령",
+         "date": "2026-09-29",
+         "date_type": "공포일자",
+         "effective_date": "2026-10-02",
+         "currency": "2026-10-27 수집 당시 자료이며 현행 여부는 다시 확인하지 않았음",
+         "source": "http://www.law.go.kr/DRF/lawService.do?target=law&MST=290323&type=HTML&efYd=20261002",
+         "license": "KR-Copyright-Act-Art7 (law.go.kr)",
+         "source_id": "law-go-kr:law:002303",
+         "snapshot_id": "api-drf-law-civil-service-002",
+         "issuer_id": "1760000",
+         "issuer_id_scheme": "행정기관코드",
+         "score": 0.72
+        }
+       ],
+       "selection": "answer",
+       "institutions": [],
+       "title_matched": false,
+       "continued": false,
+       "scope": "검색 자료 14,689건·104,134구간(질의응답 게시판 9,127 · 행정규칙 1,586 · FAQ 878 · 질의회신 해석사례 593 · 법령해석례 590 · FAQ·질의응답 556 등; 기준일 1961-03-22~2026-10-26). 법제처 국가법령정보센터·공공데이터포털 등 공개 자료이며 기관 내부 비공개 자료가 아닙니다. 질의응답 자료는 국민권익위원회 게시판 비중이 큽니다. 모든 값은 표시된 기준일 당시 값이며 현행 여부는 다시 확인하지 않았습니다.",
+       "separate_snapshot": false
+      },
+      "table_warning": "표가 들어 있는 구간을 썼습니다. 표의 행·열 대응은 검증되지 않았으므로 표 값을 해석하거나 계산한 내용은 근거로 쓰지 말고 원문 링크에서 표를 직접 확인하세요.",
+      "model": "TRID 기본 · Qwen3-1.7B 원본 (업무 특화 학습 없음)",
+      "version": "trid-assistant-qwen3-1.7b",
+      "elapsed_ms": 10105
+     }
+    }
+   ]
+  },
+  {
+   "tag": "S5 Daegu lodging (gold 80,000 제2호)",
+   "q": "국가공무원이 대구로 출장 가면 숙박비 상한이 얼마인가요?",
+   "reply": "나:\n국가공무원이 대구로 출장 가면 숙박비 상한이 얼마인가요?\n---\ntrid:\n원문과 글자 그대로 일치하는 인용이 없어 검증된 답이 없습니다. 아래 모델 해설은 검증되지 않았습니다.\n검증 안 됨 · 해설만\n자료 한계: 표 행·열 대응 미검증 — 자세한 내용은 아래 출처에서 확인하세요\n출처 · 인사혁신처",
+   "api": [
+    {
+     "s": 200,
+     "j": {
+      "file": "공무원 여비 규정",
+      "candidates": [],
+      "checked_chunks": 6,
+      "answer_mode": "case",
+      "total_chunks": 104134,
+      "warnings": [],
+      "raw_output": "D1에 따르면, \"근무지 내 국내 출장\"의 경우 숙박비 상한액은 12킬로미터 미만의 출장에 해당하며, 이 경우 숙박비 상한액은 10분의 3을 넘지 않도록 지급해야 한다. 그러나 D1에서 \"근무지 내 국내 출장\"이란 \"같은 시(특별시, 광역시 및 특별자치시를 포함한다. 이하 같다)ㆍ군 및 섬(제주특별자치도는 제외한다. 이하 같다) 안에서의 출장\"으로 명시되어 있으며, 대구는 서울특별시의 하위 시군으로 분류되어 있으므로, 대구로 출장하는 경우 \"근무지 내 국내 출장\"에 해당한다. 따라서 대구로 출장하는 경우 숙박비 상한액은 12킬로미터 미만의 출장에 해당하는 숙박비 상한액의 10분의 3을 넘지 않도록 지급해야 한다.\n\nD4에 따르면, 별표",
+      "commentary": "D1에 따르면, \"근무지 내 국내 출장\"의 경우 숙박비 상한액은 12킬로미터 미만의 출장에 해당하며, 이 경우 숙박비 상한액은 10분의 3을 넘지 않도록 지급해야 한다.\n그러나 D1에서 \"근무지 내 국내 출장\"이란 \"같은 시(특별시, 광역시 및 특별자치시를 포함한다.\n이하 같다)ㆍ군 및 섬(제주특별자치도는 제외한다.\n이하 같다) 안에서의 출장\"으로 명시되어 있으며, 대구는 서울특별시의 하위 시군으로 분류되어 있으므로, 대구로 출장하는 경우 \"근무지 내 국내 출장\"에 해당한다.\n따라서 대구로 출장하는 경우 숙박비 상한액은 12킬로미터 미만의 출장에 해당하는 숙박비 상한액의 10분의 3을 넘지 않도록 지급해야 한다.\nD4에 따르면, 별표",
+      "commentary_verified": false,
+      "unsupported_numbers": [],
+      "scope": "앞선 대화에서 쓴 문서(질문에 기관·문서명이 없어 이어서 찾음)으로 고른 문서 1건의 구간만 모델에 넣었습니다. 다른 기관·문서의 규정을 섞지 않습니다. 검색되지 않은 자료까지 정보가 없다고 보장하지 않습니다. 본문이 인용한 같은 규정의 별표 구간을 함께 넣었습니다(1건).",
+      "commentary_notes": [
+       "모델 출력이 길이 한도(256토큰)에서 잘렸습니다."
+      ],
+      "status": "unverified",
+      "answer": "원문과 글자 그대로 일치하는 인용이 없어 검증된 답이 없습니다. 아래 모델 해설은 검증되지 않았습니다.",
+      "intent": "search",
+      "retrieval": {
+       "mode": "hybrid",
+       "topical_words": [
+        "대구",
+        "숙박비",
+        "상한",
+        "국가공무원"
+       ],
+       "best_cosine": 0.638,
+       "hits": [
+        {
+         "doc_id": "law-go-kr:law:290313",
+         "passage": "law-go-kr:law:290313:0022",
+         "hybrid": 0.907,
+         "cosine": 0.62
+        },
+        {
+         "doc_id": "law-go-kr:law:290313",
+         "passage": "law-go-kr:law:290313:0052",
+         "hybrid": 0.877,
+         "cosine": 0.62
+        },
+        {
+         "doc_id": "law-go-kr:law:290313",
+         "passage": "law-go-kr:law:290313:0019",
+         "hybrid": 0.832,
+         "cosine": 0.594
+        },
+        {
+         "doc_id": "law-go-kr:law:290313",
+         "passage": "law-go-kr:law:290313:0051",
+         "hybrid": 0.818,
+         "cosine": 0.597
+        },
+        {
+         "doc_id": "law-go-kr:law:290313",
+         "passage": "law-go-kr:law:290313:0055",
+         "hybrid": 0.815,
+         "cosine": 0.594
+        }
+       ],
+       "index": "v5",
+       "dense": {
+        "model": "BAAI/bge-m3",
+        "snapshot": "5617a9f61b028005a4858fdac845db406aefb181",
+        "vectors_sha256": "87d973bdc2e8fcdf91de27d0c1357c9c0d5329069fdc4e1cb49fe2515356908e"
+       }
+      },
+      "workspace": {
+       "applied": {
+        "doc_id": "law-go-kr:law:290313",
+        "title": "공무원 여비 규정",
+        "institution": "인사혁신처",
+        "kind": "법령",
+        "date": "2026-09-29",
+        "date_type": "공포일자",
+        "effective_date": "2026-10-02",
+        "currency": "2026-10-27 수집 당시 자료이며 현행 여부는 다시 확인하지 않았음",
+        "source": "http://www.law.go.kr/DRF/lawService.do?target=law&MST=290313&type=HTML&efYd=20261002",
+        "license": "KR-Copyright-Act-Art7 (law.go.kr)",
+        "source_id": "law-go-kr:law:009402",
+        "snapshot_id": "api-drf-law-civil-service-002",
+        "issuer_id": "1760000",
+        "issuer_id_scheme": "행정기관코드"
+       },
+       "pinned": false,
+       "others": [],
+       "selection": "answer",
+       "institutions": [],
+       "title_matched": false,
+       "continued": true,
+       "scope": "검색 자료 14,689건·104,134구간(질의응답 게시판 9,127 · 행정규칙 1,586 · FAQ 878 · 질의회신 해석사례 593 · 법령해석례 590 · FAQ·질의응답 556 등; 기준일 1961-03-22~2026-10-26). 법제처 국가법령정보센터·공공데이터포털 등 공개 자료이며 기관 내부 비공개 자료가 아닙니다. 질의응답 자료는 국민권익위원회 게시판 비중이 큽니다. 모든 값은 표시된 기준일 당시 값이며 현행 여부는 다시 확인하지 않았습니다.",
+       "separate_snapshot": false
+      },
+      "table_warning": "표가 들어 있는 구간을 썼습니다. 표의 행·열 대응은 검증되지 않았으므로 표 값을 해석하거나 계산한 내용은 근거로 쓰지 말고 원문 링크에서 표를 직접 확인하세요.",
+      "model": "TRID 기본 · Qwen3-1.7B 원본 (업무 특화 학습 없음)",
+      "version": "trid-assistant-qwen3-1.7b",
+      "elapsed_ms": 13470
+     }
+    }
+   ]
+  },
+  {
+   "tag": "S6 meal per day (gold 25,000)",
+   "q": "국가공무원 국내 출장 하루 식비 정액이 얼마예요?",
+   "reply": "나:\n국가공무원 국내 출장 하루 식비 정액이 얼마예요?\n---\ntrid:\n검색 자료에서 이 질문에 답할 만큼 관련된 구간을 찾지 못했습니다(핵심어 '국내', '하루', '식비', '정액', '국가공무원'을 충분히 다루는 구간 없음). 관련 없는 문서로 대신 답하지 않습니다. 기관명이나 규정명을 넣거나 다른 표현으로 물어 주세요.\n근거 못 찾음\n자세히",
+   "api": [
+    {
+     "s": 200,
+     "j": {
+      "status": "not_found",
+      "answer": "검색 자료에서 이 질문에 답할 만큼 관련된 구간을 찾지 못했습니다(핵심어 '국내', '하루', '식비', '정액', '국가공무원'을 충분히 다루는 구간 없음). 관련 없는 문서로 대신 답하지 않습니다. 기관명이나 규정명을 넣거나 다른 표현으로 물어 주세요.",
+      "candidates": [],
+      "checked_chunks": 0,
+      "warnings": [],
+      "reason": "irrelevant",
+      "retrieval": {
+       "mode": "hybrid",
+       "topical_words": [
+        "국내",
+        "하루",
+        "식비",
+        "정액",
+        "국가공무원"
+       ],
+       "best_cosine": 0.723,
+       "hits": [
+        {
+         "doc_id": "law-go-kr:law:290313",
+         "passage": "law-go-kr:law:290313:0019",
+         "hybrid": 0.898,
+         "cosine": 0.691
+        },
+        {
+         "doc_id": "law-go-kr:law:290313",
+         "passage": "law-go-kr:law:290313:0022",
+         "hybrid": 0.893,
+         "cosine": 0.692
+        },
+        {
+         "doc_id": "law-go-kr:law:290313",
+         "passage": "law-go-kr:law:290313:0051",
+         "hybrid": 0.849,
+         "cosine": 0.693
+        },
+        {
+         "doc_id": "law-go-kr:law:290313",
+         "passage": "law-go-kr:law:290313:0046",
+         "hybrid": 0.847,
+         "cosine": 0.681
+        },
+        {
+         "doc_id": "law-go-kr:law:290313",
+         "passage": "law-go-kr:law:290313:0052",
+         "hybrid": 0.801,
+         "cosine": 0.669
+        }
+       ],
+       "index": "v5",
+       "dense": {
+        "model": "BAAI/bge-m3",
+        "snapshot": "5617a9f61b028005a4858fdac845db406aefb181",
+        "vectors_sha256": "87d973bdc2e8fcdf91de27d0c1357c9c0d5329069fdc4e1cb49fe2515356908e"
+       }
+      },
+      "scope": "모델을 실행하지 않았습니다. 검색 자료와 질문의 기관·규정명, 근거 적합성을 확인한 결과입니다.",
+      "intent": "search",
+      "workspace": {
+       "applied": null,
+       "pinned": false,
+       "others": [],
+       "selection": "not_found",
+       "institutions": [],
+       "title_matched": false,
+       "continued": true,
+       "scope": "검색 자료 14,689건·104,134구간(질의응답 게시판 9,127 · 행정규칙 1,586 · FAQ 878 · 질의회신 해석사례 593 · 법령해석례 590 · FAQ·질의응답 556 등; 기준일 1961-03-22~2026-10-26). 법제처 국가법령정보센터·공공데이터포털 등 공개 자료이며 기관 내부 비공개 자료가 아닙니다. 질의응답 자료는 국민권익위원회 게시판 비중이 큽니다. 모든 값은 표시된 기준일 당시 값이며 현행 여부는 다시 확인하지 않았습니다.",
+       "separate_snapshot": false
+      },
+      "total_chunks": 104134,
+      "model": "TRID 기본 · Qwen3-1.7B 원본 (업무 특화 학습 없음)",
+      "version": "trid-assistant-qwen3-1.7b",
+      "elapsed_ms": 5424
+     }
+    }
+   ]
+  },
+  {
+   "tag": "S7 search turn",
+   "q": "인사혁신처 징계업무편람에서 감봉의 효력은 무엇인가요?",
+   "reply": "나:\n인사혁신처 징계업무편람에서 감봉의 효력은 무엇인가요?\n---\ntrid:\n원문과 글자 그대로 일치하는 인용이 없어 검증된 답이 없습니다. 아래 모델 해설은 검증되지 않았습니다.\n검증 안 됨 · 해설만\n자료 한계: 표 행·열 대응 미검증 — 자세한 내용은 아래 출처에서 확인하세요\n출처 · 인사혁신처",
+   "api": [
+    {
+     "s": 200,
+     "j": {
+      "file": "인사혁신처_징계업무편람 정보_20220901",
+      "candidates": [],
+      "checked_chunks": 4,
+      "answer_mode": "case",
+      "total_chunks": 104134,
+      "warnings": [],
+      "raw_output": "인사혁신처 징계업무편람에서 감봉의 효력은 다음과 같습니다.\n\n- **보수상의 효력**: 감봉 1~3월 동안 보수의 1/3 감액이 적용됩니다. 연봉적용자는 연봉월액 40% 감액이 적용됩니다.\n- **승진소요최저연수**: 감봉 1~3월 동안에는 신분은 보유되지만, 직무에 종사하지 못함으로써 승진소요최저연수에 해당하는 기간은 제외됩니다.\n- **승진임용 및 특별승진임용 제한**: 감봉 1~3월 동안에는 승진임용 및 특별승진임용이 제한됩니다.\n- **정근수당 지급대상 기간 중에 감봉처분을 받은 경우**: 정근수당을 지급하지 않습니다.\n- **특수근무지수당, 위험근무수당, 특수업무수당, 업무대행수당, 군법무관수당, 관리업무수당, 정액급",
+      "commentary": "인사혁신처 징계업무편람에서 감봉의 효력은 다음과 같습니다.\n- **보수상의 효력**: 감봉 1~3월 동안 보수의 1/3 감액이 적용됩니다.\n연봉적용자는 연봉월액 40% 감액이 적용됩니다.\n- **승진소요최저연수**: 감봉 1~3월 동안에는 신분은 보유되지만, 직무에 종사하지 못함으로써 승진소요최저연수에 해당하는 기간은 제외됩니다.\n- **승진임용 및 특별승진임용 제한**: 감봉 1~3월 동안에는 승진임용 및 특별승진임용이 제한됩니다.\n- **정근수당 지급대상 기간 중에 감봉처분을 받은 경우**: 정근수당을 지급하지 않습니다.\n- **특수근무지수당, 위험근무수당, 특수업무수당, 업무대행수당, 군법무관수당, 관리업무수당, 정액급",
+      "commentary_verified": false,
+      "unsupported_numbers": [],
+      "scope": "질문에 적힌 기관(인사혁신처)으로 고른 문서 1건의 구간만 모델에 넣었습니다. 다른 기관·문서의 규정을 섞지 않습니다. 검색되지 않은 자료까지 정보가 없다고 보장하지 않습니다.",
+      "commentary_notes": [
+       "모델 출력이 길이 한도(256토큰)에서 잘렸습니다."
+      ],
+      "status": "unverified",
+      "answer": "원문과 글자 그대로 일치하는 인용이 없어 검증된 답이 없습니다. 아래 모델 해설은 검증되지 않았습니다.",
+      "intent": "search",
+      "retrieval": {
+       "mode": "hybrid",
+       "topical_words": [
+        "편람",
+        "감봉",
+        "효력"
+       ],
+       "best_cosine": 0.657,
+       "hits": [
+        {
+         "doc_id": "data.go.kr:15043134",
+         "passage": "data.go.kr:15043134#211931",
+         "hybrid": 0.823,
+         "cosine": 0.644
+        },
+        {
+         "doc_id": "law-go-kr:admrul-file:170001959",
+         "passage": "law-go-kr:admrul-file:170001959#247001",
+         "hybrid": 0.82,
+         "cosine": 0.644
+        },
+        {
+         "doc_id": "law-go-kr:admrul-file:170001959",
+         "passage": "law-go-kr:admrul-file:170001959#239106",
+         "hybrid": 0.802,
+         "cosine": 0.637
+        },
+        {
+         "doc_id": "data.go.kr:15043134",
+         "passage": "data.go.kr:15043134#59028",
+         "hybrid": 0.797,
+         "cosine": 0.638
+        },
+        {
+         "doc_id": "data.go.kr:15043134",
+         "passage": "data.go.kr:15043134#56096",
+         "hybrid": 0.773,
+         "cosine": 0.626
+        }
+       ],
+       "index": "v5",
+       "dense": {
+        "model": "BAAI/bge-m3",
+        "snapshot": "5617a9f61b028005a4858fdac845db406aefb181",
+        "vectors_sha256": "87d973bdc2e8fcdf91de27d0c1357c9c0d5329069fdc4e1cb49fe2515356908e"
+       }
+      },
+      "workspace": {
+       "applied": {
+        "doc_id": "data.go.kr:15043134",
+        "title": "인사혁신처_징계업무편람 정보_20220901",
+        "institution": "인사혁신처",
+        "kind": "업무편람",
+        "date": "2022-09-01",
+        "date_type": "데이터셋 파일 기준일(편람 2022년판)",
+        "effective_date": null,
+        "currency": "기준일 당시 자료이며 현재 값·현행 여부는 확인하지 않았음",
+        "source": "https://www.data.go.kr/data/15043134/fileData.do",
+        "license": "이용허락범위 제한 없음"
+       },
+       "pinned": false,
+       "others": [
+        {
+         "doc_id": "law-go-kr:admrul-file:170001959",
+         "title": "국가공무원 복무·징계 관련 예규 - 「국가공무원 복무·징계 관련 예규」(인사혁신처 예규 제225호).pdf",
+         "institution": "인사혁신처",
+         "kind": "행정규칙 첨부(예규)",
+         "date": "2026-10-01",
+         "date_type": "발령일자 (rule header)",
+         "effective_date": null,
+         "currency": "기준일 당시 자료이며 현재 값·현행 여부는 확인하지 않았음",
+         "source": "https://www.law.go.kr/flDownload.do?flSeq=170001959",
+         "license": "KR-Copyright-Act-Art7 (law.go.kr)",
+         "score": 0.82
+        }
+       ],
+       "selection": "answer",
+       "institutions": [
+        "인사혁신처"
+       ],
+       "title_matched": false,
+       "continued": false,
+       "scope": "검색 자료 14,689건·104,134구간(질의응답 게시판 9,127 · 행정규칙 1,586 · FAQ 878 · 질의회신 해석사례 593 · 법령해석례 590 · FAQ·질의응답 556 등; 기준일 1961-03-22~2026-10-26). 법제처 국가법령정보센터·공공데이터포털 등 공개 자료이며 기관 내부 비공개 자료가 아닙니다. 질의응답 자료는 국민권익위원회 게시판 비중이 큽니다. 모든 값은 표시된 기준일 당시 값이며 현행 여부는 다시 확인하지 않았습니다.",
+       "separate_snapshot": false
+      },
+      "table_warning": "표가 들어 있는 구간을 썼습니다. 표의 행·열 대응은 검증되지 않았으므로 표 값을 해석하거나 계산한 내용은 근거로 쓰지 말고 원문 링크에서 표를 직접 확인하세요.",
+      "model": "TRID 기본 · Qwen3-1.7B 원본 (업무 특화 학습 없음)",
+      "version": "trid-assistant-qwen3-1.7b",
+      "elapsed_ms": 10987
+     }
+    }
+   ]
+  },
+  {
+   "tag": "S8 compute 71,800",
+   "q": "택시비 12,000원이랑 KTX 59,800원을 썼어요. 합계 계산해 주세요.",
+   "reply": "나:\n택시비 12,000원이랑 KTX 59,800원을 썼어요. 합계 계산해 주세요.\n---\ntrid:\n택시비 12,000원과 KTX 59,800원의 합계는 다음과 같습니다:\n\n**12,000원 + 59,800원 = 71,800원**\n일반 대화 · 문서 근거 없음 · 검증 대상 아님\n자세히",
+   "api": [
+    {
+     "s": 200,
+     "j": {
+      "status": "chat",
+      "answer": "택시비 12,000원과 KTX 59,800원의 합계는 다음과 같습니다:\n\n**12,000원 + 59,800원 = 71,800원**",
+      "answer_mode": "chat",
+      "candidates": [],
+      "checked_chunks": 0,
+      "commentary_notes": [
+       "사용자가 준 숫자를 더하거나 빼거나 곱한 값과 일치하는 문장 1개를 그대로 보였습니다. 계산 결과는 직접 확인하세요."
+      ],
+      "warnings": [],
+      "scope": "일반 대화 응답입니다. 문서 근거를 검색하지 않았고 검증 대상이 아닙니다.",
+      "intent": "chat",
+      "request_type": "organize",
+      "model": "TRID 기본 · Qwen3-1.7B 원본 (업무 특화 학습 없음)",
+      "version": "trid-assistant-qwen3-1.7b",
+      "elapsed_ms": 3619
+     }
+    }
+   ]
+  },
+  {
+   "tag": "S9 recall",
+   "q": "아까 KTX 요금 얼마라고 했죠?",
+   "reply": "나:\n아까 KTX 요금 얼마라고 했죠?\n---\ntrid:\n검색 자료에서 이 질문에 답할 만큼 관련된 구간을 찾지 못했습니다(핵심어 'ktx', '요금', '아까'을 충분히 다루는 구간 없음). 관련 없는 문서로 대신 답하지 않습니다. 기관명이나 규정명을 넣거나 다른 표현으로 물어 주세요.\n근거 못 찾음\n자세히",
+   "api": [
+    {
+     "s": 200,
+     "j": {
+      "status": "not_found",
+      "answer": "검색 자료에서 이 질문에 답할 만큼 관련된 구간을 찾지 못했습니다(핵심어 'ktx', '요금', '아까'을 충분히 다루는 구간 없음). 관련 없는 문서로 대신 답하지 않습니다. 기관명이나 규정명을 넣거나 다른 표현으로 물어 주세요.",
+      "candidates": [],
+      "checked_chunks": 0,
+      "warnings": [],
+      "reason": "irrelevant",
+      "retrieval": {
+       "mode": "hybrid",
+       "topical_words": [
+        "ktx",
+        "요금",
+        "아까"
+       ],
+       "best_cosine": 0.565,
+       "hits": [
+        {
+         "doc_id": "data.go.kr:15156787:file:bcf13508b434b0aa",
+         "passage": "data.go.kr:15156787:file:bcf13508b434b0aa:0472",
+         "hybrid": 0.757,
+         "cosine": 0.546
+        },
+        {
+         "doc_id": "law-go-kr:admrul-file:162887313",
+         "passage": "law-go-kr:admrul-file:162887313#391252",
+         "hybrid": 0.749,
+         "cosine": 0.543
+        },
+        {
+         "doc_id": "data.go.kr:15156787:file:bcf13508b434b0aa",
+         "passage": "data.go.kr:15156787:file:bcf13508b434b0aa:0468",
+         "hybrid": 0.743,
+         "cosine": 0.541
+        },
+        {
+         "doc_id": "law-go-kr:admrul-file:152909373",
+         "passage": "law-go-kr:admrul-file:152909373#194732",
+         "hybrid": 0.742,
+         "cosine": 0.541
+        },
+        {
+         "doc_id": "law-go-kr:law-byl:155902177",
+         "passage": "law-go-kr:law-byl:155902177#0",
+         "hybrid": 0.711,
+         "cosine": 0.504
+        }
+       ],
+       "index": "v5",
+       "dense": {
+        "model": "BAAI/bge-m3",
+        "snapshot": "5617a9f61b028005a4858fdac845db406aefb181",
+        "vectors_sha256": "87d973bdc2e8fcdf91de27d0c1357c9c0d5329069fdc4e1cb49fe2515356908e"
+       }
+      },
+      "scope": "모델을 실행하지 않았습니다. 검색 자료와 질문의 기관·규정명, 근거 적합성을 확인한 결과입니다.",
+      "intent": "search",
+      "workspace": {
+       "applied": null,
+       "pinned": false,
+       "others": [],
+       "selection": "not_found",
+       "institutions": [],
+       "title_matched": false,
+       "continued": false,
+       "scope": "검색 자료 14,689건·104,134구간(질의응답 게시판 9,127 · 행정규칙 1,586 · FAQ 878 · 질의회신 해석사례 593 · 법령해석례 590 · FAQ·질의응답 556 등; 기준일 1961-03-22~2026-10-26). 법제처 국가법령정보센터·공공데이터포털 등 공개 자료이며 기관 내부 비공개 자료가 아닙니다. 질의응답 자료는 국민권익위원회 게시판 비중이 큽니다. 모든 값은 표시된 기준일 당시 값이며 현행 여부는 다시 확인하지 않았습니다.",
+       "separate_snapshot": false
+      },
+      "total_chunks": 104134,
+      "model": "TRID 기본 · Qwen3-1.7B 원본 (업무 특화 학습 없음)",
+      "version": "trid-assistant-qwen3-1.7b",
+      "elapsed_ms": 2343
+     }
+    }
+   ]
+  },
+  {
+   "tag": "R1 REB employee average (must refuse calc)",
+   "q": "한국부동산원 직원들은 한 끼 식비로 평균 얼마를 쓰나요?",
+   "reply": "나:\n한국부동산원 직원들은 한 끼 식비로 평균 얼마를 쓰나요?\n---\ntrid:\n한국부동산원에 대해 이 질문에 맞는 계산된 통계 값(직원 평균 등)은 검색 자료에 없습니다. 있는 자료: 기관 내규 게시본 3건(규정상 기준: 여비규정, 여비업무 처리지침, 예산요강), 임원 업무추진비 집행내역 9건(2026-01~2026-09 월별 실지출 공개 문서), 임원 1명별 월 업무추진비 집행액 정형 값 54건. 집행내역과 그 정형 값은 임원(원장·감사 등)의 업무추진비 지출이며 직원 평균 식비나 출장 식비가 아니므로, 이 자료로 평균·합계를 계산해 답하지 않습니다. 출장 식비의 규정상 기준을 찾으려면 기관명과 규정명(예: 여비규정 식비)으로 물어 주세요.\n근거 못 찾음\n자세히",
+   "api": [
+    {
+     "s": 200,
+     "j": {
+      "candidates": [],
+      "checked_chunks": 0,
+      "warnings": [],
+      "reason": "no_structured_statistic",
+      "scope": "모델을 실행하지 않았습니다. 한국부동산원 별도 게시 자료 색인(inst-reb-002)의 정형 값과 문서 종류만 확인했습니다. 평균·합계는 계산하지 않습니다.",
+      "status": "not_found",
+      "answer": "한국부동산원에 대해 이 질문에 맞는 계산된 통계 값(직원 평균 등)은 검색 자료에 없습니다. 있는 자료: 기관 내규 게시본 3건(규정상 기준: 여비규정, 여비업무 처리지침, 예산요강), 임원 업무추진비 집행내역 9건(2026-01~2026-09 월별 실지출 공개 문서), 임원 1명별 월 업무추진비 집행액 정형 값 54건. 집행내역과 그 정형 값은 임원(원장·감사 등)의 업무추진비 지출이며 직원 평균 식비나 출장 식비가 아니므로, 이 자료로 평균·합계를 계산해 답하지 않습니다. 출장 식비의 규정상 기준을 찾으려면 기관명과 규정명(예: 여비규정 식비)으로 물어 주세요.",
+      "intent": "search",
+      "request_type": "statistic",
+      "model": "TRID 기본 · Qwen3-1.7B 원본 (업무 특화 학습 없음)",
+      "version": "trid-assistant-qwen3-1.7b",
+      "elapsed_ms": 4529
+     }
+    }
+   ]
+  },
+  {
+   "tag": "R2 REB executive Sep (gold 790,000)",
+   "q": "한국부동산원 원장 2026년 9월 업무추진비 집행액은 얼마예요?",
+   "reply": "나:\n한국부동산원 원장 2026년 9월 업무추진비 집행액은 얼마예요?\n---\ntrid:\n한국부동산원 임원 업무추진비 월 집행액 정형 값 1건입니다(B 검증: 표 행 합 = 표기 합계, kordoc 표 행과 pdftotext 행(일자·인원·금액) 일치). 각 값은 해당 임원 1명의 한 달 집행액이며 직원 1인 식비·평균, 규정상 한도로 쓰지 않음. 평균·합계는 계산하지 않았습니다.\n- 2026-09 · 임원(원장) 1명 분 · 790,000원\nanswer_values\n자세히",
+   "api": [
+    {
+     "s": 200,
+     "j": {
+      "candidates": [],
+      "checked_chunks": 0,
+      "warnings": [],
+      "reason": "statistic",
+      "scope": "모델을 실행하지 않았습니다. 한국부동산원 별도 게시 자료 색인(inst-reb-002)의 정형 값과 문서 종류만 확인했습니다. 평균·합계는 계산하지 않습니다.",
+      "status": "answer_values",
+      "facts": [
+       {
+        "basis": "actual_spending",
+        "executions": 2,
+        "expense_type": "업무추진비(임원 업무추진비성 경비)",
+        "location": {
+         "raw_sha256": "458a7a980c13144851cd1fb2ffa42a8b119f1a9408d4623c3eea1ca07b9c7d20",
+         "section": "9월 원장",
+         "url": "https://www.reb.or.kr/reb/na/ntt/selectNttList.do?mi=9624&bbsId=1163"
+        },
+        "metric": "임원 업무추진비 월 집행액",
+        "not_for": "직원 1인 식비·평균, 규정상 한도로 쓰지 않음",
+        "period": {
+         "from": "2026-09-01",
+         "to": "2026-09-30"
+        },
+        "population": "임원(원장) 1명 분",
+        "subject": {
+         "id": "C0150",
+         "name": "한국부동산원"
+        },
+        "unit": "원",
+        "value": 790000,
+        "verification": "표 행 합 = 표기 합계, kordoc 표 행과 pdftotext 행(일자·인원·금액) 일치",
+        "source_id": "reb.or.kr:1163:117863:file:458a7a980c131448",
+        "version": "63c8b23670547e39",
+        "source_url": "https://www.reb.or.kr/reb/na/ntt/selectNttList.do?mi=9624&bbsId=1163"
+       }
+      ],
+      "answer": "한국부동산원 임원 업무추진비 월 집행액 정형 값 1건입니다(B 검증: 표 행 합 = 표기 합계, kordoc 표 행과 pdftotext 행(일자·인원·금액) 일치). 각 값은 해당 임원 1명의 한 달 집행액이며 직원 1인 식비·평균, 규정상 한도로 쓰지 않음. 평균·합계는 계산하지 않았습니다.\n- 2026-09 · 임원(원장) 1명 분 · 790,000원",
+      "intent": "search",
+      "request_type": "statistic",
+      "model": "TRID 기본 · Qwen3-1.7B 원본 (업무 특화 학습 없음)",
+      "version": "trid-assistant-qwen3-1.7b",
+      "elapsed_ms": 5071
+     }
+    }
+   ]
+  },
+  {
+   "tag": "R3 REB meal rule (1일 2식, 별표1 amounts absent)",
+   "q": "한국부동산원 여비규정에서 출장 식비는 어떻게 지급하나요?",
+   "reply": "나:\n한국부동산원 여비규정에서 출장 식비는 어떻게 지급하나요?\n---\ntrid:\n한국부동산원 누리집 게시 자료(「한국부동산원_여비규정 일부개정규정안(게시 2026.07.15)」, 2026-07-01 · 2026-07-01 기준 게시본. 이후 개정 여부는 확인하지 않았고 현행이라고 표시하지 않음)에서 찾았습니다. 원문과 글자 그대로 일치하는 인용이 없어 검증된 답이 없습니다. 아래 모델 해설은 검증되지 않았습니다.\n검증 안 됨 · 해설만\n출처 · 한국부동산원",
+   "api": [
+    {
+     "s": 200,
+     "j": {
+      "file": "한국부동산원_여비규정 일부개정규정안(게시 2026.07.15)",
+      "candidates": [],
+      "checked_chunks": 4,
+      "answer_mode": "case",
+      "total_chunks": 140,
+      "warnings": [],
+      "raw_output": "근거에 따라 한국부동산원 여비규정에서 출장 식비는 다음과 같이 지급된다:\n\n- **D1**에 따르면, 국내출장 시 식비는 별도로 지급하지 않는다.  \n  - **근거**: 제9조(국내출장) ②  \n  - **조건**: 국내출장 시  \n  - **예외**: 시내지역의 경우 식비는 별도로 지급하지 않는다.\n\n- **D2**에 따르면, 숙박비와 식비는 다음과 같이 지급된다:  \n  - **식비**: 1일 2식비를 별표1에 따라 지급한다.  \n  - **근거**: 제14조(숙박비·식비) ⑤  \n  - **조건**: 출장 시  \n  - **예외**: 출장지가 출장자의 생활근거지인 경우, 증빙을 첨부한 경우를 제외하고는 숙박비를 지급하지 아니한다.  \n  - **근거**: 제14조(숙박비·",
+      "commentary": "근거에 따라 한국부동산원 여비규정에서 출장 식비는 다음과 같이 지급된다:\n- **D1**에 따르면, 국내출장 시 식비는 별도로 지급하지 않는다.\n- **근거**: 제9조(국내출장) ②\n- **조건**: 국내출장 시\n- **예외**: 시내지역의 경우 식비는 별도로 지급하지 않는다.\n- **D2**에 따르면, 숙박비와 식비는 다음과 같이 지급된다:\n- **식비**: 1일 2식비를 별표1에 따라 지급한다.\n- **근거**: 제14조(숙박비·식비) ⑤\n- **조건**: 출장 시\n- **예외**: 출장지가 출장자의 생활근거지인 경우, 증빙을 첨부한 경우를 제외하고는 숙박비를 지급하지 아니한다.\n- **근거**: 제14조(숙박비·",
+      "commentary_verified": false,
+      "unsupported_numbers": [],
+      "scope": "질문에 적힌 기관(한국부동산원)으로 고른 문서 1건의 구간만 모델에 넣었습니다. 다른 기관·문서의 규정을 섞지 않습니다. 검색되지 않은 자료까지 정보가 없다고 보장하지 않습니다. 이 자료의 적용 범위(B 기록): 한국부동산원 임직원. 다른 기관에 그대로 적용되지 않음. 출처 메모(B): 내규공개 게시판(bbsId 1244)에 제목 \"…개정…안\"으로 게시됨. 파일은 개정이 반영된 전문(개정 이력·부칙 포함)이나, 확정·시행 여부를 따로 알리는 공고는 확인하지 않음. 사전예고 게시판(1245)과는 별개 게시판 출처 메모(B): 첫 쪽 개정 이력은 2026.01.12까지이나 부칙<2026.6.11>(2026.7.1 시행)이 있음. 개정 이력 갱신 누락 여부 미확인",
+      "commentary_notes": [
+       "모델 출력이 길이 한도(256토큰)에서 잘렸습니다."
+      ],
+      "status": "unverified",
+      "answer": "한국부동산원 누리집 게시 자료(「한국부동산원_여비규정 일부개정규정안(게시 2026.07.15)」, 2026-07-01 · 2026-07-01 기준 게시본. 이후 개정 여부는 확인하지 않았고 현행이라고 표시하지 않음)에서 찾았습니다. 원문과 글자 그대로 일치하는 인용이 없어 검증된 답이 없습니다. 아래 모델 해설은 검증되지 않았습니다.",
+      "intent": "search",
+      "retrieval": {
+       "mode": "hybrid",
+       "topical_words": [],
+       "best_cosine": 0.789,
+       "hits": [
+        {
+         "doc_id": "reb.or.kr:1244:115624:file:329a8fd764b02d23",
+         "passage": "reb.or.kr:1244:115624:file:329a8fd764b02d23:0011",
+         "hybrid": 0.898,
+         "cosine": 0.789
+        },
+        {
+         "doc_id": "reb.or.kr:1244:111227:file:36360afa54d828fe",
+         "passage": "reb.or.kr:1244:111227:file:36360afa54d828fe:0011",
+         "hybrid": 0.809,
+         "cosine": 0.767
+        },
+        {
+         "doc_id": "reb.or.kr:1244:115624:file:329a8fd764b02d23",
+         "passage": "reb.or.kr:1244:115624:file:329a8fd764b02d23:0016",
+         "hybrid": 0.745,
+         "cosine": 0.757
+        },
+        {
+         "doc_id": "reb.or.kr:1244:111227:file:36360afa54d828fe",
+         "passage": "reb.or.kr:1244:111227:file:36360afa54d828fe:0046",
+         "hybrid": 0.737,
+         "cosine": 0.757
+        },
+        {
+         "doc_id": "reb.or.kr:1244:111227:file:36360afa54d828fe",
+         "passage": "reb.or.kr:1244:111227:file:36360afa54d828fe:0044",
+         "hybrid": 0.615,
+         "cosine": 0.724
+        }
+       ],
+       "index": "inst-reb-002",
+       "dense": {
+        "model": "BAAI/bge-m3",
+        "snapshot": "5617a9f61b028005a4858fdac845db406aefb181",
+        "vectors_sha256": "4b47f6d35d0572e0138ac1954ca87cc3720e46311082d4f0dbd0914843deb848"
+       }
+      },
+      "workspace": {
+       "applied": {
+        "doc_id": "reb.or.kr:1244:115624:file:329a8fd764b02d23",
+        "title": "한국부동산원_여비규정 일부개정규정안(게시 2026.07.15)",
+        "institution": "한국부동산원",
+        "kind": "기관 내규(게시본)",
+        "date": "2026-07-01",
+        "date_type": "마지막 부칙<2026.6.11>의 시행일(본문 그대로). 게시일 2026.07.15. 이 게시본 이후 개정 여부는 확인하지 않았고 현행이라고 표시하지 않음",
+        "effective_date": "2026-07-01",
+        "currency": "2026-07-01 기준 게시본. 이후 개정 여부는 확인하지 않았고 현행이라고 표시하지 않음",
+        "source": "https://www.reb.or.kr/reb/na/ntt/selectNttInfo.do?mi=9610&bbsId=1244&nttSn=115624",
+        "license": "한국부동산원 저작권 정책: 저작권법 제24조의2에 따라 한국부동산원이 저작재산권 전부를 보유한 저작물은 별도 이용허락 없이 자유이용 가능 (https://www.reb.or.kr/reb/cm/cntnts/cntntsView.do?mi=9977&cntntsId=1293)",
+        "source_id": "reb.or.kr:1244:115624:file:e49a6aae28155d3a",
+        "snapshot_id": "inst-rule-reb-002",
+        "issuer_id": "C0150",
+        "issuer_id_scheme": "alio_apbaId"
+       },
+       "pinned": false,
+       "others": [
+        {
+         "doc_id": "reb.or.kr:1244:111227:file:36360afa54d828fe",
+         "title": "한국부동산원_여비업무 처리지침 일부개정지침안(게시 2026.01.13)",
+         "institution": "한국부동산원",
+         "kind": "기관 내규(게시본)",
+         "date": "2025-01-09",
+         "date_type": "마지막 부칙<2026.1.9>의 시행일(본문 그대로). 게시일 2026.01.13. 이 게시본 이후 개정 여부는 확인하지 않았고 현행이라고 표시하지 않음 원문 부칙<2026.1.9>이 \"2025년 1월 9일부터 시행\"이라고 적혀 있어 날짜를 그대로 옮김(오기 여부 미확인, 수정하지 않음).",
+         "effective_date": "2025-01-09",
+         "currency": "2025-01-09 기준 게시본. 이후 개정 여부는 확인하지 않았고 현행이라고 표시하지 않음",
+         "source": "https://www.reb.or.kr/reb/na/ntt/selectNttInfo.do?mi=9610&bbsId=1244&nttSn=111227",
+         "license": "한국부동산원 저작권 정책: 저작권법 제24조의2에 따라 한국부동산원이 저작재산권 전부를 보유한 저작물은 별도 이용허락 없이 자유이용 가능 (https://www.reb.or.kr/reb/cm/cntnts/cntntsView.do?mi=9977&cntntsId=1293)",
+         "source_id": "reb.or.kr:1244:111227:file:7272699ca8b3f25d",
+         "snapshot_id": "inst-rule-reb-002",
+         "issuer_id": "C0150",
+         "issuer_id_scheme": "alio_apbaId",
+         "score": 0.81
+        },
+        {
+         "doc_id": "reb.or.kr:1163:116243:file:a0e9984fdaf7d7ee",
+         "title": "한국부동산원_2026년 7월 임원 업무추진비",
+         "institution": "한국부동산원",
+         "kind": "집행내역(실지출 공개)",
+         "date": "2026-07",
+         "date_type": "집행월(게시 제목). 실제 지출이며 규정 기준이 아님",
+         "effective_date": null,
+         "currency": "2026-07 집행분 공개 내역(실제 지출). 규정상 기준이 아니며, 이후 정정 여부는 확인하지 않음",
+         "source": "https://www.reb.or.kr/reb/na/ntt/selectNttList.do?mi=9624&bbsId=1163",
+         "license": "한국부동산원 저작권 정책: 저작권법 제24조의2에 따라 한국부동산원이 저작재산권 전부를 보유한 저작물은 별도 이용허락 없이 자유이용 가능 (https://www.reb.or.kr/reb/cm/cntnts/cntntsView.do?mi=9977&cntntsId=1293)",
+         "source_id": "reb.or.kr:1163:116243:file:5a6283ed7b8a2703",
+         "snapshot_id": "inst-rule-reb-002",
+         "issuer_id": "C0150",
+         "issuer_id_scheme": "alio_apbaId",
+         "score": 0.21
+        },
+        {
+         "doc_id": "reb.or.kr:1163:112656:file:6e461128b3bf101e",
+         "title": "한국부동산원_2026년 2월 임원 업무추진비",
+         "institution": "한국부동산원",
+         "kind": "집행내역(실지출 공개)",
+         "date": "2026-02",
+         "date_type": "집행월(게시 제목). 실제 지출이며 규정 기준이 아님",
+         "effective_date": null,
+         "currency": "2026-02 집행분 공개 내역(실제 지출). 규정상 기준이 아니며, 이후 정정 여부는 확인하지 않음",
+         "source": "https://www.reb.or.kr/reb/na/ntt/selectNttList.do?mi=9624&bbsId=1163",
+         "license": "한국부동산원 저작권 정책: 저작권법 제24조의2에 따라 한국부동산원이 저작재산권 전부를 보유한 저작물은 별도 이용허락 없이 자유이용 가능 (https://www.reb.or.kr/reb/cm/cntnts/cntntsView.do?mi=9977&cntntsId=1293)",
+         "source_id": "reb.or.kr:1163:112656:file:37e97ce681db6be4",
+         "snapshot_id": "inst-rule-reb-002",
+         "issuer_id": "C0150",
+         "issuer_id_scheme": "alio_apbaId",
+         "score": 0.19
+        },
+        {
+         "doc_id": "reb.or.kr:1163:115643:file:a1426ceb77cad630",
+         "title": "한국부동산원_2026년 6월 임원 업무추진비",
+         "institution": "한국부동산원",
+         "kind": "집행내역(실지출 공개)",
+         "date": "2026-06",
+         "date_type": "집행월(게시 제목). 실제 지출이며 규정 기준이 아님",
+         "effective_date": null,
+         "currency": "2026-06 집행분 공개 내역(실제 지출). 규정상 기준이 아니며, 이후 정정 여부는 확인하지 않음",
+         "source": "https://www.reb.or.kr/reb/na/ntt/selectNttList.do?mi=9624&bbsId=1163",
+         "license": "한국부동산원 저작권 정책: 저작권법 제24조의2에 따라 한국부동산원이 저작재산권 전부를 보유한 저작물은 별도 이용허락 없이 자유이용 가능 (https://www.reb.or.kr/reb/cm/cntnts/cntntsView.do?mi=9977&cntntsId=1293)",
+         "source_id": "reb.or.kr:1163:115643:file:a5a6c0c8d7f459e2",
+         "snapshot_id": "inst-rule-reb-002",
+         "issuer_id": "C0150",
+         "issuer_id_scheme": "alio_apbaId",
+         "score": 0.18
+        },
+        {
+         "doc_id": "reb.or.kr:1163:114765:file:8b43c0656d621a27",
+         "title": "한국부동산원_2026년 5월 임원 업무추진비",
+         "institution": "한국부동산원",
+         "kind": "집행내역(실지출 공개)",
+         "date": "2026-05",
+         "date_type": "집행월(게시 제목). 실제 지출이며 규정 기준이 아님",
+         "effective_date": null,
+         "currency": "2026-05 집행분 공개 내역(실제 지출). 규정상 기준이 아니며, 이후 정정 여부는 확인하지 않음",
+         "source": "https://www.reb.or.kr/reb/na/ntt/selectNttList.do?mi=9624&bbsId=1163",
+         "license": "한국부동산원 저작권 정책: 저작권법 제24조의2에 따라 한국부동산원이 저작재산권 전부를 보유한 저작물은 별도 이용허락 없이 자유이용 가능 (https://www.reb.or.kr/reb/cm/cntnts/cntntsView.do?mi=9977&cntntsId=1293)",
+         "source_id": "reb.or.kr:1163:114765:file:3c1e4e2138bcdeaf",
+         "snapshot_id": "inst-rule-reb-002",
+         "issuer_id": "C0150",
+         "issuer_id_scheme": "alio_apbaId",
+         "score": 0.18
+        }
+       ],
+       "selection": "answer",
+       "institutions": [
+        "한국부동산원"
+       ],
+       "title_matched": false,
+       "continued": false,
+       "scope": "검색 자료 12건·140구간(집행내역(실지출 공개) 9 · 기관 내규(게시본) 3; 기준일 2020-12-10~2026-09). 법제처 국가법령정보센터·공공데이터포털 등 공개 자료이며 기관 내부 비공개 자료가 아닙니다. 질의응답 자료는 국민권익위원회 게시판 비중이 큽니다. 모든 값은 표시된 기준일 당시 값이며 현행 여부는 다시 확인하지 않았습니다.",
+       "separate_snapshot": true
+      },
+      "model": "TRID 기본 · Qwen3-1.7B 원본 (업무 특화 학습 없음)",
+      "version": "trid-assistant-qwen3-1.7b",
+      "elapsed_ms": 11839
+     }
+    }
+   ]
+  },
+  {
+   "tag": "R5 generalisation to all public bodies",
+   "q": "공공기관 임원 업무추진비는 한 달에 보통 얼마 쓰나요?",
+   "reply": "나:\n공공기관 임원 업무추진비는 한 달에 보통 얼마 쓰나요?\n---\ntrid:\n한국부동산원의 공개 집행액은 임원 직위별·월별 값입니다. 어느 직위의 몇 월 집행액인지 정해 주세요: 감사, 공시통계본부장, 부원장, 산업지원본부장, 소비자보호본부장, 시장관리본부장, 원장, 주택공급지원본부장. 여러 직위·여러 달을 묶은 평균·합계는 계산하지 않습니다.\n되묻기\n자세히",
+   "api": [
+    {
+     "s": 200,
+     "j": {
+      "candidates": [],
+      "checked_chunks": 0,
+      "warnings": [],
+      "reason": "officer",
+      "scope": "모델을 실행하지 않았습니다. 한국부동산원 별도 게시 자료 색인(inst-reb-002)의 정형 값과 문서 종류만 확인했습니다. 평균·합계는 계산하지 않습니다.",
+      "status": "clarify",
+      "answer": "한국부동산원의 공개 집행액은 임원 직위별·월별 값입니다. 어느 직위의 몇 월 집행액인지 정해 주세요: 감사, 공시통계본부장, 부원장, 산업지원본부장, 소비자보호본부장, 시장관리본부장, 원장, 주택공급지원본부장. 여러 직위·여러 달을 묶은 평균·합계는 계산하지 않습니다.",
+      "intent": "search",
+      "model": "TRID 기본 · Qwen3-1.7B 원본 (업무 특화 학습 없음)",
+      "version": "trid-assistant-qwen3-1.7b",
+      "elapsed_ms": 1191
+     }
+    }
+   ]
+  },
+  {
+   "tag": "R4 annex 6 vs 6의2",
+   "q": "공무원 여비 규정 별표 6에 따른 국외 출장 숙박비 기준은 무엇인가요?",
+   "reply": "나:\n공무원 여비 규정 별표 6에 따른 국외 출장 숙박비 기준은 무엇인가요?\n---\ntrid:\n원문과 글자 그대로 일치하는 인용이 없어 검증된 답이 없습니다. 아래 모델 해설은 검증되지 않았습니다.\n검증 안 됨 · 해설만\n출처 · 인사혁신처",
+   "api": [
+    {
+     "s": 200,
+     "j": {
+      "file": "공무원 여비 규정",
+      "candidates": [],
+      "checked_chunks": 5,
+      "answer_mode": "case",
+      "total_chunks": 104134,
+      "warnings": [],
+      "raw_output": "근거에 따라 공무원 여비 규정 별표 6에 따른 국외 출장 숙박비 기준은 다음과 같습니다:\n\n- **별표 4**에 따라 국외 여비 지급표에 따르면, **60 실비(상한액: 216)**를 지급합니다.  \n  - 이는 별표 1의 제1호라목 가 35 실비(상한액: 223)에 해당하는 사람에 대한 숙박비입니다.\n\n**근거**: D1  \n**이유**: 별표 4에 따라 국외 여비 지급표에 따라 60 실비(상한액: 216)가 지급됩니다.  \n**조건**: 공무원의 직무 및 지급 기준에 따라 적용됩니다.  \n**예외**: 별표 2 및 3에 따라 공적 항공마일리지 사용 시 일비의 50% 추가 지급이 가능하며, 항공운임이 2개 이상의 등급으로 구분될 경우 별표 3 비고에 따라 정해집니다.",
+      "commentary": "근거에 따라 공무원 여비 규정 별표 6에 따른 국외 출장 숙박비 기준은 다음과 같습니다:\n- **별표 4**에 따라 국외 여비 지급표에 따르면, **60 실비(상한액: 216)**를 지급합니다.\n- 이는 별표 1의 제1호라목 가 35 실비(상한액: 223)에 해당하는 사람에 대한 숙박비입니다.\n**근거**: D1\n**이유**: 별표 4에 따라 국외 여비 지급표에 따라 60 실비(상한액: 216)가 지급됩니다.\n**조건**: 공무원의 직무 및 지급 기준에 따라 적용됩니다.\n**예외**: 별표 2 및 3에 따라 공적 항공마일리지 사용 시 일비의 50% 추가 지급이 가능하며, 항공운임이 2개 이상의 등급으로 구분될 경우 별표 3 비고에 따라 정해집니다.",
+      "commentary_verified": false,
+      "unsupported_numbers": [],
+      "scope": "질문에 적힌 문서명으로 고른 문서 1건의 구간만 모델에 넣었습니다. 다른 기관·문서의 규정을 섞지 않습니다. 검색되지 않은 자료까지 정보가 없다고 보장하지 않습니다. 원문 표 구간과 함께 B가 원본 렌더링과 대조한 표 행(단위·비고·시점 포함, 2행)을 넣었습니다. 이 행은 원문 인용으로 표시하지 않으며, 승인된 값이나 법률 자문이 아닙니다.",
+      "commentary_notes": [],
+      "status": "unverified",
+      "answer": "원문과 글자 그대로 일치하는 인용이 없어 검증된 답이 없습니다. 아래 모델 해설은 검증되지 않았습니다.",
+      "intent": "search",
+      "retrieval": {
+       "mode": "hybrid",
+       "topical_words": [
+        "여비",
+        "국외",
+        "숙박비"
+       ],
+       "best_cosine": 0.738,
+       "hits": [
+        {
+         "doc_id": "law-go-kr:law:290313",
+         "passage": "law-go-kr:law:290313:0051",
+         "hybrid": 0.955,
+         "cosine": 0.738
+        },
+        {
+         "doc_id": "law-go-kr:law-byl:169708675",
+         "passage": "law-go-kr:law-byl:169708675#0",
+         "hybrid": 0.925,
+         "cosine": 0.728
+        },
+        {
+         "doc_id": "law-go-kr:law:290313",
+         "passage": "law-go-kr:law:290313:0019",
+         "hybrid": 0.901,
+         "cosine": 0.704
+        },
+        {
+         "doc_id": "law-go-kr:law:290313",
+         "passage": "law-go-kr:law:290313:0022",
+         "hybrid": 0.825,
+         "cosine": 0.683
+        },
+        {
+         "doc_id": "law-go-kr:law:290313",
+         "passage": "law-go-kr:law:290313:0046",
+         "hybrid": 0.821,
+         "cosine": 0.685
+        }
+       ],
+       "index": "v5",
+       "dense": {
+        "model": "BAAI/bge-m3",
+        "snapshot": "5617a9f61b028005a4858fdac845db406aefb181",
+        "vectors_sha256": "87d973bdc2e8fcdf91de27d0c1357c9c0d5329069fdc4e1cb49fe2515356908e"
+       }
+      },
+      "workspace": {
+       "applied": {
+        "doc_id": "law-go-kr:law:290313",
+        "title": "공무원 여비 규정",
+        "institution": "인사혁신처",
+        "kind": "법령",
+        "date": "2026-09-29",
+        "date_type": "공포일자",
+        "effective_date": "2026-10-02",
+        "currency": "2026-10-27 수집 당시 자료이며 현행 여부는 다시 확인하지 않았음",
+        "source": "http://www.law.go.kr/DRF/lawService.do?target=law&MST=290313&type=HTML&efYd=20261002",
+        "license": "KR-Copyright-Act-Art7 (law.go.kr)",
+        "source_id": "law-go-kr:law:009402",
+        "snapshot_id": "api-drf-law-civil-service-002",
+        "issuer_id": "1760000",
+        "issuer_id_scheme": "행정기관코드"
+       },
+       "pinned": false,
+       "others": [
+        {
+         "doc_id": "law-go-kr:law-byl:169708675",
+         "title": "공무원 여비 규정 [별표 0006] 국외 가족여비 지급 기준표(제22조 관련)",
+         "institution": "인사혁신처",
+         "kind": "법령 별표",
+         "date": "2026-09-29",
+         "date_type": "공포일자 (statute header)",
+         "effective_date": null,
+         "currency": "기준일 당시 자료이며 현재 값·현행 여부는 확인하지 않았음",
+         "source": "https://www.law.go.kr/LSW/flDownload.do?flSeq=169708675",
+         "license": "KR-Copyright-Act-Art7 (law.go.kr)",
+         "score": 0.92
+        },
+        {
+         "doc_id": "law-go-kr:law-byl:169708647",
+         "title": "공무원 여비 규정 [별표 0003] 국외 항공운임 지급 기준표(제12조제2항 관련)",
+         "institution": "인사혁신처",
+         "kind": "법령 별표",
+         "date": "2026-09-29",
+         "date_type": "공포일자 (statute header)",
+         "effective_date": null,
+         "currency": "기준일 당시 자료이며 현재 값·현행 여부는 확인하지 않았음",
+         "source": "https://www.law.go.kr/LSW/flDownload.do?flSeq=169708647",
+         "license": "KR-Copyright-Act-Art7 (law.go.kr)",
+         "score": 0.82
+        },
+        {
+         "doc_id": "law-go-kr:law-byl:169708641",
+         "title": "공무원 여비 규정 [별표 0002] 국내 여비 지급표(제10조부터 제13조까지 및 제16조제1항 관련)",
+         "institution": "인사혁신처",
+         "kind": "법령 별표",
+         "date": "2026-09-29",
+         "date_type": "공포일자 (statute header)",
+         "effective_date": null,
+         "currency": "기준일 당시 자료이며 현재 값·현행 여부는 확인하지 않았음",
+         "source": "https://www.law.go.kr/LSW/flDownload.do?flSeq=169708641",
+         "license": "KR-Copyright-Act-Art7 (law.go.kr)",
+         "score": 0.8
+        }
+       ],
+       "selection": "answer",
+       "institutions": [],
+       "title_matched": true,
+       "continued": false,
+       "scope": "검색 자료 14,689건·104,134구간(질의응답 게시판 9,127 · 행정규칙 1,586 · FAQ 878 · 질의회신 해석사례 593 · 법령해석례 590 · FAQ·질의응답 556 등; 기준일 1961-03-22~2026-10-26). 법제처 국가법령정보센터·공공데이터포털 등 공개 자료이며 기관 내부 비공개 자료가 아닙니다. 질의응답 자료는 국민권익위원회 게시판 비중이 큽니다. 모든 값은 표시된 기준일 당시 값이며 현행 여부는 다시 확인하지 않았습니다.",
+       "separate_snapshot": false
+      },
+      "model": "TRID 기본 · Qwen3-1.7B 원본 (업무 특화 학습 없음)",
+      "version": "trid-assistant-qwen3-1.7b",
+      "elapsed_ms": 7484
+     }
+    }
+   ]
+  },
+  {
+   "tag": "H1 hold passage doc",
+   "q": "비행절차설계요령에서 VOR/DME 체공 장주 설계 기준 값은 무엇인가요?",
+   "reply": "나:\n비행절차설계요령에서 VOR/DME 체공 장주 설계 기준 값은 무엇인가요?\n---\ntrid:\n원문과 글자 그대로 일치하는 인용이 없어 검증된 답이 없습니다. 아래 모델 해설은 검증되지 않았습니다.\n검증 안 됨 · 해설만\n자료 한계: 표 행·열 대응 미검증 — 자세한 내용은 아래 출처에서 확인하세요\n출처 · 국토교통부",
+   "api": [
+    {
+     "s": 200,
+     "j": {
+      "file": "비행절차설계요령 - 비행절차설계요령_국토교통부예규 제396호(2024.05.28).pdf",
+      "candidates": [],
+      "checked_chunks": 4,
+      "answer_mode": "case",
+      "total_chunks": 104134,
+      "warnings": [],
+      "raw_output": "근거에 따라 VOR/DME 체공 장주 설계 기준 값은 다음과 같습니다.\n\n- **체공 픽스로 진입하는 경우**의 진입 보호는 체공 보호공역에 의해 보호됩니다.  \n  (D3, 3.3.4.1.2.2)\n\n- **체공 픽스를 형성해 주는 래디얼을 따라 체공 픽스로 진입하는 경우**의 진입 보호는 체공 보호공역에 의해 보호됩니다.  \n  (D3, 3.3.4.1.2.2)\n\n- **체공 픽스 상공에 도착하면, 항공기는 인바운드 진로의 정반대 방향(reciprocal)과 30°각을 이루는 진로상으로 체공하는 쪽으로 선회하여, 한정하는 DME 아웃바운드 거리에 도달할 때까지 비행하고, 그 지점에 도달하면 인바운드 진로로 진입하기 위해 선회한다.**  \n  (D3, 3",
+      "commentary": "근거에 따라 VOR/DME 체공 장주 설계 기준 값은 다음과 같습니다.\n- **체공 픽스로 진입하는 경우**의 진입 보호는 체공 보호공역에 의해 보호됩니다.\n(D3, 3.3.4.1.2.2)\n- **체공 픽스를 형성해 주는 래디얼을 따라 체공 픽스로 진입하는 경우**의 진입 보호는 체공 보호공역에 의해 보호됩니다.\n- **체공 픽스 상공에 도착하면, 항공기는 인바운드 진로의 정반대 방향(reciprocal)과 30°각을 이루는 진로상으로 체공하는 쪽으로 선회하여, 한정하는 DME 아웃바운드 거리에 도달할 때까지 비행하고, 그 지점에 도달하면 인바운드 진로로 진입하기 위해 선회한다.**\n(D3, 3",
+      "commentary_verified": false,
+      "unsupported_numbers": [],
+      "scope": "질문에 적힌 문서명으로 고른 문서 1건의 구간만 모델에 넣었습니다. 다른 기관·문서의 규정을 섞지 않습니다. 검색되지 않은 자료까지 정보가 없다고 보장하지 않습니다.",
+      "commentary_notes": [
+       "같은 문장 반복 1회를 생략했습니다.",
+       "모델 출력이 길이 한도(256토큰)에서 잘렸습니다."
+      ],
+      "status": "unverified",
+      "answer": "원문과 글자 그대로 일치하는 인용이 없어 검증된 답이 없습니다. 아래 모델 해설은 검증되지 않았습니다.",
+      "intent": "search",
+      "request_type": "explain",
+      "retrieval": {
+       "mode": "hybrid",
+       "topical_words": [
+        "비행",
+        "vor",
+        "dme",
+        "체공",
+        "장주"
+       ],
+       "best_cosine": 0.753,
+       "hits": [
+        {
+         "doc_id": "law-go-kr:admrul-file:162887313",
+         "passage": "law-go-kr:admrul-file:162887313#384955",
+         "hybrid": 0.888,
+         "cosine": 0.753
+        },
+        {
+         "doc_id": "law-go-kr:admrul-file:162887313",
+         "passage": "law-go-kr:admrul-file:162887313#573829",
+         "hybrid": 0.86,
+         "cosine": 0.741
+        },
+        {
+         "doc_id": "law-go-kr:admrul-file:162887313",
+         "passage": "law-go-kr:admrul-file:162887313#198917",
+         "hybrid": 0.849,
+         "cosine": 0.73
+        },
+        {
+         "doc_id": "law-go-kr:admrul-file:162887313",
+         "passage": "law-go-kr:admrul-file:162887313#441667",
+         "hybrid": 0.835,
+         "cosine": 0.724
+        },
+        {
+         "doc_id": "law-go-kr:admrul-file:162887313",
+         "passage": "law-go-kr:admrul-file:162887313#385511",
+         "hybrid": 0.806,
+         "cosine": 0.721
+        }
+       ],
+       "index": "v5",
+       "dense": {
+        "model": "BAAI/bge-m3",
+        "snapshot": "5617a9f61b028005a4858fdac845db406aefb181",
+        "vectors_sha256": "87d973bdc2e8fcdf91de27d0c1357c9c0d5329069fdc4e1cb49fe2515356908e"
+       }
+      },
+      "workspace": {
+       "applied": {
+        "doc_id": "law-go-kr:admrul-file:162887313",
+        "title": "비행절차설계요령 - 비행절차설계요령_국토교통부예규 제396호(2024.05.28).pdf",
+        "institution": "국토교통부",
+        "kind": "행정규칙 첨부(예규)",
+        "date": "2024-05-28",
+        "date_type": "발령일자 (rule header)",
+        "effective_date": null,
+        "currency": "기준일 당시 자료이며 현재 값·현행 여부는 확인하지 않았음",
+        "source": "https://www.law.go.kr/flDownload.do?flSeq=162887313",
+        "license": "KR-Copyright-Act-Art7 (law.go.kr)"
+       },
+       "pinned": false,
+       "others": [],
+       "selection": "answer",
+       "institutions": [],
+       "title_matched": true,
+       "continued": false,
+       "scope": "검색 자료 14,689건·104,134구간(질의응답 게시판 9,127 · 행정규칙 1,586 · FAQ 878 · 질의회신 해석사례 593 · 법령해석례 590 · FAQ·질의응답 556 등; 기준일 1961-03-22~2026-10-26). 법제처 국가법령정보센터·공공데이터포털 등 공개 자료이며 기관 내부 비공개 자료가 아닙니다. 질의응답 자료는 국민권익위원회 게시판 비중이 큽니다. 모든 값은 표시된 기준일 당시 값이며 현행 여부는 다시 확인하지 않았습니다.",
+       "separate_snapshot": false
+      },
+      "table_warning": "표가 들어 있는 구간을 썼습니다. 표의 행·열 대응은 검증되지 않았으므로 표 값을 해석하거나 계산한 내용은 근거로 쓰지 말고 원문 링크에서 표를 직접 확인하세요.",
+      "model": "TRID 기본 · Qwen3-1.7B 원본 (업무 특화 학습 없음)",
+      "version": "trid-assistant-qwen3-1.7b",
+      "elapsed_ms": 7678
+     }
+    }
+   ]
+  },
+  {
+   "tag": "P1 privacy doc (body withheld)",
+   "q": "항공기 사고 재난 피해자 유해 수습 매뉴얼의 담당자 연락처를 알려 주세요.",
+   "reply": "<withheld>",
+   "api": [
+    {
+     "s": 200,
+     "j": {
+      "status": "unverified",
+      "hit_ids": [
+       "law-go-kr:admrul-file:168423963#950",
+       "law-go-kr:admrul-file:168423963#28506",
+       "law-go-kr:admrul-file:168423963#25377",
+       "law-go-kr:admrul-file:168423963#4026",
+       "law-go-kr:admrul-file:168423963#26248"
+      ],
+      "applied": null,
+      "file": "항공기 사고 재난 피해자 유해 수습 매뉴얼 - ★항공기 사고 재난 피해자 유해 수습 매뉴얼(총괄).pdf"
+     }
+    }
+   ]
+  },
+  {
+   "tag": "S14 v0.1 reader",
+   "q": "인사혁신처 징계업무편람에서 감봉의 효력은 무엇인가요?",
+   "reply": "나:\n인사혁신처 징계업무편람에서 감봉의 효력은 무엇인가요?\n---\ntrid:\n모델이 서로 다른 답 후보를 골랐습니다. 아래 원문을 확인해 주세요.\n검증 보류 · 원문 확인 필요\n자료 한계: 표 행·열 대응 미검증 — 자세한 내용은 아래 출처에서 확인하세요\n원문 인용 · 인사혁신처 · 인사혁신처_징계업무편람 정보_20220901 · 징계의 종류 및 효력 최하위 계급 공무원의 강등 적용 여부 나. 징계의 효력\n효력 |\n원문 인용 · 인사혁신처 · 인사혁신처_징계업무편람 정보_20220901 · 징계의 종류 및 효력 최하위 계급 공무원의 강등 적용 여부 나. 징계의 효력\n효력 |\n| --- | --- |\n원문 인용 · 인사혁신처 · 인사혁신처_징계업무편람 정보_20220901 · 공무원 징계등 기록말소 (나) 징계처분의 무효·취소\n재징계결과\n출처 · 인사혁신처 · 인용 3",
+   "api": [
+    {
+     "s": 200,
+     "j": {
+      "status": "review",
+      "answer": "모델이 서로 다른 답 후보를 골랐습니다. 아래 원문을 확인해 주세요.",
+      "file": "인사혁신처_징계업무편람 정보_20220901",
+      "candidates": [
+       {
+        "page": 1,
+        "text": "### 나. 징계의 효력\n\n- ● 징계의 종류별 효력은 다음과 같음.\n\n(1) 배제징계\n\n- ● 공무원신분을 완전히 해제함을 내용으로 하는 파면과 해임은 그 효력을 법 제80조에서 규정하지 않고 법 제33조(결격사유), 공무원연금법 제65조 및 같은 법 시행령\n\n제61조에서 처분효과를 정하고 있음.\n\n징계의 종류 및 효력\n\n| 징계의 종류 | 효력 |\n| --- |",
+        "page_text_start": 56096,
+        "retrieval_score": 0.773,
+        "prediction": {
+         "answer": "효력 |",
+         "presence": 0,
+         "presence_label": "present",
+         "presence_probs": [
+          0.6235429644584656,
+          0.3763388693332672,
+          0.0001181792322313413
+         ],
+         "span": [
+          266,
+          270
+         ],
+         "span_text": "효력 |",
+         "source": "D1",
+         "span_score": 17.62051773071289,
+         "reason": null,
+         "input_tokens": 201,
+         "total_seconds": 0.09,
+         "boundary_policy": "span_boundary_v2",
+         "attention": "bidirectional",
+         "head": "v2",
+         "method": "learned passage span with source id from span position; probabilities are not calibrated",
+         "abstains": false,
+         "source_character_span": [
+          193,
+          197
+         ]
+        },
+        "page_character_span": [
+         56289,
+         56293
+        ],
+        "source_label": "인사혁신처 · 인사혁신처_징계업무편람 정보_20220901 · 징계의 종류 및 효력 최하위 계급 공무원의 강등 적용 여부 나. 징계의 효력"
+       },
+       {
+        "page": 1,
+        "text": " 처분효과를 정하고 있음.\n\n징계의 종류 및 효력\n\n| 징계의 종류 | 효력 |\n| --- | --- |\n| 파면 | •공무원관계로부터 배제하고 5년간 공직재임용 제한<br>•퇴직급여액 1/2 감액(재직기간이 5년 미만인 자는 1/4감액)<br>퇴직수당 1/2감액 |\n| 해임 | •공무원관계로부터 배제하고 3년간 공직재임용 제한<",
+        "page_text_start": 56249,
+        "retrieval_score": 0.773,
+        "prediction": {
+         "answer": "효력 |\n| --- | --- |",
+         "presence": 0,
+         "presence_label": "present",
+         "presence_probs": [
+          0.5335321426391602,
+          0.46632376313209534,
+          0.00014406410627998412
+         ],
+         "span": [
+          113,
+          131
+         ],
+         "span_text": "효력 |\n| --- | --- |",
+         "source": "D1",
+         "span_score": 17.395423889160156,
+         "reason": null,
+         "input_tokens": 201,
+         "total_seconds": 0.0776,
+         "boundary_policy": "span_boundary_v2",
+         "attention": "bidirectional",
+         "head": "v2",
+         "method": "learned passage span with source id from span position; probabilities are not calibrated",
+         "abstains": false,
+         "source_character_span": [
+          40,
+          58
+         ]
+        },
+        "page_character_span": [
+         56289,
+         56307
+        ],
+        "source_label": "인사혁신처 · 인사혁신처_징계업무편람 정보_20220901 · 징계의 종류 및 효력 최하위 계급 공무원의 강등 적용 여부 나. 징계의 효력"
+       },
+       {
+        "page": 1,
+        "text": " 징계위원회 구성, 징계의결, 기타 절차상의 하자(출석통지 결여, 진술권 불부여등) 등의 중대하고 명백한 하자로 인하여 무효 확인된 경우는 법 제78 조의3(재징계의결등의 요구)에 의거 재징계를 할 수 있으므로, 그때의 말소시 기 및 방법은 재징계결과를 보아 일반 규정에 따라 처리하여야 함.\n\n예시 1 •’02. 4.18. 해임 처분\n\n•’02. 6. 2. 취소 결정\n\n•",
+        "page_text_start": 174931,
+        "retrieval_score": 0.751,
+        "prediction": {
+         "answer": "재징계결과",
+         "presence": 0,
+         "presence_label": "present",
+         "presence_probs": [
+          0.5094470977783203,
+          0.4901387393474579,
+          0.0004141727986279875
+         ],
+         "span": [
+          208,
+          213
+         ],
+         "span_text": "재징계결과",
+         "source": "D1",
+         "span_score": 19.716279983520508,
+         "reason": null,
+         "input_tokens": 201,
+         "total_seconds": 0.0745,
+         "boundary_policy": "span_boundary_v2",
+         "attention": "bidirectional",
+         "head": "v2",
+         "method": "learned passage span with source id from span position; probabilities are not calibrated",
+         "abstains": false,
+         "source_character_span": [
+          135,
+          140
+         ]
+        },
+        "page_character_span": [
+         175066,
+         175071
+        ],
+        "source_label": "인사혁신처 · 인사혁신처_징계업무편람 정보_20220901 · 공무원 징계등 기록말소 (나) 징계처분의 무효·취소"
+       }
+      ],
+      "checked_chunks": 27,
+      "total_chunks": 104134,
+      "scope": "질문에 적힌 기관(인사혁신처)으로 고른 문서 1건의 구간만 모델에 넣었습니다. 다른 기관·문서의 규정을 섞지 않습니다. 검색되지 않은 자료까지 정보가 없다고 보장하지 않습니다.",
+      "warnings": [],
+      "intent": "search",
+      "retrieval": {
+       "mode": "hybrid",
+       "topical_words": [
+        "편람",
+        "감봉",
+        "효력"
+       ],
+       "best_cosine": 0.657,
+       "hits": [
+        {
+         "doc_id": "data.go.kr:15043134",
+         "passage": "data.go.kr:15043134#211931",
+         "hybrid": 0.823,
+         "cosine": 0.644
+        },
+        {
+         "doc_id": "law-go-kr:admrul-file:170001959",
+         "passage": "law-go-kr:admrul-file:170001959#247001",
+         "hybrid": 0.82,
+         "cosine": 0.644
+        },
+        {
+         "doc_id": "law-go-kr:admrul-file:170001959",
+         "passage": "law-go-kr:admrul-file:170001959#239106",
+         "hybrid": 0.802,
+         "cosine": 0.637
+        },
+        {
+         "doc_id": "data.go.kr:15043134",
+         "passage": "data.go.kr:15043134#59028",
+         "hybrid": 0.797,
+         "cosine": 0.638
+        },
+        {
+         "doc_id": "data.go.kr:15043134",
+         "passage": "data.go.kr:15043134#56096",
+         "hybrid": 0.773,
+         "cosine": 0.626
+        }
+       ],
+       "index": "v5",
+       "dense": {
+        "model": "BAAI/bge-m3",
+        "snapshot": "5617a9f61b028005a4858fdac845db406aefb181",
+        "vectors_sha256": "87d973bdc2e8fcdf91de27d0c1357c9c0d5329069fdc4e1cb49fe2515356908e"
+       }
+      },
+      "workspace": {
+       "applied": {
+        "doc_id": "data.go.kr:15043134",
+        "title": "인사혁신처_징계업무편람 정보_20220901",
+        "institution": "인사혁신처",
+        "kind": "업무편람",
+        "date": "2022-09-01",
+        "date_type": "데이터셋 파일 기준일(편람 2022년판)",
+        "effective_date": null,
+        "currency": "기준일 당시 자료이며 현재 값·현행 여부는 확인하지 않았음",
+        "source": "https://www.data.go.kr/data/15043134/fileData.do",
+        "license": "이용허락범위 제한 없음"
+       },
+       "pinned": false,
+       "others": [
+        {
+         "doc_id": "law-go-kr:admrul-file:170001959",
+         "title": "국가공무원 복무·징계 관련 예규 - 「국가공무원 복무·징계 관련 예규」(인사혁신처 예규 제225호).pdf",
+         "institution": "인사혁신처",
+         "kind": "행정규칙 첨부(예규)",
+         "date": "2026-10-01",
+         "date_type": "발령일자 (rule header)",
+         "effective_date": null,
+         "currency": "기준일 당시 자료이며 현재 값·현행 여부는 확인하지 않았음",
+         "source": "https://www.law.go.kr/flDownload.do?flSeq=170001959",
+         "license": "KR-Copyright-Act-Art7 (law.go.kr)",
+         "score": 0.82
+        }
+       ],
+       "selection": "answer",
+       "institutions": [
+        "인사혁신처"
+       ],
+       "title_matched": false,
+       "continued": false,
+       "scope": "검색 자료 14,689건·104,134구간(질의응답 게시판 9,127 · 행정규칙 1,586 · FAQ 878 · 질의회신 해석사례 593 · 법령해석례 590 · FAQ·질의응답 556 등; 기준일 1961-03-22~2026-10-26). 법제처 국가법령정보센터·공공데이터포털 등 공개 자료이며 기관 내부 비공개 자료가 아닙니다. 질의응답 자료는 국민권익위원회 게시판 비중이 큽니다. 모든 값은 표시된 기준일 당시 값이며 현행 여부는 다시 확인하지 않았습니다.",
+       "separate_snapshot": false
+      },
+      "table_warning": "표가 들어 있는 구간을 썼습니다. 표의 행·열 대응은 검증되지 않았으므로 표 값을 해석하거나 계산한 내용은 근거로 쓰지 말고 원문 링크에서 표를 직접 확인하세요.",
+      "model": "trid v0.1 추출 독해기",
+      "version": "trid-v0.1-reader",
+      "elapsed_ms": 2500
+     }
+    }
+   ]
+  }
+ ]
+}
