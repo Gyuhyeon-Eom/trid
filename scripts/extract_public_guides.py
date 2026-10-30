@@ -87,9 +87,16 @@ DATASETS = {
                      applies_to='동서발전 입찰·계약 참여 업체', date='2021-08-26', date_type='게시일'),
     '15043018': dict(institution='한국토지주택공사', institution_type='공기업', area='인사(직무)', doc_type='직무설명서',
                      applies_to='LH 업무직 채용 직무', date='2024-05-14', date_type='데이터셋 파일 기준일'),
+    # B-022
+    '15152342': dict(institution='한국해양진흥공사', institution_type='공공기관(준정부기관)', area='회계(대손충당금)', doc_type='시스템 기준 테이블',
+                     applies_to='해양진흥공사 내부 대손충당금 설정 기준', date='2025-10-29', date_type='데이터셋 파일 기준일'),
+    '15110681': dict(institution='한국토지주택공사', institution_type='공기업', area='보수', doc_type='기관 내부규정(사규)',
+                     applies_to='LH 직원 보수 (규정 제299호, 2023-12-27 개정). 다른 기관에 그대로 적용되지 않음',
+                     date='2023-12-27', date_type='규정 개정일(파일명)'),
 }
 # datasets kept as raw but not turned into Q&A rows: no answer text (title list) or a numeric table, not guidance
-NOT_QA = {'15163350': 'title_list_without_content', '15138170': 'structured_table_not_qa'}
+NOT_QA = {'15163350': 'title_list_without_content', '15138170': 'structured_table_not_qa',
+          '15152342': 'structured_table_not_qa_with_employee_user_ids'}
 
 
 def decode(raw):

@@ -1,0 +1,35 @@
+{
+ "to": "A",
+ "from": "B (B-022)",
+ "path": "data/search-corpus-v3/",
+ "replaces": "data/search-corpus-v2 (same passages; v3 adds pages and value checks and separates empty documents)",
+ "count_documents_as": {
+  "active_documents (documents.jsonl)": 12479,
+  "zero_passage_documents (documents-zero-passage.jsonl, not searchable, do not count)": 2230
+ },
+ "passages": 41369,
+ "page_fields": "page_start/page_end (1-based PDF pages from the original file), page_method, values_check (+numbers_not_on_pages when differ)",
+ "pdf_passages": 25398,
+ "pdf_mapped": 22802,
+ "values_agree": 22557,
+ "values_differ": 245,
+ "how_to_use": [
+  "show page_start-page_end with the source URL for PDF passages; for HWP/HWPX/FAQ there are no pages (heading_path + offsets)",
+  "values_check='differ': numbers in the extracted passage were not found on the mapped pages (mostly table cells split by the PDF text layer); show the original page instead of the extracted number",
+  "documents with doc_values_check differ (3 HWPX manuals): extracted list/outline numbers that the HWPX text runs do not hold; treat numbered-list numbers as layout, not values"
+ ],
+ "by_collection_method_check": {
+  "admrul_attach|no_pages|unmapped": 1123,
+  "admrul_attach|not_found|unmapped": 1700,
+  "admrul_attach|pdf_anchor|agree": 17867,
+  "admrul_attach|pdf_anchor|differ": 211,
+  "guides|no_pages|unmapped": 1256,
+  "guides|not_found|unmapped": 896,
+  "guides|pdf_anchor|agree": 4690,
+  "guides|pdf_anchor|differ": 34,
+  "official_faq|no_pages|unmapped": 12250,
+  "statute_byl|no_pages|unmapped": 1342
+ },
+ "unchanged": "passage ids, offsets, text and sha256 are those of v2; rights/PII/date/table limits carry over",
+ "manifest_sha256": "b9bc1b7fd21ae8a16093aceb338ae28fa6c9ee8f87833162e44277434de643b6"
+}

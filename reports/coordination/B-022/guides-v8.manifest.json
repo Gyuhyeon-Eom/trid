@@ -1,0 +1,59 @@
+{
+ "version": "guides-v8",
+ "source_version": "guides-v8-src",
+ "code_sha256": "a301dd41d0ff52c9514b2a197eb76b1b2faaf5b63bfdb99056d2c328689f97e9",
+ "notes_file": null,
+ "rows_total": 936,
+ "parts": {
+  "qa_rule_or_procedure": {
+   "rows": 0,
+   "characters": 0,
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "by_institution": {},
+   "holds": {}
+  },
+  "qa_mixed": {
+   "rows": 0,
+   "characters": 0,
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "by_institution": {},
+   "holds": {}
+  },
+  "qa_other": {
+   "rows": 0,
+   "characters": 0,
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "by_institution": {},
+   "holds": {}
+  },
+  "qa_system_operation": {
+   "rows": 0,
+   "characters": 0,
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "by_institution": {},
+   "holds": {}
+  },
+  "documents": {
+   "rows": 1,
+   "characters": 21469,
+   "sha256": "c8d2cb937737887a49121674bb6dff913f03d15f9e6582aa83034b28dbeb0fe2",
+   "by_institution": {
+    "한국토지주택공사": 1
+   },
+   "holds": {}
+  },
+  "held": {
+   "rows": 935,
+   "characters": 8415,
+   "sha256": "430e1e5b3ea1f14033481803f4237cb229ddd390b4d4b612769c15ed189f3bb7",
+   "by_institution": {
+    "한국해양진흥공사": 935
+   },
+   "holds": {
+    "structured_table_not_qa_with_employee_user_ids": 935,
+    "no_answer_content": 935
+   }
+  }
+ },
+ "note": "parts are exclusive; not approved for training; documents carry tables (unverified)"
+}

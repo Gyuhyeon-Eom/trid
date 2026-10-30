@@ -1,0 +1,69 @@
+{
+ "version": "search-corpus-v3",
+ "source_version": "search-corpus-v2",
+ "code_sha256": "e3d839804ee3390054d04e2a1e52ce5cec3b33d083500ee1b9a90b4bf5b39dc1",
+ "files": {
+  "documents": {
+   "rows": 12479,
+   "sha256": "92547392dce540471e300ee9d4be8368387e8e137607d7861394c0a2f7c7d635"
+  },
+  "documents-zero-passage": {
+   "rows": 2230,
+   "sha256": "ff3f432038cb180d2c21663690ccd7d7c4977e7d883a94a48d2c235b3546276a"
+  },
+  "passages": {
+   "rows": 41369,
+   "sha256": "2d064b4c99dd957365c89e7b9209e66a58528f52eaf4d4bf50817015774ae33c"
+  }
+ },
+ "active_documents": 12479,
+ "zero_passage_documents": 2230,
+ "active_by_collection": {
+  "guides": 19,
+  "admrul_attach": 111,
+  "statute_byl": 464,
+  "official_faq": 11885
+ },
+ "zero_by_collection": {
+  "admrul_attach": 1,
+  "statute_byl": 60,
+  "official_faq": 2169
+ },
+ "passages": 41369,
+ "page_mapping": {
+  "pdf_mapped": 22802,
+  "values_agree": 22557,
+  "pdf_not_found": 2596,
+  "values_differ": 245,
+  "no_pages": 15971
+ },
+ "hwpx_doc_values": {
+  "data.go.kr:15038798": "differ",
+  "data.go.kr:15038493": "differ",
+  "data.go.kr:15033217:file:3dc524e955051ede": "differ",
+  "law-go-kr:admrul-file:159345655": "agree",
+  "law-go-kr:admrul-file:156743739": "differ",
+  "law-go-kr:admrul-file:126140889": "agree",
+  "law-go-kr:admrul-file:150743139": "agree",
+  "law-go-kr:admrul-file:133708917": "agree",
+  "law-go-kr:admrul-file:150423181": "agree",
+  "law-go-kr:admrul-file:122048493": "agree",
+  "law-go-kr:admrul-file:126801375": "agree",
+  "law-go-kr:admrul-file:126354295": "agree"
+ },
+ "unchanged_from_source": "passage ids, offsets, text and sha256 are those of the source version",
+ "carried_contract": "search corpus only; training_status is separate and no document is approved for training; passages that share text with evaluation-side data are not included; 852 unsigned reserved families cannot be checked; public material, not an institution's internal non-public data",
+ "eval_side_checked": [
+  "data/benchmark-reserve-001",
+  "data/dialogue-eval-dev.jsonl",
+  "data/dialogue-eval-final.jsonl",
+  "data/institution-qa-frozen-01",
+  "data/korean-eval-v1",
+  "data/korean-rag-eval-v1",
+  "data/korean-rag-eval-multihop-v1-source",
+  "data/korean-rag-eval-v1-source",
+  "reports/coordination/C-010/records",
+  "reports/coordination/C-010/dev",
+  "reports/coordination/C-010/dev2"
+ ]
+}
