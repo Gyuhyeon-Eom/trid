@@ -107,8 +107,18 @@ def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument('--version', required=True)
     p.add_argument('--workers', type=int, default=9)
+    p.add_argument('--reserve-quarantine', nargs='*', default=[],
+                   help='JSON {doc_id: reason} or text files of doc ids (e.g. reports/coordination/C-008/quarantine-docs.txt) '
+                        'whose rows go to quarantine:reserved_overlap')
     args = p.parse_args()
+    reserve_q = {}
+    for path in args.reserve_quarantine:
+        text = (ROOT / path).read_text()
+        entries = json.loads(text) if path.endswith('.json') else {x.strip(): 'listed' for x in text.split('\n') if x.strip()}
+        for doc_id, reason in entries.items():
+            reserve_q[doc_id.rsplit('-', 1)[-1]] = f'{path}: {reason}'
     import boto3
+    from trid.korean_quality import redacted_in_url
     s3 = boto3.client('s3')
     state = f'corpus/state/{SOURCE}/{args.version}'
     try:
@@ -131,13 +141,19 @@ def main():
             pii_total.update(row['meta']['pii_redactions'])
             if row['meta']['news_id'] in prior:
                 row['flags'].append('prior_trid_training')
-            if row['meta']['news_id'] in eval_ids or key in eval_keys or dedup_key(d.get('text') or '') in eval_keys:
-                row['flags'].append('quarantine:dev_eval_source')
-                held.append(row)
-                reasons['quarantine:dev_eval_source'] += 1
-            else:
-                kept.append(row)
-                reasons['ok'] += 1
+            news_id = row['meta']['news_id']
+            hold = []
+            if news_id in eval_ids or key in eval_keys or dedup_key(d.get('text') or '') in eval_keys:
+                hold.append('dev_eval_source')
+            if news_id in reserve_q:
+                hold.append('reserved_overlap')
+                row['meta']['reserved_overlap_evidence'] = reserve_q[news_id]
+            if redacted_in_url(row['text']):  # privacy is handled (replaced); the URL itself is now damaged
+                hold.append('pii_redaction_inside_url')
+            row['flags'] += [f'quarantine:{h}' for h in hold]
+            (held if hold else kept).append(row)
+            for h in hold or ['ok']:
+                reasons[h if h == 'ok' else f'quarantine:{h}'] += 1
     shards = []
     for name, rows in (('docs', kept), ('quarantine', held)):
         for i in range(0, max(len(rows), 1), SHARD_ROWS):
@@ -156,6 +172,10 @@ def main():
                 'input_rows': len(lines), 'code_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                 'korean_quality_sha256': hashlib.sha256(kq.read_bytes()).hexdigest(), 'reasons': dict(reasons),
                 'pii_redactions': dict(pii_total), 'eval_files': eval_used, 'eval_ids': len(eval_ids),
+                'eval_match': ('quarantine if the news id appears anywhere in an eval file, or the whitespace-free text of '
+                               'the document (before or after redaction) equals a string field >= 200 chars of an eval row'),
+                'reserve_quarantine_inputs': args.reserve_quarantine,
+                'reserve_quarantine_ids': sorted(reserve_q),
                 'prior_trid_training_rows': sum('prior_trid_training' in r['flags'] for r in kept),
                 'splits': dict(Counter(r['split'] for r in kept)), 'rows': len(kept), 'quarantine_rows': len(held),
                 'characters': sum(len(r['text']) for r in kept), 'shards': shards,

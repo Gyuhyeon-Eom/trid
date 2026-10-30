@@ -92,6 +92,14 @@ GLUED_AFTER = re.compile(r"[-－ .]?\d|[A-Za-z_]|[-－][A-Za-z0-9]")
 GLUED_BEFORE = re.compile(r"\d[-－ .,]?\Z|[A-Za-z_]\Z|[A-Za-z0-9][-－]\Z")  # ',': "1,017 20250923"(금액+날짜)
 
 _kiwi = None
+_URL_PART = re.compile(r"https?://|www\.|[?&][\w.-]*=")
+
+
+def redacted_in_url(text):
+    """치환 토큰([전화] 등)이 URL 토큰 안에 들어간 수. 개인정보 노출 문제(이미 치환됨)와 별개로 URL 내용이 훼손됐는지
+    표시하는 데 쓴다(B-008: 숫자 판정만으로 URL을 면제하지 않고, 훼손된 행은 격리)."""
+    labels = tuple(PII_LABELS.values())
+    return sum(1 for token in text.split() if _URL_PART.search(token) and any(l in token for l in labels))
 
 
 def kiwi():

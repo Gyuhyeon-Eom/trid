@@ -42,7 +42,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 BUCKET = 'trid-training-148761639313'
 SOURCE = 'assembly-minutes'
-VERSION = 'clean-v3'  # v1 (B-006): older redact, no quarantine; v2 (B-007 run): 개회식 header form left metadata_incomplete
+VERSION = 'clean-v4'  # v1 (B-006): old redact; v2: audit header gap; v3 (B-007): no URL-damage/listed quarantine
 BASE = 'https://record.assembly.go.kr/assembly'
 UA = 'Mozilla/5.0 (compatible; trid-collector/0.1; +public-sector research corpus)'
 LICENSE = 'KOGL-Type1'
@@ -63,6 +63,9 @@ PRIVATE_SPEAKER = re.compile(r'^(?:증인|참고인|진술인)\s+[가-힣]{2,4}$
 # Title/date restored from the official meeting list when the minutes header has another form (e.g. 개회식); kept in
 # S3 with the list request that showed it. Nothing is inferred from the body.
 OFFICIAL_META_KEY = f'corpus/state/{SOURCE}/official-list-meta.json'
+# Meetings held back by an outside check, e.g. partial text overlap with benchmark-reserved documents:
+# {"<id>": {"reason": "reserved_overlap_partial", "evidence": ...}}
+OVERLAP_QUARANTINE_KEY = f'corpus/state/{SOURCE}/listed-quarantine.json'
 
 
 def payload(kind, d, term):
@@ -160,16 +163,21 @@ def split_of(group):
     return next((name for name, upper in SPLITS if bucket < upper), 'train')
 
 
-def quarantine_reasons(text, meta, official):
+def quarantine_reasons(text, meta, official, listed=None):
+    from trid.korean_quality import redacted_in_url
     reasons = []
     if PETITIONER.search(text) or PRIVATE_SPEAKER.search(text):
         reasons.append('private_person_names')
     if not meta and not official:
         reasons.append('metadata_incomplete')
+    if redacted_in_url(text):  # privacy handled by the replacement; the URL text itself is damaged
+        reasons.append('pii_redaction_inside_url')
+    if listed:  # e.g. partial overlap with benchmark-reserved texts (OVERLAP_QUARANTINE_KEY)
+        reasons.append(listed)
     return reasons
 
 
-def row_of(meeting, page, collected_at, official=None):
+def row_of(meeting, page, collected_at, official=None, listed=None):
     """-> (row, pii Counter). `official`: {'title', 'date', 'source'} from the official meeting list, used only when the
     minutes header does not parse. Quarantine reasons are flags 'quarantine:<reason>'."""
     from trid.korean_quality import redact
@@ -180,7 +188,7 @@ def row_of(meeting, page, collected_at, official=None):
     url = f"{BASE}/viewer/minutes/xml.do?id={meeting['id']}&type=view"
     group = f"{SOURCE}:{meeting['id']}"
     flags = (['pii_redacted'] if pii else []) + ([] if meta else ['header_unparsed'])
-    flags += [f'quarantine:{r}' for r in quarantine_reasons(text, meta, official)]
+    flags += [f'quarantine:{r}' for r in quarantine_reasons(text, meta, official, listed)]
     extra = {'metadata_source': official['source']} if official and not meta else {}
     return {'id': group, 'group': group, 'kind': CLASSES.get(str(meeting.get('class')), 'assembly_minutes'),
             'title': title, 'text': text, 'source': url, 'license': LICENSE,
@@ -469,10 +477,20 @@ def next_shard(s3):
     return 1 + max([-1] + [int(k.rsplit('-', 1)[1].split('.')[0]) for k in list_keys(s3, f'corpus/state/{SOURCE}/{VERSION}/shard-')])
 
 
-def processed(meeting, html_bytes, official, raw_key, raw_sha):
+def side_inputs(s3):
+    """(official list metadata, listed quarantine) maps keyed by meeting id, read once per run."""
+    return read_json_s3(s3, OFFICIAL_META_KEY, {}), read_json_s3(s3, OVERLAP_QUARANTINE_KEY, {})
+
+
+def processed(meeting, html_bytes, side, raw_key, raw_sha):
+    official, listed = side
+    mid = str(meeting['id'])
     t = time.monotonic()
     row, pii = row_of(meeting, html_bytes.decode('utf-8', 'replace'),
-                      datetime.datetime.now(datetime.timezone.utc).isoformat(timespec='seconds'), official.get(str(meeting['id'])))
+                      datetime.datetime.now(datetime.timezone.utc).isoformat(timespec='seconds'), official.get(mid),
+                      (listed.get(mid) or {}).get('reason'))
+    if mid in listed:
+        row['meta']['listed_quarantine_evidence'] = listed[mid]
     row['meta'].update({'raw_key': raw_key, 'raw_gzip_sha256': raw_sha, 'raw_html_sha256': hashlib.sha256(html_bytes).hexdigest()})
     return row, pii, time.monotonic() - t
 
@@ -483,7 +501,7 @@ def fetch(client, s3, index, per_shard, workers, limit, metrics, seed=None, clas
     meetings = stratified(meetings, seed) if seed is not None else sorted(meetings, key=lambda m: m['id'])
     done = done_ids(s3)
     todo = [m for m in meetings if m['id'] not in done][:limit]
-    official = read_json_s3(s3, OFFICIAL_META_KEY, {})
+    official = side_inputs(s3)
     print(f'{len(meetings)} meetings indexed, {len(done)} done, {len(todo)} to fetch '
           f'({dict(Counter(str(m.get("class")) for m in todo))} by class)', flush=True)
     shard, started = next_shard(s3), time.monotonic()
@@ -522,7 +540,7 @@ def reprocess(s3, from_version, index, per_shard, metrics):
         ids += read_json_s3(s3, key, {'ids': []})['ids']
     done = done_ids(s3)
     todo = [meetings.get(str(i), {'id': i}) for i in ids if i not in done]
-    official = read_json_s3(s3, OFFICIAL_META_KEY, {})
+    official = side_inputs(s3)
     print(f'{len(ids)} meetings in {from_version}, {len(todo)} to rebuild from raw', flush=True)
     shard, started = next_shard(s3), time.monotonic()
     for begin in range(0, len(todo), per_shard):
