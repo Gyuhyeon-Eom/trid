@@ -1410,6 +1410,8 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                                                         f"이 {noun}{'이' if noun == '규정' else '가'} 적용되는지는 확인되지 않았습니다.")
                                 for note in m.get('limitations') or []:
                                     result['scope'] += ' 자료 한계: ' + note
+                                if m.get('limitations'):
+                                    result['source_limits'] = list(m['limitations'])  # for a visible warning (UI: B)
                                 applies = workspace.applies(selection['applied']).get('scope')
                                 if (applies in ('central_government', 'local_government')
                                         and re.search(r'공공기관|공기업|준정부기관|공단|공사', question) and '공무원' not in question):
