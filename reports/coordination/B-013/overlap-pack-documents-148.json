@@ -1,0 +1,95 @@
+{
+ "manifest_sha256": "0ed3cc079e8da0f9765e320091c88608186ef259c426f3319944c0921f7495e8",
+ "reserved_families": 148,
+ "corpus": [
+  {
+   "path": "/tmp/trid-corpus/inv/packs-overlap-input.jsonl",
+   "sha256": "4ca11ccff81f0d45befbfb272c7e6ae6046cffeeb8e7afb3ab1734affcac81c2"
+  }
+ ],
+ "corpus_rows_scanned": 5,
+ "matched_corpus_rows": 0,
+ "families_with_matches": 0,
+ "match_types": {},
+ "thresholds": {
+  "minhash_estimate": 0.5,
+  "ngram8_containment": 0.5,
+  "partial_review_min_shared_ngram8": 50
+ },
+ "per_family_matched_rows": {},
+ "matches": [],
+ "partial_review_rows": 3,
+ "partial_review_note": "rows sharing >= partial_min reserved word 8-grams below the containment threshold; evidence for manual review, not counted as matches or excluded automatically",
+ "partial_review": [
+  {
+   "corpus_id": "law-go-kr:law:290313",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:54431": {
+     "shared_ngram8": 72,
+     "of_reserved": 3664
+    },
+    "institutions:alio-rule:36465": {
+     "shared_ngram8": 155,
+     "of_reserved": 3319
+    },
+    "institutions:alio-rule:15386": {
+     "shared_ngram8": 75,
+     "of_reserved": 2640
+    },
+    "institutions:alio-rule:13257": {
+     "shared_ngram8": 126,
+     "of_reserved": 4321
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:law:283877",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:28991": {
+     "shared_ngram8": 214,
+     "of_reserved": 25789
+    },
+    "institutions:alio-rule:22216": {
+     "shared_ngram8": 373,
+     "of_reserved": 28899
+    },
+    "institutions:alio-rule:38904": {
+     "shared_ngram8": 276,
+     "of_reserved": 10681
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:law:285893",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:22216": {
+     "shared_ngram8": 1837,
+     "of_reserved": 23168
+    },
+    "institutions:alio-rule:28991": {
+     "shared_ngram8": 414,
+     "of_reserved": 25575
+    },
+    "institutions:alio-rule:35187": {
+     "shared_ngram8": 195,
+     "of_reserved": 8611
+    },
+    "institutions:alio-rule:38904": {
+     "shared_ngram8": 214,
+     "of_reserved": 6388
+    },
+    "institutions:alio-rule:39914": {
+     "shared_ngram8": 484,
+     "of_reserved": 8375
+    },
+    "institutions:alio-rule:33632": {
+     "shared_ngram8": 401,
+     "of_reserved": 6908
+    }
+   }
+  }
+ ]
+}

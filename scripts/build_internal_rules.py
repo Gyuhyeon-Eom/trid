@@ -80,6 +80,38 @@ def overlap_holds(path):
     return held
 
 
+RAW = ROOT / 'data/law-ko-source/raw'
+RAW_TAGS = {'admrul': ('발령일자', '시행일자', '소관부처명', '행정규칙종류', '제개정구분명', '현행여부', '발령번호'),
+            'expc': ('해석일자', '등록일시', '질의기관명', '해석기관명', '안건번호')}
+
+
+def norm(value):
+    digits = re.sub(r'\D', '', value or '')
+    return f'{digits[:4]}-{digits[4:6]}-{digits[6:8]}' if len(digits) >= 8 else None
+
+
+def raw_fields(kind, item_id):
+    """Header fields of the stored body XML (data/law-ko-source/raw/<target>/<id>.xml); {} if not stored."""
+    path = RAW / kind / f'{item_id}.xml'
+    if not path.exists():
+        return {}
+    head = path.read_text(encoding='utf-8', errors='replace')[:6000]
+    out = {}
+    for tag in RAW_TAGS[kind]:
+        m = re.search(fr'<{tag}>(?:<!\[CDATA\[)?([^<\]]*)', head)
+        if m and m.group(1).strip():
+            out[tag] = m.group(1).strip()
+    return out
+
+
+def date_type_of(kind, date, raw):
+    """Which raw field the row date is: 발령일자 / 해석일자, or unknown when it matches none."""
+    if not date:
+        return 'unknown'
+    field = '발령일자' if kind == 'admrul' else '해석일자'
+    return field if norm(raw.get(field)) == date else 'unknown'
+
+
 def main():
     from build_press_clean import EVAL_FILES, dedup_key, files_of
     from trid.korean_quality import PUBLIC_DOCS, assess_batch, redact, redacted_in_url
@@ -127,16 +159,23 @@ def main():
         if not source_ok:
             hold.append('source_hash_mismatch')
         group = d.get('group') or d['id']
+        raw = raw_fields(kind, d['id'].rsplit(':', 1)[1])
+        date_type = date_type_of(kind, d.get('date'), raw)
+        institution = raw.get('소관부처명') if kind == 'admrul' else raw.get('해석기관명')
+        prov = {'doc_type': '행정규칙' if kind == 'admrul' else '법령해석례', 'site': 'www.law.go.kr',
+                'institution': institution, 'published_date': d.get('date') if date_type in ('발령일자', '해석일자') else None,
+                'effective_date': norm(raw.get('시행일자')) if kind == 'admrul' else None}
         rows.append({'id': d['id'], 'group': group, 'kind': 'administrative_rule' if kind == 'admrul' else 'legal_interpretation',
                      'title': d['title'], 'text': text, 'source': d['source'], 'license': d.get('license'),
                      'attribution': d.get('attribution') or '출처: 법제처 국가법령정보센터', 'date': d.get('date'),
                      'sha256': hashlib.sha256(text.encode()).hexdigest(), 'collected_at': built_at,
                      'extractor': 'law.go.kr DRF XML (data/law-ko-source)', 'clean_version': args.version,
                      'flags': (['pii_redacted'] if pii else []) + [f'quarantine:{h}' for h in hold],
-                     'split': split_of(group),
-                     'provenance': {'doc_type': '행정규칙' if kind == 'admrul' else '법령해석례', 'site': 'www.law.go.kr',
-                                    'published_date': d.get('date')},
-                     'meta': {'topics': t, 'source_sha256': d.get('sha256'), 'pii_redactions': dict(pii)}})
+                     'split': split_of(group), 'provenance': {k: v for k, v in prov.items() if v},
+                     'meta': {'topics': t, 'source_sha256': d.get('sha256'), 'pii_redactions': dict(pii),
+                              'date_type': date_type, 'raw_fields': raw,
+                              'currency': 'listed as current (nw=1) when collected 2026-10-27~29; not re-checked'
+                                          if kind == 'admrul' else 'interpretation of the law in force at its date'}})
         texts.append(text)
         for h in hold or ['ok']:
             reasons[h.split(':')[0] if h.startswith('reserved_overlap:') else h] += 1
@@ -146,24 +185,33 @@ def main():
             row['flags'].append(f'quality:{why}')
     out.mkdir(parents=True)
     parts = {}
-    for name in ('docs', 'quarantine'):
-        part = [r for r in rows if any(f.startswith('quarantine:') for f in r['flags']) == (name == 'quarantine')]
+
+    def part_of(r):
+        if any(f.startswith('quarantine:') for f in r['flags']):
+            return 'quarantine'
+        return 'docs' if r['meta']['quality'] == 'ok' else 'quality_held'
+    for name in ('docs', 'quality_held', 'quarantine'):
+        part = [r for r in rows if part_of(r) == name]
         body = ''.join(json.dumps(r, ensure_ascii=False) + '\n' for r in part).encode()
         (out / f'{name}.jsonl').write_bytes(body)
         parts[name] = {'file': f'{name}.jsonl', 'sha256': hashlib.sha256(body).hexdigest(), 'rows': len(part),
                        'characters': sum(len(r['text']) for r in part),
                        'by_kind': dict(Counter(r['kind'] for r in part)),
-                       'by_topic': dict(Counter(t for r in part for t in r['meta']['topics']))}
+                       'by_topic': dict(Counter(t for r in part for t in r['meta']['topics'])),
+                       'date_type': dict(Counter(r['meta']['date_type'] for r in part))}
     manifest = {'version': args.version, 'built_at': built_at, 'input': str(INPUT.relative_to(ROOT)),
                 'input_sha256': hashlib.sha256(INPUT.read_bytes()).hexdigest(), 'code_sha256': CODE_SHA256,
                 'korean_quality_sha256': hashlib.sha256((ROOT / 'trid/korean_quality.py').read_bytes()).hexdigest(),
                 'overlap_report': args.overlap_report,
                 'overlap_report_sha256': hashlib.sha256(Path(args.overlap_report).read_bytes()).hexdigest() if args.overlap_report else None,
                 'eval_files': eval_used, 'reasons': dict(reasons), 'parts': parts,
-                'quality': dict(Counter(r['meta']['quality'] for r in rows if not any(f.startswith('quarantine:') for f in r['flags']))),
-                'splits': dict(Counter(r['split'] for r in rows if not any(f.startswith('quarantine:') for f in r['flags']))),
+                'quality': dict(Counter(r['meta']['quality'] for r in rows if part_of(r) != 'quarantine')),
+                'splits': dict(Counter(r['split'] for r in rows if part_of(r) == 'docs')),
                 'rights': '저작권법 제7조 (법령·훈령·예규·고시·법령해석); 출처 표시: 법제처 국가법령정보센터',
-                'note': 'local candidate; not uploaded; quality:<reason> is a flag (A decides); topic is a title match, '
+                'date_type_rule': ('row date compared with the raw body XML: admrul 발령일자 (collector maps the list '
+                                   'field 발령일자), expc 해석일자 (collector maps the list field 회신일자); no match -> unknown'),
+                'note': 'local candidate; not uploaded; docs = quality ok, quality_held = PUBLIC_DOCS failure kept with its '
+                        'original text (not a training candidate), quarantine = held; topic is a title match, '
                         'not a verified classification'}
     (out / 'manifest.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=1))
     print(json.dumps({k: v for k, v in manifest.items() if k not in ('eval_files',)}, ensure_ascii=False, indent=1))
