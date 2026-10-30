@@ -98,8 +98,22 @@ const STATUS = {
   unknown_institution: '해당 기관 자료 없음', institution_no_match: '해당 기관 자료에 근거 없음', model_failure: '모델 응답 실패',
 };
 
+// Evidence the server left out to fit the model context (UI-SCOPE-004): the answer covers only what went in, so one
+// short line sits right under the answer on every such response; the full wording stays in the fold. `context_limits`
+// gives the counts; a server without it still sends `context_notes`, and then the line carries no counts.
+const LIMIT_PARTS = [['table_rows', n => `표 행 ${n}행`], ['tables', () => '검토된 표 행 전부'],
+                     ['linked_passages', n => `다른 별표 구간 ${n}개`], ['own_passages', n => `관련도 낮은 구간 ${n}개`]];
+function contextLimitLine(result) {
+  const counts = result.context_limits || {};
+  const parts = LIMIT_PARTS.filter(([key]) => Number(counts[key]) > 0).map(([key, label]) => label(counts[key]));
+  if (parts.length) return `일부 근거만 반영 (${parts.join(' · ')} 제외)`;
+  return result.context_notes?.length ? '일부 근거만 반영 (문맥 한도로 일부 제외)' : null;
+}
+
 function renderAnswer(result, started) {
   const m = message('bot', result.answer || '(빈 응답)');
+  const limitLine = contextLimitLine(result);
+  if (limitLine) note(m, limitLine, 'warn limit');
   const tags = node('div', 'tags');
   if (result.intent === 'chat') tags.append(tag('일반 대화 · 문서 근거 없음 · 검증 대상 아님'));
   else tags.append(tag(STATUS[result.status] || result.status || '근거 검색', result.status === 'model_failure' ? 'bad' : ''));
@@ -151,6 +165,7 @@ function renderAnswer(result, started) {
   if (result.search_query) info.push(`검색어: ${result.search_query}`);
   for (const text of result.commentary_notes || []) if (!text.includes('숨겼습니다')) info.push(text);
   if (result.scope) info.push(result.scope);
+  for (const text of result.context_notes || []) if (!result.scope?.includes(text)) info.push(text);
   if (result.checked_chunks !== undefined && result.intent !== 'chat') info.push(`${result.checked_chunks}/${result.total_chunks ?? '?'}개 구간 확인`);
   info.push(`${result.model} · ${(result.elapsed_ms / 1000).toFixed(1)}초 (왕복 ${((performance.now() - started) / 1000).toFixed(1)}초)`);
   details.append(node('div', 'note', info.join('\n')));
