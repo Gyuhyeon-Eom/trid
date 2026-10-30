@@ -1,0 +1,314 @@
+{
+ "version": "case-training-view-v2r1",
+ "status": "candidate; not approved for training; no training run",
+ "code_sha256": "e1a758e8809df832cf7cb8718ce02dbaf8febd000f1b9094bd41c1b48d3897bd",
+ "parent": {
+  "path": "data/case-training-view-v2",
+  "manifest_sha256": "5ff6f10a1eb161364dd928a88d27935cd627f3cfe947f6699cfa41ab03e58f17",
+  "files": {
+   "train": {
+    "rows": 117,
+    "sha256": "fc1957df99ce2f2bcf1e57baf0ce7069b1788d531e804dcd14705f70e2b52492"
+   },
+   "dev": {
+    "rows": 6,
+    "sha256": "91774ff501efe5b70b54b9751f51763efdcce5470ae31981867de603cac0fa7b"
+   },
+   "held": {
+    "rows": 37,
+    "sha256": "a0443713120d268ae1b04e8dcb8f72aabde0b89f49d7e989917be3ca7f3d9762"
+   }
+  }
+ },
+ "changes": {
+  "path": "reports/coordination/B-032/v2r1-changes.json",
+  "sha256": "d69c7ab12cc02c0ea1923bb8fd18fcd6872ad5032c00c0faaae63540b631375d",
+  "rows": [
+   {
+    "id": "plain:law-go-kr:expc:324381",
+    "issue": [
+     "condition_omitted"
+    ],
+    "before_target_sha256": "e35a4632037f7c4389dc3e55d4db5141935df6230430370af0df087ef430fcb1",
+    "after_target_sha256": "60c580f173f60e3b1511a32aec8c0a8883354cdf93831d9786a1f1ad7223838f",
+    "answer_tokens": [
+     246,
+     251
+    ],
+    "total_tokens": [
+     1794,
+     1799
+    ],
+    "deviation_from_b031_proposal": "B-031 제안 문장 대신 v2 원래 \"대상:\" 줄에 괄호 조건 \"(4급 이상은 수의업무를 직접 담당하는 공무원)\"만 넣음. 답 토큰 한도 256을 넘어(제안문 297, 최소 삽입 265) 같은 줄의 「가축전염병예방법」 제2장 표기를 뺌(251). 업무 범위·조건 내용은 그대로",
+    "sentences": [
+     {
+      "text": "원칙적으로 포함되지 않습니다 [D1].",
+      "verdict": "supported",
+      "evidence": [
+       {
+        "cite": "D1",
+        "char_span": [
+         157,
+         257
+        ],
+        "quote": "가축방역을 위한 대책 수립, 교육 및 홍보 등에 종사하는 공무원은 원칙적으로 「지방공무원 수당 등에 관한 규정」 별표 9 제2호다목에 따른 특수업무수당의 지급대상에 포함되지 않는다"
+       }
+      ]
+     },
+     {
+      "text": "가축방역 대책 수립, 교육, 홍보 같은 일반 행정 업무를 하는 공무원은 「지방공무원 수당 등에 관한 규정」 별표 9 제2호다목의 특수업무수당 지급대상이 아닙니다 [D1].",
+      "verdict": "supported",
+      "evidence": [
+       {
+        "cite": "D1",
+        "char_span": [
+         157,
+         199
+        ],
+        "quote": "가축방역을 위한 대책 수립, 교육 및 홍보 등에 종사하는 공무원은 원칙적으로"
+       },
+       {
+        "cite": "D1",
+        "char_span": [
+         1475,
+         1532
+        ],
+        "quote": "일반적 행정 영역에 속하는 업무에 종사하는 공무원까지 특수업무수당의 지급대상이 된다고 볼 수는 없을 것"
+       }
+      ]
+     },
+     {
+      "text": "대상: 질병진단, 역학조사, 소독, 살처분 등 가축방역에 직접 필요한 업무이고, 수의직렬공무원(4급 이상은 수의업무를 직접 담당하는 공무원) 중 수의사 면허소지자에 한합니다 [D1].",
+      "verdict": "supported",
+      "evidence": [
+       {
+        "cite": "D1",
+        "char_span": [
+         1365,
+         1466
+        ],
+        "quote": "가축의 질병진단, 검안, 병성감정, 역학조사, 약물투약, 오염물건의 소독, 살처분, 축사 소독 등 가축방역의 목적 달성을 위하여 직접적으로 필요한 구체적이고 사실적인 업무영역에 국한"
+       },
+       {
+        "cite": "D1",
+        "char_span": [
+         427,
+         478
+        ],
+        "quote": "수의직렬공무원(4급 이상의 경우 수의업무를 직접 담당하는 공무원)중 수의사 면허소지자에 한함"
+       }
+      ]
+     },
+     {
+      "text": "예외: 일반 행정 업무를 하더라도 사실상 직접 가축방역업무를 담당하면 포함될 수 있고, 이는 수당지급권자가 개별적으로 판단합니다 [D1].",
+      "verdict": "supported",
+      "evidence": [
+       {
+        "cite": "D1",
+        "char_span": [
+         1583,
+         1674
+        ],
+        "quote": "일반적 행정 영역에 속하는 업무에 종사하는 공무원이라도 그 업무 외에 사실상 직접 가축방역업무를 담당하는 경우에는 특수업무수당의 지급대상자에 포함될 수 있을 것이고"
+       },
+       {
+        "cite": "D1",
+        "char_span": [
+         1719,
+         1739
+        ],
+        "quote": "수당지급권자가 구체적ㆍ개별적으로 판단"
+       }
+      ]
+     },
+     {
+      "text": "시점: 2013-02-12 법제처 해석입니다 [D1].",
+      "verdict": "supported",
+      "evidence": [
+       {
+        "cite": "D1",
+        "char_span": [
+         34,
+         68
+        ],
+        "quote": "기준 2013-02-12 법제처 해석 시점(현행 여부 미확인)"
+       }
+      ]
+     },
+     {
+      "text": "이후 법령명이나 별표가 바뀌었을 수 있으므로 현행 규정을 확인해야 합니다.",
+      "verdict": "caveat_no_citation_needed",
+      "evidence": []
+     }
+    ]
+   },
+   {
+    "id": "plain:law-go-kr:expc:343109",
+    "issue": [
+     "wrong_relation"
+    ],
+    "before_target_sha256": "d242f704d05f087274de6e67641dd765bf6ca1b3a3ad4823603236b24746579a",
+    "after_target_sha256": "3209499433f0640a4fd94d6fff1625147ab9414b71c9112dc9a5fbf7b64307ea",
+    "answer_tokens": [
+     218,
+     248
+    ],
+    "total_tokens": [
+     2289,
+     2319
+    ],
+    "deviation_from_b031_proposal": "B-031 제안의 3번째 문장 \"연가로 전환해 쓰게 하므로\"를 원문대로 \"조례로 정하는 바에 따라 연가로 전환해 사용할 수 있게 하므로\"로 좁힘(원문은 허용 규정이고 조례 조건이 있음; B-032 재대조에서 발견)",
+    "sentences": [
+     {
+      "text": "대상이 될 수 있습니다 [D1].",
+      "verdict": "supported",
+      "evidence": [
+       {
+        "cite": "D1",
+        "char_span": [
+         153,
+         206
+        ],
+        "quote": "이 사안의 경우, 「지방공무원법」 제45조제3항에 따른 환수 및 가산징수 대상이 될 수 있습니다"
+       }
+      ]
+     },
+     {
+      "text": "「지방공무원법」 제45조제3항은 보수를 부정한 방법으로 수령하면 수령한 금액의 5배의 범위에서 가산하여 징수할 수 있게 합니다 [D1].",
+      "verdict": "supported",
+      "evidence": [
+       {
+        "cite": "D1",
+        "char_span": [
+         216,
+         302
+        ],
+        "quote": "「지방공무원법」 제45조제3항에서는 보수를 거짓이나 그 밖의 부정한 방법으로 수령한 경우에는 수령한 금액의 5배의 범위에서 가산하여 징수할 수 있다고 규정"
+       }
+      ]
+     },
+     {
+      "text": "「지방공무원 복무규정」 제4조제4항은 시간외근무수당을 지급받는 대신 해당 근무시간을 조례로 정하는 바에 따라 연가로 전환해 사용할 수 있게 하므로, 수당 지급과 연가 전환 사용은 서로 대체되는 관계입니다 [D1].",
+      "verdict": "supported",
+      "evidence": [
+       {
+        "cite": "D1",
+        "char_span": [
+         653,
+         854
+        ],
+        "quote": "「지방공무원 복무규정」 제4조제4항에서는 같은 조 제1항에 따라 근무를 한 공무원은 조례로 정하는 바에 따라 「지방공무원 수당 등에 관한 규정」 제15조에 따른 시간외근무수당의 지급 범위에서 그 시간외근무수당을 지급받는 대신에 해당 근무시간을 연가로 전환하여 사용할 수 있다고 규정하고 있는바, 이는 시간외근무수당의 지급과 연가 전환 사용이 서로 대체되는 관계"
+       }
+      ]
+     },
+     {
+      "text": "따라서 부정하게 입력한 시간외근무시간을 연가로 바꿔 쓴 경우도 수당을 부정 수령한 경우와 같게 보아 환수와 가산징수 대상이 될 수 있습니다 [D1].",
+      "verdict": "supported",
+      "evidence": [
+       {
+        "cite": "D1",
+        "char_span": [
+         871,
+         910
+        ],
+        "quote": "부정한 방법으로 입력한 시간외근무시간을 연가로 전환하여 사용한 경우에도"
+       },
+       {
+        "cite": "D1",
+        "char_span": [
+         974,
+         1063
+        ],
+        "quote": "시간외근무수당을 부정하게 수령한 경우와 동일하게 볼 수 있으므로, 이 사안의 경우 「지방공무원법」 제45조제3항에 따른 환수 및 가산 징수의 대상이 될 수 있다"
+       }
+      ]
+     },
+     {
+      "text": "시점: 2026-04-22 법제처 해석입니다 [D1].",
+      "verdict": "supported",
+      "evidence": [
+       {
+        "cite": "D1",
+        "char_span": [
+         34,
+         68
+        ],
+        "quote": "기준 2026-04-22 법제처 해석 시점(현행 여부 미확인)"
+       }
+      ]
+     },
+     {
+      "text": "지금 적용하려면 현행 조문과 이후 개정 여부를 확인해야 합니다.",
+      "verdict": "caveat_no_citation_needed",
+      "evidence": []
+     }
+    ]
+   }
+  ]
+ },
+ "unchanged_train_rows": {
+  "count": 115,
+  "check": "byte-identical JSON lines to parent"
+ },
+ "reviewer": "B (AI). Same author as the B-031 proposals; not independent and not human review.",
+ "time_basis": "각 행 원문 법제처 해석일 기준. 현재 법령 판정 안 함.",
+ "kept_memos": {
+  "official:law-go-kr:expc:313010": [
+   "source_typo_copied"
+  ],
+  "plain:law-go-kr:expc:314104": [
+   "minor_redundancy"
+  ],
+  "official:law-go-kr:expc:314521": [
+   "secondary_reason_only"
+  ],
+  "official:law-go-kr:expc:322503": [
+   "weak_reason"
+  ],
+  "plain:law-go-kr:expc:326907": [
+   "premise_from_question"
+  ],
+  "plain:law-go-kr:expc:328103": [
+   "premise_from_question"
+  ],
+  "plain:law-go-kr:expc:330735": [
+   "premise_from_question",
+   "minor_redundancy"
+  ],
+  "plain:law-go-kr:expc:339029": [
+   "premise_from_question"
+  ],
+  "official:law-go-kr:expc:343109": [
+   "secondary_reason_only"
+  ]
+ },
+ "files": {
+  "train": {
+   "rows": 117,
+   "sha256": "d4b97c5ddafc8549d0dcf2e2c5e1f6528ee6112f9aa79a0c8a5183e5665fc78d"
+  },
+  "dev": {
+   "rows": 6,
+   "sha256": "91774ff501efe5b70b54b9751f51763efdcce5470ae31981867de603cac0fa7b"
+  },
+  "held": {
+   "rows": 37,
+   "sha256": "a0443713120d268ae1b04e8dcb8f72aabde0b89f49d7e989917be3ca7f3d9762"
+  }
+ },
+ "tokens": {
+  "train": {
+   "answer_max": 256,
+   "total_max": 2841,
+   "answer_total": 21181
+  },
+  "dev": {
+   "answer_max": 178,
+   "total_max": 889,
+   "answer_total": 876
+  }
+ },
+ "max_answer_tokens": 256,
+ "max_total_tokens": 4096,
+ "contract": "case adapter (CASE_SYSTEM + rag_prompt D1..Dn): every kept target cites [Dn]; numbers are in the cited passage, the question or the provenance line; no-evidence behaviours start with 확인 불가; answer <= 256 tokens. Development training only; AI review only; nothing is labelled current law."
+}
