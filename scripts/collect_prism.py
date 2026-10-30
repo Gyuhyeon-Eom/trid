@@ -56,6 +56,7 @@ KOGL = {'D0590002': 'KOGL-Type1', 'D0590006': 'KOGL-Free'}
 REPORT_FILE = 'D0150004'  # 연구보고서 (D0150018 = 활용결과 보고서, not taken)
 PUBLIC = 'B0030001'
 SPLITS = (('test', 50), ('valid', 100))
+CODE_SHA256 = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()  # as loaded
 
 
 def split_of(group):
@@ -248,10 +249,12 @@ def build(args):
         if group in held:
             hold.append(held[group].split(' ', 1)[0])
         k = dedup_key(text)
-        if k in seen:
-            reasons['exact_duplicate'] += 1
-            continue
-        seen[k] = group
+        if 'extraction_failed' not in hold:  # empty/garbled texts are failures, not copies of each other
+            if k in seen:
+                reasons['exact_duplicate'] += 1
+                print(asmt, 'exact duplicate of', seen[k], flush=True)
+                continue
+            seen[k] = group
         flags += [f'quarantine:{h}' for h in hold]
         for h in hold or ['ok']:
             reasons[h] += 1
@@ -283,7 +286,7 @@ def build(args):
         shards.append({'part': name, 'key': key, 'sha256': put_verified(s3, key, body), 'bytes': len(body), 'rows': len(part),
                        'characters': sum(len(r['text']) for r in part)})
     manifest = {'source': SOURCE, 'clean_version': args.version, 'built_at': built_at,
-                'code_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+                'code_sha256': CODE_SHA256,
                 'korean_quality_sha256': hashlib.sha256((ROOT / 'trid/korean_quality.py').read_bytes()).hexdigest(),
                 'reasons': dict(reasons), 'hold_input': args.hold, 'eval_files': eval_used,
                 'rows': shards[0]['rows'], 'quarantine_rows': shards[1]['rows'], 'shards': shards,
