@@ -1,0 +1,25 @@
+{
+ "source": "data/law-byl/v2-structure-002/structured.jsonl",
+ "source_sha256": "484ea93b1fb055713e37884fe92882741e40d1096cb9f4240f6de3301688588f",
+ "review": "reports/coordination/B-028/byl-visual-review.jsonl",
+ "render_check": "reports/coordination/B-029/render-check.jsonl",
+ "code_sha256": "ded037c5d4ee36e231ec8bde5cf78e4507cfa28787d716e4d823331c7b9e3565",
+ "files": {
+  "queryable-rows": {
+   "rows": 1641,
+   "sha256": "1e35e6a4bbb0c6d40de52d9bd1a3843f1584f2aeac76587fa92d2ca4452744b4"
+  },
+  "not-queryable": {
+   "rows": 180,
+   "sha256": "6d7ec70bbe4a905655ae348db72a019312e263f7a6ceff7dc31ce5c02b9d7ecb"
+  }
+ },
+ "counts": {
+  "rows:candidate_unreviewed": 1085,
+  "table:not_queryable": 159,
+  "doc:structured_check_differs": 21,
+  "rows:render_check_pass": 501,
+  "rows:ai_visual_review_match": 55
+ },
+ "note": "queryable-rows are candidates; ai_visual_review_match rows were compared with a rendering by an AI reviewer, render_check_pass rows passed an automatic rendered-line check. Nothing here is approved, and no row was chosen per question."
+}

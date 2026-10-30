@@ -52,6 +52,16 @@ class StructureTests(unittest.TestCase):
         self.assertEqual(t['rows'], [])
         self.assertIn('irregular_layout_rows_not_emitted', t['flags'])
 
+    def test_label_broken_after_an_enumerator_stays_whole_beside_split_rows(self):
+        t = structure(table(2, 3, [
+            (0, 0, 1, 1, ['구분']), (0, 1, 1, 1, ['경력']), (0, 2, 1, 1, ['환산율']),
+            (1, 0, 1, 1, ['1.', '공무원경력']), (1, 1, 1, 1, ['가. 공무원 경력', '나. 고용직 경력']),
+            (1, 2, 1, 1, ['100퍼센트', '80퍼센트'])]))
+        self.assertEqual([r['cells'] for r in t['rows']],
+                         [{'구분': '1. 공무원경력', '경력': '가. 공무원 경력', '환산율': '100퍼센트'},
+                          {'구분': '1. 공무원경력', '경력': '나. 고용직 경력', '환산율': '80퍼센트'}])
+        self.assertEqual(t['rows'][0]['repeated'], ['구분'])
+
 
 class SplitTests(unittest.TestCase):
     def test_only_regular_tables_of_checked_docs_are_queryable_and_review_is_per_doc(self):

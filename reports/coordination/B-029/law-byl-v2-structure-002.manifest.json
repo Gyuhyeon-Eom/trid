@@ -1,0 +1,23 @@
+{
+ "source": "data/law-byl/v2/extracted.jsonl",
+ "code_sha256": "f1e84437a8f33793a9b51541bd9fb98ac1e1da9bf0dafa6a027ed5adf77244c1",
+ "rows": 292,
+ "status": {
+  "structured": 173,
+  "partly_structured_irregular_table": 98,
+  "structured_check_differs": 21
+ },
+ "table_flags": {
+  "irregular_layout_rows_not_emitted": 127,
+  "nested_table_text_not_included": 23,
+  "no_header_row": 45
+ },
+ "row_handling": {
+  "merged_cell_repeated": 1425,
+  "multi_paragraph_cell_joined": 1497,
+  "row_split_by_paragraph_position": 292,
+  "unaligned_paragraph_lists": 202
+ },
+ "sha256": "484ea93b1fb055713e37884fe92882741e40d1096cb9f4240f6de3301688588f",
+ "note": "Structure of every HWP 별표 in the source version, from the HWP grid (pyhwp hwp5proc xml); not chosen per question and not an answer check. Not approved for training."
+}

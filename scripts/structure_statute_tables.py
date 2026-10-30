@@ -94,9 +94,23 @@ def covered(rows, cols, cells):
     return at, len(at) == rows * cols and not overlap
 
 
+# A first line that is only an enumerator ('1.', '가.', '2)') followed by text lines starts a label broken over lines
+# ('1.' / '공무원경력'), not the first item of a parallel list (B-029: 지방공무원 보수규정 별표 2 was split into '1.' and
+# '공무원경력'). A cell made only of enumerators ('1.' '2.' '3.') is a list and stays splittable.
+BARE_ENUMERATOR = re.compile(r'^(?:\d+|[가-힣])[.)]$')
+
+
+def splittable(cell):
+    parts = cell['parts']
+    if len(parts) < 2:
+        return False
+    return not (BARE_ENUMERATOR.match(parts[0]) and not all(BARE_ENUMERATOR.match(p) for p in parts))
+
+
 def stacked(row_cells):
-    """k when the row's multi-paragraph cells are parallel lists of k values, else None."""
-    multi = [c for c in row_cells if len(c['parts']) > 1]
+    """k when the row's multi-paragraph cells are parallel lists of k values, else None. A cell whose first line is a
+    bare enumerator is a broken label; it is not a list and stays whole (repeated beside the split rows)."""
+    multi = [c for c in row_cells if splittable(c)]
     ks = {len(c['parts']) for c in multi}
     if len(multi) < 2 or len(ks) != 1:
         return None
@@ -154,19 +168,30 @@ def structure(table):
                 row_cells.append((c, cell))
         own = [cell for _, cell in row_cells if cell['r'] == n]
         k = stacked(own)
+        if len({len(c['parts']) for c in own if splittable(c)}) > 1:
+            used['unaligned_paragraph_lists'] += 1  # this table stacks items in cells without keeping them in step
         if any(cell['r'] < n for _, cell in row_cells):
             used['merged_cell_repeated'] += 1
         for i in range(k or 1):
-            values = {}
+            values, repeated, joined = {}, [], []
             for c, cell in row_cells:
                 parts = cell['parts']
-                v = parts[i] if k and cell['r'] == n and len(parts) == k else ' '.join(parts)
-                if k and cell['r'] == n and len(parts) not in (1, k):
+                split_here = bool(k) and cell['r'] == n and len(parts) == k and splittable(cell)
+                v = parts[i] if split_here else ' '.join(parts)
+                if k and cell['r'] == n and len(parts) not in (1, k) and splittable(cell):
                     used['stacked_row_cell_count_mismatch'] += 1
                 if v:
-                    values[labels[c] if cell['cs'] == 1 else ' / '.join(dict.fromkeys(labels[c:c + cell['cs']]))] = v
+                    label = labels[c] if cell['cs'] == 1 else ' / '.join(dict.fromkeys(labels[c:c + cell['cs']]))
+                    values[label] = v
+                    # a value this row shares with others: a cell merged from a row above, or one paragraph standing
+                    # beside a split row's k parts (drawn once in the source, repeated here)
+                    if cell['r'] < n or cell['rs'] > 1 or (k and not split_here):
+                        repeated.append(label)  # spans rows: the same value stands in other rows too
+                    if len(parts) > 1 and not split_here:
+                        joined.append(label)  # several source lines joined with a space (wrapped or stacked text)
             if values:
-                out['rows'].append({'source_row': n, 'part': (i + 1) if k else None, 'section': section, 'cells': values})
+                out['rows'].append({'source_row': n, 'part': (i + 1) if k else None, 'section': section, 'cells': values,
+                                    'repeated': repeated, 'joined': joined})
         if k:
             used['row_split_by_paragraph_position'] += 1
         elif any(len(cell['parts']) > 1 for _, cell in row_cells):
@@ -175,6 +200,11 @@ def structure(table):
     if any(v in named for row in out['rows'] for v in row['cells'].values()):
         irregular = True  # a header label appears again as a body value: a second table in the same grid
     if used['stacked_row_cell_count_mismatch']:
+        irregular = True
+    # A table that elsewhere stacks lists of different lengths side by side (보조금 관리에 관한 법률 시행령 별표 1: items
+    # '12. 삭제', '13. …', '14. …' beside rates '연안: 70', '근해: 100', '50') does not keep paragraphs in step, so an
+    # equal count in one row is no evidence of alignment: no paragraph split is trusted there (B-029 render check)
+    if used['unaligned_paragraph_lists'] and used['row_split_by_paragraph_position']:
         irregular = True
     if irregular:
         out['flags'].append('irregular_layout_rows_not_emitted')
@@ -252,15 +282,23 @@ def run(row):
             'note': 'HWP grid structure of the whole 별표; not chosen per question; not an answer check'}
 
 
-def split(structured, review, out):
+def split(structured, review, out, render_check=None):
     """Queryable rows apart from everything else. A row is queryable only from a 'structured' 별표 (grid complete,
-    numbers agree), from a table that is regular and has no nested table. Every queryable row is a candidate,
-    'unreviewed', unless the 별표 is in the review file with result 'match' (an AI visual review against a rendering of
-    the same HWP; not a human approval). Everything else is listed in not-queryable.jsonl with the reason."""
+    numbers agree), from a table that is regular and has no nested table. Review state per row:
+      ai_visual_review_match   the 별표 is in the review file with result 'match' (an AI visual review against a
+                               rendering of the same HWP; not a human approval)
+      render_check_pass        the row's own numbers sit on one rendered line in column order and the 별표's header,
+                               unit and notes are found in the rendering (render_check_tables.py; automatic, not visual)
+      candidate_unreviewed     anything else that is queryable
+    A row whose render check failed is not queryable (not-queryable.jsonl, reason render_check_fail)."""
     reviewed = {}
     for x in (ROOT / review).read_text().splitlines() if review else []:
         r = json.loads(x)
         reviewed[r['id']] = r
+    rendered = {}
+    for x in (ROOT / render_check).read_text().splitlines() if render_check else []:
+        r = json.loads(x)
+        rendered[r['row_id']] = r
     rows, held, c = [], [], Counter()
     for line in (ROOT / structured / 'structured.jsonl').read_text().splitlines():
         d = json.loads(line)
@@ -277,15 +315,30 @@ def split(structured, review, out):
                 held.append({'id': d['id'], 'title': d['title'], 'table': i, 'reason': why or ['no_rows']})
                 c['table:not_queryable'] += 1
                 continue
-            state = ('ai_visual_review_match' if rv and rv['result'] == 'match' and i in rv['tables_reviewed']
-                     else 'candidate_unreviewed')
-            c[f'rows:{state}'] += len(t['rows'])
             for n, r in enumerate(t['rows']):
-                rows.append({'id': f"{d['id']}:t{i}:r{n}", 'doc_id': d['id'], 'title': d['title'], 'table': i,
+                rid = f"{d['id']}:t{i}:r{n}"
+                rc = rendered.get(rid)
+                if rv and rv['result'] == 'match' and i in rv['tables_reviewed']:
+                    state, ref = 'ai_visual_review_match', rv.get('review_ref')
+                elif rc and rc['status'] == 'fail':
+                    held.append({'id': rid, 'title': d['title'], 'table': i, 'reason': ['render_check_fail'],
+                                 'detail': rc.get('detail')})
+                    c['rows:render_check_fail'] += 1
+                    continue
+                elif rc and rc['status'] == 'pass':
+                    state, ref = 'render_check_pass', str(render_check)
+                else:
+                    state, ref = 'candidate_unreviewed', None
+                c[f'rows:{state}'] += 1
+                rows.append({'id': rid, 'doc_id': d['id'], 'title': d['title'], 'table': i,
                              'caption': t['caption'], 'unit': d['unit'], 'revised': d['revised'],
                              'statute_effective_date': d['statute_effective_date'], 'section': r['section'],
-                             'cells': r['cells'], 'notes': t['notes'], 'review': state,
-                             'review_ref': rv.get('review_ref') if rv and state != 'candidate_unreviewed' else None})
+                             'cells': r['cells'], 'repeated': r.get('repeated'), 'joined': r.get('joined'),
+                             'notes': t['notes'], 'review': state,
+                             'review_ref': ref, 'columns': t['columns'],
+                             'source': {'raw': d['raw'], 'raw_sha256': d.get('raw_sha256'), 'url': d.get('source'),
+                                        'kordoc_text_sha256': d.get('kordoc_text_sha256'), 'source_row': r['source_row'],
+                                        'part': r['part']}})
     out = ROOT / out
     if (out / 'manifest.json').exists():
         raise SystemExit(f'{out} exists; versions are never overwritten')
@@ -297,9 +350,11 @@ def split(structured, review, out):
         files[name] = {'rows': len(sel), 'sha256': hashlib.sha256(body).hexdigest()}
     manifest = {'source': f'{structured}/structured.jsonl',
                 'source_sha256': hashlib.sha256((ROOT / structured / 'structured.jsonl').read_bytes()).hexdigest(),
-                'review': str(review) if review else None, 'code_sha256': CODE_SHA256, 'files': files, 'counts': dict(c),
-                'note': ('queryable-rows are candidates; only rows marked ai_visual_review_match were compared with a '
-                         'rendering, by an AI reviewer. Nothing here is approved, and no row was chosen per question.')}
+                'review': str(review) if review else None, 'render_check': str(render_check) if render_check else None,
+                'code_sha256': CODE_SHA256, 'files': files, 'counts': dict(c),
+                'note': ('queryable-rows are candidates; ai_visual_review_match rows were compared with a rendering by an '
+                         'AI reviewer, render_check_pass rows passed an automatic rendered-line check. Nothing here is '
+                         'approved, and no row was chosen per question.')}
     (out / 'manifest.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=1))
     print(json.dumps(manifest, ensure_ascii=False, indent=1))
 
@@ -312,9 +367,10 @@ def main():
     p.add_argument('--workers', type=int, default=4)
     p.add_argument('--split', metavar='STRUCTURED_DIR', help='write queryable / not-queryable rows of a structure version')
     p.add_argument('--review', help='AI visual review file (jsonl: id, result, tables_reviewed, review_ref) for --split')
+    p.add_argument('--render-check', help='row results of render_check_tables.py (jsonl: row_id, status) for --split')
     args = p.parse_args()
     if args.split:
-        return split(args.split, args.review, args.out)
+        return split(args.split, args.review, args.out, args.render_check)
     out = ROOT / args.out
     if (out / 'manifest.json').exists():
         raise SystemExit(f'{out} exists; versions are never overwritten')
