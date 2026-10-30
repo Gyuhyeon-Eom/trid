@@ -449,6 +449,18 @@ def stratified(meetings, seed):
     return out
 
 
+_CODE_SHA256 = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()  # as loaded, not as on disk at write time
+_HASHES = {}
+
+
+def code_hashes():
+    """Hashes of the collector and the redactor as imported by this process (the redactor is imported here, once)."""
+    if not _HASHES:
+        import trid.korean_quality as kq
+        _HASHES.update(code_sha256=_CODE_SHA256, korean_quality_sha256=hashlib.sha256(Path(kq.__file__).read_bytes()).hexdigest())
+    return _HASHES
+
+
 def write_shard(s3, client, shard, results, workers, metrics, started, origin):
     """results: [(meeting, row|None, pii|None, error|None)] -> verified docs/quarantine shards + manifest."""
     seen_text, docs, held = {}, [], []
@@ -469,8 +481,7 @@ def write_shard(s3, client, shard, results, workers, metrics, started, origin):
     for _, _, p, _ in results:
         pii.update(p or {})
     manifest = {**keys['docs'], 'quarantine': keys['quarantine'], 'origin': origin,
-                'code_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
-                'korean_quality_sha256': hashlib.sha256((Path(__file__).resolve().parents[1] / 'trid/korean_quality.py').read_bytes()).hexdigest(),
+                **code_hashes(),
                 'ids': [m['id'] for m, row, _, _ in results if row is not None],
                 'failures': {str(m['id']): err for m, _, _, err in results if err},
                 'empty_text_ids': [str(m['id']) for m, row, _, _ in results if row is not None and not row['text']],
@@ -492,7 +503,9 @@ def next_shard(s3):
 
 
 def side_inputs(s3):
-    """(official list metadata, listed quarantine) maps keyed by meeting id, read once per run."""
+    """(official list metadata, listed quarantine) maps keyed by meeting id, read once per run. Also pins the code
+    hashes recorded in every shard manifest of this run."""
+    code_hashes()
     return read_json_s3(s3, OFFICIAL_META_KEY, {}), read_json_s3(s3, OVERLAP_QUARANTINE_KEY, {})
 
 
