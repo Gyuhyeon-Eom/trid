@@ -1,0 +1,17 @@
+{
+ "conditional_put": {
+  "different_bytes_refused": true,
+  "bytes_after": "first",
+  "etag_unchanged": true,
+  "same_bytes_accepted_without_write": true
+ },
+ "version_change_fetch": {
+  "version": "clean-v99-probe",
+  "http_calls": 0,
+  "raw_objects_before": 2140,
+  "raw_objects_after": 2140,
+  "raw_objects_changed": 0,
+  "request_log_lines_added": 0,
+  "probe_version_objects": 0
+ }
+}
