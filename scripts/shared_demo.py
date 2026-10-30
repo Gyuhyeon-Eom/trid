@@ -4,6 +4,7 @@ from dataclasses import dataclass, field
 from http.cookies import SimpleCookie
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import hmac
+import hashlib
 import html
 import json
 from pathlib import Path
@@ -172,7 +173,8 @@ def answer_document_case(document, question, base, family, context, max_tokens=2
             if len(text) < MIN_QUOTE_CHARS or text in quoted or (topical and not any(t in text for t in topical)):
                 continue
             hit = next(((i, chunk, chunk.text.find(text, evidence_start(chunk.text))) for i, (chunk, _) in enumerate(selected)
-                        if text in chunk.text[evidence_start(chunk.text):]), None)
+                        if text in chunk.text[evidence_start(chunk.text):]
+                        and not (getattr(chunk, 'value_hold', False) and _numbers(text))), None)
             if hit:
                 i, chunk, start = hit
                 quoted.add(text)
@@ -182,7 +184,9 @@ def answer_document_case(document, question, base, family, context, max_tokens=2
                                    'prediction': {'answer': text, 'source': f'D{i + 1}', 'abstains': False, 'presence': 0,
                                                   'source_character_span': [start, start + len(text)]}})
                 break
-    support = _numbers('\n'.join(chunk.text[evidence_start(chunk.text):] for chunk, _ in selected) + '\n' + question)
+    held = [chunk for chunk, _ in selected if getattr(chunk, 'value_hold', False)]
+    support = _numbers('\n'.join(chunk.text[evidence_start(chunk.text):] for chunk, _ in selected
+                                 if not getattr(chunk, 'value_hold', False)) + '\n' + question)
     notes, shown, withheld = [], [], 0
     for part in segments:
         # A sentence carrying a number found in no retrieved passage nor the question is withheld, not just flagged.
@@ -194,6 +198,9 @@ def answer_document_case(document, question, base, family, context, max_tokens=2
         notes.append(f'검색된 원문과 질문에 없는 숫자가 들어 있는 해설 문장 {withheld}개를 숨겼습니다.')
     if repeats:
         notes.append(f'같은 문장 반복 {repeats}회를 생략했습니다.')
+    if held:
+        notes.append(f'숫자 추출이 원문 쪽과 일치하지 않는 구간 {len(held)}개를 썼습니다. 이 구간의 숫자는 답 값으로 쓰지 않으니 '
+                     '원문(쪽)에서 직접 확인하세요.')
     if r.get('truncated_output'):
         notes.append(f'모델 출력이 길이 한도({max_tokens}토큰)에서 잘렸습니다.')
     result.update(raw_output=output, commentary='\n'.join(shown) or None, commentary_notes=notes,
@@ -353,6 +360,7 @@ class PassageChunk:
     doc_id: str
     path: tuple
     table: bool = False  # passage carries a table whose rows/columns B has not verified
+    value_hold: bool = False  # B value review: its extracted numbers differ from the source page; not answer values
 
 
 NORMALIZE = re.compile(r'[\s·ㆍ・「」『』()（）\[\]〈〉<>,.\-]')
@@ -408,7 +416,8 @@ class Workspace:
     STRONG_COS = 0.7
     TOPICAL_DF = 0.02  # a question noun in at most this share of passages is topical (not 출장·공무원·기준 …)
 
-    def __init__(self, directory, embedder=None, institutions=ROOT / 'data/corpus-inventory/alio-agencies.json'):
+    def __init__(self, directory, embedder=None, institutions=ROOT / 'data/corpus-inventory/alio-agencies.json',
+                 review=None):
         from trid.service.index import Index
         root = Path(directory)
         self.index = Index.load(root)
@@ -430,6 +439,24 @@ class Workspace:
                 self.title_grams.setdefault(t[i:i + self.TITLE_MIN], set()).add(doc_id)
         self.qa_docs = {d for d, m in self.meta.items() if any(x in (m['kind'] or '') for x in ('FAQ', '질의응답', '질의회신'))}
         self.authority = np.array([self.authority_of(self.meta[str(d)]['kind']) for d in self.passage_doc], np.float32)
+        # B's per-passage review (search-corpus-v4 metadata; texts and ids unchanged, so vectors stay valid): a
+        # privacy-review passage is never retrieved (no model context, answer or source text); a value-hold passage's
+        # numbers are not answer values (the reply points to the original page instead).
+        self.private, self.value_hold, self.review_source = set(), set(), None
+        if review and Path(review).exists():
+            for line in Path(review).read_text().splitlines():
+                if '"value_review"' not in line:
+                    continue
+                row = json.loads(line)
+                if row['value_review'].get('privacy_review'):
+                    self.private.add(row['passage_id'])
+                if row['value_review'].get('decision') == 'hold_for_value_use':
+                    self.value_hold.add(row['passage_id'])
+            manifest = Path(review).with_name('manifest.json')
+            self.review_source = {'file': str(review), 'manifest_sha256': hashlib.sha256(manifest.read_bytes()).hexdigest()
+                                  if manifest.exists() else None, 'privacy': len(self.private), 'value_hold': len(self.value_hold)}
+        ids = np.array([p.id for p in self.index.passages])
+        self.authority[np.isin(ids, list(self.private))] = 0.0  # zero hybrid score: never in any ranking
         self.dense, self.dense_info, self.embedder = None, None, embedder
         if (root / 'dense.f16.npy').exists():
             self.dense_info = json.loads((root / 'dense.json').read_text())
@@ -547,6 +574,7 @@ class Workspace:
         return {'doc_id': doc_id, 'title': m['title'], 'institution': m['institution'], 'kind': m['kind'],
                 'date': m['date'], 'date_type': m['date_type'], 'effective_date': m['effective_date'],
                 'currency': m['currency'], 'source': m['source'], 'license': m['license'],
+                **{k: m[k] for k in ('source_id', 'snapshot_id', 'issuer_id', 'issuer_id_scheme') if m.get(k)},
                 **({'score': round(score, 2)} if score is not None else {})}
 
     INSTITUTION_LIKE = re.compile(r'[가-힣]{2,}(?:공사|공단|위원회|재단|진흥원|연구원|은행|센터|특별시|광역시|특별자치시|특별자치도|청|처|부)(?![가-힣])')
@@ -659,7 +687,8 @@ class Workspace:
                         'candidates': [self.describe(applied, top)] + [self.describe(d, best[d]) for d in rivals.values()][:3]}
         chunks = [(PassageChunk(self.index.passages[i].text, 1, self.index.passages[i].char_start,
                                 self.passage_doc[i], self.index.passages[i].path,
-                                self.index.passages[i].id in self.tables), float(scores[i]))
+                                self.index.passages[i].id in self.tables, self.index.passages[i].id in self.value_hold),
+                  float(scores[i]))
                   for i in passing[applied]]
         return {**result, 'status': 'answer', 'applied': applied, 'chunks': chunks}
 
@@ -1045,6 +1074,9 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                             else:
                                 if selection:
                                     selected = selection['chunks']
+                                    if version['kind'] == 'extractive' or version.get('answer_mode') != 'case':
+                                        # versions whose answer is a value: held passages' numbers are not values
+                                        selected = [(c, s) for c, s in selected if not c.value_hold]
                                     document = Document(workspace.meta[selection['applied']]['title'], [],
                                                         [c for c, _ in selected], [])
                                 if version['kind'] == 'extractive':
@@ -1137,8 +1169,10 @@ def main():
                         help='JSON list of served versions; the first is the default and must be extractive')
     parser.add_argument('--secret-file', required=True)
     parser.add_argument('--port', type=int, default=51873)
-    parser.add_argument('--workspace', type=Path, default=ROOT / 'runs/workspace-index/v2',
+    parser.add_argument('--workspace', type=Path, default=ROOT / 'runs/workspace-index/v3',
                         help='shared search index of approved public sources (scripts/build_workspace_index.py)')
+    parser.add_argument('--passage-review', type=Path, default=ROOT / 'data/search-corpus-v4/passages.jsonl',
+                        help="B's per-passage review metadata (value_review: hold_for_value_use, privacy_review)")
     args = parser.parse_args()
     torch.set_num_threads(4)
     def stop_signal(*_):
@@ -1147,7 +1181,8 @@ def main():
     state = None
     try:
         state = State(json.loads(args.versions.read_text()))
-        state.workspace = Workspace(args.workspace) if (args.workspace / 'manifest.json').exists() else None
+        state.workspace = (Workspace(args.workspace, review=args.passage_review)
+                           if (args.workspace / 'manifest.json').exists() else None)
         server = make_server(state, Path(args.secret_file).read_text().strip(), args.port)
         stop = threading.Event()
         def prune():

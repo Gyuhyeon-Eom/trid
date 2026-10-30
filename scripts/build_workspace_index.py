@@ -44,13 +44,16 @@ API_KIND = {'rule': '행정규칙', 'manual': '업무편람', 'law': '법령', '
 def api_snapshot(directory, meta):
     """(documents, structured facts, snapshot info) of one local snapshot copy. Every file listed in manifest.json must
     match its sha256; records with usage restrictions are skipped; the issuer is the document's institution and
-    `applies_to` is kept separately (an issuer is not necessarily the body the rule applies to)."""
+    `applies_to` is kept separately (an issuer is not necessarily the body the rule applies to).
+    A record already indexed from another input is skipped (`duplicate`): its document id is
+    `<source_id prefix>:<version>` — for law.go.kr DRF records source_id carries the rule ID and version the serial
+    number (일련번호) that the law.go.kr corpus already uses as document id — or its source_id itself."""
     manifest_path = directory / 'manifest.json'
     manifest = json.loads(manifest_path.read_text())
     for f in manifest['files']:
         if sha256(directory / f['path']) != f['sha256']:
             raise ValueError(f"{directory / f['path']}: sha256 differs from the snapshot manifest")
-    documents, facts, skipped = [], [], {'restricted': 0, 'empty': 0}
+    documents, facts, skipped, added = [], [], {'restricted': 0, 'empty': 0, 'duplicate': 0}, []
     for f in manifest['files']:
         if not f['path'].startswith('normalized/'):
             continue
@@ -59,27 +62,33 @@ def api_snapshot(directory, meta):
             if (row.get('rights') or {}).get('restrictions'):
                 skipped['restricted'] += 1
                 continue
+            doc_id = f"{row['source_id'].rsplit(':', 1)[0]}:{row['version']}"
+            if doc_id in meta or row['source_id'] in meta:
+                skipped['duplicate'] += 1
+                continue
             for fact in row.get('structured_facts') or []:
                 facts.append({**fact, 'source_id': row['source_id'], 'version': row['version'],
                               'source_url': (row.get('location') or {}).get('url')})
             if not (row.get('text') or '').strip():
                 skipped['empty'] += 1
                 continue
-            doc_id = f"{row['source_id']}@{row['version']}"
             doc = Document(doc_id, row['title'], row['content_hash'], {'public'}, row['text'])
             doc.passages, doc.refs = parse_document(row['text'], doc_id, row['title'])
             documents.append(doc)
-            dates = row.get('dates') or {}
+            added.append(doc_id)
+            dates, kinds, issuer = row.get('dates') or {}, row.get('date_kinds') or {}, row.get('issuer') or {}
+            shown = 'published' if dates.get('published') else 'effective_from'
             meta[doc_id] = {'title': row['title'], 'kind': API_KIND.get(row['kind'], row['kind']),
-                            'institution': (row.get('issuer') or {}).get('name'), 'issuer_id': (row.get('issuer') or {}).get('id'),
-                            'applies_to': row.get('applies_to'), 'date': dates.get('published') or dates.get('effective_from'),
-                            'date_type': '공표일' if dates.get('published') else '시행일', 'effective_date': dates.get('effective_from'),
+                            'institution': issuer.get('name'), 'issuer_id': issuer.get('id'),
+                            'issuer_id_scheme': issuer.get('id_scheme'), 'applies_to': row.get('applies_to'),
+                            'date': dates.get(shown), 'date_type': kinds.get(shown, shown),
+                            'effective_date': dates.get('effective_from'),
                             'currency': f"{dates.get('retrieved_at')} 수집 당시 자료이며 현행 여부는 다시 확인하지 않았음",
                             'source': (row.get('location') or {}).get('url'), 'license': (row.get('rights') or {}).get('license'),
                             'attribution': manifest.get('producer'), 'source_id': row['source_id'], 'version': row['version'],
                             'snapshot_id': manifest['snapshot_id']}
     info = {'snapshot_id': manifest['snapshot_id'], 'manifest_sha256': sha256(manifest_path), 'indexed': len(documents),
-            'skipped': skipped, 'facts': len(facts), 'producer': manifest.get('producer')}
+            'added_documents': added, 'skipped': skipped, 'facts': len(facts), 'producer': manifest.get('producer')}
     return documents, facts, info
 
 

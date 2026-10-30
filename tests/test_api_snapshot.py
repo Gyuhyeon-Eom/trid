@@ -7,11 +7,12 @@ from pathlib import Path
 from scripts.build_workspace_index import api_snapshot
 
 
-def record(source_id, text, restrictions=None, facts=None):
-    return {'source_id': source_id, 'version': '2026-10-30', 'content_hash': hashlib.sha256(text.encode()).hexdigest(),
+def record(source_id, version, text, restrictions=None, facts=None):
+    return {'source_id': source_id, 'version': version, 'content_hash': hashlib.sha256(text.encode()).hexdigest(),
             'kind': 'rule', 'title': '가기관 여비 규정', 'issuer': {'id': 'C0001', 'name': '가기관'},
             'applies_to': {'scope': 'institution', 'ids': ['C0001']},
-            'dates': {'published': '2026-01-01', 'effective_from': '2026-01-01', 'effective_to': None, 'retrieved_at': '2026-10-30'},
+            'dates': {'published': '2026-01-01', 'effective_from': '2026-01-02', 'effective_to': None, 'retrieved_at': '2026-10-30'},
+            'date_kinds': {'published': '발령일자', 'effective_from': '시행일자'},
             'rights': {'license': 'KOGL-Type1', 'url': 'https://example.invalid', 'restrictions': restrictions},
             'location': {'url': 'https://example.invalid/rule', 'page': 1, 'article_path': ['제1조'], 'char_start': 0, 'char_end': len(text)},
             'text': text, 'structured_facts': facts or []}
@@ -31,18 +32,19 @@ class ApiSnapshotTests(unittest.TestCase):
     def test_records_become_documents_with_issuer_applicability_and_facts(self):
         fact = {'metric': '출장 식비 실지출 평균', 'value': 21000, 'unit': '원', 'basis': 'actual_spending',
                 'subject': {'id': 'C0001', 'name': '가기관'}, 'period': {'from': '2025-01', 'to': '2025-12'}}
-        d = self.snapshot([record('t:a', '제1조(식비) 식비는 하루 2만원으로 한다.', facts=[fact]),
-                           record('t:b', '제1조 비공개 조항', restrictions='이용 제한')])
-        meta = {}
+        d = self.snapshot([record('law:admrul:1', '901', '제1조(식비) 식비는 하루 2만원으로 한다.', facts=[fact]),
+                           record('law:admrul:2', '902', '제1조 비공개 조항', restrictions='이용 제한'),
+                           record('law:admrul:3', '903', '제1조 이미 색인된 규정')])
+        meta = {'law:admrul:903': {'title': '이미 색인된 규정'}}  # same rule, serial number already a document id
         docs, facts, info = api_snapshot(d, meta)
-        self.assertEqual([doc.doc_id for doc in docs], ['t:a@2026-10-30'])
-        self.assertEqual(meta['t:a@2026-10-30']['institution'], '가기관')
-        self.assertEqual(meta['t:a@2026-10-30']['applies_to']['scope'], 'institution')
-        self.assertEqual(info['skipped']['restricted'], 1)
-        self.assertEqual((facts[0]['value'], facts[0]['source_id']), (21000, 't:a'))
+        self.assertEqual([doc.doc_id for doc in docs], ['law:admrul:901'])
+        self.assertEqual((meta['law:admrul:901']['institution'], meta['law:admrul:901']['date_type']), ('가기관', '발령일자'))
+        self.assertEqual(meta['law:admrul:901']['applies_to']['scope'], 'institution')
+        self.assertEqual((info['skipped']['restricted'], info['skipped']['duplicate']), (1, 1))
+        self.assertEqual((facts[0]['value'], facts[0]['source_id']), (21000, 'law:admrul:1'))
 
     def test_file_changed_after_manifest_is_rejected(self):
-        d = self.snapshot([record('t:a', '제1조 본문')])
+        d = self.snapshot([record('law:admrul:1', '901', '제1조 본문')])
         (d / 'normalized/records-00000.jsonl').write_text('{}\n')
         with self.assertRaises(ValueError):
             api_snapshot(d, {})

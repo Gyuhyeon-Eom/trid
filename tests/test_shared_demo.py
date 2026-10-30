@@ -174,6 +174,16 @@ class ChatBackendTests(unittest.TestCase):
         self.assertIn('무엇을 도와드릴까요?', r['answer'])
         self.assertTrue(any('1개를 숨겼습니다' in n for n in r['commentary_notes']))
 
+    def test_value_hold_passage_numbers_are_neither_quotes_nor_support(self):
+        from scripts.shared_demo import PassageChunk
+        text = '식비는 하루 3만 원입니다. 담당은 운영지원팀입니다.'
+        held = [(PassageChunk(text, 1, 0, 'd', ('d',), False, True), 1.0)]
+        document = Document('d', [text], [c for c, _ in held], [])
+        with patch('scripts.shared_demo.complete', return_value={'generated': '식비는 하루 3만 원입니다.', 'truncated_output': False}):
+            r = answer_document_case(document, '식비는 얼마?', 'http://127.0.0.1:1', 'qwen3', 4096, selected=held)
+        self.assertEqual((r['candidates'], r['commentary']), ([], None))
+        self.assertTrue(any('원문(쪽)에서 직접 확인' in n for n in r['commentary_notes']))
+
     def test_chat_keeps_numbers_the_visitor_gave(self):
         from scripts.shared_demo import chat_reply
         history = [{'role': 'user', 'content': '이번 달 연차가 2일 남았어요.'}, {'role': 'assistant', 'content': '알겠습니다.'}]
@@ -281,6 +291,16 @@ class WorkspaceTests(unittest.TestCase):
         r = statistic_reply(self.ws, '직원 평균 출장 식비는?')
         self.assertEqual(r['status'], 'answer_values')
         self.assertIn('25,000원', r['answer'])
+
+    def test_privacy_review_passages_are_never_retrieved(self):
+        from scripts.shared_demo import Workspace
+        review = __import__('pathlib').Path(self.dir.name) / 'review.jsonl'
+        review.write_text(''.join(json.dumps({'passage_id': p.id, 'value_review': {'privacy_review': True}}) + '\n'
+                                  for p in self.ws.index.passages if p.doc_id == 'b'))
+        ws = Workspace(self.dir.name, review=review)
+        r = ws.select('국외 출장 식비는 하루 얼마인가요?', pinned='b')
+        self.assertEqual(r['chunks'], [])
+        self.assertNotIn('b', {c.doc_id for c, _ in ws.select('국외 출장 식비는 하루 얼마인가요?')['chunks']})
 
 
 class ExtractiveChunkTests(unittest.TestCase):
