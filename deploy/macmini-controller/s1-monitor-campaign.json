@@ -1,0 +1,45 @@
+{
+ "id": "S1-monitor",
+ "purpose": "Mac mini controller, monitor-only: watch the two approved S1 jobs (launched with in-job evaluation), record status and cost; never launch or retry.",
+ "common": {
+  "monitor_only": true,
+  "steps": 12000,
+  "save_steps": [
+   1200,
+   3600,
+   12000
+  ],
+  "checkpoint_every": 3000,
+  "segment_seconds": 0,
+  "max_runtime": 18000,
+  "eval_max_runtime": 0,
+  "eval_instances": [],
+  "data_s3": "s3://trid-training-148761639313/corpus/eval-inputs/a003/",
+  "cost_cap_usd": 54.5,
+  "prices_usd_per_hour": {
+   "ml.g6e.xlarge": 3.2032,
+   "ml.g6e.2xlarge": 3.44565
+  }
+ },
+ "status_s3": "s3://trid-training-148761639313/corpus/runs/s1/controller-status.json",
+ "arms": {
+  "91m": {
+   "run": "s1-sft12k-91m-mha",
+   "config": "korean-medium-91m.json",
+   "instance": "ml.g6e.xlarge",
+   "job": "trid-pt-s1-sft12k-91m-mha-1030122316",
+   "init_s3": "s3://trid-training-148761639313/corpus/runs/pretrain/a003-1b-91m-mha/a003-1b-91m-mha/",
+   "init_step": 15259,
+   "checkpoint_s3": "s3://trid-training-148761639313/corpus/runs/s1/"
+  },
+  "390m": {
+   "run": "s1-sft12k-390m-mha",
+   "config": "korean-390m-mha.json",
+   "instance": "ml.g6e.2xlarge",
+   "job": "trid-pt-s1-sft12k-390m-mha-1030122338",
+   "init_s3": "s3://trid-training-148761639313/corpus/runs/pretrain/a003-1b-390m-mha/a003-1b-390m-mha/",
+   "init_step": 15259,
+   "checkpoint_s3": "s3://trid-training-148761639313/corpus/runs/s1/"
+  }
+ }
+}
