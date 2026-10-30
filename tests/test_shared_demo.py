@@ -223,16 +223,20 @@ class WorkspaceTests(unittest.TestCase):
         self.assertEqual(r['status'], 'answer')
         self.assertTrue(r['continued'])
         self.assertEqual({c.doc_id for c, _ in r['chunks']}, {'b'})
+        self.assertTrue(self.ws.continues('그럼 숙박비는요?', 'b'))
+        self.assertFalse(self.ws.continues('그럼 숙박비는요?', None))
 
     def test_named_institution_overrides_previous_document(self):
         r = self.ws.select('가기관 숙박비는 얼마인가요?', context_doc='b')
         self.assertEqual(r['applied'], 'a')
         self.assertNotIn('continued', r)
+        self.assertFalse(self.ws.continues('가기관 숙박비는 얼마인가요?', 'b'))
 
     def test_previous_document_without_relevant_text_is_not_continued(self):
         r = self.ws.select('국외 출장 숙박비 1박 상한', context_doc='b')
         self.assertNotIn('continued', r)
         self.assertEqual(r['applied'], 'a')
+        self.assertFalse(self.ws.continues('국외 출장 숙박비 1박 상한', 'b'))
 
 
 class ExtractiveChunkTests(unittest.TestCase):

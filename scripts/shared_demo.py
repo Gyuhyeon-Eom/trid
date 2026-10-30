@@ -245,23 +245,23 @@ def _messages(system, history, user):
             + [{'role': 'user', 'content': user}])
 
 
-def _classify(base, family, context, text):
-    r = complete(base, [{'role': 'system', 'content': ROUTER_SYSTEM}, {'role': 'user', 'content': text}],
-                 family, 4, context, ROUTER_GRAMMAR)
-    return 'search' if (r.get('generated') or '').strip() == '검색' else 'chat'
+def _classify(base, family, context, system, grammar, question):
+    r = complete(base, [{'role': 'system', 'content': system}, {'role': 'user', 'content': f'분류할 입력: {question}'}],
+                 family, 4, context, grammar)
+    return (r.get('generated') or '').strip()
 
 
-def route(base, family, context, history, question):
+def route(base, family, context, history, question, continues=None):
     """'search' or 'chat', decided by the serving model itself under a two-word grammar (no keyword rules). The input
-    is classified on its own; when that says chat but the previous turn was a search, a second classification with
-    the recent transcript decides whether it is a follow-up of that search (e.g. "그럼 감봉은?")."""
-    if _classify(base, family, context, f'분류할 입력: {question}') == 'search':
+    is classified on its own (given a transcript, the 1.7B model continues the conversation instead of classifying).
+    Short follow-ups of a search ("그럼 감봉은?") read as chat to the model; right after a search turn, an input that
+    the previous turn's document would answer (`continues(question, doc_id)` = Workspace.continues) is a follow-up."""
+    if _classify(base, family, context, ROUTER_SYSTEM, ROUTER_GRAMMAR, question) == '검색':
         return 'search'
     last = next((h for h in reversed(history) if h['role'] == 'assistant'), None)
-    if not last or last.get('kind') != 'search':
-        return 'chat'
-    recent = '\n'.join(f"{'사용자' if h['role'] == 'user' else 'TRID'}: {h['content'][:200]}" for h in history[-4:])
-    return _classify(base, family, context, f'직전 대화:\n{recent}\n\n분류할 입력: {question}')
+    if last and last.get('kind') == 'search' and continues and continues(question, last.get('applied_id')):
+        return 'search'
+    return 'chat'
 
 
 def chat_reply(base, family, context, history, question, max_tokens=320):
@@ -400,11 +400,24 @@ class Workspace:
         titled = {d for d, n in shared.items() if n == top} if top >= self.TITLE_MIN else None
         return named, unknown, allowed, titled
 
+    def _context_relevant(self, everywhere, context_doc):
+        return (context_doc in self.meta
+                and everywhere[self.passage_doc == context_doc].max(initial=0) >= self.WEAK * everywhere.max() > 0)
+
+    def continues(self, question, context_doc):
+        """True when a question that names no institution or document is answered by `context_doc` (the document
+        applied in the previous conversation turn) at least WEAK as well as by the best passage anywhere."""
+        from trid.service.index import tokenize_all
+        named, unknown, allowed, titled = self.constraints(question)
+        tokens = tokenize_all([question])[0]
+        if named or unknown or titled or allowed is not None or not tokens:
+            return False
+        return self._context_relevant(self.index.bm25.get_scores(tokens), context_doc)
+
     def select(self, question, pinned=None, context_doc=None):
         """dict(status, applied, chunks, others, institutions, ...). status: 'answer' | 'clarify' | 'unknown_institution'
-        | 'institution_no_match' | 'not_found'. `context_doc` (the document applied in the previous turn of the
-        conversation) is searched instead of the whole corpus when the question names no institution or document and
-        that document scores at least WEAK of the corpus-wide best (`continued` in the result); otherwise ignored."""
+        | 'institution_no_match' | 'not_found'. `context_doc` (the previous turn's document) is searched instead of the
+        whole corpus when `continues(question, context_doc)` holds (`continued` in the result); otherwise ignored."""
         from trid.service.index import tokenize_all
         named, unknown, allowed, titled = self.constraints(question)
         result = {'applied': None, 'chunks': [], 'others': [], 'institutions': named, 'unknown_institutions': unknown,
@@ -417,8 +430,7 @@ class Workspace:
             return {**result, 'status': 'not_found'}
         everywhere = self.index.bm25.get_scores(tokens)
         scores = everywhere
-        if (context_doc in self.meta and restrict is None and not unknown
-                and everywhere[self.passage_doc == context_doc].max(initial=0) >= self.WEAK * everywhere.max() > 0):
+        if restrict is None and not unknown and self._context_relevant(everywhere, context_doc):
             restrict = {context_doc}
             result['continued'] = True
         if restrict is not None:
@@ -792,7 +804,8 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                         history = list(session.history)
                         intent = 'search'
                         if version.get('assistant'):
-                            intent = route(version['base'], version['family'], version['context'], history, question)
+                            intent = route(version['base'], version['family'], version['context'], history, question,
+                                           workspace.continues if workspace_mode else None)
                         last = next((h for h in reversed(history) if h['role'] == 'assistant'), None)
                         context_doc = last.get('applied_id') if last and last.get('kind') == 'search' else None
                         selected, others, selection = None, [], None
