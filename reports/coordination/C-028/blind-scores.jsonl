@@ -1,0 +1,100 @@
+{"n": 1, "id": "B-N05", "slot": "X", "concl": 1, "cond": 0, "unsup": 1, "beh": 1, "note": "20일 맞으나 근거로 입양 행 인용, 25일 조건 누락"}
+{"n": 1, "id": "B-N05", "slot": "Y", "concl": 1, "cond": 1, "unsup": 0, "beh": 1, "note": "20일+25일 조건"}
+{"n": 2, "id": "B-G03", "slot": "X", "concl": 1, "cond": null, "unsup": 0, "beh": 1, "note": ""}
+{"n": 2, "id": "B-G03", "slot": "Y", "concl": 1, "cond": null, "unsup": 0, "beh": 1, "note": "[D1] 반복 퇴화"}
+{"n": 3, "id": "B-M02", "slot": "X", "concl": 1, "cond": null, "unsup": 0, "beh": 1, "note": "근거 없음, 국방부 구분"}
+{"n": 3, "id": "B-M02", "slot": "Y", "concl": 1, "cond": null, "unsup": 0, "beh": 1, "note": "보류(짧음)"}
+{"n": 4, "id": "B-E01", "slot": "X", "concl": 1, "cond": null, "unsup": 0, "beh": 1, "note": ""}
+{"n": 4, "id": "B-E01", "slot": "Y", "concl": 1, "cond": null, "unsup": 0, "beh": 1, "note": ""}
+{"n": 5, "id": "B-A01", "slot": "X", "concl": 0, "cond": null, "unsup": 0, "beh": 0, "note": "반복 퇴화, 답 없음"}
+{"n": 5, "id": "B-A01", "slot": "Y", "concl": 1, "cond": null, "unsup": 1, "beh": 1, "note": "25,000 맞으나 대통령도 25,000이라는 오설명"}
+{"n": 6, "id": "B-N02", "slot": "X", "concl": 1, "cond": 0, "unsup": 0, "beh": 1, "note": "100,000, 제2호 조건 없음"}
+{"n": 6, "id": "B-N02", "slot": "Y", "concl": 1, "cond": 0, "unsup": 0, "beh": 1, "note": "제2호 명시, 제1호 실비 없음, 반복"}
+{"n": 7, "id": "B-A02", "slot": "X", "concl": 0, "cond": 1, "unsup": 0, "beh": 0, "note": "결론 없이 질문 반복+원문 복사"}
+{"n": 7, "id": "B-A02", "slot": "Y", "concl": 0, "cond": 1, "unsup": 1, "beh": 1, "note": "\"추가되지 않습니다\" 오결론(원문과 모순)"}
+{"n": 8, "id": "B-N07", "slot": "X", "concl": 1, "cond": 1, "unsup": 0, "beh": 1, "note": "위원장+4급 이하 위임"}
+{"n": 8, "id": "B-N07", "slot": "Y", "concl": 1, "cond": 0, "unsup": 1, "beh": 1, "note": "위임 조건 누락, 기준을 위원장 요건으로 왜곡"}
+{"n": 9, "id": "A-table:gb-kdca-duty-swap", "slot": "X", "concl": 0, "cond": null, "unsup": 0, "beh": 0, "note": "반복 퇴화"}
+{"n": 9, "id": "A-table:gb-kdca-duty-swap", "slot": "Y", "concl": 0, "cond": null, "unsup": 1, "beh": 1, "note": "과장 승인 필요(오답)"}
+{"n": 10, "id": "A-table:gb-kdca-expense-approval", "slot": "X", "concl": 1, "cond": 0, "unsup": 1, "beh": 0, "note": "아니요 결론은 맞으나 근거 없음이라 하고 근거 미제시"}
+{"n": 10, "id": "A-table:gb-kdca-expense-approval", "slot": "Y", "concl": 0, "cond": null, "unsup": 0, "beh": 0, "note": "질문 반복 퇴화"}
+{"n": 11, "id": "B-N08", "slot": "X", "concl": 1, "cond": 0, "unsup": 0, "beh": 1, "note": "660만원+90일, 미숙아 누락"}
+{"n": 11, "id": "B-N08", "slot": "Y", "concl": 1, "cond": 0, "unsup": 0, "beh": 1, "note": "660만원, 문장 반복 퇴화"}
+{"n": 12, "id": "B-N11", "slot": "X", "concl": 1, "cond": null, "unsup": 0, "beh": 1, "note": ""}
+{"n": 12, "id": "B-N11", "slot": "Y", "concl": 1, "cond": null, "unsup": 0, "beh": 1, "note": "반복 퇴화"}
+{"n": 13, "id": "A-official:law-go-kr:expc:328939", "slot": "X", "concl": 1, "cond": null, "unsup": 0, "beh": 1, "note": "결론 정확, 이유 잘림"}
+{"n": 13, "id": "A-official:law-go-kr:expc:328939", "slot": "Y", "concl": 0, "cond": null, "unsup": 0, "beh": 0, "note": "질문 반복 퇴화"}
+{"n": 14, "id": "B-N12", "slot": "X", "concl": 1, "cond": null, "unsup": 0, "beh": 1, "note": "50만원, 인용 문구 반복 오염"}
+{"n": 14, "id": "B-N12", "slot": "Y", "concl": 1, "cond": null, "unsup": 0, "beh": 1, "note": "반복 퇴화"}
+{"n": 15, "id": "B-N03", "slot": "X", "concl": 0, "cond": null, "unsup": 1, "beh": 1, "note": "표를 지어냄(실비 25,000 등)"}
+{"n": 15, "id": "B-N03", "slot": "Y", "concl": 0, "cond": null, "unsup": 0, "beh": 0, "note": "번호만 나열 퇴화"}
+{"n": 16, "id": "B-G01", "slot": "X", "concl": 0, "cond": null, "unsup": 0, "beh": 0, "note": "퇴화"}
+{"n": 16, "id": "B-G01", "slot": "Y", "concl": 0, "cond": null, "unsup": 0, "beh": 0, "note": "근거 있는데 근거 없음(거짓 보류)"}
+{"n": 17, "id": "A-official:law-go-kr:expc:327309", "slot": "X", "concl": 1, "cond": null, "unsup": 0, "beh": 1, "note": "결론 정확"}
+{"n": 17, "id": "A-official:law-go-kr:expc:327309", "slot": "Y", "concl": 0, "cond": null, "unsup": 0, "beh": 0, "note": "질문·원문 복사, 결론 없음"}
+{"n": 18, "id": "B-N10", "slot": "X", "concl": 0, "cond": null, "unsup": 1, "beh": 1, "note": "15일이나 기산점 왜곡(결정 전까지), 문장 혼란"}
+{"n": 18, "id": "B-N10", "slot": "Y", "concl": 1, "cond": null, "unsup": 0, "beh": 1, "note": "납품 후 15일"}
+{"n": 19, "id": "A-official:law-go-kr:expc:312846", "slot": "X", "concl": 1, "cond": null, "unsup": 0, "beh": 1, "note": "결론 정확(원문 복사형)"}
+{"n": 19, "id": "A-official:law-go-kr:expc:312846", "slot": "Y", "concl": 0, "cond": null, "unsup": 0, "beh": 0, "note": "근거 충돌 오판"}
+{"n": 20, "id": "A-table:gb-kdca-side-job", "slot": "X", "concl": 0, "cond": null, "unsup": 1, "beh": 1, "note": "센터장(오답, 표 오독)"}
+{"n": 20, "id": "A-table:gb-kdca-side-job", "slot": "Y", "concl": 0, "cond": null, "unsup": 0, "beh": 0, "note": "반복 퇴화"}
+{"n": 21, "id": "B-V02", "slot": "X", "concl": 0, "cond": null, "unsup": 0, "beh": 0, "note": "평균 없음 말하지 않고 공수처 규정 복사"}
+{"n": 21, "id": "B-V02", "slot": "Y", "concl": 1, "cond": null, "unsup": 0, "beh": 1, "note": "평균 자료 없음"}
+{"n": 22, "id": "B-A03", "slot": "X", "concl": 1, "cond": null, "unsup": 0, "beh": 1, "note": "면제신청서, 이후 반복"}
+{"n": 22, "id": "B-A03", "slot": "Y", "concl": 1, "cond": null, "unsup": 0, "beh": 1, "note": "면제신청서+15일+첨부"}
+{"n": 23, "id": "A-table:gb-kdca-purchase-4000", "slot": "X", "concl": 0, "cond": null, "unsup": 0, "beh": 0, "note": "반복 퇴화"}
+{"n": 23, "id": "A-table:gb-kdca-purchase-4000", "slot": "Y", "concl": 0, "cond": null, "unsup": 1, "beh": 1, "note": "과장(오답, 3천만 기준 뒤집음)"}
+{"n": 24, "id": "B-R01", "slot": "X", "concl": 0, "cond": null, "unsup": 1, "beh": 1, "note": "공공기관 전체를 공무원 여비 규정 적용으로 일반화"}
+{"n": 24, "id": "B-R01", "slot": "Y", "concl": 0, "cond": null, "unsup": 1, "beh": 0, "note": "같은 일반화, 반복 퇴화"}
+{"n": 25, "id": "B-M03", "slot": "X", "concl": 1, "cond": null, "unsup": 0, "beh": 1, "note": "근거 없음(시스템 지시문 앞부분 되풀이)"}
+{"n": 25, "id": "B-M03", "slot": "Y", "concl": 0, "cond": null, "unsup": 0, "beh": 0, "note": "행안부 규정 나열, 없음 미표시"}
+{"n": 26, "id": "B-N06", "slot": "X", "concl": 1, "cond": null, "unsup": 0, "beh": 1, "note": "산식 정확(목록형)"}
+{"n": 26, "id": "B-N06", "slot": "Y", "concl": 1, "cond": null, "unsup": 0, "beh": 1, "note": "산식 정확"}
+{"n": 27, "id": "A-table:gb-kdca-outside-lecture-askback", "slot": "X", "concl": 0, "cond": null, "unsup": 0, "beh": 0, "note": "반복 퇴화"}
+{"n": 27, "id": "A-table:gb-kdca-outside-lecture-askback", "slot": "Y", "concl": 0, "cond": null, "unsup": 1, "beh": 0, "note": "과장급 이상(오답), 되묻기 없음"}
+{"n": 28, "id": "B-E02", "slot": "X", "concl": 0, "cond": null, "unsup": 0, "beh": 1, "note": "구분 없이 원문 장황"}
+{"n": 28, "id": "B-E02", "slot": "Y", "concl": 0, "cond": null, "unsup": 1, "beh": 1, "note": "중징계 면직·정직·감봉 등 오답"}
+{"n": 29, "id": "A-pubdata:parking-type-allowed", "slot": "X", "concl": 1, "cond": 1, "unsup": 0, "beh": 1, "note": "허용값 노상/노외/부설"}
+{"n": 29, "id": "A-pubdata:parking-type-allowed", "slot": "Y", "concl": 1, "cond": 1, "unsup": 1, "beh": 1, "note": "결론 맞으나 \"지하 포함 경우도 있음\" 모순, 반복"}
+{"n": 30, "id": "B-V01", "slot": "X", "concl": 1, "cond": null, "unsup": 0, "beh": 1, "note": "확인 불가"}
+{"n": 30, "id": "B-V01", "slot": "Y", "concl": 1, "cond": null, "unsup": 0, "beh": 1, "note": "정보 없음"}
+{"n": 31, "id": "A-table:gb-kdca-purchase-2500", "slot": "X", "concl": 0, "cond": null, "unsup": 1, "beh": 1, "note": "센터장(오답, 2,500만≥3천만이라 오판)"}
+{"n": 31, "id": "A-table:gb-kdca-purchase-2500", "slot": "Y", "concl": 0, "cond": null, "unsup": 0, "beh": 0, "note": "반복 퇴화"}
+{"n": 32, "id": "A-table:gb-kdca-trip-rank", "slot": "X", "concl": 0, "cond": 0, "unsup": 0, "beh": 1, "note": "과장급 미만만 모호하게, 과장급 이상 답 없음"}
+{"n": 32, "id": "A-table:gb-kdca-trip-rank", "slot": "Y", "concl": 0, "cond": null, "unsup": 0, "beh": 0, "note": "반복 퇴화"}
+{"n": 33, "id": "A-table:gb-kdca-outside-lecture", "slot": "X", "concl": 0, "cond": null, "unsup": 0, "beh": 0, "note": "반복 퇴화"}
+{"n": 33, "id": "A-table:gb-kdca-outside-lecture", "slot": "Y", "concl": 0, "cond": null, "unsup": 1, "beh": 1, "note": "센터장(오답)"}
+{"n": 34, "id": "B-M04", "slot": "X", "concl": 1, "cond": null, "unsup": 1, "beh": 1, "note": "근거 없음; 공무원 아님은 근거 밖 주장"}
+{"n": 34, "id": "B-M04", "slot": "Y", "concl": 0, "cond": null, "unsup": 1, "beh": 0, "note": "코레일 5일 지어냄, 반복"}
+{"n": 35, "id": "A-table:gb-kdca-disclosure", "slot": "X", "concl": 0, "cond": null, "unsup": 0, "beh": 0, "note": "반복 퇴화"}
+{"n": 35, "id": "A-table:gb-kdca-disclosure", "slot": "Y", "concl": 0, "cond": null, "unsup": 1, "beh": 1, "note": "센터장 전결(오답)"}
+{"n": 36, "id": "B-V03", "slot": "X", "concl": 0, "cond": null, "unsup": 0, "beh": 0, "note": "평균 질문에 상한 100,000 제시, 평균 없음 미표시(상한이라고는 밝힘)"}
+{"n": 36, "id": "B-V03", "slot": "Y", "concl": 1, "cond": null, "unsup": 0, "beh": 1, "note": "확인 불가, 뒤에 [D1]~[D51] 퇴화"}
+{"n": 37, "id": "B-N01", "slot": "X", "concl": 1, "cond": 0, "unsup": 0, "beh": 1, "note": "25,000 1일당, 반복"}
+{"n": 37, "id": "B-N01", "slot": "Y", "concl": 1, "cond": 0, "unsup": 0, "beh": 1, "note": "25,000 1일당"}
+{"n": 38, "id": "B-M01", "slot": "X", "concl": 1, "cond": null, "unsup": 0, "beh": 1, "note": "확인 불가 후 모순 반복"}
+{"n": 38, "id": "B-M01", "slot": "Y", "concl": 1, "cond": null, "unsup": 1, "beh": 1, "note": "부동산원 없음이라면서 다른 규정 수치 제시"}
+{"n": 39, "id": "A-pubdata:parking-24h-start", "slot": "X", "concl": 1, "cond": null, "unsup": 0, "beh": 1, "note": "00:00, \"근거 충돌\" 표제 오용"}
+{"n": 39, "id": "A-pubdata:parking-24h-start", "slot": "Y", "concl": 1, "cond": null, "unsup": 0, "beh": 1, "note": "00:00, 반복"}
+{"n": 40, "id": "A-official:law-go-kr:expc:331063", "slot": "X", "concl": 0, "cond": null, "unsup": 0, "beh": 0, "note": "질문 복사 후 결론 전 잘림"}
+{"n": 40, "id": "A-official:law-go-kr:expc:331063", "slot": "Y", "concl": 0, "cond": null, "unsup": 0, "beh": 0, "note": "원문 복사, 결론 없음"}
+{"n": 41, "id": "B-R02", "slot": "X", "concl": 0, "cond": null, "unsup": 1, "beh": 1, "note": "차이 25,000원/0원 모순"}
+{"n": 41, "id": "B-R02", "slot": "Y", "concl": 0, "cond": null, "unsup": 1, "beh": 0, "note": "마일리지 50%를 식비에도 적용(오), 반복"}
+{"n": 42, "id": "A-plain:law-go-kr:expc:327309", "slot": "X", "concl": 1, "cond": null, "unsup": 0, "beh": 1, "note": "결론 정확"}
+{"n": 42, "id": "A-plain:law-go-kr:expc:327309", "slot": "Y", "concl": 0, "cond": null, "unsup": 0, "beh": 0, "note": "질문·원문 복사, 결론 없음"}
+{"n": 43, "id": "B-G02", "slot": "X", "concl": 1, "cond": 0, "unsup": 0, "beh": 1, "note": "80,000, 제2호 미표시"}
+{"n": 43, "id": "B-G02", "slot": "Y", "concl": 1, "cond": 1, "unsup": 1, "beh": 1, "note": "80,000 제2호, 마일리지 문장을 숙박비에 붙임(오)"}
+{"n": 44, "id": "B-A04", "slot": "X", "concl": 1, "cond": null, "unsup": 0, "beh": 1, "note": "위원장"}
+{"n": 44, "id": "B-A04", "slot": "Y", "concl": 0, "cond": null, "unsup": 1, "beh": 1, "note": "심사위원회가 허가 결정(오)"}
+{"n": 45, "id": "A-pubdata:parking-units", "slot": "X", "concl": 0, "cond": null, "unsup": 1, "beh": 1, "note": "단위 맞으나 둘 다 필수(오)"}
+{"n": 45, "id": "A-pubdata:parking-units", "slot": "Y", "concl": 0, "cond": null, "unsup": 1, "beh": 1, "note": "둘 다 필수 아님(오)"}
+{"n": 46, "id": "B-N09", "slot": "X", "concl": 1, "cond": 0, "unsup": 0, "beh": 1, "note": "20만원, 반복 퇴화"}
+{"n": 46, "id": "B-N09", "slot": "Y", "concl": 1, "cond": 0, "unsup": 0, "beh": 1, "note": "20만원"}
+{"n": 47, "id": "B-N04", "slot": "X", "concl": 1, "cond": null, "unsup": 0, "beh": 1, "note": "5일"}
+{"n": 47, "id": "B-N04", "slot": "Y", "concl": 1, "cond": null, "unsup": 0, "beh": 1, "note": "5일, 반복"}
+{"n": 48, "id": "B-A06", "slot": "X", "concl": 0, "cond": null, "unsup": 1, "beh": 1, "note": "서면심사 20만원(오)"}
+{"n": 48, "id": "B-A06", "slot": "Y", "concl": 0, "cond": null, "unsup": 0, "beh": 0, "note": "근거 있는데 확인 불가(거짓 보류)"}
+{"n": 49, "id": "A-official:law-go-kr:expc:314758", "slot": "X", "concl": 1, "cond": null, "unsup": 0, "beh": 1, "note": "결론 정확(원문 복사형)"}
+{"n": 49, "id": "A-official:law-go-kr:expc:314758", "slot": "Y", "concl": 1, "cond": null, "unsup": 0, "beh": 1, "note": "결론 정확"}
+{"n": 50, "id": "B-A05", "slot": "X", "concl": 0, "cond": null, "unsup": 1, "beh": 1, "note": "유효기간 지어냄, 금액 없음"}
+{"n": 50, "id": "B-A05", "slot": "Y", "concl": 1, "cond": null, "unsup": 0, "beh": 1, "note": "1,684,210원"}
