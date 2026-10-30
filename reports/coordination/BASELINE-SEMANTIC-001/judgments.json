@@ -1,0 +1,1293 @@
+{
+ "note": "C post-hoc semantic review of BASELINE-COMPARE-002 development dialogues (not blind; single AI judge; no new inference)",
+ "judgments": [
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "S3",
+   "seed": 1,
+   "turn": 2,
+   "verdict": "ok_poor",
+   "note": "식재료 나열(브로콜리·감자·닭가슴살·계란), 회식 메뉴 아님"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "S3",
+   "seed": 1,
+   "turn": 3,
+   "verdict": "ok_poor",
+   "note": "디저트로 무·브로콜리·계란"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "S3",
+   "seed": 1,
+   "turn": 5,
+   "verdict": "ok_poor",
+   "note": "막연한 샐러드, 비와 무관한 설명"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "S3",
+   "seed": 2,
+   "turn": 2,
+   "verdict": "ok_poor",
+   "note": "되묻기·탄산음료 등 막연"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "S3",
+   "seed": 2,
+   "turn": 3,
+   "verdict": "ok_poor",
+   "note": "채식·저지방 디저트 막연"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "S3",
+   "seed": 2,
+   "turn": 5,
+   "verdict": "ok_poor",
+   "note": "막연 되묻기"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "S3",
+   "seed": 3,
+   "turn": 2,
+   "verdict": "ok_concrete",
+   "note": "무침 채소·스틱 채소(빈약하나 구체)"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "S3",
+   "seed": 3,
+   "turn": 3,
+   "verdict": "ok_concrete",
+   "note": "아보카도·오트밀 코코아"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "S3",
+   "seed": 3,
+   "turn": 5,
+   "verdict": "ok_concrete",
+   "note": "채소 무침·계란 요리"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "S3",
+   "seed": 1,
+   "turn": 4,
+   "verdict": "partial",
+   "note": "견과류 알레르기를 \"많이 먹으면 몸에 나쁨\"으로 바꿔 말함"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "S3",
+   "seed": 2,
+   "turn": 4,
+   "verdict": "both"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "S3",
+   "seed": 3,
+   "turn": 4,
+   "verdict": "both"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "S3",
+   "seed": 1,
+   "turn": 2,
+   "verdict": "violation",
+   "note": "전체 중국어 전환. 마파두부(매운 요리)를 \"너무 맵지 않게\"라는 단서와 함께 추천"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "S3",
+   "seed": 1,
+   "turn": 3,
+   "verdict": "ok_concrete",
+   "note": "과일 플레이트·크림치즈 쿠키 등"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "S3",
+   "seed": 1,
+   "turn": 5,
+   "verdict": "violation",
+   "note": "김치찌개 추천(매운 요리). \"매운 라멘\"은 피하라는 언급이라 위반으로 세지 않음"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "S3",
+   "seed": 2,
+   "turn": 2,
+   "verdict": "ok_concrete",
+   "note": "샐러드·생선·파스타"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "S3",
+   "seed": 2,
+   "turn": 3,
+   "verdict": "ok_concrete",
+   "note": "과일·견과류 없는 쿠키"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "S3",
+   "seed": 2,
+   "turn": 5,
+   "verdict": "ok_concrete",
+   "note": "토마토 수프·파스타(일부 비문)"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "S3",
+   "seed": 3,
+   "turn": 2,
+   "verdict": "violation",
+   "note": "\"견과류 대신 다른 종류의 견과류\" 추천. 시스템 지시문을 중국어로 노출"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "S3",
+   "seed": 3,
+   "turn": 3,
+   "verdict": "ok_concrete",
+   "note": "과일·크림 디저트"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "S3",
+   "seed": 3,
+   "turn": 5,
+   "verdict": "ok_concrete",
+   "note": "스프·라면·샐러드, 매운 것 피하라고 명시"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "S3",
+   "seed": 1,
+   "turn": 4,
+   "verdict": "both"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "S3",
+   "seed": 2,
+   "turn": 4,
+   "verdict": "both"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "S3",
+   "seed": 3,
+   "turn": 4,
+   "verdict": "both"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "S4",
+   "seed": 1,
+   "turn": 1,
+   "verdict": "partial"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "S4",
+   "seed": 1,
+   "turn": 2,
+   "verdict": "✓"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "S4",
+   "seed": 1,
+   "turn": 3,
+   "verdict": "✗"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "S4",
+   "seed": 1,
+   "turn": 4,
+   "verdict": "✗"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "S4",
+   "seed": 1,
+   "turn": 0,
+   "note": "t1 \"일정한 자료\"로 어색, t2 통과, t3 인사만 남기고 요청 삭제, t4 처음 버전 아님"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "S4",
+   "seed": 2,
+   "turn": 1,
+   "verdict": "✗"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "S4",
+   "seed": 2,
+   "turn": 2,
+   "verdict": "✗"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "S4",
+   "seed": 2,
+   "turn": 3,
+   "verdict": "✗"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "S4",
+   "seed": 2,
+   "turn": 4,
+   "verdict": "✗"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "S4",
+   "seed": 2,
+   "turn": 0,
+   "note": "t1 \"내일까지\"→\"내일부터\" 의미 변경, t2 더 짧지 않음, t3 \"첫 인사를 드리겠습니다\"로 지시 오해"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "S4",
+   "seed": 3,
+   "turn": 1,
+   "verdict": "✓"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "S4",
+   "seed": 3,
+   "turn": 2,
+   "verdict": "✗"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "S4",
+   "seed": 3,
+   "turn": 3,
+   "verdict": "✗"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "S4",
+   "seed": 3,
+   "turn": 4,
+   "verdict": "✗"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "S4",
+   "seed": 3,
+   "turn": 0,
+   "note": "t2 \"내일 자료를\"로 기한 의미 변경, t3 지시 오해"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "S4",
+   "seed": 1,
+   "turn": 1,
+   "verdict": "✗"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "S4",
+   "seed": 1,
+   "turn": 2,
+   "verdict": "✓"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "S4",
+   "seed": 1,
+   "turn": 3,
+   "verdict": "✓"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "S4",
+   "seed": 1,
+   "turn": 4,
+   "verdict": "✗"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "S4",
+   "seed": 1,
+   "turn": 0,
+   "note": "t1 전체 중국어·의미 오류, t2·t3 통과, t4 t2 문장을 반환(처음 버전 아님)"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "S4",
+   "seed": 2,
+   "turn": 1,
+   "verdict": "✓"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "S4",
+   "seed": 2,
+   "turn": 2,
+   "verdict": "partial"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "S4",
+   "seed": 2,
+   "turn": 3,
+   "verdict": "✗"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "S4",
+   "seed": 2,
+   "turn": 4,
+   "verdict": "✗"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "S4",
+   "seed": 2,
+   "turn": 0,
+   "note": "t2 \"내일로 부탁드립니다\"(대상 생략), t3 \"메일을 보내드리겠습니다\"로 요청 삭제"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "S4",
+   "seed": 3,
+   "turn": 1,
+   "verdict": "✓"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "S4",
+   "seed": 3,
+   "turn": 2,
+   "verdict": "✗"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "S4",
+   "seed": 3,
+   "turn": 3,
+   "verdict": "✗"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "S4",
+   "seed": 3,
+   "turn": 4,
+   "verdict": "✗"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "S4",
+   "seed": 3,
+   "turn": 0,
+   "note": "t2 \"내일까지 주세요\"(공손함 하락), t3 \"메일을 받았습니다\"로 의미 오류"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "S5",
+   "seed": 1,
+   "turn": 2,
+   "verdict": "✗"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "S5",
+   "seed": 1,
+   "turn": 3,
+   "verdict": "✗"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "S5",
+   "seed": 1,
+   "turn": 4,
+   "verdict": "✗"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "S5",
+   "seed": 1,
+   "turn": 0,
+   "note": "t2 \"아니요, 비가 오지 않을 거예요\" 뒤 엉뚱한 내용(물 마실 곳 없음, 빗소리). t3 t2를 되풀이. t4 내용 무의미"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "S5",
+   "seed": 2,
+   "turn": 2,
+   "verdict": "✓"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "S5",
+   "seed": 2,
+   "turn": 3,
+   "verdict": "✗"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "S5",
+   "seed": 2,
+   "turn": 4,
+   "verdict": "✗"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "S5",
+   "seed": 2,
+   "turn": 0,
+   "note": "t2 우비류(일부 비단어 \"비면·비자신\"). t3 \"비가 오는 이유\"(기상)로 오해. t4 직전 답 2번 항목이 아님"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "S5",
+   "seed": 3,
+   "turn": 2,
+   "verdict": "✓"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "S5",
+   "seed": 3,
+   "turn": 3,
+   "verdict": "partial"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "S5",
+   "seed": 3,
+   "turn": 4,
+   "verdict": "partial"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "S5",
+   "seed": 3,
+   "turn": 0,
+   "note": "t3 기상 설명과 준비 이유가 섞임. t4 직전 답 2번째 점을 가리키나 내용 혼란"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "S5",
+   "seed": 1,
+   "turn": 2,
+   "verdict": "✓"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "S5",
+   "seed": 1,
+   "turn": 3,
+   "verdict": "✓"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "S5",
+   "seed": 1,
+   "turn": 4,
+   "verdict": "✓"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "S5",
+   "seed": 1,
+   "turn": 0,
+   "note": "t3 항목별 이유. t4 2번 \"보온 기구\" 상술"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "S5",
+   "seed": 2,
+   "turn": 2,
+   "verdict": "✓"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "S5",
+   "seed": 2,
+   "turn": 3,
+   "verdict": "✓"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "S5",
+   "seed": 2,
+   "turn": 4,
+   "verdict": "✓"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "S5",
+   "seed": 2,
+   "turn": 0,
+   "note": "t4 2번 \"건조한 옷\"과 3번을 함께 상술(초과지만 정확히 가리킴). t2 \"비 와도 SPF 50\" 등 일부 부정확"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "S5",
+   "seed": 3,
+   "turn": 2,
+   "verdict": "✓"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "S5",
+   "seed": 3,
+   "turn": 3,
+   "verdict": "✓"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "S5",
+   "seed": 3,
+   "turn": 4,
+   "verdict": "✓"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "S5",
+   "seed": 3,
+   "turn": 0,
+   "note": "t4 2번 \"보온성 물병\" 상술"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "P2",
+   "seed": 1,
+   "turn": 1,
+   "verdict": "✗"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "P2",
+   "seed": 1,
+   "turn": 2,
+   "verdict": "✗"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "P2",
+   "seed": 1,
+   "turn": 3,
+   "verdict": "partial"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "P2",
+   "seed": 1,
+   "turn": 0,
+   "note": "t1 \"천천히 답변해 주세요\"(뜻 반대). t2 내부 추론을 그대로 출력하고 후보 일부 오역. t3 일본어 感謝します는 가능하나 로마자 \"Ganbaa shimasu\" 오류, 중국어 謝謝 정답"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "P2",
+   "seed": 2,
+   "turn": 1,
+   "verdict": "✗"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "P2",
+   "seed": 2,
+   "turn": 2,
+   "verdict": "✗"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "P2",
+   "seed": 2,
+   "turn": 3,
+   "verdict": "✗"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "P2",
+   "seed": 2,
+   "turn": 0,
+   "note": "t1·t2 \"감사합니다\"만(핵심 누락). t3 \"ありがとうです。謝れます。\"(중국어 아님, 일본어도 비문)"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "P2",
+   "seed": 3,
+   "turn": 1,
+   "verdict": "✗"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "P2",
+   "seed": 3,
+   "turn": 2,
+   "verdict": "✗"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "P2",
+   "seed": 3,
+   "turn": 3,
+   "verdict": "✗"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "scenario": "P2",
+   "seed": 3,
+   "turn": 0,
+   "note": "t1·t2 핵심 누락. t3 중국어를 \"感謝합니다\"로 씀(오답)"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "P2",
+   "seed": 1,
+   "turn": 1,
+   "verdict": "✓"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "P2",
+   "seed": 1,
+   "turn": 2,
+   "verdict": "✓"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "P2",
+   "seed": 1,
+   "turn": 3,
+   "verdict": "✓"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "P2",
+   "seed": 1,
+   "turn": 0,
+   "note": "모두 정확(ありがとうございます, 谢谢)"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "P2",
+   "seed": 2,
+   "turn": 1,
+   "verdict": "✓"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "P2",
+   "seed": 2,
+   "turn": 2,
+   "verdict": "✗"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "P2",
+   "seed": 2,
+   "turn": 3,
+   "verdict": "✓"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "P2",
+   "seed": 2,
+   "turn": 0,
+   "note": "t2 \"감사합니다. 빠른 답변을 주셔서요.\"로 격식이 오히려 낮아짐"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "P2",
+   "seed": 3,
+   "turn": 1,
+   "verdict": "✓"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "P2",
+   "seed": 3,
+   "turn": 2,
+   "verdict": "✗"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "P2",
+   "seed": 3,
+   "turn": 3,
+   "verdict": "✓"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "scenario": "P2",
+   "seed": 3,
+   "turn": 0,
+   "note": "t2 \"전해드리iéndo니다… respect를\"(스페인어·영어 조각 섞임)"
+  }
+ ],
+ "language": [
+  {
+   "model": "qwen3-1.7b",
+   "dialogue": "B-S8#s1",
+   "turn": 2,
+   "class": "partial",
+   "han": 2,
+   "latin": [],
+   "note": "带上"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "dialogue": "P1#s1",
+   "turn": 2,
+   "class": "legit_term",
+   "han": 0,
+   "latin": [
+    "TV로",
+    "TV로"
+   ],
+   "note": null
+  },
+  {
+   "model": "qwen3-1.7b",
+   "dialogue": "P2#s1",
+   "turn": 3,
+   "class": "requested",
+   "han": 19,
+   "latin": [],
+   "note": null
+  },
+  {
+   "model": "qwen3-1.7b",
+   "dialogue": "P3#s1",
+   "turn": 1,
+   "class": "legit_term",
+   "han": 0,
+   "latin": [
+    "Lumière는"
+   ],
+   "note": null
+  },
+  {
+   "model": "qwen3-1.7b",
+   "dialogue": "P3#s1",
+   "turn": 3,
+   "class": "legit_term",
+   "han": 0,
+   "latin": [
+    "Lumière를"
+   ],
+   "note": null
+  },
+  {
+   "model": "qwen3-1.7b",
+   "dialogue": "D2#s1",
+   "turn": 1,
+   "class": "legit_term",
+   "han": 0,
+   "latin": [
+    "TRID입"
+   ],
+   "note": null
+  },
+  {
+   "model": "qwen3-1.7b",
+   "dialogue": "D2#s1",
+   "turn": 2,
+   "class": "legit_term",
+   "han": 0,
+   "latin": [
+    "TRID입"
+   ],
+   "note": null
+  },
+  {
+   "model": "qwen3-1.7b",
+   "dialogue": "D2#s1",
+   "turn": 3,
+   "class": "legit_term",
+   "han": 0,
+   "latin": [
+    "TRID입"
+   ],
+   "note": null
+  },
+  {
+   "model": "qwen3-1.7b",
+   "dialogue": "B-S3#s2",
+   "turn": 1,
+   "class": "legit_term",
+   "han": 0,
+   "latin": [
+    "TRID입"
+   ],
+   "note": null
+  },
+  {
+   "model": "qwen3-1.7b",
+   "dialogue": "B-S8#s2",
+   "turn": 4,
+   "class": "legit_term",
+   "han": 0,
+   "latin": [
+    "TRID입"
+   ],
+   "note": null
+  },
+  {
+   "model": "qwen3-1.7b",
+   "dialogue": "P2#s2",
+   "turn": 3,
+   "class": "requested",
+   "han": 11,
+   "latin": [],
+   "note": null
+  },
+  {
+   "model": "qwen3-1.7b",
+   "dialogue": "B-S3#s3",
+   "turn": 1,
+   "class": "legit_term",
+   "han": 0,
+   "latin": [
+    "TRID입"
+   ],
+   "note": null
+  },
+  {
+   "model": "qwen3-1.7b",
+   "dialogue": "B-S3#s3",
+   "turn": 2,
+   "class": "partial",
+   "han": 1,
+   "latin": [],
+   "note": "조미料"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "dialogue": "B-S3#s3",
+   "turn": 3,
+   "class": "partial",
+   "han": 1,
+   "latin": [],
+   "note": "조미料"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "dialogue": "B-S3#s3",
+   "turn": 5,
+   "class": "partial",
+   "han": 1,
+   "latin": [],
+   "note": "조미料"
+  },
+  {
+   "model": "qwen3-1.7b",
+   "dialogue": "B-S8#s3",
+   "turn": 4,
+   "class": "legit_term",
+   "han": 0,
+   "latin": [
+    "TRID입"
+   ],
+   "note": null
+  },
+  {
+   "model": "qwen3-1.7b",
+   "dialogue": "P2#s3",
+   "turn": 3,
+   "class": "requested",
+   "han": 14,
+   "latin": [],
+   "note": null
+  },
+  {
+   "model": "qwen2.5-7b",
+   "dialogue": "B-S2#s1",
+   "turn": 1,
+   "class": "switch",
+   "han": 82,
+   "latin": [],
+   "note": null
+  },
+  {
+   "model": "qwen2.5-7b",
+   "dialogue": "B-S2#s1",
+   "turn": 2,
+   "class": "switch",
+   "han": 94,
+   "latin": [],
+   "note": null
+  },
+  {
+   "model": "qwen2.5-7b",
+   "dialogue": "B-S2#s1",
+   "turn": 3,
+   "class": "switch",
+   "han": 48,
+   "latin": [],
+   "note": null
+  },
+  {
+   "model": "qwen2.5-7b",
+   "dialogue": "B-S3#s1",
+   "turn": 2,
+   "class": "switch",
+   "han": 239,
+   "latin": [],
+   "note": null
+  },
+  {
+   "model": "qwen2.5-7b",
+   "dialogue": "B-S3#s1",
+   "turn": 3,
+   "class": "partial",
+   "han": 0,
+   "latin": [
+    "시aison"
+   ],
+   "note": "시aison"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "dialogue": "B-S4#s1",
+   "turn": 1,
+   "class": "switch",
+   "han": 17,
+   "latin": [],
+   "note": null
+  },
+  {
+   "model": "qwen2.5-7b",
+   "dialogue": "B-S5#s1",
+   "turn": 1,
+   "class": "switch",
+   "han": 67,
+   "latin": [],
+   "note": "무관한 가을 시 해설로 전환"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "dialogue": "B-S5#s1",
+   "turn": 2,
+   "class": "legit_term",
+   "han": 0,
+   "latin": [
+    "C를"
+   ],
+   "note": "비타민 C"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "dialogue": "B-S5#s1",
+   "turn": 3,
+   "class": "legit_term",
+   "han": 0,
+   "latin": [
+    "C를"
+   ],
+   "note": "비타민 C"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "dialogue": "B-S6#s1",
+   "turn": 2,
+   "class": "switch",
+   "han": 206,
+   "latin": [],
+   "note": null
+  },
+  {
+   "model": "qwen2.5-7b",
+   "dialogue": "B-S7#s1",
+   "turn": 3,
+   "class": "switch",
+   "han": 218,
+   "latin": [],
+   "note": null
+  },
+  {
+   "model": "qwen2.5-7b",
+   "dialogue": "B-S8#s1",
+   "turn": 1,
+   "class": "switch",
+   "han": 29,
+   "latin": [],
+   "note": null
+  },
+  {
+   "model": "qwen2.5-7b",
+   "dialogue": "B-S8#s1",
+   "turn": 5,
+   "class": "switch",
+   "han": 60,
+   "latin": [],
+   "note": "중국어로 이사 날짜를 지어냄(10月23日)"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "dialogue": "P1#s1",
+   "turn": 3,
+   "class": "legit_term",
+   "han": 57,
+   "latin": [],
+   "note": "浅草雷门(지명 괄호 병기)"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "dialogue": "P2#s1",
+   "turn": 3,
+   "class": "requested",
+   "han": 12,
+   "latin": [],
+   "note": null
+  },
+  {
+   "model": "qwen2.5-7b",
+   "dialogue": "D2#s1",
+   "turn": 1,
+   "class": "switch",
+   "han": 67,
+   "latin": [],
+   "note": null
+  },
+  {
+   "model": "qwen2.5-7b",
+   "dialogue": "D2#s1",
+   "turn": 2,
+   "class": "legit_term",
+   "han": 0,
+   "latin": [
+    "은Cold",
+    "Creamery의"
+   ],
+   "note": "Cold Stone Creamery(상호)"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "dialogue": "D2#s1",
+   "turn": 3,
+   "class": "legit_term",
+   "han": 0,
+   "latin": [
+    "Creamery의"
+   ],
+   "note": "Cold Stone Creamery(상호)"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "dialogue": "B-S1#s2",
+   "turn": 2,
+   "class": "switch",
+   "han": 86,
+   "latin": [],
+   "note": "\"用户/助手\" 가짜 대화 역할 출력"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "dialogue": "B-S1#s2",
+   "turn": 3,
+   "class": "switch",
+   "han": 105,
+   "latin": [
+    "을dration"
+   ],
+   "note": null
+  },
+  {
+   "model": "qwen2.5-7b",
+   "dialogue": "B-S5#s2",
+   "turn": 1,
+   "class": "partial",
+   "han": 3,
+   "latin": [],
+   "note": "ホール드"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "dialogue": "B-S8#s2",
+   "turn": 1,
+   "class": "switch",
+   "han": 19,
+   "latin": [],
+   "note": null
+  },
+  {
+   "model": "qwen2.5-7b",
+   "dialogue": "B-S8#s2",
+   "turn": 2,
+   "class": "switch",
+   "han": 148,
+   "latin": [],
+   "note": null
+  },
+  {
+   "model": "qwen2.5-7b",
+   "dialogue": "B-S8#s2",
+   "turn": 4,
+   "class": "switch",
+   "han": 58,
+   "latin": [
+    "TRID입"
+   ],
+   "note": "환경보호 화제 제안(무관)"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "dialogue": "B-S8#s2",
+   "turn": 5,
+   "class": "switch",
+   "han": 83,
+   "latin": [
+    "가Previously"
+   ],
+   "note": "환경보호·영어 혼입"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "dialogue": "P1#s2",
+   "turn": 1,
+   "class": "switch",
+   "han": 197,
+   "latin": [],
+   "note": "무관한 소프트웨어 출시 소식으로 전환"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "dialogue": "P2#s2",
+   "turn": 3,
+   "class": "requested",
+   "han": 13,
+   "latin": [],
+   "note": null
+  },
+  {
+   "model": "qwen2.5-7b",
+   "dialogue": "D2#s2",
+   "turn": 1,
+   "class": "switch",
+   "han": 10,
+   "latin": [],
+   "note": "\"user\" 가짜 사용자 턴 출력"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "dialogue": "B-S1#s3",
+   "turn": 2,
+   "class": "switch",
+   "han": 31,
+   "latin": [],
+   "note": null
+  },
+  {
+   "model": "qwen2.5-7b",
+   "dialogue": "B-S2#s3",
+   "turn": 3,
+   "class": "partial",
+   "han": 0,
+   "latin": [
+    "feelings를"
+   ],
+   "note": "feelings를"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "dialogue": "B-S3#s3",
+   "turn": 2,
+   "class": "switch",
+   "han": 53,
+   "latin": [],
+   "note": "시스템 지시문 중국어 노출"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "dialogue": "B-S5#s3",
+   "turn": 1,
+   "class": "legit_term",
+   "han": 0,
+   "latin": [
+    "GPS를"
+   ],
+   "note": "GPS"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "dialogue": "B-S6#s3",
+   "turn": 2,
+   "class": "switch",
+   "han": 163,
+   "latin": [],
+   "note": null
+  },
+  {
+   "model": "qwen2.5-7b",
+   "dialogue": "B-S8#s3",
+   "turn": 2,
+   "class": "switch",
+   "han": 118,
+   "latin": [],
+   "note": null
+  },
+  {
+   "model": "qwen2.5-7b",
+   "dialogue": "B-S8#s3",
+   "turn": 4,
+   "class": "legit_term",
+   "han": 0,
+   "latin": [
+    "TRID입"
+   ],
+   "note": "TRID"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "dialogue": "P1#s3",
+   "turn": 1,
+   "class": "switch",
+   "han": 104,
+   "latin": [],
+   "note": null
+  },
+  {
+   "model": "qwen2.5-7b",
+   "dialogue": "P2#s3",
+   "turn": 2,
+   "class": "partial",
+   "han": 0,
+   "latin": [
+    "리iéndo",
+    "respect를"
+   ],
+   "note": "iéndo·respect"
+  },
+  {
+   "model": "qwen2.5-7b",
+   "dialogue": "P2#s3",
+   "turn": 3,
+   "class": "requested",
+   "han": 13,
+   "latin": [],
+   "note": null
+  },
+  {
+   "model": "qwen2.5-7b",
+   "dialogue": "P3#s3",
+   "turn": 1,
+   "class": "partial",
+   "han": 0,
+   "latin": [
+    "은very"
+   ],
+   "note": "very"
+  }
+ ]
+}
