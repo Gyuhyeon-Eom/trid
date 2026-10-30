@@ -324,9 +324,19 @@ class WorkspaceTests(unittest.TestCase):
         self.assertIn('국민건강보험공단', workspace_reply(self.ws, r)['answer'])
 
     def test_short_form_without_official_alias_is_asked_not_resolved(self):
-        r = self.ws.select('국토부 국외 출장 식비는?')  # no official basis for 국토부 in agency-aliases-v1
+        r = self.ws.select('근복공단 직원 출장 식비는?')  # in neither B's table nor the government abbreviation rule
         self.assertEqual((r['status'], r['reason']), ('clarify', 'institution'))
-        self.assertIn('국토교통부', r['institutions'])
+        self.assertIn('근로복지공단', r['institutions'])
+
+    def test_government_abbreviation_rule_names_its_body(self):
+        # 「정부조직 약칭과 영어 명칭에 관한 규칙」 [별표]: 국토부 = 국토교통부; 노동부 is now 고용노동부's abbreviation
+        # (before: the pre-2010 body); 기재부 comes from the superseded version and still names 기획재정부, whose
+        # rules are not given to its successor.
+        from scripts.shared_demo import workspace_reply
+        for asked, body in (('국토부', '국토교통부'), ('노동부', '고용노동부'), ('기재부', '기획재정부')):
+            r = self.ws.select(f'{asked} 국외 출장 식비는?')
+            self.assertEqual((r['status'], r['unknown_institutions']), ('unknown_institution', [body]), asked)
+        self.assertIn('재정경제부', workspace_reply(self.ws, self.ws.select('기재부 국외 출장 식비는?'))['answer'])
 
     def test_predecessor_name_is_not_answered_with_successor_rules(self):
         from scripts.shared_demo import workspace_reply
@@ -368,6 +378,70 @@ class CivilServiceScopeTests(WorkspaceTests.__base__):
         r = self.ws.select('지방공무원 출장 식비는 하루 얼마인가요?')
         self.assertEqual((r['status'], r['applied']), ('answer', 'b'))
         self.assertEqual(self.ws.select('공무원 출장 식비는 하루 얼마인가요?')['status'], 'clarify')  # no population named
+
+
+class RuleRoleTests(WorkspaceTests.__base__):
+    """Within one institution's rule set, an amount question goes to the instrument that sets the amount, not to a
+    guideline whose articles send it there or whose top passages are worked cases (C-030 #3)."""
+    TEXTS = {'g': ('다기관 여비 처리지침', '제6조(식비 지급기준) 출장 식비는 규정 별표1의 식비 정액으로 지급한다.\n'
+                                    '○ 1박 2일 출장 중 식사가 제공된 경우 식비 지급액은? - 제공된 끼니의 식비를 빼고 지급한다.'),
+             'r': ('다기관 여비 규정', '제9조(국내 여비) 국내 여비는 별표1에 따른다.\n[별표1] 국내여비\n출장 식비 지급액 1일 25,000원')}
+    setUp = WorkspaceTests.setUp
+
+    def test_amount_question_goes_to_the_rule_the_guideline_defers_to(self):
+        r = self.ws.select('다기관 출장 식비 지급액은 얼마야?')
+        self.assertEqual(r['retrieval']['hits'][0]['doc_id'], 'g')  # the guideline ranks first …
+        self.assertEqual((r['status'], r['applied']), ('answer', 'r'))  # … and hands the amount to the rule
+        self.assertEqual(r['standard_choice'], {'from': 'g', 'to': 'r', 'basis': 'defers'})
+
+    def test_case_question_keeps_the_guideline(self):
+        r = self.ws.select('다기관 출장 중 식사가 제공된 경우 식비 처리는?')
+        self.assertEqual(r['applied'], 'g')
+        self.assertNotIn('standard_choice', r)
+
+
+class AskBackAnnexTests(WorkspaceTests.__base__):
+    """An ask-back over institutions lists each one's own annex with its body when both passed (C-030 L1/S3)."""
+    TEXTS = {'a': ('가기관 여비 규정', '제10조(식비) 국내 출장 식비는 하루 단위로 별표 2에 따라 국내 출장 식비를 지급한다.'),
+             'a2': ('가기관 여비 규정 [별표 2] 국내 여비 지급표', '식비 하루 25,000원'),
+             'b': ('나기관 여비 규칙', '제10조(식비) 국내 출장 식비는 하루 25,000원으로 한다.')}
+    setUp = WorkspaceTests.setUp
+
+    def test_common_annex_is_offered_with_its_body(self):
+        r = self.ws.select('국내 출장 식비는 하루 얼마인가요?')
+        self.assertEqual(r['status'], 'clarify')
+        titles = [c['title'] for c in r['candidates']]
+        # the top institution's body, then its own annex (where the amounts are), then the other institution's rule
+        self.assertEqual(titles, ['가기관 여비 규정', '가기관 여비 규정 [별표 2] 국내 여비 지급표', '나기관 여비 규칙'])
+
+
+class ConversationScopeTests(unittest.TestCase):
+    def test_recall_without_figures_reads_this_sessions_turns_only(self):
+        from scripts.shared_demo import recall_reply, request_type
+        for q in ('아까 내가 뭐 물어봤지?', '방금 답한 규정이 뭐였어?', '앞에서 뭐라고 했지?'):
+            self.assertEqual(request_type(q), 'recall', q)
+        self.assertIsNone(request_type('출장 전에 신청해야 하나요?'))
+        self.assertIn('기록이 없습니다', recall_reply([])['answer'])
+        history = [{'role': 'user', 'content': '공무원 국내 출장 식비는?', 'kind': 'search'},
+                   {'role': 'assistant', 'content': '[문서 검색 답변] 근거 문서 인사혁신처 「공무원 여비 규정」, 확인된 원문 인용 없음',
+                    'kind': 'search'},
+                   {'role': 'user', 'content': '고마워', 'kind': 'chat'},
+                   {'role': 'assistant', 'content': '천만에요.', 'kind': 'chat'}]
+        answer = recall_reply(history)['answer']
+        self.assertIn('“공무원 국내 출장 식비는?”', answer)
+        self.assertIn('「공무원 여비 규정」', answer)
+        self.assertIn('[일반 대화 답변 · 검증 안 됨] 천만에요.', answer)
+
+    def test_class_question_answered_from_one_institution_says_so(self):
+        from types import SimpleNamespace
+        from scripts.shared_demo import population_notice
+        inst = SimpleNamespace(by_institution={'한국부동산원': set()}, name='inst-reb-002')
+        result = {'status': 'clarify', 'answer': '어느 직위인지 정해 주세요: 원장, 감사.'}
+        population_notice(result, '공공기관 임원 업무추진비는 직위별로 얼마야?', inst, None, None)
+        self.assertTrue(result['answer'].startswith('질문은 공공기관 전반에 관한 것이지만, 아래는 한국부동산원 한 기관의 자료입니다.'))
+        named = {'status': 'answer', 'answer': 'x'}
+        population_notice(named, '한국부동산원 임원 업무추진비는?', inst, None, None)
+        self.assertEqual(named['answer'], 'x')  # one named institution: no class claim to correct
 
 
 class RuleTableLinkTests(WorkspaceTests.__base__):
@@ -493,6 +567,9 @@ class RuleTableLinkTests(WorkspaceTests.__base__):
         self.assertIn('비고 1. 대통령의 식비는 실비로 한다.', sent)          # notes kept whole
         self.assertIn('나머지', sent)                                       # dropped rows are stated
         self.assertTrue(any('행을 빼었습니다' in n for n in result['context_notes']))
+        other = sum(1 for c, _ in r['chunks'] if c.doc_id != self.LAW and not c.derived)
+        self.assertEqual(result['context_limits'],                         # counts of what was actually left out
+                         {'linked_passages': other, 'table_rows': 2, 'tables': 0, 'own_passages': 0})
         self.assertEqual(result['candidates'], [])  # a line of the derived rows is not a verbatim source quote
 
 

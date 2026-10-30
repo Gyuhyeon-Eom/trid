@@ -78,11 +78,12 @@ def prompt_tokens(base, messages):
 
 
 def fit_context(selected, build, base, context, max_tokens):
-    """(selected, notes): evidence reduced until the prompt `build(selected)` — counted with the serving model's own
+    """(selected, notes, limits): evidence reduced until the prompt `build(selected)` — counted with the serving model's own
     template and tokenizer — leaves `max_tokens` for the answer within `context`. Reduction order: passages of other
     documents (linked tables); then whole reviewed-table rows, one at a time (never part of a row and never a note: a
     cut condition could change a value's meaning; the rendered rows say how many were left out); then the applied
-    document's weakest passages (its best passage stays)."""
+    document's weakest passages (its best passage stays). `limits` counts what was left out (the API's `context_limits`:
+    linked_passages, table_rows, tables — row blocks dropped whole —, own_passages; all four keys, 0 when nothing)."""
     selected, dropped = list(selected), {'linked': 0, 'rows': 0, 'tables': 0, 'own': 0}
     while selected:
         tokens = prompt_tokens(base, build(selected))
@@ -119,7 +120,9 @@ def fit_context(selected, build, base, context, max_tokens):
         notes.append('모델 문맥 한도로 검토된 표 행을 넣지 못했습니다. 표 값은 원문 표에서 확인하세요.')
     if dropped['own']:
         notes.append(f"모델 문맥 한도로 적용 문서의 관련도 낮은 구간 {dropped['own']}개를 빼었습니다.")
-    return selected, notes
+    limits = {'linked_passages': dropped['linked'], 'table_rows': dropped['rows'], 'tables': dropped['tables'],
+              'own_passages': dropped['own']}
+    return selected, notes, limits
 
 
 CONTEXT_OVERFLOW = ('근거 구간 하나가 모델 문맥 한도보다 길어 답하지 못했습니다. 서버 측 근거 구성의 한계이며, 원문 링크에서 직접 '
@@ -142,8 +145,8 @@ def answer_document_chat(document, question, base, family, context, constrained=
         return {**result, 'status': 'not_found', 'answer': '질문과 관련된 문서 구간을 찾지 못했습니다. 질문을 바꾸거나 추출 내용을 확인해 주세요.'}
     build = lambda sel: [{'role': 'system', 'content': SYSTEM},
                          {'role': 'user', 'content': rag_prompt([(f'D{i}', c.text) for i, (c, _) in enumerate(sel, 1)], question)}]
-    selected, fit_notes = fit_context(selected, build, base, context, MAX_TOKENS)
-    result.update(checked_chunks=len(selected), context_notes=fit_notes)
+    selected, fit_notes, limits = fit_context(selected, build, base, context, MAX_TOKENS)
+    result.update(checked_chunks=len(selected), context_notes=fit_notes, context_limits=limits)
     prompt = rag_prompt([(f'D{i}', chunk.text) for i, (chunk, _) in enumerate(selected, 1)], question)
     messages = [{'role': 'system', 'content': SYSTEM}, {'role': 'user', 'content': prompt}]
     r = complete(base, messages, family, MAX_TOKENS, context, evidence_grammar(prompt) if constrained else None)
@@ -215,8 +218,8 @@ def answer_document_case(document, question, base, family, context, max_tokens=2
             texts[0] = provenance + texts[0]
         prompt = rag_prompt([(f'D{i}', text) for i, text in enumerate(texts, 1)], question)
         return [{'role': 'system', 'content': CASE_SYSTEM}, {'role': 'user', 'content': prompt}]
-    selected, fit_notes = fit_context(selected, build, base, context, max_tokens)
-    result.update(checked_chunks=len(selected), context_notes=fit_notes)
+    selected, fit_notes, limits = fit_context(selected, build, base, context, max_tokens)
+    result.update(checked_chunks=len(selected), context_notes=fit_notes, context_limits=limits)
     r = complete(base, build(selected), family, max_tokens, context)
     if r.get('skipped_context'):
         raise DocumentError(CONTEXT_OVERFLOW)
@@ -336,9 +339,16 @@ STATISTIC = re.compile(r'평균|통계|집행|현황|추이|실제로?\s*(?:쓴|
 COMPUTED = re.compile(r'평균|통계|추이|합계|총\s*(?:액|얼마|지출)|건수|인당')  # a figure computed over records
 DEFINITION = re.compile(r'뜻|의미|개념|차이|정의|이란\b|란\s*(?:무엇|뭐)|구성(?:되|돼|요소|은|이)|요령')
 # A question about what the visitor said earlier is answered from the conversation, not searched.
-RECALL = re.compile(r'(?:아까|방금|앞에서|이전에|처음에|전에)\s*(?:제가|내가)?\s*(?:말한|말씀드린|얘기한|알려\s*드린|알려준|적은)'
-                    r'|(?:제가|내가)\s*(?:말한|말씀드린|얘기한|알려\s*드린|알려준|적은)')
+RECALL_VERB = (r'(?:말한|말씀드린|얘기한|알려\s*드린|알려\s*준|적은|물어본|물어봤|물었던|질문한|답한|답해\s*준|대답한|'
+               r'말해\s*준|찾아\s*준|인용한|보여\s*준|근거로\s*(?:쓴|든|삼은)|뭐라고\s*(?:했|답했|말했))')
+RECALL = re.compile(rf'(?:아까|방금|앞에서|이전에|처음에|전에|마지막에)\s*(?:제가|내가|네가|니가)?\s*{RECALL_VERB}'
+                    rf'|(?:제가|내가|네가|니가)\s*(?:아까\s*|방금\s*)?(?:뭐|무엇을?|뭘|어떤\s*걸?)?\s*{RECALL_VERB}')
 ASKING = re.compile(r'\?|얼마|몇|무엇|뭐|어떻게|언제|어디|누가|나요|까요|인가|습니까|는지|알려|궁금')
+# A question asking for an amount or its standard (단가·상한·기준), as opposed to how a case is handled.
+AMOUNT_ASKED = re.compile(r'얼마|금액|단가|상한|한도|지급액|기준액|몇\s*원|기준(?:은|이|을|이\s*뭐|\s*알려)')
+# A guideline article sending the amount to another instrument's annex ("규정 별표1의 상한액", "공무원여비규정
+# 별표2") defers to that instrument: the name written before it (empty for a bare "규정"), its kind and the annex number.
+DEFERS_TO = re.compile(r'(?<![가-힣])([가-힣]*?)(규정|규칙)\s*\[?\s*별표\s*(\d+)')
 
 
 def request_type(question):
@@ -445,6 +455,30 @@ def chat_reply(base, family, context, history, question, max_tokens=320, explain
             'checked_chunks': 0, 'commentary_notes': notes, 'warnings': [],
             'scope': ('일반 설명입니다. 특정 기관 규정을 검색하지 않았고 검증 대상이 아닙니다.' if explain else
                       '일반 대화 응답입니다. 문서 근거를 검색하지 않았고 검증 대상이 아닙니다.')}
+
+
+RECALLED = '[앞선 대화 기록을 그대로 보여 줌]'  # what a recall turn is stored as (the transcript again would nest)
+
+
+def recall_reply(history):
+    """A question about the conversation itself ("아까 내가 뭐 물어봤지?", "방금 답한 규정이 뭐였어?") without the
+    visitor's figures to organise: answered from this session's own stored turns, verbatim, with no model (a 1.7B model
+    retelling a transcript invents turns). Search turns were stored as their applied document and verified quotes
+    only; general-conversation answers are marked unverified; earlier recall turns are left out. Nothing outside this
+    session is read."""
+    turns = [(q['content'], a) for q, a in zip(history[::2], history[1::2])
+             if q['role'] == 'user' and a['role'] == 'assistant' and a['content'] != RECALLED]
+    base = {'status': 'chat', 'answer_mode': 'recall', 'candidates': [], 'checked_chunks': 0, 'commentary_notes': [],
+            'warnings': [], 'scope': '이 브라우저 세션의 대화 기록만 그대로 보였습니다. 모델을 실행하지 않았고 문서를 검색하지 않았습니다.'}
+    if not turns:
+        return {**base, 'answer': '이 대화에는 앞서 나눈 질문이나 답변 기록이 없습니다. 이전 세션이나 다른 사람의 대화는 볼 수 없습니다.'}
+    lines = []
+    for n, (asked, answer) in enumerate(turns, 1):
+        said = answer['content']
+        if answer.get('kind') != 'search':
+            said = f"[일반 대화 답변 · 검증 안 됨] {said[:160]}{'…' if len(said) > 160 else ''}"
+        lines.append(f'{n}. 질문: “{asked}”\n   답변: {said}')
+    return {**base, 'answer': '이 대화에서 앞서 나눈 내용입니다(기록 그대로).\n' + '\n'.join(lines)}
 
 
 def statistic_reply(workspace, question):
@@ -825,14 +859,19 @@ class Workspace:
         q = self.embedder(question)
         return [f for f in pool if float(self.embedder(f['metric']) @ q) >= self.FACT_COS]
 
-    def _registry(self, path, official=ROOT / 'data/agency-aliases-v1/aliases.jsonl'):
+    def _registry(self, path, official=ROOT / 'data/agency-aliases-v1/aliases.jsonl',
+                  government=ROOT / 'data/official-abbreviations/abbreviations.jsonl'):
         """alias -> official name. Sources: corpus issuers; the ALIO list of public institutions (with generic aliases:
         without a leading 한국/국립/대한 when ≥3 characters remain); and B's official alias table (agency-aliases-v1:
         기관코드 official names, ALIO names, statutory abbreviations defined in law texts, predecessor names), each row
         with its evidence. An alias marked ambiguous, or claimed by two institutions, is never resolved automatically
         (`self.ambiguous` keeps its candidates for asking back). A predecessor name stays its own (old) institution with
         `successor` noted: an old body's rules are not applied to its successor. Each official name records its corpus
-        documents (issued by it, or rules/manuals whose title starts with its name) and its ALIO type and ministry."""
+        documents (issued by it, or rules/manuals whose title starts with its name) and its ALIO type and ministry.
+        The official abbreviations of central administrative bodies (「정부조직 약칭과 영어 명칭에 관한 규칙」 [별표]:
+        행정안전부예규 제390호 in force, plus abbreviations only an earlier version used, mapped to the body it named) are
+        binding names for those bodies: each resolves to its body even where another source claims the same word (노동부
+        is now 고용노동부's abbreviation, not only the pre-2010 body)."""
         self.institutions, self.ambiguous = {}, {}
         names = [(n, None) for n in self.by_institution]
         if path.exists():
@@ -870,6 +909,20 @@ class Workspace:
                 if row.get('alio_id') and not entry['alio']:
                     entry['alio_id'] = row['alio_id']
                 aliases.setdefault(alias, set()).add(canonical)
+        self.government_abbreviations, self.central_bodies = {}, set()
+        if government.exists():
+            for line in government.read_text().splitlines():
+                row = json.loads(line)
+                alias, canonical = _norm(row['alias']), _norm(row['canonical'])
+                entry_of(canonical)
+                aliases[alias] = {canonical}
+                self.ambiguous.pop(alias, None)
+                self.government_abbreviations[alias] = canonical
+            manifest = government.with_name('manifest.json')
+            # the 중앙행정기관 the rule in force lists: a rule limited to 국가공무원 is not foreign to their staff
+            self.central_bodies = {_norm(n) for n in json.loads(manifest.read_text())['central_bodies']}
+            self.alias_source = {**(self.alias_source or {}), 'government_abbreviations': str(government),
+                                 'government_manifest_sha256': hashlib.sha256(manifest.read_bytes()).hexdigest()}
         prefixes = {}
         for d, t in self.norm_titles.items():
             if d not in self.qa_docs:
@@ -1135,6 +1188,11 @@ class Workspace:
                 applied = common[0]
         if general and applied in self.specific:
             result['scope_note'] = 'specific'
+        if AMOUNT_ASKED.search(question):
+            standard = self.standard_source(applied, passing, best)
+            if standard:
+                result['standard_choice'] = {'from': applied, 'to': standard[0], 'basis': standard[1]}
+                applied = standard[0]
         others = [self.describe(d, s) for d, s in best.items() if d != applied][:5]
         result.update(others=others)
         if general:
@@ -1147,8 +1205,14 @@ class Workspace:
                     rivals.setdefault(inst(d), d)
             if rivals:
                 options = [inst(applied)] + list(rivals)[:3]
+                # each option with its own annex when that passed too: a common law's 별표 holds the amounts asked
+                # for, and listing only its body hides them (C-030 L1/S3)
+                shown = [applied] + list(rivals.values())[:3]
+                annexes = [next((d for d in best if d not in shown and self.meta[d]['title'].startswith(self.meta[s]['title'])
+                                 and '[별표' in self.meta[d]['title']), None) for s in shown]
                 return {**result, 'status': 'clarify', 'institutions': options,
-                        'candidates': [self.describe(applied, top)] + [self.describe(d, best[d]) for d in rivals.values()][:3]}
+                        'candidates': [c for s, a in zip(shown, annexes)
+                                       for c in [self.describe(s, best[s])] + ([self.describe(a, best[a])] if a else [])]}
         chunks = [(PassageChunk(self.index.passages[i].text, 1, self.index.passages[i].char_start,
                                 self.passage_doc[i], self.index.passages[i].path,
                                 self.index.passages[i].id in self.tables, self.index.passages[i].id in self.value_hold),
@@ -1246,6 +1310,40 @@ class Workspace:
         a = self.meta[doc].get('applies_to')
         return a if isinstance(a, dict) else {}
 
+    def standard_source(self, applied, passing, best):
+        """(doc, 'defers') for a question asking an amount or standard, when the chosen document is not where that
+        standard is set: its passages send the amount to another instrument's annex ("규정 별표1의 상한액", "여비규정
+        별표1") and a passing document of the same institution is that instrument — its title holds the name written
+        before 별표 (bare "규정": any 규정 of the institution) and its text the annex header [별표1]. Otherwise None. The
+        guideline's worked cases (deductions, examples) stay for questions about cases. Same institution only, and not
+        statutes: those are left to their own annex linking (linked_tables, reviewed rows)."""
+        inst = self.meta[applied]['institution']
+        if not inst or self.meta[applied]['kind'].startswith('법령'):
+            return None
+        peers = sorted((d for d in best if d != applied and self.meta[d]['institution'] == inst
+                        and not self.meta[d]['kind'].startswith('법령')), key=lambda d: -best[d])
+        if not peers:
+            return None
+        texts = [self.index.passages[i].text for i in passing[applied]]
+        for text in texts:
+            for m in DEFERS_TO.finditer(text):
+                name = _norm(m[1] + m[2])
+                header = re.compile(rf'\[\s*별표\s*0*{m[3]}\s*\]|^#+\s*별표\s*0*{m[3]}\b', re.M)
+                for d in peers:
+                    # a bare "규정 별표1" (the guideline's defined term) is its own subject's 규정: titles share a
+                    # subject word (여비업무 처리지침 / 여비규정), not just the instrument kind
+                    if (name in _norm(self.meta[d]['title']) and (m[1] or self._subject(applied) & self._subject(d))
+                            and any(header.search(self.index.passages[i].text) for i in np.flatnonzero(self.passage_doc == d))):
+                        return d, 'defers'
+        return None
+
+    def _subject(self, doc):
+        """Character pairs of a rule title's subject: the title without its institution, instrument kinds, amendment
+        and posting words, and dates (한국부동산원_여비업무 처리지침 일부개정지침안(게시 …) → 여비)."""
+        t = self.meta[doc]['title'].replace(self.meta[doc]['institution'] or '', '')
+        t = re.sub(r'\(.*?\)|일부개정\S*|전부개정\S*|제정\S*|규정|규칙|지침|세칙|내규|요강|처리|업무|운영|시행|게시|[^가-힣]', ' ', t)
+        return {w[i:i + 2] for w in t.split() for i in range(len(w) - 1)}
+
     @staticmethod
     def civil_service_subject(question):
         """'local_government' / 'central_government' when the question names only 지방공무원 / only 국가공무원."""
@@ -1271,6 +1369,28 @@ def _withhold_figures(result, why):
         result['status'] = 'review'
     if result.get('raw_output'):
         result.update(raw_output=None, raw_output_withheld=True)
+
+
+# A question about public institutions as a class (not one named body).
+POPULATION = re.compile(r'공공기관|공기업|준정부기관|(?:여러|모든|전체|각|다른)\s*기관|기관(?:들|별)')
+
+
+def population_notice(result, question, inst_ws, ws, selection):
+    """A question about public institutions as a class answered from one institution's own material (its separate
+    snapshot, its structured values, or its own rule): the visible answer first says whose data it is and that it does
+    not represent public institutions in general (C-030 #8). One body's figures or position list is never offered as
+    the class's."""
+    if not POPULATION.search(question) or result.get('intent') == 'chat' or result.get('status') == 'chat':
+        return
+    if inst_ws is not None:
+        name = next(iter(inst_ws.by_institution), None) or inst_ws.name
+    elif selection and selection.get('status') == 'answer' and selection.get('scope_note') == 'specific':
+        name = ws.meta[selection['applied']]['institution'] or '특정 기관'
+    else:
+        return
+    result['population_scope'] = {'asked': 'public_institutions', 'source_institution': name}
+    result['answer'] = (f'질문은 공공기관 전반에 관한 것이지만, 아래는 {name} 한 기관의 자료입니다. 공공기관 전체나 다른 기관의 '
+                        f'대표값·기준으로 보지 마세요. ' + (result.get('answer') or ''))
 
 
 def applicability_guard(result, applies, title):
@@ -1743,8 +1863,10 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                         continues = ((lambda q, d: (inst_ws or workspace).continues(q, d)) if workspace_mode else None)
                         if version.get('assistant'):
                             kind = request_type(question)
-                            if kind == 'organize' or (kind == 'recall' and history):
-                                intent = 'chat'  # the visitor's own figures or what they said earlier
+                            if kind == 'organize' or (kind == 'recall' and history and ORGANIZE.search(question)):
+                                intent = 'chat'  # the visitor's own figures, or what they said earlier, to organise
+                            elif kind == 'recall':
+                                intent = 'chat'  # what was said in this conversation: its stored turns, verbatim
                             elif kind == 'explain' and workspace_mode and not inst_ws:
                                 # A definition is answered from the corpus when it covers the term (견책 → 징계업무편람);
                                 # only otherwise as a general explanation citing no institution.
@@ -1754,7 +1876,9 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                             else:
                                 intent = route(version['base'], version['family'], version['context'], history, question,
                                                continues)
-                        if intent == 'chat':
+                        if intent == 'chat' and kind == 'recall' and not (history and ORGANIZE.search(question)):
+                            result = recall_reply(history)
+                        elif intent == 'chat':
                             result = chat_reply(version['base'], version['family'], version['context'], history, question,
                                                 explain=kind == 'explain')
                         elif workspace_mode and ((kind == 'statistic' and not (inst_ws and not inst_ws.facts
@@ -1863,7 +1987,13 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                                 if m.get('limitations'):
                                     result['source_limits'] = list(m['limitations'])  # for a visible warning (UI: B)
                                 applies = ws.applies(selection['applied']).get('scope')
-                                if applies in ('central_government', 'local_government') and '공무원' not in question:
+                                central = (applies == 'central_government' and selection['institutions']
+                                           and all(n in ws.central_bodies for n in selection['institutions']))
+                                if central:
+                                    # 인사처 → 인사혁신처, a 중앙행정기관 (정부조직 약칭 규칙 [별표]): its staff are 국가공무원
+                                    result['scope'] += (f" 질문의 기관({', '.join(selection['institutions'])})은 중앙행정기관이고, 이 "
+                                                        '규정은 국가공무원에게 적용되는 규정입니다(제1조 목적).')
+                                elif applies in ('central_government', 'local_government') and '공무원' not in question:
                                     applicability_guard(result, applies, m['title'])
                                 if m.get('record_kind') == 'expenditure_record':
                                     expenditure_guard(result, m)
@@ -1897,6 +2027,12 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                                 if selection.get('linked_tables'):
                                     result['scope'] += (' 본문이 인용한 같은 규정의 별표 구간을 함께 넣었습니다'
                                                         f"({len(selection['linked_tables'])}건).")
+                                if selection.get('standard_choice'):
+                                    sc = selection['standard_choice']
+                                    result['scope'] += (f" 질문이 금액·기준을 물었고, 처음 고른 「{ws.meta[sc['from']]['title']}」의 구간이 "
+                                                        f"그 금액을 「{ws.meta[sc['to']]['title']}」의 별표에 따르도록 정하고 있어 같은 기관의 "
+                                                        '그 규정을 근거로 골랐습니다. 처리지침의 사례·공제 예시는 사례를 묻는 질문에 씁니다.')
+                        population_notice(result, question, inst_ws, ws, selection)
                         result['model'] = version['label']
                         result['version'] = version_id
                         result['elapsed_ms'] = round((time.monotonic() - started) * 1000)
@@ -1905,16 +2041,21 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                             result.update(raw_output=None, raw_output_withheld=True)
                         if version.get('assistant'):
                             applied_doc = (result.get('workspace') or {}).get('applied')
-                            if intent == 'chat':
+                            if result.get('answer_mode') == 'recall':
+                                said = RECALLED
+                            elif intent == 'chat':
                                 said = result['answer']
                             else:
-                                # Memory keeps only what is verified, with its provenance: verified quotes and the
-                                # document they come from. Unverified commentary, ask-back lists and institution
-                                # listings are not remembered, so the conversation model cannot replay them as facts.
+                                # Memory keeps only what is verified, with its provenance: the document the answer was
+                                # chosen from and its verified quotes. Unverified commentary, ask-back lists and
+                                # institution listings are not remembered, so the conversation model cannot replay them
+                                # as facts.
                                 quotes = ' '.join(f"“{c['prediction']['answer']}”" for c in result.get('candidates', [])[:3])
-                                said = ('[문서 검색 답변] ' + (
-                                    f"{applied_doc['institution'] or ''} 「{applied_doc['title']}」의 확인된 원문: {quotes}"
-                                    if applied_doc and quotes else '확인된 원문 인용 없음'))
+                                said = '[문서 검색 답변] ' + (
+                                    f"근거 문서 {applied_doc['institution'] or ''} 「{applied_doc['title']}」, "
+                                    + (f'확인된 원문: {quotes}' if quotes else '확인된 원문 인용 없음')
+                                    if applied_doc and (result.get('workspace') or {}).get('selection') == 'answer'
+                                    else '근거 문서를 정하지 않음(보류·되묻기·자료 없음)')
                             with state.lock:
                                 session.history += [{'role': 'user', 'content': question, 'kind': intent},
                                                     {'role': 'assistant', 'content': said[:600], 'kind': intent,
