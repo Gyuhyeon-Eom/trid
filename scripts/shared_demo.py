@@ -88,7 +88,7 @@ def answer_document_chat(document, question, base, family, context, constrained=
     if output.removesuffix('.') == '확인 불가':
         return {**result, 'status': 'not_found', 'answer': '확인한 문서 구간에서 답을 찾지 못했습니다(모델 보류).'}
     if output.removesuffix('.') == '근거 충돌':
-        return {**result, 'status': 'review', 'answer': '모델이 근거 충돌로 판단했습니다. /source로 원문을 확인해 주세요.'}
+        return {**result, 'status': 'review', 'answer': '모델이 근거 충돌로 판단했습니다. 원문을 직접 확인해 주세요.'}
     match = GRAMMAR.fullmatch(output)
     source_first = None if match else SOURCE_FIRST_ANSWER.fullmatch(output)
     pairs = ([(match[1], match[2]), (match[3], match[4])] if match
@@ -181,7 +181,7 @@ def answer_document_case(document, question, base, family, context, max_tokens=2
                                    'prediction': {'answer': text, 'source': f'D{i + 1}', 'abstains': False, 'presence': 0,
                                                   'source_character_span': [start, start + len(text)]}})
                 break
-    support = _numbers('\n'.join(chunk.text for chunk, _ in selected) + '\n' + question)
+    support = _numbers('\n'.join(chunk.text[evidence_start(chunk.text):] for chunk, _ in selected) + '\n' + question)
     notes, shown, withheld = [], [], 0
     for part in segments:
         # A sentence carrying a number found in no retrieved passage nor the question is withheld, not just flagged.
@@ -475,7 +475,7 @@ def workspace_reply(workspace, selection):
     elif status == 'unknown_institution':
         names = ', '.join(selection['unknown_institutions'])
         answer = (f"질문에 적힌 '{names}'의 규정은 현재 검색 자료에 없습니다. 다른 기관의 규정으로 대신 답하지 않습니다. "
-                  '해당 기관 규정을 /pdf 또는 /paste로 넣으면 그 문서에서 찾을 수 있습니다.')
+                  '해당 기관 규정 문서를 첨부(＋)로 넣으면 그 문서에서 찾을 수 있습니다.')
     elif status == 'institution_no_match':
         names = ', '.join(selection['institutions'])
         answer = (f"'{names}' 자료에서 이 질문과 관련된 규정을 찾지 못했습니다. 다른 기관의 규정으로 대신 답하지 않습니다.")
@@ -827,7 +827,7 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                                     result = answer_document(document, question, version['model'], None, version['tok'],
                                                              version['device'], reader=read_chunk, selected=selected)
                                     if any(item['prediction']['presence'] == 2 for item in result['checked']):
-                                        result.update(status='review', answer='모델이 근거 충돌로 판단한 구간이 있습니다. /source로 원문을 확인해 주세요.')
+                                        result.update(status='review', answer='모델이 근거 충돌로 판단한 구간이 있습니다. 원문을 직접 확인해 주세요.')
                                 elif version.get('answer_mode') == 'case':
                                     result = answer_document_case(document, question, version['base'], version['family'],
                                                                   version['context'], selected=selected)

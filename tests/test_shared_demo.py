@@ -161,6 +161,9 @@ class ChatBackendTests(unittest.TestCase):
             with patch('scripts.shared_demo.complete', return_value={'generated': generated}):
                 result = answer_document_chat(document, '상한은?', 'http://127.0.0.1:1', 'qwen3', 4096)
             self.assertEqual(result['status'], status, generated)
+        with patch('scripts.shared_demo.complete', return_value={'generated': '강의료는 100만원까지 줄 수 있습니다.', 'truncated_output': False}):
+            result = answer_document_case(document, '상한은?', 'http://127.0.0.1:1', 'qwen3', 4096)
+        self.assertNotIn('100만원', result['commentary'] or '')
 
     def test_chat_reply_withholds_unsourced_rule_facts(self):
         from scripts.shared_demo import chat_reply
