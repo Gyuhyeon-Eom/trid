@@ -25,6 +25,7 @@ BUCKET = 'trid-training-148761639313'
 REGION = 'ap-northeast-2'
 ROLE = 'arn:aws:iam::148761639313:role/trid-sagemaker-lora'
 IMAGE = '763104351884.dkr.ecr.ap-northeast-2.amazonaws.com/pytorch-training:2.8.0-gpu-py312-cu129-ubuntu22.04-sagemaker'
+CPU_IMAGE = '763104351884.dkr.ecr.ap-northeast-2.amazonaws.com/pytorch-training:2.8.0-cpu-py312-ubuntu22.04-sagemaker'
 
 
 def aws(*args, capture=True):
@@ -38,8 +39,9 @@ def code_files():
     files = sorted(p for p in (ROOT / 'trid').rglob('*.py') if '__pycache__' not in p.parts)
     files += [ROOT / f'scripts/{name}' for name in ('train_medium_cpt_gpu.py', 'sm_pretrain.sh', 'sm_sft_eval.sh',
                                                      'sm_span_eval.sh', 'sm_sft_campaign.sh', 'sm_eval_weights.sh',
-                                                     'sm_bench_sft.sh', 'bench_sft_speed.py', 'train_public_dialogue.py',
-                                                     'evaluate_rag_eval.py', 'evaluate_question_sensitivity.py')]
+                                                     'sm_bench_sft.sh', 'sm_observe_s3.sh', 'bench_sft_speed.py',
+                                                     'train_public_dialogue.py', 'evaluate_rag_eval.py',
+                                                     'evaluate_question_sensitivity.py')]
     files += sorted((ROOT / 'configs').glob('*.json'))
     return files
 
@@ -76,11 +78,12 @@ def main():
     p.add_argument('--log', type=Path, default=ROOT / 'reports/coordination/sm-jobs-A.jsonl')
     p.add_argument('--wait', action='store_true')
     p.add_argument('--spot', action='store_true', help='SageMaker managed spot; resumes from CheckpointConfig after interruption')
+    p.add_argument('--cpu', action='store_true', help='CPU training image (observer jobs)')
     p.add_argument('--entry', default='sm_pretrain.sh',
                    choices=['sm_pretrain.sh', 'sm_sft_eval.sh', 'sm_span_eval.sh', 'sm_sft_campaign.sh', 'sm_eval_weights.sh',
-                            'sm_bench_sft.sh'],
+                            'sm_bench_sft.sh', 'sm_observe_s3.sh'],
                    help='entrypoint under scripts/: pretraining, SFT + evaluation, span diagnostic, SFT campaign segment, '
-                        'evaluation of saved weights, SFT speed benchmark')
+                        'evaluation of saved weights, SFT speed benchmark, in-cloud S3 observer')
     a = p.parse_args()
     checkpoint = a.checkpoint_s3 or f's3://{BUCKET}/corpus/runs/pretrain/{a.run}/'
     prefix, key, head, dirty = upload_code()
@@ -94,7 +97,7 @@ def main():
         'S3DataType': 'S3Prefix', 'S3Uri': uri, 'S3DataDistributionType': 'FullyReplicated'}}}
     spec = {
         'TrainingJobName': name, 'RoleArn': ROLE,
-        'AlgorithmSpecification': {'TrainingImage': IMAGE, 'TrainingInputMode': 'File',
+        'AlgorithmSpecification': {'TrainingImage': CPU_IMAGE if a.cpu else IMAGE, 'TrainingInputMode': 'File',
                                    'ContainerEntrypoint': ['bash', f'/opt/ml/input/data/code/scripts/{a.entry}']},
         'InputDataConfig': [channel('code', f's3://{BUCKET}/{prefix}'), channel('data', a.data_s3)],
         'OutputDataConfig': {'S3OutputPath': f's3://{BUCKET}/corpus/sm-output/'},

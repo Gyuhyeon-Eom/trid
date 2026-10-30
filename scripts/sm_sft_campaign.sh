@@ -4,8 +4,12 @@
 # validation every 100 steps on 64 rows, context 1024, example normalization). The run directory lives under the
 # checkpoint path: SageMaker restores it from S3 at job start, train(resume=True) continues from the newest recovery
 # checkpoint (weights, optimizer, sampling RNG, best-so-far, metrics) and the segment ends after SEGMENT_SECONDS
-# (or SESSION_STEPS) with a fresh recovery checkpoint. scripts/drive_sft_campaign.py chains the segments.
-#   RUN, INIT_S3, INIT_STEP, SFT_STEPS, SAVE_STEPS (comma list), CHECKPOINT_EVERY, SEGMENT_SECONDS | SESSION_STEPS
+# (or SESSION_STEPS) with a fresh recovery checkpoint. scripts/drive_sft_campaign.py chains segments of long runs.
+# Optional in-job evaluation (no driver needed): EVAL_STEPS (comma list of saved milestone steps) and EVAL_BEST=1 run
+# the fixed development evaluation (RAG310 evidence + free, KLUE dev question sensitivity) on this instance after
+# training, write reports under $RUN/eval/<label>/, then a DONE.json summary; the job then ends and the instance stops.
+#   RUN, INIT_S3, INIT_STEP, SFT_STEPS, SAVE_STEPS (comma list), CHECKPOINT_EVERY, SEGMENT_SECONDS | SESSION_STEPS,
+#   EVAL_STEPS, EVAL_BEST
 set -euo pipefail
 : "${RUN:?}" "${INIT_S3:?}" "${INIT_STEP:?}" "${SFT_STEPS:?}" "${SAVE_STEPS:?}" "${CHECKPOINT_EVERY:?}"
 cp -r /opt/ml/input/data/code /opt/work
@@ -13,7 +17,9 @@ cd /opt/work
 export PYTHONPATH=/opt/work
 pip install -q tokenizers safetensors
 mkdir -p data
-ln -s /opt/ml/input/data/data/public-dialogue-mix-04 data/public-dialogue-mix-04
+for d in public-dialogue-mix-04 korean-rag-eval-v1 klue-mrc-source; do
+  [ -e "/opt/ml/input/data/data/$d" ] && ln -s "/opt/ml/input/data/data/$d" "data/$d"
+done
 OUT=/opt/ml/checkpoints/$RUN
 mkdir -p "$OUT" /opt/init
 python - "$INIT_S3" "$INIT_STEP" <<'PY'
@@ -40,4 +46,37 @@ meta = train('data/public-dialogue-mix-04', '$OUT/sft', init_run='/opt/init', st
              session_steps=${SESSION_STEPS:-None}, max_seconds=${SEGMENT_SECONDS:-None})
 print('segment end', json.dumps({k: meta.get(k) for k in ('status', 'completed_steps', 'resumed_from_step', 'best_step',
                                                          'best_validation_loss', 'training_seconds')}))
+PY
+evaluate() {  # $1 label, $2 weights file
+  local dir=/opt/eval/$1 out="$OUT/eval/$1"
+  [ -f "$out/question-sensitivity.json" ] && return 0
+  mkdir -p "$dir" "$out"
+  cp "$OUT/sft/config.json" "$OUT/sft/tokenizer.json" "$dir/"
+  cp "$2" "$dir/model.safetensors"
+  sha256sum "$dir/model.safetensors" | sed "s|$dir/||" > "$out/weights.sha256"
+  for decoding in evidence free; do
+    [ -f "$out/rag310-$decoding.json" ] || python scripts/evaluate_rag_eval.py --run "$dir" --decoding "$decoding" --device cuda \
+      --output "$out/rag310-$decoding.json"
+  done
+  python scripts/evaluate_question_sensitivity.py --run "$dir" --device cuda --output "$out/question-sensitivity.json"
+  rm -rf "$dir"
+}
+EVAL_STEPS=${EVAL_STEPS:-}
+for s in ${EVAL_STEPS//,/ }; do
+  m="$OUT/sft/milestones/step-$(printf %08d "$s")/model.safetensors"
+  if [ -f "$m" ]; then evaluate "step-$(printf %08d "$s")" "$m"; else echo "milestone $s not reached; not evaluated"; fi
+done
+if [ "${EVAL_BEST:-0}" = 1 ] && grep -q '"status": "complete"' "$OUT/sft/training.json"; then
+  evaluate best-valid "$OUT/sft/model.safetensors"
+fi
+python - "$OUT" <<'PY'
+import json, sys, time
+from pathlib import Path
+out = Path(sys.argv[1])
+t = json.loads((out / 'sft/training.json').read_text())
+evals = sorted(p.name for p in (out / 'eval').glob('*') if (p / 'question-sensitivity.json').exists()) if (out / 'eval').exists() else []
+(out / 'DONE.json').write_text(json.dumps({'status': t.get('status'), 'completed_steps': t.get('completed_steps'),
+    'best_step': t.get('best_step'), 'best_validation_loss': t.get('best_validation_loss'), 'evaluated': evals,
+    'finished_unix': time.time()}, indent=1))
+print('DONE', (out / 'DONE.json').read_text())
 PY
