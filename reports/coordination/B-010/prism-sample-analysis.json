@@ -1,0 +1,1094 @@
+{
+ "aggregate": {
+  "law_lines": {
+   "docs_with_any": 71,
+   "median_per_doc": 7,
+   "total": 6053
+  },
+  "rule_lines": {
+   "docs_with_any": 59,
+   "median_per_doc": 3,
+   "total": 3047
+  },
+  "definition_lines": {
+   "docs_with_any": 44,
+   "median_per_doc": 0,
+   "total": 264
+  },
+  "table_like_lines": {
+   "docs_with_any": 89,
+   "median_per_doc": 119,
+   "total": 24040
+  },
+  "docs": 92,
+  "median_chars": 137196,
+  "median_short_line_frac": 0.73,
+  "quality_flags": {
+   "quality:dup_line_frac": 48,
+   "quality:ok": 11,
+   "quality:latin_ratio": 3,
+   "quality:duplicated_6_n_grams": 1,
+   "quality:line_punct_ratio": 21,
+   "quality:char_dup_ratio": 4,
+   "quality:hangul_ratio": 2,
+   "quality:list_ratio": 1,
+   "quality:hanja_ratio": 1
+  },
+  "domains": {
+   "-": 24,
+   "일반공공행정": 5,
+   "농림해양수산": 9,
+   "산업 ·중소기업": 5,
+   "통일·외교": 1,
+   "공공질서 및 안전": 4,
+   "사회복지": 10,
+   "문화체육관광": 12,
+   "보건": 2,
+   "환경보호": 8,
+   "지역개발": 1,
+   "수송 및 교통": 1,
+   "교육": 10
+  },
+  "institutions_top": [
+   [
+    "경상북도",
+    5
+   ],
+   [
+    "기후에너지환경부",
+    4
+   ],
+   [
+    "문화체육관광부",
+    3
+   ],
+   [
+    "산림청",
+    3
+   ],
+   [
+    "농림축산식품부",
+    3
+   ],
+   [
+    "충청남도",
+    3
+   ],
+   [
+    "충청남도교육청",
+    3
+   ],
+   [
+    "외교부",
+    2
+   ]
+  ]
+ },
+ "per_doc": [
+  {
+   "id": "prism:1051000-202500195",
+   "chars": 134874,
+   "lines": 8762,
+   "law_lines": 1,
+   "rule_lines": 0,
+   "definition_lines": 0,
+   "table_like_lines": 71,
+   "short_line_frac": 0.698
+  },
+  {
+   "id": "prism:1092000-202500013",
+   "chars": 303016,
+   "lines": 12665,
+   "law_lines": 88,
+   "rule_lines": 53,
+   "definition_lines": 20,
+   "table_like_lines": 454,
+   "short_line_frac": 0.573
+  },
+  {
+   "id": "prism:1160100-202400035",
+   "chars": 156517,
+   "lines": 16325,
+   "law_lines": 0,
+   "rule_lines": 0,
+   "definition_lines": 0,
+   "table_like_lines": 124,
+   "short_line_frac": 0.89
+  },
+  {
+   "id": "prism:1192000-202500021",
+   "chars": 15790,
+   "lines": 1179,
+   "law_lines": 0,
+   "rule_lines": 0,
+   "definition_lines": 0,
+   "table_like_lines": 0,
+   "short_line_frac": 0.768
+  },
+  {
+   "id": "prism:1262000-202500013",
+   "chars": 71044,
+   "lines": 6138,
+   "law_lines": 45,
+   "rule_lines": 0,
+   "definition_lines": 0,
+   "table_like_lines": 42,
+   "short_line_frac": 0.769
+  },
+  {
+   "id": "prism:1262000-202600040",
+   "chars": 12349,
+   "lines": 193,
+   "law_lines": 0,
+   "rule_lines": 0,
+   "definition_lines": 0,
+   "table_like_lines": 0,
+   "short_line_frac": 0.109
+  },
+  {
+   "id": "prism:1270000-202400033",
+   "chars": 319337,
+   "lines": 10212,
+   "law_lines": 143,
+   "rule_lines": 53,
+   "definition_lines": 12,
+   "table_like_lines": 175,
+   "short_line_frac": 0.428
+  },
+  {
+   "id": "prism:1320000-202500075",
+   "chars": 79824,
+   "lines": 11223,
+   "law_lines": 0,
+   "rule_lines": 0,
+   "definition_lines": 0,
+   "table_like_lines": 76,
+   "short_line_frac": 0.967
+  },
+  {
+   "id": "prism:1320000-202600003",
+   "chars": 138249,
+   "lines": 7735,
+   "law_lines": 9,
+   "rule_lines": 4,
+   "definition_lines": 0,
+   "table_like_lines": 20,
+   "short_line_frac": 0.569
+  },
+  {
+   "id": "prism:1342000-202400034",
+   "chars": 91624,
+   "lines": 4407,
+   "law_lines": 1,
+   "rule_lines": 0,
+   "definition_lines": 0,
+   "table_like_lines": 70,
+   "short_line_frac": 0.558
+  },
+  {
+   "id": "prism:1351000-202500033",
+   "chars": 450631,
+   "lines": 19552,
+   "law_lines": 966,
+   "rule_lines": 283,
+   "definition_lines": 23,
+   "table_like_lines": 687,
+   "short_line_frac": 0.585
+  },
+  {
+   "id": "prism:1351000-202500035",
+   "chars": 233307,
+   "lines": 23996,
+   "law_lines": 2,
+   "rule_lines": 26,
+   "definition_lines": 10,
+   "table_like_lines": 433,
+   "short_line_frac": 0.843
+  },
+  {
+   "id": "prism:1371000-202400011",
+   "chars": 152400,
+   "lines": 6685,
+   "law_lines": 2,
+   "rule_lines": 0,
+   "definition_lines": 0,
+   "table_like_lines": 132,
+   "short_line_frac": 0.571
+  },
+  {
+   "id": "prism:1371000-202400084",
+   "chars": 215306,
+   "lines": 12504,
+   "law_lines": 156,
+   "rule_lines": 28,
+   "definition_lines": 2,
+   "table_like_lines": 210,
+   "short_line_frac": 0.721
+  },
+  {
+   "id": "prism:1371000-202400090",
+   "chars": 84901,
+   "lines": 2691,
+   "law_lines": 0,
+   "rule_lines": 0,
+   "definition_lines": 0,
+   "table_like_lines": 76,
+   "short_line_frac": 0.393
+  },
+  {
+   "id": "prism:1383000-202400039",
+   "chars": 167296,
+   "lines": 13132,
+   "law_lines": 16,
+   "rule_lines": 1,
+   "definition_lines": 4,
+   "table_like_lines": 284,
+   "short_line_frac": 0.823
+  },
+  {
+   "id": "prism:1400000-202400017",
+   "chars": 144725,
+   "lines": 8594,
+   "law_lines": 467,
+   "rule_lines": 150,
+   "definition_lines": 5,
+   "table_like_lines": 286,
+   "short_line_frac": 0.701
+  },
+  {
+   "id": "prism:1400000-202400032",
+   "chars": 15405,
+   "lines": 334,
+   "law_lines": 1,
+   "rule_lines": 0,
+   "definition_lines": 0,
+   "table_like_lines": 3,
+   "short_line_frac": 0.419
+  },
+  {
+   "id": "prism:1400000-202500009",
+   "chars": 387785,
+   "lines": 19176,
+   "law_lines": 10,
+   "rule_lines": 3,
+   "definition_lines": 1,
+   "table_like_lines": 174,
+   "short_line_frac": 0.66
+  },
+  {
+   "id": "prism:1430000-202400002",
+   "chars": 147774,
+   "lines": 4630,
+   "law_lines": 11,
+   "rule_lines": 0,
+   "definition_lines": 0,
+   "table_like_lines": 231,
+   "short_line_frac": 0.391
+  },
+  {
+   "id": "prism:1450000-202500083",
+   "chars": 332184,
+   "lines": 15134,
+   "law_lines": 146,
+   "rule_lines": 50,
+   "definition_lines": 0,
+   "table_like_lines": 212,
+   "short_line_frac": 0.633
+  },
+  {
+   "id": "prism:1450000-202500159",
+   "chars": 133891,
+   "lines": 5840,
+   "law_lines": 493,
+   "rule_lines": 28,
+   "definition_lines": 1,
+   "table_like_lines": 114,
+   "short_line_frac": 0.536
+  },
+  {
+   "id": "prism:1450000-202500169",
+   "chars": 50647,
+   "lines": 1657,
+   "law_lines": 0,
+   "rule_lines": 0,
+   "definition_lines": 0,
+   "table_like_lines": 48,
+   "short_line_frac": 0.411
+  },
+  {
+   "id": "prism:1471000-202400006",
+   "chars": 168928,
+   "lines": 15601,
+   "law_lines": 84,
+   "rule_lines": 56,
+   "definition_lines": 2,
+   "table_like_lines": 118,
+   "short_line_frac": 0.872
+  },
+  {
+   "id": "prism:1480000-202400243",
+   "chars": 673343,
+   "lines": 65699,
+   "law_lines": 5,
+   "rule_lines": 1,
+   "definition_lines": 0,
+   "table_like_lines": 6409,
+   "short_line_frac": 0.882
+  },
+  {
+   "id": "prism:1480000-202400355",
+   "chars": 161699,
+   "lines": 8291,
+   "law_lines": 17,
+   "rule_lines": 0,
+   "definition_lines": 0,
+   "table_like_lines": 127,
+   "short_line_frac": 0.651
+  },
+  {
+   "id": "prism:1480000-202500003",
+   "chars": 163267,
+   "lines": 9342,
+   "law_lines": 0,
+   "rule_lines": 21,
+   "definition_lines": 22,
+   "table_like_lines": 171,
+   "short_line_frac": 0.712
+  },
+  {
+   "id": "prism:1490000-202400079",
+   "chars": 145509,
+   "lines": 5620,
+   "law_lines": 313,
+   "rule_lines": 130,
+   "definition_lines": 1,
+   "table_like_lines": 159,
+   "short_line_frac": 0.472
+  },
+  {
+   "id": "prism:1490000-202400098",
+   "chars": 50933,
+   "lines": 5621,
+   "law_lines": 3,
+   "rule_lines": 6,
+   "definition_lines": 3,
+   "table_like_lines": 69,
+   "short_line_frac": 0.874
+  },
+  {
+   "id": "prism:1543000-202400065",
+   "chars": 84240,
+   "lines": 5703,
+   "law_lines": 20,
+   "rule_lines": 3,
+   "definition_lines": 1,
+   "table_like_lines": 17,
+   "short_line_frac": 0.753
+  },
+  {
+   "id": "prism:1543000-202500030",
+   "chars": 132206,
+   "lines": 5550,
+   "law_lines": 7,
+   "rule_lines": 33,
+   "definition_lines": 4,
+   "table_like_lines": 52,
+   "short_line_frac": 0.509
+  },
+  {
+   "id": "prism:1543000-202600025",
+   "chars": 244063,
+   "lines": 9066,
+   "law_lines": 29,
+   "rule_lines": 0,
+   "definition_lines": 0,
+   "table_like_lines": 201,
+   "short_line_frac": 0.516
+  },
+  {
+   "id": "prism:1613000-202400012",
+   "chars": 12065,
+   "lines": 272,
+   "law_lines": 0,
+   "rule_lines": 0,
+   "definition_lines": 0,
+   "table_like_lines": 12,
+   "short_line_frac": 0.096
+  },
+  {
+   "id": "prism:1613000-202500028",
+   "chars": 186163,
+   "lines": 6233,
+   "law_lines": 161,
+   "rule_lines": 77,
+   "definition_lines": 1,
+   "table_like_lines": 138,
+   "short_line_frac": 0.46
+  },
+  {
+   "id": "prism:1790387-202400004",
+   "chars": 246859,
+   "lines": 23669,
+   "law_lines": 1,
+   "rule_lines": 18,
+   "definition_lines": 12,
+   "table_like_lines": 361,
+   "short_line_frac": 0.879
+  },
+  {
+   "id": "prism:1833000-202400002",
+   "chars": 107105,
+   "lines": 6918,
+   "law_lines": 0,
+   "rule_lines": 128,
+   "definition_lines": 0,
+   "table_like_lines": 0,
+   "short_line_frac": 0.67
+  },
+  {
+   "id": "prism:1833000-202400014",
+   "chars": 302251,
+   "lines": 11519,
+   "law_lines": 1264,
+   "rule_lines": 587,
+   "definition_lines": 6,
+   "table_like_lines": 486,
+   "short_line_frac": 0.496
+  },
+  {
+   "id": "prism:3090000-202400009",
+   "chars": 70620,
+   "lines": 4807,
+   "law_lines": 19,
+   "rule_lines": 8,
+   "definition_lines": 0,
+   "table_like_lines": 70,
+   "short_line_frac": 0.855
+  },
+  {
+   "id": "prism:3210000-202500001",
+   "chars": 98828,
+   "lines": 3231,
+   "law_lines": 25,
+   "rule_lines": 2,
+   "definition_lines": 11,
+   "table_like_lines": 45,
+   "short_line_frac": 0.449
+  },
+  {
+   "id": "prism:3480000-202400003",
+   "chars": 1427,
+   "lines": 10,
+   "law_lines": 0,
+   "rule_lines": 0,
+   "definition_lines": 0,
+   "table_like_lines": 4,
+   "short_line_frac": 0.2
+  },
+  {
+   "id": "prism:3510000-202400002",
+   "chars": 101830,
+   "lines": 4900,
+   "law_lines": 7,
+   "rule_lines": 1,
+   "definition_lines": 0,
+   "table_like_lines": 146,
+   "short_line_frac": 0.669
+  },
+  {
+   "id": "prism:3560000-202400013",
+   "chars": 304094,
+   "lines": 25008,
+   "law_lines": 99,
+   "rule_lines": 41,
+   "definition_lines": 2,
+   "table_like_lines": 144,
+   "short_line_frac": 0.849
+  },
+  {
+   "id": "prism:3780000-202500004",
+   "chars": 537373,
+   "lines": 79618,
+   "law_lines": 15,
+   "rule_lines": 6,
+   "definition_lines": 0,
+   "table_like_lines": 369,
+   "short_line_frac": 0.968
+  },
+  {
+   "id": "prism:3990000-202500004",
+   "chars": 112771,
+   "lines": 6176,
+   "law_lines": 65,
+   "rule_lines": 11,
+   "definition_lines": 4,
+   "table_like_lines": 119,
+   "short_line_frac": 0.755
+  },
+  {
+   "id": "prism:4191000-202500048",
+   "chars": 307984,
+   "lines": 19757,
+   "law_lines": 209,
+   "rule_lines": 15,
+   "definition_lines": 5,
+   "table_like_lines": 562,
+   "short_line_frac": 0.795
+  },
+  {
+   "id": "prism:4420000-202500024",
+   "chars": 20310,
+   "lines": 1252,
+   "law_lines": 7,
+   "rule_lines": 0,
+   "definition_lines": 0,
+   "table_like_lines": 30,
+   "short_line_frac": 0.71
+  },
+  {
+   "id": "prism:4430000-202600004",
+   "chars": 46092,
+   "lines": 3238,
+   "law_lines": 44,
+   "rule_lines": 0,
+   "definition_lines": 0,
+   "table_like_lines": 57,
+   "short_line_frac": 0.795
+  },
+  {
+   "id": "prism:4490000-202500064",
+   "chars": 332062,
+   "lines": 30480,
+   "law_lines": 22,
+   "rule_lines": 6,
+   "definition_lines": 2,
+   "table_like_lines": 1008,
+   "short_line_frac": 0.891
+  },
+  {
+   "id": "prism:4510000-202400030",
+   "chars": 506259,
+   "lines": 68368,
+   "law_lines": 47,
+   "rule_lines": 0,
+   "definition_lines": 0,
+   "table_like_lines": 1029,
+   "short_line_frac": 0.948
+  },
+  {
+   "id": "prism:4520000-202500025",
+   "chars": 18187,
+   "lines": 381,
+   "law_lines": 1,
+   "rule_lines": 146,
+   "definition_lines": 0,
+   "table_like_lines": 8,
+   "short_line_frac": 0.312
+  },
+  {
+   "id": "prism:4520000-202500048",
+   "chars": 537163,
+   "lines": 28928,
+   "law_lines": 0,
+   "rule_lines": 16,
+   "definition_lines": 6,
+   "table_like_lines": 797,
+   "short_line_frac": 0.458
+  },
+  {
+   "id": "prism:4600000-202500004",
+   "chars": 268224,
+   "lines": 20117,
+   "law_lines": 42,
+   "rule_lines": 4,
+   "definition_lines": 0,
+   "table_like_lines": 398,
+   "short_line_frac": 0.792
+  },
+  {
+   "id": "prism:4600000-202500015",
+   "chars": 10122,
+   "lines": 1413,
+   "law_lines": 0,
+   "rule_lines": 0,
+   "definition_lines": 0,
+   "table_like_lines": 7,
+   "short_line_frac": 0.902
+  },
+  {
+   "id": "prism:4641000-202400009",
+   "chars": 60108,
+   "lines": 7033,
+   "law_lines": 1,
+   "rule_lines": 2,
+   "definition_lines": 0,
+   "table_like_lines": 51,
+   "short_line_frac": 0.939
+  },
+  {
+   "id": "prism:4701000-202400028",
+   "chars": 19230,
+   "lines": 1291,
+   "law_lines": 0,
+   "rule_lines": 0,
+   "definition_lines": 0,
+   "table_like_lines": 51,
+   "short_line_frac": 0.775
+  },
+  {
+   "id": "prism:4701000-202600022",
+   "chars": 215044,
+   "lines": 18261,
+   "law_lines": 79,
+   "rule_lines": 0,
+   "definition_lines": 0,
+   "table_like_lines": 241,
+   "short_line_frac": 0.848
+  },
+  {
+   "id": "prism:4900000-202500024",
+   "chars": 153187,
+   "lines": 9631,
+   "law_lines": 32,
+   "rule_lines": 11,
+   "definition_lines": 1,
+   "table_like_lines": 80,
+   "short_line_frac": 0.698
+  },
+  {
+   "id": "prism:4930000-202500001",
+   "chars": 353561,
+   "lines": 35256,
+   "law_lines": 8,
+   "rule_lines": 1,
+   "definition_lines": 1,
+   "table_like_lines": 245,
+   "short_line_frac": 0.898
+  },
+  {
+   "id": "prism:5100000-202400025",
+   "chars": 104710,
+   "lines": 2622,
+   "law_lines": 33,
+   "rule_lines": 16,
+   "definition_lines": 2,
+   "table_like_lines": 220,
+   "short_line_frac": 0.451
+  },
+  {
+   "id": "prism:5360000-202600004",
+   "chars": 132802,
+   "lines": 4710,
+   "law_lines": 5,
+   "rule_lines": 1,
+   "definition_lines": 0,
+   "table_like_lines": 218,
+   "short_line_frac": 0.5
+  },
+  {
+   "id": "prism:5370000-202500006",
+   "chars": 51539,
+   "lines": 4775,
+   "law_lines": 2,
+   "rule_lines": 7,
+   "definition_lines": 1,
+   "table_like_lines": 32,
+   "short_line_frac": 0.873
+  },
+  {
+   "id": "prism:5370000-202500016",
+   "chars": 115474,
+   "lines": 3748,
+   "law_lines": 0,
+   "rule_lines": 6,
+   "definition_lines": 3,
+   "table_like_lines": 195,
+   "short_line_frac": 0.384
+  },
+  {
+   "id": "prism:5470000-202600001",
+   "chars": 49052,
+   "lines": 1815,
+   "law_lines": 3,
+   "rule_lines": 2,
+   "definition_lines": 0,
+   "table_like_lines": 84,
+   "short_line_frac": 0.5
+  },
+  {
+   "id": "prism:5530000-202500011",
+   "chars": 80521,
+   "lines": 13330,
+   "law_lines": 10,
+   "rule_lines": 0,
+   "definition_lines": 0,
+   "table_like_lines": 77,
+   "short_line_frac": 0.918
+  },
+  {
+   "id": "prism:5540000-202400008",
+   "chars": 117929,
+   "lines": 5413,
+   "law_lines": 39,
+   "rule_lines": 13,
+   "definition_lines": 2,
+   "table_like_lines": 74,
+   "short_line_frac": 0.672
+  },
+  {
+   "id": "prism:5690000-202500008",
+   "chars": 197608,
+   "lines": 17617,
+   "law_lines": 44,
+   "rule_lines": 9,
+   "definition_lines": 0,
+   "table_like_lines": 132,
+   "short_line_frac": 0.87
+  },
+  {
+   "id": "prism:5710000-202500011",
+   "chars": 72508,
+   "lines": 5440,
+   "law_lines": 79,
+   "rule_lines": 16,
+   "definition_lines": 1,
+   "table_like_lines": 92,
+   "short_line_frac": 0.784
+  },
+  {
+   "id": "prism:6270000-202500002",
+   "chars": 86015,
+   "lines": 5365,
+   "law_lines": 22,
+   "rule_lines": 3,
+   "definition_lines": 0,
+   "table_like_lines": 71,
+   "short_line_frac": 0.71
+  },
+  {
+   "id": "prism:6410000-202500002",
+   "chars": 289119,
+   "lines": 14635,
+   "law_lines": 52,
+   "rule_lines": 427,
+   "definition_lines": 27,
+   "table_like_lines": 111,
+   "short_line_frac": 0.659
+  },
+  {
+   "id": "prism:6410000-202600135",
+   "chars": 806492,
+   "lines": 104703,
+   "law_lines": 0,
+   "rule_lines": 0,
+   "definition_lines": 1,
+   "table_like_lines": 429,
+   "short_line_frac": 0.959
+  },
+  {
+   "id": "prism:6410000-202600178",
+   "chars": 96940,
+   "lines": 7818,
+   "law_lines": 37,
+   "rule_lines": 2,
+   "definition_lines": 0,
+   "table_like_lines": 65,
+   "short_line_frac": 0.828
+  },
+  {
+   "id": "prism:6440000-202500163",
+   "chars": 181899,
+   "lines": 11343,
+   "law_lines": 157,
+   "rule_lines": 64,
+   "definition_lines": 2,
+   "table_like_lines": 132,
+   "short_line_frac": 0.788
+  },
+  {
+   "id": "prism:6440000-202500214",
+   "chars": 107055,
+   "lines": 6427,
+   "law_lines": 14,
+   "rule_lines": 2,
+   "definition_lines": 0,
+   "table_like_lines": 109,
+   "short_line_frac": 0.737
+  },
+  {
+   "id": "prism:6440000-202500223",
+   "chars": 36804,
+   "lines": 1879,
+   "law_lines": 0,
+   "rule_lines": 0,
+   "definition_lines": 0,
+   "table_like_lines": 52,
+   "short_line_frac": 0.7
+  },
+  {
+   "id": "prism:6440000-202600039",
+   "chars": 215608,
+   "lines": 30754,
+   "law_lines": 3,
+   "rule_lines": 0,
+   "definition_lines": 0,
+   "table_like_lines": 342,
+   "short_line_frac": 0.963
+  },
+  {
+   "id": "prism:6470000-202500142",
+   "chars": 175361,
+   "lines": 9583,
+   "law_lines": 0,
+   "rule_lines": 0,
+   "definition_lines": 0,
+   "table_like_lines": 58,
+   "short_line_frac": 0.716
+  },
+  {
+   "id": "prism:6470000-202500144",
+   "chars": 178127,
+   "lines": 28482,
+   "law_lines": 1,
+   "rule_lines": 0,
+   "definition_lines": 0,
+   "table_like_lines": 270,
+   "short_line_frac": 0.944
+  },
+  {
+   "id": "prism:6470000-202500188",
+   "chars": 39498,
+   "lines": 2889,
+   "law_lines": 5,
+   "rule_lines": 1,
+   "definition_lines": 0,
+   "table_like_lines": 12,
+   "short_line_frac": 0.776
+  },
+  {
+   "id": "prism:6470000-202600118",
+   "chars": 137227,
+   "lines": 6665,
+   "law_lines": 0,
+   "rule_lines": 0,
+   "definition_lines": 1,
+   "table_like_lines": 394,
+   "short_line_frac": 0.73
+  },
+  {
+   "id": "prism:6470000-202600170",
+   "chars": 69555,
+   "lines": 3073,
+   "law_lines": 62,
+   "rule_lines": 20,
+   "definition_lines": 1,
+   "table_like_lines": 43,
+   "short_line_frac": 0.555
+  },
+  {
+   "id": "prism:6500000-202400097",
+   "chars": 128876,
+   "lines": 10421,
+   "law_lines": 0,
+   "rule_lines": 4,
+   "definition_lines": 0,
+   "table_like_lines": 180,
+   "short_line_frac": 0.817
+  },
+  {
+   "id": "prism:6500000-202500010",
+   "chars": 526239,
+   "lines": 52732,
+   "law_lines": 7,
+   "rule_lines": 6,
+   "definition_lines": 0,
+   "table_like_lines": 1092,
+   "short_line_frac": 0.839
+  },
+  {
+   "id": "prism:6540000-202500060",
+   "chars": 137196,
+   "lines": 13479,
+   "law_lines": 3,
+   "rule_lines": 0,
+   "definition_lines": 0,
+   "table_like_lines": 119,
+   "short_line_frac": 0.888
+  },
+  {
+   "id": "prism:7010000-202500028",
+   "chars": 247067,
+   "lines": 12646,
+   "law_lines": 3,
+   "rule_lines": 319,
+   "definition_lines": 20,
+   "table_like_lines": 42,
+   "short_line_frac": 0.638
+  },
+  {
+   "id": "prism:7480000-202400003",
+   "chars": 50810,
+   "lines": 4822,
+   "law_lines": 0,
+   "rule_lines": 13,
+   "definition_lines": 14,
+   "table_like_lines": 9,
+   "short_line_frac": 0.817
+  },
+  {
+   "id": "prism:7530000-202500015",
+   "chars": 271466,
+   "lines": 25381,
+   "law_lines": 5,
+   "rule_lines": 27,
+   "definition_lines": 1,
+   "table_like_lines": 109,
+   "short_line_frac": 0.857
+  },
+  {
+   "id": "prism:7530000-202500061",
+   "chars": 121741,
+   "lines": 9530,
+   "law_lines": 5,
+   "rule_lines": 14,
+   "definition_lines": 6,
+   "table_like_lines": 84,
+   "short_line_frac": 0.753
+  },
+  {
+   "id": "prism:8140000-202400011",
+   "chars": 60219,
+   "lines": 3872,
+   "law_lines": 2,
+   "rule_lines": 0,
+   "definition_lines": 1,
+   "table_like_lines": 34,
+   "short_line_frac": 0.755
+  },
+  {
+   "id": "prism:8140000-202500002",
+   "chars": 123503,
+   "lines": 9215,
+   "law_lines": 2,
+   "rule_lines": 0,
+   "definition_lines": 1,
+   "table_like_lines": 126,
+   "short_line_frac": 0.794
+  },
+  {
+   "id": "prism:8140000-202500003",
+   "chars": 283040,
+   "lines": 28067,
+   "law_lines": 0,
+   "rule_lines": 0,
+   "definition_lines": 0,
+   "table_like_lines": 236,
+   "short_line_frac": 0.859
+  },
+  {
+   "id": "prism:B552783-202400001",
+   "chars": 136683,
+   "lines": 1543,
+   "law_lines": 94,
+   "rule_lines": 43,
+   "definition_lines": 16,
+   "table_like_lines": 233,
+   "short_line_frac": 0.438
+  },
+  {
+   "id": "prism:B552783-202400010",
+   "chars": 573968,
+   "lines": 35440,
+   "law_lines": 181,
+   "rule_lines": 23,
+   "definition_lines": 2,
+   "table_like_lines": 861,
+   "short_line_frac": 0.71
+  }
+ ],
+ "examples": {
+  "law": [
+   [
+    "prism:1092000-202500013",
+    "취약청년 현황 및 지원방안 연구 1인가구 청년 및 경계선 지능 청년을 중",
+    "- (청년 1인가구) 청년 1인가구란 「청년기본법」에 근거하여 19세~34세까지의 사람"
+   ],
+   [
+    "prism:1262000-202500013",
+    "APEC 개도국 역량강화사업CBNI에 따른 공급망 논의 방향 설정",
+    "2) Sodam Kweon, Jeena Kim, Kim Ji-eun. “유럽연합 「핵심원자재법」 최종 승인 및 시사점 검토”,"
+   ],
+   [
+    "prism:1270000-202400033",
+    "이민행정 분야 중앙-지방 협력 활성화 방안 연구",
+    "<표 Ⅲ-3> 캐나다 통합 헌법(1867년·1982년)-제95조(Section)의 내용"
+   ],
+   [
+    "prism:1351000-202500033",
+    "청년복지 사업 기반 및 성과 평가 기초 연구",
+    "진 특별법」 및 「청년고용촉진 특별법 시행령」, 「청년기본법」 및 「청년 기본법 시"
+   ]
+  ],
+  "rule": [
+   [
+    "prism:1092000-202500013",
+    "취약청년 현황 및 지원방안 연구 1인가구 청년 및 경계선 지능 청년을 중",
+    "갖추지 못할 경우 기본적인 식사를 해결하지 못하거나, 집안 정리 정돈에도 취약할 수 있다."
+   ],
+   [
+    "prism:1270000-202400033",
+    "이민행정 분야 중앙-지방 협력 활성화 방안 연구",
+    "여 입법을 하지 않는 경우에만, 그 범위 내에서 연방주가 자체적인 법령을 제정할 수 있다"
+   ],
+   [
+    "prism:1351000-202500033",
+    "청년복지 사업 기반 및 성과 평가 기초 연구",
+    "② 국가와 지방자치단체는 청년의 육체적·정신적 건강 증진을 위한 건강서비스 전달체계를 확립하여야 한다."
+   ],
+   [
+    "prism:1351000-202500035",
+    "인구변화의 주요부문별 전망과 대응방향 연구",
+    "구와 1.2.2절에서 소개한 방법으로 얻은 시군구별 인구를 이용하여 계산할 수 있다."
+   ]
+  ],
+  "def": [
+   [
+    "prism:1092000-202500013",
+    "취약청년 현황 및 지원방안 연구 1인가구 청년 및 경계선 지능 청년을 중",
+    "청년기 취약성은 성인기 이행 취약성으로 정의될 수 있다. 이 정의를 적용하면, 취약"
+   ],
+   [
+    "prism:1270000-202400033",
+    "이민행정 분야 중앙-지방 협력 활성화 방안 연구",
+    "당하며, 이는 연방법과 주법을 시행하는 것을 의미한다(기본법 제83조-제85조). 주는 스스"
+   ],
+   [
+    "prism:1351000-202500033",
+    "청년복지 사업 기반 및 성과 평가 기초 연구",
+    "무급 돌봄(unpaid care)을 제공하는 청(소)년”으로 정의함(Aldridge &"
+   ],
+   [
+    "prism:1351000-202500035",
+    "인구변화의 주요부문별 전망과 대응방향 연구",
+    "대적인 교육 수준이 앞으로 유지된다는 것을 의미한다. 기준시점 이후에 대해서는"
+   ]
+  ],
+  "table": [
+   [
+    "prism:1051000-202500195",
+    "2025 APEC 구조개혁장관회의 의제에 대한 연구",
+    "1.2. APEC 논의 내용 .......................................................................... 10\n1.2.1. 2021년 3차 SRMM 공동선언문 ............................................ 10\n1.2.2. EAASR .................................................................................... 13\n부록 1-1. Putrajaya Vision 2040 및 Aotearoa Plan of Action .. 16"
+   ],
+   [
+    "prism:1092000-202500013",
+    "취약청년 현황 및 지원방안 연구 1인가구 청년 및 경계선 지능 청년을 중",
+    "(개념) 1인가구란 혼자서 독립된 생계를 유지하는 가구를 의미함.\n- (청년 1인가구) 청년 1인가구란 「청년기본법」에 근거하여 19세~34세까지의 사람\n이 독립된 생계를 유지하는 가구를 의미함. 단, 지자체 조례에서 규정하고 있는\n청년 연령에 따라 연령 범위는 달라질 수 있음."
+   ],
+   [
+    "prism:1160100-202400035",
+    "2024년 금융인력 기초통계 분석 및 수급전망",
+    "영업지원\n자산운용(4.2%), 보험(3.5%), 투자은행(2.8%), 자산관리(2.1%)\n순으로 나타남.\n▣ 직급별 인력 비중"
+   ]
+  ]
+ }
+}

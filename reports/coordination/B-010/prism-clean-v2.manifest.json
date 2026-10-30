@@ -1,0 +1,44 @@
+{
+ "source": "prism",
+ "clean_version": "clean-v2",
+ "built_at": "2026-10-30T02:30:11+00:00",
+ "code_sha256": "b7c0b92b2e8370c8ac3c397652e16bfe776b544f73aca9f28fcb5af6803530a9",
+ "korean_quality_sha256": "4d732cf102821152e6dd3ea3bf3e37f4874923b7903129967eb4ed97c11a5c97",
+ "reasons": {
+  "ok": 92,
+  "extraction_failed": 8
+ },
+ "hold_input": null,
+ "eval_files": [
+  "data/korean-rag-eval-v1/test.jsonl",
+  "data/institution-qa-frozen-01/source-docs.jsonl",
+  "data/institution-qa-frozen-01/test.jsonl",
+  "data/public-document-sft-source/annotations.jsonl",
+  "data/public-document-sft-source/documents.jsonl"
+ ],
+ "rows": 92,
+ "quarantine_rows": 8,
+ "shards": [
+  {
+   "part": "docs",
+   "key": "corpus/clean/prism/clean-v2/docs-00000.jsonl.gz",
+   "sha256": "0f72998a5a4b05f74f4e2a86280f2a567f8a3464ef5abe7718240efa3e28caf3",
+   "bytes": 8854412,
+   "rows": 92,
+   "characters": 16594634
+  },
+  {
+   "part": "quarantine",
+   "key": "corpus/clean/prism/clean-v2/quarantine-00000.jsonl.gz",
+   "sha256": "f9a02caaf217df3a0a2d9420d03668b07754b24ea1e57e29a81cc4ea580f4f39",
+   "bytes": 5545,
+   "rows": 8,
+   "characters": 1905
+  }
+ ],
+ "splits": {
+  "train": 91,
+  "test": 1
+ },
+ "note": "pilot; research input candidate only; quality:<reason> flags are not quarantine (A decides)"
+}
