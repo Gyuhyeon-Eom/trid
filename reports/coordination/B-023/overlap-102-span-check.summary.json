@@ -1,0 +1,23 @@
+{
+ "code_sha256": "03cb19006cdf74eaba17768d6dd1980cf6e78de43fc6203d1eaa22aef39a6de1",
+ "rows": 102,
+ "counts": {
+  "index_ok_all_spans_statute": 69,
+  "separate_from_eval_index": 33,
+  "span:non_statute_span": 116,
+  "span:own_statute_span": 1814,
+  "span:statute_span": 1567
+ },
+ "by_kind": {
+  "admrul": {
+   "separate_from_eval_index": 26
+  },
+  "expc": {
+   "index_ok_all_spans_statute": 4,
+   "separate_from_eval_index": 7
+  },
+  "law": {
+   "index_ok_all_spans_statute": 65
+  }
+ }
+}

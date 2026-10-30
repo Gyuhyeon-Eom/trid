@@ -1,0 +1,33 @@
+{
+  "Version": "2012-10-17",
+  "Comment": "NOT ATTACHED. Proposal for API-S3-001: a non-root principal (profile trid-api-writer) that may only write and read back B's API snapshots. Create and attach only with the user's approval; B does not modify IAM.",
+  "Statement": [
+    {
+      "Sid": "WriteApiSnapshotsEncrypted",
+      "Effect": "Allow",
+      "Action": "s3:PutObject",
+      "Resource": "arn:aws:s3:::trid-training-148761639313/corpus/api/*",
+      "Condition": {"StringEquals": {"s3:x-amz-server-side-encryption": "AES256"}}
+    },
+    {
+      "Sid": "ReadBackApiSnapshots",
+      "Effect": "Allow",
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::trid-training-148761639313/corpus/api/*"
+    },
+    {
+      "Sid": "ListOnlyTheApiPrefix",
+      "Effect": "Allow",
+      "Action": "s3:ListBucket",
+      "Resource": "arn:aws:s3:::trid-training-148761639313",
+      "Condition": {"StringLike": {"s3:prefix": ["corpus/api/*"]}}
+    },
+    {
+      "Sid": "DenyPlainHttp",
+      "Effect": "Deny",
+      "Action": "s3:*",
+      "Resource": ["arn:aws:s3:::trid-training-148761639313", "arn:aws:s3:::trid-training-148761639313/*"],
+      "Condition": {"Bool": {"aws:SecureTransport": "false"}}
+    }
+  ]
+}
