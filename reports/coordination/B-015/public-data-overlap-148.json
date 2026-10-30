@@ -1,0 +1,24 @@
+{
+ "manifest_sha256": "0ed3cc079e8da0f9765e320091c88608186ef259c426f3319944c0921f7495e8",
+ "reserved_families": 148,
+ "corpus": [
+  {
+   "path": "/tmp/trid-corpus/inv/public-data-overlap-input.jsonl",
+   "sha256": "034b9c2d2270b4b8d2e05762c2c8f433af67556f9fe32ba3ba4b5facfbe7a585"
+  }
+ ],
+ "corpus_rows_scanned": 302,
+ "matched_corpus_rows": 0,
+ "families_with_matches": 0,
+ "match_types": {},
+ "thresholds": {
+  "minhash_estimate": 0.5,
+  "ngram8_containment": 0.5,
+  "partial_review_min_shared_ngram8": 50
+ },
+ "per_family_matched_rows": {},
+ "matches": [],
+ "partial_review_rows": 0,
+ "partial_review_note": "rows sharing >= partial_min reserved word 8-grams below the containment threshold; evidence for manual review, not counted as matches or excluded automatically",
+ "partial_review": []
+}

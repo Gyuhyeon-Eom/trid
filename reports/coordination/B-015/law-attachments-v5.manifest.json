@@ -1,0 +1,150 @@
+{
+ "source": "v4",
+ "out": "v5",
+ "code_sha256": "9ee9323e602e94815ec787d66a2735ce3ed68d932fe8afeb55e3655105b60b52",
+ "decisions_file": "reports/coordination/B-015/attachment-review-decisions.json",
+ "decisions_sha256": "802e7af19bbd4854f5b2f8823ee162e242549ccb3f1125100cb8818d75981282",
+ "overlap_report_sha256": "46b599c3d5d2cac779ebdd2f43eaccd188c1b56305df621a470d9d2b669a08fc",
+ "parts": {
+  "candidate_quality_ok": {
+   "rows": 57,
+   "characters": 5631674,
+   "table_rows": 21037,
+   "sha256": "4012110a16747693ba6d0c627fc2a049738ca2616e417a8c54278da3a25fc5c1",
+   "doc_type": {
+    "행정규칙 첨부(고시)": 21,
+    "행정규칙 첨부(훈령)": 12,
+    "행정규칙 첨부(예규)": 12,
+    "행정규칙 첨부(매뉴얼)": 6,
+    "행정규칙 첨부(지침)": 6
+   },
+   "topic_labels": {
+    "결재·문서": 18,
+    "계약·구매": 2,
+    "복무": 5,
+    "회계·지출": 3,
+    "감사·징계": 1,
+    "보수·수당": 1,
+    "예산·기금": 1,
+    "여비": 1
+   },
+   "rows_without_topic": 26,
+   "rows_with_two_topics": 1
+  },
+  "candidate_table_unverified": {
+   "rows": 49,
+   "characters": 3114556,
+   "table_rows": 21832,
+   "sha256": "7eb413a77229f59abb8be38aa91a31aefb395f011a830f6074b0365f963e0a7f",
+   "doc_type": {
+    "행정규칙 첨부(예규)": 13,
+    "행정규칙 첨부(고시)": 18,
+    "행정규칙 첨부(훈령)": 8,
+    "행정규칙 첨부(지침)": 6,
+    "행정규칙 첨부(기타)": 2,
+    "행정규칙 첨부(공고)": 1,
+    "행정규칙 첨부(매뉴얼)": 1
+   },
+   "topic_labels": {
+    "결재·문서": 10,
+    "예산·기금": 7,
+    "복무": 3,
+    "인사": 3,
+    "계약·구매": 5,
+    "회계·지출": 5,
+    "감사·징계": 1
+   },
+   "rows_without_topic": 16,
+   "rows_with_two_topics": 1
+  },
+  "candidate_short_reviewed": {
+   "rows": 8,
+   "characters": 1929,
+   "table_rows": 6,
+   "sha256": "234f7fa601821b171abfcda39228916acb1e8ecec4abd78fc654b8fb26a8dc41",
+   "doc_type": {
+    "행정규칙 첨부(고시)": 4,
+    "행정규칙 첨부(훈령)": 2,
+    "행정규칙 첨부(예규)": 2
+   },
+   "topic_labels": {
+    "인사": 2,
+    "보수·수당": 1,
+    "여비": 1
+   },
+   "rows_without_topic": 4,
+   "rows_with_two_topics": 0
+  },
+  "held_reserved_overlap": {
+   "rows": 2,
+   "characters": 828920,
+   "table_rows": 2897,
+   "sha256": "9a54ccf228e1e0aba2a146baadbba04f5378bced48694f02c4b1f936b86d3b1c",
+   "doc_type": {
+    "행정규칙 첨부(예규)": 1,
+    "행정규칙 첨부(규정)": 1
+   },
+   "topic_labels": {
+    "보수·수당": 1
+   },
+   "rows_without_topic": 1,
+   "rows_with_two_topics": 0
+  },
+  "held_review": {
+   "rows": 6,
+   "characters": 238665,
+   "table_rows": 845,
+   "sha256": "a90ba17b03be653437cfcf4dc349aa7aae48b8f580db94a11119a197e717133e",
+   "doc_type": {
+    "행정규칙 첨부(훈령)": 2,
+    "행정규칙 첨부(예규)": 2,
+    "행정규칙 첨부(고시)": 2
+   },
+   "topic_labels": {
+    "회계·지출": 1,
+    "결재·문서": 1
+   },
+   "rows_without_topic": 4,
+   "rows_with_two_topics": 0
+  },
+  "held_quality": {
+   "rows": 3,
+   "characters": 3582,
+   "table_rows": 0,
+   "sha256": "df42972d1cc74ea05e635a150889ac877cf5f7e5a8656e75c69d1375039c826c",
+   "doc_type": {
+    "행정규칙 첨부(예규)": 1,
+    "행정규칙 첨부(고시)": 1,
+    "행정규칙 첨부(훈령)": 1
+   },
+   "topic_labels": {
+    "보수·수당": 1,
+    "인사": 1,
+    "결재·문서": 1
+   },
+   "rows_without_topic": 0,
+   "rows_with_two_topics": 0
+  },
+  "held_extraction": {
+   "rows": 0,
+   "characters": 0,
+   "table_rows": 0,
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "doc_type": {},
+   "topic_labels": {},
+   "rows_without_topic": 0,
+   "rows_with_two_topics": 0
+  },
+  "duplicates": {
+   "rows": 0,
+   "characters": 0,
+   "table_rows": 0,
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "doc_type": {},
+   "topic_labels": {},
+   "rows_without_topic": 0,
+   "rows_with_two_topics": 0
+  }
+ },
+ "note": "no row is approved for training; candidate_* are candidates only; 852 reserved families unchecked"
+}

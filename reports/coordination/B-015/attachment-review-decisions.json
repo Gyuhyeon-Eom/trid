@@ -1,0 +1,21 @@
+{
+ "reviewer": "ai:B (assistant session; not a human review)",
+ "reviewed_at": "2026-10-30",
+ "method": "full text read against the stored source; OCR pages compared with rendered page images (pdftoppm)",
+ "decisions": {
+  "law-go-kr:admrul-file:162716033": {"decision": "short_complete", "note": "산림경영지도원 정원 고시 제2026-20호: 전문 완결, 표 848/255/593 (단위: 명) 원문과 일치"},
+  "law-go-kr:admrul-file:1785696": {"decision": "short_complete", "note": "경찰의 날 규칙: 전문 완결 (10월 21일, 1946년 제1주년, 부칙)"},
+  "law-go-kr:admrul-file:170063497": {"decision": "short_complete", "note": "폐지 예규: 대검 예규 제355호 폐지, 시행 2026. 12. 31. 시점 근거로만 의미"},
+  "law-go-kr:admrul-file:137336595": {"decision": "short_complete", "note": "국토교통부 고시 제2024-72호 지정 취소: 전문 완결"},
+  "law-go-kr:admrul-file:5998801": {"decision": "hold_missing_referenced_content", "note": "고시문이 '정부기능별 지출분류 항목표' 전문을 통계청 홈페이지에 게재한다고만 적음. 분류표 본문 없음"},
+  "law-go-kr:admrul-file:1733266": {"decision": "short_complete", "note": "교정의 날 규칙: 전문 완결"},
+  "law-go-kr:admrul-file:161163535": {"decision": "short_complete", "note": "2026년도 공무원보수인상률 3.5% (인사혁신처 고시 제2026-2호, 2026-01-01 적용). 연도별로 바뀌는 값이므로 시점 표시 필수"},
+  "law-go-kr:admrul-file:38726796": {"decision": "short_complete", "note": "강원지방우정청 고시 제2018-8호: 운영시간 08:30~17:30 -> 08:30~14:00, 시행 2018. 12. 1. 표 원문과 일치"},
+  "law-go-kr:admrul-file:170063527": {"decision": "short_complete", "note": "폐지 예규: 대검 예규 제772호 폐지, 시행 2027. 1. 1."},
+  "law-go-kr:admrul-file:162886393": {"decision": "ocr_hold_defects", "note": "OCR 2쪽: 조문·숫자(4인, 5명, 2인, 5급, 제750호, 2024.4.24.) 일치. 제3조 원문자 ②③이 '2', '3'으로 읽혀 항 번호가 틀림 -> 수정 전 보류"},
+  "law-go-kr:admrul-file:19962113": {"decision": "ocr_hold_defects", "note": "OCR 6쪽 중 2쪽 대조: 숫자(8인, 제395호) 일치, '심의·조정'의 '·'가 '.'로, 띄어쓰기 누락 다수('각팀및') -> 보류"},
+  "law-go-kr:admrul-file:20816141": {"decision": "ocr_failed", "note": "WCO관세평가규정해설 173쪽: OCR 결과에서 명사가 대량 누락('에게 를위해서 하는 것은또는으로') -> 사용 불가"},
+  "law-go-kr:admrul-file:162886413": {"decision": "hold_low_hangul", "note": "항공교통관리 우발계획: 영문 비중이 높아 한글 비율 0.238. 내용 검토 안 함"},
+  "law-go-kr:admrul-file:161080153": {"decision": "hold_low_hangul", "note": "NAK 전자기록물 장기보존패키지 기술규격 제2부: 영문 XML 예시 위주, 한글 비율 0.266. 내용 검토 안 함"}
+ }
+}
