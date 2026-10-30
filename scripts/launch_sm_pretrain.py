@@ -41,7 +41,8 @@ def code_files():
                                                      'sm_span_eval.sh', 'sm_sft_campaign.sh', 'sm_eval_weights.sh',
                                                      'sm_bench_sft.sh', 'sm_observe_s3.sh', 'bench_sft_speed.py',
                                                      'train_public_dialogue.py', 'evaluate_rag_eval.py',
-                                                     'evaluate_question_sensitivity.py')]
+                                                     'evaluate_question_sensitivity.py', 'sm_lora_pilot.sh',
+                                                     'train_open_weight_lora.py')]
     files += sorted((ROOT / 'configs').glob('*.json'))
     return files
 

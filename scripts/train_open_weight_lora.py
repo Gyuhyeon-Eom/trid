@@ -47,8 +47,9 @@ def sha256(path):
         return hashlib.file_digest(f, 'sha256').hexdigest()
 
 
-def load_rows(entry):
+def load_rows(entry, base):
     path = Path(entry['path'])
+    path = path if path.is_absolute() else base / path  # relative paths resolve against the manifest's directory
     if sha256(path) != entry['sha256']:
         raise ValueError(f'{path}: sha256 does not match the manifest')
     rows = []
@@ -132,6 +133,8 @@ def main():
     p.add_argument('--seed', type=int, default=20261030)
     p.add_argument('--device', default='mps' if torch.backends.mps.is_available() else 'cuda' if torch.cuda.is_available() else 'cpu')
     p.add_argument('--merge', action='store_true', help='also write the merged model to <out>/merged')
+    p.add_argument('--max-train-seconds', type=float,
+                   help='after 5 steps, stop (without saving) if the projected training time exceeds this')
     a = p.parse_args()
     if a.out.exists():
         p.error('Use a new --out directory')
@@ -145,7 +148,7 @@ def main():
         items, dropped = [], 0
         for entry in entries:
             for _ in range(entry.get('epochs', 1) if expand else 1):
-                for row in load_rows(entry):
+                for row in load_rows(entry, a.manifest.resolve().parent):
                     x = encode(tok, row, a.family, a.max_tokens)
                     if x is None:
                         dropped += 1
@@ -174,6 +177,7 @@ def main():
     history, cursor = [], 0
     trained_tokens = {}
     model.train()
+    train_started = time.time()
     for step in range(1, steps + 1):
         optimizer.zero_grad(set_to_none=True)
         total = 0.0
@@ -183,10 +187,16 @@ def main():
             for x in chunk:
                 trained_tokens[x['file']] = trained_tokens.get(x['file'], 0) + sum(1 for t in x['labels'] if t != -100)
             loss = batch_loss(model, chunk, a.device, pad_id) / accumulation
+            if not torch.isfinite(loss):
+                raise FloatingPointError(f'non-finite loss at step {step}; stopping without saving')
             loss.backward()
             total += loss.item()
         torch.nn.utils.clip_grad_norm_(params, 1.0)
         optimizer.step(); schedule.step()
+        if a.max_train_seconds and step == 5:
+            projected = (time.time() - train_started) / 5 * steps
+            if projected > a.max_train_seconds:
+                raise SystemExit(f'projected training time {projected:.0f}s exceeds --max-train-seconds; stopping early')
         record = {'step': step, 'train_loss': round(total, 5), 'lr': schedule.get_last_lr()[0],
                   'elapsed_seconds': round(time.time() - started, 1)}
         if valid and (step % a.valid_every == 0 or step == steps):
