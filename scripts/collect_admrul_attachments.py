@@ -154,39 +154,98 @@ def strip_table_markup(text):
     return TABLE_MARKUP.sub(' ', text)
 
 
+# The HWPX image-strip fallback keeps every kordoc 4.24.23 zip limit on the original file and adds the checks kordoc
+# leaves to the zip reader. Limits taken from kordoc: HWPX entries 500 and declared uncompressed total 256 MiB
+# (dist/index.js MAX_ZIP_ENTRIES, MAX_DECOMPRESS_SIZE); 10,000 entries is kordoc's cap for a media-heavy container
+# (MAX_ZIP_ENTRIES2). The ratio cap is B's: the largest ratio in the real 1,267-entry manual is 31.7.
+HWPX_MAX_KEPT_ENTRIES = 500
+HWPX_MAX_ENTRIES = 10_000
+HWPX_MAX_UNCOMPRESSED = 256 * 1024 * 1024
+HWPX_MAX_ENTRY_RATIO = 100
+IMAGE_PLACEHOLDER = re.compile(r'\[이미지: (image\d+)\]')
+
+
+def strip_hwpx_images(src, dst):
+    """Copy the HWPX zip `src` to `dst` without its BinData/ entries (embedded images). Refuses, with ValueError, before
+    decompressing anything: more than HWPX_MAX_ENTRIES entries or more than HWPX_MAX_KEPT_ENTRIES non-image entries,
+    declared uncompressed total (images included) above HWPX_MAX_UNCOMPRESSED, an entry above HWPX_MAX_ENTRY_RATIO,
+    absolute/'..'/backslash/drive paths, symlinks, encrypted entries and duplicate names. Kept entries are copied in
+    chunks and refused once they inflate past their declared size. BinData/ entries are never decompressed.
+    -> {'images_removed', 'image_bytes', 'entries_kept'}."""
+    import stat
+    import zipfile
+    with zipfile.ZipFile(src) as z:
+        infos = z.infolist()
+        if len(infos) > HWPX_MAX_ENTRIES:
+            raise ValueError(f'zip entries {len(infos)} > {HWPX_MAX_ENTRIES}')
+        names = [i.filename for i in infos]
+        if len(set(names)) != len(names):
+            raise ValueError('duplicate zip entry names')
+        total = sum(i.file_size for i in infos)
+        if total > HWPX_MAX_UNCOMPRESSED:
+            raise ValueError(f'declared uncompressed total {total} > {HWPX_MAX_UNCOMPRESSED}')
+        for i in infos:
+            n = i.filename
+            if n.startswith('/') or '\\' in n or re.match(r'^[A-Za-z]:', n) or '..' in n.split('/'):
+                raise ValueError(f'unsafe zip entry path {n!r}')
+            if stat.S_ISLNK(i.external_attr >> 16):
+                raise ValueError(f'symlink zip entry {n!r}')
+            if i.flag_bits & 0x1:
+                raise ValueError(f'encrypted zip entry {n!r}')
+            if i.file_size > 1024 * 1024 and i.file_size > HWPX_MAX_ENTRY_RATIO * max(i.compress_size, 1):
+                raise ValueError(f'zip entry {n!r} compression ratio above {HWPX_MAX_ENTRY_RATIO}')
+        images = [i for i in infos if i.filename.startswith('BinData/')]
+        kept = [i for i in infos if not i.filename.startswith('BinData/')]
+        if len(kept) > HWPX_MAX_KEPT_ENTRIES:
+            raise ValueError(f'non-image zip entries {len(kept)} > {HWPX_MAX_KEPT_ENTRIES}')
+        with zipfile.ZipFile(dst, 'w', zipfile.ZIP_DEFLATED) as w:
+            for i in kept:
+                done = 0
+                with z.open(i) as r, w.open(zipfile.ZipInfo(i.filename, i.date_time), 'w') as o:
+                    while chunk := r.read(1024 * 1024):
+                        done += len(chunk)
+                        if done > i.file_size:
+                            raise ValueError(f'zip entry {i.filename!r} inflates past its declared size')
+                        o.write(chunk)
+    return {'images_removed': len(images), 'image_bytes': sum(i.file_size for i in images), 'entries_kept': len(kept)}
+
 
 def extract_text(path):
     """PDF/HWP/HWPX -> Markdown with kordoc 4.24.23 (tables as Markdown tables, PDF running headers/footers removed);
-    image placeholders dropped. Chosen over pdftotext/hwp5txt after the pilot: hwp5txt returned 12-117 characters for
-    별표 HWP files whose tables kordoc reads (B-014).
+    exported-image links dropped. Chosen over pdftotext/hwp5txt after the pilot: hwp5txt returned 12-117 characters
+    for 별표 HWP files whose tables kordoc reads (B-014).
     kordoc refuses an HWPX zip with more than 500 entries (its ZIP_BOMB guard); a manual with ~1,200 embedded images
-    hits that. Such a file is read once more from a copy without BinData/ (the images, which are dropped anyway); the
-    text and tables come from Contents/ unchanged, and the extractor label says the images were removed (B-025)."""
+    hits that. Such a file is read once more from strip_hwpx_images()'s copy (all kordoc zip limits still checked on
+    the original, plus path/encryption/ratio checks), and kordoc applies its own limits again to the copy. Text and
+    tables come from Contents/; what the figures showed is NOT recovered: each image reference stays in the text as
+    '[그림 생략: imageN]' and the extractor label records how many images and figure references were dropped (B-026)."""
     import subprocess
     import tempfile
-    import zipfile
     raw = path.read_bytes()
     kind = ('pdf' if raw[:4] == b'%PDF' else 'hwpx' if raw[:2] == b'PK' else 'hwp' if raw[:8] == bytes.fromhex('d0cf11e0a1b11ae1')
             else path.suffix.lstrip('.'))
     if kind not in ('pdf', 'hwp', 'hwpx'):
         return '', f'unsupported:{kind}'
-    label = f'kordoc-4.24.23:{kind}'
+    label, stripped = f'kordoc-4.24.23:{kind}', None
     with tempfile.TemporaryDirectory() as d:
         src, out = Path(d) / f'f.{kind}', Path(d) / 'out.md'
         src.write_bytes(raw)
         r = subprocess.run(KORDOC + [str(src), '-o', str(out)], capture_output=True, timeout=900, cwd=d)
         if (r.returncode != 0 or not out.exists()) and kind == 'hwpx' and b'ZIP_BOMB' in r.stdout + r.stderr:
-            with zipfile.ZipFile(src) as z, zipfile.ZipFile(Path(d) / 'noimg.hwpx', 'w') as w:
-                for info in z.infolist():
-                    if not info.filename.startswith('BinData/'):
-                        w.writestr(info, z.read(info.filename))
+            try:
+                stripped = strip_hwpx_images(src, Path(d) / 'noimg.hwpx')
+            except ValueError as exc:
+                return '', f'kordoc_failed:zip_entry_limit; image-strip fallback refused: {exc}'
             r = subprocess.run(KORDOC + [str(Path(d) / 'noimg.hwpx'), '-o', str(out)], capture_output=True, timeout=900, cwd=d)
-            label += '(BinData images removed: zip entry limit)'
         if r.returncode != 0 or not out.exists():
             return '', f'kordoc_failed:{r.returncode}'
         text = out.read_text(encoding='utf-8', errors='replace')
     text = re.sub(r'^!\[image\]\([^)]*\)\s*$', '', text, flags=re.M)
-    text = re.sub(r'\[이미지: image\d+\][ \t]*', '', text)  # placeholder of an image that is not in the copy
+    if stripped:
+        text, refs = IMAGE_PLACEHOLDER.subn(r'[그림 생략: \1]', text)
+        # 'images removed' is what build_workspace_index.guides() turns into a limitation note shown with answers
+        label += (f"(BinData images removed: zip entry limit; {stripped['images_removed']} images, {stripped['image_bytes']} "
+                  f"bytes, removed before kordoc; {refs} figure references kept as [그림 생략] markers, figure content not extracted)")
     return re.sub(r'\n{3,}', '\n\n', text).strip(), label
 
 

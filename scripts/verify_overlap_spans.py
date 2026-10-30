@@ -13,6 +13,12 @@ Nothing is approved for training and no evaluation set is changed.
 
   .venv/bin/python scripts/verify_overlap_spans.py --rows reports/coordination/B-022/v3-overlap-index-separation.jsonl \
       --out reports/coordination/B-023/overlap-102-span-check.jsonl
+
+The same check runs on any corpus held for a partial reserved overlap (B-026): --overlap-report takes the
+`partial_review` rows of a check_reserved_overlap.py report, --corpus the JSONL it scanned (id, text).
+
+  .venv/bin/python scripts/verify_overlap_spans.py --overlap-report data/public-data/guides-v11-src/overlap-148.json \
+      --corpus data/public-data/guides-v11-src/overlap-input.jsonl --out reports/coordination/B-026/guides-overlap-span-check.jsonl
 """
 import argparse
 import gzip
@@ -55,14 +61,23 @@ def spans(w, shared):
 
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument('--rows', required=True)
+    rows_in = p.add_mutually_exclusive_group(required=True)
+    rows_in.add_argument('--rows', help='B-022 separation list (law.go.kr rows; text from data/law-ko-source)')
+    rows_in.add_argument('--overlap-report', help="check_reserved_overlap.py report; its 'partial_review' rows")
+    p.add_argument('--corpus', help='JSONL (id, text) scanned for --overlap-report')
     p.add_argument('--out', required=True)
     args = p.parse_args()
     out = ROOT / args.out
     if out.exists():
         raise SystemExit(f'{out} exists; outputs are never overwritten')
-    rows = [json.loads(x) for x in (ROOT / args.rows).read_text().split('\n') if x]
-    rows = [r for r in rows if r['recommendation'] == 'index_ok_shared_text_is_statute']
+    if args.overlap_report and not args.corpus:
+        p.error('--overlap-report needs --corpus')
+    if args.rows:
+        rows = [json.loads(x) for x in (ROOT / args.rows).read_text().split('\n') if x]
+        rows = [r for r in rows if r['recommendation'] == 'index_ok_shared_text_is_statute']
+    else:
+        rows = [{'corpus_id': r['corpus_id'], 'families': sorted(r['families']), 'kind': 'partial_overlap_row'}
+                for r in json.loads((ROOT / args.overlap_report).read_text())['partial_review']]
     fams = {f for r in rows for f in r['families']}
     sign = defaultdict(set)
     with gzip.open(SIGN, 'rt') as f:
@@ -72,9 +87,9 @@ def main():
                 sign[r['family_id']].update(grams(words(r['text'])))
     want = {r['corpus_id'] for r in rows}
     text_of, row_spans = {}, {}
-    with open(LAW) as f:
+    with open(ROOT / args.corpus if args.corpus else LAW) as f:
         for line in f:
-            if any(line.startswith(f'{{"id": "{k}') for k in want):
+            if args.corpus or any(line.startswith(f'{{"id": "{k}') for k in want):
                 d = json.loads(line)
                 if d['id'] in want:
                     text_of[d['id']] = words(d['text'])

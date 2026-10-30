@@ -341,9 +341,13 @@ def main():
             holds.append('pii_redaction_inside_url')
         row = {'id': rid, 'group': rid.rsplit(':', 1)[0] if is_qa else rid, 'kind': 'qa_item' if is_qa else 'guide_document',
                'title': title[:200], 'text': text, 'sha256': hashlib.sha256(text.encode()).hexdigest(), **base,
-               'flags': (['pii_redacted'] if pii else []) + [f'hold:{h}' for h in holds],
+               # figure_content_missing: images were removed before extraction (extract_text label); their references
+               # stay as [그림 생략: imageN] markers, so the text is not complete where a figure carried content
+               'flags': (['pii_redacted'] if pii else []) + (['figure_content_missing'] if '[그림 생략:' in text else [])
+               + [f'hold:{h}' for h in holds],
                'provenance': {k: ds[k] for k in ('institution', 'institution_type', 'area', 'doc_type', 'applies_to', 'date', 'date_type')},
                'meta': {**meta, 'quality': 'ok' if ok else why, 'pii_redactions': dict(pii),
+                        'figures_omitted': text.count('[그림 생략:'),
                         'table_rows': sum(1 for l in text.split('\n') if l.startswith('| ')) + text.count('<tr'),
                         'table_check': 'unverified', 'clean_version': args.version, 'code_sha256': CODE_SHA256}}
         if not row['meta']['table_rows']:
