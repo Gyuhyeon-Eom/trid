@@ -168,7 +168,7 @@ def main():
     def apply_review(c):
         """Attach review records whose content_sha256 matches the case as built now; a non-correct verdict holds it."""
         matching = [r for r in reviews.get(c['id'], []) if r['content_sha256'] == c['content_sha256']]
-        keep = ('reviewer_id', 'reviewer_type', 'verdict', 'note', 'file', 'scope', 'work_relevance', 'dimensions')
+        keep = ('reviewer_id', 'reviewer_type', 'verdict', 'note', 'file', 'scope', 'work_relevance', 'dimensions', 'outdated_flag')
         c['review'] = (dict(status='ai_reviewed', records=[{k: r[k] for k in keep if k in r} for r in matching])
                        if matching else dict(status='unreviewed', records=[]))
         if matching and any(r['verdict'] != 'correct' for r in matching) and not c.get('training_hold'):
@@ -193,10 +193,30 @@ def main():
             plain_rejected[c['verbatim_case']] = c['training_hold']
     plain = [c for c in plain if not c.get('training_hold')]
     (a.out / 'plain-candidates.jsonl').write_text(''.join(json.dumps(c, ensure_ascii=False) + '\n' for c in plain))
-    # Every document behind a built case (kept or held) is training-side: it must not appear in a final evaluation set.
-    (a.out / 'final-eval-exclusion.json').write_text(json.dumps(dict(
-        rule='training-side documents: do not use in any final evaluation set (C-013)',
-        docs=sorted({c['doc'] for c in out})), ensure_ascii=False, indent=2))
+    # Per-document provenance (C-014). Says what C did with each document; it is not a removal list: existing
+    # evaluation sets are never pruned from it, and final evaluation design is decided by the supervisor and A.
+    def doc_status(c):
+        hold = c.get('training_hold') or ''
+        if hold.startswith('reserve-overlap'):
+            return 'held_reserve_overlap'          # kept out of training; not training-side
+        if hold.startswith('B v3 split'):
+            return 'held_eval_side_split'
+        if hold:
+            return 'held_review_defect'
+        return 'training_candidate_ai_reviewed' if c['review']['status'] == 'ai_reviewed' else 'training_candidate_unreviewed'
+    provenance = {}
+    for c in out:
+        provenance.setdefault(c['doc'], set()).add(doc_status(c))
+    (a.out / 'doc-provenance.json').write_text(json.dumps(dict(
+        statuses={'training_candidate_ai_reviewed': 'C built a training candidate and an AI review matched its content',
+                  'training_candidate_unreviewed': 'C built a training candidate; content not reviewed',
+                  'held_reserve_overlap': 'B-013 reserve overlap: C keeps it out of training; it is not training-side',
+                  'held_eval_side_split': "B v3 'valid'/'test' split row: kept out of training",
+                  'held_review_defect': 'AI review found a defect: kept out of training'},
+        training_used='unknown to C: whether a candidate was actually trained on is recorded by A',
+        rule='provenance only; not a list for removing documents from existing evaluation sets; final evaluation '
+             'design is decided by the supervisor and A',
+        docs={d: sorted(s) for d, s in sorted(provenance.items())}), ensure_ascii=False, indent=2))
     meta = dict(purpose='internal-work SFT candidates (question / context / target / evidence); not evaluation items; '
                         'AI review only where review.status says so, never human-verified here; tokenizer/template left to A',
                 review_status=dict(Counter(c['review']['status'] for c in batch)),

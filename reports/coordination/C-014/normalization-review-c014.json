@@ -1,0 +1,417 @@
+{
+  "reviewer_id": "ai:assistant-session-01a17c28",
+  "reviewer_type": "ai",
+  "independence": "not independent (AI; same reviewer as other C reviews); samples drawn excluding documents in B samples per rule (seed c014-norm)",
+  "source": {
+    "v3": "data/internal-rules/v3/docs.jsonl",
+    "v3_norm2": "data/internal-rules/v3-norm2/docs.jsonl"
+  },
+  "mechanical_all_edits": {
+    "edits": {
+      "footnote": 996,
+      "entity": 47,
+      "linebreak_join": 235,
+      "linebreak_space": 260
+    },
+    "defects": 0,
+    "checks": [
+      "applying edits by src offsets to v3 text reproduces v3-norm2 text (377 rows exact; 215 rows exact up to the appended footnote section)",
+      "every linebreak edit replaces exactly one newline; join -> empty, space -> single space",
+      "every entity edit equals html.unescape of the source span",
+      "every footnote body appears verbatim in the v3-norm2 text"
+    ],
+    "note": "counts are for v3-norm2 docs.jsonl rows; B-014 report counts (1,086/53/285/307) appear to include held rows [inference]"
+  },
+  "semantic_sample": {
+    "footnote": {
+      "n": 12,
+      "correct": 12,
+      "items": [
+        {
+          "id": "law-go-kr:expc:338143",
+          "src_start": 609,
+          "src_end": 656,
+          "replacement": "[각주3]"
+        },
+        {
+          "id": "law-go-kr:expc:337043",
+          "src_start": 820,
+          "src_end": 865,
+          "replacement": "[각주2]"
+        },
+        {
+          "id": "law-go-kr:expc:334319",
+          "src_start": 690,
+          "src_end": 788,
+          "replacement": "[각주2]"
+        },
+        {
+          "id": "law-go-kr:expc:340291",
+          "src_start": 2184,
+          "src_end": 2228,
+          "replacement": "[각주6]"
+        },
+        {
+          "id": "law-go-kr:expc:342351",
+          "src_start": 2826,
+          "src_end": 2866,
+          "replacement": "[각주1]"
+        },
+        {
+          "id": "law-go-kr:expc:334773",
+          "src_start": 3922,
+          "src_end": 4004,
+          "replacement": "[각주10]"
+        },
+        {
+          "id": "law-go-kr:expc:330303",
+          "src_start": 2121,
+          "src_end": 2165,
+          "replacement": "[각주2]"
+        },
+        {
+          "id": "law-go-kr:expc:338729",
+          "src_start": 3073,
+          "src_end": 3117,
+          "replacement": "[각주1]"
+        },
+        {
+          "id": "law-go-kr:expc:341779",
+          "src_start": 1623,
+          "src_end": 1666,
+          "replacement": "[각주1]"
+        },
+        {
+          "id": "law-go-kr:expc:327529",
+          "src_start": 1812,
+          "src_end": 1855,
+          "replacement": "[각주1]"
+        },
+        {
+          "id": "law-go-kr:expc:338729",
+          "src_start": 3471,
+          "src_end": 3540,
+          "replacement": "[각주2]"
+        },
+        {
+          "id": "law-go-kr:expc:335511",
+          "src_start": 4038,
+          "src_end": 4084,
+          "replacement": "[각주7]"
+        }
+      ]
+    },
+    "entity": {
+      "n": 6,
+      "correct": 6,
+      "items": [
+        {
+          "id": "law-go-kr:expc:328423",
+          "src_start": 2985,
+          "src_end": 2992,
+          "replacement": "․"
+        },
+        {
+          "id": "law-go-kr:expc:327195",
+          "src_start": 822,
+          "src_end": 829,
+          "replacement": "․"
+        },
+        {
+          "id": "law-go-kr:expc:327195",
+          "src_start": 831,
+          "src_end": 838,
+          "replacement": "․"
+        },
+        {
+          "id": "law-go-kr:expc:327261",
+          "src_start": 2580,
+          "src_end": 2587,
+          "replacement": "․"
+        },
+        {
+          "id": "law-go-kr:expc:327195",
+          "src_start": 1309,
+          "src_end": 1316,
+          "replacement": "․"
+        },
+        {
+          "id": "law-go-kr:expc:329473",
+          "src_start": 1308,
+          "src_end": 1315,
+          "replacement": "․"
+        }
+      ]
+    },
+    "linebreak_join": {
+      "n": 20,
+      "correct": 20,
+      "items": [
+        {
+          "id": "law-go-kr:expc:311440",
+          "src_start": 930,
+          "src_end": 931,
+          "replacement": ""
+        },
+        {
+          "id": "law-go-kr:expc:323199",
+          "src_start": 981,
+          "src_end": 982,
+          "replacement": ""
+        },
+        {
+          "id": "law-go-kr:expc:343991",
+          "src_start": 1461,
+          "src_end": 1462,
+          "replacement": ""
+        },
+        {
+          "id": "law-go-kr:expc:311440",
+          "src_start": 2857,
+          "src_end": 2858,
+          "replacement": ""
+        },
+        {
+          "id": "law-go-kr:expc:321611",
+          "src_start": 2103,
+          "src_end": 2104,
+          "replacement": ""
+        },
+        {
+          "id": "law-go-kr:expc:323413",
+          "src_start": 1742,
+          "src_end": 1743,
+          "replacement": ""
+        },
+        {
+          "id": "law-go-kr:expc:325117",
+          "src_start": 2094,
+          "src_end": 2095,
+          "replacement": ""
+        },
+        {
+          "id": "law-go-kr:expc:343959",
+          "src_start": 2150,
+          "src_end": 2151,
+          "replacement": ""
+        },
+        {
+          "id": "law-go-kr:expc:322817",
+          "src_start": 1790,
+          "src_end": 1791,
+          "replacement": ""
+        },
+        {
+          "id": "law-go-kr:expc:316039",
+          "src_start": 2056,
+          "src_end": 2057,
+          "replacement": ""
+        },
+        {
+          "id": "law-go-kr:expc:321611",
+          "src_start": 2750,
+          "src_end": 2751,
+          "replacement": ""
+        },
+        {
+          "id": "law-go-kr:expc:323139",
+          "src_start": 1108,
+          "src_end": 1109,
+          "replacement": ""
+        },
+        {
+          "id": "law-go-kr:expc:313827",
+          "src_start": 4432,
+          "src_end": 4433,
+          "replacement": ""
+        },
+        {
+          "id": "law-go-kr:expc:312980",
+          "src_start": 3290,
+          "src_end": 3291,
+          "replacement": ""
+        },
+        {
+          "id": "law-go-kr:expc:321533",
+          "src_start": 1731,
+          "src_end": 1732,
+          "replacement": ""
+        },
+        {
+          "id": "law-go-kr:expc:312416",
+          "src_start": 5923,
+          "src_end": 5924,
+          "replacement": ""
+        },
+        {
+          "id": "law-go-kr:expc:324839",
+          "src_start": 1657,
+          "src_end": 1658,
+          "replacement": ""
+        },
+        {
+          "id": "law-go-kr:expc:324501",
+          "src_start": 1146,
+          "src_end": 1147,
+          "replacement": ""
+        },
+        {
+          "id": "law-go-kr:expc:322371",
+          "src_start": 2170,
+          "src_end": 2171,
+          "replacement": ""
+        },
+        {
+          "id": "law-go-kr:expc:324931",
+          "src_start": 2438,
+          "src_end": 2439,
+          "replacement": ""
+        }
+      ]
+    },
+    "linebreak_space": {
+      "n": 20,
+      "correct": 20,
+      "items": [
+        {
+          "id": "law-go-kr:expc:324781",
+          "src_start": 1017,
+          "src_end": 1018,
+          "replacement": " "
+        },
+        {
+          "id": "law-go-kr:expc:322441",
+          "src_start": 959,
+          "src_end": 960,
+          "replacement": " "
+        },
+        {
+          "id": "law-go-kr:expc:312169",
+          "src_start": 1069,
+          "src_end": 1070,
+          "replacement": " "
+        },
+        {
+          "id": "law-go-kr:expc:322695",
+          "src_start": 2314,
+          "src_end": 2315,
+          "replacement": " "
+        },
+        {
+          "id": "law-go-kr:expc:324953",
+          "src_start": 1856,
+          "src_end": 1857,
+          "replacement": " "
+        },
+        {
+          "id": "law-go-kr:expc:322441",
+          "src_start": 1602,
+          "src_end": 1603,
+          "replacement": " "
+        },
+        {
+          "id": "law-go-kr:expc:313495",
+          "src_start": 1409,
+          "src_end": 1410,
+          "replacement": " "
+        },
+        {
+          "id": "law-go-kr:expc:311947",
+          "src_start": 1033,
+          "src_end": 1034,
+          "replacement": " "
+        },
+        {
+          "id": "law-go-kr:expc:321537",
+          "src_start": 943,
+          "src_end": 944,
+          "replacement": " "
+        },
+        {
+          "id": "law-go-kr:expc:322943",
+          "src_start": 1877,
+          "src_end": 1878,
+          "replacement": " "
+        },
+        {
+          "id": "law-go-kr:expc:314634",
+          "src_start": 1683,
+          "src_end": 1684,
+          "replacement": " "
+        },
+        {
+          "id": "law-go-kr:expc:312507",
+          "src_start": 4804,
+          "src_end": 4805,
+          "replacement": " "
+        },
+        {
+          "id": "law-go-kr:expc:313660",
+          "src_start": 1575,
+          "src_end": 1576,
+          "replacement": " "
+        },
+        {
+          "id": "law-go-kr:expc:312978",
+          "src_start": 1397,
+          "src_end": 1398,
+          "replacement": " "
+        },
+        {
+          "id": "law-go-kr:expc:325053",
+          "src_start": 1129,
+          "src_end": 1130,
+          "replacement": " "
+        },
+        {
+          "id": "law-go-kr:expc:312848",
+          "src_start": 1226,
+          "src_end": 1227,
+          "replacement": " "
+        },
+        {
+          "id": "law-go-kr:expc:311861",
+          "src_start": 1079,
+          "src_end": 1080,
+          "replacement": " "
+        },
+        {
+          "id": "law-go-kr:expc:322965",
+          "src_start": 1784,
+          "src_end": 1785,
+          "replacement": " "
+        },
+        {
+          "id": "law-go-kr:expc:311440",
+          "src_start": 1568,
+          "src_end": 1569,
+          "replacement": " "
+        },
+        {
+          "id": "law-go-kr:expc:322911",
+          "src_start": 929,
+          "src_end": 930,
+          "replacement": " "
+        }
+      ]
+    }
+  },
+  "footnote_placement": {
+    "question/premise": 84,
+    "question/definition": 194,
+    "question/citation": 12,
+    "question/other": 28,
+    "answer/citation": 1,
+    "reasons/citation": 548,
+    "reasons/definition": 71,
+    "reasons/other": 58
+  },
+  "verdict": {
+    "linebreak_join": "meaning kept in 20/20; recommend approval",
+    "linebreak_space": "meaning kept in 20/20; recommend approval",
+    "entity": "6/6; recommend approval",
+    "footnote": "text kept in 12/12, but moving bodies to the document end detaches question premises/definitions (84+194 in 질의요지) from the question section; usable only if a case builder re-attaches each referenced footnote body to the section that cites it. Not approved for section-based case building as is.",
+    "linebreak_unknown_kept": "not touched; no change requested"
+  },
+  "applied": "none: v3 stays the case source until the supervisor approves rules; v3-norm2 offsets/hashes left as B wrote them"
+}

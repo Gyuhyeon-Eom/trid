@@ -1,0 +1,84 @@
+{
+  "note": "C-014 hand-off to A: high-relevance AI-reviewed bundle first. AI review only (not independent; pack/table/plain are C self-review). Not training approval.",
+  "overfit_guard": [
+    "small set: do not upsample or repeat beyond the epochs used for the rest of the mix; report its share of training tokens",
+    "mix with A general data; track loss/eval per task_type separately",
+    "these documents are training-side (see doc-provenance); do not score final evaluation on them; existing evaluation sets are not pruned by this list"
+  ],
+  "bundles": {
+    "high_official": [
+      "official:law-go-kr:expc:315313",
+      "official:law-go-kr:expc:315192",
+      "official:law-go-kr:expc:315149",
+      "official:law-go-kr:expc:326559",
+      "official:law-go-kr:expc:327923",
+      "official:law-go-kr:expc:330153",
+      "official:law-go-kr:expc:315121",
+      "official:law-go-kr:expc:329921",
+      "official:law-go-kr:expc:314786",
+      "official:law-go-kr:expc:312489",
+      "official:law-go-kr:expc:324291",
+      "official:law-go-kr:expc:344033",
+      "official:law-go-kr:expc:312544",
+      "official:law-go-kr:expc:312846",
+      "official:law-go-kr:expc:328283",
+      "official:law-go-kr:expc:312452",
+      "official:law-go-kr:expc:323225",
+      "official:law-go-kr:expc:344093"
+    ],
+    "high_statute_application": [
+      "pack:treasury-03-fund",
+      "pack:treasury-03-pfmf",
+      "pack:treasury-20-rule",
+      "pack:treasury-20-lookup",
+      "pack:acct-05-register",
+      "pack:acct-05-mnd",
+      "pack:acct-05-status",
+      "pack:acct-05-askback",
+      "pack:treasury-03-fundlist",
+      "pack:treasury-20-time",
+      "pack:treasury-03-art31"
+    ],
+    "high_table_lookup": [
+      "table:mokpo-common-budget-1500",
+      "table:mokpo-common-budget-900",
+      "table:mokpo-common-leave-6",
+      "table:mokpo-common-overseas-trip",
+      "table:mokpo-common-complaint-return",
+      "table:mokpo-common-design-threshold",
+      "table:mokpo-common-leave-askback",
+      "table:mokpo-common-info-disclosure",
+      "table:mokpo-common-time"
+    ],
+    "medium_official": [
+      "official:law-go-kr:expc:315394",
+      "official:law-go-kr:expc:334949",
+      "official:law-go-kr:expc:331063",
+      "official:law-go-kr:expc:315182",
+      "official:law-go-kr:expc:315135",
+      "official:law-go-kr:expc:324903",
+      "official:law-go-kr:expc:314521",
+      "official:law-go-kr:expc:323199"
+    ],
+    "plain_explanations": [
+      "plain:law-go-kr:expc:327309",
+      "plain:law-go-kr:expc:330509",
+      "plain:law-go-kr:expc:314104",
+      "plain:law-go-kr:expc:324381",
+      "plain:law-go-kr:expc:321503",
+      "plain:law-go-kr:expc:323305"
+    ]
+  },
+  "files": {
+    "candidates": "reports/coordination/C-014/batch-v3/candidates.jsonl",
+    "table": "reports/coordination/C-014/table-batch/table-candidates.jsonl",
+    "plain": "reports/coordination/C-014/batch-v3/plain-candidates.jsonl"
+  },
+  "counts": {
+    "high_official": 18,
+    "high_statute_application": 11,
+    "high_table_lookup": 9,
+    "medium_official": 8,
+    "plain_explanations": 6
+  }
+}
