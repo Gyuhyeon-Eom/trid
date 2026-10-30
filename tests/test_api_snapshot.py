@@ -52,24 +52,24 @@ class ApiSnapshotTests(unittest.TestCase):
 
 
 class GuidesTests(unittest.TestCase):
-    def test_only_substantive_licensed_rows_are_indexed_with_limitations_and_pending_notes(self):
-        def row(id_, text, license_='이용허락범위 제한 없음', extractor='kordoc:pdf', holds=()):
+    def test_only_substantive_licensed_rows_are_indexed_and_figure_limits_are_carried(self):
+        def row(id_, text, license_='이용허락범위 제한 없음', figures=0, holds=()):
             return {'id': id_, 'title': f'기관_{id_}', 'sha256': id_, 'text': text, 'license': license_, 'source': 'https://example.invalid',
-                    'meta': {'extractor': extractor, 'table_check': 'unverified', 'status_holds': list(holds)},
+                    'flags': ['figure_content_missing'] if figures else [],
+                    'meta': {'extractor': 'kordoc', 'table_check': 'unverified', 'status_holds': list(holds), 'figures_omitted': figures},
                     'provenance': {'institution': '가기관', 'doc_type': '업무매뉴얼', 'applies_to': '가기관 업무'}}
         body = '제1장 총칙\n' + '업무 절차를 설명한다. ' * 60
         rows = [row('ok', body), row('cover', '표지'), row('held', body, holds=['reserved_overlap']),
                 row('nc', body, license_='공공누리 제3유형'), row('kogl1', body, license_='공공저작물 : 출처표시 (제 1유형)'),
-                row('img', body, extractor='kordoc:hwpx(BinData images removed: zip entry limit)')]
+                row('fig', body + '[그림 생략]', figures=423)]
         d = Path(tempfile.mkdtemp())
         (d / 'documents.jsonl').write_text(''.join(json.dumps(r, ensure_ascii=False) + '\n' for r in rows))
         meta, tables = {}, []
-        docs, info = guides(d, meta, tables, {'img': '검사 전 조건부'})
-        self.assertEqual([x.doc_id for x in docs], ['ok', 'kogl1', 'img'])
+        docs, info = guides(d, meta, tables)
+        self.assertEqual([x.doc_id for x in docs], ['ok', 'kogl1', 'fig'])
         self.assertEqual(info['skipped'], {'empty_or_cover': ['cover'], 'hold': ['held'], 'license': ['nc']})
-        self.assertEqual((meta['ok']['limitations'], meta['img']['review_pending']), ([], '검사 전 조건부'))
-        self.assertIn('이미지', meta['img']['limitations'][0])
-        self.assertNotIn('review_pending', meta['ok'])
+        self.assertEqual((meta['ok']['limitations'], info['limited']), ([], ['fig']))
+        self.assertIn('423곳', meta['fig']['limitations'][0])
 
 
 if __name__ == '__main__':

@@ -1409,8 +1409,6 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                                                         f"이 {noun}{'이' if noun == '규정' else '가'} 적용되는지는 확인되지 않았습니다.")
                                 for note in m.get('limitations') or []:
                                     result['scope'] += ' 자료 한계: ' + note
-                                if m.get('review_pending'):
-                                    result['scope'] += ' ' + m['review_pending']
                                 applies = workspace.applies(selection['applied']).get('scope')
                                 if (applies in ('central_government', 'local_government')
                                         and re.search(r'공공기관|공기업|준정부기관|공단|공사', question) and '공무원' not in question):
@@ -1465,7 +1463,7 @@ def main():
                         help='JSON list of served versions; the first is the default and must be extractive')
     parser.add_argument('--secret-file', required=True)
     parser.add_argument('--port', type=int, default=51873)
-    parser.add_argument('--workspace', type=Path, default=ROOT / 'runs/workspace-index/v4',
+    parser.add_argument('--workspace', type=Path, default=ROOT / 'runs/workspace-index/v5',
                         help='shared search index of approved public sources (scripts/build_workspace_index.py)')
     parser.add_argument('--passage-review', type=Path, default=ROOT / 'data/search-corpus-v4/passages.jsonl',
                         help="B's per-passage review metadata (value_review: hold_for_value_use, privacy_review)")

@@ -105,18 +105,25 @@ def api_snapshot(directory, meta):
 
 
 GUIDE_MIN_CHARS = 500
-IMAGES_REMOVED = ('원본 파일의 이미지(그림)를 빼고 추출한 본문입니다. 그림 속 정보는 빠져 있고, 표·이미지를 원본과 대조해 '
-                  '검증하지 않았습니다.')
 
 
-def guides(path, meta, tables, pending=()):
+def figure_limit(row):
+    """The extraction limit B records for figures it could not extract (flag figure_content_missing,
+    meta.figures_omitted = number of [그림 생략] markers), or None."""
+    n = (row.get('meta') or {}).get('figures_omitted') or 0
+    if not n and 'figure_content_missing' not in (row.get('flags') or []):
+        return None
+    return (f"원본의 그림{f' {n:,}곳' if n else ''}은 본문에 [그림 생략]으로만 남아 있고 그림 내용은 추출되지 않았습니다. "
+            '그림·표를 원본과 대조해 검증하지 않았습니다.')
+
+
+def guides(path, meta, tables):
     """(documents, info) of B's cleaned practice guides (data/public-data/guides-vN/documents.jsonl). B's `documents`
     part already passed its rights / PII / reserved-overlap checks (held rows are in held.jsonl and never read here);
     rows with a status hold, near-empty extractions (covers, separators: < GUIDE_MIN_CHARS) and rows without an
-    unrestricted or KOGL Type 1 licence are still left out. An extractor label saying images were removed becomes a
-    `limitations` note shown with every answer from the document; ids in `pending` (a check B has not finished) are
-    indexed with `review_pending` so answers say the document is not fully approved. Table passages are flagged
-    (B: table_check unverified)."""
+    unrestricted or KOGL Type 1 licence are still left out. A figure-extraction limit (figure_limit) becomes a
+    `limitations` note shown with every answer from the document. Table passages are flagged (B: table_check
+    unverified)."""
     documents, skipped = [], {}
     for line in (path / 'documents.jsonl').read_text().splitlines():
         row = json.loads(line)
@@ -131,20 +138,19 @@ def guides(path, meta, tables, pending=()):
         doc = Document(row['id'], row['title'], row['sha256'], {'public'}, row['text'])
         doc.passages, doc.refs = parse_document(row['text'], row['id'], row['title'])
         documents.append(doc)
+        limit = figure_limit(row)
         meta[row['id']] = {'title': row['title'], 'kind': prov.get('doc_type') or '업무매뉴얼', 'institution': prov.get('institution'),
                            'date': prov.get('date'), 'date_type': prov.get('date_type'), 'effective_date': None,
                            'currency': '자료 기준일 당시 내용이며 현행 여부는 확인하지 않았음', 'source': row.get('source'),
                            'license': license_, 'attribution': row.get('collected_at'), 'extractor': m.get('extractor'),
                            'applies_to': {'scope': 'institution', 'note': prov.get('applies_to')}, 'table_check': m.get('table_check'),
-                           'limitations': [IMAGES_REMOVED] if 'images removed' in (m.get('extractor') or '') else []}
-        if row['id'] in pending:
-            meta[row['id']]['review_pending'] = pending[row['id']]
+                           'limitations': [limit] if limit else []}
         if m.get('table_check') == 'unverified':
             tables += [p.id for p in doc.passages if '|' in p.text or '<table' in p.text or '<tr' in p.text]
     manifest = path / 'manifest.json'
     return documents, {'path': str(path), 'manifest_sha256': sha256(manifest) if manifest.exists() else None,
                        'indexed': [d.doc_id for d in documents], 'skipped': skipped,
-                       'pending': {d: pending[d] for d in pending if any(x.doc_id == d for x in documents)}}
+                       'limited': [d.doc_id for d in documents if meta[d.doc_id]['limitations']]}
 
 
 def main():
@@ -155,8 +161,6 @@ def main():
                    help='also index a local copy of a B API-S3-001 snapshot (reports/coordination/HYBRID-RAG-001-SCHEMA.md)')
     p.add_argument('--guides', type=Path, action='append', default=[],
                    help="also index B's cleaned practice guides (data/public-data/guides-vN); see guides()")
-    p.add_argument('--guide-pending', action='append', default=[], metavar='ID=NOTE',
-                   help='guide document indexed while a B check is still open; NOTE is shown with its answers')
     a = p.parse_args()
     if a.out.exists():
         p.error('Use a new --out directory')
@@ -232,7 +236,7 @@ def main():
         facts += rows_facts
     guide_info = []
     for path in a.guides:
-        docs, info = guides(path, meta, tables, dict(x.split('=', 1) for x in a.guide_pending))
+        docs, info = guides(path, meta, tables)
         documents += docs
         guide_info.append(info)
     index = Index.build(documents)
