@@ -1,0 +1,21 @@
+{
+  "status": "C accepts B v3-footnotes1 as the footnote source; C-015 proposal and B contract are equivalent on every footnote",
+  "b_source": "data/internal-rules/v3-footnotes1/docs.relations.jsonl (manifest code_sha256 2ac177f0240cd628…, text_changed false)",
+  "b_contract": "offsets index the unchanged v3 text of the row with source_sha256; marker = the N) that stays in the sentence; inline = duplicated N) + footnote text + its terminating newline",
+  "c_mapping": "C span = [marker.start, inline.end) replaced by [각주N]; body = footnote text; sections = 질의요지 (before '< 질의 배경 >'), 회답, 이유 (before the 법령정비/관계 법령 heading)",
+  "comparison_all_rows": {
+    "footnotes": 996,
+    "source_sha256_mismatch": 0,
+    "span_differs_from_c015_norm2_edit": 0,
+    "number_mismatch": 0,
+    "body_mismatch": 0,
+    "section_assignment_differs": 0,
+    "b_section_법령정비_outside_c_sections": 2,
+    "kinds": {"reference": 574, "definition": 220, "premise": 74, "other": 128}
+  },
+  "builder_equivalence": "scripts/build_internal_cases.py --footnotes on B relations gives the same 384 cases with the same content_sha256 as the C-015 norm2-based build",
+  "requests_to_b": [
+    "7 rows restart footnote numbering inside a section (ambiguous [각주N]); 1 row has a broken marker (expc:339505 '7)1) 1)'): C skips them; B may relabel",
+    "18 official cases end with a related-statute appendix that has no heading in v3 (law name line, articles, '(생 략)'); please mark it as its own section in the relations file so C can stop the 이유 section before it"
+  ]
+}

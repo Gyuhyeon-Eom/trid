@@ -85,7 +85,7 @@ def attach_footnotes(text, span, edits):
         if not m or not n or m.group(1) != n.group(1):
             raise ValueError(f'footnote edit does not match its source span: {raw[:20]!r}')
         out += [text[pos:e['src_start']], e['replacement']]
-        notes.append((n.group(1), raw[m.end():].strip(), e['src_start'], e['src_end']))
+        notes.append((n.group(1), raw[m.end():].strip(), e['src_start'], e['src_end'], e.get('kind')))
         pos = e['src_end']
     out.append(text[pos:end])
     body = ''.join(out)
@@ -147,7 +147,7 @@ def official_case(row, footnote_edits=None):
                 authored='question (whole 질의요지), conclusion and reasons verbatim from the official interpretation; '
                          'date/source lines are a fixed template')
     if any(notes.values()):
-        case['footnotes'] = {name: [dict(n=n, body=b, src_start=s, src_end=e) for n, b, s, e in ns]
+        case['footnotes'] = {name: [dict(n=n, body=b, src_start=s, src_end=e, kind=k) for n, b, s, e, k in ns]
                              for name, ns in notes.items() if ns}
         case['authored'] += '; footnotes cited in a section are moved, verbatim, to the end of that section ([각주N])'
     return case, None
@@ -204,16 +204,22 @@ def main():
                    help='review records (jsonl: id, content_sha256, reviewer_id, reviewer_type, verdict, note); a record '
                         'applies only when its content_sha256 matches the case as built now')
     p.add_argument('--footnotes', type=Path,
-                   help='B v3-norm2 docs.jsonl: only its footnote edits (offsets into v3) are used, per section')
+                   help='B footnote relations (data/internal-rules/v3-footnotes1/docs.relations.jsonl: marker/inline '
+                        'offsets into the unchanged v3 text; contract agreed in C-016) or B v3-norm2 docs.jsonl')
     a = p.parse_args()
     a.reviews = [r.resolve() for r in a.reviews]
     footnotes = {}
     if a.footnotes:
         for line in a.footnotes.resolve().open():
             r = json.loads(line)
-            norm = r['meta']['normalization']
-            footnotes[r['id']] = dict(source_sha256=norm['source_sha256'],
-                                      edits=[e for e in norm['edits'] if e['rule'] == 'footnote'])
+            if 'footnotes' in r:            # v3-footnotes1: marker 'N)' + inline 'N) text\n' -> one span
+                footnotes[r['id']] = dict(source_sha256=r['source_sha256'], edits=[
+                    dict(src_start=f['marker'][0], src_end=f['inline'][1], replacement=f"[각주{f['n']}]", kind=f['kind'])
+                    for f in r['footnotes']])
+            else:                           # v3-norm2 footnote edits
+                norm = r['meta']['normalization']
+                footnotes[r['id']] = dict(source_sha256=norm['source_sha256'],
+                                          edits=[e for e in norm['edits'] if e['rule'] == 'footnote'])
     reviews = {}
     for path in a.reviews:
         for r in map(json.loads, path.open()):
@@ -256,6 +262,16 @@ def main():
             c['training_hold'] = f"B v3 split '{c['split_hint']}': kept out of training to keep evaluation-side rows separate"
         apply_review(c)
         c['synthetic_parts'] = 'template lines' if c['kind'] == 'official_interpretation' else 'question and explanation (AI-written)'
+    # Separate requests (different 안건번호) sometimes got word-for-word the same question and answer; train on one.
+    first = {}
+    for c in out:
+        if c['kind'] != 'official_interpretation' or c['training_hold']:
+            continue
+        key = hashlib.sha256((c['question'] + '\n' + c['evidence']['conclusion']).encode()).hexdigest()
+        if key in first:
+            c['training_hold'] = f"duplicate: same question and answer as {first[key]} (separate 안건번호 {c.get('agenda')})"
+        else:
+            first[key] = c['id']
     batch = [c for c in out if not c['training_hold']]
     excluded = [c for c in out if c['training_hold']]
     a.out.mkdir(parents=True, exist_ok=True)

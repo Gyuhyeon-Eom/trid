@@ -1,0 +1,12 @@
+{
+  "rule": "provenance only; not a list for removing documents from existing evaluation sets",
+  "docs": {
+    "law-go-kr:admrul-file:126140889": "training_candidate_ai_reviewed",
+    "law-go-kr:admrul-file:133708917": "training_candidate_ai_reviewed",
+    "law-go-kr:admrul-file:150743139": "training_candidate_ai_reviewed"
+  },
+  "compared_not_used": {
+    "law-go-kr:admrul-file:163009611": "tables compared with the original; no cases built",
+    "law-go-kr:admrul-file:166503373": "tables compared with the original; no cases built"
+  }
+}

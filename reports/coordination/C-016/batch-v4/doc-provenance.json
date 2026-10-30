@@ -1,0 +1,1168 @@
+{
+  "statuses": {
+    "training_candidate_ai_reviewed": "C built a training candidate and an AI review matched its content",
+    "training_candidate_unreviewed": "C built a training candidate; content not reviewed",
+    "held_reserve_overlap": "B-013 reserve overlap: C keeps it out of training; it is not training-side",
+    "held_eval_side_split": "B v3 'valid'/'test' split row: kept out of training",
+    "held_review_defect": "AI review found a defect: kept out of training"
+  },
+  "training_used": "unknown to C: whether a candidate was actually trained on is recorded by A",
+  "rule": "provenance only; not a list for removing documents from existing evaluation sets; final evaluation design is decided by the supervisor and A",
+  "docs": {
+    "law-go-kr:admrul:2100000272852": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:311364": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:311465": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:311485": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:311504": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:311515": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:311556": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:311634": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:311687": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:311726": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:311747": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:311799": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:311861": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:311947": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:312040": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:312051": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:312064": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:312091": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:312112": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:312169": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:312267": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:312317": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:312325": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:312346": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:312368": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:312398": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:312420": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:312426": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:312452": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:312456": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:312461": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:312483": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:312489": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:312509": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:312518": [
+      "held_review_defect"
+    ],
+    "law-go-kr:expc:312532": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:312544": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:312554": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:312605": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:312609": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:312684": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:312701": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:312799": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:312813": [
+      "held_review_defect"
+    ],
+    "law-go-kr:expc:312846": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:312848": [
+      "held_eval_side_split"
+    ],
+    "law-go-kr:expc:312849": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:312978": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:313010": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:313031": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:313050": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:313076": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:313083": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:313086": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:313139": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:313154": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:313155": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:313170": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:313172": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:313182": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:313194": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:313212": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:313213": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:313241": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:313246": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:313250": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:313445": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:313570": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:313794": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:313801": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:313815": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:313979": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:314104": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:314132": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:314176": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:314245": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:314330": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:314343": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:314360": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:314369": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:314395": [
+      "held_review_defect"
+    ],
+    "law-go-kr:expc:314521": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:314600": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:314634": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:314738": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:314758": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:314786": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:314842": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:314866": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:314875": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:314881": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:314889": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:314922": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:314929": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:314955": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:314977": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:314983": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:314986": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:314992": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:315030": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:315121": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:315135": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:315149": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:315172": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:315182": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:315187": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:315192": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:315265": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:315280": [
+      "held_review_defect"
+    ],
+    "law-go-kr:expc:315313": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:315361": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:315380": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:315394": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:315442": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:315517": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:321379": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:321441": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:321457": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:321487": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:321503": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:321537": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:321611": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:322363": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:322371": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:322441": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:322503": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:322669": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:322711": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:322725": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:322757": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:322769": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:322795": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:322827": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:322831": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:322835": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:322885": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:322911": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:322959": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:322965": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:323041": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:323053": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:323085": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:323089": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:323119": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:323169": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:323187": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:323199": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:323203": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:323207": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:323225": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:323305": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:323331": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:323411": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:323413": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:323417": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:323467": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:323479": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:323509": [
+      "held_review_defect"
+    ],
+    "law-go-kr:expc:323593": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:323599": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:323615": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:323765": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:323781": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:323783": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:323787": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:323813": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:323831": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:323873": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:323903": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:323965": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:323977": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:324007": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:324033": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:324047": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:324137": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:324157": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:324171": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:324177": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:324179": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:324187": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:324291": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:324341": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:324343": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:324353": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:324357": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:324377": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:324381": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:324401": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:324421": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:324471": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:324499": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:324501": [
+      "held_eval_side_split"
+    ],
+    "law-go-kr:expc:324529": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:324631": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:324647": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:324669": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:324683": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:324693": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:324705": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:324709": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:324759": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:324851": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:324865": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:324871": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:324891": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:324903": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:324927": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:324931": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:324959": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:324963": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:324965": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:324999": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:325001": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:325005": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:325009": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:325025": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:325053": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:325071": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:325089": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:325117": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:325147": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:325323": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:325337": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:325361": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:325381": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:325427": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:325527": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:325539": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:326299": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:326315": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:326343": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:326477": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:326513": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:326535": [
+      "held_review_defect"
+    ],
+    "law-go-kr:expc:326559": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:326767": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:326825": [
+      "held_review_defect"
+    ],
+    "law-go-kr:expc:326849": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:326907": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:326913": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:326973": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:327029": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:327053": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:327077": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:327153": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:327173": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:327195": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:327261": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:327297": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:327309": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:327401": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:327587": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:327701": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:327719": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:327771": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:327829": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:327889": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:327923": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:327997": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:328077": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:328103": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:328117": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:328205": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:328275": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:328283": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:328295": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:328331": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:328333": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:328353": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:328371": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:328513": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:328517": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:328531": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:328605": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:328667": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:328679": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:328813": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:328855": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:328939": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:329015": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:329095": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:329177": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:329291": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:329451": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:329473": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:329517": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:329739": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:329773": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:329797": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:329849": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:329891": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:329919": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:329921": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:330129": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:330153": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:330303": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:330363": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:330509": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:330535": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:330681": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:330735": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:330915": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:330989": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:331003": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:331063": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:331101": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:331103": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:331135": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:331143": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:331161": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:331223": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:331367": [
+      "held_review_defect"
+    ],
+    "law-go-kr:expc:331699": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:332093": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:332097": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:332123": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:332213": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:332229": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:332239": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:332241": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:332317": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:332753": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:332837": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:332847": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:333027": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:333227": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:333427": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:333611": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:334347": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:334443": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:334743": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:334757": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:334907": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:334949": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:335055": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:335093": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:335283": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:335465": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:335779": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:335831": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:336173": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:336453": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:336877": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:337531": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:337821": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:338503": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:338697": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:338795": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:339029": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:339035": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:340259": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:340291": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:341315": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:341579": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:341581": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:342129": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:342211": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:342897": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:342937": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:343055": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:343103": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:343109": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:343137": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:343265": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:343273": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:343335": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:343471": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:343513": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:343571": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:343677": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:343725": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:343817": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:343839": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:343951": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:343959": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:343973": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:343991": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:expc:344033": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:344075": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:344093": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:expc:344121": [
+      "training_candidate_unreviewed"
+    ],
+    "law-go-kr:law:276079": [
+      "training_candidate_ai_reviewed"
+    ],
+    "law-go-kr:law:283877": [
+      "held_reserve_overlap"
+    ],
+    "law-go-kr:law:285893": [
+      "held_reserve_overlap"
+    ],
+    "law-go-kr:law:290313": [
+      "held_reserve_overlap"
+    ]
+  }
+}
