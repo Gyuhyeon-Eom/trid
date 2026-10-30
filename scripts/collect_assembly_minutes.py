@@ -22,6 +22,7 @@ import argparse
 import base64
 import datetime
 import gzip
+import contextlib
 import hashlib
 import html
 import json
@@ -216,21 +217,25 @@ def row_of(meeting, page, collected_at, official=None, listed=None):
 
 
 class HostLimiter:
-    """One request-start interval for the whole host. Slows down on 429/5xx, Retry-After or time-to-first-byte above
-    max(2x running median, median + 1 s); drifts back toward the base interval when healthy. Callers pass
-    time-to-first-byte, not total transfer time: a large file download is not a sign of server distress (2026-10-30:
-    total time pushed the ALIO interval from 1 s to the 30 s cap).
+    """One request at a time per host, and each request starts at least `interval` after the previous request to that
+    host has finished (response read or failed). Since a request's bytes go out after its start and before its end,
+    consecutive actual sends are always more than `interval` apart, however late a process wakes up or stalls before
+    sending (B-008 review: the old design spaced *reserved* start times; a late wake-up let the logged gap fall to
+    0.9906 s). The wait is checked against the wall clock after every sleep, not computed once.
 
-    With `host`, the next allowed start time lives in a lock file (<tmp>/trid-host-limits/<host>), so every process
-    and thread on this machine that talks to that host shares one interval (B-007: two collectors on one host must not
-    add up to more than the policy rate)."""
+    Slows down on 429/5xx, Retry-After or time-to-first-byte above max(2x running median, median + 1 s); drifts back
+    toward the base interval when healthy. Callers pass time-to-first-byte, not total transfer time.
+
+    With `host`, the last end time and the not-before time live in a lock file (<tmp>/trid-host-limits/<host>) that is
+    held, with an exclusive flock, for the whole request: every process and thread on this machine that talks to that
+    host shares one gap and one request in flight. The OS drops the lock if a process dies."""
 
     def __init__(self, interval, max_interval=30.0, host=None, shared_dir=None):
         import tempfile
         self.base = self.interval = interval
         self.max_interval = max_interval
-        self.next_start, self.lock, self.latencies = 0.0, threading.Lock(), []
-        self.reserved = threading.local()  # per thread: exact reserved start of its latest request (rate evidence)
+        self.lock, self.latencies = threading.Lock(), []
+        self.last = {'end': 0.0, 'not_before': 0.0}  # without `host`: this process only
         self.shared = None
         if host:
             folder = Path(shared_dir or tempfile.gettempdir()) / 'trid-host-limits'
@@ -238,52 +243,48 @@ class HostLimiter:
             self.shared = folder / host
             self.shared.touch(exist_ok=True)
 
-    def _reserve(self, earliest_gap=0.0):
-        """Reserve the next start (wall clock) and return it; with a shared file, under an exclusive file lock."""
+    @contextlib.contextmanager
+    def slot(self):
+        """Hold the host for one request: yields (start, waited). `start` is the wall-clock time after the last wait;
+        the caller sends right after it. The end time is recorded when the block exits."""
         import fcntl
-        with self.lock:
-            now = time.time()
-            if not self.shared:
-                start = max(now + earliest_gap, self.next_start)
-                self.next_start = start + self.interval
-                return start, now
-            with open(self.shared, 'r+') as f:
+        with self.lock, (open(self.shared, 'r+') if self.shared else contextlib.nullcontext()) as f:
+            if f:
                 fcntl.flock(f, fcntl.LOCK_EX)
-                try:
+            try:
+                if f:
                     text = f.read().strip()
-                    shared_next = float(text) if text else 0.0
-                    start = max(now + earliest_gap, shared_next, self.next_start)
-                    self.next_start = start + self.interval
+                    state = json.loads(text) if text.startswith('{') else {'end': 0.0, 'not_before': 0.0}
+                else:
+                    state = self.last
+                t0 = time.time()
+                while True:  # re-check after each sleep: a sleep may end early or late
+                    gap = max(state['end'] + self.interval, state['not_before']) - time.time()
+                    if gap <= 0:
+                        break
+                    time.sleep(gap)
+                start = time.time()
+                yield start, start - t0
+            finally:
+                end = time.time()
+                self.last = {'end': end, 'not_before': end + self.interval}  # interval after observe() of this request
+                if f:
                     f.seek(0)
                     f.truncate()
-                    f.write(repr(self.next_start))
-                    f.flush()  # must reach the file before the lock is released, or another process reads a stale start
-                finally:
+                    f.write(json.dumps(self.last))
+                    f.flush()
                     fcntl.flock(f, fcntl.LOCK_UN)
-            return start, now
-
-    def acquire(self):
-        start, now = self._reserve()
-        self.reserved.start = start
-        wait = start - now
-        if wait > 0:
-            time.sleep(wait)
-        return wait
 
     def observe(self, status, latency, retry_after=None):
-        backoff = False
-        with self.lock:
-            self.latencies = (self.latencies + [latency])[-50:]
-            median = statistics.median(self.latencies)
-            if status == 429 or status >= 500 or retry_after:
-                self.interval = min(self.max_interval, max(self.interval * 2, float(retry_after or 0)))
-                backoff = True
-            elif len(self.latencies) >= 10 and latency > max(2 * median, median + 1.0):
-                self.interval = min(self.max_interval, self.interval * 1.5)
-            else:
-                self.interval = max(self.base, self.interval * 0.95)
-        if backoff:  # push the shared next start out for every process, not only this one
-            self._reserve(earliest_gap=self.interval)
+        """Call inside slot(): the interval it sets applies from this request's end, for every process."""
+        self.latencies = (self.latencies + [latency])[-50:]
+        median = statistics.median(self.latencies)
+        if status == 429 or status >= 500 or retry_after:
+            self.interval = min(self.max_interval, max(self.interval * 2, float(retry_after or 0)))
+        elif len(self.latencies) >= 10 and latency > max(2 * median, median + 1.0):
+            self.interval = min(self.max_interval, self.interval * 1.5)
+        else:
+            self.interval = max(self.base, self.interval * 0.95)
 
 
 class Client:
@@ -295,24 +296,30 @@ class Client:
 
     def request(self, method, url, metrics, **kw):
         for attempt in range(6):
-            waited = self.limiter.acquire()
-            started = time.monotonic()
-            if self.request_log:  # one line per request start: the evidence for the host-wide rate
+            with self.limiter.slot() as (start, waited):
+                started = time.monotonic()
+                r = error = None
+                try:
+                    r = self.session.request(method, url, timeout=180, **kw)
+                    size = len(r.content)  # read the body inside the slot: one transfer in flight per host
+                except Exception as exc:  # network error: count as a 5xx-like failure and back off
+                    error = exc
+                    self.limiter.observe(599, time.monotonic() - started)
+                else:
+                    retry_after = r.headers.get('Retry-After')
+                    retry_after = float(retry_after) if retry_after and retry_after.isdigit() else None
+                    self.limiter.observe(r.status_code, r.elapsed.total_seconds(), retry_after)  # elapsed = time to headers
+                end = time.time()
+            if self.request_log:  # one line per request: actual start (after the last wait) and end
                 with self.log_lock, open(self.request_log, 'a') as log:
-                    log.write(json.dumps({'t': time.time(), 'reserved': getattr(self.limiter.reserved, 'start', None),
-                                          'pid': os.getpid(), 'method': method, 'url': url}) + '\n')
-            try:
-                r = self.session.request(method, url, timeout=180, **kw)
-            except Exception as exc:  # network error: count as a 5xx-like failure and back off
-                self.limiter.observe(599, time.monotonic() - started)
-                metrics.record(waited, time.monotonic() - started, 0, 599)
-                print(f'retry after {exc!r}', flush=True)
-                continue
+                    log.write(json.dumps({'t': start, 'end': end, 'pid': os.getpid(), 'method': method, 'url': url,
+                                          'status': r.status_code if r is not None else None}) + '\n')
             latency = time.monotonic() - started
-            retry_after = r.headers.get('Retry-After')
-            retry_after = float(retry_after) if retry_after and retry_after.isdigit() else None
-            self.limiter.observe(r.status_code, r.elapsed.total_seconds(), retry_after)  # elapsed = time to headers
-            metrics.record(waited, latency, len(r.content), r.status_code)
+            if error is not None:
+                metrics.record(waited, latency, 0, 599)
+                print(f'retry after {error!r}', flush=True)
+                continue
+            metrics.record(waited, latency, size, r.status_code)
             if r.status_code < 500 and r.status_code != 429:
                 return r
         raise RuntimeError(f'request failed after retries: {url}')
@@ -367,6 +374,40 @@ def put_verified(s3, key, body):
     digest = hashlib.sha256(body).digest()
     s3.put_object(Bucket=BUCKET, Key=key, Body=body, ChecksumSHA256=base64.b64encode(digest).decode())
     return digest.hex()
+
+
+class RawExists(Exception):
+    """The key already holds different bytes; raw objects are never replaced."""
+
+
+def put_new(s3, key, body):
+    """Write raw bytes once: S3 conditional put (If-None-Match: *) refuses to replace an existing object, so a re-run
+    or a race cannot overwrite stored raw. Same bytes already stored -> returns their digest; different bytes -> raises
+    RawExists (a deliberate new capture would need its own key, e.g. <id>.<sha256[:16]>.html.gz)."""
+    digest = hashlib.sha256(body).digest()
+    try:
+        s3.put_object(Bucket=BUCKET, Key=key, Body=body, ChecksumSHA256=base64.b64encode(digest).decode(), IfNoneMatch='*')
+    except Exception as exc:
+        code = getattr(exc, 'response', {}).get('Error', {}).get('Code')
+        if code not in ('PreconditionFailed', 'ConditionalRequestConflict'):
+            raise
+        head = s3.head_object(Bucket=BUCKET, Key=key, ChecksumMode='ENABLED')
+        stored = base64.b64decode(head.get('ChecksumSHA256', '')).hex()
+        if stored != digest.hex():
+            raise RawExists(f'{key} stored sha256 {stored[:12]}') from None
+    return digest.hex()
+
+
+def put_raw_keep(s3, key, body):
+    """put_new, but when the key already holds different bytes (a deliberate re-acquisition), keep both: the new bytes
+    go to <stem>.<sha256[:16]><suffix>. Returns (sha256 hex, key written or matched)."""
+    try:
+        return put_new(s3, key, body), key
+    except RawExists:
+        digest = hashlib.sha256(body).hexdigest()
+        stem, dot, suffix = key.rpartition('/')[2].partition('.')
+        alt = f"{key.rpartition('/')[0]}/{stem}.{digest[:16]}{dot}{suffix}"
+        return put_new(s3, alt, body), alt
 
 
 def discover(client, s3, terms, classes, index, metrics):
@@ -522,7 +563,18 @@ def processed(meeting, html_bytes, side, raw_key, raw_sha):
     return row, pii, time.monotonic() - t
 
 
-def fetch(client, s3, index, per_shard, workers, limit, metrics, seed=None, classes=None):
+def client_error_ids(s3):
+    """Meetings that any earlier run (any version) got an HTTP 4xx for: not asked again unless retry_failed."""
+    ids = {}
+    for key in list_keys(s3, f'corpus/state/{SOURCE}/'):
+        if '/shard-' in key and key.endswith('.json'):
+            for mid, err in read_json_s3(s3, key, {}).get('failures', {}).items():
+                if str(err).startswith('http_4'):
+                    ids[int(mid)] = err
+    return ids
+
+
+def fetch(client, s3, index, per_shard, workers, limit, metrics, seed=None, classes=None, retry_failed=False):
     meetings = list(read_json_s3(s3, f'corpus/state/{SOURCE}/{index}', {'meetings': {}})['meetings'].values())
     meetings = [m for m in meetings if not classes or str(m.get('class')) in classes]
     meetings = stratified(meetings, seed) if seed is not None else sorted(meetings, key=lambda m: m['id'])
@@ -530,9 +582,11 @@ def fetch(client, s3, index, per_shard, workers, limit, metrics, seed=None, clas
     # Never download a meeting twice: raw already stored under any version is reprocessed, not fetched (B-008: a run
     # that only looked at the current version's manifests re-downloaded 10 meetings and replaced their raw bytes).
     have_raw = {int(k.rsplit('/', 1)[1].split('.')[0]) for k in list_keys(s3, f'corpus/raw/{SOURCE}/') if k.endswith('.html.gz')}
-    todo = [m for m in meetings if m['id'] not in done and m['id'] not in have_raw][:limit]
+    refused = {} if retry_failed else client_error_ids(s3)
+    todo = [m for m in meetings if m['id'] not in done and m['id'] not in have_raw and m['id'] not in refused][:limit]
     official = side_inputs(s3)
-    print(f'{len(meetings)} meetings indexed, {len(done)} done, {len(todo)} to fetch '
+    print(f'{len(meetings)} meetings indexed, {len(done)} done in {VERSION}, {len(have_raw)} with stored raw, '
+          f'{len(refused)} skipped after an earlier HTTP 4xx, {len(todo)} to fetch '
           f'({dict(Counter(str(m.get("class")) for m in todo))} by class)', flush=True)
     shard, started = next_shard(s3), time.monotonic()
 
@@ -542,7 +596,10 @@ def fetch(client, s3, index, per_shard, workers, limit, metrics, seed=None, clas
             return meeting, None, None, f'http_{r.status_code}'
         t = time.monotonic()
         raw_key = f"corpus/raw/{SOURCE}/{meeting['id']}.html.gz"
-        raw_sha = put_verified(s3, raw_key, gzip.compress(r.content, mtime=0))
+        try:
+            raw_sha = put_new(s3, raw_key, gzip.compress(r.content, mtime=0))
+        except RawExists as exc:  # stored bytes stay; nothing built from the new response
+            return meeting, None, None, f'raw_exists_not_overwritten:{exc}'
         metrics.add('s3_s', time.monotonic() - t)
         row, pii, parse = processed(meeting, r.content, official, raw_key, raw_sha)
         metrics.add('parse_s', parse)
@@ -646,6 +703,7 @@ def main():
     p.add_argument('--per-shard', type=int, default=200)
     p.add_argument('--limit', type=int, help='fetch at most this many meetings (pilot)')
     p.add_argument('--seed', help='fetch order: seeded, alternating meeting classes (default: ascending id)')
+    p.add_argument('--retry-failed', action='store_true', help='fetch: also ask again for meetings that got an HTTP 4xx')
     args = p.parse_args()
     s3, metrics = s3_client(), Metrics()
     host = BASE.split('://', 1)[1].split('/', 1)[0]
@@ -655,7 +713,8 @@ def main():
     if args.action == 'discover':
         discover(client, s3, args.terms, args.classes, args.index, metrics)
     elif args.action == 'fetch':
-        fetch(client, s3, args.index, args.per_shard, args.workers, args.limit, metrics, args.seed, set(args.classes))
+        fetch(client, s3, args.index, args.per_shard, args.workers, args.limit, metrics, args.seed, set(args.classes),
+              args.retry_failed)
     elif args.action == 'reprocess':
         reprocess(s3, args.index, args.per_shard, metrics)
     else:

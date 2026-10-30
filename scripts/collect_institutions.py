@@ -34,8 +34,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'scripts'))
 sys.path.insert(0, str(ROOT))
-from collect_assembly_minutes import (BUCKET, Client, HostLimiter, Metrics, list_keys, put_verified,  # noqa: E402
-                                      read_json_s3, s3_client)
+from collect_assembly_minutes import (BUCKET, Client, HostLimiter, Metrics, list_keys, put_raw_keep,  # noqa: E402
+                                      put_verified, read_json_s3, s3_client)
 
 SOURCE = 'institutions'
 BASE = 'https://www.alio.go.kr'
@@ -148,11 +148,12 @@ def acquire_family(client, s3, metrics, rid, fam):
     prefix = f'corpus/reserved/{rid}'
     r = client.request('GET', f'{BASE}/occasional/findRuleDtl.json', metrics, params={'seq': seq})
     t = time.monotonic()
-    put_verified(s3, f'{prefix}/raw/{seq}/detail.json', r.content)
+    detail_sha, detail_key = put_raw_keep(s3, f'{prefix}/raw/{seq}/detail.json', r.content)  # raw is never replaced
     metrics.add('s3_s', time.monotonic() - t)
     state = {'doc_family_id': fam['doc_family_id'], 'seq': seq, 'reservation': rid,
              'reserved_business_group': fam.get('business_group'), 'business_group_review': 'pending',
              'page_url': f'{BASE}/occasional/ruleDtl.do?seq={seq}', 'detail_http': r.status_code,
+             'detail_key': detail_key, 'detail_sha256': detail_sha,
              'collected_at': datetime.datetime.now(datetime.timezone.utc).isoformat(timespec='seconds'),
              'licence_evidence': LICENCE_EVIDENCE, 'licence_status': 'unconfirmed', 'files': []}
     body = r.json() if r.status_code == 200 and r.content[:1] == b'{' else {}
@@ -179,8 +180,7 @@ def acquire_family(client, s3, metrics, rid, fam):
         rec.update({'download_status': 'ok', 'bytes': len(data), 'content_type': f.headers.get('Content-Type'),
                     'kind': kind_of(data, name)})
         t = time.monotonic()
-        rec['raw_sha256'] = put_verified(s3, f'{prefix}/raw/{seq}/{no}.{rec["kind"].split(":")[-1] or "bin"}', data)
-        rec['raw_key'] = f'{prefix}/raw/{seq}/{no}.{rec["kind"].split(":")[-1] or "bin"}'
+        rec['raw_sha256'], rec['raw_key'] = put_raw_keep(s3, f'{prefix}/raw/{seq}/{no}.{rec["kind"].split(":")[-1] or "bin"}', data)
         metrics.add('s3_s', time.monotonic() - t)
         if rec['kind'] == 'zip:zip':
             rec['members'] = zip_members(s3, metrics, prefix, seq, no, data)

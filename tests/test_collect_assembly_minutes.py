@@ -2,7 +2,7 @@
 import threading
 import time
 import unittest
-from scripts.collect_assembly_minutes import HostLimiter, extract, minute_ids, nodes_of, payload, row_of
+from scripts.collect_assembly_minutes import extract, minute_ids, nodes_of, payload, row_of
 
 LIST = '''<ul class="tree_list"><li><div class="tit_wrap"><div class="txt">
 <a href="javascript:void(0);" class="tit sess" data-id="" data-sess="430" data-th="22" data-class="1"
@@ -50,7 +50,7 @@ class AssemblyMinutesTests(unittest.TestCase):
                           '2026-10-30T00:00:00+00:00')
         self.assertNotIn('02-123-4567', row['text'])
         self.assertEqual(dict(pii), {'PHONE': 1})
-        self.assertEqual((row['clean_version'], row['provenance']['institution']), ('clean-v5', '국회'))
+        self.assertEqual(row['provenance']['institution'], '국회')
         self.assertIn(row['split'], ('train', 'valid', 'test'))
         self.assertEqual(row['id'], 'assembly-minutes:55958')
         self.assertEqual(row['kind'], 'assembly_plenary')
@@ -147,35 +147,165 @@ class AssemblyMinutesTests(unittest.TestCase):
         self.assertNotIn(None, second.calls)  # the root list page was not requested again
         self.assertEqual(len(second.calls), 30 - 25)  # only sessions after the last checkpoint
 
-    def test_host_limiter_spaces_starts_across_threads_and_backs_off(self):
-        limiter, waits = HostLimiter(0.05), []
-        started = time.monotonic()
-        threads = [threading.Thread(target=lambda: waits.append(limiter.acquire())) for _ in range(4)]
-        for t in threads:
-            t.start()
-        for t in threads:
-            t.join()
-        # Four starts share one host interval: the last one cannot begin before 3 intervals have passed.
-        self.assertGreaterEqual(time.monotonic() - started, 0.15 - 0.01)
-        limiter.observe(429, 0.1, retry_after=0.2)
-        self.assertGreaterEqual(limiter.interval, 0.2)
-        for _ in range(200):
-            limiter.observe(200, 0.1)
-        self.assertAlmostEqual(limiter.interval, 0.05)
-
-    def test_shared_limiter_spaces_reservations_across_processes(self):
+    def test_requests_reach_the_server_spaced_across_processes_threads_late_wakeups_and_stalls(self):
         import multiprocessing
         import tempfile
-        with tempfile.TemporaryDirectory() as d:
-            with multiprocessing.get_context('spawn').Pool(3) as pool:
-                starts = sorted(s for batch in pool.starmap(_reserve_n, [(d, 4)] * 3) for s in batch)
-        self.assertEqual(len(starts), 12)
-        self.assertTrue(all(b - a >= 0.1 - 1e-6 for a, b in zip(starts, starts[1:])), starts)  # epoch-float rounding
+        with _Server() as server, tempfile.TemporaryDirectory() as d:
+            with multiprocessing.get_context('spawn').Pool(2) as pool:
+                logged = pool.starmap(_burst, [(d, server.url, 6, 3, False), (d, server.url, 6, 1, True)])
+            arrivals = sorted(server.arrivals)
+        starts = sorted(t for batch in logged for t in batch)
+        self.assertEqual(len(arrivals), 12)
+        # Server-side arrival times: no epsilon. A request is sent after its start and before its end, and the next
+        # start waits for that end + interval, so even late wake-ups and pre-send stalls cannot close the gap.
+        self.assertGreaterEqual(min(b - a for a, b in zip(arrivals, arrivals[1:])), INTERVAL, arrivals)
+        self.assertGreaterEqual(min(b - a for a, b in zip(starts, starts[1:])), INTERVAL, starts)
+
+    def test_retry_after_pushes_the_next_request_out(self):
+        import tempfile
+        from scripts import collect_assembly_minutes as am
+        with _Server(first_status=429) as server, tempfile.TemporaryDirectory() as d:
+            client = am.Client(am.HostLimiter(INTERVAL, host='retry-after', shared_dir=d))
+            self.assertEqual(client.request('GET', server.url, am.Metrics()).status_code, 200)  # retried after the 429
+            arrivals = sorted(server.arrivals)
+        self.assertEqual(len(arrivals), 2)
+        self.assertGreaterEqual(arrivals[1] - arrivals[0], 1.0)  # Retry-After: 1
+
+    def test_new_clean_version_never_downloads_or_replaces_stored_raw(self):
+        import gzip
+        import json as _json
+        from unittest import mock
+        from scripts import collect_assembly_minutes as am
+        s3 = _FakeS3()
+        meetings = {str(i): {'id': i, 'class': '2', 'th': '22'} for i in (1, 2, 3)}
+        s3.objects['corpus/state/assembly-minutes/idx.json'] = _json.dumps({'done': [], 'meetings': meetings}).encode()
+        stored = gzip.compress(b'<h1>stored minutes</h1>', mtime=0)
+        am.put_new(s3, 'corpus/raw/assembly-minutes/1.html.gz', stored)  # collected under an older clean version
+        s3.objects['corpus/state/assembly-minutes/clean-v1/shard-00000.json'] = _json.dumps(
+            {'ids': [1], 'failures': {'2': 'http_400'}}).encode()
+        client = _FakeClient()
+        with mock.patch.object(am, 'VERSION', 'clean-v99'):
+            am.fetch(client, s3, 'idx.json', 10, 1, None, am.Metrics())
+        self.assertEqual(client.ids, [3])  # 1 has raw (any version), 2 got HTTP 400 before: no request for either
+        self.assertEqual(s3.objects['corpus/raw/assembly-minutes/1.html.gz'], stored)
+        self.assertIn('corpus/raw/assembly-minutes/3.html.gz', s3.objects)
+        # A direct write of different bytes to a stored raw key is refused and leaves the bytes alone.
+        with self.assertRaises(am.RawExists):
+            am.put_new(s3, 'corpus/raw/assembly-minutes/1.html.gz', b'other')
+        self.assertEqual(s3.objects['corpus/raw/assembly-minutes/1.html.gz'], stored)
+        self.assertEqual(am.put_new(s3, 'corpus/raw/assembly-minutes/1.html.gz', stored), __import__('hashlib').sha256(stored).hexdigest())
+        sha, key = am.put_raw_keep(s3, 'corpus/raw/x/9.html.gz', b'a')
+        sha2, key2 = am.put_raw_keep(s3, 'corpus/raw/x/9.html.gz', b'b')  # deliberate re-capture: both kept
+        self.assertEqual((key, s3.objects[key]), ('corpus/raw/x/9.html.gz', b'a'))
+        self.assertEqual((key2, s3.objects[key2]), (f'corpus/raw/x/9.{sha2[:16]}.html.gz', b'b'))
 
 
-def _reserve_n(shared_dir, n):
-    limiter = HostLimiter(0.1, host='proof.example', shared_dir=shared_dir)
-    return [limiter._reserve()[0] for _ in range(n)]
+INTERVAL = 0.15
+
+
+class _Server:
+    """Local HTTP server that records when each request arrives (handler entry) and answers after a random delay."""
+
+    def __init__(self, first_status=200):
+        self.arrivals, self.first_status = [], first_status
+
+    def __enter__(self):
+        import http.server
+        import random
+        outer = self
+
+        class Handler(http.server.BaseHTTPRequestHandler):
+            def do_GET(self):
+                outer.arrivals.append(time.time())
+                time.sleep(random.uniform(0, 0.05))
+                status = outer.first_status if len(outer.arrivals) == 1 else 200
+                self.send_response(status)
+                if status == 429:
+                    self.send_header('Retry-After', '1')
+                self.send_header('Content-Length', '2')
+                self.end_headers()
+                self.wfile.write(b'ok')
+
+            def log_message(self, *args):
+                pass
+
+        self.httpd = http.server.ThreadingHTTPServer(('127.0.0.1', 0), Handler)
+        self.url = f'http://127.0.0.1:{self.httpd.server_address[1]}/'
+        threading.Thread(target=self.httpd.serve_forever, daemon=True).start()
+        return self
+
+    def __exit__(self, *exc):
+        self.httpd.shutdown()
+        self.httpd.server_close()
+
+
+def _burst(shared_dir, url, n, threads, misbehave):
+    """One process: n requests over `threads` threads. misbehave: every sleep overshoots by up to 120 ms and every
+    request stalls up to 200 ms between its start and the actual send."""
+    import random
+    import tempfile
+    from concurrent.futures import ThreadPoolExecutor
+    from pathlib import Path
+    from scripts import collect_assembly_minutes as am
+    if misbehave:
+        real_sleep = time.sleep
+        am.time.sleep = lambda s: real_sleep(s + random.uniform(0, 0.12))
+    log = Path(tempfile.mkdtemp()) / 'requests.jsonl'
+    client = am.Client(am.HostLimiter(INTERVAL, host='local-proof', shared_dir=shared_dir), log)
+    if misbehave:
+        send = client.session.request
+
+        def stalled(*a, **kw):
+            time.sleep(random.uniform(0, 0.2))
+            return send(*a, **kw)
+        client.session.request = stalled
+    with ThreadPoolExecutor(threads) as pool:
+        list(pool.map(lambda _: client.request('GET', url, am.Metrics()), range(n)))
+    import json as _json
+    return [_json.loads(line)['t'] for line in log.read_text().split('\n') if line]
+
+
+class _FakeS3:
+    """Enough of S3 for fetch: conditional put (If-None-Match), checksums, listing."""
+
+    class _Missing(Exception):
+        pass
+    exceptions = type('E', (), {'NoSuchKey': _Missing})
+
+    def __init__(self):
+        self.objects, self.checksums = {}, {}
+
+    def put_object(self, Bucket, Key, Body, ChecksumSHA256=None, IfNoneMatch=None):
+        if IfNoneMatch == '*' and Key in self.objects:
+            err = Exception('PreconditionFailed')
+            err.response = {'Error': {'Code': 'PreconditionFailed'}}
+            raise err
+        self.objects[Key], self.checksums[Key] = Body, ChecksumSHA256
+
+    def get_object(self, Bucket, Key):
+        import io
+        if Key not in self.objects:
+            raise self._Missing(Key)
+        return {'Body': io.BytesIO(self.objects[Key])}
+
+    def head_object(self, Bucket, Key, ChecksumMode=None):
+        return {'ChecksumSHA256': self.checksums[Key], 'ContentLength': len(self.objects[Key])}
+
+    def get_paginator(self, name):
+        objects = self.objects
+        return type('P', (), {'paginate': lambda self, Bucket, Prefix: [
+            {'Contents': [{'Key': k} for k in sorted(objects) if k.startswith(Prefix)]}]})()
+
+
+class _FakeClient:
+    limiter = type('L', (), {'interval': 1.0})()
+
+    def __init__(self):
+        self.ids = []
+
+    def request(self, method, url, metrics, **kw):
+        self.ids.append(int(url.split('id=')[1].split('&')[0]))
+        return type('R', (), {'status_code': 200, 'text': VIEWER, 'content': VIEWER.encode()})()
 
 
 if __name__ == '__main__':
