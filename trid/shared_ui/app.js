@@ -1,151 +1,293 @@
 'use strict';
+// Chat UI over the A-UI-API-CONTRACT-001 API. Every server value is placed with textContent (no HTML from responses).
 const el = id => document.getElementById(id);
 const token = document.querySelector('meta[name="trid-token"]').content;
+const defaultModel = document.querySelector('meta[name="trid-default-model"]')?.content || '';
+const MAX_QUESTION = 500;
 let documentId = null, pages = [], documentName = '', busy = false, lastApplied = null;
-let commandHistory = [], historyIndex = 0, draft = '';
-function print(text, kind = '') {
-  const line = document.createElement('pre');
-  line.className = kind;
-  line.textContent = text;
-  el('output').append(line);
-  line.scrollIntoView({block:'end'});
+
+function node(tag, cls, text) {
+  const n = document.createElement(tag);
+  if (cls) n.className = cls;
+  if (text !== undefined && text !== null) n.textContent = text;
+  return n;
 }
+function message(role, text, extraClass = '') {
+  document.body.classList.remove('empty');
+  const wrap = node('div', `msg ${role}${extraClass ? ' ' + extraClass : ''}`);
+  const body = node('div', 'text', text);
+  body.prepend(node('span', 'sr-only', role === 'user' ? '나: ' : role === 'bot' ? 'trid: ' : '안내: '));
+  wrap.append(body);
+  el('output').append(wrap);
+  requestAnimationFrame(() => wrap.scrollIntoView({block: 'end', behavior: 'smooth'}));
+  return wrap;
+}
+const system = text => message('system', text);
+function failure(text) { message('system', text, 'error').setAttribute('role', 'alert'); }
+function tag(text, kind = '') { return node('span', `tag${kind ? ' ' + kind : ''}`, text); }
+function note(parent, text, kind = '') { parent.append(node('div', `note${kind ? ' ' + kind : ''}`, text)); }
+function block(label, text) {
+  const b = node('div', 'block', text);
+  if (label) b.prepend(node('span', 'label', label));
+  return b;
+}
+function sourceLink(url) {
+  const a = node('a', '', url);
+  if (/^https?:\/\//.test(url)) { a.href = url; a.target = '_blank'; a.rel = 'noopener noreferrer'; }
+  return a;
+}
+
 function setBusy(value) {
   busy = value;
-  el('command').disabled = value;
-  el('command-form').querySelector('button').disabled = value;
-  el('save-text').disabled = value;
-  el('cancel-text').disabled = value;
-  el('version').disabled = value;
-  el('pending').textContent = value ? 'trid > 처리 중…' : '';
+  for (const id of ['send', 'attach', 'attach-pdf', 'attach-paste', 'attach-sample', 'new-chat', 'save-text', 'cancel-text',
+                    'version', 'back-workspace']) el(id).disabled = value;
+  el('command').setAttribute('aria-busy', String(value));
+  el('pending').textContent = value ? '답변을 만드는 중' : '';
   if (!value && el('paste-panel').hidden) el('command').focus();
 }
 async function api(path, body, headers = {}) {
-  const response = await fetch(path, {method:'POST', headers:{'X-Trid-Token':token, ...headers}, body});
+  let response;
+  try {
+    response = await fetch(path, {method: 'POST', headers: {'X-Trid-Token': token, ...headers}, body});
+  } catch {
+    throw Error('서버에 연결하지 못했습니다. 잠시 후 다시 시도해 주세요.');
+  }
   let data;
-  try {data = await response.json();} catch {throw Error('서버에 연결하지 못했습니다. 잠시 후 다시 시도해 주세요.');}
-  if (!response.ok) throw Error(data.error || '요청에 실패했습니다.');
+  try { data = await response.json(); } catch { throw Error('서버 응답을 읽지 못했습니다. 잠시 후 다시 시도해 주세요.'); }
+  if (!response.ok) throw Error(data.error || '요청에 실패했습니다. 잠시 후 다시 시도해 주세요.');
   return data;
 }
-const jsonApi = (path, data) => api(path, JSON.stringify(data), {'Content-Type':'application/json'});
+const jsonApi = (path, data) => api(path, JSON.stringify(data), {'Content-Type': 'application/json'});
 async function task(action) {
-  if (busy) return;
+  if (busy) return false;
   setBusy(true);
-  try {await action();} catch (error) {print(`오류 > ${error.message}`, 'error');} finally {setBusy(false);}
+  try { await action(); return true; } catch (error) { failure(error.message); return false; } finally { setBusy(false); }
+}
+
+function describe(d) {
+  return [d.institution, d.title, d.kind, d.date ? `${d.date_type || '기준일'} ${d.date}` : null,
+          d.effective_date ? `시행 ${d.effective_date}` : null].filter(Boolean).join(' · ');
+}
+function setDocument(data) {
+  documentId = data ? data.document_id : null;
+  pages = data ? data.pages : [];
+  documentName = data ? data.name : '';
+  el('doc-chip').hidden = !documentId;
+  el('doc-name').textContent = documentId ? `${documentName} (${pages.length}쪽)` : '';
 }
 function loaded(data) {
-  documentId = data.document_id; pages = data.pages; documentName = data.name;
-  print(`trid > ${documentName} · ${pages.length}페이지를 읽었습니다.\n이제 질문은 이 문서에서만 찾습니다. 공유 자료 검색으로 돌아가려면 /workspace.`, 'reply');
-  for (const warning of data.warnings) print(warning.replace('추출 문서 보기에서 확인해 주세요.', '/source로 원문을 확인해 주세요.'), 'muted');
+  setDocument(data);
+  const m = system(`${documentName}을(를) 읽었습니다. 이제 이 문서에서만 찾습니다.`);
+  for (const warning of data.warnings || []) note(m, warning.replace('추출 문서 보기에서 확인해 주세요.', '‘문서 보기’로 원문을 확인해 주세요.'), 'warn');
 }
-function help() {
-  print('말을 걸거나 질문하세요. 업무 규정·기준 질문은 등록된 공개 자료에서 근거를 찾습니다.\n/doc 번호  (고급) 직전 답변의 참고 문서 중 하나로 다음 질문 고정, /doc 해제\n/workspace 업로드 문서 대신 공유 자료 검색으로 돌아가기\n/pdf       텍스트 PDF 열기 (2MB · 20페이지 · 5만 자 이하, OCR 미지원)\n/paste     문서 직접 붙여넣기 (5,000자 이하)\n/sample    가상 출장 규정 불러오기\n/source    현재 문서(또는 직전 답변의 적용 문서 원문 링크) 보기\n/clear     대화 기억·서버 문서·화면 기록 지우기\n/help      도움말\n\n기본 엔진은 최근 대화 몇 턴을 기억합니다(이 브라우저 세션, /clear로 삭제). 업무 사실은 매번 공개 자료에서 근거를 새로 찾습니다.\n↑ / ↓ 이전 명령 선택 · Enter 실행', 'muted');
+function highlighted(text, span) {
+  const b = node('div', 'block');
+  const chars = Array.from(text);  // the server returns code-point offsets
+  const [a, z] = span || [0, 0];
+  b.append(document.createTextNode(chars.slice(0, a).join('')));
+  if (z > a) b.append(node('mark', '', chars.slice(a, z).join('')));
+  b.append(document.createTextNode(chars.slice(z).join('')));
+  return b;
 }
-function describe(d) {
-  return [d.institution, d.title, d.kind, d.date ? `${d.date_type || '기준일'} ${d.date}` : null, d.effective_date ? `시행 ${d.effective_date}` : null].filter(Boolean).join(' · ');
+
+// Status shown on every evidence answer: never hide that an answer is unverified or that the model failed.
+// Colour stays neutral; the wording carries the status. Only a model failure is drawn as an error.
+const STATUS = {
+  quoted: '원문 인용 확인됨', answer: '원문 위치 확인됨', unverified: '검증 안 됨 · 해설만',
+  review: '검증 보류 · 원문 확인 필요', not_found: '근거 못 찾음', clarify: '되묻기',
+  unknown_institution: '해당 기관 자료 없음', institution_no_match: '해당 기관 자료에 근거 없음', model_failure: '모델 응답 실패',
+};
+
+function renderAnswer(result, started) {
+  const m = message('bot', result.answer || '(빈 응답)');
+  const tags = node('div', 'tags');
+  if (result.intent === 'chat') tags.append(tag('일반 대화 · 문서 근거 없음 · 검증 대상 아님'));
+  else tags.append(tag(STATUS[result.status] || result.status || '근거 검색', result.status === 'model_failure' ? 'bad' : ''));
+  m.append(tags);
+  for (const text of result.commentary_notes || []) if (text.includes('숨겼습니다')) note(m, text, 'warn');
+  if (result.table_warning) note(m, result.table_warning, 'warn');
+  // A verified quote is the answer itself: show the exact span; its surrounding text stays in the fold.
+  for (const c of result.candidates || []) {
+    const [a, z] = c.prediction?.source_character_span || [0, 0];
+    if (z <= a) continue;
+    const where = c.source_label || (c.page ? `${c.page}쪽` : '');
+    const quote = block(`원문 인용${where ? ' · ' + where : ''}`, '');
+    quote.append(node('mark', '', Array.from(c.text).slice(a, z).join('')));
+    m.append(quote);
+  }
+
+  const ws = result.workspace;
+  if (result.intent !== 'chat' && ws) lastApplied = ws.applied || null;
+  const details = node('details', 'more');
+  const parts = [];
+  if (ws?.applied) parts.push(ws.applied.institution || '적용 문서');
+  if (result.candidates?.length) parts.push(`인용 ${result.candidates.length}`);
+  details.append(node('summary', '', parts.length ? `출처 · ${parts.join(' · ')}` : '자세히'));
+  if (ws?.applied) {
+    const a = ws.applied;
+    const b = block(`적용 문서${ws.pinned ? ' · 고정됨' : ''}`, describe(a));
+    if (a.currency) b.append(document.createTextNode(`\n${a.currency}`));
+    if (a.source) { b.append(document.createTextNode('\n원문 ')); b.append(sourceLink(a.source)); }
+    if (a.license) b.append(document.createTextNode(` · ${a.license}`));
+    details.append(b);
+  }
+  for (const c of result.candidates || []) {
+    const b = highlighted(c.text, c.prediction?.source_character_span);
+    const where = c.source_label || (c.page ? `${c.page}쪽` : '');
+    b.prepend(node('span', 'label', `${result.answer_mode === 'case' ? '원문 인용 · 글자 그대로 확인됨' : '근거'}${where ? ' · ' + where : ''}`));
+    details.append(b);
+  }
+  if (result.commentary) details.append(block('모델 해설 · 검증 안 됨 — 원문과 대조하세요', result.commentary));
+  if (ws?.selection === 'answer' && ws.others?.length) {
+    details.append(block('검색된 다른 문서 (이 답변에는 쓰지 않음 · 다른 기관 기준이면 질문에 기관명을 넣어 주세요)',
+                         ws.others.slice(0, 3).map(d => `- ${describe(d)}`).join('\n')));
+  }
+  const info = [];
+  if (result.search_query) info.push(`검색어: ${result.search_query}`);
+  for (const text of result.commentary_notes || []) if (!text.includes('숨겼습니다')) info.push(text);
+  if (result.scope) info.push(result.scope);
+  if (result.checked_chunks !== undefined && result.intent !== 'chat') info.push(`${result.checked_chunks}/${result.total_chunks ?? '?'}개 구간 확인`);
+  info.push(`${result.model} · ${(result.elapsed_ms / 1000).toFixed(1)}초 (왕복 ${((performance.now() - started) / 1000).toFixed(1)}초)`);
+  details.append(node('div', 'note', info.join('\n')));
+  details.lastChild.style.whiteSpace = 'pre-wrap';
+  m.append(details);
+}
+
+async function ask(question) {
+  message('user', question);
+  await task(async () => {
+    const started = performance.now();
+    const request = documentId ? {question, document_id: documentId, version: el('version').value}
+                               : {question, scope: 'workspace', version: el('version').value};
+    renderAnswer(await jsonApi('/api/ask', request), started);
+  });
+}
+function showSource() {
+  if (documentId) {
+    const m = system(`${documentName} 원문`);
+    const details = node('details', 'more');
+    details.open = true;
+    details.append(node('summary', '', `${pages.length}쪽`));
+    pages.forEach((p, i) => details.append(block(`${i + 1}쪽`, p)));
+    m.append(details);
+  } else if (lastApplied) {
+    const m = system(`직전 답변의 적용 문서: ${describe(lastApplied)}`);
+    if (lastApplied.source) {
+      const n = node('div', 'note');
+      n.append(document.createTextNode('원문 '), sourceLink(lastApplied.source));
+      m.append(n);
+    }
+  } else {
+    system('먼저 질문하거나 문서를 첨부해 주세요.');
+  }
+}
+async function newChat() {
+  await task(async () => {
+    await jsonApi('/api/clear', {});
+    setDocument(null); lastApplied = null;
+    el('file').value = ''; el('document-text').value = ''; el('output').replaceChildren();
+    pastePanel(false);
+    document.body.classList.add('empty');
+  });
 }
 function pastePanel(show) {
   el('paste-panel').hidden = !show;
-  el('command-form').hidden = show;
+  toggleAttachMenu(false);
   (show ? el('document-text') : el('command')).focus();
 }
-async function execute(value) {
-  print(`나 > ${value}`);
-  if (value === '/help') {help(); return;}
-  if (value === '/pdf') {el('file').value = ''; el('file').click(); return;}
-  if (value === '/paste') {pastePanel(true); return;}
-  if (value === '/source') {
-    if (documentId) print(`${documentName}\n\n${pages.map((p,i)=>`[${i+1}페이지]\n${p}`).join('\n\n')}`, 'muted');
-    else if (lastApplied) print(`직전 답변의 적용 문서: ${describe(lastApplied)}\n원문: ${lastApplied.source}`, 'muted');
-    else print('trid > 먼저 질문하거나 /pdf, /paste로 문서를 넣어 주세요.', 'muted');
+function toggleAttachMenu(show = el('attach-menu').hidden) {
+  el('attach-menu').hidden = !show;
+  el('attach').setAttribute('aria-expanded', String(show));
+}
+function openPdf() { toggleAttachMenu(false); el('file').value = ''; el('file').click(); }
+async function sample() { toggleAttachMenu(false); await task(async () => loaded(await jsonApi('/api/sample', {}))); }
+function backToWorkspace() { setDocument(null); system('공개 자료 검색으로 돌아왔습니다.'); }
+function openInfo() { el('info').showModal(); }
+
+const COMMANDS = {
+  '/help': openInfo, '/pdf': openPdf, '/paste': () => pastePanel(true), '/source': showSource, '/sample': sample,
+  '/workspace': backToWorkspace, '/clear': newChat, '/reset': newChat,
+};
+function submit() {
+  const input = el('command');
+  const value = input.value.trim();
+  if (busy || !value) return;
+  if (value.startsWith('/') && !value.includes('\n')) {
+    const command = COMMANDS[value.split(/\s+/)[0]];
+    input.value = ''; resize();
+    if (command) void command(); else system('알 수 없는 명령어입니다. i 버튼에서 사용법을 확인하세요.');
     return;
   }
-  if (value === '/workspace') {documentId = null; pages = []; documentName = ''; print('trid > 공유 자료 검색으로 돌아왔습니다.', 'muted'); return;}
-  if (value === '/doc' || /^\/doc\s+\d+$/.test(value)) {
-    const n = value === '/doc' ? null : Number(value.split(/\s+/)[1]);
-    await task(async()=>{
-      const r = await jsonApi('/api/pin', {choice:n});
-      print(r.pinned ? `trid > 다음 질문부터 이 문서에서만 찾습니다: ${describe(r.pinned)}` : 'trid > 문서 고정을 풀었습니다. 질문마다 가장 관련 있는 문서를 자동으로 고릅니다.', 'muted');
-    }); return;
-  }
-  if (value === '/sample') {await task(async()=>loaded(await jsonApi('/api/sample', {}))); return;}
-  if (value === '/clear' || value === '/reset') {
-    await task(async()=>{
-      await jsonApi('/api/clear', {});
-      documentId = null; pages = []; documentName = ''; commandHistory = []; historyIndex = 0; draft = '';
-      el('file').value = ''; el('document-text').value = ''; el('output').replaceChildren();
-      print('TRID > 대화 기억, 문서, 화면 기록을 지웠습니다.');
-    }); return;
-  }
-  if (value.startsWith('/')) {print('trid > 알 수 없는 명령입니다. /help로 명령어를 확인하세요.', 'muted'); return;}
-  await task(async()=>{
-    const started = performance.now();
-    const request = documentId ? {question:value, document_id:documentId, version:el('version').value}
-                               : {question:value, scope:'workspace', version:el('version').value};
-    const result = await jsonApi('/api/ask', request);
-    if (result.intent === 'chat') {
-      print(`TRID > ${result.answer}`, 'reply');
-      print(`[일반 대화 · 문서 근거 없음 · 검증 대상 아님 · ${result.model} · ${result.elapsed_ms}ms]`, 'muted');
-      for (const note of result.commentary_notes || []) print(note, 'error');
-      return;
-    }
-    print(`TRID [근거 검색 · ${result.model}] > ${result.answer}`, 'reply');
-    if (result.search_query) print(`[앞선 대화를 반영한 검색어] ${result.search_query}`, 'muted');
-    const ws = result.workspace;
-    if (ws) {
-      lastApplied = ws.applied;
-      if (ws.applied) print(`[적용 문서${ws.pinned ? ' · 고정됨' : ''}] ${describe(ws.applied)}\n원문: ${ws.applied.source} · ${ws.applied.license}\n${ws.applied.currency || ''}`, 'muted');
-    }
-    print(`[서버 처리 ${result.elapsed_ms}ms · 왕복 ${Math.round(performance.now()-started)}ms · ${result.checked_chunks}/${result.total_chunks}개 구간 확인]`, 'muted');
-    for (const candidate of result.candidates) {
-      const [a,b] = candidate.prediction.source_character_span;
-      const chars = Array.from(candidate.text);
-      // Code-point offsets are returned by the Python model; bracket the exact source span.
-      const source = chars.slice(0,a).join('') + '【' + chars.slice(a,b).join('') + '】' + chars.slice(b).join('');
-      const where = candidate.source_label || `${candidate.page}페이지`;
-      print(`[${result.answer_mode === 'case' ? '원문 인용 · 글자 그대로 확인됨' : '근거'} · ${where}]\n${source}`, 'muted');
-    }
-    if (result.commentary) print(`[모델 해설 · 검증 안 됨 — 원문과 대조하세요]\n${result.commentary}`, 'muted');
-    for (const note of result.commentary_notes || []) print(note, note.includes('숨겼습니다') ? 'error' : 'muted');
-    if (result.table_warning) print(result.table_warning, 'error');
-    if (ws?.selection === 'answer' && ws.others?.length) print('검색된 다른 문서 (참고용, 이 답변에는 쓰지 않음. 다른 기관 기준이 필요하면 질문에 기관명이나 규정명을 넣어 주세요):\n' + ws.others.slice(0, 3).map(d=>`- ${describe(d)}`).join('\n'), 'muted');
-    print(result.scope, 'muted');
-  });
+  if (Array.from(value).length > MAX_QUESTION) { failure(`질문은 ${MAX_QUESTION}자 이하로 입력해 주세요. 긴 문서는 ＋ → 문서 붙여넣기로 넣어 주세요.`); return; }
+  input.value = ''; resize();
+  void ask(value);
 }
-el('command-form').addEventListener('submit', event=>{
-  event.preventDefault();
-  const value = el('command').value.trim();
-  if (busy || !value) return;
-  commandHistory.push(value); historyIndex = commandHistory.length; draft = '';
-  el('command').value = '';
-  void execute(value);
-});
-el('command').addEventListener('keydown', event=>{
-  if (event.key === 'Enter' && event.isComposing) {event.preventDefault(); return;}
-  if (event.isComposing || !['ArrowUp','ArrowDown'].includes(event.key) || !commandHistory.length) return;
-  event.preventDefault();
-  if (historyIndex === commandHistory.length) draft = el('command').value;
-  historyIndex = Math.max(0, Math.min(commandHistory.length, historyIndex + (event.key === 'ArrowUp' ? -1 : 1)));
-  el('command').value = historyIndex === commandHistory.length ? draft : commandHistory[historyIndex];
-});
-el('version').addEventListener('change', ()=>{
+function resize() {
+  const input = el('command');
+  input.style.height = 'auto';
+  input.style.height = `${Math.min(input.scrollHeight, window.innerHeight * 0.4)}px`;
+}
+function updateFlag() {
+  const label = el('version').selectedOptions[0]?.textContent || '';
+  el('model-flag').hidden = !/회귀/.test(label);
   for (const card of document.querySelectorAll('.version-card')) card.hidden = card.dataset.version !== el('version').value;
-  print(`trid > 모델 버전: ${el('version').selectedOptions[0].textContent} · 다음 질문부터 적용됩니다.`, 'muted');
+}
+
+let composing = false;
+el('command').addEventListener('compositionstart', () => { composing = true; });
+el('command').addEventListener('compositionend', () => { composing = false; });
+el('command').addEventListener('keydown', event => {
+  if (event.key !== 'Enter' || event.shiftKey) return;
+  // IME: Enter that confirms a Korean syllable must not send (isComposing / keyCode 229 on some browsers).
+  if (event.isComposing || composing || event.keyCode === 229) return;
+  event.preventDefault();
+  submit();
 });
-el('version-form').addEventListener('submit', event=>event.preventDefault());
-el('file').addEventListener('change', ()=>{
-  const file = el('file').files[0]; if (!file || busy) return;
-  if (file.size > 2*1024*1024) {print('오류 > PDF는 2MB 이하로 넣어 주세요.', 'error'); return;}
-  void task(async()=>loaded(await api('/api/load', file, {'Content-Type':'application/pdf','X-File-Name':encodeURIComponent(file.name)})));
+el('command').addEventListener('input', resize);
+el('command-form').addEventListener('submit', event => { event.preventDefault(); submit(); });
+el('attach').addEventListener('click', () => toggleAttachMenu());
+el('attach-pdf').addEventListener('click', openPdf);
+el('attach-paste').addEventListener('click', () => pastePanel(true));
+el('attach-sample').addEventListener('click', () => void sample());
+el('new-chat').addEventListener('click', () => void newChat());
+el('doc-source').addEventListener('click', showSource);
+el('back-workspace').addEventListener('click', backToWorkspace);
+el('open-info').addEventListener('click', openInfo);
+el('open-info-inline').addEventListener('click', openInfo);
+el('close-info').addEventListener('click', () => el('info').close());
+el('info').addEventListener('click', event => { if (event.target === el('info')) el('info').close(); });
+el('version').addEventListener('change', () => {
+  updateFlag();
+  if (!document.body.classList.contains('empty')) system(`모델: ${el('version').selectedOptions[0].textContent}`);
+  el('command').focus();
 });
-el('save-text').onclick = ()=>void task(async()=>{
-  loaded(await jsonApi('/api/text', {text:el('document-text').value}));
+el('version-form').addEventListener('submit', event => event.preventDefault());
+el('file').addEventListener('change', () => {
+  const file = el('file').files[0];
+  toggleAttachMenu(false);
+  if (!file || busy) return;
+  if (file.size > 2 * 1024 * 1024) { failure('PDF는 2MB 이하로 넣어 주세요.'); return; }
+  void task(async () => loaded(await api('/api/load', file, {'Content-Type': 'application/pdf', 'X-File-Name': encodeURIComponent(file.name)})));
+});
+el('save-text').addEventListener('click', () => void task(async () => {
+  loaded(await jsonApi('/api/text', {text: el('document-text').value}));
   el('document-text').value = ''; pastePanel(false);
+}));
+el('cancel-text').addEventListener('click', () => { el('document-text').value = ''; pastePanel(false); });
+el('document-text').addEventListener('keydown', event => {
+  if (busy || event.isComposing || event.keyCode === 229) return;
+  if (event.key === 'Escape') { event.preventDefault(); el('cancel-text').click(); }
+  if (event.key === 'Enter' && (event.ctrlKey || event.metaKey)) { event.preventDefault(); el('save-text').click(); }
 });
-el('cancel-text').onclick = ()=>{el('document-text').value = ''; pastePanel(false);};
-el('document-text').addEventListener('keydown', event=>{
-  if (busy || event.isComposing) return;
-  if (event.key === 'Escape') {event.preventDefault(); el('cancel-text').click();}
-  if (event.key === 'Enter' && (event.ctrlKey || event.metaKey)) {event.preventDefault(); el('save-text').click();}
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && !el('attach-menu').hidden) { toggleAttachMenu(false); el('attach').focus(); }
 });
-print('TRID > 안녕하세요. 무엇을 도와드릴까요? 업무 규정이나 기준을 물으시면 공개 자료에서 근거를 찾아 드립니다.', 'muted');
+
+// Default model: keep the server's selected option; otherwise pick the option named like the default engine.
+const select = el('version');
+if (!select.querySelector('option[selected]') && defaultModel) {
+  const match = Array.from(select.options).find(o => o.textContent === defaultModel);
+  if (match) select.value = match.value;
+}
+updateFlag();
+resize();
