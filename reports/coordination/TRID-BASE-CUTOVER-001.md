@@ -45,11 +45,11 @@
 | Qwen3-0.6B prompt_only | 25 | 0 | — | 0 | 신규 `rag310-qwen3-0.6b-q8.json` |
 | Qwen3-0.6B grammar_instructed | 59 | 2 | 80 | 0 | 신규 (같은 파일) |
 | Qwen3-0.6B evidence_constrained | 14 | 13 | — | 0 | 신규 `open-weight-lora/rag310-qwen3-0.6b-base-constrained.json` |
-| 참고: 자체 E1 390M (evidence 디코딩, strict) | 35 | ≤37 (82 − 45; 보류 종류 오류 포함) | 45 | 0 | A-004 (디코딩 방식이 달라 직접 비교하지 않음) |
+| Qwen3-1.7B prompt_only | 8 | 0 | — | 0 | 기존 `rag310-qwen3-1.7b-q8.json` |
 | Qwen3-1.7B grammar_instructed | **104** | 2 | 75 | 0 | 기존 (같은 파일) |
 | Qwen3-1.7B evidence_constrained | 6 | 14 | — | 6 | 기존 `rag310-qwen3-base-constrained.json` |
 | 참고: Kanana-1.5-2.1B grammar_instructed / constrained | 26 / 52 | 0 / 11 | — | 0 / 11 | 기존 |
-| 참고: 자체 E1 390M (evidence 디코딩, strict) | 35 | 37 | 45 | 0 | A-004 (디코딩 방식이 달라 직접 비교하지 않음) |
+| 참고: 자체 E1 390M (evidence 디코딩, strict) | 35 | ≤37 (82 − 45, 보류 종류 오류 포함) | 45 | 0 | A-004 (디코딩 방식이 달라 직접 비교하지 않음) |
 
 - **같은 문항 비교 (grammar_instructed, 답 있음 228):** 1.7B만 맞힘 62, 0.6B만 맞힘 17. McNemar p=3.6e-7.
 - **값 순서 강제의 부작용:** Qwen3는 자연스럽게 `[D1] 값` 순서로 답한다. `evidence_constrained`는 값이 먼저 오도록 문법을 강제하므로, 모델이 엉뚱한 구간("수 있으며 [D5]")을 고르게 된다.
