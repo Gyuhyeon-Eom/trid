@@ -500,7 +500,10 @@ def fetch(client, s3, index, per_shard, workers, limit, metrics, seed=None, clas
     meetings = [m for m in meetings if not classes or str(m.get('class')) in classes]
     meetings = stratified(meetings, seed) if seed is not None else sorted(meetings, key=lambda m: m['id'])
     done = done_ids(s3)
-    todo = [m for m in meetings if m['id'] not in done][:limit]
+    # Never download a meeting twice: raw already stored under any version is reprocessed, not fetched (B-008: a run
+    # that only looked at the current version's manifests re-downloaded 10 meetings and replaced their raw bytes).
+    have_raw = {int(k.rsplit('/', 1)[1].split('.')[0]) for k in list_keys(s3, f'corpus/raw/{SOURCE}/') if k.endswith('.html.gz')}
+    todo = [m for m in meetings if m['id'] not in done and m['id'] not in have_raw][:limit]
     official = side_inputs(s3)
     print(f'{len(meetings)} meetings indexed, {len(done)} done, {len(todo)} to fetch '
           f'({dict(Counter(str(m.get("class")) for m in todo))} by class)', flush=True)
@@ -532,16 +535,16 @@ def fetch(client, s3, index, per_shard, workers, limit, metrics, seed=None, clas
         shard += 1
 
 
-def reprocess(s3, from_version, index, per_shard, metrics):
-    """Rebuild meetings already collected under `from_version` from the stored raw HTML (no download)."""
+def reprocess(s3, index, per_shard, metrics):
+    """Rebuild, from the stored raw HTML (no download), every indexed meeting that has raw in S3 and no row in the
+    current version yet."""
     meetings = read_json_s3(s3, f'corpus/state/{SOURCE}/{index}', {'meetings': {}})['meetings']
-    ids = []
-    for key in sorted(list_keys(s3, f'corpus/state/{SOURCE}/{from_version}/shard-')):
-        ids += read_json_s3(s3, key, {'ids': []})['ids']
+    have_raw = {int(k.rsplit('/', 1)[1].split('.')[0]) for k in list_keys(s3, f'corpus/raw/{SOURCE}/') if k.endswith('.html.gz')}
+    ids = sorted(int(i) for i in meetings if int(i) in have_raw)
     done = done_ids(s3)
-    todo = [meetings.get(str(i), {'id': i}) for i in ids if i not in done]
+    todo = [meetings[str(i)] for i in ids if i not in done]
     official = side_inputs(s3)
-    print(f'{len(ids)} meetings in {from_version}, {len(todo)} to rebuild from raw', flush=True)
+    print(f'{len(ids)} indexed meetings with raw, {len(todo)} to rebuild from raw', flush=True)
     shard, started = next_shard(s3), time.monotonic()
     for begin in range(0, len(todo), per_shard):
         results = []
@@ -551,7 +554,7 @@ def reprocess(s3, from_version, index, per_shard, metrics):
             row, pii, parse = processed(meeting, gzip.decompress(body), official, raw_key, hashlib.sha256(body).hexdigest())
             metrics.add('parse_s', parse)
             results.append((meeting, row, pii, None))
-        m = write_shard(s3, None, shard, results, 0, metrics, started, f'raw-reprocess:{from_version}')
+        m = write_shard(s3, None, shard, results, 0, metrics, started, 'raw-reprocess')
         print(json.dumps({'shard': shard, 'rows': m['rows'], 'quarantine': m['quarantine']['rows'],
                           'reasons': m['quarantine_reasons']}, ensure_ascii=False), flush=True)
         shard += 1

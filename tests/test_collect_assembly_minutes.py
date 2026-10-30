@@ -50,7 +50,7 @@ class AssemblyMinutesTests(unittest.TestCase):
                           '2026-10-30T00:00:00+00:00')
         self.assertNotIn('02-123-4567', row['text'])
         self.assertEqual(dict(pii), {'PHONE': 1})
-        self.assertEqual((row['clean_version'], row['provenance']['institution']), ('clean-v3', '국회'))
+        self.assertEqual((row['clean_version'], row['provenance']['institution']), ('clean-v4', '국회'))
         self.assertIn(row['split'], ('train', 'valid', 'test'))
         self.assertEqual(row['id'], 'assembly-minutes:55958')
         self.assertEqual(row['kind'], 'assembly_plenary')
