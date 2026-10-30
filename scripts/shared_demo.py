@@ -502,8 +502,8 @@ def reader_windows(selected, tok):
 # document maps onto the indexed text: B's link file (law-byl rows → the same law-byl document, or the statute body
 # `law-go-kr:law:<MST>` span of that annex), or the row's own `source` (index_doc_id, content_hash, char_span) for an
 # institution snapshot. Only rows B compared with a rendering by eye (ai_visual_review_match) are used.
-TABLE_ROWS = [(ROOT / 'data/law-byl/v2-structure-002-rows-001/queryable-rows.jsonl',
-               ROOT / 'reports/coordination/B-029/byl-index-links.jsonl'),
+TABLE_ROWS = [(ROOT / 'data/law-byl/v2-structure-003-rows-001/queryable-rows.jsonl',
+               ROOT / 'reports/coordination/B-030/byl-index-links.jsonl'),
               (ROOT / 'reports/coordination/B-029/reb-yeobi-reviewed-rows.jsonl', None)]
 REVIEWED = 'ai_visual_review_match'
 
@@ -756,11 +756,16 @@ class Workspace:
                     annex, scope, method = caption_annex, src['index_doc_id'], 'row_source_span'
                 elif link:
                     annex, scope = _annex(link['byl']), _norm(link['law'])
-                    if link.get('status') != 'linked':
+                    if link.get('byl_doc_in_index') == doc_id and doc_id in self.meta:
+                        # the same table document is indexed: linked by its source hash (checked below), whatever
+                        # B found for the statute-body span (e.g. mismatch from columns mixed in the flattened body)
+                        target, span, src_hash, method = doc_id, None, src.get('kordoc_text_sha256'), 'same_source_hash'
+                        if not src_hash:
+                            self.row_unlinked[(scope, annex)] = 'rows carry no source hash for the indexed document'
+                            continue
+                    elif link.get('status') != 'linked':
                         self.row_unlinked[(scope, annex)] = f"B link status {link.get('status')}"
                         continue
-                    if link.get('byl_doc_in_index') == doc_id and doc_id in self.meta:
-                        target, span, src_hash, method = doc_id, None, src.get('kordoc_text_sha256'), 'same_source_hash'
                     else:
                         section = link.get('linked_section')
                         span = section['char_span'] if isinstance(section, dict) else section

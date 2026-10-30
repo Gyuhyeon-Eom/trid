@@ -424,10 +424,12 @@ class RuleTableLinkTests(WorkspaceTests.__base__):
                             {'구분': '6. 삭제 <2021. 5. 25.>'}], 'ai_visual_review_match', {}),
              ('byl5', '5', [{'구분': '국내 이전비', '지급액': '390,000'}], 'ai_visual_review_match', {}),
              ('t6', '6의2', [{'지급 사유': '부임', '지급액': '3분의 2'}], 'ai_visual_review_match', {'kordoc_text_sha256': 'stale'}),
-             ('byl11', '11', [{'호봉': '1', '금액': '7'}], 'ai_visual_review_match', {})],
+             ('byl11', '11', [{'호봉': '1', '금액': '7'}], 'ai_visual_review_match', {}),
+             ('t6x', '6', [{'구분': '다른', '식비': '없음'}], 'ai_visual_review_match', {'kordoc_text_sha256': 't6x'})],
             [self.link('t2', '2', in_index='t2'), self.link('t8', '8', in_index='t8'),
              self.link('byl4', '4', span=self.span(4)), self.link('byl5', '5', span=self.span(5)),
-             self.link('t6', '6의2', in_index='t6'), self.link('byl11', '11', status='mismatch')])
+             self.link('t6', '6의2', in_index='t6'), self.link('byl11', '11', status='mismatch'),
+             self.link('t6x', '6', status='mismatch', in_index='t6x')])
         self.assertEqual(ws.row_links[('공무원여비규정', '2')]['method'], 'same_source_hash')       # same document, same hash
         self.assertEqual(ws.row_links[('공무원여비규정', '4')]['method'], 'statute_body_segment')  # B span, values verified
         self.assertEqual(ws.row_links[('공무원여비규정', '4')]['segment'], self.span(4))
@@ -435,6 +437,7 @@ class RuleTableLinkTests(WorkspaceTests.__base__):
         self.assertIn('numbers not in the linked span', ws.row_unlinked[('공무원여비규정', '5')])
         self.assertIn('hash differs', ws.row_unlinked[('공무원여비규정', '6의2')])
         self.assertIn('mismatch', ws.row_unlinked[('공무원여비규정', '11')])
+        self.assertEqual(ws.row_links[('공무원여비규정', '6')]['method'], 'same_source_hash')  # body span mismatch, same doc hash
         r = ws.select('국외 여비 지급표', pinned=self.LAW)
         derived = [c for c, _ in r['chunks'] if c.derived]
         self.assertEqual((len(derived), r['reviewed_rows']['annex']), (1, '4'))
