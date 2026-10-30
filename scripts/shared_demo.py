@@ -36,9 +36,10 @@ QA_ANSWER = re.compile(r'\n답변\s*:')
 
 def evidence_start(text):
     """Offset where admissible evidence begins. In a Q&A passage ("질문: … 답변: …") the asker's question is not a
-    source: values and quotes count only from the answer part on."""
-    if text.startswith('질문') and (m := QA_ANSWER.search(text)):
-        return m.end()
+    source: values and quotes count only from the answer part on; a passage holding only the question has none."""
+    if text.startswith('질문'):
+        m = QA_ANSWER.search(text)
+        return m.end() if m else len(text)
     return 0
 
 
