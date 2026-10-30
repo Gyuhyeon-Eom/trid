@@ -1,0 +1,1803 @@
+{
+ "set_sha256": "bbbc0f275f91897b29bbab3df19b1a2f0d884ae950a917838fe25fa44a4c2fc1",
+ "v3": {
+  "index": "v3",
+  "manifest_sha256": "8afc0384bc48c48ffd47fef7f2e9d451a57820ad7f12b6b9acb46b0d8f5fa748",
+  "vectors_sha256": "8e553e0eb49872d59d56cae5ff5c4e052b396bf00aaaf690c1d568fea2474789",
+  "review": {
+   "file": "/Users/eomgyuhyeon/사업/trid/data/search-corpus-v4/passages.jsonl",
+   "manifest_sha256": "1c59fb25b7ea4c08de3c9bddea3fc275ac98d17c54874eb2bd0b996e1cd0c394",
+   "privacy": 2,
+   "value_hold": 87
+  },
+  "rows": [
+   {
+    "id": "N01",
+    "type": "named",
+    "best_cosine": 0.776,
+    "hybrid_seconds": 4.568,
+    "bm25": {
+     "gold_rank": null,
+     "top3_kinds": [
+      "행정규칙 첨부(예규)",
+      "행정규칙",
+      "법령해석례"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": 4,
+     "top3_kinds": [
+      "행정규칙",
+      "법령해석례",
+      "법령 별표"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "N02",
+    "type": "named",
+    "best_cosine": 0.7,
+    "hybrid_seconds": 0.116,
+    "bm25": {
+     "gold_rank": null,
+     "top3_kinds": [
+      "행정규칙",
+      "법령해석례",
+      "질의응답 게시판"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": 3,
+     "top3_kinds": [
+      "법령해석례",
+      "행정규칙",
+      "법령 별표"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "N03",
+    "type": "named",
+    "best_cosine": 0.762,
+    "hybrid_seconds": 0.251,
+    "bm25": {
+     "gold_rank": 7,
+     "top3_kinds": [
+      "법령 별표",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": 1,
+     "top3_kinds": [
+      "법령 별표",
+      "법령 별표",
+      "법령 별표"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "N04",
+    "type": "named",
+    "best_cosine": 0.741,
+    "hybrid_seconds": 0.218,
+    "bm25": {
+     "gold_rank": 4,
+     "top3_kinds": [
+      "업무 해설서",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": 1,
+     "top3_kinds": [
+      "법령 별표",
+      "법령 별표",
+      "업무 해설서"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "N05",
+    "type": "named",
+    "best_cosine": 0.759,
+    "hybrid_seconds": 0.126,
+    "bm25": {
+     "gold_rank": 3,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙 첨부(예규)",
+      "법령 별표"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": 1,
+     "top3_kinds": [
+      "법령 별표",
+      "행정규칙 첨부(예규)",
+      "법령 별표"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "N06",
+    "type": "named",
+    "best_cosine": 0.793,
+    "hybrid_seconds": 0.131,
+    "bm25": {
+     "gold_rank": 1,
+     "top3_kinds": [
+      "법령 별표",
+      "행정규칙 첨부(예규)",
+      "법령해석례"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": 1,
+     "top3_kinds": [
+      "법령 별표",
+      "행정규칙 첨부(예규)",
+      "법령 별표"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "N07",
+    "type": "named",
+    "best_cosine": 0.801,
+    "hybrid_seconds": 0.122,
+    "bm25": {
+     "gold_rank": 1,
+     "top3_kinds": [
+      "행정규칙",
+      "법령해석례",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": 1,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "N08",
+    "type": "named",
+    "best_cosine": 0.807,
+    "hybrid_seconds": 0.122,
+    "bm25": {
+     "gold_rank": 1,
+     "top3_kinds": [
+      "행정규칙",
+      "법령해석례",
+      "법령 별표"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": 1,
+     "top3_kinds": [
+      "행정규칙",
+      "법령해석례",
+      "법령해석례"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "N09",
+    "type": "named",
+    "best_cosine": 0.767,
+    "hybrid_seconds": 0.13,
+    "bm25": {
+     "gold_rank": 1,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": 1,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "N10",
+    "type": "named",
+    "best_cosine": 0.846,
+    "hybrid_seconds": 0.132,
+    "bm25": {
+     "gold_rank": 1,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": 1,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "N11",
+    "type": "named",
+    "best_cosine": 0.759,
+    "hybrid_seconds": 0.118,
+    "bm25": {
+     "gold_rank": 1,
+     "top3_kinds": [
+      "업무편람",
+      "행정규칙 첨부(예규)",
+      "질의응답 게시판"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": 1,
+     "top3_kinds": [
+      "업무편람",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "N12",
+    "type": "named",
+    "best_cosine": 0.743,
+    "hybrid_seconds": 0.123,
+    "bm25": {
+     "gold_rank": 1,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": 1,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "A01",
+    "type": "alias",
+    "best_cosine": 0.72,
+    "hybrid_seconds": 0.093,
+    "bm25": {
+     "gold_rank": null,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": 1,
+     "top3_kinds": [
+      "법령 별표",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "A02",
+    "type": "alias",
+    "best_cosine": 0.715,
+    "hybrid_seconds": 0.121,
+    "bm25": {
+     "gold_rank": 4,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": 1,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "A03",
+    "type": "alias",
+    "best_cosine": 0.787,
+    "hybrid_seconds": 0.196,
+    "bm25": {
+     "gold_rank": 2,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": 2,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "A04",
+    "type": "alias",
+    "best_cosine": 0.742,
+    "hybrid_seconds": 0.157,
+    "bm25": {
+     "gold_rank": 3,
+     "top3_kinds": [
+      "질의응답 게시판",
+      "질의응답 게시판",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": 1,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "법령해석례"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "A05",
+    "type": "alias",
+    "best_cosine": 0.798,
+    "hybrid_seconds": 0.137,
+    "bm25": {
+     "gold_rank": 1,
+     "top3_kinds": [
+      "행정규칙",
+      "법령해석례",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": 1,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙 첨부(예규)",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "A06",
+    "type": "alias",
+    "best_cosine": 0.736,
+    "hybrid_seconds": 0.145,
+    "bm25": {
+     "gold_rank": null,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": 1,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "G01",
+    "type": "generic",
+    "best_cosine": 0.701,
+    "hybrid_seconds": 0.146,
+    "bm25": {
+     "gold_rank": null,
+     "top3_kinds": [
+      "질의응답 게시판",
+      "행정규칙 첨부(지침)",
+      "행정규칙 첨부(지침)"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": 5,
+     "top3_kinds": [
+      "행정규칙",
+      "법령 별표",
+      "법령해석례"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "G02",
+    "type": "generic",
+    "best_cosine": 0.638,
+    "hybrid_seconds": 0.14,
+    "bm25": {
+     "gold_rank": null,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": 7,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "G03",
+    "type": "generic",
+    "best_cosine": 0.697,
+    "hybrid_seconds": 0.164,
+    "bm25": {
+     "gold_rank": 4,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙 첨부(예규)",
+      "업무 해설서"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": 1,
+     "top3_kinds": [
+      "법령 별표",
+      "행정규칙",
+      "법령 별표"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "R01",
+    "type": "authority",
+    "best_cosine": 0.742,
+    "hybrid_seconds": 0.135,
+    "bm25": {
+     "gold_rank": null,
+     "top3_kinds": [
+      "질의응답 게시판",
+      "질의응답 게시판",
+      "질의응답 게시판"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": null,
+     "top3_kinds": [
+      "행정규칙",
+      "법령 별표",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "R02",
+    "type": "authority",
+    "best_cosine": 0.7,
+    "hybrid_seconds": 0.128,
+    "bm25": {
+     "gold_rank": 31,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": 3,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "법령 별표"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "E01",
+    "type": "general_explain",
+    "best_cosine": 0.656,
+    "hybrid_seconds": 0.128,
+    "bm25": {
+     "gold_rank": null,
+     "top3_kinds": [
+      "행정규칙 첨부(예규)",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": 28,
+     "top3_kinds": [
+      "법령 별표",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "E02",
+    "type": "general_explain",
+    "best_cosine": 0.72,
+    "hybrid_seconds": 0.134,
+    "bm25": {
+     "gold_rank": 14,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "법령해석례"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": 2,
+     "top3_kinds": [
+      "법령해석례",
+      "업무편람",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "V01",
+    "type": "avg_vs_limit",
+    "best_cosine": 0.697,
+    "hybrid_seconds": 0.12,
+    "bm25": {
+     "gold_rank": null,
+     "top3_kinds": [
+      "질의응답 게시판",
+      "행정규칙",
+      "질의응답 게시판"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": null,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "법령 별표"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "V02",
+    "type": "avg_vs_limit",
+    "best_cosine": 0.69,
+    "hybrid_seconds": 0.075,
+    "bm25": {
+     "gold_rank": null,
+     "top3_kinds": [
+      "질의응답 게시판",
+      "질의응답 게시판",
+      "질의응답 게시판"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": null,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "V03",
+    "type": "avg_vs_limit",
+    "best_cosine": 0.64,
+    "hybrid_seconds": 0.081,
+    "bm25": {
+     "gold_rank": null,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": null,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "M01",
+    "type": "missing",
+    "best_cosine": 0.719,
+    "hybrid_seconds": 0.077,
+    "bm25": {
+     "gold_rank": null,
+     "top3_kinds": [
+      "법령 별표",
+      "행정규칙",
+      "편람"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": null,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "법령 별표"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "M02",
+    "type": "missing",
+    "best_cosine": 0.672,
+    "hybrid_seconds": 0.089,
+    "bm25": {
+     "gold_rank": null,
+     "top3_kinds": [
+      "질의응답 세트",
+      "행정규칙",
+      "법령해석례"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": null,
+     "top3_kinds": [
+      "행정규칙",
+      "법령해석례",
+      "법령해석례"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "M03",
+    "type": "missing",
+    "best_cosine": 0.618,
+    "hybrid_seconds": 0.087,
+    "bm25": {
+     "gold_rank": null,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "질의응답 게시판"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": null,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "M04",
+    "type": "missing",
+    "best_cosine": 0.624,
+    "hybrid_seconds": 0.084,
+    "bm25": {
+     "gold_rank": null,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙 첨부(예규)",
+      "질의응답 세트"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": null,
+     "top3_kinds": [
+      "업무 해설서",
+      "법령 별표",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    }
+   }
+  ],
+  "summary": {
+   "bm25": {
+    "doc@1": 8,
+    "doc@3": 11,
+    "doc@5": 14,
+    "doc@10": 15,
+    "mrr": 0.407,
+    "n": 25
+   },
+   "hybrid": {
+    "doc@1": 16,
+    "doc@3": 20,
+    "doc@5": 22,
+    "doc@10": 23,
+    "mrr": 0.732,
+    "n": 25
+   }
+  },
+  "by_type": {
+   "alias": {
+    "bm25": {
+     "doc@1": 1,
+     "doc@3": 3,
+     "doc@5": 4,
+     "doc@10": 4,
+     "mrr": 0.347,
+     "n": 6
+    },
+    "hybrid": {
+     "doc@1": 5,
+     "doc@3": 6,
+     "doc@5": 6,
+     "doc@10": 6,
+     "mrr": 0.917,
+     "n": 6
+    }
+   },
+   "authority": {
+    "bm25": {
+     "doc@1": 0,
+     "doc@3": 0,
+     "doc@5": 0,
+     "doc@10": 0,
+     "mrr": 0.016,
+     "n": 2
+    },
+    "hybrid": {
+     "doc@1": 0,
+     "doc@3": 1,
+     "doc@5": 1,
+     "doc@10": 1,
+     "mrr": 0.167,
+     "n": 2
+    }
+   },
+   "general_explain": {
+    "bm25": {
+     "doc@1": 0,
+     "doc@3": 0,
+     "doc@5": 0,
+     "doc@10": 0,
+     "mrr": 0.036,
+     "n": 2
+    },
+    "hybrid": {
+     "doc@1": 0,
+     "doc@3": 1,
+     "doc@5": 1,
+     "doc@10": 1,
+     "mrr": 0.268,
+     "n": 2
+    }
+   },
+   "generic": {
+    "bm25": {
+     "doc@1": 0,
+     "doc@3": 0,
+     "doc@5": 1,
+     "doc@10": 1,
+     "mrr": 0.083,
+     "n": 3
+    },
+    "hybrid": {
+     "doc@1": 1,
+     "doc@3": 1,
+     "doc@5": 2,
+     "doc@10": 3,
+     "mrr": 0.448,
+     "n": 3
+    }
+   },
+   "named": {
+    "bm25": {
+     "doc@1": 7,
+     "doc@3": 8,
+     "doc@5": 9,
+     "doc@10": 10,
+     "mrr": 0.644,
+     "n": 12
+    },
+    "hybrid": {
+     "doc@1": 10,
+     "doc@3": 11,
+     "doc@5": 12,
+     "doc@10": 12,
+     "mrr": 0.882,
+     "n": 12
+    }
+   }
+  },
+  "no_gold_best_cosine": {
+   "V01": 0.697,
+   "V02": 0.69,
+   "V03": 0.64,
+   "M01": 0.719,
+   "M02": 0.672,
+   "M03": 0.618,
+   "M04": 0.624
+  }
+ },
+ "v2": {
+  "index": "v2",
+  "manifest_sha256": "13501cc60de0258051d01f3ee8c90dfb44955ecfcc55a16a712418247639b7c9",
+  "vectors_sha256": "da7b5be504fbfcbff6dc3e4d334ef74d77d2e7374f2fd327f30461803e3cb7b0",
+  "review": {
+   "file": "/Users/eomgyuhyeon/사업/trid/data/search-corpus-v4/passages.jsonl",
+   "manifest_sha256": "1c59fb25b7ea4c08de3c9bddea3fc275ac98d17c54874eb2bd0b996e1cd0c394",
+   "privacy": 2,
+   "value_hold": 87
+  },
+  "rows": [
+   {
+    "id": "N01",
+    "type": "named",
+    "best_cosine": 0.743,
+    "hybrid_seconds": 0.241,
+    "bm25": {
+     "gold_rank": null,
+     "top3_kinds": [
+      "행정규칙 첨부(예규)",
+      "행정규칙",
+      "법령해석례"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": 3,
+     "top3_kinds": [
+      "법령해석례",
+      "법령 별표",
+      "법령 별표"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "N02",
+    "type": "named",
+    "best_cosine": 0.7,
+    "hybrid_seconds": 0.185,
+    "bm25": {
+     "gold_rank": null,
+     "top3_kinds": [
+      "법령해석례",
+      "질의응답 게시판",
+      "질의응답 게시판"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": 2,
+     "top3_kinds": [
+      "법령해석례",
+      "법령 별표",
+      "법령 별표"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "N03",
+    "type": "named",
+    "best_cosine": 0.762,
+    "hybrid_seconds": 0.117,
+    "bm25": {
+     "gold_rank": 7,
+     "top3_kinds": [
+      "법령 별표",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": 1,
+     "top3_kinds": [
+      "법령 별표",
+      "법령 별표",
+      "법령 별표"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "N04",
+    "type": "named",
+    "best_cosine": 0.741,
+    "hybrid_seconds": 0.107,
+    "bm25": {
+     "gold_rank": 4,
+     "top3_kinds": [
+      "업무 해설서",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": 1,
+     "top3_kinds": [
+      "법령 별표",
+      "법령 별표",
+      "업무 해설서"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "N05",
+    "type": "named",
+    "best_cosine": 0.759,
+    "hybrid_seconds": 0.101,
+    "bm25": {
+     "gold_rank": 3,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙 첨부(예규)",
+      "법령 별표"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": 1,
+     "top3_kinds": [
+      "법령 별표",
+      "행정규칙 첨부(예규)",
+      "법령 별표"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "N06",
+    "type": "named",
+    "best_cosine": 0.793,
+    "hybrid_seconds": 0.108,
+    "bm25": {
+     "gold_rank": 1,
+     "top3_kinds": [
+      "법령 별표",
+      "행정규칙 첨부(예규)",
+      "법령해석례"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": 1,
+     "top3_kinds": [
+      "법령 별표",
+      "행정규칙 첨부(예규)",
+      "법령 별표"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "N07",
+    "type": "named",
+    "best_cosine": 0.801,
+    "hybrid_seconds": 0.105,
+    "bm25": {
+     "gold_rank": 1,
+     "top3_kinds": [
+      "행정규칙",
+      "법령해석례",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": 1,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "N08",
+    "type": "named",
+    "best_cosine": 0.807,
+    "hybrid_seconds": 0.101,
+    "bm25": {
+     "gold_rank": 1,
+     "top3_kinds": [
+      "행정규칙",
+      "법령해석례",
+      "법령 별표"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": 1,
+     "top3_kinds": [
+      "행정규칙",
+      "법령해석례",
+      "법령해석례"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "N09",
+    "type": "named",
+    "best_cosine": 0.767,
+    "hybrid_seconds": 0.111,
+    "bm25": {
+     "gold_rank": 1,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": 1,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "N10",
+    "type": "named",
+    "best_cosine": 0.846,
+    "hybrid_seconds": 0.132,
+    "bm25": {
+     "gold_rank": 1,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": 1,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "N11",
+    "type": "named",
+    "best_cosine": 0.759,
+    "hybrid_seconds": 0.108,
+    "bm25": {
+     "gold_rank": 1,
+     "top3_kinds": [
+      "업무편람",
+      "행정규칙 첨부(예규)",
+      "질의응답 게시판"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": 1,
+     "top3_kinds": [
+      "업무편람",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "N12",
+    "type": "named",
+    "best_cosine": 0.743,
+    "hybrid_seconds": 0.105,
+    "bm25": {
+     "gold_rank": 1,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": 1,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "A01",
+    "type": "alias",
+    "best_cosine": 0.72,
+    "hybrid_seconds": 0.129,
+    "bm25": {
+     "gold_rank": null,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": 1,
+     "top3_kinds": [
+      "법령 별표",
+      "행정규칙",
+      "법령 별표"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "A02",
+    "type": "alias",
+    "best_cosine": 0.715,
+    "hybrid_seconds": 0.118,
+    "bm25": {
+     "gold_rank": 4,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": 1,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "A03",
+    "type": "alias",
+    "best_cosine": 0.787,
+    "hybrid_seconds": 0.142,
+    "bm25": {
+     "gold_rank": 2,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": 2,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "A04",
+    "type": "alias",
+    "best_cosine": 0.742,
+    "hybrid_seconds": 0.129,
+    "bm25": {
+     "gold_rank": 3,
+     "top3_kinds": [
+      "질의응답 게시판",
+      "질의응답 게시판",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": 1,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "법령해석례"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "A05",
+    "type": "alias",
+    "best_cosine": 0.798,
+    "hybrid_seconds": 0.128,
+    "bm25": {
+     "gold_rank": 1,
+     "top3_kinds": [
+      "행정규칙",
+      "법령해석례",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": 1,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙 첨부(예규)",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "A06",
+    "type": "alias",
+    "best_cosine": 0.736,
+    "hybrid_seconds": 0.139,
+    "bm25": {
+     "gold_rank": null,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": 1,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "G01",
+    "type": "generic",
+    "best_cosine": 0.661,
+    "hybrid_seconds": 0.138,
+    "bm25": {
+     "gold_rank": null,
+     "top3_kinds": [
+      "질의응답 게시판",
+      "행정규칙 첨부(지침)",
+      "행정규칙 첨부(지침)"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": 4,
+     "top3_kinds": [
+      "법령 별표",
+      "법령해석례",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "G02",
+    "type": "generic",
+    "best_cosine": 0.635,
+    "hybrid_seconds": 0.172,
+    "bm25": {
+     "gold_rank": null,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "행정규칙 첨부(예규)"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": 6,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "G03",
+    "type": "generic",
+    "best_cosine": 0.697,
+    "hybrid_seconds": 0.103,
+    "bm25": {
+     "gold_rank": 4,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙 첨부(예규)",
+      "업무 해설서"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": 1,
+     "top3_kinds": [
+      "법령 별표",
+      "행정규칙",
+      "법령 별표"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "R01",
+    "type": "authority",
+    "best_cosine": 0.742,
+    "hybrid_seconds": 0.134,
+    "bm25": {
+     "gold_rank": null,
+     "top3_kinds": [
+      "질의응답 게시판",
+      "질의응답 게시판",
+      "질의응답 게시판"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": null,
+     "top3_kinds": [
+      "행정규칙",
+      "법령 별표",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "R02",
+    "type": "authority",
+    "best_cosine": 0.693,
+    "hybrid_seconds": 0.158,
+    "bm25": {
+     "gold_rank": 30,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": 2,
+     "top3_kinds": [
+      "행정규칙",
+      "법령 별표",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "E01",
+    "type": "general_explain",
+    "best_cosine": 0.651,
+    "hybrid_seconds": 0.163,
+    "bm25": {
+     "gold_rank": null,
+     "top3_kinds": [
+      "행정규칙 첨부(예규)",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": 27,
+     "top3_kinds": [
+      "법령 별표",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "E02",
+    "type": "general_explain",
+    "best_cosine": 0.72,
+    "hybrid_seconds": 0.209,
+    "bm25": {
+     "gold_rank": 14,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "법령해석례"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": 2,
+     "top3_kinds": [
+      "법령해석례",
+      "업무편람",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "V01",
+    "type": "avg_vs_limit",
+    "best_cosine": 0.69,
+    "hybrid_seconds": 0.211,
+    "bm25": {
+     "gold_rank": null,
+     "top3_kinds": [
+      "질의응답 게시판",
+      "행정규칙",
+      "질의응답 게시판"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": null,
+     "top3_kinds": [
+      "행정규칙",
+      "법령 별표",
+      "법령 별표"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "V02",
+    "type": "avg_vs_limit",
+    "best_cosine": 0.69,
+    "hybrid_seconds": 0.248,
+    "bm25": {
+     "gold_rank": null,
+     "top3_kinds": [
+      "질의응답 게시판",
+      "질의응답 게시판",
+      "질의응답 게시판"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": null,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "V03",
+    "type": "avg_vs_limit",
+    "best_cosine": 0.617,
+    "hybrid_seconds": 0.17,
+    "bm25": {
+     "gold_rank": null,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": null,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "M01",
+    "type": "missing",
+    "best_cosine": 0.667,
+    "hybrid_seconds": 0.139,
+    "bm25": {
+     "gold_rank": null,
+     "top3_kinds": [
+      "법령 별표",
+      "행정규칙",
+      "편람"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": null,
+     "top3_kinds": [
+      "행정규칙",
+      "법령 별표",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "M02",
+    "type": "missing",
+    "best_cosine": 0.672,
+    "hybrid_seconds": 0.145,
+    "bm25": {
+     "gold_rank": null,
+     "top3_kinds": [
+      "질의응답 세트",
+      "행정규칙",
+      "법령해석례"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": null,
+     "top3_kinds": [
+      "행정규칙",
+      "법령해석례",
+      "법령해석례"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "M03",
+    "type": "missing",
+    "best_cosine": 0.618,
+    "hybrid_seconds": 0.13,
+    "bm25": {
+     "gold_rank": null,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "질의응답 게시판"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": null,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    }
+   },
+   {
+    "id": "M04",
+    "type": "missing",
+    "best_cosine": 0.624,
+    "hybrid_seconds": 0.164,
+    "bm25": {
+     "gold_rank": null,
+     "top3_kinds": [
+      "행정규칙",
+      "행정규칙 첨부(예규)",
+      "질의응답 세트"
+     ],
+     "privacy_in_top200": 0
+    },
+    "hybrid": {
+     "gold_rank": null,
+     "top3_kinds": [
+      "업무 해설서",
+      "법령 별표",
+      "행정규칙"
+     ],
+     "privacy_in_top200": 0
+    }
+   }
+  ],
+  "summary": {
+   "bm25": {
+    "doc@1": 8,
+    "doc@3": 11,
+    "doc@5": 14,
+    "doc@10": 15,
+    "mrr": 0.407,
+    "n": 25
+   },
+   "hybrid": {
+    "doc@1": 16,
+    "doc@3": 21,
+    "doc@5": 22,
+    "doc@10": 23,
+    "mrr": 0.751,
+    "n": 25
+   }
+  },
+  "by_type": {
+   "alias": {
+    "bm25": {
+     "doc@1": 1,
+     "doc@3": 3,
+     "doc@5": 4,
+     "doc@10": 4,
+     "mrr": 0.347,
+     "n": 6
+    },
+    "hybrid": {
+     "doc@1": 5,
+     "doc@3": 6,
+     "doc@5": 6,
+     "doc@10": 6,
+     "mrr": 0.917,
+     "n": 6
+    }
+   },
+   "authority": {
+    "bm25": {
+     "doc@1": 0,
+     "doc@3": 0,
+     "doc@5": 0,
+     "doc@10": 0,
+     "mrr": 0.017,
+     "n": 2
+    },
+    "hybrid": {
+     "doc@1": 0,
+     "doc@3": 1,
+     "doc@5": 1,
+     "doc@10": 1,
+     "mrr": 0.25,
+     "n": 2
+    }
+   },
+   "general_explain": {
+    "bm25": {
+     "doc@1": 0,
+     "doc@3": 0,
+     "doc@5": 0,
+     "doc@10": 0,
+     "mrr": 0.036,
+     "n": 2
+    },
+    "hybrid": {
+     "doc@1": 0,
+     "doc@3": 1,
+     "doc@5": 1,
+     "doc@10": 1,
+     "mrr": 0.269,
+     "n": 2
+    }
+   },
+   "generic": {
+    "bm25": {
+     "doc@1": 0,
+     "doc@3": 0,
+     "doc@5": 1,
+     "doc@10": 1,
+     "mrr": 0.083,
+     "n": 3
+    },
+    "hybrid": {
+     "doc@1": 1,
+     "doc@3": 1,
+     "doc@5": 2,
+     "doc@10": 3,
+     "mrr": 0.472,
+     "n": 3
+    }
+   },
+   "named": {
+    "bm25": {
+     "doc@1": 7,
+     "doc@3": 8,
+     "doc@5": 9,
+     "doc@10": 10,
+     "mrr": 0.644,
+     "n": 12
+    },
+    "hybrid": {
+     "doc@1": 10,
+     "doc@3": 12,
+     "doc@5": 12,
+     "doc@10": 12,
+     "mrr": 0.903,
+     "n": 12
+    }
+   }
+  },
+  "no_gold_best_cosine": {
+   "V01": 0.69,
+   "V02": 0.69,
+   "V03": 0.617,
+   "M01": 0.667,
+   "M02": 0.672,
+   "M03": 0.618,
+   "M04": 0.624
+  }
+ }
+}
