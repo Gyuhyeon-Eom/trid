@@ -1,0 +1,231 @@
+{
+ "release": "RELEASE-TEST-001",
+ "deployed_at_kst": "2026-10-30 13:03",
+ "code_commit": "4ac68ee",
+ "worker_version_id": "8e579603-ed17-4654-a72b-b60d6eb93a1f",
+ "expires_at_unix": 1793419400.476465,
+ "host": "MacBook (CPU, llama.cpp 8ca4060 CPU/BLAS build) via Cloudflare quick tunnel + Worker",
+ "versions": [
+  {
+   "id": "trid-v0.1-reader",
+   "label": "trid v0.1 추출 독해기",
+   "kind": "extractive",
+   "run": "runs/reader-factorial-01-cpt-v1-v2-v4",
+   "weights_sha256": "90ccb60fcb98b839e5d74f0b3cd0781f30609654e88c660c3778167e33c9317c",
+   "base_model": "자체 무작위 초기화 91M (이전 자체 모델 실험 계보)",
+   "license": "자체 학습 가중치 (비공개)",
+   "version": "v0.1 · 2026-10-29 배포판 (롤백 기준)",
+   "status": "실험판 · 품질 기준 미달",
+   "evaluation": "고정 근거를 준 기관문서 probe 20/40. 이 웹의 검색 경로 정확도가 아닙니다.",
+   "limits": "추출만 함(설명·요약·계산 불가). 보류와 오답이 남아 있음. 근거 충돌은 검토 안내로만 표시."
+  },
+  {
+   "id": "baseline-qwen3-1.7b",
+   "label": "기준선: Qwen3-1.7B 원본 (미특화, trid 아님)",
+   "kind": "llama",
+   "decoding": "grammar_instructed",
+   "family": "qwen3",
+   "llama_server": "runs/tools/llama.cpp-8ca4060/llama-server",
+   "model_file": "runs/open-weight-base/Qwen3-1.7B-Q8_0.gguf",
+   "model_sha256": "061b54daade076b5d3362dac252678d17da8c68f07560be70818cace6590cb1a",
+   "context": 4096,
+   "port": 51912,
+   "base_model": "Qwen/Qwen3-1.7B-GGUF Q8_0, revision 90862c4b9d2787eaed51d12237eafdfe7c5f6077 (Alibaba Qwen)",
+   "license": "Apache-2.0",
+   "version": "baseline-0 · 튜닝 없음 · llama.cpp 8ca4060 · greedy · 사고 모드 끔",
+   "status": "비교용 기준선 · 품질 기준 미달 · 업무 특화 전 원본",
+   "evaluation": "RAG310 개발셋(고정 근거, 같은 지시문, 원문 형식 무관 값·출처 일치): 답 있는 228문항 중 104 · 보류해야 할 82문항 중 바르게 보류 2, 75문항은 보류 대신 답을 냄 · 근거 충돌 12문항 0. 기관 probe 40문항 중 14(답 없는 10문항 보류 0). 독립 벤치마크 아님.",
+   "limits": "근거가 없어도 답하는 경향이 큼. 원문에서 위치를 확인한 값만 답으로 표시하지만, 확인된 값도 질문과 다른 자리일 수 있음. 공공기관 업무 특화 학습 전 원본임."
+  }
+ ],
+ "local_smoke_http": {
+  "checks": {
+   "GET / with proxy secret": 200,
+   "GET / without proxy secret": 403,
+   "GET model file path": 404,
+   "unknown version": 422,
+   "bad CSRF token": 403,
+   "foreign Origin": 403
+  },
+  "answers": [
+   {
+    "question": "해외 출장 식비는 얼마야?",
+    "version": "trid-v0.1-reader",
+    "http": 200,
+    "status": "not_found",
+    "answer": "확인한 문서 구간에서 답을 찾지 못했습니다.",
+    "raw": null,
+    "spans": [],
+    "elapsed_ms": 54
+   },
+   {
+    "question": "해외 출장 식비는 얼마야?",
+    "version": "baseline-qwen3-1.7b",
+    "http": 200,
+    "status": "review",
+    "answer": "모델 출력이 원문 위치 검증을 통과하지 못해 답으로 표시하지 않습니다.",
+    "raw": "[D1] 해외 출장 식비는 하루 8만원입니다.",
+    "spans": [],
+    "elapsed_ms": 1550
+   },
+   {
+    "question": "해외 숙박비 상한은?",
+    "version": "trid-v0.1-reader",
+    "http": 200,
+    "status": "not_found",
+    "answer": "확인한 문서 구간에서 답을 찾지 못했습니다.",
+    "raw": null,
+    "spans": [],
+    "elapsed_ms": 50
+   },
+   {
+    "question": "해외 숙박비 상한은?",
+    "version": "baseline-qwen3-1.7b",
+    "http": 200,
+    "status": "review",
+    "answer": "모델 출력이 원문 위치 검증을 통과하지 못해 답으로 표시하지 않습니다.",
+    "raw": "[D1] 해외 숙박비 상한은 25만원입니다.",
+    "spans": [],
+    "elapsed_ms": 1503
+   },
+   {
+    "question": "담당 부서는 어디야?",
+    "version": "trid-v0.1-reader",
+    "http": 200,
+    "status": "answer",
+    "answer": "운영지원팀",
+    "raw": null,
+    "spans": [
+     [
+      1,
+      "운영지원팀"
+     ]
+    ],
+    "elapsed_ms": 51
+   },
+   {
+    "question": "담당 부서는 어디야?",
+    "version": "baseline-qwen3-1.7b",
+    "http": 200,
+    "status": "answer",
+    "answer": "운영지원팀 [D1]",
+    "raw": "[D1] 운영지원팀",
+    "spans": [
+     [
+      1,
+      "운영지원팀"
+     ]
+    ],
+    "elapsed_ms": 1173
+   },
+   {
+    "question": "출장비 신청 마감 시각과 담당자 전화번호는?",
+    "version": "trid-v0.1-reader",
+    "http": 200,
+    "status": "not_found",
+    "answer": "확인한 문서 구간에서 답을 찾지 못했습니다.",
+    "raw": null,
+    "spans": [],
+    "elapsed_ms": 57
+   },
+   {
+    "question": "출장비 신청 마감 시각과 담당자 전화번호는?",
+    "version": "baseline-qwen3-1.7b",
+    "http": 200,
+    "status": "review",
+    "answer": "모델 출력이 형식 검증을 통과하지 못해 답으로 표시하지 않습니다.",
+    "raw": "근거 충돌.",
+    "spans": [],
+    "elapsed_ms": 1229
+   },
+   {
+    "question": "출장비 신청 마감 시각과 담당자 전화번호는?",
+    "version": "trid-v0.1-reader",
+    "status": "not_found",
+    "answer": "확인한 문서 구간에서 답을 찾지 못했습니다.",
+    "raw": null
+   },
+   {
+    "question": "출장비 신청 마감 시각과 담당자 전화번호는?",
+    "version": "baseline-qwen3-1.7b",
+    "status": "review",
+    "answer": "모델이 근거 충돌로 판단했습니다. /source로 원문을 확인해 주세요.",
+    "raw": "근거 충돌."
+   },
+   {
+    "question": "출장 정산은 언제까지 신청해?",
+    "version": "trid-v0.1-reader",
+    "status": "not_found",
+    "answer": "확인한 문서 구간에서 답을 찾지 못했습니다.",
+    "raw": null
+   },
+   {
+    "question": "출장 정산은 언제까지 신청해?",
+    "version": "baseline-qwen3-1.7b",
+    "status": "answer",
+    "answer": "복귀 후 7일 이내 [D1]",
+    "raw": "[D1] 복귀 후 7일 이내"
+   },
+   {
+    "question": "제작비 지원 비율과 최대 한도는 얼마인가요?",
+    "version": "trid-v0.1-reader",
+    "status": "not_found",
+    "answer": "확인한 문서 구간에서 답을 찾지 못했습니다.",
+    "raw": null
+   },
+   {
+    "question": "제작비 지원 비율과 최대 한도는 얼마인가요?",
+    "version": "baseline-qwen3-1.7b",
+    "status": "review",
+    "answer": "모델 출력이 형식 검증을 통과하지 못해 답으로 표시하지 않습니다.",
+    "raw": "[D1], [D6]"
+   },
+   {
+    "question": "신청 방법과 선정 절차를 알려주세요.",
+    "version": "trid-v0.1-reader",
+    "status": "not_found",
+    "answer": "확인한 문서 구간에서 답을 찾지 못했습니다.",
+    "raw": null
+   },
+   {
+    "question": "신청 방법과 선정 절차를 알려주세요.",
+    "version": "baseline-qwen3-1.7b",
+    "status": "review",
+    "answer": "모델 출력이 형식 검증을 통과하지 못해 답으로 표시하지 않습니다.",
+    "raw": "[D2], [D4]"
+   },
+   {
+    "question": "청렴 교육 장소는?",
+    "version": "trid-v0.1-reader",
+    "status": "not_found",
+    "answer": "확인한 문서 구간에서 답을 찾지 못했습니다.",
+    "raw": null
+   },
+   {
+    "question": "청렴 교육 장소는?",
+    "version": "baseline-qwen3-1.7b",
+    "status": "answer",
+    "answer": "11월 12일 본관 대회의실 [D1]",
+    "raw": "[D1] 11월 12일 본관 대회의실"
+   }
+  ]
+ },
+ "public_ui_smoke": {
+  "url": "https://test.tridatum.co",
+  "browser": "headless Chromium",
+  "steps": [
+   "/sample",
+   "담당 부서는 어디야? (v0.1) -> 운영지원팀, 원문 강조 일치",
+   "버전 전환 -> 기준선 카드 표시(기반 모델·revision·라이선스·실측·한계)",
+   "출장 정산은 언제까지 신청해? (기준선) -> 복귀 후 7일 이내 [D1], 원문 강조 일치",
+   "해외 출장 식비는 얼마야? (기준선) -> 원본 출력 \"[D1] 해외 출장 식비는 하루 8만원입니다.\"가 원문 문자열과 달라 답으로 표시하지 않음"
+  ],
+  "page_errors": "Cloudflare Insights beacon blocked by the page CSP (pre-existing); no application script errors."
+ },
+ "observations": [
+  "Qwen3-1.7B baseline tends to answer unanswerable questions (said 근거 충돌 for a missing-information question) and paraphrases values into sentences that fail verbatim verification; both are targets for specialization, not fixed here.",
+  "trid v0.1 reader abstained on most sample/public-document questions in this smoke (as in its earlier deployment record)."
+ ],
+ "rollback": "Remove the baseline entry from deploy/shared-demo/versions.json (or check out commit 454dae5 for scripts/shared_demo.py and trid/shared_ui/*), then share_demo_control.py stop/start/deploy. The v0.1 reader weights and sha are unchanged.",
+ "limits": "Numbers shown on the page are RAG310 fixed-evidence development results, not this site's retrieval-path accuracy and not an independent benchmark. MacBook-hosted; stops if the Mac sleeps or shuts down."
+}
