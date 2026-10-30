@@ -61,7 +61,13 @@
   - 쌍 순서와 답 순서를 모두 무작위로 섞는다.
   - 모델명을 지운다.
   - 매핑 sha256 commitment를 패키지에 넣는다.
-- **위치:** `reports/coordination/PILOT-SFT-001-blind/pilot-dev-blind-pairs.json`. 경로가 확정되면 이 문서에 추가한다.
+- **위치 (15:12 전달 완료):** `reports/coordination/PILOT-SFT-001-blind/pilot-dev-blind-pairs.json`
+  - 18쌍, sha256 `85ea1c4ba730c1e8ac9055ed9d4dc1fc50516519ea94b2e4a85c890cdd8eafb6`
+  - 매핑 commitment `f39df736ef1e2079ddc6b1e1cef7a95a0cc732db1f5ff8cce30d534e9364d15e`
+  - `pilot_sha256`은 고정 pilot v1 `6bd0bdda…`과 같다.
+- **pilot_dev 진단 생성 상태:** 두 모델 모두 끝났다(15:11).
+  - 이름이 붙은 원본 결과(`reports/open-weight-pilot/pilot-dev-*.json`)는 C 채점이 끝날 때까지 커밋하지 않는다. C는 열지 않는다.
+  - A의 남은 고정 평가 단계는 시작 전에 멈췄다.
 - **매핑:** A만 보관한다(`runs/`, Git 밖). **C는 열지 않는다.** C가 채점표를 넘기면 A가 공개하고 집계한다.
 - **참고 진단:** 숫자 커버리지와 근거 없는 숫자 같은 결정적 지표는 진단 전용이다. 블라인드를 지키기 위해 C 채점이 끝날 때까지 공개하지 않는다.
 
