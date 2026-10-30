@@ -1,0 +1,132 @@
+{
+ "version": "clean-v3",
+ "source": "assembly-minutes",
+ "kind": "provenance supplement (manifests left unchanged)",
+ "why": "clean-v3 shard manifests were written without code/redact hashes; this file adds them without rewriting the manifests (B-007 review item 5)",
+ "run": {
+  "action": "reprocess (from stored raw, no download)",
+  "started_utc_approx": "2026-10-30T00:20Z",
+  "log": "B session bash job bg_83",
+  "collector": "scripts/collect_assembly_minutes.py",
+  "collector_sha256": "2ba4c190a0ec93042d9f89f72357ad0e068a04b07ea23e49ae0ed4b333915d98",
+  "korean_quality_sha256": "45bc08ff1d009020cd93dced10fef653e44d51f90b89cc21b161aed6367b34ec",
+  "git_commit_with_identical_content": "74aafd661516a977ddf2544cab12921ceab78965 (committed 2026-10-30T09:29:40+09:00, after the run; no edits in between)",
+  "side_inputs": {
+   "corpus/state/assembly-minutes/official-list-meta.json": "406246b2231b39291079c1e26aca300666ff6106e055c822f5937abbd3c70ca2"
+  }
+ },
+ "integrity_check_2026-10-30": {
+  "parts_ok": 20,
+  "rows": 1000,
+  "text_hash_ok": 1000,
+  "raw_hash_differs_from_stored": 10,
+  "licence_ok": 1000,
+  "split_ok": 1000,
+  "placement_ok": 1000,
+  "clean_version_ok": 1000,
+  "raw_hash_matches_stored": 990
+ },
+ "known_issue": "raw bytes of 10 meetings (51946, 52032, 52038, 52167, 52171, 52600, 52757, 55606, 55917, 56111) were overwritten on 2026-10-30 09:33:43-09:34:00 KST (pid 91224, request log lines 875-884) by a mis-scoped fetch (B-008); their clean-v3 rows were built from the earlier raw, so meta.raw_gzip_sha256 no longer matches the stored object for these 10 (bucket versioning off; earlier bytes not recoverable)",
+ "shards": [
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v3/docs-00000.jsonl.gz",
+   "sha256": "887ed20df23e85e0b6ea2164e0f8fc89b87b7ccb7a21ecd56f44228e99a9cc0e",
+   "rows": 91
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v3/quarantine-00000.jsonl.gz",
+   "sha256": "498c97354d9bb4c169fcb8a91e53b61ec8cdfad6fbab572160c19ae8d951ca98",
+   "rows": 9
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v3/docs-00001.jsonl.gz",
+   "sha256": "6ff47c8c4e97ac1af6ae1ff6a9f489991efec408d886fd7ff31c6312df8f3c10",
+   "rows": 57
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v3/quarantine-00001.jsonl.gz",
+   "sha256": "7ae8c3d55e99ea5b3c1784bf0b062a9a07e7db8043cb91f11a811f2bae0ca096",
+   "rows": 43
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v3/docs-00002.jsonl.gz",
+   "sha256": "b7903fd6593f36c26cfbe333f4234868e277e04cd1ce76fcebfdf0f59dbbc07e",
+   "rows": 78
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v3/quarantine-00002.jsonl.gz",
+   "sha256": "a47579608880cccd33749dde21547f09f21dd9fd55b8a4fb83404aa71f5c3696",
+   "rows": 22
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v3/docs-00003.jsonl.gz",
+   "sha256": "71558a56a38ccab65b1fb1770ffce9529b95772893b83755419f5e9d8851737d",
+   "rows": 77
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v3/quarantine-00003.jsonl.gz",
+   "sha256": "457fa97eb106ec94c87d998d2bb9a0d709eb379c61e11338cacead014e3916e9",
+   "rows": 23
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v3/docs-00004.jsonl.gz",
+   "sha256": "9f0079ce70942e0d177e87487e40ddffae8d7b57fe633449dd29fdc6dce19e3b",
+   "rows": 67
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v3/quarantine-00004.jsonl.gz",
+   "sha256": "411110823a171df7cfca8016bc6bca0baf8f4d15aa6410e7457d5fe6c4671f80",
+   "rows": 33
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v3/docs-00005.jsonl.gz",
+   "sha256": "23a6b78ce1ad4e604691e1ffd166314aa95e7a502e3db5d0d1692650c2dcfe71",
+   "rows": 57
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v3/quarantine-00005.jsonl.gz",
+   "sha256": "84356ed863a79142e9864214c38826716d4b37227747c0e1bca4b93f07ce5e32",
+   "rows": 43
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v3/docs-00006.jsonl.gz",
+   "sha256": "4d2f800b17b662d78b1ec18473b0be52a833c42ef5590aadc33241226a4cae76",
+   "rows": 62
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v3/quarantine-00006.jsonl.gz",
+   "sha256": "6416bf51e6fba90cd1f64736606ccb1a788dff21c3659b556fc3ec9e55556764",
+   "rows": 38
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v3/docs-00007.jsonl.gz",
+   "sha256": "88ca2e265800948c2fc6117cabb8a979f6c64ea1e8c59ce8852176c873a645db",
+   "rows": 67
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v3/quarantine-00007.jsonl.gz",
+   "sha256": "e16ebb8b58631dd6f5445f1fc2517ccae134f7d7c22b281479f6acc3781b1c03",
+   "rows": 33
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v3/docs-00008.jsonl.gz",
+   "sha256": "25060b7cd53e7de9dff005b41b87ec8466083972e6ef89900ae0b71091d756d0",
+   "rows": 79
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v3/quarantine-00008.jsonl.gz",
+   "sha256": "2e010bab9f511bf80b3b31e46fde06de383f8c5f77102fd41b20ae6a3a0eaaae",
+   "rows": 21
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v3/docs-00009.jsonl.gz",
+   "sha256": "42c901359406ff442a8c68a6228e60362ded2c6f5213d933898b3632d0cc5efb",
+   "rows": 95
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v3/quarantine-00009.jsonl.gz",
+   "sha256": "89bb3b5d7be5cecc10d08d5c9572868820c1d453054689f1db8ee49469d47918",
+   "rows": 5
+  }
+ ]
+}

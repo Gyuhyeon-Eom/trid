@@ -1,0 +1,236 @@
+{
+ "version": "clean-v5",
+ "manifests": 22,
+ "checks": {
+  "parts_ok": 44,
+  "rows": 2140,
+  "text_hash_ok": 2140,
+  "raw_hash_matches_stored": 2140,
+  "licence_ok": 2140,
+  "split_ok": 2140,
+  "placement_ok": 2140,
+  "clean_version_ok": 2140
+ },
+ "shards": [
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v5/docs-00000.jsonl.gz",
+   "sha256": "abe2c72fb6de09de1af1c2f721afea887bcbde67bcb7b97ce94a525f3ae9e6a0",
+   "rows": 46
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v5/quarantine-00000.jsonl.gz",
+   "sha256": "22f3ae4dbae99712db0339e38e5cdb014bdae654c74d53f1a4aca29fe158d2ca",
+   "rows": 54
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v5/docs-00001.jsonl.gz",
+   "sha256": "d1ddc1bf92bcb00033ba0e1c96e099e3731e09ddbef7335359b348c7fef8cc29",
+   "rows": 46
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v5/quarantine-00001.jsonl.gz",
+   "sha256": "21819b756b5c21dea6fe44fce6daa09fee3daf1da85ac40f21ad5c6e708f6d0c",
+   "rows": 54
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v5/docs-00002.jsonl.gz",
+   "sha256": "6248e7cf3246f33a5b64bc4d8f3cfce8a12eaa6e626306e0fbee796faaa82a16",
+   "rows": 74
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v5/quarantine-00002.jsonl.gz",
+   "sha256": "783f02fba47d2a64adafb29cf5f1dbe2bcc5512c2b763468e579dcf9dd2347fb",
+   "rows": 26
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v5/docs-00003.jsonl.gz",
+   "sha256": "8b7a72df66510e80ac47374d9ff621c2a6e63089abcc37f04505f2bc104f91f7",
+   "rows": 89
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v5/quarantine-00003.jsonl.gz",
+   "sha256": "71a9c9757ca75b931ee992410153b4584f8828ce2571c5e461a30f789384ebaa",
+   "rows": 11
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v5/docs-00004.jsonl.gz",
+   "sha256": "c745ce6682657a4739d3febee3faf20698f2ec0087cbbecdc55260d23583ae3c",
+   "rows": 86
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v5/quarantine-00004.jsonl.gz",
+   "sha256": "a510ddabcb525141e8a9fd8764331943d07690c4858608c28373c71db4cc281f",
+   "rows": 14
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v5/docs-00005.jsonl.gz",
+   "sha256": "8e2772172f69f303581a780cc7b3dd7dae7751bab86354194c9c85eca2b5bf92",
+   "rows": 90
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v5/quarantine-00005.jsonl.gz",
+   "sha256": "7096472c02f4c86d216419727d0f1419947b85f10e3df49123a2311ef32eb456",
+   "rows": 10
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v5/docs-00006.jsonl.gz",
+   "sha256": "dce2db3b17ad4940e501dfab691056d383db903467f0bafef36894924824da78",
+   "rows": 89
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v5/quarantine-00006.jsonl.gz",
+   "sha256": "94fd722a6e00662d5525c6db82c5a5d8a20a03f038039973aad1bb249d750c07",
+   "rows": 11
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v5/docs-00007.jsonl.gz",
+   "sha256": "552c05981536281ea7446ad209e4594d604ce59ac3ced65f6c9c85aec4f44d76",
+   "rows": 82
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v5/quarantine-00007.jsonl.gz",
+   "sha256": "6daa925a7151617d20c05cd666f6356006597104d52eab69cdf4682ea20ca1e8",
+   "rows": 18
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v5/docs-00008.jsonl.gz",
+   "sha256": "6a7f59562f5edec42a13c2f43d24ebe17126d9d42e97d4dcf38fa10712880b78",
+   "rows": 82
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v5/quarantine-00008.jsonl.gz",
+   "sha256": "d6c6f6e47005997d7df5c340193950228fbcf47ca5cb58fc17c919a48650e3a4",
+   "rows": 18
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v5/docs-00009.jsonl.gz",
+   "sha256": "618f4fb8c8b3d14220551c3ad532a4c22767e9bdaceacfe7e1d5d027f5c785f0",
+   "rows": 82
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v5/quarantine-00009.jsonl.gz",
+   "sha256": "fd90766ae715e0af76c28ab751173689240fc67d201f3b4e1402d5d7d200820f",
+   "rows": 18
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v5/docs-00010.jsonl.gz",
+   "sha256": "7026986e25132bcf6ba6c304639fc93ed308f656e6cbf322a9c899f2a16639d4",
+   "rows": 87
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v5/quarantine-00010.jsonl.gz",
+   "sha256": "4dea15afa225ed5a505dd43fa5f529209d5d320b99a8ebbf6cadc72120c0b99d",
+   "rows": 13
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v5/docs-00011.jsonl.gz",
+   "sha256": "a8ceb050f142411d1a9107f1d438336e0ed1f61aa58ed1097993a1c57e011773",
+   "rows": 83
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v5/quarantine-00011.jsonl.gz",
+   "sha256": "e88fdac46d7e5b82199343aed02faf697f7dc924a53e15dedc3e0bb695e8781f",
+   "rows": 17
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v5/docs-00012.jsonl.gz",
+   "sha256": "9a9e66da747b57eefd2dc74df765c1ad98cfa4b3881937a9c5f88582fbf53e18",
+   "rows": 43
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v5/quarantine-00012.jsonl.gz",
+   "sha256": "cf443ef1c6e7b0f0fe2f5b2667f214755449c9fe3c2c9bef5c551dc232787081",
+   "rows": 57
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v5/docs-00013.jsonl.gz",
+   "sha256": "b07b0a5493a09c11d8523ae8555227c87b1a8aa803f15b091fe9f7bcc7a66d67",
+   "rows": 56
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v5/quarantine-00013.jsonl.gz",
+   "sha256": "a5f14fbcef4f19851359686c67976ecb9cd953b7f8652e20b214f3299b11bfda",
+   "rows": 44
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v5/docs-00014.jsonl.gz",
+   "sha256": "5c50236a3e25a19586028ce7bbf9cd5579ee8fb42a9a6a52f636f827750c06bf",
+   "rows": 90
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v5/quarantine-00014.jsonl.gz",
+   "sha256": "9ddaf5dd551e619117504944271d293935b5aa790fe6a31574e78d824273ee7d",
+   "rows": 10
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v5/docs-00015.jsonl.gz",
+   "sha256": "9d409994723abe9774ed620dc682cb5b2d108ccf543587902094e5f46af91676",
+   "rows": 86
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v5/quarantine-00015.jsonl.gz",
+   "sha256": "5f7dccee58f58c292f73b363958837a27134ce5c1f754f3269131d90ace09f91",
+   "rows": 14
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v5/docs-00016.jsonl.gz",
+   "sha256": "19852609dea3b014c441b5d95b20de7954433fa55541e9df7a0cece8fe068032",
+   "rows": 82
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v5/quarantine-00016.jsonl.gz",
+   "sha256": "b923a84613c32573d9b3509615e59b5245d91add60321b8311c3ff2463051796",
+   "rows": 18
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v5/docs-00017.jsonl.gz",
+   "sha256": "6524687fb65c05ecebdd52d0d74aa2204281b7968baf50fb1d9f9954cf71a192",
+   "rows": 88
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v5/quarantine-00017.jsonl.gz",
+   "sha256": "ec49aeeea3e4fb9432b047b524539e87030843ad5fabd52c44e39b8e9aaa4ba2",
+   "rows": 12
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v5/docs-00018.jsonl.gz",
+   "sha256": "08d39364d424c8476c864ab492d511326a1a9a7ec503deac490908b2746c8e00",
+   "rows": 85
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v5/quarantine-00018.jsonl.gz",
+   "sha256": "be29a210c4e3617fb8ffddf2d08b10564f32684eea0aae71efdc8884fbf4e3dc",
+   "rows": 15
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v5/docs-00019.jsonl.gz",
+   "sha256": "b0fa53230ba2016f53688113074ecda81cd7c36507e3a746602efc28cd9b7f9a",
+   "rows": 93
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v5/quarantine-00019.jsonl.gz",
+   "sha256": "bbfb3103d9358a62be7f419a0ef88e549c3a5e99ce1d4a810e81f04829e4496a",
+   "rows": 7
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v5/docs-00020.jsonl.gz",
+   "sha256": "947726987dedc373682e2ded7d5c15b7de688934fdb3b138b1b919ab8f5b6939",
+   "rows": 88
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v5/quarantine-00020.jsonl.gz",
+   "sha256": "52237a4f7e1a5a9ce0b5fba8764238f97bc23ea37e6500500dd16308f63dc217",
+   "rows": 12
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v5/docs-00021.jsonl.gz",
+   "sha256": "b4fb1e56999ac8a0db219af4cdbbbc2df7c31448bc6ae548d5c8fea9c5d72be2",
+   "rows": 37
+  },
+  {
+   "key": "corpus/clean/assembly-minutes/clean-v5/quarantine-00021.jsonl.gz",
+   "sha256": "222f4fc5bba775a5fb5aeab88b58eaaf35400d456fd4948125058d04edeb946d",
+   "rows": 3
+  }
+ ]
+}

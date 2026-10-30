@@ -1,0 +1,1080 @@
+{
+ "summary": {
+  "rows": 46,
+  "target_ngrams": 4908,
+  "ngrams_found_in_statutes": 3651,
+  "rows_mostly_statute_text(>=0.8)": 31,
+  "rows_mixed(0.2-0.8)": 11,
+  "rows_mostly_non_statute(<0.2)": 4
+ },
+ "pairs": [
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156131217",
+   "family": "institutions:alio-rule:20256",
+   "shared_ngram8": 96,
+   "tool_shared_ngram8": 53,
+   "also_in_statute": 91,
+   "statute_share": 0.95,
+   "example_not_in_statute": [
+    "받은 사실을 안 날부터 2일 이내(기간의 말일이 토요일",
+    "사실을 안 날부터 2일 이내(기간의 말일이 토요일 또는"
+   ],
+   "example_in_statute": [
+    "3. “금품등”이란 다음 각 목의 어느 하나에 해당하는",
+    "3. 그 밖에 제공자에게 반환하기 어려운 사정이 있는"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156186046",
+   "family": "institutions:alio-rule:33636",
+   "shared_ngram8": 213,
+   "tool_shared_ngram8": 192,
+   "also_in_statute": 208,
+   "statute_share": 0.98,
+   "example_not_in_statute": [
+    "개선조치를 하여야 하며, 필요하면 소속 기관의 장에게 개선조치를",
+    "경우에는 즉시 개선조치를 하여야 하며, 필요하면 소속 기관의"
+   ],
+   "example_in_statute": [
+    "1. 법률에 특별한 규정이 있거나 법령상 의무를 준수하기",
+    "3. 공공기관이 개인정보를 처리하지 아니하면 다른 법률에서 정하는"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156186046",
+   "family": "institutions:alio-rule:12706",
+   "shared_ngram8": 84,
+   "tool_shared_ngram8": 52,
+   "also_in_statute": 84,
+   "statute_share": 1.0,
+   "example_not_in_statute": [],
+   "example_in_statute": [
+    "개인을 알아볼 수 없더라도 다른 정보와 쉽게 결합하여",
+    "개인정보 보호업무 및 관련 고충사항을 처리하는 부서의 명칭과"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156213427",
+   "family": "institutions:alio-rule:54470",
+   "shared_ngram8": 69,
+   "tool_shared_ngram8": 69,
+   "also_in_statute": 0,
+   "statute_share": 0.0,
+   "example_not_in_statute": [
+    "* 지원직무 관련 경험 혹은 경력사항을 기입해 주십시오.",
+    "* 지원직무 관련 과목 및 교육과정을 이수한 경우"
+   ],
+   "example_in_statute": []
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156232774",
+   "family": "institutions:alio-rule:54470",
+   "shared_ngram8": 68,
+   "tool_shared_ngram8": 68,
+   "also_in_statute": 52,
+   "statute_share": 0.76,
+   "example_not_in_statute": [
+    "감봉-견책 라. 성매매 파면-해임 해임-강등 정직-감봉 견책 마.",
+    "대상 성폭력) 파면 파면-해임 해임-강등 강등-정직 나. 그"
+   ],
+   "example_in_statute": [
+    "\"업무상 위력 등\"이란 업무, 고용이나 그 밖의 관계로",
+    "7. 품위 유지의 의무 위반 가. 성폭력(업무상 위력"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156245946",
+   "family": "institutions:alio-rule:54470",
+   "shared_ngram8": 67,
+   "tool_shared_ngram8": 67,
+   "also_in_statute": 52,
+   "statute_share": 0.78,
+   "example_not_in_statute": [
+    "대상 성폭력) 파면 파면-해임 해임-강등 강등-정직 나. 그",
+    "또는 장애인 대상 성폭력) 파면 파면-해임 해임-강등 강등-정직"
+   ],
+   "example_in_statute": [
+    "\"업무상 위력 등\"이란 업무, 고용이나 그 밖의 관계로",
+    "7. 품위 유지의 의무 위반 가. 성폭력(업무상 위력"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156248473",
+   "family": "institutions:alio-rule:20256",
+   "shared_ngram8": 285,
+   "tool_shared_ngram8": 162,
+   "also_in_statute": 170,
+   "statute_share": 0.6,
+   "example_not_in_statute": [
+    "10만원으로 하되, 제1호부터 제3호까지의 규정에 따른 가액 범위를",
+    "2. 경조사비: 축의금․조의금은 5만원. 다만, 축의금․조의금을 대신하는 화환․조화는"
+   ],
+   "example_in_statute": [
+    "1. 음식물(제공자와 공직자등이 함께 하는 식사, 다과, 주류,",
+    "10만원으로 하되, 제2호 본문 또는 단서나 제3호 본문"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156272453",
+   "family": "institutions:alio-rule:54470",
+   "shared_ngram8": 67,
+   "tool_shared_ngram8": 67,
+   "also_in_statute": 52,
+   "statute_share": 0.78,
+   "example_not_in_statute": [
+    "대상 성폭력) 파면 파면-해임 해임-강등 강등-정직 나. 그",
+    "또는 장애인 대상 성폭력) 파면 파면-해임 해임-강등 강등-정직"
+   ],
+   "example_in_statute": [
+    "\"업무상 위력 등\"이란 업무, 고용이나 그 밖의 관계로",
+    "7. 품위 유지의 의무 위반 가. 성폭력(업무상 위력"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156295418",
+   "family": "institutions:alio-rule:12706",
+   "shared_ngram8": 75,
+   "tool_shared_ngram8": 70,
+   "also_in_statute": 75,
+   "statute_share": 1.0,
+   "example_not_in_statute": [],
+   "example_in_statute": [
+    "1. 개인정보의 수집·이용 목적 2. 수집하려는 개인정보의 항목",
+    "1. 위탁업무 수행 목적 외 개인정보의 처리 금지에"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156295418",
+   "family": "institutions:alio-rule:33636",
+   "shared_ngram8": 60,
+   "tool_shared_ngram8": 54,
+   "also_in_statute": 56,
+   "statute_share": 0.93,
+   "example_not_in_statute": [
+    "2. 개인정보의 기술적·관리적 보호조치에 관한 사항 3. 그",
+    "개인정보의 기술적·관리적 보호조치에 관한 사항 3. 그 밖에"
+   ],
+   "example_in_statute": [
+    "1. 개인정보의 수집·이용 목적 2. 수집하려는 개인정보의 항목",
+    "1. 위탁업무 수행 목적 외 개인정보의 처리 금지에"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156298805",
+   "family": "institutions:alio-rule:39994",
+   "shared_ngram8": 65,
+   "tool_shared_ngram8": 53,
+   "also_in_statute": 41,
+   "statute_share": 0.63,
+   "example_not_in_statute": [
+    "1. 업무의 일시적 중단 또는 전환 2. ｢근로기준법｣",
+    "“고객응대근로자”라 한다)에 대하여 고객의 폭언, 폭행, 그 밖에"
+   ],
+   "example_in_statute": [
+    "2. 고객과의 문제 상황 발생 시 대처방법 등을",
+    "건강장해 관련 치료 및 상담 지원 4. 관할"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156309773",
+   "family": "institutions:alio-rule:3394",
+   "shared_ngram8": 244,
+   "tool_shared_ngram8": 195,
+   "also_in_statute": 155,
+   "statute_share": 0.64,
+   "example_not_in_statute": [
+    "(3.5cm×4.5cm) 등록기준지 주 소 실거주지 직 장 직장명",
+    "(3cm×4cm)ㆍ (3.5cm×4.5cm) 등록기준지 주 소 실거주지 직 장"
+   ],
+   "example_in_statute": [
+    "(성명) 학 력 학 교 명 기 간",
+    ". . . . ∼ . . ."
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156313129",
+   "family": "institutions:alio-rule:7719",
+   "shared_ngram8": 54,
+   "tool_shared_ngram8": 51,
+   "also_in_statute": 54,
+   "statute_share": 1.0,
+   "example_not_in_statute": [],
+   "example_in_statute": [
+    "1. 근로자가 계속 근로한 기간이 3개월 미만인 경우",
+    "3. 근로자가 고의로 사업에 막대한 지장을 초래하거나 재산상"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156318493",
+   "family": "institutions:alio-rule:38737",
+   "shared_ngram8": 440,
+   "tool_shared_ngram8": 379,
+   "also_in_statute": 261,
+   "statute_share": 0.59,
+   "example_not_in_statute": [
+    "① 상담원은 피해자가 직장 내 괴롭힘 피해를 입었다고",
+    "① 제9조에 따라 사건이 접수된 경우 상담원은 지체"
+   ],
+   "example_in_statute": [
+    "1. 사건의 접수 2. 상담을 통한 피해자의 의사",
+    "1. 직장 내 괴롭힘 행위의 정의 2. 금지되는"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156318493",
+   "family": "institutions:alio-rule:49961",
+   "shared_ngram8": 460,
+   "tool_shared_ngram8": 444,
+   "also_in_statute": 297,
+   "statute_share": 0.65,
+   "example_not_in_statute": [
+    "2년 간 반기별로 해당 사건의 행위자에 의한 직장",
+    "“상담원”이라 한다)을 둔다. 이 경우 직장 내 성희롱"
+   ],
+   "example_in_statute": [
+    "1. 사건의 접수 2. 상담을 통한 피해자의 의사",
+    "1. 직장 내 괴롭힘 행위의 정의 2. 금지되는"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156395730",
+   "family": "institutions:alio-rule:7719",
+   "shared_ngram8": 162,
+   "tool_shared_ngram8": 145,
+   "also_in_statute": 155,
+   "statute_share": 0.96,
+   "example_not_in_statute": [
+    "“가족돌봄휴직”이라 한다)을 신청하는 경우 이를 허용하여야 한다. 다만,",
+    "가족을 돌보기 위한 휴직(이하 “가족돌봄휴직”이라 한다)을 신청하는 경우"
+   ],
+   "example_in_statute": [
+    "1. 가족돌봄휴직 기간은 연간 최장 90일로 하며, 이를",
+    "15시간 이상이어야 하고 30시간을 넘어서는 아니 된다. ③"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156395730",
+   "family": "institutions:alio-rule:54710",
+   "shared_ngram8": 78,
+   "tool_shared_ngram8": 78,
+   "also_in_statute": 74,
+   "statute_share": 0.95,
+   "example_not_in_statute": [
+    "가족을 돌보기 위한 휴직(이하 “가족돌봄휴직”이라 한다)을 신청하는 경우",
+    "돌보기 위한 휴직(이하 “가족돌봄휴직”이라 한다)을 신청하는 경우 이를"
+   ],
+   "example_in_statute": [
+    "“가족”이라 한다)의 질병, 사고, 노령으로 인하여 그 가족을",
+    "④ 육아기 근로시간 단축의 기간은 1년 이내로 한다."
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156395730",
+   "family": "institutions:alio-rule:8942",
+   "shared_ngram8": 62,
+   "tool_shared_ngram8": 62,
+   "also_in_statute": 56,
+   "statute_share": 0.9,
+   "example_not_in_statute": [
+    "10일로 하며, 일단위로 사용할 수 있다. 다만, 가족돌봄휴가",
+    "사용할 수 있다. 다만, 가족돌봄휴가 기간은 가족돌봄휴직 기간에"
+   ],
+   "example_in_statute": [
+    "1. 가족돌봄휴직 기간은 연간 최장 90일로 하며, 이를",
+    "2. 가족돌봄휴가 기간은 연간 최장 10일로 하며, 일단위로"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156364625",
+   "family": "institutions:alio-rule:22216",
+   "shared_ngram8": 144,
+   "tool_shared_ngram8": 89,
+   "also_in_statute": 133,
+   "statute_share": 0.92,
+   "example_not_in_statute": [
+    "가. 입찰 또는 계약에 관한 서류(제39조에 따라 전자조달시스템을",
+    "계약에 관한 서류(제39조에 따라 전자조달시스템을 통하여 입찰서를 제출하는"
+   ],
+   "example_in_statute": [
+    "「건설기술 진흥법 시행령」 제60조 및 계약서 등에 따른",
+    "「건설기술 진흥법」 제47조에 따른 타당성 조사 용역의 계약에서"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156400548",
+   "family": "institutions:alio-rule:54470",
+   "shared_ngram8": 53,
+   "tool_shared_ngram8": 53,
+   "also_in_statute": 0,
+   "statute_share": 0.0,
+   "example_not_in_statute": [
+    "* 지원직무 관련 과목 및 교육과정을 이수한 경우",
+    "* 지원직무 관련 국가기술/전문자격, 국가공인민간자격을 기입해 주십시오. 자격증명"
+   ],
+   "example_in_statute": []
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156398908",
+   "family": "institutions:alio-rule:50990",
+   "shared_ngram8": 51,
+   "tool_shared_ngram8": 51,
+   "also_in_statute": 51,
+   "statute_share": 1.0,
+   "example_not_in_statute": [],
+   "example_in_statute": [
+    "1. 위원회 직무 수행 과정에서 취득한 비밀 준수",
+    "4. 위원회 직무수행 과정에서 취득한 정보를 허가되지 않은"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156552370",
+   "family": "institutions:alio-rule:12706",
+   "shared_ngram8": 92,
+   "tool_shared_ngram8": 86,
+   "also_in_statute": 92,
+   "statute_share": 1.0,
+   "example_not_in_statute": [],
+   "example_in_statute": [
+    "\"가명처리\"란 개인정보의 일부를 삭제하거나 일부 또는 전부를 대체하는",
+    "\"개인정보\"란 살아 있는 개인에 관한 정보로서 다음 각"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156552370",
+   "family": "institutions:alio-rule:33636",
+   "shared_ngram8": 81,
+   "tool_shared_ngram8": 79,
+   "also_in_statute": 81,
+   "statute_share": 1.0,
+   "example_not_in_statute": [],
+   "example_in_statute": [
+    "\"가명처리\"란 개인정보의 일부를 삭제하거나 일부 또는 전부를 대체하는",
+    "\"개인정보\"란 살아 있는 개인에 관한 정보로서 다음 각"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156413009",
+   "family": "institutions:alio-rule:33636",
+   "shared_ngram8": 93,
+   "tool_shared_ngram8": 83,
+   "also_in_statute": 93,
+   "statute_share": 1.0,
+   "example_not_in_statute": [],
+   "example_in_statute": [
+    "\"가명처리\"란 개인정보의 일부를 삭제하거나 일부 또는 전부를 대체하는",
+    "\"개인정보\"란 살아 있는 개인에 관한 정보로서 다음 각"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156413009",
+   "family": "institutions:alio-rule:12706",
+   "shared_ngram8": 100,
+   "tool_shared_ngram8": 94,
+   "also_in_statute": 100,
+   "statute_share": 1.0,
+   "example_not_in_statute": [],
+   "example_in_statute": [
+    "\"가명처리\"란 개인정보의 일부를 삭제하거나 일부 또는 전부를 대체하는",
+    "\"개인정보\"란 살아 있는 개인에 관한 정보로서 다음 각"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156412829",
+   "family": "institutions:alio-rule:12034",
+   "shared_ngram8": 95,
+   "tool_shared_ngram8": 87,
+   "also_in_statute": 95,
+   "statute_share": 1.0,
+   "example_not_in_statute": [],
+   "example_in_statute": [
+    "1. 파면, 해임, 해고, 그 밖에 신분상실에 해당하는",
+    "2. 징계, 정직, 감봉, 강등, 승진 제한 등"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156412829",
+   "family": "institutions:alio-rule:26634",
+   "shared_ngram8": 70,
+   "tool_shared_ngram8": 70,
+   "also_in_statute": 70,
+   "statute_share": 1.0,
+   "example_not_in_statute": [],
+   "example_in_statute": [
+    "1. 파면, 해임, 해고, 그 밖에 신분상실에 해당하는",
+    "2. 징계, 정직, 감봉, 강등, 승진 제한 등"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156421903",
+   "family": "institutions:alio-rule:28993",
+   "shared_ngram8": 59,
+   "tool_shared_ngram8": 52,
+   "also_in_statute": 59,
+   "statute_share": 1.0,
+   "example_not_in_statute": [],
+   "example_in_statute": [
+    "5. 다음 각 목의 어느 하나의 경우에 대비한",
+    "6. 위생시설 등 고용노동부령으로 정하는 시설의 설치 등을"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156552379",
+   "family": "institutions:alio-rule:12706",
+   "shared_ngram8": 93,
+   "tool_shared_ngram8": 56,
+   "also_in_statute": 93,
+   "statute_share": 1.0,
+   "example_not_in_statute": [],
+   "example_in_statute": [
+    "1. 정보주체의 동의를 받은 경우 2. 법률에 특별한",
+    "2. 법률에 특별한 규정이 있거나 법령상 의무를 준수하기"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156434090",
+   "family": "institutions:alio-rule:33636",
+   "shared_ngram8": 255,
+   "tool_shared_ngram8": 200,
+   "also_in_statute": 252,
+   "statute_share": 0.99,
+   "example_not_in_statute": [
+    "관한 사항(해당되는 경우에만 정한다) 4. 개인정보의 파기절차 및",
+    "제3자 제공에 관한 사항(해당되는 경우에만 정한다) 4. 개인정보의"
+   ],
+   "example_in_statute": [
+    "\"가명처리\"란 개인정보의 일부를 삭제하거나 일부 또는 전부를 대체하는",
+    "\"개인정보\"란 살아 있는 개인에 관한 정보로서 다음 각"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156434090",
+   "family": "institutions:alio-rule:12706",
+   "shared_ngram8": 234,
+   "tool_shared_ngram8": 74,
+   "also_in_statute": 234,
+   "statute_share": 1.0,
+   "example_not_in_statute": [],
+   "example_in_statute": [
+    "\"가명처리\"란 개인정보의 일부를 삭제하거나 일부 또는 전부를 대체하는",
+    "\"개인정보\"란 살아 있는 개인에 관한 정보로서 다음 각"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156552457",
+   "family": "institutions:alio-rule:33636",
+   "shared_ngram8": 103,
+   "tool_shared_ngram8": 82,
+   "also_in_statute": 100,
+   "statute_share": 0.97,
+   "example_not_in_statute": [
+    "개인을 알아볼 수 없도록 처리한 가명정보에서 특정 개인을",
+    "알아볼 수 없도록 처리한 가명정보에서 특정 개인을 알아보는"
+   ],
+   "example_in_statute": [
+    "가능성 등 개인을 알아보는 데 소요되는 시간, 비용,",
+    "가명처리함으로써 원래의 상태로 복원하기 위한 추가 정보의 사용·결합"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156552457",
+   "family": "institutions:alio-rule:12706",
+   "shared_ngram8": 90,
+   "tool_shared_ngram8": 72,
+   "also_in_statute": 87,
+   "statute_share": 0.97,
+   "example_not_in_statute": [
+    "사생활을 현저히 침해할 우려가 있는 개인정보로서 「개인정보보호법 시행령」(이하",
+    "시간·비용·기술 등을 합리적으로 고려할 때 다른 정보를 사용하여도"
+   ],
+   "example_in_statute": [
+    "가능성 등 개인을 알아보는 데 소요되는 시간, 비용,",
+    "가명처리함으로써 원래의 상태로 복원하기 위한 추가 정보의 사용·결합"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156460772",
+   "family": "institutions:alio-rule:33636",
+   "shared_ngram8": 237,
+   "tool_shared_ngram8": 237,
+   "also_in_statute": 95,
+   "statute_share": 0.4,
+   "example_not_in_statute": [
+    "(개인정보의 처리제한) ① “을”은 계약기간은 물론 계약 종료",
+    "(목적) 이 계약은 “갑”이 개인정보처리업무를 “을”에게 위탁하고, “을”은"
+   ],
+   "example_in_statute": [
+    "(위탁업무 기간) 이 계약서에 의한 개인정보 처리업무의 기간은",
+    "1. 개인정보의 처리 현황 2. 개인정보의 접근 또는"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156460772",
+   "family": "institutions:alio-rule:22216",
+   "shared_ngram8": 56,
+   "tool_shared_ngram8": 50,
+   "also_in_statute": 49,
+   "statute_share": 0.88,
+   "example_not_in_statute": [
+    "따른 부정당업자의 입찰참가자격 제한 처분을 받겠습니다. 2. 입찰가격의",
+    "또는 법인명칭 법인등록번호 주 소 전 화 번"
+   ],
+   "example_in_statute": [
+    "2. 입찰가격의 사전 협의 또는 특정인의 낙찰을 위한",
+    "가격입찰서를 개찰한 결과 낙찰자를 결정할 수 없는 경우로서"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156460772",
+   "family": "institutions:alio-rule:54674",
+   "shared_ngram8": 112,
+   "tool_shared_ngram8": 112,
+   "also_in_statute": 106,
+   "statute_share": 0.95,
+   "example_not_in_statute": [
+    "기간 동안 민사상·형사상 책임 또는 시효가 지속되거나, 증명자료로서의",
+    "동안 민사상·형사상 책임 또는 시효가 지속되거나, 증명자료로서의 가치가"
+   ],
+   "example_in_statute": [
+    "1년 이상 3년 미만의 기간 동안 보존할 필요가",
+    "1월 1일로 한다. 다만, 여러 해에 걸쳐서 진행되는"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156460772",
+   "family": "institutions:alio-rule:8018",
+   "shared_ngram8": 71,
+   "tool_shared_ngram8": 60,
+   "also_in_statute": 68,
+   "statute_share": 0.96,
+   "example_not_in_statute": [
+    "6. 그 밖에 개인정보의 보호를 위하여 필요한 사항",
+    "금품, 향응 등(친인척 등에 대한 부정한 취업 제공"
+   ],
+   "example_in_statute": [
+    "(위탁업무 기간) 이 계약서에 의한 개인정보 처리업무의 기간은",
+    "1. 개인정보의 처리 현황 2. 개인정보의 접근 또는"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156472796",
+   "family": "institutions:alio-rule:28993",
+   "shared_ngram8": 288,
+   "tool_shared_ngram8": 151,
+   "also_in_statute": 284,
+   "statute_share": 0.99,
+   "example_not_in_statute": [
+    "관련 안전ㆍ보건 관리를 위해 환경부장관이 정하여 고시하는 사항",
+    "그 밖에 원료ㆍ제조물 관련 안전ㆍ보건 관리를 위해 환경부장관이"
+   ],
+   "example_in_statute": [
+    "1회 이상 점검하고, 직접 점검하지 않은 경우에는 점검이",
+    "가. 공중이용시설 또는 공중교통수단의 안전과 유지관리를 위한 인력의"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156472779",
+   "family": "institutions:alio-rule:28993",
+   "shared_ngram8": 188,
+   "tool_shared_ngram8": 111,
+   "also_in_statute": 183,
+   "statute_share": 0.97,
+   "example_not_in_statute": [
+    "관련 안전ㆍ보건 관리를 위해 환경부장관이 정하여 고시하는 사항",
+    "그 밖에 원료ㆍ제조물 관련 안전ㆍ보건 관리를 위해 환경부장관이"
+   ],
+   "example_in_statute": [
+    "1회 이상 점검하고, 직접 점검하지 않은 경우에는 점검이",
+    "가. 공중이용시설 또는 공중교통수단의 안전과 유지관리를 위한 인력의"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156472783",
+   "family": "institutions:alio-rule:28993",
+   "shared_ngram8": 188,
+   "tool_shared_ngram8": 111,
+   "also_in_statute": 183,
+   "statute_share": 0.97,
+   "example_not_in_statute": [
+    "관련 안전ㆍ보건 관리를 위해 환경부장관이 정하여 고시하는 사항",
+    "그 밖에 원료ㆍ제조물 관련 안전ㆍ보건 관리를 위해 환경부장관이"
+   ],
+   "example_in_statute": [
+    "1회 이상 점검하고, 직접 점검하지 않은 경우에는 점검이",
+    "가. 공중이용시설 또는 공중교통수단의 안전과 유지관리를 위한 인력의"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156472793",
+   "family": "institutions:alio-rule:28993",
+   "shared_ngram8": 288,
+   "tool_shared_ngram8": 151,
+   "also_in_statute": 284,
+   "statute_share": 0.99,
+   "example_not_in_statute": [
+    "관련 안전ㆍ보건 관리를 위해 환경부장관이 정하여 고시하는 사항",
+    "그 밖에 원료ㆍ제조물 관련 안전ㆍ보건 관리를 위해 환경부장관이"
+   ],
+   "example_in_statute": [
+    "1회 이상 점검하고, 직접 점검하지 않은 경우에는 점검이",
+    "가. 공중이용시설 또는 공중교통수단의 안전과 유지관리를 위한 인력의"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156470465",
+   "family": "institutions:alio-rule:55096",
+   "shared_ngram8": 82,
+   "tool_shared_ngram8": 82,
+   "also_in_statute": 82,
+   "statute_share": 1.0,
+   "example_not_in_statute": [],
+   "example_in_statute": [
+    "③ 이해충돌방지담당관은 법 제5조제2항에 따라 기피 신청의 대상이",
+    "같은 조 제4항 또는 제5항에 따라 조사 등에"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156485214",
+   "family": "institutions:alio-rule:28993",
+   "shared_ngram8": 269,
+   "tool_shared_ngram8": 159,
+   "also_in_statute": 4,
+   "statute_share": 0.01,
+   "example_not_in_statute": [
+    "(사고분석 및 대책) 재난안전담당부서는 전년도에 발생한 안전사고를 총괄분석한",
+    "(안전보건관리책임자) ① 안전보건관리책임자는 다음 각호와 같다. 1. 회사"
+   ],
+   "example_in_statute": [
+    "3. 기타 안전 및 보건에 관한 사항 ③",
+    "근로자는 산업재해가 발생할 급박한 위험이 있는 경우에는 작업을"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156552627",
+   "family": "institutions:alio-rule:33636",
+   "shared_ngram8": 84,
+   "tool_shared_ngram8": 68,
+   "also_in_statute": 76,
+   "statute_share": 0.9,
+   "example_not_in_statute": [
+    "법령상 의무를 준수하기 위하여 불가피한 경우 2. 공공기관이",
+    "법정대리인의 성명·연락처를 수집할 때에는 해당 아동에게 자신의 신분과"
+   ],
+   "example_in_statute": [
+    "1. 법률에 특별한 규정이 있거나 법령상 의무를 준수하기",
+    "가명처리 또는 암호화 등 안전성 확보에 필요한 조치를"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156552627",
+   "family": "institutions:alio-rule:12706",
+   "shared_ngram8": 57,
+   "tool_shared_ngram8": 51,
+   "also_in_statute": 55,
+   "statute_share": 0.96,
+   "example_not_in_statute": [
+    "법정대리인의 성명·연락처를 수집할 때에는 해당 아동에게 자신의 신분과",
+    "성명·연락처를 수집할 때에는 해당 아동에게 자신의 신분과 연락처,"
+   ],
+   "example_in_statute": [
+    "14세 미만의 아동에게 개인정보 처리와 관련한 사항의 고지",
+    "개인정보가 불필요하게 되었을 때에는 정당한 사유가 없는 한"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156515266",
+   "family": "institutions:alio-rule:55096",
+   "shared_ngram8": 57,
+   "tool_shared_ngram8": 57,
+   "also_in_statute": 57,
+   "statute_share": 1.0,
+   "example_not_in_statute": [],
+   "example_in_statute": [
+    "3년 이내에 민간 부문에서 업무활동을 한 경우, 그",
+    "「공직자의 이해충돌 방지법」제8조에 따라 민간부문 업무활동 내역을 위와"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156515266",
+   "family": "institutions:alio-rule:12706",
+   "shared_ngram8": 56,
+   "tool_shared_ngram8": 55,
+   "also_in_statute": 56,
+   "statute_share": 1.0,
+   "example_not_in_statute": [],
+   "example_in_statute": [
+    "가. 성명, 주민등록번호 및 영상 등을 통하여 개인을",
+    "가능성 등 개인을 알아보는 데 소요되는 시간, 비용,"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156514788",
+   "family": "institutions:alio-rule:22216",
+   "shared_ngram8": 58,
+   "tool_shared_ngram8": 58,
+   "also_in_statute": 41,
+   "statute_share": 0.71,
+   "example_not_in_statute": [
+    "「벤처기업육성에 관한 특별조치법」 제2조제1항에 따른 벤처기업 또는 「중소기업창업",
+    "「소상공인기본법」 제2조에 따른 소상공인, 「벤처기업육성에 관한 특별조치법」 제2조제1항에"
+   ],
+   "example_in_statute": [
+    "10. 추정가격이 고시금액 미만인 물품의 제조ㆍ구매 또는 용역(「엔지니어링산업",
+    "1억원 미만인 물품의 제조ㆍ구매 또는 용역의 경우에는 「중소기업기본법」"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156552636",
+   "family": "institutions:alio-rule:33636",
+   "shared_ngram8": 307,
+   "tool_shared_ngram8": 136,
+   "also_in_statute": 292,
+   "statute_share": 0.95,
+   "example_not_in_statute": [
+    "Peer)”라 함은 정보통신망을 통해 서버의 도움 없이 개인과",
+    "to Peer)”라 함은 정보통신망을 통해 서버의 도움 없이"
+   ],
+   "example_in_statute": [
+    "1. 개인정보를 제공받는 자 2. 개인정보를 제공받는 자의",
+    "1. 교육목적 및 대상 2. 교육 내용 3."
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156552636",
+   "family": "institutions:alio-rule:12706",
+   "shared_ngram8": 142,
+   "tool_shared_ngram8": 134,
+   "also_in_statute": 142,
+   "statute_share": 1.0,
+   "example_not_in_statute": [],
+   "example_in_statute": [
+    "1. 개인정보를 제공받는 자 2. 개인정보를 제공받는 자의",
+    "1. 개인정보의 안전한 처리를 위한 다음 각 목의"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156519800",
+   "family": "institutions:alio-rule:34655",
+   "shared_ngram8": 62,
+   "tool_shared_ngram8": 62,
+   "also_in_statute": 62,
+   "statute_share": 1.0,
+   "example_not_in_statute": [],
+   "example_in_statute": [
+    "2. 징계, 정직, 감봉, 강등, 승진 제한 등",
+    "3. 직무 미부여, 직무 재배치, 그 밖에 본인의"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156519800",
+   "family": "institutions:alio-rule:12034",
+   "shared_ngram8": 60,
+   "tool_shared_ngram8": 53,
+   "also_in_statute": 60,
+   "statute_share": 1.0,
+   "example_not_in_statute": [],
+   "example_in_statute": [
+    "1. 파면, 해임, 해고, 그 밖에 신분상실에 해당하는",
+    "2. 징계, 정직, 감봉, 강등, 승진 제한 등"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156545354",
+   "family": "institutions:alio-rule:12034",
+   "shared_ngram8": 81,
+   "tool_shared_ngram8": 72,
+   "also_in_statute": 81,
+   "statute_share": 1.0,
+   "example_not_in_statute": [],
+   "example_in_statute": [
+    "1. 파면, 해임, 해고, 그 밖에 신분상실에 해당하는",
+    "3. 전보, 전근, 직무 미부여, 직무 재배치, 그"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156545354",
+   "family": "institutions:alio-rule:26634",
+   "shared_ngram8": 68,
+   "tool_shared_ngram8": 68,
+   "also_in_statute": 68,
+   "statute_share": 1.0,
+   "example_not_in_statute": [],
+   "example_in_statute": [
+    "1. 파면, 해임, 해고, 그 밖에 신분상실에 해당하는",
+    "3. 전보, 전근, 직무 미부여, 직무 재배치, 그"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156551628",
+   "family": "institutions:alio-rule:33636",
+   "shared_ngram8": 192,
+   "tool_shared_ngram8": 173,
+   "also_in_statute": 171,
+   "statute_share": 0.89,
+   "example_not_in_statute": [
+    "2. 개인정보의 기술적·관리적 보호조치에 관한 사항 3. 그",
+    "“인터넷 홈페이지등”이라 함)에서 개인정보를 수집하는 경우 정보주체의 동의"
+   ],
+   "example_in_statute": [
+    "1. 위탁업무 수행 목적 외 개인정보의 처리 금지에",
+    "3. 그 밖에 개인정보의 안전한 관리를 위하여 대통령령으로"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156551628",
+   "family": "institutions:alio-rule:12706",
+   "shared_ngram8": 124,
+   "tool_shared_ngram8": 51,
+   "also_in_statute": 124,
+   "statute_share": 1.0,
+   "example_not_in_statute": [],
+   "example_in_statute": [
+    "1. 위탁업무 수행 목적 외 개인정보의 처리 금지에",
+    "가능성 등 개인을 알아보는 데 소요되는 시간, 비용,"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156561869",
+   "family": "institutions:alio-rule:49961",
+   "shared_ngram8": 53,
+   "tool_shared_ngram8": 53,
+   "also_in_statute": 53,
+   "statute_share": 1.0,
+   "example_not_in_statute": [],
+   "example_in_statute": [
+    "① 누구든지 직장 내 괴롭힘 발생 사실을 알게",
+    "개인사에 대한 소문을 퍼뜨리는 등 명예를 훼손하는 행위"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156577526",
+   "family": "institutions:alio-rule:12706",
+   "shared_ngram8": 54,
+   "tool_shared_ngram8": 50,
+   "also_in_statute": 54,
+   "statute_share": 1.0,
+   "example_not_in_statute": [],
+   "example_in_statute": [
+    "가입ㆍ탈퇴, 정치적 견해, 건강, 성생활 등에 관한 정보,",
+    "각 호의 사항을 정보주체에게 알려야 한다. 다음 각"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156577526",
+   "family": "institutions:alio-rule:33636",
+   "shared_ngram8": 117,
+   "tool_shared_ngram8": 95,
+   "also_in_statute": 117,
+   "statute_share": 1.0,
+   "example_not_in_statute": [],
+   "example_in_statute": [
+    "1. 개인정보의 처리 목적 2. 개인정보의 처리 및",
+    "2. 개인정보의 처리 및 보유 기간 3. 개인정보의"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156587363",
+   "family": "institutions:alio-rule:20256",
+   "shared_ngram8": 186,
+   "tool_shared_ngram8": 182,
+   "also_in_statute": 186,
+   "statute_share": 1.0,
+   "example_not_in_statute": [],
+   "example_in_statute": [
+    "1. 음식물(제공자와 공직자등이 함께 하는 식사, 다과, 주류,",
+    "10만원으로 하되, 제2호 본문 또는 단서의 가액 범위를"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156613983",
+   "family": "institutions:alio-rule:53754",
+   "shared_ngram8": 84,
+   "tool_shared_ngram8": 77,
+   "also_in_statute": 0,
+   "statute_share": 0.0,
+   "example_not_in_statute": [
+    "27001 등) □ 예 □ 아니오 처리 장소",
+    "ISMS-P, ISO 27001 등) □ 예 □ 아니오"
+   ],
+   "example_in_statute": []
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156624165",
+   "family": "institutions:alio-rule:33636",
+   "shared_ngram8": 60,
+   "tool_shared_ngram8": 60,
+   "also_in_statute": 60,
+   "statute_share": 1.0,
+   "example_not_in_statute": [],
+   "example_in_statute": [
+    "가능한 경우에는 익명에 의하여, 익명처리로 목적을 달성할 수",
+    "가명으로 처리하여도 개인정보 수집목적을 달성할 수 있는 경우"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156624165",
+   "family": "institutions:alio-rule:12706",
+   "shared_ngram8": 64,
+   "tool_shared_ngram8": 63,
+   "also_in_statute": 64,
+   "statute_share": 1.0,
+   "example_not_in_statute": [],
+   "example_in_statute": [
+    "가능한 경우에는 익명에 의하여, 익명처리로 목적을 달성할 수",
+    "가명으로 처리하여도 개인정보 수집목적을 달성할 수 있는 경우"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156636323",
+   "family": "institutions:alio-rule:33851",
+   "shared_ngram8": 75,
+   "tool_shared_ngram8": 67,
+   "also_in_statute": 31,
+   "statute_share": 0.41,
+   "example_not_in_statute": [
+    "- 사용예정일 1일 전까지 취소 o 계약금 환급",
+    "- 사용예정일 1일 전까지 취소 o 총요금의 10%"
+   ],
+   "example_in_statute": [
+    "- 이동수단(항공기 등)의 이용이 불가한 경우 o 계약금",
+    "1일 전까지 취소 o 계약금 환급 및 총요금의"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156681701",
+   "family": "institutions:alio-rule:10819",
+   "shared_ngram8": 74,
+   "tool_shared_ngram8": 74,
+   "also_in_statute": 41,
+   "statute_share": 0.55,
+   "example_not_in_statute": [
+    "(서명 또는 인) 생년월일 위임하는 사람과의 관계 전화번호",
+    "2. 민원사항(출입국사실증명, 외국인등록사실증명, 국내거소신고 사실증명, 납세증명, 지방세 납세증명"
+   ],
+   "example_in_statute": [
+    "(서명 또는 인) 유의사항 1. 위임받는 사람의 신분증(주민등록증,",
+    "1. 위임받는 사람의 신분증(주민등록증, 여권, 운전면허증 등)을 제시해야"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156681620",
+   "family": "institutions:alio-rule:12706",
+   "shared_ngram8": 103,
+   "tool_shared_ngram8": 63,
+   "also_in_statute": 103,
+   "statute_share": 1.0,
+   "example_not_in_statute": [],
+   "example_in_statute": [
+    "1. 유출된 개인정보의 항목 2. 유출된 시점과 그",
+    "2. 유출된 시점과 그 경위 3. 유출로 인하여"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156681620",
+   "family": "institutions:alio-rule:33636",
+   "shared_ngram8": 205,
+   "tool_shared_ngram8": 142,
+   "also_in_statute": 205,
+   "statute_share": 1.0,
+   "example_not_in_statute": [],
+   "example_in_statute": [
+    "1. 유출된 개인정보의 항목 2. 유출된 시점과 그",
+    "1. 정보주체로부터 별도의 동의를 받은 경우 2. 다른"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156682234",
+   "family": "institutions:alio-rule:12034",
+   "shared_ngram8": 83,
+   "tool_shared_ngram8": 66,
+   "also_in_statute": 83,
+   "statute_share": 1.0,
+   "example_not_in_statute": [],
+   "example_in_statute": [
+    "1. 파면, 해임, 해고, 그 밖에 신분상실에 해당하는",
+    "3. 전보, 전근, 직무 미부여, 직무 재배치, 그"
+   ]
+  },
+  {
+   "report": "overlap/press-clean-v1-check.json",
+   "corpus_id": "korea-kr-briefing:156682234",
+   "family": "institutions:alio-rule:26634",
+   "shared_ngram8": 64,
+   "tool_shared_ngram8": 64,
+   "also_in_statute": 64,
+   "statute_share": 1.0,
+   "example_not_in_statute": [],
+   "example_in_statute": [
+    "1. 파면, 해임, 해고, 그 밖에 신분상실에 해당하는",
+    "3. 전보, 전근, 직무 미부여, 직무 재배치, 그"
+   ]
+  }
+ ]
+}
