@@ -139,7 +139,7 @@ def number_list(text):
     return out[:30]
 
 
-META = re.compile(r'구간|번호|질문|묻는|만드세요|작성|다음과 같|편집된|수정된')
+META = re.compile(r'구간|번호|질문|묻는|만드세요|작성하세요|작성하시오|다음과 같|편집된|수정된')   # '작성' alone is an ordinary word in rule names and duties
 MARKERS = {
     'condition': re.compile(r'경우|이상|이하|미만|초과|대상|자격|요건|해당|충족|이면|라면|한하|기준|이내|부터|까지'),
     'exception': re.compile(r'제외|다만|예외|면제|않|아니|불가|단,'),
@@ -504,12 +504,18 @@ def check(work, distractor_ids, dev_mod, include_spec, profile='small'):
     extra = json.loads(Path(include_spec).read_text()) if include_spec else None
     tok = Tokenizer.from_file(str(B.TOKENIZER))
     dis_ids = [x.strip() for x in Path(distractor_ids).read_text().split() if x.strip()]
-    wanted = set(dis_ids) | {cands[r['cid']]['doc'] for r in rows if r['state'] == 'pending'}
+    # Evidence-record candidates from other corpora (C-010, law-ko-source) carry their verbatim excerpts as the passages.
+    excerpted = {c['doc']: c for c in cands.values() if c.get('record') and c.get('corpus') != 'korea-kr-briefing-source'}
+    wanted = set(dis_ids) | {cands[r['cid']]['doc'] for r in rows if r['state'] == 'pending'} - set(excerpted)
     if extra:
         wanted |= {i['doc'] for i in extra['items'] if 'doc' in i} | {p[0] for i in extra['items'] for p in i.get('parts', [])}
         wanted |= {t['doc'] for t in extra['tables'].values()}
     docs = B.load_docs(SOURCE, wanted)
     cut = {k: passages(v['text']) for k, v in docs.items()}
+    for d, c in excerpted.items():
+        ps = [c['passages'][k] for k in sorted(c['passages'], key=int)]
+        docs[d] = dict(id=d, title=c['title'], source=c.get('source_url'), license=c.get('license'), text='\n\n'.join(ps))
+        cut[d] = ps
 
     def split_of(doc):
         return 'valid' if int(hashlib.sha256(('c007-dev' + doc).encode()).hexdigest(), 16) % 10 < dev_mod else 'train'

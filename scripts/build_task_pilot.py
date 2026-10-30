@@ -120,7 +120,7 @@ def assemble(item, kind, targets, distractor, split, docs, spec, rng):
             raise ValueError(f"{item['id']}: answer also appears in another passage")
         answer = f"{item['answer']} [{sid(t)}]"
     prov = [{'doc': d, 'source': docs[d]['source'], 'title': docs[d]['title'], 'date': docs[d].get('date'),
-             'domain': spec['domains'].get(d), 'license': 'KOGL Type 1', 'passage_id': sid(t),
+             'domain': spec['domains'].get(d), 'license': docs[d].get('license', 'KOGL Type 1'), 'passage_id': sid(t),
              'passage_sha256': hashlib.sha256(text.encode()).hexdigest(),
              **({'artificial_edit': True, 'original_sha256': hashlib.sha256(orig.encode()).hexdigest(),
                  'edits': item['edits']} if orig else {})}

@@ -171,7 +171,8 @@ def repeated_values(passage, title, doc_text):
     return keys
 
 
-QUANTITY = re.compile(r'(?<![\d.,])(?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d+)?(?:%|퍼센트|명|건|개소|개|곳|원|억|조|만|천|톤|kg|㎡|ha|km|대|척|회|배|가구|세대|종|편|권|마리|그루|점|석|병상|시간|개월)')
+UNITS = sorted('% 퍼센트 명 건 개소 개월 개 곳 원 억 조 만 천 톤 kg ㎡ ha km 대 척 회 배 가구 세대 종 편 권 마리 그루 점 석 병상 시간'.split(), key=len, reverse=True)
+QUANTITY = re.compile(r'(?<![\d.,])(?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d+)?(?:' + '|'.join(map(re.escape, UNITS)) + ')')   # longest unit first: 4개월 is not 4개
 
 
 def edit_target(cand):
@@ -213,28 +214,77 @@ def parse_reply(out, schema):
     return reply
 
 
+RECORD_TYPES = ('condition', 'exception', 'explanation', 'combine')
+RECORD_TASK = {
+    'condition': ('아래 조문 문단은 "{condition}"일 때 "{effect}"라고 정합니다. 이 효과(누가 무엇을 하거나 할 수 있는지)를 질문에 밝히고, '
+                  '그 효과가 적용되는 경우(조건)를 묻는 질문 하나를 쓰세요. 질문에 법령·규정 이름을 넣고, 조건 내용은 질문에 쓰지 마세요. '
+                  '정답은 조건 구간으로 이미 정해져 있으므로 질문만 씁니다.'),
+    'exception': ('아래 조문 문단의 원칙은 "{rule}"이고, 단서(예외)는 "{exception}"입니다. 원칙을 질문에 밝히고, 그 원칙에 대해 단서가 정한 '
+                  '예외가 무엇인지 묻는 질문 하나를 쓰세요. 질문에 법령·규정 이름을 넣고, 예외 내용은 질문에 쓰지 마세요. 정답은 단서 구간으로 이미 정해져 있습니다.'),
+    'explanation': ('아래는 법령해석례의 회답(결론)과 그 근거가 된 이유 문단입니다. 해석 대상(법령 조항과 쟁점)을 밝히고 그것이 어떻게 해석되는지 '
+                    '"근거와 함께 설명해 주세요."로 끝나는 질문 하나를 쓰세요. 결론 내용은 질문에 쓰지 마세요. 결론과 근거 구간은 이미 정해져 있습니다.'),
+    'combine': ('문단 0은 조문 A, 문단 1은 A를 "{reference}"로 가리키는 조문 B입니다. 조문 번호 대신 A가 정한 내용을 풀어 써서 질문의 대상을 특정하고, '
+                '그 대상에 대해 B가 정한 내용을 묻는 질문 하나를 쓰세요. 그래서 A를 읽어야 대상을 알 수 있고 B를 읽어야 답할 수 있어야 합니다. '
+                'value_a는 질문의 대상을 특정하는 A의 구간, value_b는 질문의 답이 되는 B의 구간이며 둘 다 원문 그대로 복사합니다. '
+                'why_both는 두 조문이 왜 모두 필요한지 한 문장으로 씁니다.'),
+}
+RECORD_FIELDS = {'condition': ['question'], 'exception': ['question'], 'explanation': ['question'],
+                 'combine': ['question', 'value_a', 'value_b', 'why_both']}
+
+
+def record_prompt(cand):
+    kind, rec = cand['type'], cand['record']
+    body = '\n\n'.join(f'문단 {i}:\n{p}' for i, p in cand['passages'].items())
+    schema = {'type': 'object', 'required': ['check', 'skip', 'reason', *RECORD_FIELDS[kind]],
+              'properties': {'check': {'type': 'string'}, 'skip': {'type': 'boolean'}, 'reason': {'type': 'string'},
+                             **{k: {'type': 'string'} for k in RECORD_FIELDS[kind]}}}
+    task = RECORD_TASK[kind].format(**{k: v for k, v in rec.items() if isinstance(v, str)})
+    return f'{task}\n\n{body}', schema
+
+
+def record_item(cand, d, iid, q):
+    """C-002 item whose answer spans come from the evidence record (written before generation); only the question and,
+    for combine, the two verbatim spans inside the fixed passages come from the generator."""
+    kind, rec, doc, ps = cand['type'], cand['record'], cand['doc'], cand['passages']
+    if kind == 'condition':
+        return dict(id=iid, type=kind, doc=doc, passage=0, question=q, answer=exact(rec['condition'], ps['0']), note=f"effect: {rec['effect']}")
+    if kind == 'exception':
+        return dict(id=iid, type=kind, doc=doc, passage=0, question=q, answer=exact(rec['exception'], ps['0']), note=f"rule: {rec['rule']}")
+    if kind == 'explanation':
+        return dict(id=iid, type=kind, doc=doc, passage=0, question=q, conclusion=exact(rec['conclusion'], ps['0']),
+                    evidence=exact(rec['ground'], ps['0']), condition=None)
+    a, b = exact(d['value_a'], ps['0']), exact(d['value_b'], ps['1'])
+    return dict(id=iid, type=kind, question=q, parts=[[doc, 0, a], [doc, 1, b]],
+                note=f"relation: {rec['citing_article']} cites {rec['cited_article']} ({rec['reference']}); why both: {d['why_both']}")
+
 def draft_one(url, cand, retries=2):
     """Draft with the generator's thinking mode, then validate locally with to_item; on a failure the generator gets
     the exact reason and rewrites (at most `retries` times). Every attempt's call metadata and failure reason are kept.
     A truncated reply (finish_reason != stop) ends the attempts and is recorded as such."""
     kind = cand['type']
     ids = [int(i) for i in cand.get('passages', {})]
-    if kind == 'table':
-        body = f"표 원문:\n{cand['table']['raw_block']}"
+    if cand.get('record') and kind in RECORD_TYPES:
+        prompt, schema = record_prompt(cand)
+        messages = [{'role': 'system', 'content': ROLE}, {'role': 'user', 'content': (
+            f'{prompt}\n\ncheck에는 질문이 정해진 정답 구간 하나만을 가리키는지, 정답을 노출하지 않는지 점검해 씁니다. 그런 질문을 쓸 수 없으면 skip합니다.\n\n'
+            f"출력: 다음 키를 모두 가진 JSON 객체 하나만 출력합니다(코드 블록 없이). {json.dumps(schema['properties'], ensure_ascii=False)}")}]
     else:
-        body = '\n\n'.join(f'문단 {i}:\n{p}' for i, p in cand['passages'].items())
-        body += ('\n\n서로 다른 두 문단을 passage_a, passage_b로 고르세요.' if kind == 'combine'
-                 else '\n\n문제를 만들 문단 하나를 passage로 고르세요.')
-    if kind == 'numeric_change':
-        if not edit_target(cand):
-            return dict(skip=True, reason='no quantity that appears only in this passage (unsafe to edit)'), None
-        body += guard_note(cand)
-    if kind == 'combine' and len(ids) < 2:
-        return dict(skip=True, reason='fewer than two passages'), None
-    schema = draft_schema(kind, ids)
-    shape = json.dumps(schema['properties'], ensure_ascii=False)
-    messages = [{'role': 'system', 'content': ROLE},
-                {'role': 'user', 'content': f'{TASK[kind]} {CHECK}\n\n{body}\n\n출력: 다음 키를 모두 가진 JSON 객체 하나만 출력합니다(코드 블록 없이). {shape}'}]
+        if kind == 'table':
+            body = f"표 원문:\n{cand['table']['raw_block']}"
+        else:
+            body = '\n\n'.join(f'문단 {i}:\n{p}' for i, p in cand['passages'].items())
+            body += ('\n\n서로 다른 두 문단을 passage_a, passage_b로 고르세요.' if kind == 'combine'
+                     else '\n\n문제를 만들 문단 하나를 passage로 고르세요.')
+        if kind == 'numeric_change':
+            if not edit_target(cand):
+                return dict(skip=True, reason='no quantity that appears only in this passage (unsafe to edit)'), None
+            body += guard_note(cand)
+        if kind == 'combine' and len(ids) < 2:
+            return dict(skip=True, reason='fewer than two passages'), None
+        schema = draft_schema(kind, ids)
+        shape = json.dumps(schema['properties'], ensure_ascii=False)
+        messages = [{'role': 'system', 'content': ROLE},
+                    {'role': 'user', 'content': f'{TASK[kind]} {CHECK}\n\n{body}\n\n출력: 다음 키를 모두 가진 JSON 객체 하나만 출력합니다(코드 블록 없이). {shape}'}]
     attempts = []
     reply = None
     for _ in range(retries + 1):
@@ -280,6 +330,8 @@ def to_item(cand, d):
     kind, doc = cand['type'], cand['doc']
     iid = f'{kind}-{doc}'
     q = d['question'].strip()
+    if cand.get('record') and kind in RECORD_TYPES:
+        return record_item(cand, d, iid, q), None
     if kind in ('condition', 'exception'):
         text = cand['passages'][str(d['passage'])]
         return dict(id=iid, type=kind, doc=doc, passage=d['passage'], question=q, answer=exact(d['answer'], text)), None
