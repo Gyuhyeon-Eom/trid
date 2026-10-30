@@ -1,0 +1,13 @@
+01:09:18 stop
+Demo is stopped (supervisor and model server process group exited).
+group 87216 members left: 0
+01:09:21 start
+ready
+Current Version ID: 4ceb3ca5-0bd8-4721-b2b8-a70f200f68a6
+01:09:50 done
+{'status': 'running', 'supervisor_pid': 88765, 'backend_pid': 88766, 'backend_pgid': 88766, 'backend_started': 'Sat Oct 31 01:09:21 2026', 'connection_status': 'ready'}
+python3.1 88766 127.0.0.1:51873
+llama-ser 88768 127.0.0.1:51912
+llama-ser 88775 127.0.0.1:51917
+llama-ser 88776 127.0.0.1:51918
+9256df4

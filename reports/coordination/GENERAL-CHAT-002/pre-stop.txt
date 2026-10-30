@@ -1,0 +1,8 @@
+2026-10-31 01:09:13 KST
+{'supervisor_pid': 87215, 'backend_pid': 87216, 'backend_pgid': 87216, 'backend_started': 'Sat Oct 31 00:54:34 2026'}
+87215 87215 Sat Oct 31 00:54:34 2026 /Users/eomgyuhyeon/사업/trid/.venv/bin/python /Users/eomgyuhyeon/사업/trid/script
+87216 87216 Sat Oct 31 00:54:34 2026 /Users/eomgyuhyeon/사업/trid/.venv/bin/python /Users/eomgyuhyeon/사업/trid/script
+87218 87216 Sat Oct 31 00:54:35 2026 /Users/eomgyuhyeon/사업/trid/runs/tools/llama.cpp-8ca4060-metal/llama-server -m /Users/eomgy
+87225 87216 Sat Oct 31 00:54:37 2026 /Users/eomgyuhyeon/사업/trid/runs/tools/llama.cpp-8ca4060-metal/llama-server -m /Users/eomgy
+87226 87216 Sat Oct 31 00:54:38 2026 /Users/eomgyuhyeon/사업/trid/runs/tools/llama.cpp-8ca4060-metal/llama-server -m /Users/eomgy
+87234 87216 Sat Oct 31 00:54:44 2026 /Users/eomgyuhyeon/사업/trid/.venv/bin/python -c from multiprocessing.resource_tracker impor
