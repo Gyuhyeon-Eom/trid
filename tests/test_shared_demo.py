@@ -241,7 +241,8 @@ class WorkspaceTests(unittest.TestCase):
             d.passages, d.refs = parse_document(text, key, title)
             docs.append(d)
             meta[key] = {'title': title, 'kind': '행정규칙', 'institution': title[:3], 'date': '2026-01-01', 'date_type': '발령일자',
-                         'effective_date': None, 'currency': None, 'source': f'https://example.invalid/{key}', 'license': 'test'}
+                         'effective_date': None, 'currency': None, 'source': f'https://example.invalid/{key}', 'license': 'test',
+                         **getattr(self, 'META', {}).get(key, {})}
         self.dir = tempfile.TemporaryDirectory(); self.addCleanup(self.dir.cleanup)
         Index.build(docs).save(self.dir.name)
         Path = __import__('pathlib').Path
@@ -372,42 +373,118 @@ class CivilServiceScopeTests(WorkspaceTests.__base__):
 class RuleTableLinkTests(WorkspaceTests.__base__):
     """A statute body passage citing 별표 N is answered with that table of the same statute — identified by the annex id
     in the table's own caption, never by the corpus title number ("[별표 0006]" may be 별표 6의2)."""
-    TEXTS = {'law': ('공무원 여비 규정', '제16조(식비) 국내 출장 식비는 별표 2에 따라 지급하고, 가족 여비는 별표 6의2에 따른다.'),
+    LAW = 'law-go-kr:law:1'
+    BODY = ('제16조(식비) 국내 출장 식비는 별표 2에 따라 지급하고, 가족 여비는 별표 6의2에 따른다.\n'
+            '제17조(국외) 국외 여비는 별표 4에 따른다.\n'
+            '■ 공무원 여비 규정 [별표 4]\n국외 여비 지급표 가 60 실비(상한액: 471) 186\n'
+            '■ 공무원 여비 규정 [별표 5]\n이전비 지급 기준표 실비')
+    TEXTS = {LAW: ('공무원 여비 규정', BODY),
              't2': ('공무원 여비 규정 [별표 0002] 국내 여비 지급표', '■ 공무원 여비 규정 [별표 2]\n국내 출장 식비 하루 25,000원'),
              't6': ('공무원 여비 규정 [별표 0006] 가족 여비 지급표', '■ 공무원 여비 규정 [별표 6의2]\n국외 가족 여비 지급표'),
              't6x': ('공무원 여비 규정 [별표 0006] 다른 표', '■ 공무원 여비 규정 [별표 6]\n다른 식비 표'),
              't8': ('공무원 여비 규정 [별표 0008] 상시 출장 공무원의 여비 지급 기준표', '■ 공무원 여비 규정 [별표 8]\n상시 출장 식비 월 지급'),
              'other': ('다른 여비 규정 [별표 0002] 지급표', '■ 다른 여비 규정 [별표 2]\n식비 하루 1원')}
+    META = {LAW: {'kind': '법령', 'effective_date': '2026-10-02'}}
     setUp = WorkspaceTests.setUp
 
     def test_cited_table_of_the_same_rule_is_added_by_its_caption_annex_id(self):
         self.assertEqual((self.ws.annex_id['t6'], self.ws.annex_id['t6x']), ('6의2', '6'))
-        r = self.ws.select('국내 출장 식비 지급', pinned='law')
+        r = self.ws.select('국내 출장 식비 지급', pinned=self.LAW)
         self.assertEqual(r['linked_tables'], ['t2', 't6'])
-        self.assertEqual({c.doc_id for c, _ in r['chunks']}, {'law', 't2', 't6'})
+        self.assertEqual({c.doc_id for c, _ in r['chunks']}, {self.LAW, 't2', 't6'})
 
-    def test_only_visually_reviewed_rows_are_added_and_never_quoted(self):
-        from scripts.shared_demo import answer_document_case
-        from trid.pdf_documents import Document as Doc
-        row = lambda n, review, cells: {'id': f't2:t0:r{n}', 'doc_id': 't2', 'table': 0, 'review': review, 'cells': cells,
-                                         'caption': ['■ 공무원 여비 규정 [별표 2]', '국내 여비 지급표'], 'unit': '원',
-                                         'revised': '개정 2026. 9. 29.', 'statute_effective_date': '2026-10-02',
-                                         'section': None, 'notes': ['비고 1. 대통령의 식비는 실비로 한다.']}
-        path = __import__('pathlib').Path(self.dir.name) / 'rows.jsonl'
-        path.write_text(''.join(json.dumps(r, ensure_ascii=False) + '\n' for r in (
-            row(0, 'ai_visual_review_match', {'구분': '제2호', '식비(1일당)': '25,000'}),
-            {**row(1, 'candidate_unreviewed', {'구분': '제1호', '식비(1일당)': '99,999'}), 'doc_id': 't8'})))
-        loaded = __import__('scripts.shared_demo', fromlist=['Workspace']).Workspace(self.dir.name, table_rows=path)
-        self.assertEqual(set(loaded.reviewed_rows), {'t2'})  # candidate rows are never used
-        self.ws.reviewed_rows = {'t2': [row(0, 'ai_visual_review_match', {'구분': '제2호', '식비(1일당)': '25,000'})]}
-        r = self.ws.select('국내 출장 식비 지급', pinned='law')
+    def span(self, annex):
+        s = self.BODY.index(f'■ 공무원 여비 규정 [별표 {annex}]')
+        return [s, self.BODY.find('■', s + 1) if self.BODY.find('■', s + 1) > 0 else len(self.BODY)]
+
+    def rows_workspace(self, groups, links):
+        """Workspace over this fixture with a reviewed-row file and B's link file.
+        groups = [(rows doc id, annex, cell rows, review, source)]; links = [B link entries]."""
+        from pathlib import Path
+        from scripts.shared_demo import Workspace
+        d = Path(self.dir.name)
+        rows = [{'id': f'{doc}:t0:r{i}', 'doc_id': doc, 'table': 0, 'review': review, 'cells': cells, 'source': source,
+                 'caption': [f'■ 공무원 여비 규정 [별표 {annex}] <개정 2021. 5. 25.>', '지급표'], 'unit': '단위: 원',
+                 'revised': '개정 2021. 5. 25.', 'statute_effective_date': '2026-10-02', 'section': None,
+                 'notes': ['비고 1. 대통령의 식비는 실비로 한다.']}
+                for doc, annex, cell_rows, review, source in groups for i, cells in enumerate(cell_rows)]
+        (d / 'rows.jsonl').write_text(''.join(json.dumps(r, ensure_ascii=False) + '\n' for r in rows))
+        (d / 'links.jsonl').write_text(''.join(json.dumps(l, ensure_ascii=False) + '\n' for l in links))
+        return Workspace(self.dir.name, table_rows=[(d / 'rows.jsonl', d / 'links.jsonl')])
+
+    def link(self, doc, annex, status='linked', in_index=None, span=None):
+        return {'row_doc_id': doc, 'law': '공무원 여비 규정', 'mst': '1', 'byl': annex, 'status': status,
+                'byl_doc_in_index': in_index, 'body_doc': self.LAW, 'linked_section': span}
+
+    def test_reviewed_rows_link_only_to_their_verified_source_text(self):
+        ws = self.rows_workspace(
+            [('t2', '2', [{'구분': '제2호', '식비(1일당)': '25,000'}], 'ai_visual_review_match', {'kordoc_text_sha256': 't2'}),
+             ('t8', '8', [{'구분': '1', '지급': '99,999'}], 'render_check_pass', {'kordoc_text_sha256': 't8'}),
+             ('byl4', '4', [{'등급': '가', '일비': '60', '숙박비': '실비(상한액: 471)', '식비': '186'},
+                            {'구분': '6. 삭제 <2021. 5. 25.>'}], 'ai_visual_review_match', {}),
+             ('byl5', '5', [{'구분': '국내 이전비', '지급액': '390,000'}], 'ai_visual_review_match', {}),
+             ('t6', '6의2', [{'지급 사유': '부임', '지급액': '3분의 2'}], 'ai_visual_review_match', {'kordoc_text_sha256': 'stale'}),
+             ('byl11', '11', [{'호봉': '1', '금액': '7'}], 'ai_visual_review_match', {})],
+            [self.link('t2', '2', in_index='t2'), self.link('t8', '8', in_index='t8'),
+             self.link('byl4', '4', span=self.span(4)), self.link('byl5', '5', span=self.span(5)),
+             self.link('t6', '6의2', in_index='t6'), self.link('byl11', '11', status='mismatch')])
+        self.assertEqual(ws.row_links[('공무원여비규정', '2')]['method'], 'same_source_hash')       # same document, same hash
+        self.assertEqual(ws.row_links[('공무원여비규정', '4')]['method'], 'statute_body_segment')  # B span, values verified
+        self.assertEqual(ws.row_links[('공무원여비규정', '4')]['segment'], self.span(4))
+        self.assertNotIn(('공무원여비규정', '8'), ws.row_links)                                   # render_check_pass rows never
+        self.assertIn('numbers not in the linked span', ws.row_unlinked[('공무원여비규정', '5')])
+        self.assertIn('hash differs', ws.row_unlinked[('공무원여비규정', '6의2')])
+        self.assertIn('mismatch', ws.row_unlinked[('공무원여비규정', '11')])
+        r = ws.select('국외 여비 지급표', pinned=self.LAW)
         derived = [c for c, _ in r['chunks'] if c.derived]
-        self.assertEqual(len(derived), 1)
-        for part in ('단위: 원', '법령 시행일 2026-10-02', '식비(1일당): 25,000', '비고 1. 대통령의 식비는 실비로 한다.'):
+        self.assertEqual((len(derived), r['reviewed_rows']['annex']), (1, '4'))
+        for part in ('단위: 원', '법령 시행일 2026-10-02', '일비: 60', '비고 1. 대통령의 식비는 실비로 한다.'):
             self.assertIn(part, derived[0].text)
+        self.assertIn('별표 5', r.get('table_rows_unlinked', []))  # its span is in the evidence: said, not replaced
+
+    def test_rows_are_not_attached_for_a_table_the_question_does_not_ask_about(self):
+        ws = self.rows_workspace(
+            [('t2', '2', [{'구분': '제2호', '식비(1일당)': '25,000'}], 'ai_visual_review_match', {'kordoc_text_sha256': 't2'}),
+             ('t8', '8', [{'구분': '별표 8', '지급': '월'}], 'ai_visual_review_match', {'kordoc_text_sha256': 't8'})],
+            [self.link('t2', '2', in_index='t2'), self.link('t8', '8', in_index='t8')])
+        ws.row_links[('공무원여비규정', '2')]['rows'][0]['caption'][1] = '국내 여비 지급표'
+        ws.row_links[('공무원여비규정', '8')]['rows'][0]['caption'][1] = '상시 출장 지급표'
+        r = ws.select('국내 출장 식비 지급', pinned=self.LAW)
+        self.assertEqual(r['reviewed_rows']['annex'], '2')
+        # another table of the rule is named by the question better than the one in the evidence: no rows at all
+        ws.row_links[('공무원여비규정', '8')]['rows'][0]['caption'][1] = '국내 출장 식비 지급 기준표'
+        r = ws.select('국내 출장 식비 지급', pinned=self.LAW)
+        self.assertNotIn('reviewed_rows', r)
+        self.assertEqual(r['table_rows_not_in_evidence'], ['별표 8'])
+
+    def test_derived_rows_are_never_quoted_and_shrink_by_whole_rows(self):
+        from dataclasses import replace
+        from scripts.shared_demo import CASE_SYSTEM, answer_document_case, rag_prompt, render_rows
+        from trid.pdf_documents import Document as Doc
+        ws = self.rows_workspace([('byl4', '4', [{'등급': g, '일비': '60', '숙박비': '실비(상한액: 471)', '식비': '186'}
+                                                for g in '가나다라'], 'ai_visual_review_match', {})],
+                                 [self.link('byl4', '4', span=self.span(4))])
+        r = ws.select('국외 여비 지급표', pinned=self.LAW)
+        derived = next(c for c, _ in r['chunks'] if c.derived)
+        # the prompt once other documents' passages are gone and two of the four rows remain: the budget
+        kept = [(c, s) for c, s in r['chunks'] if c.doc_id == self.LAW and not c.derived] + [
+            (replace(derived, text=render_rows(derived.rows, 2), shown=2), 0.0)]
+        counter = lambda base, messages: sum(len(m['content']) for m in messages)  # a stand-in tokenizer: 1 char = 1 token
+        budget = counter(None, [{'content': CASE_SYSTEM},
+                                {'content': rag_prompt([(f'D{i}', c.text) for i, (c, _) in enumerate(kept, 1)], '일비')}])
         document = Doc('d', [], [c for c, _ in r['chunks']], [])
-        with patch('scripts.shared_demo.complete', return_value={'generated': '구분: 제2호; 식비(1일당): 25,000', 'truncated_output': False}):
-            result = answer_document_case(document, '식비', 'http://127.0.0.1:1', 'qwen3', 4096, selected=r['chunks'])
+        with patch('scripts.shared_demo.prompt_tokens', side_effect=counter), \
+             patch('scripts.shared_demo.complete', return_value={'generated': '- 등급: 가; 일비: 60', 'truncated_output': False}) as call:
+            result = answer_document_case(document, '일비', 'http://127.0.0.1:1', 'qwen3', budget, max_tokens=0,
+                                          selected=r['chunks'])
+        sent = call.call_args[0][1][1]['content']
+        self.assertNotIn('[별표 2]', sent)                                  # other documents' passages go first
+        self.assertIn('등급: 나', sent)
+        self.assertNotIn('등급: 다', sent)                                   # then whole rows, from the end
+        self.assertIn('나머지 2행', sent)                                    # and the text says so
+        self.assertIn('비고 1. 대통령의 식비는 실비로 한다.', sent)          # notes kept whole
+        self.assertIn('나머지', sent)                                       # dropped rows are stated
+        self.assertTrue(any('행을 빼었습니다' in n for n in result['context_notes']))
         self.assertEqual(result['candidates'], [])  # a line of the derived rows is not a verbatim source quote
 
 

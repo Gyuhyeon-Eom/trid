@@ -1,6 +1,6 @@
 """Temporary multi-visitor demo. Only accepts requests from the authenticated edge proxy."""
 import argparse
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from http.cookies import SimpleCookie
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import hmac
@@ -65,6 +65,65 @@ def read_chunk(model, _presence, tok, text, question, device):
             abstains, span, answer = True, None, '확인 불가'
     return {**result, 'answer': answer, 'abstains': abstains, 'source_character_span': span}
 
+
+def prompt_tokens(base, messages):
+    """Tokens of the prompt as the serving model renders and tokenizes it (same /apply-template + /tokenize calls as
+    `complete`), or None when the server cannot be asked."""
+    try:
+        prompt = llama_request(base, '/apply-template', {'messages': messages, 'chat_template_kwargs': {'enable_thinking': False}})['prompt']
+        return len(llama_request(base, '/tokenize', {'content': prompt, 'add_special': True, 'parse_special': True})['tokens'])
+    except OSError:
+        return None
+
+
+def fit_context(selected, build, base, context, max_tokens):
+    """(selected, notes): evidence reduced until the prompt `build(selected)` — counted with the serving model's own
+    template and tokenizer — leaves `max_tokens` for the answer within `context`. Reduction order: passages of other
+    documents (linked tables); then whole reviewed-table rows, one at a time (never part of a row and never a note: a
+    cut condition could change a value's meaning; the rendered rows say how many were left out); then the applied
+    document's weakest passages (its best passage stays)."""
+    selected, dropped = list(selected), {'linked': 0, 'rows': 0, 'tables': 0, 'own': 0}
+    while selected:
+        tokens = prompt_tokens(base, build(selected))
+        if tokens is None or tokens + max_tokens <= context:
+            break
+        applied = selected[0][0].doc_id
+        linked = [i for i, (c, _) in enumerate(selected) if c.doc_id != applied and not c.derived]
+        derived = [i for i, (c, _) in enumerate(selected) if c.derived]
+        own = [i for i, (c, _) in enumerate(selected) if c.doc_id == applied and not c.derived][1:]
+        if linked:
+            del selected[linked[-1]]
+            dropped['linked'] += 1
+        elif derived:
+            i = derived[-1]
+            chunk, score = selected[i]
+            n = (len(chunk.rows) if chunk.shown < 0 else chunk.shown) - 1
+            if n < 1:
+                del selected[i]
+                dropped['tables'] += 1
+            else:
+                selected[i] = (replace(chunk, text=render_rows(chunk.rows, n), shown=n), score)
+                dropped['rows'] += 1
+        elif own:
+            del selected[own[-1]]
+            dropped['own'] += 1
+        else:
+            break
+    notes = []
+    if dropped['linked']:
+        notes.append(f"모델 문맥 한도로 함께 넣으려던 다른 별표 구간 {dropped['linked']}개를 빼었습니다.")
+    if dropped['rows']:
+        notes.append(f"모델 문맥 한도로 검토된 표 행 {dropped['rows']}행을 빼었습니다. 이 답은 넣은 행에 한정됩니다.")
+    if dropped['tables']:
+        notes.append('모델 문맥 한도로 검토된 표 행을 넣지 못했습니다. 표 값은 원문 표에서 확인하세요.')
+    if dropped['own']:
+        notes.append(f"모델 문맥 한도로 적용 문서의 관련도 낮은 구간 {dropped['own']}개를 빼었습니다.")
+    return selected, notes
+
+
+CONTEXT_OVERFLOW = ('근거 구간 하나가 모델 문맥 한도보다 길어 답하지 못했습니다. 서버 측 근거 구성의 한계이며, 원문 링크에서 직접 '
+                    '확인해 주세요.')
+
 def answer_document_chat(document, question, base, family, context, constrained=False, selected=None):
     """One completion over the retrieved chunks (as D1..Dn), with the evaluation's `grammar_instructed` system prompt
     and optionally its `evidence_constrained` grammar. `value [Dn]` and source-first `[Dn] value` are accepted (the
@@ -80,11 +139,15 @@ def answer_document_chat(document, question, base, family, context, constrained=
               'scope': '관련도 상위 최대 6개 구간을 확인한 결과입니다. 미검색 구간까지 정보가 없다고 보장하지 않습니다.'}
     if not selected:
         return {**result, 'status': 'not_found', 'answer': '질문과 관련된 문서 구간을 찾지 못했습니다. 질문을 바꾸거나 추출 내용을 확인해 주세요.'}
+    build = lambda sel: [{'role': 'system', 'content': SYSTEM},
+                         {'role': 'user', 'content': rag_prompt([(f'D{i}', c.text) for i, (c, _) in enumerate(sel, 1)], question)}]
+    selected, fit_notes = fit_context(selected, build, base, context, MAX_TOKENS)
+    result.update(checked_chunks=len(selected), context_notes=fit_notes)
     prompt = rag_prompt([(f'D{i}', chunk.text) for i, (chunk, _) in enumerate(selected, 1)], question)
     messages = [{'role': 'system', 'content': SYSTEM}, {'role': 'user', 'content': prompt}]
     r = complete(base, messages, family, MAX_TOKENS, context, evidence_grammar(prompt) if constrained else None)
     if r.get('skipped_context'):
-        raise DocumentError('검색된 문서 구간이 모델 문맥 한도를 넘었습니다. 질문을 더 구체적으로 입력해 주세요.')
+        raise DocumentError(CONTEXT_OVERFLOW)
     output = r['generated']
     result['raw_output'] = output
     if output.removesuffix('.') == '확인 불가':
@@ -145,14 +208,17 @@ def answer_document_case(document, question, base, family, context, max_tokens=2
         return {**result, 'status': 'not_found', 'answer': '질문과 관련된 문서 구간을 찾지 못했습니다. 질문을 바꾸거나 추출 내용을 확인해 주세요.'}
     # Versions trained on B's case-training-view (MODEL-REPAIR-001) saw D1 start with a '자료 정보: …' line naming the
     # document, institution and date basis; they are served the same way (`provenance`), others without it.
-    texts = [chunk.text for chunk, _ in selected]
-    if provenance:
-        texts[0] = provenance + texts[0]
-    prompt = rag_prompt([(f'D{i}', text) for i, text in enumerate(texts, 1)], question)
-    messages = [{'role': 'system', 'content': CASE_SYSTEM}, {'role': 'user', 'content': prompt}]
-    r = complete(base, messages, family, max_tokens, context)
+    def build(sel):
+        texts = [chunk.text for chunk, _ in sel]
+        if provenance:
+            texts[0] = provenance + texts[0]
+        prompt = rag_prompt([(f'D{i}', text) for i, text in enumerate(texts, 1)], question)
+        return [{'role': 'system', 'content': CASE_SYSTEM}, {'role': 'user', 'content': prompt}]
+    selected, fit_notes = fit_context(selected, build, base, context, max_tokens)
+    result.update(checked_chunks=len(selected), context_notes=fit_notes)
+    r = complete(base, build(selected), family, max_tokens, context)
     if r.get('skipped_context'):
-        raise DocumentError('검색된 문서 구간이 모델 문맥 한도를 넘었습니다. 질문을 더 구체적으로 입력해 주세요.')
+        raise DocumentError(CONTEXT_OVERFLOW)
     output = r['generated']
     # Echoing the question or the instructions back is a failed answer (a known defect of the pilot), not a quote.
     flat = _norm(output)
@@ -416,6 +482,8 @@ class PassageChunk:
     table: bool = False  # passage carries a table whose rows/columns B has not verified
     value_hold: bool = False  # B value review: its extracted numbers differ from the source page; not answer values
     derived: bool = False  # built here from reviewed structure (not source text): never a verbatim quote or value span
+    rows: tuple = ()  # derived chunk: the reviewed rows it renders (so the context fit can drop whole rows)
+    shown: int = -1  # derived chunk: how many of `rows` are rendered (-1: all)
 
 
 def reader_windows(selected, tok):
@@ -430,6 +498,16 @@ def reader_windows(selected, tok):
     return out
 
 
+# Reviewed table rows (B: one row per line with caption/columns/cells/unit/notes/dates/review) and how each row
+# document maps onto the indexed text: B's link file (law-byl rows → the same law-byl document, or the statute body
+# `law-go-kr:law:<MST>` span of that annex), or the row's own `source` (index_doc_id, content_hash, char_span) for an
+# institution snapshot. Only rows B compared with a rendering by eye (ai_visual_review_match) are used.
+TABLE_ROWS = [(ROOT / 'data/law-byl/v2-structure-002-rows-001/queryable-rows.jsonl',
+               ROOT / 'reports/coordination/B-029/byl-index-links.jsonl'),
+              (ROOT / 'reports/coordination/B-029/reb-yeobi-reviewed-rows.jsonl', None)]
+REVIEWED = 'ai_visual_review_match'
+
+
 NORMALIZE = re.compile(r'[\s·ㆍ・「」『』()（）\[\]〈〉<>,.\-]')
 
 
@@ -442,34 +520,40 @@ def _annex(text):
     return re.sub(r'\s+', '', text)
 
 
-def render_rows(rows, limit=1400):
-    """B's visually reviewed table rows (law-byl v2-structure rows, review ai_visual_review_match) as evidence text of
-    at most `limit` characters: each table's caption, unit, revision and statute dates, one line per row pairing every
-    value with its column header, then the table's notes — numbers never travel without their conditions, unit and
-    date. Rows that do not fit are dropped with a stated count; notes cut short say so."""
+def render_rows(rows, shown=-1):
+    """Reviewed table rows (B review ai_visual_review_match) as evidence text: each table's caption, unit, revision and
+    statute dates, one line per row pairing every value with its column header, then the table's notes in full —
+    numbers never travel without their conditions, unit and date. With `shown` ≥ 0 only that many rows are rendered
+    and the text says how many rows were left out and that the answer is limited to the rows given; notes are never
+    cut (a cut condition could change a value's meaning)."""
+    rows = list(rows)
+    kept = rows if shown < 0 else rows[:shown]
     out = []
     for table in dict.fromkeys(r['table'] for r in rows):
         part = [r for r in rows if r['table'] == table]
         head = part[0]
-        unit = re.sub(r'^\(?\s*단위\s*:\s*|\)$', '', head['unit'] or '').strip()
-        header = [f"[검토된 표 행 · B AI 시각 대조, 승인·법률 자문 아님] {' '.join(head['caption'])}",
-                  f"단위: {unit or '표에 표기 없음'} · {head['revised'] or '개정 표기 없음'} · 법령 시행일 "
-                  f"{head['statute_effective_date'] or '미상'}"]
-        notes = list(dict.fromkeys(n for r in part for n in r.get('notes') or []))
-        note = (('' if notes[0].startswith('비고') else '비고: ') + ' / '.join(notes)) if notes else ''
-        budget = limit - len('\n'.join(out + header)) - min(len(note), limit // 3) - 40
-        lines, section = [], None
+        unit = re.sub(r'^\(?\s*단위\s*:\s*|\)$', '', head.get('unit') or '').strip()
+        when = (f"법령 시행일 {head['statute_effective_date']}" if head.get('statute_effective_date') else
+                f"규정 시행일 {head['rule_effective_date']}(게시본, 현행 여부 미확인)" if head.get('rule_effective_date') else
+                '시행일 표기 없음')
+        out += [f"[검토된 표 행 · B AI 시각 대조, 승인·법률 자문 아님] {' '.join(head['caption'])}",
+                f"단위: {unit or '표에 표기 없음'} · {head.get('revised') or '개정 표기 없음'} · {when}"]
+        out += [f'조건(표 앞 문장): {c}' for c in head.get('conditions') or []]
+        section = None
         for r in part:
-            line = ('' if not r.get('section') or r['section'] == section else f"[{r['section']}]\n") \
-                + '- ' + '; '.join(f'{k}: {v}' for k, v in r['cells'].items())
-            if len('\n'.join(lines + [line])) > budget:
-                lines.append(f'(이 표의 나머지 {len(part) - len(lines)}행은 생략했습니다. 원문 표를 확인하세요.)')
-                break
-            section = r.get('section') or section
-            lines.append(line)
-        if len(note) > limit // 3:
-            note = note[:limit // 3] + ' …(비고 일부 생략, 원문 확인)'
-        out += header + lines + ([note] if note else [])
+            if not any(r is k for k in kept):
+                continue
+            if r.get('section') and r['section'] != section:
+                section = r['section']
+                out.append(f'[{section}]')
+            out.append('- ' + '; '.join(f'{k}: {v}' for k, v in r['cells'].items()))
+        left = sum(1 for r in part if not any(r is k for k in kept))
+        if left:
+            out.append(f'(이 표의 나머지 {left}행은 모델 문맥 한도로 넣지 않았습니다. 이 답은 넣은 행에 한정되며, 나머지는 원문 표를 '
+                       '확인하세요.)')
+        notes = list(dict.fromkeys(n for r in part for n in r.get('notes') or []))
+        if notes:
+            out.append(('' if notes[0].startswith('비고') else '비고: ') + ' / '.join(notes))
     return '\n'.join(out)
 
 def _alias_ok(alias):
@@ -498,7 +582,6 @@ class Workspace:
          plain language which institution's rule is meant instead of picking one.
     Each answer uses passages of ONE document, so rules of different institutions are never mixed."""
     MAX_PASSAGES = 4  # CPU prompt processing dominates latency; four 550-char passages keep answers short
-    CONTEXT_CHARS = 3600  # evidence characters that fit the 4,096-token window (3,643 answered; 5,013 overflowed live)
     TITLE_MIN = 8      # normalised characters shared with a title to count as naming that document
     CLOSE = 0.85       # another institution's best score within this ratio of the top makes the question ambiguous
     # Hybrid ranking (HYBRID-RAG-001 dev measurement, 14 labelled questions: dense ranks the target document far
@@ -525,7 +608,7 @@ class Workspace:
     TOPICAL_DF = 0.02  # a question noun in at most this share of passages is topical (not 출장·공무원·기준 …)
 
     def __init__(self, directory, embedder=None, institutions=ROOT / 'data/corpus-inventory/alio-agencies.json',
-                 review=None, table_rows=ROOT / 'data/law-byl/v2-structure-001-rows-001/queryable-rows.jsonl'):
+                 review=None, table_rows=TABLE_ROWS):
         from trid.service.index import Index
         root = Path(directory)
         self.index = Index.load(root)
@@ -600,18 +683,7 @@ class Workspace:
                 if d in self.annex_id:
                     self.rule_tables.setdefault(base, {})[self.annex_id[d]] = d
         self.rule_of = {d: base for base, docs in self.rule_names.items() for d in docs}
-        # B's table rows (law-byl v2-structure rows): only rows B compared with a rendering of the source
-        # (ai_visual_review_match) are used; candidate_unreviewed rows and not-queryable tables never are.
-        self.reviewed_rows, self.table_rows_source = {}, None
-        if table_rows and Path(table_rows).exists():
-            for line in Path(table_rows).read_text().splitlines():
-                row = json.loads(line)
-                if row.get('review') == 'ai_visual_review_match' and row['doc_id'] in self.meta:
-                    self.reviewed_rows.setdefault(row['doc_id'], []).append(row)
-            manifest = Path(table_rows).with_name('manifest.json')
-            self.table_rows_source = {'file': str(table_rows), 'reviewed_rows': sum(map(len, self.reviewed_rows.values())),
-                                      'manifest_sha256': hashlib.sha256(manifest.read_bytes()).hexdigest()
-                                      if manifest.exists() else None}
+        self._link_table_rows(table_rows or [])
         self.dense, self.dense_info, self.embedder = None, None, embedder
         if (root / 'dense.f16.npy').exists():
             self.dense_info = json.loads((root / 'dense.json').read_text())
@@ -634,6 +706,97 @@ class Workspace:
                               if areas.exists() else {})
         facts = root / 'facts.jsonl'  # structured_facts of API snapshot records (HYBRID-RAG-001-SCHEMA.md)
         self.facts = [json.loads(line) for line in facts.read_text().splitlines()] if facts.exists() else []
+
+    ANNEX_CAPTION = re.compile(r'■?\s*(.*?)\s*\[별표\s*(\d+(?:\s*의\s*\d+)?)\]')
+
+    def doc_text(self, doc):
+        """A document's text rebuilt from its indexed passages at their source offsets (gaps as line breaks)."""
+        out, end = [], 0
+        for i in sorted(np.flatnonzero(self.passage_doc == doc), key=lambda i: self.index.passages[i].char_start):
+            p = self.index.passages[i]
+            if p.char_start > end:
+                out.append('\n' * (p.char_start - end))
+                end = p.char_start
+            if p.char_start + len(p.text) > end:
+                out.append(p.text[end - p.char_start:])
+                end = p.char_start + len(p.text)
+        return ''.join(out)
+
+    def _link_table_rows(self, sources):
+        """Link reviewed table rows (REVIEWED only; render_check_pass and unreviewed rows are never used) to the exact
+        indexed text they describe. The link — B's link file entry with status 'linked' (key: law name + MST + the
+        annex id printed in the table's own header + caption), or the row's own index location — is verified here:
+          - the target document is in this index; a same-document link also has the rows' source hash;
+          - the linked span (or the whole table document) contains every number of the rows' cells, leaving out
+            revision/deletion markers, deleted items and repeated merged cells.
+        Linked: `row_links[(scope, annex)]` (scope: the rule's normalised name, or the document for institution rows)
+        with the document, the span, its passages and the method. Not linked (B: body_empty / mismatch, or a check
+        failed here): `row_unlinked[(scope, annex)]` = reason — used to say the rows were left out, never to attach
+        another table's rows instead."""
+        self.row_links, self.row_unlinked, self.table_rows_source = {}, {}, []
+        marker = lambda t: re.sub(r'<[^>]*>', ' ', str(t))
+        deleted = lambda r: all(re.fullmatch(r'\s*[\d.]*\s*삭제\s*', marker(v)) for v in r['cells'].values())
+        for rows_path, links_path in sources:
+            rows_path = Path(rows_path)
+            if not rows_path.exists():
+                continue
+            rows = [r for r in map(json.loads, rows_path.read_text().splitlines()) if r.get('review') == REVIEWED]
+            links = ({l['row_doc_id']: l for l in map(json.loads, Path(links_path).read_text().splitlines())}
+                     if links_path and Path(links_path).exists() else {})
+            groups = {}
+            for r in rows:
+                cap = self.ANNEX_CAPTION.search(' '.join(r.get('caption') or []))
+                groups.setdefault((r['doc_id'], _annex(cap.group(2)) if cap else None), []).append(r)
+            for (doc_id, caption_annex), part in groups.items():
+                src, link = part[0].get('source') or {}, links.get(doc_id)
+                if src.get('index_doc_id'):           # rows that carry their own place in the index
+                    spans = [r['source']['char_span'] for r in part if (r.get('source') or {}).get('char_span')]
+                    target, src_hash = src['index_doc_id'], src.get('content_hash')
+                    span = [min(s for s, _ in spans), max(e for _, e in spans)] if spans else None
+                    annex, scope, method = caption_annex, src['index_doc_id'], 'row_source_span'
+                elif link:
+                    annex, scope = _annex(link['byl']), _norm(link['law'])
+                    if link.get('status') != 'linked':
+                        self.row_unlinked[(scope, annex)] = f"B link status {link.get('status')}"
+                        continue
+                    if link.get('byl_doc_in_index') == doc_id and doc_id in self.meta:
+                        target, span, src_hash, method = doc_id, None, src.get('kordoc_text_sha256'), 'same_source_hash'
+                    else:
+                        section = link.get('linked_section')
+                        span = section['char_span'] if isinstance(section, dict) else section
+                        target, src_hash, method = link['body_doc'], None, 'statute_body_segment'
+                        if target != f"law-go-kr:law:{link['mst']}":
+                            self.row_unlinked[(scope, annex)] = 'body document is not the linked MST'
+                            continue
+                else:
+                    self.row_unlinked[(doc_id, caption_annex)] = 'no link to the index'
+                    continue
+                key = (scope, annex)
+                if not annex or target not in self.meta:
+                    self.row_unlinked[key] = 'target document not in this index' if annex else 'no annex id'
+                    continue
+                if src_hash and self.index.documents[target].sha256 != src_hash:
+                    self.row_unlinked[key] = 'source hash differs from the indexed document'
+                    continue
+                if method == 'same_source_hash' and self.annex_id.get(target) not in (None, annex):
+                    self.row_unlinked[key] = 'indexed document caption has another annex id'
+                    continue
+                text = self.doc_text(target)
+                s, e = span or (0, len(text))
+                repeated = lambda r: set(r.get('repeated') or [])
+                cells = [marker(v) for r in part if not deleted(r) for k, v in r['cells'].items() if k not in repeated(r)]
+                numbers = set().union(set(), *map(_numbers, cells))
+                if not numbers <= _numbers(marker(text[s:e])):
+                    self.row_unlinked[key] = f'{len(numbers - _numbers(marker(text[s:e])))} row numbers not in the linked span'
+                    continue
+                passages = [int(i) for i in np.flatnonzero(self.passage_doc == target)
+                            if self.index.passages[i].char_start < e
+                            and self.index.passages[i].char_start + len(self.index.passages[i].text) > s]
+                self.row_links[key] = {'doc': target, 'segment': [s, e], 'passages': passages, 'rows': tuple(part),
+                                       'annex': annex, 'method': method, 'rows_doc': doc_id,
+                                       'law_mst': (link or {}).get('mst'), 'statute_effective_date': part[0].get('statute_effective_date')}
+            self.table_rows_source.append({'rows': str(rows_path), 'links': str(links_path) if links_path else None,
+                                           'reviewed_rows': len(rows), 'rows_sha256': hashlib.sha256(rows_path.read_bytes()).hexdigest()})
 
     FACT_COS = 0.6  # metric name ↔ question similarity for a structured value to count as asked for
 
@@ -984,32 +1147,57 @@ class Workspace:
                                      self.passage_doc[i], self.index.passages[i].path,
                                      self.index.passages[i].id in self.tables, self.index.passages[i].id in self.value_hold),
                         float(everywhere[i])) for i in linked]
-        tables = self.rule_tables.get(self.rule_of.get(applied), {})
-        inline = {_annex(n) for c, _ in chunks for n in re.findall(r'\[별표\s*(\d+(?:\s*의\s*\d+)?)\]', c.text)}
-        candidates = [d for d in dict.fromkeys([str(c.doc_id) for c, _ in chunks] + [tables[n] for n in sorted(inline) if n in tables])
-                      if d in self.reviewed_rows]
-        best_of = lambda d: float(np.max(everywhere[self.passage_doc == d], initial=0))
-        top_of = lambda d: [int(i) for i in np.flatnonzero(self.passage_doc == d)[
-            np.argsort(-everywhere[self.passage_doc == d], kind='stable')][:self.MAX_PASSAGES]]
-        candidates = [d for d in candidates if self.relevant(top_of(d), cos, topical)]  # a table about the question
-        reviewed = sorted(candidates, key=best_of, reverse=True)[:1]  # the table the question is most about
-        if reviewed:
+        # Tables whose source text is in the evidence: a 별표 document's own annex, or an inline "[별표 N]" caption in a
+        # passage. Reviewed rows are added only for such a table when its rows are linked (_link_table_rows) to this
+        # very text — the same document, or this statute body at the rows' effective date — never another table.
+        present = {}
+        for c, s in chunks:
+            d = str(c.doc_id)
+            scope = self.rule_of.get(d) or d
+            overlap = lambda link: link['doc'] == d and c.start < link['segment'][1] and c.start + len(c.text) > link['segment'][0]
+            annexes = {self.annex_id[d]} if d in self.annex_id else set()
+            annexes |= {_annex(n) for n in re.findall(r'\[별표\s*(\d+(?:\s*의\s*\d+)?)\]', c.text)}
+            annexes |= {n for (sc, n), link in self.row_links.items() if sc == scope and overlap(link)}  # table span only
+            # "…는 별표1에 따른다" inside the document that itself holds that table (institution rules): that table
+            annexes |= {_annex(n) for n in re.findall(r'별표\s*(\d+(?:\s*의\s*\d+)?)', c.text)
+                        if self.row_links.get((scope, _annex(n)), {}).get('doc') == d}
+            for n in annexes:
+                link = self.row_links.get((scope, n))
+                body = (link and d not in self.annex_id and self.meta[d].get('effective_date')
+                        and self.meta[d].get('effective_date') == link['statute_effective_date'])
+                here = link and (overlap(link) or link['doc'] == d)
+                if (scope, n) in self.row_unlinked:
+                    present.setdefault((scope, n), max(s, present.get((scope, n), -1.0)))
+                elif link and (here or body):
+                    present[(scope, n)] = max(s, present.get((scope, n), -1.0))
+        # The table the evidence is most about — the one whose own caption carries most of the question's topic words
+        # (국내 vs 국외 여비 지급표), then the best passage score: its rows if linked; if its rows could not be verified,
+        # no other table's rows are attached in its place.
+        caption_of = lambda k: ' '.join((self.row_links.get(k) or {}).get('rows', [{}])[0].get('caption') or []) \
+            if k in self.row_links else ''
+        words = {self.JOSA.sub('', w) for w in re.findall(r'[가-힣]{2,}', question)} - self.QUESTION_WORDS
+        about = lambda k: sum(1 for w in words if len(w) >= 2 and w in caption_of(k))
+        top = sorted(present, key=lambda k: (-about(k), -present[k]))[:1]
+        linked_rows = [k for k in top if k in self.row_links]
+        better = [k for k in self.row_links if top and k[0] == top[0][0] and about(k) > about(top[0])]
+        if linked_rows and better:
+            # the question names another table of the same rule (국외여비 asked, 국내여비 in the evidence): no rows
+            linked_rows = []
+            result['table_rows_not_in_evidence'] = [f"별표 {self.row_links[k]['annex']}" for k in better]
+        missing = sorted(n for (scope, n) in present if (scope, n) in self.row_unlinked)
+        if missing:
+            result['table_rows_unlinked'] = [f'별표 {n}' for n in missing]
+        if linked_rows:
             # B's visually reviewed rows of that table, with their unit, notes and dates: the row/column pairing the
             # flattened table text loses. Derived text, so never a verbatim quote nor a value-version answer. A linked
-            # table's flattened passages give way to its rows; the applied document's own passages stay (quotes).
-            d = reviewed[0]
-            result['reviewed_rows'] = {d: len(self.reviewed_rows[d])}
-            if d != applied:
-                chunks = [(c, s) for c, s in chunks if str(c.doc_id) != d]
-            chunks.append((PassageChunk(render_rows(self.reviewed_rows[d]), 1, 0, d, ('검토된 표 행',), derived=True), 0.0))
-        # The model's window (4,096 tokens incl. instructions and answer): linked table passages go first, then the
-        # applied document's weakest passages, keeping its best one and the reviewed rows.
-        while sum(len(c.text) for c, _ in chunks) > self.CONTEXT_CHARS and len(chunks) > 1:
-            linked_at = [i for i, (c, _) in enumerate(chunks) if str(c.doc_id) != applied and not c.derived]
-            own_at = [i for i, (c, _) in enumerate(chunks) if str(c.doc_id) == applied and not c.derived][1:]
-            if not (linked_at or own_at):
-                break
-            del chunks[(linked_at or own_at)[-1]]
+            # table document's flattened passages give way to its rows; the applied document's passages stay (quotes).
+            link = self.row_links[linked_rows[0]]
+            result['reviewed_rows'] = {'doc': link['doc'], 'rows': len(link['rows']), 'annex': link['annex'],
+                                       'method': link['method']}
+            if link['doc'] != applied:
+                chunks = [(c, s) for c, s in chunks if str(c.doc_id) != link['doc']]
+            chunks.append((PassageChunk(render_rows(link['rows']), 1, 0, link['doc'], ('검토된 표 행',), derived=True,
+                                        rows=link['rows']), 0.0))
         kept_linked = sorted({str(c.doc_id) for c, _ in chunks if str(c.doc_id) != applied and not c.derived})
         if kept_linked:
             result['linked_tables'] = kept_linked
@@ -1667,9 +1855,20 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                                 for note in m.get('source_notes') or []:
                                     result['scope'] += f' 출처 메모(B): {note}'
                                 if selection.get('reviewed_rows'):
-                                    result['scope'] += (' 원문 표 구간과 함께 B가 원본 렌더링과 대조한 표 행(단위·비고·시점 포함, '
-                                                        f"{sum(selection['reviewed_rows'].values())}행)을 넣었습니다. 이 행은 원문 인용으로 "
-                                                        '표시하지 않으며, 승인된 값이나 법률 자문이 아닙니다.')
+                                    rr = selection['reviewed_rows']
+                                    result['scope'] += (f" 원문 표 구간과 함께 B가 원본 렌더링과 대조한 별표 {rr['annex']}의 표 행(단위·비고·"
+                                                        f"시점 포함, {rr['rows']}행; 원문 위치 확인 방식 {rr['method']})을 넣었습니다. 이 행은 "
+                                                        '원문 인용으로 표시하지 않으며, 승인된 값이나 법률 자문이 아닙니다.')
+                                if selection.get('table_rows_unlinked'):
+                                    result['scope'] += (f" {', '.join(selection['table_rows_unlinked'])}의 검토된 표 행은 현재 색인 문서의 원문 "
+                                                        '위치와 맞는지 확인하지 못해 넣지 않았습니다(다른 별표로 대신하지 않음). 표 값은 원문 '
+                                                        '표에서 확인하세요.')
+                                if selection.get('table_rows_not_in_evidence'):
+                                    result['scope'] += (f" 질문이 가리키는 {', '.join(selection['table_rows_not_in_evidence'])} 구간이 검색 근거에 "
+                                                        '없어 그 표의 검토된 행을 넣지 않았고, 다른 별표의 행으로 대신하지도 않았습니다. 정보가 '
+                                                        '부족합니다. 별표 번호나 표 이름을 넣어 다시 물어 주세요.')
+                                for note in result.get('context_notes') or []:
+                                    result['scope'] += ' ' + note
                                 if selection.get('linked_tables'):
                                     result['scope'] += (' 본문이 인용한 같은 규정의 별표 구간을 함께 넣었습니다'
                                                         f"({len(selection['linked_tables'])}건).")
