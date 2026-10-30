@@ -1,0 +1,91 @@
+{
+  "purpose": "pilot hand-off for A specialisation experiment; AI review only (one reviewer; statute/table/public-data/plain cases are C self-review); independent verification 0; not production approval",
+  "sha256": "6bd0bddac4281db0ace6db68e1f2c645ee36d647b59a2ff64fe49cc65034e291",
+  "cases": 75,
+  "by_split": {
+    "train": 57,
+    "pilot_dev": 18
+  },
+  "by_task_type": {
+    "train": {
+      "code_unit_lookup": 4,
+      "table_lookup": 13,
+      "statute_application": 4,
+      "official_answer_extraction": 31,
+      "official_answer_plain_explanation": 5
+    },
+    "pilot_dev": {
+      "code_unit_lookup": 3,
+      "table_lookup": 9,
+      "official_answer_extraction": 5,
+      "official_answer_plain_explanation": 1
+    }
+  },
+  "by_behavior": {
+    "answer": 4,
+    "hold_time": 2,
+    "ask_back": 6,
+    "answer_with_condition": 8,
+    "answer_with_exception": 10,
+    "hold_missing_basis": 1,
+    "lookup_needed": 2,
+    "answer_with_basis": 42
+  },
+  "characters": {
+    "code_unit_lookup": 4162,
+    "official_answer_extraction": 136902,
+    "official_answer_plain_explanation": 14597,
+    "statute_application": 1079,
+    "table_lookup": 169954
+  },
+  "tokens": "not counted: to be agreed after A fixes the tokenizer/template",
+  "document_groups": 43,
+  "repeated_documents": {
+    "law-go-kr:admrul-file:126140889": 9,
+    "law-go-kr:admrul-file:133708917": 9,
+    "law-go-kr:admrul-file:150743139": 4,
+    "law-go-kr:admrul:2100000272852": 4,
+    "data-go-kr:15156444": 3,
+    "data-go-kr:15106475": 2,
+    "data-go-kr:15123063": 2,
+    "law-go-kr:expc:314104": 2,
+    "law-go-kr:expc:321503": 2,
+    "law-go-kr:expc:323305": 2,
+    "law-go-kr:expc:324381": 2,
+    "law-go-kr:expc:327309": 2,
+    "law-go-kr:expc:330509": 2
+  },
+  "dropped": {
+    "official: not AI-reviewed": 276,
+    "official: work relevance not rated": 39,
+    "official: abolition or rename suspected": 6,
+    "official: low work relevance": 12,
+    "official_interpretation: document or question appears in evaluation-side data": 1,
+    "pack_behavior: document or question appears in evaluation-side data": 7
+  },
+  "dropped_for_evaluation_exposure": [
+    "official:law-go-kr:expc:344033",
+    "pack:treasury-03-fund",
+    "pack:treasury-03-pfmf",
+    "pack:treasury-20-rule",
+    "pack:treasury-20-lookup",
+    "pack:treasury-03-fundlist",
+    "pack:treasury-20-time",
+    "pack:treasury-03-art31"
+  ],
+  "checks": [
+    "content_sha256 recomputed and matched; each case has a content-matched AI review record",
+    "no held case; no reserve-overlap or B valid/test document",
+    "evaluation-side data searched for full document id, 안건번호 and question prefix: data/benchmark-reserve-001, data/dialogue-eval-dev.jsonl, data/dialogue-eval-final.jsonl, data/institution-qa-frozen-01, data/korean-eval-v1, data/korean-rag-eval-v1, data/korean-rag-eval-multihop-v1-source, data/korean-rag-eval-v1-source, reports/coordination/C-010/records, reports/coordination/C-010/dev, reports/coordination/C-010/dev2",
+    "no two cases with the same question and target; split assigned per document group"
+  ],
+  "time_labels": "official interpretations: as of the interpretation date, current law unverified (no case is labelled current)",
+  "inputs": {
+    "reports/coordination/C-016/batch-v4/candidates.jsonl": "53698a681a3109589e805ff066828ef44229e9f4689bd6c139fb366cd1671695",
+    "reports/coordination/C-016/batch-v4/excluded.jsonl": "08a826382ee3b6f07a569937e09b5df58ede5917b34d3b620b9e6db9d7d85dd9",
+    "reports/coordination/C-016/batch-v4/plain-candidates.jsonl": "7a642b5bdefe62d7ecd807ba2374b7bed0ba82a2c690fd53bc9a7b0d5319e2d9",
+    "reports/coordination/C-016/table-batch/table-candidates.jsonl": "8522532deb320aa90543b4626430fe9fdb5a94994d9e0dd6f8ff1b473fd1b147",
+    "reports/coordination/C-016/public-data-batch/public-data-candidates.jsonl": "96cde151f5168af7079d3fdbd582ab76d30affb54c7bf16501a4c81aa53bb255",
+    "reports/coordination/C-017/review-c017-ai.jsonl": "bfb393d5affed72582c8b12e272ea8b53062b5f419e24c1e8e8744adc1c3c3ae"
+  }
+}
