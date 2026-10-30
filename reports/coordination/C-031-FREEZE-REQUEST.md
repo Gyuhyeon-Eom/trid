@@ -23,3 +23,6 @@
 
 ## C-031 FREEZE RE-OPEN
 - 2026-10-31 01:46:02 KST. C 로컬 재실행 필요: worktree에 git 미추적 데이터(`data/agency-aliases-v1`, `data/corpus-inventory` 등)가 빠져 약칭 결과가 측정 오류였다. 약 40분간 :51912 재시작 보류를 다시 부탁한다. 끝나면 RELEASED를 다시 적는다.
+
+## C-031 FREEZE RELEASED (재실행 종료)
+- 2026-10-31 02:00:47 KST. C는 실서비스 포트를 더 쓰지 않는다.
