@@ -1,0 +1,233 @@
+{
+ "note": "prompt reconstruction from the GENERAL-CHAT-001 live smoke (live-ui-scenarios-2.json, Worker a6986060): the exact message list chat_reply built per turn under the 6-message window, rendered with the serving model template; needle = the visitor first sentence",
+ "S3": [
+  {
+   "turn": "저는 매운 걸 못 먹고 견과류 알레르기가",
+   "stored_turns": 0,
+   "given_turns": 0,
+   "roles": [
+    "s",
+    "u"
+   ],
+   "prompt_tokens": 109,
+   "fits": true,
+   "저는 매운 걸 못 먹고 견과류 알레르기가 있어요.": true,
+   "견과류": true,
+   "answer": "안녕하세요, 저는 TRID입니다. 편하게 이야기해 주세요. 매운 음식이나 견과류를 피하는 이유가 궁금한 점이 있나요? 아니면 "
+  },
+  {
+   "turn": "다음 주 팀 회식 메뉴 뭐가 좋을까요?",
+   "stored_turns": 2,
+   "given_turns": 2,
+   "roles": [
+    "s",
+    "u",
+    "a",
+    "u"
+   ],
+   "prompt_tokens": 196,
+   "fits": true,
+   "저는 매운 걸 못 먹고 견과류 알레르기가 있어요.": true,
+   "견과류": true,
+   "answer": "매운 음식과 견과류를 피하는 이유를 고려해서는, 시원한 메뉴가 더 맛있고 건강할 수 있습니다. 다음 주의 팀 회식 메뉴로 추천"
+  },
+  {
+   "turn": "그럼 디저트는요?",
+   "stored_turns": 4,
+   "given_turns": 4,
+   "roles": [
+    "s",
+    "u",
+    "a",
+    "u",
+    "a",
+    "u"
+   ],
+   "prompt_tokens": 349,
+   "fits": true,
+   "저는 매운 걸 못 먹고 견과류 알레르기가 있어요.": true,
+   "견과류": true,
+   "answer": "디저트를 고려할 때는 매운 음식과 견과류를 포함하지 않는 건강한 선택이 좋습니다. 예를 들어, 아몬드를 사용한 빵, 케이크, "
+  },
+  {
+   "turn": "아까 말한 제 조건 두 가지 다시 말해 ",
+   "stored_turns": 6,
+   "given_turns": 6,
+   "roles": [
+    "s",
+    "u",
+    "a",
+    "u",
+    "a",
+    "u",
+    "a",
+    "u"
+   ],
+   "prompt_tokens": 466,
+   "fits": true,
+   "저는 매운 걸 못 먹고 견과류 알레르기가 있어요.": true,
+   "견과류": true,
+   "answer": "매운 음식과 견과류를 피하는 이유를 고려해서는, 건강하고 편안한 메뉴가 더 좋습니다. 이에 따라 다음 주의 팀 회식 메뉴와 디"
+  },
+  {
+   "turn": "비 오는 날이면 메뉴를 바꾸는 게 나을까",
+   "stored_turns": 8,
+   "given_turns": 6,
+   "roles": [
+    "s",
+    "u",
+    "a",
+    "u",
+    "a",
+    "u",
+    "a",
+    "u"
+   ],
+   "prompt_tokens": 479,
+   "fits": true,
+   "저는 매운 걸 못 먹고 견과류 알레르기가 있어요.": false,
+   "견과류": true,
+   "answer": "비 오는 날은 건강하고 편안한 식사가 중요하다고 생각해요. 메뉴를 바꾸는 것도 좋은 선택이 될 수 있어요. 예를 들어, 비와 "
+  }
+ ],
+ "S4": [
+  {
+   "turn": "이 문장을 공손하게 바꿔 줘: 자료 내일",
+   "stored_turns": 0,
+   "given_turns": 0,
+   "roles": [
+    "s",
+    "u"
+   ],
+   "prompt_tokens": 108,
+   "fits": true,
+   "이 문장을 공손하게 바꿔 줘: 자료 내일까지 주세요.": true,
+   "내일까지에 대한 자료를 보내주세요.": false,
+   "answer": "내일까지에 대한 자료를 보내주세요."
+  },
+  {
+   "turn": "조금 더 짧게.",
+   "stored_turns": 2,
+   "given_turns": 2,
+   "roles": [
+    "s",
+    "u",
+    "a",
+    "u"
+   ],
+   "prompt_tokens": 136,
+   "fits": true,
+   "이 문장을 공손하게 바꿔 줘: 자료 내일까지 주세요.": true,
+   "내일까지에 대한 자료를 보내주세요.": true,
+   "answer": "내일까지 자료를 보내주세요."
+  },
+  {
+   "turn": "메일 첫 인사 한 줄도 붙여 줘.",
+   "stored_turns": 4,
+   "given_turns": 4,
+   "roles": [
+    "s",
+    "u",
+    "a",
+    "u",
+    "a",
+    "u"
+   ],
+   "prompt_tokens": 171,
+   "fits": true,
+   "이 문장을 공손하게 바꿔 줘: 자료 내일까지 주세요.": true,
+   "내일까지에 대한 자료를 보내주세요.": true,
+   "answer": "내일까지 자료를 메일로 전달해 주세요."
+  },
+  {
+   "turn": "처음에 고친 버전으로 다시 보여 줘.",
+   "stored_turns": 6,
+   "given_turns": 6,
+   "roles": [
+    "s",
+    "u",
+    "a",
+    "u",
+    "a",
+    "u",
+    "a",
+    "u"
+   ],
+   "prompt_tokens": 210,
+   "fits": true,
+   "이 문장을 공손하게 바꿔 줘: 자료 내일까지 주세요.": true,
+   "내일까지에 대한 자료를 보내주세요.": true,
+   "answer": "내일까지 자료를 메일로 전달해 주세요."
+  }
+ ],
+ "S5": [
+  {
+   "turn": "주말에 처음 등산 가는데 뭘 챙기면 돼요",
+   "stored_turns": 0,
+   "given_turns": 0,
+   "roles": [
+    "s",
+    "u"
+   ],
+   "prompt_tokens": 109,
+   "fits": true,
+   "주말에 처음 등산 가는데 뭘 챙기면 돼요?": true,
+   "등산": true,
+   "answer": "등산을 처음으로 하시는 거예요. 안전하게 오시려면 신중하게 준비해 주세요. 먼저, 체력이 충분한지 확인하고, 옷도 적합한 옷차"
+  },
+  {
+   "turn": "비 오면요?",
+   "stored_turns": 2,
+   "given_turns": 2,
+   "roles": [
+    "s",
+    "u",
+    "a",
+    "u"
+   ],
+   "prompt_tokens": 334,
+   "fits": true,
+   "주말에 처음 등산 가는데 뭘 챙기면 돼요?": true,
+   "등산": true,
+   "answer": "비가 오면 등산을 하실 때는 안전을 위해 몸을 잘 보호하고, 허리에 안정감 있는 옷을 착용하는 것이 중요합니다. 비를 맞으시면"
+  },
+  {
+   "turn": "그건 왜요?",
+   "stored_turns": 4,
+   "given_turns": 4,
+   "roles": [
+    "s",
+    "u",
+    "a",
+    "u",
+    "a",
+    "u"
+   ],
+   "prompt_tokens": 487,
+   "fits": true,
+   "주말에 처음 등산 가는데 뭘 챙기면 돼요?": true,
+   "등산": true,
+   "answer": "비가 오는 이유는 여러 가지가 있어요. 첫째, 기상 조건이 변화하고 있는 경우가 많아서 비가 오는 경우가 있습니다. 둘째, 날"
+  },
+  {
+   "turn": "두 번째로 말한 거 좀 더 자세히요.",
+   "stored_turns": 6,
+   "given_turns": 6,
+   "roles": [
+    "s",
+    "u",
+    "a",
+    "u",
+    "a",
+    "u",
+    "a",
+    "u"
+   ],
+   "prompt_tokens": 678,
+   "fits": true,
+   "주말에 처음 등산 가는데 뭘 챙기면 돼요?": true,
+   "등산": true,
+   "answer": "알겠습니다. 비가 오는 경우, 특히 강한 폭우가 오는 경우에는 등산을 하실 때는 다음과 같은 점을 주의해야 합니다:\n\n1. *"
+  }
+ ]
+}

@@ -195,14 +195,20 @@ class ChatBackendTests(unittest.TestCase):
         self.assertEqual(r['answer'], '네.')
         self.assertEqual(sent[-1][1:], ['user 2', 'assistant 2', '그래서?'])  # the latest turn kept, the oldest gone
 
-    def test_chat_resamples_a_reply_that_repeats_an_earlier_answer(self):
+    def test_chat_keeps_the_visitors_first_statement_while_the_conversation_fits(self):
+        # GENERAL-CHAT-002: a fixed 6-message window dropped "견과류 알레르기가 있어요" on the 5th turn although the
+        # prompt used 479 of 4096 tokens; the whole stored conversation goes in while it fits.
         from scripts.shared_demo import chat_reply
-        earlier = '출장 중 체력 관리는 휴식과 가벼운 운동이 중요해요.'
-        history = [{'role': 'user', 'content': '체력 관리는?'}, {'role': 'assistant', 'content': earlier}]
-        replies = iter([{'generated': earlier}, {'generated': '오늘 이야기 나눠서 저도 즐거웠어요.'}])
-        with patch('scripts.shared_demo.chat_complete', side_effect=lambda *a: next(replies)):
-            r = chat_reply('http://127.0.0.1:1', 'qwen3', 4096, history, '오늘 얘기 고마웠어요.')
-        self.assertEqual(r['answer'], '오늘 이야기 나눠서 저도 즐거웠어요.')
+        history = [{'role': 'user', 'content': '저는 견과류 알레르기가 있어요.'}, {'role': 'assistant', 'content': '알겠어요.'}]
+        history += [{'role': r, 'content': f'{r} {i}'} for i in range(4) for r in ('user', 'assistant')]
+        sent = []
+        def complete(base, messages, *args):
+            sent.append([m['content'] for m in messages])
+            return {'generated': '네.'}
+        with patch('scripts.shared_demo.chat_complete', side_effect=complete):
+            chat_reply('http://127.0.0.1:1', 'qwen3', 4096, history, '비 오는 날이면 메뉴를 바꾸는 게 나을까요?')
+        self.assertEqual(sent[0][1], '저는 견과류 알레르기가 있어요.')
+        self.assertEqual(len(sent), 1)
 
     def test_value_hold_passage_numbers_are_neither_quotes_nor_support(self):
         from scripts.shared_demo import PassageChunk

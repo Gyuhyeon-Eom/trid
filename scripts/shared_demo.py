@@ -305,7 +305,10 @@ class Session:
     history: list = field(default_factory=list)  # [{'role', 'content', 'kind'}] of this browser session only
 
 
-HISTORY_TURNS = 6  # user+assistant messages kept as conversation context (session memory only, cleared by /clear)
+# Session memory (cleared by /clear): the last HISTORY_MESSAGES user+assistant messages. The conversation model gets
+# every one of them that fits its context (oldest dropped first); a fixed window of 6 messages cut the visitor's
+# first sentence ("견과류 알레르기가 있어요") out of the 5th turn while 479 of 4096 tokens were used (GENERAL-CHAT-002).
+HISTORY_MESSAGES = 24
 ROUTER_SYSTEM = (
     '당신은 입력 분류기입니다. 사용자의 마지막 입력을 처리할 방법을 하나 고르세요.\n'
     '검색: 공공기관의 규정·지침·법령·질의회신 문서에 근거해야 답할 수 있는 업무 사실(금액, 기한, 비율, 절차, 자격, '
@@ -324,13 +327,10 @@ ROUTER_GRAMMAR = 'root ::= "검색" | "대화"'
 # work facts are kept out by the router and by the rule-claim check on the reply (RULE_CLAIM), not by the prompt.
 CHAT_SYSTEM = (
     '당신은 TRID입니다. 공공기관 직원과 이야기하는 한국어 AI 비서입니다. 사용자의 말에 공감하고, 앞선 대화를 이어서 '
-    '자연스럽고 구체적으로 답하세요. 대화 도중에 인사나 자기소개를 반복하지 마세요. 한국어로만 답하세요.')
+    '자연스럽고 구체적으로 답하세요. 대화 도중에 인사나 자기소개를 반복하지 마세요. 한국어로 답하세요.')
 # Qwen3's recommended non-thinking sampling for conversation (greedy decoding made the 1.7B model repeat its previous
-# answer on follow-ups); classification and document answers stay greedy. Scripts sampled Qwen3 drifts into mid-reply
-# are excluded by grammar: Han, kana, and accented Latin ("잘 hiểu해요"); plain ASCII (Excel, PDF) stays.
+# answer on follow-ups); classification and document answers stay greedy.
 CHAT_SAMPLING = dict(temperature=0.7, top_p=0.8, top_k=20, min_p=0, presence_penalty=1.5)
-NO_FOREIGN_SCRIPT = (r'root ::= [^\u00c0-\u024f\u1e00-\u1eff\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff'
-                     r'\u0300-\u036f]*')
 EXPLAIN_SYSTEM = (
     '당신은 TRID입니다. 공공기관 업무 용어·개념·일반적인 요령을 쉬운 한국어로 짧게 설명하세요. 특정 기관 규정의 금액·'
     '한도·기한·조문 번호는 말하지 말고, 어느 기관의 규정이나 자료에 따른 설명인 것처럼 기관명을 내세우지 마세요. 구체적인 '
@@ -410,8 +410,7 @@ def _derived(values):
 
 
 def _messages(system, history, user):
-    return ([{'role': 'system', 'content': system}]
-            + [{'role': h['role'], 'content': h['content']} for h in history[-HISTORY_TURNS:]]
+    return ([{'role': 'system', 'content': system}] + [{'role': h['role'], 'content': h['content']} for h in history]
             + [{'role': 'user', 'content': user}])
 
 
@@ -441,7 +440,7 @@ def route(base, family, context, history, question, continues=None):
 
 
 def chat_complete(base, messages, family, max_tokens, context):
-    """Conversation completion: the model's native template (Qwen3 without thinking), CHAT_SAMPLING, no foreign script.
+    """Conversation completion: the model's native template (Qwen3 without thinking) and CHAT_SAMPLING.
     {'generated', 'truncated_output'}; {'skipped_context': True} when the prompt leaves no room for `max_tokens`."""
     prompt = llama_request(base, '/apply-template', {'messages': messages, 'chat_template_kwargs': {'enable_thinking': False}})['prompt']
     if family == 'qwen3' and not prompt.endswith(QWEN3_NO_THINK):
@@ -449,7 +448,7 @@ def chat_complete(base, messages, family, max_tokens, context):
     tokens = llama_request(base, '/tokenize', {'content': prompt, 'add_special': True, 'parse_special': True})['tokens']
     if len(tokens) + max_tokens > context:
         return {'skipped_context': True}
-    c = llama_request(base, '/completion', dict(prompt=tokens, n_predict=max_tokens, grammar=NO_FOREIGN_SCRIPT, cache_prompt=False,
+    c = llama_request(base, '/completion', dict(prompt=tokens, n_predict=max_tokens, cache_prompt=False,
                                                  seed=secrets.randbelow(2 ** 31), **CHAT_SAMPLING))
     return {'generated': c['content'].strip(), 'truncated_output': c['stop_type'] == 'limit'}
 
@@ -464,30 +463,21 @@ def conversation_turns(history, recall):
 
 def chat_reply(base, family, context, history, question, max_tokens=384, explain=False, first_turn=None):
     """General conversation (or, with `explain`, a general explanation citing no institution) with the model's native
-    chat template and the given earlier turns (the oldest dropped when they do not fit). Not grounded: a sentence
-    making a rule claim — a number with a unit in a sentence about rules, rates or entitlements (RULE_CLAIM) — is
-    withheld unless every number in it was given by the visitor in this conversation (their own facts may be repeated
-    or organised); everyday figures stay. On the first turn of a conversation (`first_turn`, default: no turns given)
-    the model is told there is nothing earlier, so "제 이름이 뭐라고 했죠?" after a new conversation is not answered
-    with a claimed memory. A reply that repeats one of the earlier answers given to it (≥ 0.9 similar: the 1.7B model
-    answered "오늘 얘기 고마웠어요" with its previous answer word for word) is sampled once more."""
-    from difflib import SequenceMatcher
-
+    chat template and the given earlier turns — all of them that fit the context, the oldest dropped first. Not
+    grounded: a sentence making a rule claim — a number with a unit in a sentence about rules, rates or entitlements
+    (RULE_CLAIM) — is withheld unless every number in it was given by the visitor in this conversation (their own facts
+    may be repeated or organised); everyday figures stay. On the first turn of a conversation (`first_turn`, default:
+    no turns given) the model is told there is nothing earlier, so "제 이름이 뭐라고 했죠?" after a new conversation
+    is not answered with a claimed memory."""
     system = EXPLAIN_SYSTEM if explain else CHAT_SYSTEM
     if (not history) if first_turn is None else first_turn:
         system += ' 이 대화는 지금 막 시작되어 앞선 내용이 없습니다. 사용자가 앞에서 한 말을 물으면 아직 들은 적이 없다고 답하세요.'
-    turns = history[-HISTORY_TURNS:]
+    turns = list(history)
     while True:
         r = chat_complete(base, _messages(system, turns, question), family, max_tokens, context)
         if not r.get('skipped_context') or not turns:
             break
         turns = turns[2:]
-    earlier = [h['content'] for h in turns if h['role'] == 'assistant']
-    repeats = lambda text: any(SequenceMatcher(None, text, e).ratio() >= 0.9 for e in earlier)
-    if r.get('generated') and repeats(r['generated']):
-        again = chat_complete(base, _messages(system, turns, question), family, max_tokens, context)
-        if again.get('generated') and not repeats(again['generated']):
-            r = again
     output = (r.get('generated') or '').strip()
     given_text = ' '.join([question] + [h['content'] for h in history if h['role'] == 'user'])
     given, given_values = _numbers(given_text), _values(given_text)
@@ -2147,7 +2137,7 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                                                     {'role': 'assistant', 'content': said[:1500 if intent == 'chat' else 600],
                                                      'kind': intent,
                                                      'applied_id': applied_doc['doc_id'] if applied_doc else None}]
-                                del session.history[:-2 * HISTORY_TURNS]
+                                del session.history[:-HISTORY_MESSAGES]
                     else:
                         self.respond(404, {'error': '없는 기능입니다.'}); return
                 finally:
