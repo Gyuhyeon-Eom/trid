@@ -1,0 +1,24 @@
+2026-10-31 00:53:04 KST
+{'supervisor_pid': 85814, 'backend_pid': 85815, 'backend_pgid': 85815, 'backend_started': 'Sat Oct 31 00:40:58 2026'}
+00:53:04 stop
+Demo is stopped (supervisor and model server process group exited).
+group 85815 members left: 0
+00:53:06 start
+Traceback (most recent call last):
+  File "/Users/eomgyuhyeon/사업/trid/scripts/share_demo_control.py", line 335, in <module>
+    main()
+  File "/Users/eomgyuhyeon/사업/trid/scripts/share_demo_control.py", line 307, in main
+    raise RuntimeError('Startup failed. See .shared-demo/supervisor.log')
+RuntimeError: Startup failed. See .shared-demo/supervisor.log
+00:54:23 done
+{'status': 'stopped', 'supervisor_pid': 87000, 'backend_pid': 87001, 'backend_pgid': 87001, 'backend_started': 'Sat Oct 31 00:53:06 2026', 'connection_status': None}
+9e392db
+00:54:34 start retry
+Demo ready. Run deploy to connect test.tridatum.co.
+Current Version ID: a6986060-984c-4371-9e28-820804bbe4ce
+00:55:38 done
+{'status': 'running', 'supervisor_pid': 87215, 'backend_pid': 87216, 'backend_pgid': 87216, 'backend_started': 'Sat Oct 31 00:54:34 2026', 'connection_status': 'ready'}
+python3.1 87216 127.0.0.1:51873
+llama-ser 87218 127.0.0.1:51912
+llama-ser 87225 127.0.0.1:51917
+llama-ser 87226 127.0.0.1:51918
