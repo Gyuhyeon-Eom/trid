@@ -1,0 +1,120 @@
+{
+ "law-go-kr:law-byl:160396697": {
+  "title": "물품관리법 시행규칙 [서식 0009] 물품관리대장",
+  "law": "물품관리법 시행규칙",
+  "b_status": "candidate_form",
+  "b_values_check": "agree",
+  "raw_sha256": "4709f9ce96e69b0c0947512612facad187bbdade6c86e7c24a37610fe990e08d",
+  "exposure": "none found",
+  "tables": []
+ },
+ "law-go-kr:law-byl:160396759": {
+  "title": "물품관리법 시행규칙 [서식 0017] 재고위치카드",
+  "law": "물품관리법 시행규칙",
+  "b_status": "candidate_form",
+  "b_values_check": "agree",
+  "raw_sha256": "d4fd9f999f9b2b2f1ab10f95f8e850517d729ae2f665c25cdc58e8258299a945",
+  "exposure": "none found",
+  "tables": []
+ },
+ "law-go-kr:law-byl:161135149": {
+  "title": "선거관리위원회 공무원 수당에 관한 규칙 [별표 0003] 성과상여금 지급대상ㆍ지급등급 및 지급률표",
+  "law": "선거관리위원회 공무원 수당에 관한 규칙",
+  "b_status": "candidate_table",
+  "b_values_check": "agree",
+  "raw_sha256": "e8f093840e53854651da9d80ac651229dd6c2187a5103d266ac66182ed84ad71",
+  "exposure": "none found",
+  "tables": [
+   {
+    "index": 0,
+    "exact_after_title_rows": true,
+    "original_title_rows_dropped": 1,
+    "rows": [
+     5,
+     5
+    ],
+    "cells": [
+     15,
+     15
+    ],
+    "text_equal": 15,
+    "span_equal": 15
+   }
+  ]
+ },
+ "law-go-kr:law-byl:162349615": {
+  "title": "헌법재판소공무원 수당 등에 관한 규칙 [별표 0001] 직급보조비 지급 구분표",
+  "law": "헌법재판소공무원 수당 등에 관한 규칙",
+  "b_status": "candidate_table",
+  "b_values_check": "agree",
+  "raw_sha256": "a5986bafcaa8cf0e43cd7282e2c3140d39019d51fdbf6cf50945231b7300802a",
+  "exposure": "none found",
+  "tables": [
+   {
+    "index": 0,
+    "exact_after_title_rows": true,
+    "original_title_rows_dropped": 1,
+    "rows": [
+     2,
+     2
+    ],
+    "cells": [
+     6,
+     6
+    ],
+    "text_equal": 6,
+    "span_equal": 6
+   }
+  ]
+ },
+ "law-go-kr:law-byl:164767093": {
+  "title": "법관 및 법원공무원수당 등에 관한 규칙 [별표 0005] 가족수당 지급 구분표",
+  "law": "법관 및 법원공무원수당 등에 관한 규칙",
+  "b_status": "candidate_table",
+  "b_values_check": "agree",
+  "raw_sha256": "452c9ccea026650bab4e2068bc1456dda72bf658a3e8c6acc994a5b940a3311e",
+  "exposure": "none found",
+  "tables": [
+   {
+    "index": 0,
+    "exact_after_title_rows": true,
+    "original_title_rows_dropped": 1,
+    "rows": [
+     6,
+     6
+    ],
+    "cells": [
+     15,
+     15
+    ],
+    "text_equal": 15,
+    "span_equal": 15
+   }
+  ]
+ },
+ "law-go-kr:law-byl:166991573": {
+  "title": "재외공무원 수당 지급 규칙 [별표 0002] 특수지 근무수당 지급대상지역과 그 지역별 구분(제3조 관련)",
+  "law": "재외공무원 수당 지급 규칙",
+  "b_status": "candidate_table",
+  "b_values_check": "agree",
+  "raw_sha256": "c12cae734aab9d8f0906ae93c1f4468e726b81403ee3618212bba34e37e343fa",
+  "exposure": "none found",
+  "tables": [
+   {
+    "index": 0,
+    "exact_after_title_rows": true,
+    "original_title_rows_dropped": 2,
+    "rows": [
+     6,
+     6
+    ],
+    "cells": [
+     24,
+     24
+    ],
+    "text_equal": 24,
+    "span_equal": 24
+   }
+  ]
+ }
+}

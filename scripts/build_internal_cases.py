@@ -252,8 +252,10 @@ def main():
         keep = ('reviewer_id', 'reviewer_type', 'verdict', 'note', 'file', 'scope', 'work_relevance', 'dimensions', 'outdated_flag')
         c['review'] = (dict(status='ai_reviewed', records=[{k: r[k] for k in keep if k in r} for r in matching])
                        if matching else dict(status='unreviewed', records=[]))
-        if matching and any(r['verdict'] != 'correct' for r in matching) and not c.get('training_hold'):
-            c['training_hold'] = 'review: AI review found a defect (see review.records)'
+        bad = [r['verdict'] for r in matching if r['verdict'] != 'correct']
+        if bad and not c.get('training_hold'):
+            c['training_hold'] = ('review: AI review found same-content duplicate of another case (see review.records)'
+                                  if set(bad) == {'duplicate'} else 'review: AI review found a defect (see review.records)')
 
     for c in out:
         c['content_sha256'] = hashlib.sha256((c['question'] + '\n' + c['target']).encode()).hexdigest()

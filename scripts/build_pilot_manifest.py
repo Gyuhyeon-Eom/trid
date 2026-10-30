@@ -15,7 +15,10 @@ No case is labelled current law: official interpretations are 'as of the interpr
 AI review only, one reviewer, no independent or human verification: not production approval.
 
 usage: build_pilot_manifest.py --out DIR [--main F --excluded F --plain F --table F --public F --statute F]
-                               [--reviews F ...] [--frozen PILOT_JSONL]
+                               [--reviews F ...] [--frozen PILOT_JSONL] [--official-ids JSON_LIST]
+
+--official-ids (added in C-019) limits official interpretations to the listed ids (cases of the frozen version are always
+kept), so long verbatim official answers do not grow just because more cases were reviewed.
 """
 import argparse
 import hashlib
@@ -98,6 +101,7 @@ def main():
                         default=None if k == 'table' else v)
     ap.add_argument('--reviews', type=Path, action='append', default=[])
     ap.add_argument('--frozen', type=Path, help='pilot.jsonl of a frozen earlier version')
+    ap.add_argument('--official-ids', type=Path, help='JSON list of official interpretation ids allowed in this version')
     a = ap.parse_args()
     tables = a.table or [DEFAULTS['table']]
     data = dict(main=load(a.main), excluded=load(a.excluded), plain=load(a.plain),
@@ -107,6 +111,8 @@ def main():
                   [r for p in review_files for r in load(p)])
     held_docs = {c['doc']: c['training_hold'] for c in data['excluded']}
     eval_text = eval_side_text()
+    frozen = load(a.frozen)
+    allowed = (set(json.loads(a.official_ids.read_text())) | {r['id'] for r in frozen}) if a.official_ids else None
     selected, dropped = [], Counter()
 
     for c in data['main']:
@@ -120,6 +126,8 @@ def main():
             dropped['official: work relevance not rated'] += 1
         elif relevance(c) == 'low':
             dropped['official: low work relevance'] += 1
+        elif allowed is not None and c['id'] not in allowed:
+            dropped['official: not in --official-ids selection'] += 1
         else:
             selected.append(c)
     for key in ('table', 'public', 'statute'):
@@ -155,7 +163,6 @@ def main():
             problems.append(f"{c['id']}: same question and target as {seen[sha]}")
         seen[sha] = c['id']
 
-    frozen = load(a.frozen)
     frozen_split = {r['split_group']: r['split'] for r in frozen}
     by_id = {c['id']: c for c in kept}
     for r in frozen:                     # a frozen version is carried over unchanged
@@ -187,7 +194,7 @@ def main():
     body = ''.join(json.dumps(r, ensure_ascii=False) + '\n' for r in rows)
     (a.out / 'pilot.jsonl').write_text(body)
     per_group = Counter(r['split_group'] for r in rows)
-    inputs = [a.main, a.excluded, a.plain, *tables, a.public, a.statute, *review_files, a.frozen]
+    inputs = [a.main, a.excluded, a.plain, *tables, a.public, a.statute, *review_files, a.frozen, a.official_ids]
     meta = dict(
         purpose='pilot hand-off for A specialisation experiment; AI review only (one reviewer; statute/table/public-data/'
                 'plain cases are C self-review); independent verification 0; not production approval',

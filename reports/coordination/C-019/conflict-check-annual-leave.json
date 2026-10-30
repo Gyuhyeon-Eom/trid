@@ -1,0 +1,11 @@
+{
+  "topic": "근로기준법 제60조 연차 유급휴가 해석례 묶음",
+  "cases": {
+    "expc:331063 (2018-04-24)": "개정법 시행일(2018-05-29) 기준 이미 2년차인 근로자: 구법 제60조제3항 적용(경과 상황)",
+    "expc:332317 (2018-08-06)": "2018-05-30 이후 1년이 되는 근로자: 1년차 11일 + 2년차 15일 = 26일",
+    "expc:339035 (2024-07-09)": "최초 1년 11일을 받은 근로자(근로관계 유지 전제): 1년을 마친 다음 날 15일 추가",
+    "expc:343273 (2026-06-04)": "가산휴가(제4항)는 제1항 출근율 충족 시에만 발생"
+  },
+  "verdict": "no conflict: same statute applied to different facts and transition dates; consistent conclusions (332317 and 339035 agree). Conflict cases stay 0.",
+  "reviewer": "ai:assistant-session-01a17c28 (not independent)"
+}

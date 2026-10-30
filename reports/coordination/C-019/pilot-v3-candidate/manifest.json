@@ -1,0 +1,123 @@
+{
+  "purpose": "pilot hand-off for A specialisation experiment; AI review only (one reviewer; statute/table/public-data/plain cases are C self-review); independent verification 0; not production approval",
+  "sha256": "9d4d7b9f1c3f2b9783e968795d8ac5d909513ef5553fc0ef637c70cad8a9d2d3",
+  "cases": 160,
+  "by_split": {
+    "train": 134,
+    "pilot_dev": 26
+  },
+  "by_task_type": {
+    "train": {
+      "code_unit_lookup": 4,
+      "table_lookup": 31,
+      "statute_application": 8,
+      "official_answer_extraction": 72,
+      "official_answer_plain_explanation": 14,
+      "form_field_lookup": 5
+    },
+    "pilot_dev": {
+      "code_unit_lookup": 3,
+      "table_lookup": 9,
+      "official_answer_extraction": 8,
+      "official_answer_plain_explanation": 2,
+      "statute_application": 4
+    }
+  },
+  "by_behavior": {
+    "answer": 6,
+    "hold_time": 3,
+    "ask_back": 9,
+    "answer_with_condition": 21,
+    "answer_with_exception": 14,
+    "hold_missing_basis": 6,
+    "lookup_needed": 5,
+    "answer_with_basis": 96
+  },
+  "characters": {
+    "code_unit_lookup": 4162,
+    "form_field_lookup": 6720,
+    "official_answer_extraction": 302929,
+    "official_answer_plain_explanation": 38966,
+    "statute_application": 6981,
+    "table_lookup": 231380
+  },
+  "tokens": "not counted: to be agreed after A fixes the tokenizer/template",
+  "document_groups": 97,
+  "repeated_documents": {
+    "law-go-kr:admrul-file:126140889": 9,
+    "law-go-kr:admrul-file:133708917": 9,
+    "law-go-kr:admrul-file:161110089": 5,
+    "law-go-kr:admrul-file:150743139": 4,
+    "law-go-kr:admrul-file:98402863": 4,
+    "law-go-kr:admrul:2100000272852": 4,
+    "law-go-kr:law:276107": 4,
+    "law-go-kr:law:286449": 4,
+    "data-go-kr:15156444": 3,
+    "law-go-kr:law-byl:160396697": 3,
+    "law-go-kr:law-byl:166991573": 3,
+    "data-go-kr:15106475": 2,
+    "data-go-kr:15123063": 2,
+    "law-go-kr:expc:314104": 2,
+    "law-go-kr:expc:314786": 2,
+    "law-go-kr:expc:315121": 2,
+    "law-go-kr:expc:315361": 2,
+    "law-go-kr:expc:321503": 2,
+    "law-go-kr:expc:323305": 2,
+    "law-go-kr:expc:324381": 2,
+    "law-go-kr:expc:326907": 2,
+    "law-go-kr:expc:327309": 2,
+    "law-go-kr:expc:328103": 2,
+    "law-go-kr:expc:328517": 2,
+    "law-go-kr:expc:330509": 2,
+    "law-go-kr:expc:330735": 2,
+    "law-go-kr:expc:339029": 2,
+    "law-go-kr:expc:341579": 2,
+    "law-go-kr:expc:343109": 2,
+    "law-go-kr:law-byl:160396759": 2,
+    "law-go-kr:law-byl:161135149": 2,
+    "law-go-kr:law-byl:162349615": 2,
+    "law-go-kr:law-byl:164767093": 2
+  },
+  "frozen_version": {
+    "file": "reports/coordination/C-017/pilot/pilot.jsonl",
+    "cases": 75,
+    "carried_over": 75
+  },
+  "dropped": {
+    "official: not in --official-ids selection": 154,
+    "official: low work relevance": 66,
+    "official: abolition or rename suspected": 68,
+    "pack_behavior: document or question appears in evaluation-side data": 7
+  },
+  "dropped_for_evaluation_exposure": [
+    "pack:treasury-03-fund",
+    "pack:treasury-03-pfmf",
+    "pack:treasury-20-rule",
+    "pack:treasury-20-lookup",
+    "pack:treasury-03-fundlist",
+    "pack:treasury-20-time",
+    "pack:treasury-03-art31"
+  ],
+  "checks": [
+    "content_sha256 recomputed and matched; each case has a content-matched AI review record",
+    "no held case; no reserve-overlap or B valid/test document",
+    "evaluation-side data searched for full document id, 안건번호 and question prefix: data/benchmark-reserve-001, data/dialogue-eval-dev.jsonl, data/dialogue-eval-final.jsonl, data/institution-qa-frozen-01, data/korean-eval-v1, data/korean-rag-eval-v1, data/korean-rag-eval-multihop-v1-source, data/korean-rag-eval-v1-source, reports/coordination/C-010/records, reports/coordination/C-010/dev, reports/coordination/C-010/dev2",
+    "no two cases with the same question and target; split assigned per document group",
+    "frozen version (if given): every case carried over unchanged and every frozen group keeps its split"
+  ],
+  "time_labels": "official interpretations: as of the interpretation date, current law unverified (no case is labelled current)",
+  "inputs": {
+    "reports/coordination/C-019/batch-v5/candidates.jsonl": "b363fbed4720060e7c362f2867315823c0a92eca6d958956af8c3ea83e0f993d",
+    "reports/coordination/C-019/batch-v5/excluded.jsonl": "861f04c8782005ba071276bc06e3ea75d7b386764194ff7458015669bd19b74b",
+    "reports/coordination/C-019/batch-v5/plain-candidates.jsonl": "069c1976e49e02f094e37722d988704e4c775d771cf320d168fe6239a1b8cd43",
+    "reports/coordination/C-018/table-batch/table-candidates.jsonl": "24140653ff703aa021822da54308ddb76dd8147a1c5455ce471b33737daa5a7f",
+    "reports/coordination/C-019/byl-batch/byl-candidates.jsonl": "52d296ef5691bb4b21fa9e3a8f380fb3479440b092c16e153671748380ba2c61",
+    "reports/coordination/C-016/public-data-batch/public-data-candidates.jsonl": "96cde151f5168af7079d3fdbd582ab76d30affb54c7bf16501a4c81aa53bb255",
+    "reports/coordination/C-018/statute-batch/statute-candidates.jsonl": "e83db83b6f7898aed44da7a7e2d530d93e97e56181e669e99892d4527e93a123",
+    "reports/coordination/C-017/review-c017-ai.jsonl": "bfb393d5affed72582c8b12e272ea8b53062b5f419e24c1e8e8744adc1c3c3ae",
+    "reports/coordination/C-018/review-c018-ai.jsonl": "64d0a70e3feff12b4a249e5a43ca3fd199673f0eba0b477e900e89ad8e98c4b4",
+    "reports/coordination/C-019/review-c019-ai.jsonl": "ef07f472834c6bcfbcf9cee705b14cc90a1d2c3382726b30d90b92ef7dd93fb2",
+    "reports/coordination/C-017/pilot/pilot.jsonl": "6bd0bddac4281db0ace6db68e1f2c645ee36d647b59a2ff64fe49cc65034e291",
+    "reports/coordination/C-019/official-selection-v3.json": "a573023173134c2b9888ded5714ff84ea2c895539377b9922a165642eae0a985"
+  }
+}
