@@ -1,0 +1,147 @@
+{
+ "version": "case-training-view-v1",
+ "code_sha256": "eb56133577c4d3b43e7505fe3fae633f0eaf92234e3f3c92bb0ac3685fd541c2",
+ "source": {
+  "pilot": "reports/coordination/C-019/pilot-v3-candidate/pilot.jsonl",
+  "sha256": "9d4d7b9f1c3f2b9783e968795d8ac5d909513ef5553fc0ef637c70cad8a9d2d3"
+ },
+ "tokenizer": {
+  "path": "runs/pilot-sft-001-a-qwen3-1p7b/train/merged",
+  "tokenizer_json_sha256": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4"
+ },
+ "max_total_tokens": 4096,
+ "max_answer_tokens": 256,
+ "files": {
+  "train": {
+   "rows": 34,
+   "sha256": "0d8a640b9f3712461a0b2dbe03c239da147736fd93ea268765e1dfecc20b7a50"
+  },
+  "dev": {
+   "rows": 6,
+   "sha256": "91774ff501efe5b70b54b9751f51763efdcce5470ae31981867de603cac0fa7b"
+  },
+  "held": {
+   "rows": 120,
+   "sha256": "dab12a6f00317cb4968964085ee91e3200af6722bffacdf017bbbb4a82d51a6d"
+  }
+ },
+ "kept_by_task": {
+  "train": {
+   "code_unit_lookup": 4,
+   "table_lookup": 15,
+   "statute_application": 8,
+   "official_answer_plain_explanation": 3,
+   "form_field_lookup": 4
+  },
+  "pilot_dev": {
+   "code_unit_lookup": 3,
+   "statute_application": 3
+  }
+ },
+ "answer_token_share": {
+  "train": {
+   "code_unit_lookup": 0.135,
+   "table_lookup": 0.435,
+   "statute_application": 0.197,
+   "official_answer_plain_explanation": 0.128,
+   "form_field_lookup": 0.105
+  },
+  "pilot_dev": {
+   "code_unit_lookup": 0.411,
+   "statute_application": 0.589
+  }
+ },
+ "held_reasons": {
+  "over_context_budget": 26,
+  "ungrounded_number:14": 1,
+  "ungrounded_number:5000": 2,
+  "over_answer_budget": 95,
+  "ungrounded_number:0160": 1,
+  "ungrounded_number:0450": 1,
+  "ungrounded_number:0121": 2,
+  "ungrounded_number:0371": 1,
+  "ungrounded_number:0294": 1,
+  "ungrounded_number:0016": 1,
+  "ungrounded_number:0339": 1,
+  "ungrounded_number:0007": 1,
+  "ungrounded_number:0050": 3,
+  "ungrounded_number:0157": 1,
+  "ungrounded_number:0146": 1,
+  "ungrounded_number:0286": 1,
+  "ungrounded_number:0444": 1,
+  "ungrounded_number:0779": 1,
+  "ungrounded_number:0030": 1,
+  "ungrounded_number:0124": 1,
+  "ungrounded_number:0131": 2,
+  "ungrounded_number:0139": 1,
+  "ungrounded_number:0134": 1,
+  "ungrounded_number:0344": 1,
+  "ungrounded_number:0425": 1,
+  "ungrounded_number:0765": 1,
+  "ungrounded_number:0481": 1,
+  "ungrounded_number:0518": 1,
+  "ungrounded_number:0235": 1,
+  "ungrounded_number:0089": 1,
+  "ungrounded_number:0445": 1,
+  "ungrounded_number:0087": 1,
+  "ungrounded_number:0640": 1,
+  "ungrounded_number:0038": 1,
+  "ungrounded_number:0328": 1,
+  "ungrounded_number:0388": 1,
+  "ungrounded_number:0298": 1,
+  "ungrounded_number:0317": 1,
+  "ungrounded_number:0025": 1,
+  "ungrounded_number:0579": 1,
+  "ungrounded_number:0400": 1,
+  "ungrounded_number:0443": 1,
+  "ungrounded_number:0281": 1,
+  "ungrounded_number:0074": 1,
+  "ungrounded_number:0542": 1,
+  "ungrounded_number:0485": 1,
+  "ungrounded_number:0761": 1,
+  "ungrounded_number:0302": 1,
+  "ungrounded_number:0670": 2,
+  "ungrounded_number:0703": 1,
+  "ungrounded_number:0426": 1,
+  "ungrounded_number:0427": 1,
+  "ungrounded_number:0132": 1,
+  "ungrounded_number:0056": 2,
+  "ungrounded_number:0164": 1,
+  "ungrounded_number:0456": 1,
+  "ungrounded_number:0516": 1,
+  "ungrounded_number:0752": 1,
+  "ungrounded_number:0009": 1,
+  "ungrounded_number:0639": 1,
+  "ungrounded_number:0162": 2,
+  "ungrounded_number:0553": 1,
+  "ungrounded_number:0310": 1,
+  "ungrounded_number:0158": 1,
+  "ungrounded_number:0508": 1,
+  "ungrounded_number:0120": 1,
+  "ungrounded_number:0201": 1,
+  "ungrounded_number:0067": 1,
+  "ungrounded_number:0540": 1,
+  "ungrounded_number:0620": 1,
+  "ungrounded_number:0678": 1,
+  "ungrounded_number:0539": 1,
+  "ungrounded_number:0423": 1,
+  "ungrounded_number:0318": 1,
+  "ungrounded_number:0994": 1,
+  "ungrounded_number:0149": 1,
+  "ungrounded_number:0434": 1,
+  "ungrounded_number:1": 1,
+  "ungrounded_number:200000": 1,
+  "ungrounded_number:550000": 1
+ },
+ "held_by_split_task": {
+  "train:table_lookup": 16,
+  "pilot_dev:table_lookup": 9,
+  "train:official_answer_extraction": 72,
+  "pilot_dev:official_answer_extraction": 8,
+  "train:official_answer_plain_explanation": 11,
+  "pilot_dev:official_answer_plain_explanation": 2,
+  "train:form_field_lookup": 1,
+  "pilot_dev:statute_application": 1
+ },
+ "contract": "case adapter (CASE_SYSTEM + rag_prompt D1..Dn): every kept target cites [Dn]; numbers are in the cited passage, the question or the provenance line; no-evidence behaviours start with 확인 불가; answer <= 256 tokens. Development training only; AI review only; nothing is labelled current law."
+}
