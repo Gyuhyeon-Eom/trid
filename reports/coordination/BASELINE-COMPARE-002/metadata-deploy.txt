@@ -1,0 +1,17 @@
+2026-10-31 02:04:37 KST pre-stop
+{'supervisor_pid': 88765, 'backend_pid': 88766, 'backend_pgid': 88766, 'backend_started': 'Sat Oct 31 01:09:21 2026'}
+88765 88765 Sat Oct 31 01:09:21 2026 /Users/eomgyuhyeon/사업/trid/.venv/bin/python /Users/eomgyuhyeon/사업/t
+88766 88766 Sat Oct 31 01:09:21 2026 /Users/eomgyuhyeon/사업/trid/.venv/bin/python /Users/eomgyuhyeon/사업/t
+88768 88766 Sat Oct 31 01:09:23 2026 /Users/eomgyuhyeon/사업/trid/runs/tools/llama.cpp-8ca4060-metal/llama-server -m /U
+88775 88766 Sat Oct 31 01:09:25 2026 /Users/eomgyuhyeon/사업/trid/runs/tools/llama.cpp-8ca4060-metal/llama-server -m /U
+88776 88766 Sat Oct 31 01:09:26 2026 /Users/eomgyuhyeon/사업/trid/runs/tools/llama.cpp-8ca4060-metal/llama-server -m /U
+88783 88766 Sat Oct 31 01:09:32 2026 /Users/eomgyuhyeon/사업/trid/.venv/bin/python -c from multiprocessing.resource_tra
+02:04:37 stop
+Demo is stopped (supervisor and model server process group exited).
+group 88766 left: 0
+02:04:42 start
+ready
+Current Version ID: 2c7dc245-ecda-450f-98f1-ac788fa4fcbb
+02:05:52 done
+{'status': 'running', 'backend_pgid': 95961, 'backend_started': 'Sat Oct 31 02:04:42 2026', 'connection_status': 'ready'}
+7fbc618
