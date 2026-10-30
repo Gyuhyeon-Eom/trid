@@ -1,0 +1,274 @@
+{
+ "source_scores": "reports/coordination/C-022/blind-scores.jsonl (fd3f44d, sha 06f75d87…; unchanged after reveal)",
+ "mapping": "reports/coordination/PILOT-SFT-001-blind/blind-mapping-revealed.json (sha f39df736… = commitment)",
+ "provenance_check": "18/18 pairs: package answers equal the mapped model outputs in reports/open-weight-pilot/pilot-dev-*.json",
+ "models": {
+  "original": {
+   "label": "qwen3-1.7b-base-localconv",
+   "model_sha256": "f2ba848c65c2e135495656fc91774b82a10d1f9267671609fad54684c9db1c38"
+  },
+  "tuned": {
+   "label": "qwen3-1.7b-pilot-sft-001",
+   "model_sha256": "0c78b0c2ace93fda8b3ce1de53441ec006afcb7f89638d79d8ef896b5a9432af"
+  }
+ },
+ "per_model": {
+  "original": {
+   "conclusion": 9,
+   "conditions": 6,
+   "no_unsupported": 5,
+   "behaviour": 16,
+   "time": "1/9"
+  },
+  "tuned": {
+   "conclusion": 2,
+   "conditions": 5,
+   "no_unsupported": 15,
+   "behaviour": 4,
+   "time": "0/9"
+  }
+ },
+ "per_task": {
+  "code_unit_lookup": {
+   "original": {
+    "n": 3,
+    "conclusion": 1,
+    "no_answer": 0
+   },
+   "tuned": {
+    "n": 3,
+    "conclusion": 1,
+    "no_answer": 0
+   }
+  },
+  "official_answer_extraction": {
+   "original": {
+    "n": 5,
+    "conclusion": 5,
+    "no_answer": 0
+   },
+   "tuned": {
+    "n": 5,
+    "conclusion": 1,
+    "no_answer": 4
+   }
+  },
+  "official_answer_plain_explanation": {
+   "original": {
+    "n": 1,
+    "conclusion": 1,
+    "no_answer": 0
+   },
+   "tuned": {
+    "n": 1,
+    "conclusion": 0,
+    "no_answer": 1
+   }
+  },
+  "table_lookup": {
+   "original": {
+    "n": 9,
+    "conclusion": 2,
+    "no_answer": 2
+   },
+   "tuned": {
+    "n": 9,
+    "conclusion": 0,
+    "no_answer": 9
+   }
+  }
+ },
+ "error_types": {
+  "original": {
+   "semantic_wrong": 8,
+   "ok_except_time": 1,
+   "false_abstention": 1,
+   "unsupported_conflict": 3,
+   "missed_ask_back": 1,
+   "misattributed_basis": 2,
+   "wrong_reference": 1,
+   "unsupported_inference": 1,
+   "misstated_basis": 1,
+   "truncated_tail": 1
+  },
+  "tuned": {
+   "instruction_noncompliance": 9,
+   "degenerate_repetition": 5,
+   "semantic_wrong": 2,
+   "truncated_copy": 4,
+   "fabricated_citation": 1
+  }
+ },
+ "per_pair": [
+  {
+   "pair": "pair-01",
+   "task_type": "table_lookup",
+   "original_conclusion": 0,
+   "tuned_conclusion": 0,
+   "original_sum4": 1,
+   "tuned_sum4": 1,
+   "change": "same"
+  },
+  {
+   "pair": "pair-02",
+   "task_type": "table_lookup",
+   "original_conclusion": 1,
+   "tuned_conclusion": 0,
+   "original_sum4": 2,
+   "tuned_sum4": 1,
+   "change": "worse"
+  },
+  {
+   "pair": "pair-03",
+   "task_type": "code_unit_lookup",
+   "original_conclusion": 0,
+   "tuned_conclusion": 0,
+   "original_sum4": 2,
+   "tuned_sum4": 1,
+   "change": "worse"
+  },
+  {
+   "pair": "pair-04",
+   "task_type": "official_answer_extraction",
+   "original_conclusion": 1,
+   "tuned_conclusion": 0,
+   "original_sum4": 4,
+   "tuned_sum4": 2,
+   "change": "worse"
+  },
+  {
+   "pair": "pair-05",
+   "task_type": "code_unit_lookup",
+   "original_conclusion": 0,
+   "tuned_conclusion": 0,
+   "original_sum4": 1,
+   "tuned_sum4": 1,
+   "change": "same"
+  },
+  {
+   "pair": "pair-06",
+   "task_type": "table_lookup",
+   "original_conclusion": 0,
+   "tuned_conclusion": 0,
+   "original_sum4": 1,
+   "tuned_sum4": 1,
+   "change": "same"
+  },
+  {
+   "pair": "pair-07",
+   "task_type": "table_lookup",
+   "original_conclusion": 0,
+   "tuned_conclusion": 0,
+   "original_sum4": 1,
+   "tuned_sum4": 1,
+   "change": "same"
+  },
+  {
+   "pair": "pair-08",
+   "task_type": "code_unit_lookup",
+   "original_conclusion": 1,
+   "tuned_conclusion": 1,
+   "original_sum4": 3,
+   "tuned_sum4": 4,
+   "change": "better"
+  },
+  {
+   "pair": "pair-09",
+   "task_type": "table_lookup",
+   "original_conclusion": 0,
+   "tuned_conclusion": 0,
+   "original_sum4": 1,
+   "tuned_sum4": 1,
+   "change": "same"
+  },
+  {
+   "pair": "pair-10",
+   "task_type": "table_lookup",
+   "original_conclusion": 0,
+   "tuned_conclusion": 0,
+   "original_sum4": 1,
+   "tuned_sum4": 1,
+   "change": "same"
+  },
+  {
+   "pair": "pair-11",
+   "task_type": "table_lookup",
+   "original_conclusion": 0,
+   "tuned_conclusion": 0,
+   "original_sum4": 2,
+   "tuned_sum4": 1,
+   "change": "worse"
+  },
+  {
+   "pair": "pair-12",
+   "task_type": "table_lookup",
+   "original_conclusion": 0,
+   "tuned_conclusion": 0,
+   "original_sum4": 1,
+   "tuned_sum4": 1,
+   "change": "same"
+  },
+  {
+   "pair": "pair-13",
+   "task_type": "official_answer_extraction",
+   "original_conclusion": 1,
+   "tuned_conclusion": 0,
+   "original_sum4": 2,
+   "tuned_sum4": 2,
+   "change": "same"
+  },
+  {
+   "pair": "pair-14",
+   "task_type": "table_lookup",
+   "original_conclusion": 1,
+   "tuned_conclusion": 0,
+   "original_sum4": 3,
+   "tuned_sum4": 1,
+   "change": "worse"
+  },
+  {
+   "pair": "pair-15",
+   "task_type": "official_answer_extraction",
+   "original_conclusion": 1,
+   "tuned_conclusion": 1,
+   "original_sum4": 2,
+   "tuned_sum4": 4,
+   "change": "better"
+  },
+  {
+   "pair": "pair-16",
+   "task_type": "official_answer_extraction",
+   "original_conclusion": 1,
+   "tuned_conclusion": 0,
+   "original_sum4": 3,
+   "tuned_sum4": 1,
+   "change": "worse"
+  },
+  {
+   "pair": "pair-17",
+   "task_type": "official_answer_plain_explanation",
+   "original_conclusion": 1,
+   "tuned_conclusion": 0,
+   "original_sum4": 2,
+   "tuned_sum4": 2,
+   "change": "same"
+  },
+  {
+   "pair": "pair-18",
+   "task_type": "official_answer_extraction",
+   "original_conclusion": 1,
+   "tuned_conclusion": 0,
+   "original_sum4": 4,
+   "tuned_sum4": 0,
+   "change": "worse"
+  }
+ ],
+ "conclusion_sign_test": {
+  "discordant": 7,
+  "original_only": 7,
+  "tuned_only": 0,
+  "two_sided_p": 0.0156,
+  "note": "exact binomial on discordant pairs; 18 items authored by C (exposed); single AI scorer"
+ },
+ "limits": "pilot_dev 18 items, C-authored and known to C; single AI scorer (not human); CASE_SYSTEM prompt, greedy, 512 tokens, ctx 8192; development diagnostic, not an independent benchmark"
+}
