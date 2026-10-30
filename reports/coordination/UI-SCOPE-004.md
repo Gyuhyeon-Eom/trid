@@ -37,7 +37,7 @@
 
 ## 실브라우저 확인 (배포 전, 개발 fixture)
 
-- **fixture 서버:** 버리는 스크립트 `/tmp/trid-corpus/uiscope004/fixture_server.py`, 포트 51994.
+- **fixture 서버:** 버리는 스크립트 `/tmp/trid-corpus/uiscope004/fixture_server.py`, 포트 51994. 확인 뒤 서버를 멈추고 스크립트를 지웠다. 확인한 브라우저 탭도 닫았다.
   - 모델·색인·C 자료 없이 합성 응답만 돌려준다. 가상기관의 가상 규정이다.
   - worktree의 `index.html`과 `app.js`를 실서버와 같은 CSP로 제공한다.
 - **브라우저:** 관리형 Chromium. 실제 입력창에 입력하고 Enter 또는 전송 버튼으로 보냈다.
