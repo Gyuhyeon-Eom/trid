@@ -19,7 +19,22 @@
     }
    ],
    "consecutive_failures": 0,
-   "evals": {},
+   "evals": {
+    "step-00000300": {
+     "job": "trid-pt-a006-smoke-91m-seg-eval-1030113359",
+     "status": "Completed",
+     "failure": null,
+     "instance": "ml.g6e.16xlarge",
+     "attempts": 1
+    },
+    "step-00000600": {
+     "job": "trid-pt-a006-smoke-91m-seg-eval-1030113846",
+     "status": "Completed",
+     "failure": null,
+     "instance": "ml.g6e.4xlarge",
+     "attempts": 1
+    }
+   },
    "halted": "2026-10-30T11:32:06: segment limit 2 reached (smoke/limited campaign)",
    "done": false,
    "recovery_kept": [
@@ -40,8 +55,62 @@
     "best_validation_loss": 0.8586517031071708,
     "steps_per_second": null,
     "eta_hours": null
+   },
+   "evals_pending": []
+  },
+  "ref": {
+   "segments": [
+    {
+     "job": "trid-pt-a006-smoke-91m-ref-1030114120",
+     "status": "Completed",
+     "failure": null,
+     "launched_at": "2026-10-30T11:40:56",
+     "from_step": null
+    }
+   ],
+   "consecutive_failures": 0,
+   "evals": {
+    "step-00000300": {
+     "job": "trid-pt-a006-smoke-91m-ref-eval-1030114733",
+     "status": "Completed",
+     "failure": null,
+     "instance": "ml.g6e.4xlarge",
+     "attempts": 1
+    },
+    "step-00000600": {
+     "job": "trid-pt-a006-smoke-91m-ref-eval-1030114917",
+     "status": "InProgress",
+     "failure": null,
+     "instance": "ml.g6e.16xlarge",
+     "attempts": 1
+    }
+   },
+   "halted": "2026-10-30T11:48:34: segment limit 1 reached (smoke/limited campaign)",
+   "done": false,
+   "waiting": "2026-10-30T11:39:49: ml.g6e.16xlarge busy; segment launch deferred",
+   "recovery_kept": [
+    "step-00000400",
+    "step-00000600"
+   ],
+   "recovery_pruned_objects": 7,
+   "evals_pending": [
+    "step-00000600"
+   ],
+   "progress": {
+    "global_step": 600,
+    "target": 1200000,
+    "last_eval": {
+     "step": 600,
+     "train_loss": 0.7864373326301575,
+     "valid_loss": 0.8581320160301402,
+     "elapsed_seconds": 115.42
+    },
+    "best_step": 600,
+    "best_validation_loss": 0.8581320160301402,
+    "steps_per_second": null,
+    "eta_hours": null
    }
   }
  },
- "updated_at": "2026-10-30T11:32:06"
+ "updated_at": "2026-10-30T11:53:54"
 }

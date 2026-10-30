@@ -1,0 +1,50 @@
+{
+ "campaign": "A-006-spot-smoke",
+ "arms": {
+  "spot": {
+   "segments": [
+    {
+     "job": "trid-pt-a006-spot-smoke-91m-1030113612",
+     "status": "Completed",
+     "failure": null,
+     "launched_at": "2026-10-30T11:35:48",
+     "from_step": null
+    },
+    {
+     "job": "trid-pt-a006-spot-smoke-91m-1030114317",
+     "status": "InProgress",
+     "failure": null,
+     "launched_at": "2026-10-30T11:42:41",
+     "from_step": 300
+    }
+   ],
+   "consecutive_failures": 0,
+   "evals": {},
+   "halted": null,
+   "done": false,
+   "recovery_kept": [
+    "step-00000200",
+    "step-00000300"
+   ],
+   "recovery_pruned_objects": 2,
+   "evals_pending": [
+    "step-00000300"
+   ],
+   "progress": {
+    "global_step": 300,
+    "target": 1200000,
+    "last_eval": {
+     "step": 300,
+     "train_loss": 0.77751225233078,
+     "valid_loss": 0.9844332840293646,
+     "elapsed_seconds": 58.61
+    },
+    "best_step": 300,
+    "best_validation_loss": 0.9844332840293646,
+    "steps_per_second": null,
+    "eta_hours": null
+   }
+  }
+ },
+ "updated_at": "2026-10-30T11:53:28"
+}
