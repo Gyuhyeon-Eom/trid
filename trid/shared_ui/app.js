@@ -93,7 +93,7 @@ function highlighted(text, span) {
 // Status shown on every evidence answer: never hide that an answer is unverified or that the model failed.
 // Colour stays neutral; the wording carries the status. Only a model failure is drawn as an error.
 const STATUS = {
-  quoted: '원문 인용 확인됨', answer: '원문 위치 확인됨', unverified: '검증 안 됨 · 해설만',
+  quoted: '원문 일치 · 정답 검증 아님', answer: '원문 위치 일치 · 정답 검증 아님', unverified: '검증 안 됨 · 해설만',
   review: '검증 보류 · 원문 확인 필요', not_found: '근거 못 찾음', clarify: '되묻기',
   unknown_institution: '해당 기관 자료 없음', institution_no_match: '해당 기관 자료에 근거 없음', model_failure: '모델 응답 실패',
 };
@@ -134,7 +134,7 @@ function renderAnswer(result, started) {
   for (const c of result.candidates || []) {
     const b = highlighted(c.text, c.prediction?.source_character_span);
     const where = c.source_label || (c.page ? `${c.page}쪽` : '');
-    b.prepend(node('span', 'label', `${result.answer_mode === 'case' ? '원문 인용 · 글자 그대로 확인됨' : '근거'}${where ? ' · ' + where : ''}`));
+    b.prepend(node('span', 'label', `${result.answer_mode === 'case' ? '원문 일치 · 정답 검증 아님' : '근거'}${where ? ' · ' + where : ''}`));
     details.append(b);
   }
   if (result.commentary) details.append(block('모델 해설 · 검증 안 됨 — 원문과 대조하세요', result.commentary));
