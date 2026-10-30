@@ -1,0 +1,18 @@
+{
+ "purpose": "C-028 blind evaluation of MODEL-REPAIR-002 (model-P / model-Q). Fixed before any output was read.",
+ "blinding": "no GGUF hashing, no inode tracing, no MODEL-REPAIR-002.md / versions card / site repair version / RETRIEVAL-DECISION-001 text before scores are committed; fixed-suite outputs written but not read before scores are committed",
+ "case_inputs": {"path_private": "runs/c-private/c028-case-inputs-v1.jsonl", "rows": 50,
+   "sha256": "9571a5bb61d58109b6912172d007426fdbbeada5ae6d7b30f621e0a28831fa62",
+   "sets": {"pilot_dev18": "C-017 pilot_dev (C-authored, answers known to C = exposed); context as given + B provenance(row) line before D1",
+            "c027_fixed32": "C-held fixed questions (sha bbbc0f27…); evidence = top-4 hybrid passages (v3 + v4 review) of the gold doc, or of the hybrid top doc for no-gold items (expected 확인 불가); Workspace.provenance line before D1"},
+   "leakage_check": "train34 (data/case-training-view-v1r1/train.jsonl, sha e4eb5f67…) vs pilot_dev18: case id overlap 0, question overlap 0, source document overlap 0/7, context overlap 0"},
+ "generation": "CASE_SYSTEM + rag_prompt(D1..Dn), native template, Qwen3 no-thinking, greedy, 256 output tokens, llama.cpp 8ca4060 CPU build, -c 8192",
+ "automatic_metrics": ["every answer sentence ends with [Dn] (share of sentences)", "'확인 불가' used on no-evidence items / wrongly on answer items", "EOS within 256 tokens (finish_reason)", "repeated sentences", "longest prompt span copied (chars) and copied share"],
+ "manual_rubric_per_answer (C, single AI scorer, answers shuffled with item-level random keys, model label hidden)": {
+   "conclusion_correct": "0/1 vs gold target/facts",
+   "conditions_complete": "0/1/NA vs gold conditions/exceptions",
+   "unsupported_claim": "0/1 any claim not in evidence (incl. wrong institution/scope)",
+   "behavior_correct": "0/1 answer vs 확인 불가 as expected"},
+ "value_contract_regression": "fixed suite (RAG310, probe, public-dialogue, counterfactual) via scripts/eval_open_weight_suite.sh, same as C-024, read only after score commit",
+ "committed_at": "2026-10-30 C"
+}
