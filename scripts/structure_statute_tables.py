@@ -38,7 +38,10 @@ from collect_admrul_attachments import strip_table_markup  # noqa: E402
 CODE_SHA256 = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()  # as loaded
 HWP5PROC = ['uv', 'run', '-q', '--no-project', '--python', '3.12', '--with', 'pyhwp', '--with', 'six', '--with', 'lxml',
             'hwp5proc', 'xml']
-CONTINUATION = re.compile(r'^[(（<※\[]|[,，]$')
+# A line continuing the previous one: an opening bracket or note mark, a trailing comma, a range left open ('27.6~'
+# then '28.9', also '～'), or a bound or unit word on its own line ('60.0' then '이상', '13～18' then '호봉'). Such cells
+# are one value, never a list (B-030: 소방공무원 임용령 시행규칙 별표 7 ranges and 별표 3 '호봉' lines were split into rows).
+CONTINUATION = re.compile(r'^[(（<※\[]|[,，~∼～]$|^(?:이상|이하|미만|초과|호봉|원|명|개월|년|일|시간|퍼센트|%)$')
 
 
 def text_of(elem):

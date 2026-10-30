@@ -150,7 +150,10 @@ def check_doc(d):
     doc = {'id': d['id'], 'title': d['title'], 'render': 'ok', 'pages': len({p for p, _, _ in lines})}
     labels = [lab for t in d['tables'] for lab in t['columns'] if not re.fullmatch(r'열\d+', lab)]
     # every word of a label's top part (a two-line header cell renders as two lines)
-    doc['header_missing'] = [lab for lab in labels if any(norm(w) not in flat for w in lab.split(' > ')[0].split())]
+    # a wrapped header cell interleaves with its neighbours on the page, so a label is also found as a whole cell
+    cell_text = ''.join(f'\n{c[5]}' for c in cells)
+    doc['header_missing'] = [lab for lab in labels if any(norm(w) not in flat for w in lab.split(' > ')[0].split())
+                             and norm(lab.split(' > ')[0]) not in cell_text]
     doc['unit_found'] = None if not d['unit'] else norm(d['unit']) in flat
     doc['notes_missing'] = [n for t in d['tables'] for n in t['notes'] if norm(n) not in flat]
     side_ok = not doc['header_missing'] and doc['unit_found'] is not False and not doc['notes_missing']

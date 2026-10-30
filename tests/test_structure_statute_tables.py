@@ -62,13 +62,24 @@ class StructureTests(unittest.TestCase):
                           {'구분': '1. 공무원경력', '경력': '나. 고용직 경력', '환산율': '80퍼센트'}])
         self.assertEqual(t['rows'][0]['repeated'], ['구분'])
 
+    def test_ranges_broken_over_lines_stay_one_value(self):
+        t = structure(table(2, 3, [
+            (0, 0, 1, 1, ['성별']), (0, 1, 1, 1, ['1']), (0, 2, 1, 1, ['10']),
+            (1, 0, 1, 1, ['여']), (1, 1, 1, 1, ['27.6~', '28.9']), (1, 2, 1, 1, ['37.0', '이상'])]))
+        self.assertEqual([r['cells'] for r in t['rows']], [{'성별': '여', '1': '27.6~ 28.9', '10': '37.0 이상'}])
+        t = structure(table(2, 3, [
+            (0, 0, 1, 1, ['계급']), (0, 1, 1, 1, ['전문대학 교원']), (0, 2, 1, 1, ['공공기관 등']),
+            (1, 0, 1, 1, ['소방령']), (1, 1, 1, 1, ['13～18', '호봉']), (1, 2, 1, 1, ['과장', '차장'])]))
+        self.assertEqual([r['cells'] for r in t['rows']], [{'계급': '소방령', '전문대학 교원': '13～18 호봉', '공공기관 등': '과장 차장'}])
+
 
 class SplitTests(unittest.TestCase):
     def test_only_regular_tables_of_checked_docs_are_queryable_and_review_is_per_doc(self):
         def doc(i, status, flags, rows):
             return {'id': i, 'title': i, 'status': status, 'unit': None, 'revised': None, 'statute_effective_date': None,
-                    'tables': [{'flags': flags, 'caption': [], 'notes': [], 'rows': rows}]}
-        row = [{'section': None, 'cells': {'구분': '제1호', '일비': '25,000'}}]
+                    'raw': f'data/law-byl/raw/1/{i}.hwp',
+                    'tables': [{'flags': flags, 'caption': [], 'notes': [], 'columns': ['구분', '일비'], 'rows': rows}]}
+        row = [{'source_row': 1, 'part': None, 'section': None, 'cells': {'구분': '제1호', '일비': '25,000'}}]
         with tempfile.TemporaryDirectory() as d:
             src, out = Path(d) / 'src', Path(d) / 'out'
             src.mkdir()

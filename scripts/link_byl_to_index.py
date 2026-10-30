@@ -72,22 +72,32 @@ def main():
         if body and number:
             text = body['text']
             heads = list(re.finditer(r'^■\s*' + re.escape(law) + r'\s*\[별표\s*(\d+(?:의\d+)?)\][^\n]*$', text, re.M))
-            for i, h in enumerate(heads):
-                if h.group(1) != number:
-                    continue
-                start, end = h.start(), heads[i + 1].start() if i + 1 < len(heads) else len(text)
+            def check(start, end, layout, header):
                 sec = text[start:end]
                 pool = Counter(n.replace(',', '') for n in NUM.findall(sec))
                 need = Counter(values)
                 found = sum(min(k, pool[n]) for n, k in need.items())
-                rev = re.search(r'<\s*(개정|신설|제정)[^>]*>', h.group(0))
-                sections.append({'char_span': [start, end], 'header': h.group(0)[:80],
-                                 'revision_in_body': rev.group(0) if rev else None,
-                                 'caption_found': norm(caption) in norm(sec) if caption else None,
-                                 'numbers_found': f'{found}/{sum(need.values())}',
-                                 'body_text_chars': len(norm(sec[len(h.group(0)):])),
-                                 'passages': [q['id'] for q in body['passages']
-                                              if q['char_start'] < end and q['char_end'] > start]})
+                rev = re.search(r'<\s*(개정|신설|제정)[^>]*>', header)
+                return {'char_span': [start, end], 'layout': layout, 'header': header[:80],
+                        'revision_in_body': rev.group(0) if rev else None,
+                        'caption_found': norm(caption) in norm(sec) if caption else None,
+                        'numbers_found': f'{found}/{sum(need.values())}',
+                        'missing_numbers': dict(need - pool),
+                        'body_text_chars': len(norm(sec.replace(header, '', 1))),
+                        'passages': [q['id'] for q in body['passages']
+                                     if q['char_start'] < end and q['char_end'] > start]}
+            for i, h in enumerate(heads):
+                if h.group(1) != number:
+                    continue
+                start, end = h.start(), heads[i + 1].start() if i + 1 < len(heads) else len(text)
+                s = check(start, end, 'header_then_content', h.group(0))
+                sections.append(s)
+                if s['body_text_chars'] < 20 and caption:
+                    # the API's 별표내용 may carry the 별표's own header line after its table (공무원보수규정 별표 1,
+                    # 공무원수당 등에 관한 규정 별표 2의4): then the table sits between its caption line and the header
+                    cap = text.rfind(caption, heads[i - 1].end() if i else 0, h.start())
+                    if cap >= 0:
+                        sections.append(check(cap, h.end(), 'content_then_header', h.group(0)))
         ok = [s for s in sections if s['caption_found'] and s['numbers_found'].split('/')[0] == s['numbers_found'].split('/')[1]]
         if len(ok) > 1:
             # the body may carry an older copy of the same 별표 (공무원 여비 규정 별표 5 twice: '사다리차 또는 승강기의
@@ -105,8 +115,12 @@ def main():
         links.append({'row_doc_id': doc_id, 'law': law, 'mst': mst, 'byl': number, 'caption': caption,
                       'rows': len(rs), 'reviews': dict(Counter(r['review'] for r in rs)),
                       'byl_doc_in_index': doc_id if doc_id in docs else None,
+                      # same extracted text as the rows came from (law-byl kordoc text sha256)
+                      'byl_doc_hash_match': (docs[doc_id]['sha256'] == (rs[0].get('source') or {}).get('kordoc_text_sha256'))
+                      if doc_id in docs else None,
                       'body_doc': body['doc_id'] if body else None, 'body_sections': sections,
-                      'linked_section': ok[0]['char_span'] if len(ok) == 1 else None, 'status': status})
+                      'linked_section': ok[0]['char_span'] if len(ok) == 1 else None,
+                      'linked_layout': ok[0]['layout'] if len(ok) == 1 else None, 'status': status})
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(''.join(json.dumps(x, ensure_ascii=False) + '\n' for x in links))
     print(json.dumps({'byl_docs': len(links), 'status': dict(c), 'code_sha256': CODE_SHA256}, ensure_ascii=False))
