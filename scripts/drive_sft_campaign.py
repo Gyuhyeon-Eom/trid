@@ -21,15 +21,20 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 REGION = 'ap-northeast-2'
+AWS_CLI = os.environ.get('TRID_AWS_CLI', 'aws')  # the Mac mini sets /opt/homebrew/bin/aws (CLI v2, `aws login`)
+# Error text of expired or missing credentials (CLI v1/v2, STS, `aws login`/SSO sessions).
+AUTH_MARKERS = ('ExpiredToken', 'InvalidClientTokenId', 'Unable to locate credentials', 'could not be found',
+                'Token has expired', 'session has expired', 'UnauthorizedSSOToken', 'RequestExpired',
+                'aws login', 'Error loading SSO Token', 'UnrecognizedClientException')
 
 
 def aws(*args, check=True):
     if os.environ.get('TRID_AWS_TRACE'):  # records every AWS call (for least-privilege policy review)
         with open(os.environ['TRID_AWS_TRACE'], 'a') as f:
             f.write(json.dumps(args) + '\n')
-    out = subprocess.run(['aws', '--region', REGION, *args], capture_output=True, text=True)
+    out = subprocess.run([AWS_CLI, '--region', REGION, *args], capture_output=True, text=True)
     if check and out.returncode:
-        raise RuntimeError(f'aws {" ".join(args[:3])}: {out.stderr.strip()}')
+        raise RuntimeError(f'aws {" ".join(args[:3])}: {out.stderr.strip()[-400:]}')
     return out
 
 
@@ -247,7 +252,23 @@ def main():
     path = a.state or a.campaign.with_name('state.json')
     state = json.loads(path.read_text()) if path.exists() else {'campaign': campaign['id'], 'arms': {}}
     while True:
-        finished = step(campaign, state)
+        try:
+            finished = step(campaign, state)
+            state.pop('auth', None)
+        except RuntimeError as exc:
+            if not any(marker in str(exc) for marker in AUTH_MARKERS):
+                raise
+            # Expired/missing login: nothing can be observed or launched. Record it and wait for re-authentication
+            # instead of exiting (which would make launchd restart the driver in a loop). No job is created here.
+            state['auth'] = {'status': 'reauth_required',
+                             'since': state.get('auth', {}).get('since') or datetime.datetime.now().isoformat(timespec='seconds'),
+                             'message': '사용자 재인증 필요 (aws login). 제어기는 대기 중이며 job을 만들지 않는다.'}
+            path.write_text(json.dumps(state, ensure_ascii=False, indent=1))
+            print(datetime.datetime.now().isoformat(timespec='seconds'), 'reauth_required', flush=True)
+            if a.once:
+                return
+            time.sleep(a.interval)
+            continue
         path.write_text(json.dumps(state, ensure_ascii=False, indent=1))
         aws('s3', 'cp', '--only-show-errors', str(path), campaign['status_s3'], check=False)
         print(state['updated_at'], json.dumps({n: (s['progress'], s['segments'][-1]['status'] if s['segments'] else None)

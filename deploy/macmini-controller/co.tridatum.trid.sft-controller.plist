@@ -17,7 +17,8 @@
   </array>
   <key>EnvironmentVariables</key>
   <dict>
-    <key>PATH</key><string>/Users/eomgyuhyeon/trid-controller/repo/.venv/bin:/usr/bin:/bin</string>
+    <key>PATH</key><string>/opt/homebrew/bin:/Users/eomgyuhyeon/trid-controller/repo/.venv/bin:/usr/bin:/bin</string>
+    <key>TRID_AWS_CLI</key><string>/opt/homebrew/bin/aws</string>
     <key>AWS_PROFILE</key><string>trid-controller</string>
     <key>AWS_DEFAULT_REGION</key><string>ap-northeast-2</string>
   </dict>
