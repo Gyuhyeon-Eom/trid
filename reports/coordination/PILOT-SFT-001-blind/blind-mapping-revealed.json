@@ -1,0 +1,86 @@
+{
+ "models": {
+  "A": {
+   "label": "qwen3-1.7b-base-localconv",
+   "model_sha256": "f2ba848c65c2e135495656fc91774b82a10d1f9267671609fad54684c9db1c38"
+  },
+  "B": {
+   "label": "qwen3-1.7b-pilot-sft-001",
+   "model_sha256": "0c78b0c2ace93fda8b3ce1de53441ec006afcb7f89638d79d8ef896b5a9432af"
+  }
+ },
+ "items": {
+  "pair-01": {
+   "answer_1": "B",
+   "answer_2": "A"
+  },
+  "pair-02": {
+   "answer_1": "A",
+   "answer_2": "B"
+  },
+  "pair-03": {
+   "answer_1": "A",
+   "answer_2": "B"
+  },
+  "pair-04": {
+   "answer_1": "B",
+   "answer_2": "A"
+  },
+  "pair-05": {
+   "answer_1": "A",
+   "answer_2": "B"
+  },
+  "pair-06": {
+   "answer_1": "B",
+   "answer_2": "A"
+  },
+  "pair-07": {
+   "answer_1": "A",
+   "answer_2": "B"
+  },
+  "pair-08": {
+   "answer_1": "A",
+   "answer_2": "B"
+  },
+  "pair-09": {
+   "answer_1": "B",
+   "answer_2": "A"
+  },
+  "pair-10": {
+   "answer_1": "A",
+   "answer_2": "B"
+  },
+  "pair-11": {
+   "answer_1": "B",
+   "answer_2": "A"
+  },
+  "pair-12": {
+   "answer_1": "B",
+   "answer_2": "A"
+  },
+  "pair-13": {
+   "answer_1": "B",
+   "answer_2": "A"
+  },
+  "pair-14": {
+   "answer_1": "A",
+   "answer_2": "B"
+  },
+  "pair-15": {
+   "answer_1": "A",
+   "answer_2": "B"
+  },
+  "pair-16": {
+   "answer_1": "B",
+   "answer_2": "A"
+  },
+  "pair-17": {
+   "answer_1": "A",
+   "answer_2": "B"
+  },
+  "pair-18": {
+   "answer_1": "B",
+   "answer_2": "A"
+  }
+ }
+}
