@@ -157,6 +157,13 @@ class QualityTests(unittest.TestCase):
         for text, expected in cases.items():
             self.assertEqual(kq.redact(text)[0], expected, text)
 
+    def test_redaction_inside_url_is_told_apart_from_a_label_next_to_a_url(self):
+        for damaged in ('(http://www.saha.go.kr/tour/contents.do?mId=[전화])', 'https://[전화].',
+                        'https://us06web.zoom.us/j/1?pwd=x&omn=[전화]', 'view.do?no=[계좌] 참고'):
+            self.assertEqual(kq.redacted_in_url(damaged), 1, damaged)
+        for intact in ('전화([전화])·이메일·인터넷(http://119.go.kr)으로', '문의 [전화] www.a.go.kr', 'https://a.go.kr/x?id=7'):
+            self.assertEqual(kq.redacted_in_url(intact), 0, intact)
+
     def test_builder_records_quality_and_pii_counts(self):
         with tempfile.TemporaryDirectory() as d:
             src = Path(d) / 'press'
