@@ -1,0 +1,19 @@
+{
+  "version": "pilot-v1",
+  "status": "frozen (C-018): approved by supervisor as conditional development-experiment input for A; not to be overwritten; later versions are separate files",
+  "pilot_sha256": "6bd0bddac4281db0ace6db68e1f2c645ee36d647b59a2ff64fe49cc65034e291",
+  "manifest_sha256": "6ee34ee43665031c03a88e2652c02225e8369374cb8848f2b7c2946589e85fe7",
+  "cases": 75,
+  "train": 57,
+  "pilot_dev": 18,
+  "pilot_dev_groups": [
+    "data-go-kr:15156444",
+    "law-go-kr:admrul-file:133708917",
+    "law-go-kr:expc:312846",
+    "law-go-kr:expc:314758",
+    "law-go-kr:expc:327309",
+    "law-go-kr:expc:328939",
+    "law-go-kr:expc:331063"
+  ],
+  "rule": "later versions keep every pilot_dev group of v1 in pilot_dev (never moved to train) and every v1 case unchanged"
+}

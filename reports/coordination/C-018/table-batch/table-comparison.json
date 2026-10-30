@@ -1,0 +1,512 @@
+{
+ "law-go-kr:admrul-file:126140889": {
+  "title": "목포지방해양수산청 위임전결규정 - (별표) 위임전결사항.hwpx",
+  "original_tables": 10,
+  "extracted_tables": 10,
+  "raw_sha256": "1b5dbbd5a5ef97deec595a4029d4202725174fde4af7cfeb418c8467bd39eaba",
+  "tables": [
+   {
+    "rows": [
+     85,
+     85
+    ],
+    "cells": [
+     446,
+     446
+    ],
+    "text_equal": 446,
+    "span_equal": 446,
+    "exact": true
+   },
+   {
+    "rows": [
+     125,
+     125
+    ],
+    "cells": [
+     654,
+     654
+    ],
+    "text_equal": 654,
+    "span_equal": 654,
+    "exact": true
+   },
+   {
+    "rows": [
+     126,
+     126
+    ],
+    "cells": [
+     655,
+     655
+    ],
+    "text_equal": 655,
+    "span_equal": 655,
+    "exact": true
+   },
+   {
+    "rows": [
+     104,
+     104
+    ],
+    "cells": [
+     535,
+     535
+    ],
+    "text_equal": 535,
+    "span_equal": 535,
+    "exact": true
+   },
+   {
+    "rows": [
+     127,
+     127
+    ],
+    "cells": [
+     650,
+     650
+    ],
+    "text_equal": 650,
+    "span_equal": 650,
+    "exact": true
+   },
+   {
+    "rows": [
+     68,
+     68
+    ],
+    "cells": [
+     346,
+     346
+    ],
+    "text_equal": 346,
+    "span_equal": 346,
+    "exact": true
+   },
+   {
+    "rows": [
+     75,
+     75
+    ],
+    "cells": [
+     388,
+     388
+    ],
+    "text_equal": 388,
+    "span_equal": 388,
+    "exact": true
+   },
+   {
+    "rows": [
+     40,
+     40
+    ],
+    "cells": [
+     204,
+     204
+    ],
+    "text_equal": 204,
+    "span_equal": 204,
+    "exact": true
+   },
+   {
+    "rows": [
+     47,
+     47
+    ],
+    "cells": [
+     248,
+     248
+    ],
+    "text_equal": 248,
+    "span_equal": 248,
+    "exact": true
+   },
+   {
+    "rows": [
+     68,
+     68
+    ],
+    "cells": [
+     352,
+     352
+    ],
+    "text_equal": 352,
+    "span_equal": 352,
+    "exact": true
+   }
+  ]
+ },
+ "law-go-kr:admrul-file:133708917": {
+  "title": "경북권질병대응센터 위임전결규정 - (개정별표)경북권질병대응센터 위임전결사항.hwpx",
+  "original_tables": 5,
+  "extracted_tables": 5,
+  "raw_sha256": "28aa817f54c4e680186400a62c68397cd78d370720079bf94e6f232683930147",
+  "tables": [
+   {
+    "rows": [
+     118,
+     118
+    ],
+    "cells": [
+     579,
+     579
+    ],
+    "text_equal": 579,
+    "span_equal": 579,
+    "exact": true
+   },
+   {
+    "rows": [
+     131,
+     131
+    ],
+    "cells": [
+     639,
+     639
+    ],
+    "text_equal": 639,
+    "span_equal": 639,
+    "exact": true
+   },
+   {
+    "rows": [
+     42,
+     42
+    ],
+    "cells": [
+     202,
+     202
+    ],
+    "text_equal": 202,
+    "span_equal": 202,
+    "exact": true
+   },
+   {
+    "rows": [
+     16,
+     16
+    ],
+    "cells": [
+     82,
+     82
+    ],
+    "text_equal": 82,
+    "span_equal": 82,
+    "exact": true
+   },
+   {
+    "rows": [
+     9,
+     9
+    ],
+    "cells": [
+     51,
+     51
+    ],
+    "text_equal": 51,
+    "span_equal": 51,
+    "exact": true
+   }
+  ]
+ },
+ "law-go-kr:admrul-file:163009611": {
+  "title": "국가보훈부 당직근무 운영지침 - 국가보훈부 당직근무 운영지침 전문(국가보훈부훈령 제143호¸ 2026. 4. 1. 시행)_별지서식 포함.hwpx",
+  "original_tables": 5,
+  "extracted_tables": 5,
+  "raw_sha256": "3ff6807ead00f9b662d49bd19c2a8a5d2d17f6c3097f7716435bb6804045880f",
+  "tables": [
+   {
+    "rows": [
+     21,
+     17
+    ],
+    "cells": [
+     99,
+     95
+    ],
+    "text_equal": 43,
+    "span_equal": 33,
+    "exact": false
+   },
+   {
+    "rows": [
+     29,
+     28
+    ],
+    "cells": [
+     150,
+     149
+    ],
+    "text_equal": 54,
+    "span_equal": 93,
+    "exact": false
+   },
+   {
+    "rows": [
+     21,
+     16
+    ],
+    "cells": [
+     98,
+     93
+    ],
+    "text_equal": 35,
+    "span_equal": 19,
+    "exact": false
+   },
+   {
+    "rows": [
+     19,
+     16
+    ],
+    "cells": [
+     89,
+     86
+    ],
+    "text_equal": 58,
+    "span_equal": 56,
+    "exact": false
+   },
+   {
+    "rows": [
+     4,
+     4
+    ],
+    "cells": [
+     29,
+     29
+    ],
+    "text_equal": 28,
+    "span_equal": 29,
+    "exact": false
+   }
+  ]
+ },
+ "law-go-kr:admrul-file:150743139": {
+  "title": "중앙소방학교 당직 및 비상근무규정 - 개정본문별표(중앙소방학교 당직 및 비상근무규정).hwpx",
+  "original_tables": 1,
+  "extracted_tables": 1,
+  "raw_sha256": "21464940e75f7a37cf308cbe3fa0c630eae8cb8ff87a516f58cffa3b9efdf1c2",
+  "tables": [
+   {
+    "rows": [
+     5,
+     5
+    ],
+    "cells": [
+     14,
+     14
+    ],
+    "text_equal": 14,
+    "span_equal": 14,
+    "exact": true
+   }
+  ]
+ },
+ "law-go-kr:admrul-file:166503373": {
+  "title": "지방자치단체 기금운용계획 수립기준 - (전문) 2027년도 지방자치단체 기금운용계획 수립기준.hwpx",
+  "original_tables": 79,
+  "extracted_tables": 29,
+  "raw_sha256": "4b527d0f4f5cb7481df2c42b22e2506da0fc43d558bd68043d5902fd2b09ac32",
+  "tables": "table count differs"
+ },
+ "law-go-kr:admrul-file:161110089": {
+  "title": "중앙119구조본부 위임전결규정 - 중앙119구조본부 위임전결규정(본문_별표)_(시행일 20260119).hwp",
+  "original_tables": 9,
+  "extracted_tables": 9,
+  "raw_sha256": "abed30e946023e754800c1fd71b96e23debb2755ddf4324aff554f32fd018c63",
+  "tables": [
+   {
+    "rows": [
+     54,
+     54
+    ],
+    "cells": [
+     257,
+     257
+    ],
+    "text_equal": 257,
+    "span_equal": 203,
+    "exact": false
+   },
+   {
+    "rows": [
+     162,
+     162
+    ],
+    "cells": [
+     760,
+     760
+    ],
+    "text_equal": 760,
+    "span_equal": 760,
+    "exact": true
+   },
+   {
+    "rows": [
+     25,
+     25
+    ],
+    "cells": [
+     121,
+     121
+    ],
+    "text_equal": 121,
+    "span_equal": 121,
+    "exact": true
+   },
+   {
+    "rows": [
+     40,
+     40
+    ],
+    "cells": [
+     184,
+     184
+    ],
+    "text_equal": 184,
+    "span_equal": 184,
+    "exact": true
+   },
+   {
+    "rows": [
+     46,
+     46
+    ],
+    "cells": [
+     207,
+     207
+    ],
+    "text_equal": 207,
+    "span_equal": 207,
+    "exact": true
+   },
+   {
+    "rows": [
+     21,
+     21
+    ],
+    "cells": [
+     97,
+     97
+    ],
+    "text_equal": 97,
+    "span_equal": 97,
+    "exact": true
+   },
+   {
+    "rows": [
+     61,
+     61
+    ],
+    "cells": [
+     283,
+     283
+    ],
+    "text_equal": 283,
+    "span_equal": 283,
+    "exact": true
+   },
+   {
+    "rows": [
+     34,
+     34
+    ],
+    "cells": [
+     163,
+     163
+    ],
+    "text_equal": 163,
+    "span_equal": 163,
+    "exact": true
+   },
+   {
+    "rows": [
+     29,
+     29
+    ],
+    "cells": [
+     138,
+     138
+    ],
+    "text_equal": 138,
+    "span_equal": 138,
+    "exact": true
+   }
+  ]
+ },
+ "law-go-kr:admrul-file:98402863": {
+  "title": "국립장기조직혈액관리원 위임전결 규정 - 국립장기조직혈액관리원 위임전결 규정 별표.hwp",
+  "original_tables": 5,
+  "extracted_tables": 5,
+  "raw_sha256": "af6ad266031abe2c4c1254717fb3ef44d4bcdb1af7461bae0026579a0be5eb87",
+  "tables": [
+   {
+    "rows": [
+     65,
+     65
+    ],
+    "cells": [
+     318,
+     318
+    ],
+    "text_equal": 317,
+    "span_equal": 318,
+    "exact": false
+   },
+   {
+    "rows": [
+     97,
+     97
+    ],
+    "cells": [
+     499,
+     499
+    ],
+    "text_equal": 499,
+    "span_equal": 499,
+    "exact": true
+   },
+   {
+    "rows": [
+     11,
+     11
+    ],
+    "cells": [
+     61,
+     61
+    ],
+    "text_equal": 61,
+    "span_equal": 61,
+    "exact": true
+   },
+   {
+    "rows": [
+     15,
+     15
+    ],
+    "cells": [
+     72,
+     72
+    ],
+    "text_equal": 72,
+    "span_equal": 72,
+    "exact": true
+   },
+   {
+    "rows": [
+     19,
+     19
+    ],
+    "cells": [
+     95,
+     95
+    ],
+    "text_equal": 95,
+    "span_equal": 95,
+    "exact": true
+   }
+  ]
+ }
+}

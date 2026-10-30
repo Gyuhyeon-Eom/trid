@@ -12,6 +12,7 @@
 usage: build_table_cases.py --out DIR
 """
 import argparse
+import subprocess
 import hashlib
 import json
 import re
@@ -82,6 +83,41 @@ class _Html(HTMLParser):
     def handle_data(self, data):
         if self.cell is not None and self.cell['depth'] == len(self.stack):
             self.cell['text'] += data
+
+
+def hwp_tables(path):
+    """Tables of a binary .hwp read with `hwp5proc xml` (pyhwp), independent of kordoc: TableBody / TableRow /
+    TableCell (rowspan, colspan); a cell's text excludes nested tables."""
+    xml = subprocess.run(['hwp5proc', 'xml', str(path)], check=True, capture_output=True).stdout
+    root = ET.fromstring(xml)
+
+    def cell_text(e):
+        out = []
+        for ch in e:
+            if ch.tag in ('TableBody', 'TableControl'):
+                continue
+            if ch.tag == 'Text':
+                out.append(''.join(ch.itertext()))
+                continue
+            out.append(cell_text(ch))
+        return ''.join(out)
+
+    tables = []
+    for body in root.iter('TableBody'):
+        tables.append([[dict(text=cell_text(tc), rs=int(tc.get('rowspan', 1)), cs=int(tc.get('colspan', 1)))
+                        for tc in tr.findall('TableCell')] for tr in body.findall('TableRow')])
+    return tables
+
+
+def original_tables(row):
+    """Tables parsed straight from the original attachment file (.hwpx XML or .hwp via hwp5proc) and its sha256."""
+    fid = row['id'].rsplit(':', 1)[1]
+    folder = RAW / row['group'].split(':')[1]
+    for suffix, reader in (('.hwpx', hwpx_tables), ('.hwp', hwp_tables)):
+        path = folder / f'{fid}{suffix}'
+        if path.exists():
+            return reader(path), hashlib.sha256(path.read_bytes()).hexdigest()
+    raise ValueError(f"{row['id']}: no .hwpx/.hwp original to compare")
 
 
 def html_tables(text):
@@ -179,10 +215,10 @@ def main():
     for doc in spec['compare']:
         r = rows[doc]
         fid = doc.rsplit(':', 1)[1]
-        path = RAW / r['group'].split(':')[1] / f'{fid}.hwpx'
-        orig, ext = hwpx_tables(path), html_tables(r['text'])
+        orig, raw_sha = original_tables(r)
+        ext = html_tables(r['text'])
         comparisons[doc] = dict(title=r['title'], original_tables=len(orig), extracted_tables=len(ext),
-                                raw_sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
+                                raw_sha256=raw_sha,
                                 tables=[compare(o, e) for o, e in zip(orig, ext)] if len(orig) == len(ext) else 'table count differs')
     for c in spec['cases']:
         r = rows[c['doc']]
@@ -190,7 +226,7 @@ def main():
         if cmp['tables'] == 'table count differs' or not cmp['tables'][c['table']]['exact']:
             raise ValueError(f"{c['id']}: table {c['table']} does not match the original exactly; not usable")
         fid = c['doc'].rsplit(':', 1)[1]
-        orig = hwpx_tables(RAW / r['group'].split(':')[1] / f'{fid}.hwpx')
+        orig, _ = original_tables(r)
         spans = table_spans(r['text'])
         start, end = spans[c['table']]
         prev_end = spans[c['table'] - 1][1] if c['table'] else 0
