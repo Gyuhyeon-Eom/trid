@@ -1,0 +1,59 @@
+{
+ "builder": "scripts/build_internal_cases.py",
+ "builder_sha256": "332ccb5630e706bb5f8922ae7092342634ddc981e34549193683592539ccf53a",
+ "runs": {
+  "footnotes1": {
+   "relations": "data/internal-rules/v3-footnotes1/docs.relations.jsonl",
+   "candidates": 385,
+   "byte_identical_to_pre_edit_build": true
+  },
+  "footnotes2": {
+   "relations": "data/internal-rules/v3-footnotes2/docs.relations.jsonl",
+   "candidates": 364,
+   "skipped_trailing_only": 64
+  }
+ },
+ "diff_fn1_to_fn2": {
+  "removed_trailing_only": [
+   "official:law-go-kr:expc:326343",
+   "official:law-go-kr:expc:327173",
+   "official:law-go-kr:expc:328103",
+   "official:law-go-kr:expc:328205",
+   "official:law-go-kr:expc:328295",
+   "official:law-go-kr:expc:328813",
+   "official:law-go-kr:expc:329451",
+   "official:law-go-kr:expc:332229",
+   "official:law-go-kr:expc:332317",
+   "official:law-go-kr:expc:333227",
+   "official:law-go-kr:expc:334347",
+   "official:law-go-kr:expc:334743",
+   "official:law-go-kr:expc:335465",
+   "official:law-go-kr:expc:336877",
+   "official:law-go-kr:expc:337821",
+   "official:law-go-kr:expc:339029",
+   "official:law-go-kr:expc:342129",
+   "official:law-go-kr:expc:342211",
+   "official:law-go-kr:expc:343137",
+   "official:law-go-kr:expc:343265",
+   "official:law-go-kr:expc:343273",
+   "official:law-go-kr:expc:343471",
+   "official:law-go-kr:expc:343677",
+   "official:law-go-kr:expc:343725",
+   "official:law-go-kr:expc:343817",
+   "official:law-go-kr:expc:344121"
+  ],
+  "added_restart_rows_labelled_by_ordinal": [
+   "official:law-go-kr:expc:326805",
+   "official:law-go-kr:expc:327529",
+   "official:law-go-kr:expc:329861",
+   "official:law-go-kr:expc:330783",
+   "official:law-go-kr:expc:331335"
+  ],
+  "content_changed_in_common": []
+ },
+ "frozen_pilots": {
+  "v1": "6bd0bddac4281db0ace6db68e1f2c645ee36d647b59a2ff64fe49cc65034e291",
+  "v3_candidate": "9d4d7b9f1c3f2b9783e968795d8ac5d909513ef5553fc0ef637c70cad8a9d2d3"
+ },
+ "note": "smoke only: no new internal batch is adopted; the 5 added official cases are unreviewed"
+}

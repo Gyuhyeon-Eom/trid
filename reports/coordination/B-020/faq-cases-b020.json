@@ -1,0 +1,145 @@
+{
+ "note": "B-020 FAQ cases: AI-written (B) questions/answers grounded in one official FAQ row each (KOICA 원조조달 계약 FAQ); B AI self-review only; not in any pilot",
+ "sources": [
+  {
+   "version": "guides-v6",
+   "parts": [
+    "qa_rule_or_procedure"
+   ]
+  }
+ ],
+ "cases": [
+  {
+   "id": "faq:koica-innovation-product",
+   "source": "data.go.kr:15151524:27",
+   "task_type": "faq_explanation",
+   "behavior": "answer_with_condition",
+   "question": "혁신제품을 사려는데 추정가격이 1억원을 넘어도 수의계약이 되나요?",
+   "target": "됩니다. 국가계약법 시행령 제26조에 따라 조달사업에 관한 법률 제27조제1항의 혁신제품을 구매하는 경우 수의계약 체결이 가능합니다.\n조건: 추정가격 1억원이 넘는 계약은 협력단 계약심의위원회 지침에 따라 심의가 필요합니다.\n근거: 국가계약법 시행령 제26조, 계약분쟁심의위원회 운영지침(답변 출처 표기).\n범위: 한국국제협력단(KOICA) 원조조달 FAQ의 안내입니다. 다른 기관에 그대로 적용하면 안 됩니다.\n시점: 2025-10-31 기준 데이터 파일의 답변입니다. 지금 적용되는 값인지는 확인되지 않았습니다.",
+   "must_keep": [
+    "혁신제품",
+    "1억원",
+    "심의가 필요"
+   ],
+   "date": "2025-10-31",
+   "date_field": "KOICA FAQ dataset file date (no per-row date)"
+  },
+  {
+   "id": "faq:koica-lump-sum-settlement",
+   "source": "data.go.kr:15151524:34",
+   "task_type": "faq_explanation",
+   "behavior": "answer_with_condition",
+   "question": "총액계약인데 계약 후에 사후정산을 할 수 있나요?",
+   "target": "원칙적으로 인정되지 않습니다. 「(계약예규) 정부 입찰・계약 집행기준」 제91조에서 정한 국민건강보험료, 노인장기요양보험료, 국민연금보험료 등만 예외입니다.\n예외: 입찰공고 시에 사후정산 사항을 명시하고, 계약체결 시 특수조건으로 계약상대자의 계약상 이익을 부당하게 제한하지 않는 범위에서 사후정산조건을 정했다면 가능할 것이라고 안내합니다.\n근거: 기획재정부 유권해석(답변 출처 표기).\n범위: 한국국제협력단(KOICA) 원조조달 FAQ의 안내입니다. 다른 기관에 그대로 적용하면 안 됩니다.\n시점: 2025-10-31 기준 데이터 파일의 답변입니다. 지금 적용되는 값인지는 확인되지 않았습니다.",
+   "must_keep": [
+    "원칙적으로 인정되지 않습니다",
+    "제91조",
+    "입찰공고 시에 사후정산 사항을 명시"
+   ],
+   "date": "2025-10-31",
+   "date_field": "KOICA FAQ dataset file date (no per-row date)"
+  },
+  {
+   "id": "faq:koica-delay-penalty-guarantee",
+   "source": "data.go.kr:15151524:37",
+   "task_type": "faq_explanation",
+   "behavior": "answer",
+   "question": "기성부분이 있으면 지체상금이 계약보증금 상당액에 이르는 시점은 무엇을 기준으로 보나요?",
+   "target": "기성부분을 제외하지 않은 전체 계약보증금이 기준입니다. 국가계약법 시행령 제50조 제1항의 계약보증금은 전체 계약보증금을 뜻하므로, 시행령 제75조 제2항에 따라 계약을 해지할 때는 지체상금이 전체 계약금액에 대한 계약보증금에 달하는 시점으로 봅니다.\n근거: 기획재정부 유권해석(답변 출처 표기).\n범위: 한국국제협력단(KOICA) 원조조달 FAQ의 안내입니다. 다른 기관에 그대로 적용하면 안 됩니다.\n시점: 2025-10-31 기준 데이터 파일의 답변입니다. 지금 적용되는 값인지는 확인되지 않았습니다.",
+   "must_keep": [
+    "기성부분을 제외하지 않은",
+    "전체 계약보증금",
+    "제75조 제2항"
+   ],
+   "date": "2025-10-31",
+   "date_field": "KOICA FAQ dataset file date (no per-row date)"
+  },
+  {
+   "id": "faq:koica-tech-unfit-rebid",
+   "source": "data.go.kr:15151524:101",
+   "task_type": "faq_explanation",
+   "behavior": "answer",
+   "question": "협상에 의한 계약에서 수의계약 대상 업체가 기술부적격이면 어떻게 하나요?",
+   "target": "제안서를 보완한 뒤 재심사할 수 있고, 2회 재심사 후에도 기술부적격이면 그 업체와 수의계약은 할 수 없습니다. 이 경우 재공고입찰 또는 신규입찰로 진행할 수 있습니다.\n근거: 「기술평가지침」 제18조(답변 인용).\n범위: 한국국제협력단(KOICA) 원조조달 FAQ의 안내입니다. 다른 기관에 그대로 적용하면 안 됩니다.\n시점: 2025-10-31 기준 데이터 파일의 답변입니다. 지금 적용되는 값인지는 확인되지 않았습니다.",
+   "must_keep": [
+    "2회 재심사",
+    "재공고입찰",
+    "신규입찰"
+   ],
+   "date": "2025-10-31",
+   "date_field": "KOICA FAQ dataset file date (no per-row date)"
+  },
+  {
+   "id": "faq:koica-reserve-guarantee",
+   "source": "data.go.kr:15151524:117",
+   "task_type": "faq_lookup",
+   "behavior": "answer",
+   "question": "예비비가 있는 계약에서 계약보증금과 선금은 어떤 금액을 기준으로 하나요?",
+   "target": "계약보증금은 예비비를 포함한 총 계약금액 기준으로 산정하고, 선금은 예비비를 제외한 금액 기준으로 산정합니다.\n근거: 2018년 배포된 「국별협력사업 예비비 활용 세부지침」(협국총-243, 답변 인용).\n범위: 한국국제협력단(KOICA) 원조조달 FAQ의 안내입니다. 다른 기관에 그대로 적용하면 안 됩니다.\n시점: 2025-10-31 기준 데이터 파일의 답변입니다. 지금 적용되는 값인지는 확인되지 않았습니다.",
+   "must_keep": [
+    "예비비를 포함한",
+    "예비비를 제외한",
+    "협국총-243"
+   ],
+   "date": "2025-10-31",
+   "date_field": "KOICA FAQ dataset file date (no per-row date)"
+  },
+  {
+   "id": "faq:koica-advance-balance",
+   "source": "data.go.kr:15151524:126",
+   "task_type": "faq_explanation",
+   "behavior": "answer",
+   "question": "선금을 일부 정산했으면 남은 선금잔액 기준으로 보증서를 다시 받을 수 있나요?",
+   "target": "받을 수 있습니다. 선금을 정산했을 때는 계약상대자의 요청에 의하여 선금잔액(선금정산액을 공제한 금액)에 약정이자상당액을 가산한 금액을 기준으로 채권확보조치를 할 수 있습니다.\n근거: 「(계약예규) 정부 입찰계약 집행기준」 제35조제3항(답변 인용).\n범위: 한국국제협력단(KOICA) 원조조달 FAQ의 안내입니다. 다른 기관에 그대로 적용하면 안 됩니다.\n시점: 2025-10-31 기준 데이터 파일의 답변입니다. 지금 적용되는 값인지는 확인되지 않았습니다.",
+   "must_keep": [
+    "계약상대자의 요청",
+    "선금잔액",
+    "약정이자상당액"
+   ],
+   "date": "2025-10-31",
+   "date_field": "KOICA FAQ dataset file date (no per-row date)"
+  },
+  {
+   "id": "faq:koica-tech-eval-weights",
+   "source": "data.go.kr:15151524:142",
+   "task_type": "faq_lookup",
+   "behavior": "answer",
+   "question": "협상에 의한 계약에서 기술평가 항목과 배점을 과업에 맞게 바꿀 수 있나요?",
+   "target": "바꿀 수 있습니다. 평가항목별 배점한도를 10점의 범위 내에서 가감 조정할 수 있고 평가항목을 추가하거나 제외할 수 있습니다. 단, 각 평가항목별 배점한도는 30점을 초과할 수 없습니다.\n기술능력(70)과 입찰가격(30)의 배점한도도 필요하면 분야별로 20점의 범위 내에서 가감조정할 수 있습니다.\n근거: 「기술평가지침」 제13조제2항, 「(계약예규) 협상에 의한 계약체결기준」 제7조제2항(답변 인용).\n범위: 한국국제협력단(KOICA) 원조조달 FAQ의 안내입니다. 다른 기관에 그대로 적용하면 안 됩니다.\n시점: 2025-10-31 기준 데이터 파일의 답변입니다. 지금 적용되는 값인지는 확인되지 않았습니다.",
+   "must_keep": [
+    "10점의 범위",
+    "30점을 초과할 수 없",
+    "20점의 범위"
+   ],
+   "date": "2025-10-31",
+   "date_field": "KOICA FAQ dataset file date (no per-row date)"
+  }
+ ],
+ "dropped": [
+  {
+   "id": "faq:koica-small-quote-award",
+   "source": "data.go.kr:15151524:8",
+   "reason": "builder gate 3: evaluation exposure (reported by the builder; evaluation text not viewed by B)"
+  },
+  {
+   "id": "faq:koica-supervision-defect",
+   "source": "data.go.kr:15151524:89",
+   "reason": "builder: evaluation exposure (question prefix or 1 shared 20-char windows)"
+  },
+  {
+   "id": "faq:koica-20k-usd-service",
+   "source": "data.go.kr:15151524:104",
+   "reason": "builder: evaluation exposure (question prefix or 2 shared 20-char windows)"
+  },
+  {
+   "id": "faq:koica-advance-delayed-start",
+   "source": "data.go.kr:15151524:129",
+   "reason": "builder: evaluation exposure (question prefix or 2 shared 20-char windows)"
+  },
+  {
+   "id": "faq:koica-local-goods-credit",
+   "source": "data.go.kr:15151524:140",
+   "reason": "builder: evaluation exposure (question prefix or 5 shared 20-char windows)"
+  }
+ ]
+}

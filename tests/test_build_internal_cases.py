@@ -79,5 +79,43 @@ class FootnoteSections(unittest.TestCase):
         self.assertIn('boundary', why)
 
 
+def relations_line(text, bodies, restarts, heading='none'):
+    """A B v3-footnotes2 relations row for `text` (marker 'N)' + inline 'N) body\\n'), in document order."""
+    import json
+    fns = []
+    for ordinal, body in enumerate(bodies, 1):
+        start = text.index(body)
+        n = int(body.split(')', 1)[0])
+        fns.append(dict(n=n, ordinal=ordinal, marker=[start, start + len(str(n)) + 1],
+                        inline=[start + len(str(n)) + 1, start + len(body)], text=body, section=None, kind='reference'))
+    return json.dumps(dict(id='t', source_sha256='x', footnotes=fns, numbering_restarts=restarts, related_law_heading=heading))
+
+
+class FootnoteRelations(unittest.TestCase):
+    """B-017 v3-footnotes2: the source restarts footnote numbering inside one section in 7 rows; relation rows carry a
+    document-order ordinal, and the builder labels those rows by it so a section never has two different [각주1]."""
+
+    def setUp(self):
+        self.first, self.second = '1)1) 법제처 해석례 참조\n', '1)1) 구 「지방공무원수당규정」 참조\n'
+        self.r = row('수당을 지급할 수 있는지?', '지급할 수 없습니다.', f'가{self.first}이고 나{self.second}입니다. 따라서 지급할 수 없습니다.')
+
+    def test_restarted_numbering_is_labelled_by_document_order(self):
+        fn = bic.load_footnotes([relations_line(self.r['text'], [self.first, self.second], restarts=True)])['t']
+        case, why = bic.official_case(self.r, fn['edits'])
+        self.assertIsNone(why)
+        self.assertIn('가[각주1]이고 나[각주2]입니다', case['evidence']['reasons'])
+        self.assertTrue(case['evidence']['reasons'].endswith('[각주1] 법제처 해석례 참조\n[각주2] 구 「지방공무원수당규정」 참조'))
+
+    def test_without_the_restart_flag_source_numbers_are_kept(self):
+        fn = bic.load_footnotes([relations_line(self.r['text'], [self.first, self.second], restarts=False)])['t']
+        case, why = bic.official_case(self.r, fn['edits'])
+        self.assertIsNone(case)
+        self.assertIn('one to one', why)
+
+    def test_trailing_related_law_heading_is_carried_for_the_skip(self):
+        fn = bic.load_footnotes([relations_line(self.r['text'], [self.first], restarts=False, heading='trailing_only')])['t']
+        self.assertEqual(fn['related_law_heading'], 'trailing_only')
+
+
 if __name__ == '__main__':
     unittest.main()

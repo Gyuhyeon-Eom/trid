@@ -82,7 +82,10 @@ def attach_footnotes(text, span, edits):
         raw = text[e['src_start']:e['src_end']]
         m = FOOTNOTE_BODY.match(raw)
         n = re.fullmatch(r'\[각주(\d+)\]', e['replacement'])
-        if not m or not n or m.group(1) != n.group(1):
+        # the source number written in the text must match: the label itself (v3-norm2, footnotes1) or, when footnotes2
+        # relabels a restarted section by document order, the source number the relation row carries
+        expected = str(e['source_n']) if 'source_n' in e else (n.group(1) if n else None)
+        if not m or not n or m.group(1) != expected:
             raise ValueError(f'footnote edit does not match its source span: {raw[:20]!r}')
         out += [text[pos:e['src_start']], e['replacement']]
         notes.append((n.group(1), raw[m.end():].strip(), e['src_start'], e['src_end'], e.get('kind')))
@@ -196,6 +199,25 @@ def plain_cases(batch):
     return out, rejected
 
 
+def load_footnotes(lines):
+    """{row id: {source_sha256, related_law_heading, edits}} from B footnote relations (v3-footnotes1/2: marker 'N)' +
+    inline 'N) text\\n' -> one span replaced by [각주N]) or from B v3-norm2 rows (their footnote edits)."""
+    footnotes = {}
+    for line in lines:
+        r = json.loads(line)
+        if 'footnotes' in r:
+            # footnotes2 rows whose source restarts numbering inside a section are labelled by document order
+            # (ordinal) so a section never carries two different [각주1]; every other row keeps the source number
+            label = (lambda f: f['ordinal']) if r.get('numbering_restarts') else (lambda f: f['n'])
+            footnotes[r['id']] = dict(source_sha256=r['source_sha256'], related_law_heading=r.get('related_law_heading'), edits=[
+                dict(src_start=f['marker'][0], src_end=f['inline'][1], replacement=f"[각주{label(f)}]", source_n=f['n'], kind=f['kind'])
+                for f in r['footnotes']])
+        else:
+            norm = r['meta']['normalization']
+            footnotes[r['id']] = dict(source_sha256=norm['source_sha256'],
+                                      edits=[e for e in norm['edits'] if e['rule'] == 'footnote'])
+    return footnotes
+
 
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -208,18 +230,7 @@ def main():
                         'offsets into the unchanged v3 text; contract agreed in C-016) or B v3-norm2 docs.jsonl')
     a = p.parse_args()
     a.reviews = [r.resolve() for r in a.reviews]
-    footnotes = {}
-    if a.footnotes:
-        for line in a.footnotes.resolve().open():
-            r = json.loads(line)
-            if 'footnotes' in r:            # v3-footnotes1: marker 'N)' + inline 'N) text\n' -> one span
-                footnotes[r['id']] = dict(source_sha256=r['source_sha256'], edits=[
-                    dict(src_start=f['marker'][0], src_end=f['inline'][1], replacement=f"[각주{f['n']}]", kind=f['kind'])
-                    for f in r['footnotes']])
-            else:                           # v3-norm2 footnote edits
-                norm = r['meta']['normalization']
-                footnotes[r['id']] = dict(source_sha256=norm['source_sha256'],
-                                          edits=[e for e in norm['edits'] if e['rule'] == 'footnote'])
+    footnotes = load_footnotes(a.footnotes.resolve().open()) if a.footnotes else {}
     reviews = {}
     for path in a.reviews:
         for r in map(json.loads, path.open()):
@@ -238,6 +249,11 @@ def main():
         fn = footnotes.get(row['id'])
         if fn and fn['source_sha256'] != row['sha256']:
             raise ValueError(f"{row['id']}: footnote offsets were made for a different v3 text")
+        if fn and fn.get('related_law_heading') == 'trailing_only':
+            # footnotes2: the quoted related-law articles run on at the end of 이유 and the source marks only their end,
+            # so the 이유 section cannot be cut before them; the start is never guessed (B-017)
+            skipped['related-law appendix start not marked in the source (footnotes2 trailing_only)'] += 1
+            continue
         case, why = official_case(row, fn['edits'] if fn else None)
         if not case:
             skipped[why] += 1

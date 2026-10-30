@@ -1,0 +1,1502 @@
+{
+ "code_sha256": "6f47dd1dec8a92c5f5ff7e2bb8723aca3c5779167afb2e2c7c0c2dd2e9ca554d",
+ "manifest": "data/benchmark-reserve-001/signatures-partial-148.jsonl",
+ "docs": [
+  {
+   "id": "data.go.kr:15099914:file:4b8c305ba5555885",
+   "title": "인사혁신처_공무원 보수등의 업무지침_20260122",
+   "institution": "인사혁신처",
+   "text_sha256": "5b860546ceb29f0c2db700b00985c6a6844f6609bfc82368aab9d59ad498e352",
+   "chars": 770181,
+   "shared_ngram8_positions": 787,
+   "families": {
+    "institutions:alio-rule:20338": 266,
+    "institutions:alio-rule:15386": 247,
+    "institutions:alio-rule:13257": 157,
+    "institutions:alio-rule:36465": 142,
+    "institutions:alio-rule:748": 73,
+    "institutions:alio-rule:54431": 66,
+    "institutions:alio-rule:7287": 52,
+    "institutions:alio-rule:7719": 21,
+    "institutions:alio-rule:54710": 20,
+    "institutions:alio-rule:54304": 18,
+    "institutions:alio-rule:28743": 15,
+    "institutions:alio-rule:44940": 6,
+    "institutions:alio-rule:10819": 5,
+    "institutions:alio-rule:50990": 4,
+    "institutions:alio-rule:31150": 3,
+    "institutions:alio-rule:4817": 2,
+    "institutions:alio-rule:38239": 2,
+    "institutions:alio-rule:40420": 2,
+    "institutions:alio-rule:49558": 2,
+    "institutions:alio-rule:8942": 2,
+    "institutions:alio-rule:22216": 2,
+    "institutions:alio-rule:49961": 1,
+    "institutions:alio-rule:39914": 1,
+    "institutions:alio-rule:20256": 1,
+    "institutions:alio-rule:12706": 1,
+    "institutions:alio-rule:33636": 1,
+    "institutions:alio-rule:54881": 1,
+    "institutions:alio-rule:4809": 1,
+    "institutions:alio-rule:1986": 1,
+    "institutions:alio-rule:19569": 1,
+    "institutions:alio-rule:29104": 1,
+    "institutions:alio-rule:9106": 1,
+    "institutions:alio-rule:2535": 1
+   },
+   "spans": 151,
+   "covered_chars": 7880,
+   "covered_share": 0.0102,
+   "spans_quoting_higher_norm": 2,
+   "chars_quoting_higher_norm": 76,
+   "top_headings": [
+    [
+     "</table>",
+     52
+    ],
+    [
+     "<table>",
+     14
+    ],
+    [
+     "Ⅴ. 국외출장시의 여비",
+     10
+    ],
+    [
+     "5. 숙박비 실비정산(총괄) : ‘실비 상한액(A)'란부터 ‘정산금액(E)'란까지는 USD금액과 원화금액으로 구분하여 기재하고 나머지는 원화",
+     7
+    ],
+    [
+     "6. ｢고등교육법｣ 제2조 각 호의 학교 중 국가가 국립대학 법인으로 설립하는 국립학교",
+     6
+    ],
+    [
+     "Ⅳ. 근무지외 국내출장시의 여비",
+     5
+    ],
+    [
+     "라. 라등급",
+     5
+    ],
+    [
+     "6. 숙박비 결제내역",
+     5
+    ],
+    [
+     "Ⅱ. 여비의 종류･계산방법 및 정산",
+     4
+    ],
+    [
+     "Ⅲ. 근무지내 국내출장시의 여비(영 제18조)",
+     4
+    ],
+    [
+     "다. 다등급",
+     4
+    ],
+    [
+     "Ⅵ. 근무지 변경에 따른 여비지급",
+     3
+    ]
+   ],
+   "span_list": [
+    {
+     "start": 21283,
+     "end": 21321,
+     "chars": 38,
+     "heading": "□ **새로운 경력을 합산하는 경우**",
+     "quotes_higher_norm": false,
+     "sha256": "7637b533ccadb454e883b7fed85c267d3689a3333d21c25a42d0e6269dbd017f"
+    },
+    {
+     "start": 23142,
+     "end": 23180,
+     "chars": 38,
+     "heading": "□ **새로운 경력을 합산하는 경우**",
+     "quotes_higher_norm": false,
+     "sha256": "7637b533ccadb454e883b7fed85c267d3689a3333d21c25a42d0e6269dbd017f"
+    },
+    {
+     "start": 154026,
+     "end": 154054,
+     "chars": 28,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "a4bd4c0ea6f8da8ac5aa066ebebdd1222237af8d06067d10c635cf2effbdd269"
+    },
+    {
+     "start": 161290,
+     "end": 161351,
+     "chars": 61,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "361c7a9480a7d7bb802b1576186ff7551d0ab524ad4ce2dcaf4f9f96d7ee9ebc"
+    },
+    {
+     "start": 179395,
+     "end": 179426,
+     "chars": 31,
+     "heading": "□ **연봉한계액**",
+     "quotes_higher_norm": false,
+     "sha256": "32bbf5f2c1660770da5664be5a457d69c77ba05ac152599dad295f068282ade5"
+    },
+    {
+     "start": 374169,
+     "end": 374198,
+     "chars": 29,
+     "heading": "2. 우정직공무원 우정9급부터 우정2급까지 : 4년 이상",
+     "quotes_higher_norm": false,
+     "sha256": "a3044b3ff9c107e48281a4b87e4804a748a1c86bef8b2de543a950195ea29bea"
+    },
+    {
+     "start": 389795,
+     "end": 389859,
+     "chars": 64,
+     "heading": "< 부양가족의 범위 >",
+     "quotes_higher_norm": false,
+     "sha256": "7062f9df808cfc87fe1936f574cf7d4e5b3de970e59c753e2322a3213e01f579"
+    },
+    {
+     "start": 390028,
+     "end": 390082,
+     "chars": 54,
+     "heading": "< 부양가족의 범위 >",
+     "quotes_higher_norm": false,
+     "sha256": "8dfad20dd0de1178a49357c8b9ac181c6aefeb080c5cd15abb0ba432701bd4c6"
+    },
+    {
+     "start": 401957,
+     "end": 401986,
+     "chars": 29,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "2b5dd0a34062c01ecd1f1c2ab1863cc9e7acad8cbbf72c36ba950ebc28b0a7d9"
+    },
+    {
+     "start": 402157,
+     "end": 402195,
+     "chars": 38,
+     "heading": "5. ｢지방공기업법｣ 제49조에 따른 지방공사 및 같은 법 제76조에 따른 지방공단",
+     "quotes_higher_norm": true,
+     "sha256": "a89ded173be19425f79f33bf11b769a90811fe69c00f0f45112a6e787295ef0b"
+    },
+    {
+     "start": 402204,
+     "end": 402241,
+     "chars": 37,
+     "heading": "6. ｢고등교육법｣ 제2조 각 호의 학교 중 국가가 국립대학 법인으로 설립하는 국립학교",
+     "quotes_higher_norm": false,
+     "sha256": "1a7c4cfb1ca9ae4fa8ad8505a7ade098f6e42a1465a3d6de75790b3751c22eff"
+    },
+    {
+     "start": 408930,
+     "end": 409035,
+     "chars": 105,
+     "heading": "6. ｢고등교육법｣ 제2조 각 호의 학교 중 국가가 국립대학 법인으로 설립하는 국립학교",
+     "quotes_higher_norm": false,
+     "sha256": "a2332728be93dc93c7d2c17c1b0d7fd4c6c28f1240a3f1c1db054aef34a42854"
+    },
+    {
+     "start": 409039,
+     "end": 409154,
+     "chars": 115,
+     "heading": "6. ｢고등교육법｣ 제2조 각 호의 학교 중 국가가 국립대학 법인으로 설립하는 국립학교",
+     "quotes_higher_norm": false,
+     "sha256": "e752f9058a89adb8148d05c4b5ea53e24ead2420cd6e7f4a47513429230a6b39"
+    },
+    {
+     "start": 412826,
+     "end": 412855,
+     "chars": 29,
+     "heading": "6. ｢고등교육법｣ 제2조 각 호의 학교 중 국가가 국립대학 법인으로 설립하는 국립학교",
+     "quotes_higher_norm": false,
+     "sha256": "2b5dd0a34062c01ecd1f1c2ab1863cc9e7acad8cbbf72c36ba950ebc28b0a7d9"
+    },
+    {
+     "start": 413040,
+     "end": 413078,
+     "chars": 38,
+     "heading": "5. ｢지방공기업법｣ 제49조에 따른 지방공사 및 같은 법 제76조에 따른 지방공단",
+     "quotes_higher_norm": true,
+     "sha256": "a89ded173be19425f79f33bf11b769a90811fe69c00f0f45112a6e787295ef0b"
+    },
+    {
+     "start": 413087,
+     "end": 413124,
+     "chars": 37,
+     "heading": "6. ｢고등교육법｣ 제2조 각 호의 학교 중 국가가 국립대학 법인으로 설립하는 국립학교",
+     "quotes_higher_norm": false,
+     "sha256": "1a7c4cfb1ca9ae4fa8ad8505a7ade098f6e42a1465a3d6de75790b3751c22eff"
+    },
+    {
+     "start": 414316,
+     "end": 414347,
+     "chars": 31,
+     "heading": "6. ｢고등교육법｣ 제2조 각 호의 학교 중 국가가 국립대학 법인으로 설립하는 국립학교",
+     "quotes_higher_norm": false,
+     "sha256": "d09efb84897260aa57853bc6c213e6c68fa8c66f9817fe006530726f871a9811"
+    },
+    {
+     "start": 419505,
+     "end": 419554,
+     "chars": 49,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "e918782708b86834c65f2ed5b47398253474057c1ad4454415690df93249fc03"
+    },
+    {
+     "start": 421234,
+     "end": 421268,
+     "chars": 34,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "4d38aa17d404f423a1679613128cc7eaef3dd42331ff6449adb4abf04c6a6863"
+    },
+    {
+     "start": 421473,
+     "end": 421511,
+     "chars": 38,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "30e9dd1f02acfc910afed352b493724a3ea119810242e3c479d8a67d40111b29"
+    },
+    {
+     "start": 421707,
+     "end": 421741,
+     "chars": 34,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "4d38aa17d404f423a1679613128cc7eaef3dd42331ff6449adb4abf04c6a6863"
+    },
+    {
+     "start": 421861,
+     "end": 421899,
+     "chars": 38,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "30e9dd1f02acfc910afed352b493724a3ea119810242e3c479d8a67d40111b29"
+    },
+    {
+     "start": 422349,
+     "end": 422387,
+     "chars": 38,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "30e9dd1f02acfc910afed352b493724a3ea119810242e3c479d8a67d40111b29"
+    },
+    {
+     "start": 509004,
+     "end": 509036,
+     "chars": 32,
+     "heading": "가. 법 제73조의3제1항제3호에 따라 직위해제처분을 받은 사람이 다음의 어느 하나에 해당하는 경우 그 직위해제처분기간",
+     "quotes_higher_norm": false,
+     "sha256": "270019ead6ea805de09e73bda903a5e6d963c2d5f69165879ce76b54c415266d"
+    },
+    {
+     "start": 543074,
+     "end": 543094,
+     "chars": 20,
+     "heading": "2. 장해진단서 등 ｢공무원수당 등에 관한 규정｣ 제10조제3항 각호에 해당되는 사실을 입증할 수 있는 자료 1부(해당자에 한함)",
+     "quotes_higher_norm": false,
+     "sha256": "51be86f1b4bcab6c61cdf349c66ff3ef2c737c18785b0d963d25bbbb977c6d0b"
+    },
+    {
+     "start": 623360,
+     "end": 623398,
+     "chars": 38,
+     "heading": "Ⅰ. 총 칙",
+     "quotes_higher_norm": false,
+     "sha256": "a8486583198fc9cca59ed11d7e84d5c91591eab31dfdbe15a7275f5b4d498064"
+    },
+    {
+     "start": 623568,
+     "end": 623614,
+     "chars": 46,
+     "heading": "Ⅱ. 여비의 종류･계산방법 및 정산",
+     "quotes_higher_norm": false,
+     "sha256": "586f95b287930888e2c0093e6274072f2505c07a7191828fa7fbd566b4e1c461"
+    },
+    {
+     "start": 623657,
+     "end": 623685,
+     "chars": 28,
+     "heading": "Ⅱ. 여비의 종류･계산방법 및 정산",
+     "quotes_higher_norm": false,
+     "sha256": "6e5afcfba6c715fb8ded70a237177c8e55a9cf7b488a4324ca9219562c43b46e"
+    },
+    {
+     "start": 623696,
+     "end": 623724,
+     "chars": 28,
+     "heading": "Ⅱ. 여비의 종류･계산방법 및 정산",
+     "quotes_higher_norm": false,
+     "sha256": "b532ea19b50d4c559289369191ba588f7ba902788ab90ab3f4c0c3fb94420f26"
+    },
+    {
+     "start": 623735,
+     "end": 623779,
+     "chars": 44,
+     "heading": "Ⅱ. 여비의 종류･계산방법 및 정산",
+     "quotes_higher_norm": false,
+     "sha256": "8e3cb2c69295a356cdc2d4bf92a31046c375567cfb8b7aeafb73ddec410a9de5"
+    },
+    {
+     "start": 626730,
+     "end": 626764,
+     "chars": 34,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "9127a54d88d72b46587bdfd360f90a73dd294cd83640d999b0cfea9260d9fbac"
+    },
+    {
+     "start": 627021,
+     "end": 627060,
+     "chars": 39,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "eeae3889b1187fb6c427ee56646468b7ce4361248657050266089c16ac9775c3"
+    },
+    {
+     "start": 627065,
+     "end": 627113,
+     "chars": 48,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "0c988c710763b999c8a93504b1ce608ce9c168536b00eb7906a4c4fd9f4c4409"
+    },
+    {
+     "start": 627195,
+     "end": 627299,
+     "chars": 104,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "5215171d31453a6f733867494c7433e3794273f7e25b87fbb387a7e6d10be545"
+    },
+    {
+     "start": 627883,
+     "end": 627916,
+     "chars": 33,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "9be69b32d706cb9c683e848a76187558fe0029b159618a6a4035ffe5e40c6039"
+    },
+    {
+     "start": 627939,
+     "end": 627982,
+     "chars": 43,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "16e2b4b23313424e698c24cbca25958817b7d9d090d86b9c82e1285240b4ba59"
+    },
+    {
+     "start": 628006,
+     "end": 628055,
+     "chars": 49,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "178864d0925290959c7670d439648c4e141b67cd26ee0cb41743039ebf0cce07"
+    },
+    {
+     "start": 628242,
+     "end": 628271,
+     "chars": 29,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "3487d4adb54450db7298d723dc26d0e6f32afff0150bb81ee5ba139409d6d8e0"
+    },
+    {
+     "start": 628811,
+     "end": 628844,
+     "chars": 33,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "e60976f63bfeb9d48dca142391194e7daf3e38b9141525f16122dcf49705859c"
+    },
+    {
+     "start": 629038,
+     "end": 629088,
+     "chars": 50,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "dcae40cbdf08ed434e051044d002fac787294664d5944dcccced1bffe46547fe"
+    },
+    {
+     "start": 631782,
+     "end": 631828,
+     "chars": 46,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "7b230125b43dd3220723ed8106038fbd09d55a0c2b2f6a84d4cb7dcb364524ac"
+    },
+    {
+     "start": 632849,
+     "end": 632878,
+     "chars": 29,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "629b4c0bbfa40d89fc49cbaa72afa5a8246618fea49574bc409aadd2028d53a4"
+    },
+    {
+     "start": 632888,
+     "end": 632943,
+     "chars": 55,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "4be548e0176a70ea3a669a99dc71410d952155beeea5f57a2b0baf15c8334c5c"
+    },
+    {
+     "start": 633026,
+     "end": 633061,
+     "chars": 35,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "719dc716bd04c26c727b66591ae749e851bc16cd75dd7df1124d91de54c546ca"
+    },
+    {
+     "start": 633195,
+     "end": 633245,
+     "chars": 50,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "df266431a4ecd80b507fd29291f08bee638cbd6420ff434691020e32a05722ee"
+    },
+    {
+     "start": 635807,
+     "end": 635840,
+     "chars": 33,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "b6655c11ea4050824b275f3723527f7ea0ef164c05b2c4d63e8647115be65e93"
+    },
+    {
+     "start": 654482,
+     "end": 654533,
+     "chars": 51,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "b3caeac675c70b6f21c1275ee210d983ca444168b3b4d9916becefaf2555a8e9"
+    },
+    {
+     "start": 654882,
+     "end": 654923,
+     "chars": 41,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "8c681b5bf2a2d3102b5f5e693e675f53e8cbbb1fb70826e9599c2c8c2a91b371"
+    },
+    {
+     "start": 657355,
+     "end": 657385,
+     "chars": 30,
+     "heading": "Ⅲ. 근무지내 국내출장시의 여비(영 제18조)",
+     "quotes_higher_norm": false,
+     "sha256": "baf8bf65853adf22be9a02071c7eb782baca0375bae2aa72f4257c82aa91799c"
+    },
+    {
+     "start": 658024,
+     "end": 658062,
+     "chars": 38,
+     "heading": "Ⅲ. 근무지내 국내출장시의 여비(영 제18조)",
+     "quotes_higher_norm": false,
+     "sha256": "810d45e8bed7c8bb302e6414b8882184dbbd49f36dd4df8b86954cd438b80825"
+    },
+    {
+     "start": 658513,
+     "end": 658564,
+     "chars": 51,
+     "heading": "Ⅲ. 근무지내 국내출장시의 여비(영 제18조)",
+     "quotes_higher_norm": false,
+     "sha256": "c387487cdcbe0150c70ad092bd34f58bf96eab0a9cbe3eec3bbf228d0ba47dbe"
+    },
+    {
+     "start": 658570,
+     "end": 658608,
+     "chars": 38,
+     "heading": "Ⅲ. 근무지내 국내출장시의 여비(영 제18조)",
+     "quotes_higher_norm": false,
+     "sha256": "810d45e8bed7c8bb302e6414b8882184dbbd49f36dd4df8b86954cd438b80825"
+    },
+    {
+     "start": 658822,
+     "end": 658873,
+     "chars": 51,
+     "heading": "Ⅳ. 근무지외 국내출장시의 여비",
+     "quotes_higher_norm": false,
+     "sha256": "c387487cdcbe0150c70ad092bd34f58bf96eab0a9cbe3eec3bbf228d0ba47dbe"
+    },
+    {
+     "start": 658879,
+     "end": 658917,
+     "chars": 38,
+     "heading": "Ⅳ. 근무지외 국내출장시의 여비",
+     "quotes_higher_norm": false,
+     "sha256": "810d45e8bed7c8bb302e6414b8882184dbbd49f36dd4df8b86954cd438b80825"
+    },
+    {
+     "start": 659137,
+     "end": 659189,
+     "chars": 52,
+     "heading": "Ⅳ. 근무지외 국내출장시의 여비",
+     "quotes_higher_norm": false,
+     "sha256": "66e702f7cc3f07a59b5d6e201f762cd506547ba8f65a5ad2b15517cd3b2e370e"
+    },
+    {
+     "start": 659402,
+     "end": 659438,
+     "chars": 36,
+     "heading": "Ⅳ. 근무지외 국내출장시의 여비",
+     "quotes_higher_norm": false,
+     "sha256": "16b35dab70c6f619e6250db056d508c39b637adf33d3bf11696500e4b1d26a56"
+    },
+    {
+     "start": 659989,
+     "end": 660044,
+     "chars": 55,
+     "heading": "Ⅳ. 근무지외 국내출장시의 여비",
+     "quotes_higher_norm": false,
+     "sha256": "85684e45a4a39104bed2448bc75d5107bf2277ad5d61cdc4762499fa14556fc0"
+    },
+    {
+     "start": 663580,
+     "end": 663671,
+     "chars": 91,
+     "heading": "<table>",
+     "quotes_higher_norm": false,
+     "sha256": "7421bab81e5888f8b19c48575fa7b59979a4e181ce951b449b6b2e3a975b3733"
+    },
+    {
+     "start": 663752,
+     "end": 663792,
+     "chars": 40,
+     "heading": "<table>",
+     "quotes_higher_norm": false,
+     "sha256": "515170655e690da8f803d9081a4168442ae5e522988aa7c1d6205e7b4867ff92"
+    },
+    {
+     "start": 663818,
+     "end": 663866,
+     "chars": 48,
+     "heading": "<table>",
+     "quotes_higher_norm": false,
+     "sha256": "3cbc067ab038def322b0390eea06274faec6af92dbed3ed2e196e0cbe1ed422d"
+    },
+    {
+     "start": 664089,
+     "end": 664136,
+     "chars": 47,
+     "heading": "<table>",
+     "quotes_higher_norm": false,
+     "sha256": "c182ccd2df6c226f0c0728cd475a730158cdd2274ac7553aa8962c226b258254"
+    },
+    {
+     "start": 664178,
+     "end": 664219,
+     "chars": 41,
+     "heading": "<table>",
+     "quotes_higher_norm": false,
+     "sha256": "c3d91c932c70637dea554c73291467cf577b33030eca4e380f467eb05713fb28"
+    },
+    {
+     "start": 664459,
+     "end": 664536,
+     "chars": 77,
+     "heading": "<table>",
+     "quotes_higher_norm": false,
+     "sha256": "71c9628fc5705383256ad5c158952374a33bfc5711ec5a10216fe4d7f57761bb"
+    },
+    {
+     "start": 664613,
+     "end": 664646,
+     "chars": 33,
+     "heading": "<table>",
+     "quotes_higher_norm": false,
+     "sha256": "5898322442b46e6d09e5e396c2d642cccc2c23b2ccb97f8ecbce39071ec882f8"
+    },
+    {
+     "start": 665407,
+     "end": 665440,
+     "chars": 33,
+     "heading": "<table>",
+     "quotes_higher_norm": false,
+     "sha256": "5898322442b46e6d09e5e396c2d642cccc2c23b2ccb97f8ecbce39071ec882f8"
+    },
+    {
+     "start": 667044,
+     "end": 667073,
+     "chars": 29,
+     "heading": "<table>",
+     "quotes_higher_norm": false,
+     "sha256": "75127d230e50cc3216c3ae8435bab6af8487787b5158129af3e171bfc7a0f163"
+    },
+    {
+     "start": 667629,
+     "end": 667658,
+     "chars": 29,
+     "heading": "<table>",
+     "quotes_higher_norm": false,
+     "sha256": "35d75e3e2708d4665d3037e6480f863ccfe278aefc9322e069771248c85bb66e"
+    },
+    {
+     "start": 667701,
+     "end": 667746,
+     "chars": 45,
+     "heading": "<table>",
+     "quotes_higher_norm": false,
+     "sha256": "58e8b5c63e932526d891dacd609558f84faa2125d3d6ad63a9c1b8497c7ac6d6"
+    },
+    {
+     "start": 668206,
+     "end": 668250,
+     "chars": 44,
+     "heading": "<table>",
+     "quotes_higher_norm": false,
+     "sha256": "eb9786058d734f11dd02631ca5e640bdfb741c7cc3bf1b1781cccc531fa775ff"
+    },
+    {
+     "start": 669583,
+     "end": 669634,
+     "chars": 51,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "c70ccfaf5cd2264ab048a33c1eb0395bc46a00650aa4939682d927f5daba262f"
+    },
+    {
+     "start": 669782,
+     "end": 669889,
+     "chars": 107,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "e74975ad882a6d33c20cd9f8e285e420e029701c4de62af10c119a9a8cd0ae4b"
+    },
+    {
+     "start": 670061,
+     "end": 670091,
+     "chars": 30,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "c466831d43eefbbdde0013e77ac1364cace59ccdb2b24d2a752388b5e32a1bde"
+    },
+    {
+     "start": 670100,
+     "end": 670166,
+     "chars": 66,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "858c1739d1fcaa87f41b1b7db1f8db74af34b7b73117acb20e18d9a8a4ff1978"
+    },
+    {
+     "start": 670175,
+     "end": 670239,
+     "chars": 64,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "0e7b4737c3ec85ab07692fd75c7530cbc21b7375ff6d387170fe8e27488b1cba"
+    },
+    {
+     "start": 670264,
+     "end": 670293,
+     "chars": 29,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "a86ebec63e0796b1e1900ede85b959bb1da212b5ad67588b3716fc0d130729c6"
+    },
+    {
+     "start": 670415,
+     "end": 670444,
+     "chars": 29,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "8332688c2dc004e51c73be8a4fbf13cdd6dc9b2a06cb7751aa48580fc4d61216"
+    },
+    {
+     "start": 670450,
+     "end": 670547,
+     "chars": 97,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "93af8653746dbe613a7989bbeb038ebca6548a2aa3235c243b0e95ce9a0902ec"
+    },
+    {
+     "start": 671056,
+     "end": 671163,
+     "chars": 107,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "e74975ad882a6d33c20cd9f8e285e420e029701c4de62af10c119a9a8cd0ae4b"
+    },
+    {
+     "start": 671169,
+     "end": 671278,
+     "chars": 109,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "840ee6cd03029f90beefaecaed0beb559ac97b5939a52938f8ac033fc44e1c7d"
+    },
+    {
+     "start": 671284,
+     "end": 671326,
+     "chars": 42,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "51aacd5a8f53a75e1f3f39503390f9bc014bc65b1cda0f69469b2089a83d8728"
+    },
+    {
+     "start": 671344,
+     "end": 671498,
+     "chars": 154,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "ac6a16e7f1fadf0b05890b1ca5d42adddd63f1f8fe48d7b9568b61fc5360b793"
+    },
+    {
+     "start": 673320,
+     "end": 673363,
+     "chars": 43,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "b026835cc7c999e8ee9a9e3e2013b93accad23143df95d4a25cae21d65f19827"
+    },
+    {
+     "start": 673655,
+     "end": 673693,
+     "chars": 38,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "fd88f66c3b06af60f3d568d237e4d85a20ce442cb1acb24f5c67a21ee77a6d80"
+    },
+    {
+     "start": 674840,
+     "end": 674875,
+     "chars": 35,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "edb485058f7719719ba7575e9d25a54e5cf8322a71cb38dbefcf2a4bcb128db5"
+    },
+    {
+     "start": 675612,
+     "end": 675666,
+     "chars": 54,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "45fc767caa1bd4ac6b83fc3e1e7e4197bcef97a8568953aa7c89d7fe236e4cc1"
+    },
+    {
+     "start": 679633,
+     "end": 679678,
+     "chars": 45,
+     "heading": "Ⅴ. 국외출장시의 여비",
+     "quotes_higher_norm": false,
+     "sha256": "2258bb129512f2c9103e0860408dcbaf0c3ee8d31d26e7eea087885863706fdf"
+    },
+    {
+     "start": 679865,
+     "end": 679923,
+     "chars": 58,
+     "heading": "Ⅴ. 국외출장시의 여비",
+     "quotes_higher_norm": false,
+     "sha256": "5943efa3ba205e9a649ca337e37d4493e25b50df581f8b715e4c954639398ac3"
+    },
+    {
+     "start": 679980,
+     "end": 680009,
+     "chars": 29,
+     "heading": "Ⅴ. 국외출장시의 여비",
+     "quotes_higher_norm": false,
+     "sha256": "67e57b450f8c7533d9e716a1cb65bf45f2f1b112209354793a1e8bfbfe6483cd"
+    },
+    {
+     "start": 680258,
+     "end": 680293,
+     "chars": 35,
+     "heading": "Ⅴ. 국외출장시의 여비",
+     "quotes_higher_norm": false,
+     "sha256": "f9868d9442f0ffde795af163587ddc2c3892e39ed94b52a47e71fb37c71785d4"
+    },
+    {
+     "start": 680300,
+     "end": 680343,
+     "chars": 43,
+     "heading": "Ⅴ. 국외출장시의 여비",
+     "quotes_higher_norm": false,
+     "sha256": "b026835cc7c999e8ee9a9e3e2013b93accad23143df95d4a25cae21d65f19827"
+    },
+    {
+     "start": 680347,
+     "end": 680385,
+     "chars": 38,
+     "heading": "Ⅴ. 국외출장시의 여비",
+     "quotes_higher_norm": false,
+     "sha256": "223706aefb4d7d07b0e0481443a4e55eaebd569d5fc4db28d6bf504dd2f2f11f"
+    },
+    {
+     "start": 680786,
+     "end": 680816,
+     "chars": 30,
+     "heading": "Ⅴ. 국외출장시의 여비",
+     "quotes_higher_norm": false,
+     "sha256": "1f620283cfcf44ffcf1c2e86b09352a7736cec6195947021e0fd1a4e6daaac44"
+    },
+    {
+     "start": 681774,
+     "end": 681832,
+     "chars": 58,
+     "heading": "Ⅴ. 국외출장시의 여비",
+     "quotes_higher_norm": false,
+     "sha256": "917514b93283a168e4259bbeb38fd2001b1f62703efeeeb08625da161572b9a6"
+    },
+    {
+     "start": 681871,
+     "end": 681931,
+     "chars": 60,
+     "heading": "Ⅴ. 국외출장시의 여비",
+     "quotes_higher_norm": false,
+     "sha256": "c1228997cdea8833ae4aa0a430ff8bea7f4edf3f609d43ae4339f441ae726afb"
+    },
+    {
+     "start": 682000,
+     "end": 682035,
+     "chars": 35,
+     "heading": "Ⅴ. 국외출장시의 여비",
+     "quotes_higher_norm": false,
+     "sha256": "a85736f4a8f687741e6fb8f8cb12b8d6cef97e8100cb7d212c4d2e36e28f4627"
+    },
+    {
+     "start": 685526,
+     "end": 685573,
+     "chars": 47,
+     "heading": "Ⅵ. 근무지 변경에 따른 여비지급",
+     "quotes_higher_norm": false,
+     "sha256": "db9d71fea871490aee51f631a0f258bdaff6ad4013a25bfaf08b8441daacfe96"
+    },
+    {
+     "start": 686990,
+     "end": 687041,
+     "chars": 51,
+     "heading": "Ⅵ. 근무지 변경에 따른 여비지급",
+     "quotes_higher_norm": false,
+     "sha256": "7891e3b1f6d79f96d1b7f265528dee9a8f10d1e9827460101842f8b05b1743e3"
+    },
+    {
+     "start": 687262,
+     "end": 687344,
+     "chars": 82,
+     "heading": "Ⅵ. 근무지 변경에 따른 여비지급",
+     "quotes_higher_norm": false,
+     "sha256": "1d9adc246df696daed0e6c63db0cb01bbd069e04765b36c797f1ea19015c83f4"
+    },
+    {
+     "start": 692243,
+     "end": 692271,
+     "chars": 28,
+     "heading": "Ⅶ. 퇴직자･사망자 등의 여비",
+     "quotes_higher_norm": false,
+     "sha256": "d8e7dbc2bf7b4898f3e0b64b5bbaa72f132b343eede69a205241a2ffd5ee9aa2"
+    },
+    {
+     "start": 692318,
+     "end": 692365,
+     "chars": 47,
+     "heading": "Ⅶ. 퇴직자･사망자 등의 여비",
+     "quotes_higher_norm": false,
+     "sha256": "7871c24b8e1f91525def00a1aa9447d6dcf903afd1529f3a1eb3d47e229d86f5"
+    },
+    {
+     "start": 693321,
+     "end": 693411,
+     "chars": 90,
+     "heading": "Ⅷ. 보 칙",
+     "quotes_higher_norm": false,
+     "sha256": "b98a275664a8c5c9439691de9e1bcb68fcac4ed15d43512276a98d362b260713"
+    },
+    {
+     "start": 700293,
+     "end": 700329,
+     "chars": 36,
+     "heading": "## [별표 2]",
+     "quotes_higher_norm": false,
+     "sha256": "ac6186e8a20e55821ceeb2cad5b4d266f84f1f370d17431c0bed4b777cc0cf2f"
+    },
+    {
+     "start": 700526,
+     "end": 700562,
+     "chars": 36,
+     "heading": "## [별표 2]",
+     "quotes_higher_norm": false,
+     "sha256": "85090ac3734b03f5edb75f3078828e5dcc39c9e76c026b153eb495e0498409c9"
+    },
+    {
+     "start": 700623,
+     "end": 700714,
+     "chars": 91,
+     "heading": "## [별표 2]",
+     "quotes_higher_norm": false,
+     "sha256": "65049e1cb71fc0bb3a840d8a5278cc6df561a9a99f06def3821e652ad2b71fad"
+    },
+    {
+     "start": 700753,
+     "end": 700789,
+     "chars": 36,
+     "heading": "5. 운임 및 숙박비의 할인이 가능한 경우에는 할인된 요금을 지급한다.",
+     "quotes_higher_norm": false,
+     "sha256": "394902d85df05053b3556a59255c149972c8e82f879424a6669c9195f5386f73"
+    },
+    {
+     "start": 702097,
+     "end": 702133,
+     "chars": 36,
+     "heading": "1. 별표 1의 제1호가목 중 대통령과 국무총리의 일비, 숙박비 및 식비는 실비로 한다.",
+     "quotes_higher_norm": false,
+     "sha256": "ac6186e8a20e55821ceeb2cad5b4d266f84f1f370d17431c0bed4b777cc0cf2f"
+    },
+    {
+     "start": 702188,
+     "end": 702215,
+     "chars": 27,
+     "heading": "2. 국가 및 도시별 등급 구분은 다음과 같다.",
+     "quotes_higher_norm": false,
+     "sha256": "06502029d1ef54d8feb0f08e4d6d801a8ae7bdb820aac6351143a7b3bec72e96"
+    },
+    {
+     "start": 702220,
+     "end": 702294,
+     "chars": 74,
+     "heading": "가. 가등급 : 도쿄, 뉴욕, 런던, 로스엔젤레스, 모스크바, 샌프란시스코, 워싱턴 D.C, 파리, 홍콩, 제네바, 싱가포르",
+     "quotes_higher_norm": false,
+     "sha256": "293917aedabfd3d6b99d7919eef81db7200c32b4893d37b83d3bfc9bdc0e56b7"
+    },
+    {
+     "start": 702309,
+     "end": 702363,
+     "chars": 54,
+     "heading": "나. 나등급",
+     "quotes_higher_norm": false,
+     "sha256": "46c7b91311125b6caab806a85dd24f2b4653cc563b5194af908d7a29bca1fb1a"
+    },
+    {
+     "start": 702375,
+     "end": 702582,
+     "chars": 207,
+     "heading": "나. 나등급",
+     "quotes_higher_norm": false,
+     "sha256": "c161a489ff55e88568adbcb50cfad314825531caee335dd41eeb2d7dfcaedada"
+    },
+    {
+     "start": 702593,
+     "end": 702729,
+     "chars": 136,
+     "heading": "나. 나등급",
+     "quotes_higher_norm": false,
+     "sha256": "ba9dfc8f5a6c08576074d969903d4e3d3d4f8fd30765ebd61487a4c1adfb739b"
+    },
+    {
+     "start": 702755,
+     "end": 702838,
+     "chars": 83,
+     "heading": "다. 다등급",
+     "quotes_higher_norm": false,
+     "sha256": "8984e4a6ad3990c7fdff06a502aec91731a6e572a21a446f0338172994840922"
+    },
+    {
+     "start": 702848,
+     "end": 702925,
+     "chars": 77,
+     "heading": "다. 다등급",
+     "quotes_higher_norm": false,
+     "sha256": "c08ca8ed46f5a6586f2a214603f3c08de059e64c4aab4a01088bfa0e8b28e6c1"
+    },
+    {
+     "start": 702932,
+     "end": 703016,
+     "chars": 84,
+     "heading": "다. 다등급",
+     "quotes_higher_norm": false,
+     "sha256": "aa0990c20266b4eaedb53ffb18fbbc72575db8a7d329af3052824df1117fb7b2"
+    },
+    {
+     "start": 703027,
+     "end": 703186,
+     "chars": 159,
+     "heading": "다. 다등급",
+     "quotes_higher_norm": false,
+     "sha256": "df48d262f9863dd10df0ac849d15e5d1419d35d1f33710ace56b89d08a676eb4"
+    },
+    {
+     "start": 703201,
+     "end": 703276,
+     "chars": 75,
+     "heading": "라. 라등급",
+     "quotes_higher_norm": false,
+     "sha256": "e94bef692de81c2bbcda428c14abee592e53df49090a6ba53a1dff2fa33fd5cd"
+    },
+    {
+     "start": 703286,
+     "end": 703354,
+     "chars": 68,
+     "heading": "라. 라등급",
+     "quotes_higher_norm": false,
+     "sha256": "304d54e69b6354a87981fcaee2e966677b3a17e76953073686e499ddce6ef0c3"
+    },
+    {
+     "start": 703391,
+     "end": 703458,
+     "chars": 67,
+     "heading": "라. 라등급",
+     "quotes_higher_norm": false,
+     "sha256": "853eac58187917b57eb274da43fc1ee0c76771b05714505878ddd20efa4e052b"
+    },
+    {
+     "start": 703468,
+     "end": 703545,
+     "chars": 77,
+     "heading": "라. 라등급",
+     "quotes_higher_norm": false,
+     "sha256": "fe0edfa3673c026c43a628032bfb6fd4b396e36c669b532f1efbf3e9ffc237a9"
+    },
+    {
+     "start": 703550,
+     "end": 703651,
+     "chars": 101,
+     "heading": "라. 라등급",
+     "quotes_higher_norm": false,
+     "sha256": "75daa44ccc8ecee4a39384507d74f57f806b1842451ac23f6b565be578626c04"
+    },
+    {
+     "start": 703961,
+     "end": 704008,
+     "chars": 47,
+     "heading": "<table>",
+     "quotes_higher_norm": false,
+     "sha256": "db9d71fea871490aee51f631a0f258bdaff6ad4013a25bfaf08b8441daacfe96"
+    },
+    {
+     "start": 704209,
+     "end": 704279,
+     "chars": 70,
+     "heading": "<table>",
+     "quotes_higher_norm": false,
+     "sha256": "cb3d0adf6fee37fe7b28c6e965c6a4bf33267b3144e9baa25bee384ceb490d0b"
+    },
+    {
+     "start": 708469,
+     "end": 708541,
+     "chars": 72,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "e470cb8eb6ab75c0f58a3d2d9f61a3afe18aee7ca7b03d9dc415be9b9692819a"
+    },
+    {
+     "start": 708605,
+     "end": 708633,
+     "chars": 28,
+     "heading": "4. 인사발령 공문 1부.",
+     "quotes_higher_norm": false,
+     "sha256": "3e26b31553990c52db9ef60c9fbb80caf5bb1059be8f524c688080e5971a60d4"
+    },
+    {
+     "start": 710575,
+     "end": 710615,
+     "chars": 40,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "d60b82fad364213cd69d9851139365e9e8cf5f345ad2a4c55e003c9c2a686a63"
+    },
+    {
+     "start": 710679,
+     "end": 710707,
+     "chars": 28,
+     "heading": "4. 인사발령 공문 1부.",
+     "quotes_higher_norm": false,
+     "sha256": "3e26b31553990c52db9ef60c9fbb80caf5bb1059be8f524c688080e5971a60d4"
+    },
+    {
+     "start": 711759,
+     "end": 711798,
+     "chars": 39,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "65da805f29391e1f17c2efaa148b950729d69c9b5b43aaf5871899368734623a"
+    },
+    {
+     "start": 712641,
+     "end": 712704,
+     "chars": 63,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "6dc091f0673d30260f6c5e99c4cc7ee0a97d07722d192fc7291e4946d92ee504"
+    },
+    {
+     "start": 714923,
+     "end": 714950,
+     "chars": 27,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "af2d8f19778d9d72c7ffb765a51ef188db0f50fddc58e43cced99287ff0f9f82"
+    },
+    {
+     "start": 714974,
+     "end": 715002,
+     "chars": 28,
+     "heading": "1. 본 서식은 국내 및 국외여행 항공기 이용 시 적용함",
+     "quotes_higher_norm": false,
+     "sha256": "61881568f2ff3750498153a6ee426018a5e31ffa04f2d2852df9dbabf85e2618"
+    },
+    {
+     "start": 715216,
+     "end": 715252,
+     "chars": 36,
+     "heading": "2. 공적 항공마일리지 의무사용에 따라 활용 가능여부를 반드시 확인하여야 하며, 공적 항공마일리지 활용(보너스좌석, 좌석승급에 한함)이",
+     "quotes_higher_norm": false,
+     "sha256": "9e9727d4c0348c76c238ae1f59caca24b76d8c9dfc84a3d97f25e69a60ec3ea4"
+    },
+    {
+     "start": 715257,
+     "end": 715329,
+     "chars": 72,
+     "heading": "3. 부가서비스는 보너스좌석, 좌석승급 이외에 공적항공마일리지로 이용할 수 있는 초과수하물, 리무진 버스, 렌터카 등의 서비스를 의미함",
+     "quotes_higher_norm": false,
+     "sha256": "b0d0f58d91489c6f53710051f81b86177f42da69c8bee8de33350df8caa47073"
+    },
+    {
+     "start": 717897,
+     "end": 717924,
+     "chars": 27,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "af2d8f19778d9d72c7ffb765a51ef188db0f50fddc58e43cced99287ff0f9f82"
+    },
+    {
+     "start": 725158,
+     "end": 725187,
+     "chars": 29,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "ddb466657b6bc13d58acb0dc34af25a29cd1f6148ac6a5c42f67f4555a37bd3e"
+    },
+    {
+     "start": 725989,
+     "end": 726039,
+     "chars": 50,
+     "heading": "5. 숙박비 실비정산(총괄) : ‘실비 상한액(A)'란부터 ‘정산금액(E)'란까지는 USD금액과 원화금액으로 구분하여 기재하고 나머지는 원화",
+     "quotes_higher_norm": false,
+     "sha256": "7595e6003e1bd5c47c2ade7a1a7d0141ead842bc0d61409c6c0d315c87484a06"
+    },
+    {
+     "start": 726154,
+     "end": 726225,
+     "chars": 71,
+     "heading": "5. 숙박비 실비정산(총괄) : ‘실비 상한액(A)'란부터 ‘정산금액(E)'란까지는 USD금액과 원화금액으로 구분하여 기재하고 나머지는 원화",
+     "quotes_higher_norm": false,
+     "sha256": "f84bc51144dbed37092be67adb4831a6754ee645ece572dbec2313625cf142a7"
+    },
+    {
+     "start": 726245,
+     "end": 726285,
+     "chars": 40,
+     "heading": "5. 숙박비 실비정산(총괄) : ‘실비 상한액(A)'란부터 ‘정산금액(E)'란까지는 USD금액과 원화금액으로 구분하여 기재하고 나머지는 원화",
+     "quotes_higher_norm": false,
+     "sha256": "72de6fe88e2d99c98fa4be06b4876bab49ad717af7e05d7a3d24862830fd125e"
+    },
+    {
+     "start": 726290,
+     "end": 726351,
+     "chars": 61,
+     "heading": "5. 숙박비 실비정산(총괄) : ‘실비 상한액(A)'란부터 ‘정산금액(E)'란까지는 USD금액과 원화금액으로 구분하여 기재하고 나머지는 원화",
+     "quotes_higher_norm": false,
+     "sha256": "e9e45c3c7d07eed1e71e374c1475c322eb4b3677f85c68f1f5d5c89953ce590c"
+    },
+    {
+     "start": 726546,
+     "end": 726599,
+     "chars": 53,
+     "heading": "5. 숙박비 실비정산(총괄) : ‘실비 상한액(A)'란부터 ‘정산금액(E)'란까지는 USD금액과 원화금액으로 구분하여 기재하고 나머지는 원화",
+     "quotes_higher_norm": false,
+     "sha256": "51d07b176d069fca00a492678781055fb43feaaa83fc566095c93251746d9383"
+    },
+    {
+     "start": 726974,
+     "end": 727024,
+     "chars": 50,
+     "heading": "5. 숙박비 실비정산(총괄) : ‘실비 상한액(A)'란부터 ‘정산금액(E)'란까지는 USD금액과 원화금액으로 구분하여 기재하고 나머지는 원화",
+     "quotes_higher_norm": false,
+     "sha256": "56ed71799fc3a881c74350f498830738dd9d3bff5de16021fd2cf33c58e79e7d"
+    },
+    {
+     "start": 727048,
+     "end": 727123,
+     "chars": 75,
+     "heading": "5. 숙박비 실비정산(총괄) : ‘실비 상한액(A)'란부터 ‘정산금액(E)'란까지는 USD금액과 원화금액으로 구분하여 기재하고 나머지는 원화",
+     "quotes_higher_norm": false,
+     "sha256": "02fe7ab72f4732e0ce16c1d18febdb73cb210755e2687a6ba0f0f8f461c9cdc2"
+    },
+    {
+     "start": 727207,
+     "end": 727362,
+     "chars": 155,
+     "heading": "6. 숙박비 결제내역",
+     "quotes_higher_norm": false,
+     "sha256": "abf375aa4eb6c65ba42c35875390e2da77a200b00278d64e05d9f3360331cf8c"
+    },
+    {
+     "start": 727382,
+     "end": 727436,
+     "chars": 54,
+     "heading": "6. 숙박비 결제내역",
+     "quotes_higher_norm": false,
+     "sha256": "f9fe9265dca3dbe8aba1138fc9c2eebe75c80dbe9d17979d9fe43cbc80d9a6e1"
+    },
+    {
+     "start": 727451,
+     "end": 727484,
+     "chars": 33,
+     "heading": "6. 숙박비 결제내역",
+     "quotes_higher_norm": false,
+     "sha256": "d2a6bcab9121a513e588fdfb10b5a4ae800ff9b81e1b812370a58a767bffb493"
+    },
+    {
+     "start": 727489,
+     "end": 727548,
+     "chars": 59,
+     "heading": "6. 숙박비 결제내역",
+     "quotes_higher_norm": false,
+     "sha256": "dee9a0a66c62ff61416ac819c50682fd0faad1040c86ea0df9b19ea9f7108c3d"
+    },
+    {
+     "start": 727571,
+     "end": 727622,
+     "chars": 51,
+     "heading": "6. 숙박비 결제내역",
+     "quotes_higher_norm": false,
+     "sha256": "6935482b1572179b1d8ba45f2e17dba17098d3b5964e217f58c50151ed9424ca"
+    },
+    {
+     "start": 728340,
+     "end": 728363,
+     "chars": 23,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "352d4ddf7c3d90c5e47a20b3ac03b280a0d7c1d678d461b7ed84c80f84e75c4c"
+    },
+    {
+     "start": 730598,
+     "end": 730621,
+     "chars": 23,
+     "heading": "</table>",
+     "quotes_higher_norm": false,
+     "sha256": "352d4ddf7c3d90c5e47a20b3ac03b280a0d7c1d678d461b7ed84c80f84e75c4c"
+    },
+    {
+     "start": 744535,
+     "end": 744567,
+     "chars": 32,
+     "heading": "< 출산축하 복지점수 배정 장려>",
+     "quotes_higher_norm": false,
+     "sha256": "7378db9e91e5d035fafa1cf3d2c1c863e22b0b19e0541936a2fd456a39766f8d"
+    },
+    {
+     "start": 746051,
+     "end": 746083,
+     "chars": 32,
+     "heading": "< 출산축하 복지점수 배정 장려>",
+     "quotes_higher_norm": false,
+     "sha256": "7378db9e91e5d035fafa1cf3d2c1c863e22b0b19e0541936a2fd456a39766f8d"
+    },
+    {
+     "start": 764942,
+     "end": 764982,
+     "chars": 40,
+     "heading": "Ⅷ. 맞춤형 복지 통합관리시스템",
+     "quotes_higher_norm": false,
+     "sha256": "9eb9c88480bb0893f5709d445482225f135bdeade2a2d322f0ab8bcf6a691e67"
+    }
+   ]
+  },
+  {
+   "id": "data.go.kr:15038805:file:a53e94e4ff2f340d",
+   "title": "2026년도 지방자치단체 예산편성 운영기준 및 기금운용계획 수립기준(최종).hwpx",
+   "institution": "행정안전부",
+   "text_sha256": "00bc2cd56e7193890b165a59e68be04b07b4b04a5ab9a466b52f39aa850d5bda",
+   "chars": 730303,
+   "shared_ngram8_positions": 261,
+   "families": {
+    "institutions:alio-rule:36465": 207,
+    "institutions:alio-rule:15386": 142,
+    "institutions:alio-rule:54431": 137,
+    "institutions:alio-rule:20338": 25,
+    "institutions:alio-rule:748": 18,
+    "institutions:alio-rule:13257": 15,
+    "institutions:alio-rule:38904": 7,
+    "institutions:alio-rule:54304": 3,
+    "institutions:alio-rule:54834": 2,
+    "institutions:alio-rule:10819": 2,
+    "institutions:alio-rule:36169": 1,
+    "institutions:alio-rule:10324": 1,
+    "institutions:alio-rule:28743": 1
+   },
+   "spans": 14,
+   "covered_chars": 1907,
+   "covered_share": 0.0026,
+   "spans_quoting_higher_norm": 0,
+   "chars_quoting_higher_norm": 0,
+   "top_headings": [
+    [
+     "1. 위 표의 제1호란에도 불구하고 별표 1의 제1호가목 중 대통령과 국무총리의 일비와 식비는 실비로 한다.",
+     3
+    ],
+    [
+     "라. 라등급",
+     2
+    ],
+    [
+     "□ 이  월**(지방기금법 제12조)**",
+     1
+    ],
+    [
+     "3. 이미 예산으로 승인된 사업의 계속",
+     1
+    ],
+    [
+     "나. 개방형직위에 임용되는 임기제공무원 및 별정직공무원(전문임기제 공무원은 제외한다)",
+     1
+    ],
+    [
+     "다. 전문임기제 공무원",
+     1
+    ],
+    [
+     "가. 가족수당(지방공무원 수당 등에 관한 규정 제10조) <개정 2025.1.3.>",
+     1
+    ],
+    [
+     "5. 운임 및 숙박비의 할인이 가능한 경우에는 할인된 요금을 지급한다.",
+     1
+    ],
+    [
+     "1. 별표 1의 제1호가목 중 대통령과 국무총리의 일비, 숙박비 및 식비는 실비로 한다.",
+     1
+    ],
+    [
+     "2. 국가 및 도시별 등급 구분은 다음과 같다.",
+     1
+    ],
+    [
+     "<table>",
+     1
+    ]
+   ],
+   "span_list": [
+    {
+     "start": 426059,
+     "end": 426093,
+     "chars": 34,
+     "heading": "□ 이  월**(지방기금법 제12조)**",
+     "quotes_higher_norm": false,
+     "sha256": "dbf2cfe09bc897aa99c1607a8cd9f23a511777284f4c95ab1c485eeef817cfd5"
+    },
+    {
+     "start": 471092,
+     "end": 471148,
+     "chars": 56,
+     "heading": "3. 이미 예산으로 승인된 사업의 계속",
+     "quotes_higher_norm": false,
+     "sha256": "bd2f9176ab70b572f46793d01d9d62f85adf14a41779df415d6c9dda344c6045"
+    },
+    {
+     "start": 493435,
+     "end": 493467,
+     "chars": 32,
+     "heading": "나. 개방형직위에 임용되는 임기제공무원 및 별정직공무원(전문임기제 공무원은 제외한다)",
+     "quotes_higher_norm": false,
+     "sha256": "03e48d7f9f3484c59338d25cf471a2ca7cce69b17927512fd5b85114266bc129"
+    },
+    {
+     "start": 493913,
+     "end": 493945,
+     "chars": 32,
+     "heading": "다. 전문임기제 공무원",
+     "quotes_higher_norm": false,
+     "sha256": "03e48d7f9f3484c59338d25cf471a2ca7cce69b17927512fd5b85114266bc129"
+    },
+    {
+     "start": 519955,
+     "end": 519992,
+     "chars": 37,
+     "heading": "가. 가족수당(지방공무원 수당 등에 관한 규정 제10조) <개정 2025.1.3.>",
+     "quotes_higher_norm": false,
+     "sha256": "f6783e923d563fb4d5d2d46f437e6ea24ff4a2ce7bd5ce669d1468f2bd57e16b"
+    },
+    {
+     "start": 556258,
+     "end": 556294,
+     "chars": 36,
+     "heading": "1. 위 표의 제1호란에도 불구하고 별표 1의 제1호가목 중 대통령과 국무총리의 일비와 식비는 실비로 한다.",
+     "quotes_higher_norm": false,
+     "sha256": "ac6186e8a20e55821ceeb2cad5b4d266f84f1f370d17431c0bed4b777cc0cf2f"
+    },
+    {
+     "start": 556431,
+     "end": 556514,
+     "chars": 83,
+     "heading": "1. 위 표의 제1호란에도 불구하고 별표 1의 제1호가목 중 대통령과 국무총리의 일비와 식비는 실비로 한다.",
+     "quotes_higher_norm": false,
+     "sha256": "0a134c28308a2bb687e064d09e4a57899b34aa8b869afa5aaf83d041fa32ba30"
+    },
+    {
+     "start": 556569,
+     "end": 556660,
+     "chars": 91,
+     "heading": "1. 위 표의 제1호란에도 불구하고 별표 1의 제1호가목 중 대통령과 국무총리의 일비와 식비는 실비로 한다.",
+     "quotes_higher_norm": false,
+     "sha256": "65049e1cb71fc0bb3a840d8a5278cc6df561a9a99f06def3821e652ad2b71fad"
+    },
+    {
+     "start": 556692,
+     "end": 556728,
+     "chars": 36,
+     "heading": "5. 운임 및 숙박비의 할인이 가능한 경우에는 할인된 요금을 지급한다.",
+     "quotes_higher_norm": false,
+     "sha256": "394902d85df05053b3556a59255c149972c8e82f879424a6669c9195f5386f73"
+    },
+    {
+     "start": 559430,
+     "end": 559466,
+     "chars": 36,
+     "heading": "1. 별표 1의 제1호가목 중 대통령과 국무총리의 일비, 숙박비 및 식비는 실비로 한다.",
+     "quotes_higher_norm": false,
+     "sha256": "ac6186e8a20e55821ceeb2cad5b4d266f84f1f370d17431c0bed4b777cc0cf2f"
+    },
+    {
+     "start": 559521,
+     "end": 560781,
+     "chars": 1260,
+     "heading": "2. 국가 및 도시별 등급 구분은 다음과 같다.",
+     "quotes_higher_norm": false,
+     "sha256": "84f8747b1dfa35d02354d424ab0ca22ffb34fbc4f71c2d31ae077f77caf1e91d"
+    },
+    {
+     "start": 560791,
+     "end": 560868,
+     "chars": 77,
+     "heading": "라. 라등급",
+     "quotes_higher_norm": false,
+     "sha256": "fe0edfa3673c026c43a628032bfb6fd4b396e36c669b532f1efbf3e9ffc237a9"
+    },
+    {
+     "start": 560873,
+     "end": 560932,
+     "chars": 59,
+     "heading": "라. 라등급",
+     "quotes_higher_norm": false,
+     "sha256": "5d3f4a6b09c4afa45bce91e91e6525fde3e7afbe62fcd5366a374fdd96d9814c"
+    },
+    {
+     "start": 563013,
+     "end": 563051,
+     "chars": 38,
+     "heading": "<table>",
+     "quotes_higher_norm": false,
+     "sha256": "8e4a10f43805393202845597ab3f15347bc59347463e2c9d2597cd304686e9c0"
+    }
+   ]
+  }
+ ]
+}

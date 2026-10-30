@@ -1,0 +1,54 @@
+{
+ "request": "C-021 section 2 / item 5 (site public-document list and document 1 extraction)",
+ "checked_by": "B (B-020); originals downloaded with scripts/logged_get.py from korea.kr",
+ "document_1": {
+  "id": "korea-kr-press-156613289",
+  "title": "섬 지역 4만 5,000여 가구에 생활연료 해상운송비 지원",
+  "documents_jsonl_text_sha256": "8428bc1d3b873456048587dab4c3c3f9a8858e9f467e2e94074a51b5b0c0d1e5",
+  "record_sha256_field": "8428bc1d3b873456048587dab4c3c3f9a8858e9f467e2e94074a51b5b0c0d1e5",
+  "originals": {
+   "pdf": {
+    "url": "https://www.korea.kr/common/download.do?fileId=197614421&tblKey=GMN",
+    "sha256": "9f5e29f9bd95ff68ffe6783a54373817ee9cde9274c669cf3970620f15b80ae1"
+   },
+   "hwpx": {
+    "url": "https://www.korea.kr/common/download.do?fileId=197614422&tblKey=GMN",
+    "sha256": "82caf0b6702404eb7e3ddc54e4daa2577b00bff51e6ff80a25b3c89935375c81"
+   }
+  },
+  "findings": [
+   {
+    "text": "광부 보도자료",
+    "offset": [
+     0,
+     7
+    ],
+    "in_hwpx": "yes: first <hp:t> runs are \"광부\", \"보도자료\" (masthead logo text)",
+    "in_pdf_text_layer": "yes: \"광부\" then \"보도자료\"",
+    "verdict": "source masthead artifact, not a truncation of body text. scripts/collect_korea_briefing.py (commit bd59bd6) already strips this masthead pattern (MASTHEAD_NOISE) for new extractions; this row predates that fix"
+   },
+   {
+    "text": "경부",
+    "offset": [
+     1093,
+     1095
+    ],
+    "line": "ㅇ (대상 지자체) 인천, 경기, 충남, 전북, 전남, 경부, 경남",
+    "in_hwpx": "yes (same line)",
+    "in_pdf": "yes (same line)",
+    "verdict": "source typo in the original document (the same document writes 경상북도 / 경북 elsewhere); not corrected, not guessed"
+   }
+  ],
+  "regeneration_impact_for_A": "if the masthead is stripped by re-extraction, every character offset after it moves by the removed length (text currently starts at offset 0 with \"광부 보도자료\\n\\n\"); annotations.jsonl start/end (44-80, 714-757 for this document) and the text sha256 must be recomputed; 경부 stays (source text)"
+ },
+ "titles_with_entities": {
+  "count": "7 of 20 in data/public-document-sft-source/documents.jsonl",
+  "cause": "korea.kr escapes titleText twice (&amp;middot; in the page source); the stored item titles were unescaped once only. The current collector unescapes to a fixed point (commit bd59bd6); these items were collected before",
+  "examples": [
+   "원스톱 수출&middot;수주지원단 …",
+   "질병관리청, 백신&#x2024;치료제 …"
+  ],
+  "verdict": "extraction-stage defect (stale data), not source text; unescaping changes only the title field, not body text or annotation offsets"
+ },
+ "ownership": "data/public-document-sft-source and the site rendering are not changed by B (UI escaping/rendering is A). B did not correct any character."
+}

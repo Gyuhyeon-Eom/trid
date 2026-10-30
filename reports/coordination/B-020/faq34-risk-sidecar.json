@@ -1,0 +1,8 @@
+{
+ "checked": 34,
+ "batch": "reports/coordination/C-020/faq-batch/faq-candidates.jsonl",
+ "batch_sha256": "b7834e3afbe39b0c6514a5cb9a717d1f075671434c2eeb5c1712decf9973116d",
+ "training_view": "data/public-data/guides-v6-train-view-v1",
+ "rule": "sidecar only; the frozen batch is not edited; a case listed with a hold reason is held in the next batch version",
+ "risks": []
+}

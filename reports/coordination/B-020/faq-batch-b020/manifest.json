@@ -1,0 +1,17 @@
+{
+ "cases": 7,
+ "sha256": "a9e01eb8b74c702028b32321a07903faf99dce307ea18ee3e03da4608579cb91",
+ "by_task_type": {
+  "faq_explanation": 5,
+  "faq_lookup": 2,
+  "faq_ask_back": 0
+ },
+ "by_institution": {
+  "한국국제협력단": 7
+ },
+ "reviewed": 7,
+ "sources": {
+  "guides-v6/qa_rule_or_procedure": "621020dd057aa53d25b4051b1b15cc5d9ed68ef9d1d1f9b12eb5fc1486336cb6"
+ },
+ "note": "C-020 follow-up candidate batch; not part of pilot v1/v3; AI self-review only; not production approval"
+}

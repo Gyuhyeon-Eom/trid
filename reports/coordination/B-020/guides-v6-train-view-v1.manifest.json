@@ -1,0 +1,50 @@
+{
+ "version": "guides-v6-train-view-v1",
+ "code_sha256": "37642f21b3e3617c64503f6110ba86c1b50efe030e1fed0fbfc16c3c2138ea42",
+ "source_versions": [
+  "guides-v6",
+  "bojo-faq-v3"
+ ],
+ "prep": "guides-v6-prep",
+ "prep_summary_sha256": "93080223c2ddfd8f776eef4b1544dd8c1636ee14842b22817d9b0fb2ad435530",
+ "rows": 14059,
+ "excluded": 2008,
+ "rows_sha256": "c17d917b6d1546e440f026a6a29e6d9f6866a1755a81b6c2db55271089359126",
+ "excluded_sha256": "8ee33bf9017d11d584a8ea931e4db5e1a406e8b95d10ae88d49ff4b0a9952a27",
+ "counts": {
+  "rows_with_replacement": 611,
+  "replaced:named_official": 94,
+  "excluded:personal_situation": 345,
+  "replaced:petition_no": 495,
+  "replaced:reply_contact": 466,
+  "excluded:named_company": 71,
+  "excluded:dup_exact_non_first": 51,
+  "excluded:masked_contact": 727,
+  "excluded:residual_phone_fragment": 105,
+  "excluded:same_answer_over_3": 814,
+  "replaced:asker_name": 15,
+  "excluded:non_answer": 465
+ },
+ "by_faq_kind": {
+  "rule_or_procedure": 10843,
+  "mixed": 83,
+  "other": 2804,
+  "system_operation": 324,
+  "null": 5
+ },
+ "by_institution": {
+  "한국국제협력단": 278,
+  "한국산업기술기획평가원": 215,
+  "방위사업청": 99,
+  "국민권익위원회": 11407,
+  "조달청": 860,
+  "국가철도공단": 557,
+  "한국남부발전(주)": 70,
+  "인사혁신처": 1,
+  "행정안전부": 4,
+  "기획예산처·행정안전부 (운영: 한국재정정보원)": 568
+ },
+ "documents_with_tables_unverified": 5,
+ "consumer_check": "ok",
+ "note": "view for a training consumer; not a training approval; documents keep unverified tables"
+}
