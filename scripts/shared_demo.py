@@ -911,16 +911,22 @@ class Workspace:
                 aliases.setdefault(alias, set()).add(canonical)
         self.government_abbreviations, self.central_bodies = {}, set()
         if government.exists():
+            manifest = government.with_name('manifest.json')
+            info = json.loads(manifest.read_text())
+            versions = {v['id']: v for v in info['versions']}
             for line in government.read_text().splitlines():
                 row = json.loads(line)
                 alias, canonical = _norm(row['alias']), _norm(row['canonical'])
                 entry_of(canonical)
                 aliases[alias] = {canonical}
                 self.ambiguous.pop(alias, None)
-                self.government_abbreviations[alias] = canonical
-            manifest = government.with_name('manifest.json')
-            # the 중앙행정기관 the rule in force lists: a rule limited to 국가공무원 is not foreign to their staff
-            self.central_bodies = {_norm(n) for n in json.loads(manifest.read_text())['central_bodies']}
+                v = versions[row['version']]
+                # which version of the rule the abbreviation comes from, said wherever it is used
+                self.government_abbreviations[alias] = {
+                    'canonical': canonical, 'status': row['status'],
+                    'source': f"「{info['rule']}」 [별표], {v['version']}" + ('' if row['status'] == 'current' else ' — 현행 판에는 없는 이전 약칭')}
+            # the 중앙행정기관 the rule in force lists (not a statement about who of their staff is a civil servant)
+            self.central_bodies = {_norm(n) for n in info['central_bodies']}
             self.alias_source = {**(self.alias_source or {}), 'government_abbreviations': str(government),
                                  'government_manifest_sha256': hashlib.sha256(manifest.read_bytes()).hexdigest()}
         prefixes = {}
@@ -1989,10 +1995,15 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                                 applies = ws.applies(selection['applied']).get('scope')
                                 central = (applies == 'central_government' and selection['institutions']
                                            and all(n in ws.central_bodies for n in selection['institutions']))
-                                if central:
-                                    # 인사처 → 인사혁신처, a 중앙행정기관 (정부조직 약칭 규칙 [별표]): its staff are 국가공무원
-                                    result['scope'] += (f" 질문의 기관({', '.join(selection['institutions'])})은 중앙행정기관이고, 이 "
-                                                        '규정은 국가공무원에게 적용되는 규정입니다(제1조 목적).')
+                                if central and '공무원' not in question:
+                                    # 인사처 → 인사혁신처, a 중앙행정기관: the rule covers its 국가공무원 — not every person
+                                    # working there (공무직 and other non-civil-servant staff are not established here)
+                                    names = ', '.join(selection['institutions'])
+                                    result['applicability'] = {'rule_scope': applies, 'named_central_body': selection['institutions'],
+                                                               'status': 'civil_servants_only'}
+                                    result['answer'] = (f"「{m['title']}」은 국가공무원에게 적용되는 규정입니다(제1조 목적). {names} 소속 "
+                                                        '국가공무원 기준이며, 같은 기관의 공무직 등 공무원이 아닌 인력에게 적용되는지는 '
+                                                        '확인되지 않았습니다. ' + (result.get('answer') or ''))
                                 elif applies in ('central_government', 'local_government') and '공무원' not in question:
                                     applicability_guard(result, applies, m['title'])
                                 if m.get('record_kind') == 'expenditure_record':
@@ -2033,6 +2044,15 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                                                         f"그 금액을 「{ws.meta[sc['to']]['title']}」의 별표에 따르도록 정하고 있어 같은 기관의 "
                                                         '그 규정을 근거로 골랐습니다. 처리지침의 사례·공제 예시는 사례를 묻는 질문에 씁니다.')
                         population_notice(result, question, inst_ws, ws, selection)
+                        if workspace_mode and result.get('status') != 'chat':
+                            asked = _norm(question)
+                            used = [{'alias': a, **info} for a, info in workspace.government_abbreviations.items()
+                                    if a in asked and info['canonical'] not in asked]
+                            if used:
+                                # which version of the official abbreviation rule the name was read with
+                                result['abbreviations'] = used
+                                result['scope'] = (result.get('scope') or '') + ''.join(
+                                    f" 약칭 인식: {u['alias']} → {u['canonical']}({u['source']} 기준)." for u in used)
                         result['model'] = version['label']
                         result['version'] = version_id
                         result['elapsed_ms'] = round((time.monotonic() - started) * 1000)
