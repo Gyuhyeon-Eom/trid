@@ -588,7 +588,8 @@ def reprocess(s3, index, per_shard, metrics):
 
 
 def aggregate(s3, index):
-    manifests = [read_json_s3(s3, k, {}) for k in list_keys(s3, f'corpus/state/{SOURCE}/{VERSION}/shard-')]
+    keys = list_keys(s3, f'corpus/state/{SOURCE}/{VERSION}/shard-')
+    manifests = [read_json_s3(s3, k, {}) for k in keys]
     for m in manifests:
         for part in (m, m.get('quarantine')):
             if not part:
@@ -605,7 +606,11 @@ def aggregate(s3, index):
              'estimate_note': 'chars / 1.6, not a tokenizer count', 'chars_by_kind': sums('chars_by_kind'),
              'splits': sums('splits'), 'pii_redactions': sums('pii_redactions'), 'shards': len(manifests),
              'quarantine_rows': sum(m.get('quarantine', {}).get('rows', 0) for m in manifests),
-             'quarantine_reasons': sums('quarantine_reasons')}
+             'quarantine_reasons': sums('quarantine_reasons'),
+             'duplicate_text_rows': sum(m.get('duplicate_text_rows', 0) for m in manifests)}
+    fetched = {int(i) for m in manifests for i in m['ids']}
+    stats['not_collected'] = sorted(int(i) for i in meetings['meetings'] if int(i) not in fetched)  # causes: shard failures / logs
+    stats['code'] = sorted({json.dumps({k: m.get(k) for k in ('code_sha256', 'korean_quality_sha256')}) for m in manifests})
     provenance = {'source': SOURCE, 'clean_version': VERSION, 'site': 'https://record.assembly.go.kr/assembly/',
                   'license': LICENSE, 'license_evidence': ['https://record.assembly.go.kr/assembly/ footer: 공공누리 제1유형(출처표시)',
                                                            'https://open.assembly.go.kr/portal/policy/copyRightPage.do'],
@@ -618,6 +623,13 @@ def aggregate(s3, index):
                        ('ATTRIBUTION.txt', '출처: 국회사무처 국회회의록 (https://record.assembly.go.kr), 공공누리 제1유형(출처표시). '
                                            '각 행의 source URL이 원문 회의록입니다.\n')):
         s3.put_object(Bucket=BUCKET, Key=f'{prefix}/{name}', Body=body.encode())
+    shards = [{'manifest': k, 'origin': m['origin'], 'code_sha256': m.get('code_sha256'),
+               'korean_quality_sha256': m.get('korean_quality_sha256'),
+               **{part: {f: p[f] for f in ('key', 'sha256', 'bytes', 'rows', 'characters')}
+                  for part, p in (('docs', m), ('quarantine', m['quarantine']))}}
+              for k, m in zip(keys, manifests)]
+    s3.put_object(Bucket=BUCKET, Key=f'corpus/state/{SOURCE}/{VERSION}.manifest.json',
+                  Body=json.dumps({**stats, 'shards': shards}, ensure_ascii=False, indent=1).encode())
     if stats['meetings_fetched'] >= stats['meetings_indexed'] and stats['index_pairs_done'] == len(TERMS) * len(CLASSES):
         s3.put_object(Bucket=BUCKET, Key=f'corpus/state/{SOURCE}/{VERSION}/_DONE', Body=json.dumps(stats).encode())
     print(json.dumps(stats, ensure_ascii=False, indent=2))
