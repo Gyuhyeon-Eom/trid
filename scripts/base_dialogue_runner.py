@@ -148,7 +148,10 @@ def main():
         if a.hf_dir:
             official = official_render(a.hf_dir, sample, template_kwargs)
             manifest['render_parity_with_official'] = {'hf_dir': a.hf_dir, 'equal': served == official, 'official': official}
-        effective = None
+        else:
+            # no local official tokenizer: parity is unconfirmed, never assumed
+            manifest['render_parity_with_official'] = {'hf_dir': None, 'equal': None, 'note': 'unconfirmed: no local official tokenizer'}
+        effective, drift = None, []
         for name, turns in dialogues.items():
             mem, live = memory_state(), live_state()
             manifest['guard'].append({'t': time.strftime('%H:%M:%S'), 'dialogue': name, **mem, 'live': live.get('status')})
@@ -167,7 +170,13 @@ def main():
                 c = request(base, '/completion', dict(prompt=tokens, n_predict=a.max_tokens, seed=a.seed, cache_prompt=False,
                                                       return_tokens=True, **sampling))
                 wall = time.monotonic() - started
-                effective = effective or c.get('generation_settings')
+                settings = {k: v for k, v in (c.get('generation_settings') or {}).items() if k not in ('n_predict', 'seed')}
+                if effective is None:
+                    effective = settings
+                elif settings != effective:
+                    drift.append({'dialogue': name, 'turn': index,
+                                  'changed': {k: [effective.get(k), settings.get(k)] for k in set(effective) | set(settings)
+                                              if effective.get(k) != settings.get(k)}})
                 text = c['content'].strip()
                 turns_file.write(json.dumps({'dialogue': name, 'turn': index, 'question': question, 'prompt': prompt,
                                              'prompt_token_ids': tokens, 'output': text, 'output_token_ids': c.get('tokens'),
@@ -177,6 +186,8 @@ def main():
                 history += [{'role': 'user', 'content': question}, {'role': 'assistant', 'content': text}]
         else:
             manifest['status'] = 'complete'
+        manifest['effective_settings_constant'] = not drift
+        manifest['effective_settings_drift'] = drift
         manifest['effective_generation_settings'] = effective
     finally:
         turns_file.close()
