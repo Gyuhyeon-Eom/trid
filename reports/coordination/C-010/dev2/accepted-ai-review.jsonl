@@ -1,0 +1,35 @@
+{"cid": "explanation:law-go-kr:expc:312102", "type": "explanation", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "semantic_correct": true, "note": ""}
+{"cid": "explanation:law-go-kr:expc:312354", "type": "explanation", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "semantic_correct": true, "note": ""}
+{"cid": "explanation:law-go-kr:expc:311483", "type": "explanation", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "semantic_correct": true, "note": ""}
+{"cid": "explanation:law-go-kr:expc:313238", "type": "explanation", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "semantic_correct": true, "note": ""}
+{"cid": "explanation:law-go-kr:expc:343989", "type": "explanation", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "semantic_correct": false, "note": "질문이 프롬프트 지시문(\"해석 대상(법령 조항과 쟁점)을 밝히고\")을 그대로 옮김"}
+{"cid": "explanation:law-go-kr:expc:312776", "type": "explanation", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "semantic_correct": true, "note": ""}
+{"cid": "combine:law-go-kr:law:288367", "type": "combine", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "semantic_correct": true, "note": ""}
+{"cid": "combine:law-go-kr:admrul:2100000262570", "type": "combine", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "semantic_correct": true, "note": ""}
+{"cid": "combine:law-go-kr:admrul:2100000281282", "type": "combine", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "semantic_correct": true, "note": ""}
+{"cid": "combine:law-go-kr:law:249601", "type": "combine", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "semantic_correct": true, "note": ""}
+{"cid": "combine:law-go-kr:law:290653", "type": "combine", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "semantic_correct": true, "note": ""}
+{"cid": "exception:law-go-kr:admrul:2100000271868", "type": "exception", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "semantic_correct": true, "note": ""}
+{"cid": "exception:law-go-kr:admrul:2100000221788", "type": "exception", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "semantic_correct": true, "note": ""}
+{"cid": "exception:law-go-kr:admrul:2100000238824", "type": "exception", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "semantic_correct": true, "note": ""}
+{"cid": "exception:law-go-kr:law:289117", "type": "exception", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "semantic_correct": false, "note": "질문에 다른 법령명(행정기관의 조직과 정원에 관한 통칙)을 규정 이름으로 씀"}
+{"cid": "exception:law-go-kr:admrul:2100000280254", "type": "exception", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "semantic_correct": true, "note": ""}
+{"cid": "exception:law-go-kr:admrul:2100000264270", "type": "exception", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "semantic_correct": true, "note": ""}
+{"cid": "exception:law-go-kr:admrul:2100000276838", "type": "exception", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "semantic_correct": true, "note": ""}
+{"cid": "exception:law-go-kr:admrul:2100000272362", "type": "exception", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "semantic_correct": true, "note": ""}
+{"cid": "condition:law-go-kr:law:282611", "type": "condition", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "semantic_correct": true, "note": ""}
+{"cid": "condition:law-go-kr:admrul:2100000284646", "type": "condition", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "semantic_correct": true, "note": ""}
+{"cid": "condition:law-go-kr:admrul:2100000283440", "type": "condition", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "semantic_correct": true, "note": ""}
+{"cid": "condition:law-go-kr:admrul:2100000109389", "type": "condition", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "semantic_correct": true, "note": ""}
+{"cid": "condition:law-go-kr:law:280821", "type": "condition", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "semantic_correct": true, "note": ""}
+{"cid": "condition:law-go-kr:law:279965", "type": "condition", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "semantic_correct": true, "note": ""}
+{"cid": "condition:law-go-kr:law:279923", "type": "condition", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "semantic_correct": true, "note": ""}
+{"cid": "condition:law-go-kr:admrul:2200000092499", "type": "condition", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "semantic_correct": true, "note": ""}
+{"cid": "table:korea-kr-press-156196149", "type": "table", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "semantic_correct": true, "note": ""}
+{"cid": "table:korea-kr-press-156591787", "type": "table", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "semantic_correct": true, "note": ""}
+{"cid": "table:korea-kr-press-156739789", "type": "table", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "semantic_correct": false, "note": "행 이름 \"용역\"이 분류이고 실제 행은 \"용역 협상계약\": 질문의 행 지정이 모호"}
+{"cid": "table:korea-kr-press-156607237", "type": "table", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "semantic_correct": true, "note": ""}
+{"cid": "table:korea-kr-press-156639763", "type": "table", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "semantic_correct": true, "note": ""}
+{"cid": "numeric_change:korea-kr-press-156693198", "type": "numeric_change", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "semantic_correct": true, "note": ""}
+{"cid": "numeric_change:korea-kr-press-156135315", "type": "numeric_change", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "semantic_correct": true, "note": ""}
+{"cid": "numeric_change:korea-kr-press-156730720", "type": "numeric_change", "reviewer_id": "ai:assistant-session-01a17c28", "reviewer_type": "ai", "semantic_correct": true, "note": ""}
