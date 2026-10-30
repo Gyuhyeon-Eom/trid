@@ -273,7 +273,7 @@ class Workspace:
                 'currency': m['currency'], 'source': m['source'], 'license': m['license'],
                 **({'score': round(score, 2)} if score is not None else {})}
 
-    INSTITUTION_LIKE = re.compile(r'[가-힣]{2,}(?:공사|공단|위원회|재단|진흥원|연구원|은행|센터|청|처|부)(?![가-힣])')
+    INSTITUTION_LIKE = re.compile(r'[가-힣]{2,}(?:공사|공단|위원회|재단|진흥원|연구원|은행|센터|특별시|광역시|특별자치시|특별자치도|청|처|부)(?![가-힣])')
     WEAK = 0.6  # best score inside the named institution below this share of the corpus-wide best: no relevant rule
 
     def constraints(self, question):
@@ -283,15 +283,21 @@ class Workspace:
         q = _norm(question)
         named = [name for name in self.by_institution if name in q]
         named = [n for n in named if not any(n != m and n in m for m in named)]  # keep the longest names
+        # An institution-like name is known only as a corpus institution or as the leading word of a rule's title
+        # ("해양경찰청 공무국외출장 …"); a mention inside another body's title (an interpretation about it) is not its rule.
         unknown = [w for w in self.INSTITUTION_LIKE.findall(question)
                    if not any(_norm(w) in n or n in _norm(w) for n in named) and _norm(w) not in self.by_institution
-                   and not any(_norm(w) in t for t in self.norm_titles.values())]
+                   and not any(t.startswith(_norm(w)) for t in self.norm_titles.values())]
         allowed = None
         if named:
             allowed = set().union(*(self.by_institution[n] for n in named))
-            allowed |= {d for d, t in self.norm_titles.items() if any(n in t for n in named)}
+            allowed |= {d for d, t in self.norm_titles.items() if any(t.startswith(n) for n in named)}
+        # Title matching ignores institution names, so naming an institution alone never counts as naming a document.
+        q_title = q
+        for name in named + [_norm(w) for w in self.INSTITUTION_LIKE.findall(question)]:
+            q_title = q_title.replace(name, '|')
         pool = allowed if allowed is not None else self.norm_titles.keys()
-        shared = {d: _longest_shared(self.norm_titles[d], q) for d in pool}
+        shared = {d: _longest_shared(self.norm_titles[d], q_title) for d in pool}
         top = max(shared.values(), default=0)
         titled = {d for d, n in shared.items() if n == top} if top >= self.TITLE_MIN else None
         return named, unknown, allowed, titled

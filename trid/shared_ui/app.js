@@ -87,8 +87,7 @@ async function execute(value) {
     const ws = result.workspace;
     if (ws) {
       lastApplied = ws.applied;
-      print(ws.applied ? `[적용 문서${ws.pinned ? ' · 고정됨' : ''}] ${describe(ws.applied)}\n원문: ${ws.applied.source} · ${ws.applied.license}\n${ws.applied.currency || ''}`
-                       : '[적용 문서] 관련 자료를 찾지 못했습니다.', 'muted');
+      if (ws.applied) print(`[적용 문서${ws.pinned ? ' · 고정됨' : ''}] ${describe(ws.applied)}\n원문: ${ws.applied.source} · ${ws.applied.license}\n${ws.applied.currency || ''}`, 'muted');
     }
     print(`[서버 처리 ${result.elapsed_ms}ms · 왕복 ${Math.round(performance.now()-started)}ms · ${result.checked_chunks}/${result.total_chunks}개 구간 확인]`, 'muted');
     for (const candidate of result.candidates) {
