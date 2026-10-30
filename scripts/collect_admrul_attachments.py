@@ -158,23 +158,36 @@ def strip_table_markup(text):
 def extract_text(path):
     """PDF/HWP/HWPX -> Markdown with kordoc 4.24.23 (tables as Markdown tables, PDF running headers/footers removed);
     image placeholders dropped. Chosen over pdftotext/hwp5txt after the pilot: hwp5txt returned 12-117 characters for
-    별표 HWP files whose tables kordoc reads (B-014)."""
+    별표 HWP files whose tables kordoc reads (B-014).
+    kordoc refuses an HWPX zip with more than 500 entries (its ZIP_BOMB guard); a manual with ~1,200 embedded images
+    hits that. Such a file is read once more from a copy without BinData/ (the images, which are dropped anyway); the
+    text and tables come from Contents/ unchanged, and the extractor label says the images were removed (B-025)."""
     import subprocess
     import tempfile
+    import zipfile
     raw = path.read_bytes()
     kind = ('pdf' if raw[:4] == b'%PDF' else 'hwpx' if raw[:2] == b'PK' else 'hwp' if raw[:8] == bytes.fromhex('d0cf11e0a1b11ae1')
             else path.suffix.lstrip('.'))
     if kind not in ('pdf', 'hwp', 'hwpx'):
         return '', f'unsupported:{kind}'
+    label = f'kordoc-4.24.23:{kind}'
     with tempfile.TemporaryDirectory() as d:
         src, out = Path(d) / f'f.{kind}', Path(d) / 'out.md'
         src.write_bytes(raw)
         r = subprocess.run(KORDOC + [str(src), '-o', str(out)], capture_output=True, timeout=900, cwd=d)
+        if (r.returncode != 0 or not out.exists()) and kind == 'hwpx' and b'ZIP_BOMB' in r.stdout + r.stderr:
+            with zipfile.ZipFile(src) as z, zipfile.ZipFile(Path(d) / 'noimg.hwpx', 'w') as w:
+                for info in z.infolist():
+                    if not info.filename.startswith('BinData/'):
+                        w.writestr(info, z.read(info.filename))
+            r = subprocess.run(KORDOC + [str(Path(d) / 'noimg.hwpx'), '-o', str(out)], capture_output=True, timeout=900, cwd=d)
+            label += '(BinData images removed: zip entry limit)'
         if r.returncode != 0 or not out.exists():
             return '', f'kordoc_failed:{r.returncode}'
         text = out.read_text(encoding='utf-8', errors='replace')
     text = re.sub(r'^!\[image\]\([^)]*\)\s*$', '', text, flags=re.M)
-    return re.sub(r'\n{3,}', '\n\n', text).strip(), f'kordoc-4.24.23:{kind}'
+    text = re.sub(r'\[이미지: image\d+\][ \t]*', '', text)  # placeholder of an image that is not in the copy
+    return re.sub(r'\n{3,}', '\n\n', text).strip(), label
 
 
 def extract(args):

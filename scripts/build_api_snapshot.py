@@ -33,6 +33,21 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from trid.korean_quality import PII_HINT  # noqa: E402
 
+
+def pii_review(text):
+    """PII hint hits, each with context; a hit is explained only when it is the '+N' of an arithmetic formula in the
+    statute text ('3배수+20인', '×20/100+300만원'): PII_HINT's international-number branch (\\+\\d{1,3}) matches it.
+    Any other hit holds the record."""
+    hits = []
+    for m in PII_HINT.finditer(text):
+        before, after = text[max(0, m.start() - 12):m.start()], text[m.end():m.end() + 4]
+        formula = (m.group(0).startswith('+') and re.search(r'(?:\d|수|\)|%)\s*$', before) is not None
+                   and re.match(r'\s*(?:인|만원|원|%|명|일)', after) is not None)
+        hits.append({'match': m.group(0), 'context': (before + m.group(0) + after).replace('\n', ' '),
+                     'explained': 'arithmetic_formula_plus_term' if formula else None})
+    return hits
+
+
 CODE_SHA256 = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()  # as loaded
 SOURCE = ROOT / 'data/law-ko-source'
 OVERLAP = ROOT / 'reports/coordination/B-022/v3-overlap-index-separation.jsonl'
@@ -86,7 +101,8 @@ def statute_applies_to(text):
 
 def record(doc, xml, retrieved_at, target):
     text = unicodedata.normalize('NFC', doc['text']).strip()
-    pii_hits = len(PII_HINT.findall(text))
+    pii_hits = pii_review(text)
+    unexplained = [h for h in pii_hits if not h['explained']]
     if target == 'law':
         published, effective = iso(field(xml, '공포일자')), iso(field(xml, '시행일자'))
         specific = {'source_id': f"law-go-kr:law:{field(xml, '법령ID')}", 'version': re.search(r'MST=(\d+)', doc['source']).group(1),
@@ -112,8 +128,9 @@ def record(doc, xml, retrieved_at, target):
         'location': {'url': doc['source'], 'page': None, 'article_path': [], 'char_start': 0, 'char_end': len(text)},
         'text': text,
         'structured_facts': [],
-        'pii': {'check': 'trid.korean_quality.PII_HINT', 'hits': pii_hits},
-        'status': 'held_pii' if pii_hits else 'ok',
+        'pii': {'check': 'trid.korean_quality.PII_HINT, hits reviewed in context', 'hits': len(pii_hits),
+                'unexplained': len(unexplained), 'explained_hits': [h for h in pii_hits if h['explained']]},
+        'status': 'held_pii' if unexplained else 'ok',
         'collection': 'existing_collection_no_new_api_call',
     }
 

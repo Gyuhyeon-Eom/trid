@@ -1,0 +1,65 @@
+{
+ "version": "guides-v10",
+ "source_version": "guides-v10-src",
+ "code_sha256": "83a57ddcf1c6e872eb8bf0fb1fb7850e387312a022bfae73b906df30f7d274d8",
+ "notes_file": null,
+ "rows_total": 15,
+ "parts": {
+  "qa_rule_or_procedure": {
+   "rows": 0,
+   "characters": 0,
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "by_institution": {},
+   "holds": {}
+  },
+  "qa_mixed": {
+   "rows": 0,
+   "characters": 0,
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "by_institution": {},
+   "holds": {}
+  },
+  "qa_other": {
+   "rows": 0,
+   "characters": 0,
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "by_institution": {},
+   "holds": {}
+  },
+  "qa_system_operation": {
+   "rows": 0,
+   "characters": 0,
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "by_institution": {},
+   "holds": {}
+  },
+  "documents": {
+   "rows": 12,
+   "characters": 918695,
+   "sha256": "a6e0f5d84be5dcc65b4fa4e05c61f8c78d6509e04502a5ae3139511649213b2b",
+   "by_institution": {
+    "주택도시보증공사": 1,
+    "한전케이피에스주식회사": 1,
+    "행정안전부": 1,
+    "국토교통부": 1,
+    "한국환경공단": 7,
+    "농림축산식품부": 1
+   },
+   "holds": {}
+  },
+  "held": {
+   "rows": 3,
+   "characters": 441010,
+   "sha256": "c1625f1c8b68f1394f3522f102414e5346f554e5eeae623258d4857fc7d6cd88",
+   "by_institution": {
+    "한국환경공단": 1,
+    "고용노동부": 1,
+    "교육부": 1
+   },
+   "holds": {
+    "reserved_overlap": 3
+   }
+  }
+ },
+ "note": "parts are exclusive; not approved for training; documents carry tables (unverified)"
+}

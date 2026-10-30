@@ -107,6 +107,15 @@ DATASETS = {
     '15040179': dict(institution='한국환경공단', institution_type='공공기관', area='공사감독(환경시설 설치공사)', doc_type='업무매뉴얼',
                      applies_to='한국환경공단 환경기초시설 설치공사 감독업무. 다른 기관에 그대로 적용되지 않음', date='2016-12-14',
                      date_type='매뉴얼 기준일(파일명), 장별 HWP 묶음'),
+    # B-025: no data.go.kr download button; the file is the providing institution's own board copy
+    '15144767': dict(institution='고용노동부', institution_type='중앙행정기관', area='채용(채용절차법)', doc_type='업무매뉴얼',
+                     applies_to='채용절차의 공정화에 관한 법률 적용 사업장(상시 30명 이상)과 그 지도·감독 업무', date='2025-05-19',
+                     date_type='데이터셋 파일 기준일, 고용노동부 게시 2025년 매뉴얼'),
+    '15140811': dict(institution='농림축산식품부', institution_type='중앙행정기관', area='농촌관광(농촌체험휴양마을)', doc_type='업무매뉴얼',
+                     applies_to='농촌체험휴양마을 지정·관리 업무(지자체 담당자)', date='2024-05-31', date_type='데이터셋 파일 기준일(2024 매뉴얼)'),
+    '15100897': dict(institution='교육부', institution_type='중앙행정기관', area='교육 민원 질의회신', doc_type='질의회신 사례집',
+                     applies_to='교육부 민원 질의·회신 사례(참고용, 유권해석 아님)', date='2021-12-31',
+                     date_type='데이터셋 파일 기준일(2021년도 사례집)'),
 }
 # datasets kept as raw but not turned into Q&A rows: no answer text (title list) or a numeric table, not guidance
 NOT_QA = {'15163350': 'title_list_without_content', '15138170': 'structured_table_not_qa',
