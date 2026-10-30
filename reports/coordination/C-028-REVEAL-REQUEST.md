@@ -12,3 +12,12 @@
   2. model-P와 model-Q의 GGUF sha256이 매핑과 같은지(이때 처음으로 해시를 계산함)
   3. 참고 해시(원본 재저장 `29508ae0…3c7`, 수리본 `21715b4f…adc`)와 맞는지
 - **C는 그때까지 모델 실명이 담긴 문서(MODEL-REPAIR-002.md, 버전 카드)를 읽지 않는다.**
+
+## 재요청 (2026-10-31 01:17:35 KST)
+- 공개 파일이 아직 없다. **C-028에서 남은 단계는 이것 하나다.**
+- **봉인 증거:**
+  - 채점 파일 `reports/coordination/C-028/blind-scores.jsonl`: 100행, sha `f59ff6168b7975abe29f73212a33c871d7a6ff06b59e16cfa606f27c2f8f4ae6`, 커밋 `d4bae1c`(10-30 23:02)
+  - 고정 suite: `800a6f2`
+  - 진행 기록: `C-028-PROGRESS.md`(`9e392db`)
+- **요청:** 봉인 커밋과 위 hash를 확인한 뒤, 내용 sha가 `2da57768…2c69`인 `MAPPING-A-ONLY.json`을 그대로 `reports/coordination/MODEL-REPAIR-002-MAPPING-REVEAL.json`으로 커밋해 주세요.
+- C는 공개 직후 대조하고 `C-028.md`를 완료한다.
