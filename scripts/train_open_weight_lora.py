@@ -12,7 +12,8 @@ never filters for quality. Adapters:
   - `prompt_answer`: rows {"prompt", "answer", "task"?, "id"?} (trid curricula). RAG prompts (trid.prompts.rag_prompt
     format) get the evaluation's grammar_instructed system prompt; other rows get none.
   - `case`: rows {"id", "question", "context": [str], "target", "task_type"} (C cases). The user turn is
-    rag_prompt over the context passages as D1..Dn, with the same system prompt; the answer is `target`.
+    rag_prompt over the context passages as D1..Dn with CASE_SYSTEM (cases answer with conclusion, basis,
+    conditions and exceptions; the value-only SYSTEM would contradict those targets); the answer is `target`.
 Each sample is the native chat template with the generation prompt (Qwen3: the no-thinking prefix must render)
 followed by the answer and the tokenizer's EOS (end of turn); loss covers only those answer tokens. Rows longer than
 --max-tokens are dropped and counted. No upsampling beyond the per-file epochs; the per-file share of trained answer
@@ -38,6 +39,8 @@ from trid.prompts import RAG_PREFIX, rag_prompt  # noqa: E402
 
 SYSTEM = ('주어진 근거만 사용하세요. 답은 값 [Dn] 형식으로 쓰고, 여러 값은 쉼표로 구분하세요. '
           '근거가 없으면 확인 불가, 근거가 충돌하면 근거 충돌만 출력하세요. 설명은 덧붙이지 마세요.')
+CASE_SYSTEM = ('주어진 근거만 사용하세요. 근거에 있는 결론과 그 이유·조건·예외를 빠짐없이 쓰고, 근거에 없는 내용은 '
+               '추측하지 마세요. 근거가 부족하거나 시점·대상 확인이 필요하면 그렇다고 밝히세요.')
 QWEN3_NO_THINK = '<think>\n\n</think>\n\n'
 TARGETS = ['q_proj', 'k_proj', 'v_proj', 'o_proj', 'gate_proj', 'up_proj', 'down_proj']
 
@@ -65,7 +68,7 @@ def load_rows(entry, base):
                              user=row['prompt'], answer=row['answer'], file=str(path)))
         elif entry['adapter'] == 'case':
             passages = [(f'D{i}', text) for i, text in enumerate(row['context'], 1)]
-            rows.append(dict(id=row['id'], task=row.get('task_type', 'unknown'), system=SYSTEM,
+            rows.append(dict(id=row['id'], task=row.get('task_type', 'unknown'), system=CASE_SYSTEM,
                              user=rag_prompt(passages, row['question']), answer=row['target'], file=str(path)))
         else:
             raise ValueError(f"unknown adapter {entry['adapter']}")
@@ -222,7 +225,7 @@ def main():
         answer_token_share={f: round(n / token_total, 4) for f, n in sorted(trained_tokens.items())},
         steps=steps, batch_size=a.batch_size, micro_batch_size=a.micro_batch_size, lr=a.lr,
         lora=dict(rank=a.rank, alpha=a.alpha, dropout=a.dropout, targets=TARGETS), max_tokens=a.max_tokens,
-        seed=a.seed, device=a.device, dtype=str(dtype), system_prompt=SYSTEM,
+        seed=a.seed, device=a.device, dtype=str(dtype), system_prompt=SYSTEM, case_system_prompt=CASE_SYSTEM,
         versions=dict(torch=torch.__version__, transformers=transformers.__version__, peft=peft.__version__),
         history=history, elapsed_seconds=round(time.time() - started, 1), status='complete')
     (a.out / 'training.json').write_text(json.dumps(report, ensure_ascii=False, indent=1))
