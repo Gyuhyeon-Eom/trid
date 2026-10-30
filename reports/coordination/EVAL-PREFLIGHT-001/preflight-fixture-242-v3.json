@@ -1,0 +1,370 @@
+{
+ "code": "/tmp/trid-pf-242",
+ "commit": "242dbf2c8275e03d549d3a68ba201a821d72b498",
+ "index": "/Users/eomgyuhyeon/사업/trid/runs/workspace-index/v3",
+ "review": "/Users/eomgyuhyeon/사업/trid/data/search-corpus-v4/passages.jsonl",
+ "reference": "/Users/eomgyuhyeon/사업/trid",
+ "probes": [
+  "안녕하세요",
+  "출장 여비 지급 기준",
+  "연가 사용 원칙",
+  "별표 지급표 금액"
+ ],
+ "artifacts": [
+  {
+   "path": "/System/Library/CoreServices/SystemVersion.plist",
+   "scope": "external",
+   "status": "ok",
+   "kinds": [
+    "checked",
+    "read"
+   ],
+   "bytes": 599,
+   "sha256": "e233481029d77cb1e73c60afb8ad134f19fbfff6b04b0ab63f56c626e17a652a"
+  },
+  {
+   "path": "/Users/eomgyuhyeon/.cache/huggingface/hub/models--BAAI--bge-m3/refs/main",
+   "scope": "external",
+   "status": "ok",
+   "kinds": [
+    "checked",
+    "read"
+   ],
+   "bytes": 40,
+   "sha256": "1c872317cdcebed80d210377247bc1c88a4465bad572c465155cbd6a2275aa1d"
+  },
+  {
+   "path": "/Users/eomgyuhyeon/.cache/huggingface/hub/models--BAAI--bge-m3/snapshots/5617a9f61b028005a4858fdac845db406aefb181/1_Pooling/config.json",
+   "scope": "external",
+   "status": "ok",
+   "kinds": [
+    "checked",
+    "read"
+   ],
+   "bytes": 191,
+   "sha256": "e54c164a07274f2eb45bb724f54a79d1efcc90c41573887cd9a29aeee0597352"
+  },
+  {
+   "path": "/Users/eomgyuhyeon/.cache/huggingface/hub/models--BAAI--bge-m3/snapshots/5617a9f61b028005a4858fdac845db406aefb181/README.md",
+   "scope": "external",
+   "status": "ok",
+   "kinds": [
+    "checked",
+    "read"
+   ],
+   "bytes": 15822,
+   "sha256": "0b81ccf9134e5874d620a86e6905062ea999e779c34eb1a7e65eaeb7fe00e450"
+  },
+  {
+   "path": "/Users/eomgyuhyeon/.cache/huggingface/hub/models--BAAI--bge-m3/snapshots/5617a9f61b028005a4858fdac845db406aefb181/config.json",
+   "scope": "external",
+   "status": "ok",
+   "kinds": [
+    "read"
+   ],
+   "bytes": 687,
+   "sha256": "26159e7ad065073448460117eb24b7a4572f6f4e78eadff65dc0a11c052449fa"
+  },
+  {
+   "path": "/Users/eomgyuhyeon/.cache/huggingface/hub/models--BAAI--bge-m3/snapshots/5617a9f61b028005a4858fdac845db406aefb181/config_sentence_transformers.json",
+   "scope": "external",
+   "status": "ok",
+   "kinds": [
+    "checked",
+    "read"
+   ],
+   "bytes": 123,
+   "sha256": "1eef72430e7194a1e59680e635aed81ffa083f05668dbc5bb1c56c04c0999c38"
+  },
+  {
+   "path": "/Users/eomgyuhyeon/.cache/huggingface/hub/models--BAAI--bge-m3/snapshots/5617a9f61b028005a4858fdac845db406aefb181/modules.json",
+   "scope": "external",
+   "status": "ok",
+   "kinds": [
+    "checked",
+    "read"
+   ],
+   "bytes": 349,
+   "sha256": "84e40c8e006c9b1d6c122e02cba9b02458120b5fb0c87b746c41e0207cf642cf"
+  },
+  {
+   "path": "/Users/eomgyuhyeon/.cache/huggingface/hub/models--BAAI--bge-m3/snapshots/5617a9f61b028005a4858fdac845db406aefb181/pytorch_model.bin",
+   "scope": "external",
+   "status": "ok",
+   "kinds": [
+    "read"
+   ],
+   "bytes": 2271145830,
+   "sha256": "b5e0ce3470abf5ef3831aa1bd5553b486803e83251590ab7ff35a117cf6aad38"
+  },
+  {
+   "path": "/Users/eomgyuhyeon/.cache/huggingface/hub/models--BAAI--bge-m3/snapshots/5617a9f61b028005a4858fdac845db406aefb181/sentence_bert_config.json",
+   "scope": "external",
+   "status": "ok",
+   "kinds": [
+    "checked",
+    "read"
+   ],
+   "bytes": 54,
+   "sha256": "eb9b44b13c0f52a3b3685c3b1cbdea1ba8b04bea123b98f61610048940776eb1"
+  },
+  {
+   "path": "/Users/eomgyuhyeon/.cache/huggingface/hub/models--BAAI--bge-m3/snapshots/5617a9f61b028005a4858fdac845db406aefb181/special_tokens_map.json",
+   "scope": "external",
+   "status": "ok",
+   "kinds": [
+    "read"
+   ],
+   "bytes": 964,
+   "sha256": "8c785abebea9ae3257b61681b4e6fd8365ceafde980c21970d001e834cf10835"
+  },
+  {
+   "path": "/Users/eomgyuhyeon/.cache/huggingface/hub/models--BAAI--bge-m3/snapshots/5617a9f61b028005a4858fdac845db406aefb181/tokenizer.json",
+   "scope": "external",
+   "status": "ok",
+   "kinds": [
+    "read"
+   ],
+   "bytes": 17098108,
+   "sha256": "21106b6d7dab2952c1d496fb21d5dc9db75c28ed361a05f5020bbba27810dd08"
+  },
+  {
+   "path": "/Users/eomgyuhyeon/.cache/huggingface/hub/models--BAAI--bge-m3/snapshots/5617a9f61b028005a4858fdac845db406aefb181/tokenizer_config.json",
+   "scope": "external",
+   "status": "ok",
+   "kinds": [
+    "read"
+   ],
+   "bytes": 444,
+   "sha256": "a62b2b6784f990259fddef5f16388693a8043be4f69179e6a5257eeb3f9abac4"
+  },
+  {
+   "path": "/Users/eomgyuhyeon/.cache/huggingface/hub/models--BAAI--bge-m3/trees/5617a9f61b028005a4858fdac845db406aefb181.json",
+   "scope": "external",
+   "status": "ok",
+   "kinds": [
+    "read"
+   ],
+   "bytes": 4956,
+   "sha256": "b50865eb6512d602c3532b32a1760024878730ac856ec8eec8bc879d333b68f2"
+  },
+  {
+   "path": "/Users/eomgyuhyeon/사업/trid/data/search-corpus-v4/manifest.json",
+   "scope": "external",
+   "status": "ok",
+   "kinds": [
+    "checked",
+    "read"
+   ],
+   "bytes": 2837,
+   "sha256": "1c59fb25b7ea4c08de3c9bddea3fc275ac98d17c54874eb2bd0b996e1cd0c394"
+  },
+  {
+   "path": "/Users/eomgyuhyeon/사업/trid/data/search-corpus-v4/passages.jsonl",
+   "scope": "external",
+   "status": "ok",
+   "kinds": [
+    "checked",
+    "read"
+   ],
+   "bytes": 76687416,
+   "sha256": "fe6987c947ab3c87a928c1b2be9194d9068a5daa1b0421d8209d3a284469441f"
+  },
+  {
+   "path": "/Users/eomgyuhyeon/사업/trid/runs/workspace-index/v3/bm25/data.csc.index.npy",
+   "scope": "external",
+   "status": "ok",
+   "kinds": [
+    "read"
+   ],
+   "bytes": 19046540,
+   "sha256": "4f892d6cc1bdeab380a46d4735c6099d54438b8eba1082f7545787b0fd64794d"
+  },
+  {
+   "path": "/Users/eomgyuhyeon/사업/trid/runs/workspace-index/v3/bm25/indices.csc.index.npy",
+   "scope": "external",
+   "status": "ok",
+   "kinds": [
+    "read"
+   ],
+   "bytes": 19046540,
+   "sha256": "466ac3eb15e4918bf81ce7728585731e715a877d4a6f90af3fa193cb66c1a78c"
+  },
+  {
+   "path": "/Users/eomgyuhyeon/사업/trid/runs/workspace-index/v3/bm25/indptr.csc.index.npy",
+   "scope": "external",
+   "status": "ok",
+   "kinds": [
+    "read"
+   ],
+   "bytes": 518480,
+   "sha256": "209a0a01356b766a42da058e25d43b8fd9867bed2e1c107b953702d40f047e59"
+  },
+  {
+   "path": "/Users/eomgyuhyeon/사업/trid/runs/workspace-index/v3/bm25/params.index.json",
+   "scope": "external",
+   "status": "ok",
+   "kinds": [
+    "read"
+   ],
+   "bytes": 225,
+   "sha256": "9b1183db94a3fe12a1047a257f0e3334b3bf2bb79819ea84ae815578f855c95a"
+  },
+  {
+   "path": "/Users/eomgyuhyeon/사업/trid/runs/workspace-index/v3/bm25/vocab.index.json",
+   "scope": "external",
+   "status": "ok",
+   "kinds": [
+    "read"
+   ],
+   "bytes": 1283897,
+   "sha256": "ecf773fd0a8854172f28f2b910981f19b46339fde5af21e15c918c50af51ea7b"
+  },
+  {
+   "path": "/Users/eomgyuhyeon/사업/trid/runs/workspace-index/v3/dense.f16.npy",
+   "scope": "external",
+   "status": "ok",
+   "kinds": [
+    "checked",
+    "read"
+   ],
+   "bytes": 207091840,
+   "sha256": "7429c618b3e18340098b41aad87f17ccb9b70cbf3bc70f5a9e497bb9eabcd54c"
+  },
+  {
+   "path": "/Users/eomgyuhyeon/사업/trid/runs/workspace-index/v3/dense.json",
+   "scope": "external",
+   "status": "ok",
+   "kinds": [
+    "read"
+   ],
+   "bytes": 536,
+   "sha256": "9cdaa58c24228b4a33732e8ab2b1b1ce042c1c73169e4f3e5d3bfd137f1eeaff"
+  },
+  {
+   "path": "/Users/eomgyuhyeon/사업/trid/runs/workspace-index/v3/documents.json",
+   "scope": "external",
+   "status": "ok",
+   "kinds": [
+    "read"
+   ],
+   "bytes": 152252579,
+   "sha256": "cdd206730aa58866a6d581d0391ce33e899f61f933226381370bbe629f0b5375"
+  },
+  {
+   "path": "/Users/eomgyuhyeon/사업/trid/runs/workspace-index/v3/facts.jsonl",
+   "scope": "external",
+   "status": "absent_intentional",
+   "kinds": [
+    "checked"
+   ]
+  },
+  {
+   "path": "/Users/eomgyuhyeon/사업/trid/runs/workspace-index/v3/graph.json",
+   "scope": "external",
+   "status": "ok",
+   "kinds": [
+    "checked",
+    "read"
+   ],
+   "bytes": 1660290,
+   "sha256": "faa9cb2058b1b354fc72bafea7991045a23dad5976a68058dc59d7e16fd17829"
+  },
+  {
+   "path": "/Users/eomgyuhyeon/사업/trid/runs/workspace-index/v3/manifest.json",
+   "scope": "external",
+   "status": "ok",
+   "kinds": [
+    "read"
+   ],
+   "bytes": 2742,
+   "sha256": "8afc0384bc48c48ffd47fef7f2e9d451a57820ad7f12b6b9acb46b0d8f5fa748"
+  },
+  {
+   "path": "/Users/eomgyuhyeon/사업/trid/runs/workspace-index/v3/meta.json",
+   "scope": "external",
+   "status": "ok",
+   "kinds": [
+    "read"
+   ],
+   "bytes": 12713379,
+   "sha256": "6366ba1715121aca97e1564de5947e8ee49b2891ceca8f9a8827a9a6a40819e8"
+  },
+  {
+   "path": "/Users/eomgyuhyeon/사업/trid/runs/workspace-index/v3/tables.json",
+   "scope": "external",
+   "status": "ok",
+   "kinds": [
+    "checked",
+    "read"
+   ],
+   "bytes": 1088662,
+   "sha256": "6a94d45beaab84d00095d8f910e2f1d7cf5c467bcb273709f770f42e07cb3fbb"
+  },
+  {
+   "path": "/Users/eomgyuhyeon/사업/trid/scripts/eval_artifact_preflight.py",
+   "scope": "external",
+   "status": "ok",
+   "kinds": [
+    "read"
+   ],
+   "bytes": 8953,
+   "sha256": "9017c92817e745cce018c41acb4f36200b4b4788cd5a02f91af8366982762e6b"
+  },
+  {
+   "path": "/opt/homebrew/bin/jbig2dec",
+   "scope": "external",
+   "status": "ok",
+   "kinds": [
+    "checked"
+   ],
+   "bytes": 52512,
+   "sha256": "8c557edc278a17ce3b0591c85500dfd3cb7e82d0176401125a2f49465f8937a2"
+  },
+  {
+   "path": "data/corpus-inventory/alio-agencies.json",
+   "scope": "code_root",
+   "kinds": [
+    "checked"
+   ],
+   "git_tracked": false,
+   "symlink": false,
+   "status": "missing",
+   "reference_exists": true
+  },
+  {
+   "path": "trid/service/reference/admin-areas.json",
+   "scope": "code_root",
+   "kinds": [
+    "checked",
+    "read"
+   ],
+   "git_tracked": true,
+   "symlink": false,
+   "status": "ok",
+   "bytes": 1572,
+   "sha256": "00f3fa993bf24594041d1643dc11654eacc8061ef794fa31bfccee57929c9834"
+  },
+  {
+   "path": "/usr/share/zoneinfo/UTC",
+   "scope": "external",
+   "status": "ok",
+   "kinds": [
+    "read"
+   ],
+   "bytes": 114,
+   "sha256": "8b85846791ab2c8a5463c83a5be3c043e2570d7448434d41398969ed47e3e6f2"
+  }
+ ],
+ "summary": {
+  "ok": 31,
+  "missing": [
+   "data/corpus-inventory/alio-agencies.json"
+  ],
+  "absent_intentional": [
+   "/Users/eomgyuhyeon/사업/trid/runs/workspace-index/v3/facts.jsonl"
+  ],
+  "untracked_differs_from_reference": []
+ },
+ "verdict": "fail"
+}
