@@ -63,6 +63,17 @@ def launch(entry, run, config, instance, max_runtime, data_s3, checkpoint_s3, en
     return json.loads(out.stdout)['job'], None
 
 
+def busy_types():
+    """Instance types of every in-progress training job in the account (quota is 1 per type for g6e)."""
+    names = json.loads(aws('sagemaker', 'list-training-jobs', '--status-equals', 'InProgress', '--max-results', '100').stdout)
+    return {json.loads(aws('sagemaker', 'describe-training-job', '--training-job-name', j['TrainingJobName']).stdout)
+            ['ResourceConfig']['InstanceType'] for j in names['TrainingJobSummaries']}
+
+
+def quota_wait(err):
+    return err is not None and 'ResourceLimitExceeded' in err
+
+
 def prune(arm):
     """Keep the newest two complete recovery checkpoints in S3; delete older ones and stale .tmp objects."""
     bucket, keys = s3_keys(f"{arm['checkpoint_s3']}{arm['run']}/sft/checkpoints/")
@@ -82,7 +93,7 @@ def prune(arm):
 def step(campaign, state):
     now = datetime.datetime.now().isoformat(timespec='seconds')
     common = campaign['common']
-    busy_eval = {j['instance'] for a in state['arms'].values() for j in a['evals'].values() if j.get('status') == 'InProgress'}
+    busy = busy_types()
     for name, arm in campaign['arms'].items():
         s = state['arms'].setdefault(name, {'segments': [], 'consecutive_failures': 0, 'evals': {}, 'halted': None, 'done': False})
         run_s3 = f"{arm['checkpoint_s3']}{arm['run']}/sft/"
@@ -109,13 +120,20 @@ def step(campaign, state):
                 env = {'INIT_S3': arm['init_s3'], 'INIT_STEP': arm['init_step'], 'SFT_STEPS': common['steps'],
                        'SAVE_STEPS': ','.join(map(str, common['save_steps'])), 'CHECKPOINT_EVERY': common['checkpoint_every'],
                        **({'SESSION_STEPS': session_steps} if session_steps else {'SEGMENT_SECONDS': common['segment_seconds']})}
-                job, err = launch('sm_sft_campaign.sh', arm['run'], arm['config'], arm['instance'], common['max_runtime'],
-                                  common['data_s3'], arm['checkpoint_s3'], env,
-                                  f"{campaign['id']} {name} segment {len(s['segments']) + 1} (resume from S3)")
-                s['segments'].append({'job': job, 'status': 'InProgress' if job else 'LaunchFailed', 'failure': err,
-                                      'launched_at': now, 'from_step': training.get('completed_steps')})
-                if not job:
-                    s['consecutive_failures'] += 1
+                if arm['instance'] in busy:
+                    s['waiting'] = f'{now}: {arm["instance"]} busy; segment launch deferred'
+                    job, err = None, 'deferred'
+                else:
+                    job, err = launch('sm_sft_campaign.sh', arm['run'], arm['config'], arm['instance'], common['max_runtime'],
+                                      common['data_s3'], arm['checkpoint_s3'], env,
+                                      f"{campaign['id']} {name} segment {len(s['segments']) + 1} (resume from S3)")
+                if job or not (err == 'deferred' or quota_wait(err)):
+                    s['segments'].append({'job': job, 'status': 'InProgress' if job else 'LaunchFailed', 'failure': err,
+                                          'launched_at': now, 'from_step': training.get('completed_steps')})
+                    if job:
+                        busy.add(arm['instance'])
+                    else:
+                        s['consecutive_failures'] += 1
         kept, deleted = prune(arm)
         s['recovery_kept'], s['recovery_pruned_objects'] = kept, s.get('recovery_pruned_objects', 0) + deleted
         # Milestones and, at the end, the validation-selected weights get one evaluation job each.
@@ -131,16 +149,20 @@ def step(campaign, state):
                 continue
             if ev and (ev['status'] == 'Completed' or ev.get('attempts', 0) >= 2):
                 continue
-            free = [i for i in common['eval_instances'] if i not in busy_eval]
+            free = [i for i in common['eval_instances'] if i not in busy]
             if not free:
                 continue
             job, err = launch('sm_eval_weights.sh', f"{arm['run']}-eval", arm['config'], free[0], common['eval_max_runtime'],
                               common['data_s3'], f"{arm['checkpoint_s3']}{arm['run']}-eval/",
                               {'RUN_S3': run_s3, 'WEIGHTS_S3': weights, 'LABEL': label}, f"{campaign['id']} {name} eval {label}")
+            if quota_wait(err):
+                continue
             s['evals'][label] = {'job': job, 'status': 'InProgress' if job else 'LaunchFailed', 'failure': err,
                                  'instance': free[0], 'attempts': (ev or {}).get('attempts', 0) + 1}
             if job:
-                busy_eval.add(free[0])
+                busy.add(free[0])
+        s['evals_pending'] = sorted(label for label, _ in targets if (s['evals'].get(label) or {}).get('status') != 'Completed'
+                                    and (s['evals'].get(label) or {}).get('attempts', 0) < 2)
         last = next((m for m in reversed(metrics) if 'train_loss' in m), None)
         rate = None
         if len(metrics) > 20:
@@ -153,9 +175,9 @@ def step(campaign, state):
                          'steps_per_second': round(rate, 3) if rate else None,
                          'eta_hours': round((common['steps'] - last['step']) / rate / 3600, 1) if rate and last else None}
     state['updated_at'] = now
-    return all(a.get('done') or a.get('halted') for a in state['arms'].values()) and all(
-        e.get('status') in ('Completed', 'Failed', 'Stopped', 'LaunchFailed')
-        for a in state['arms'].values() for e in a['evals'].values()) and len(state['arms']) == len(campaign['arms'])
+    return len(state['arms']) == len(campaign['arms']) and all(
+        (a.get('done') or a.get('halted')) and not a.get('evals_pending')
+        and all(e.get('status') != 'InProgress' for e in a['evals'].values()) for a in state['arms'].values())
 
 
 def main():

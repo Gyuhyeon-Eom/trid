@@ -1,0 +1,97 @@
+{
+ "method": "Exact replay of trid.training.train sampling: random.Random(271030).choices(rows, cum_weights from mix-04 row weights, k=8) per step; answer-loss tokens = labels != -100 from trid.text.encode_example with the 8,192 BPE tokenizer. Same draw sequence for any total step count (the schedule does not affect sampling).",
+ "data": {
+  "path": "data/public-dialogue-mix-04/train.jsonl",
+  "rows": 18581,
+  "unique_doc_keys": 16208,
+  "doc_key": "source_guid | source_id | prompt hash",
+  "answer_tokens_one_pass": 262431
+ },
+ "milestones": {
+  "1200": {
+   "examples_drawn": 9600,
+   "unique_rows": 6948,
+   "unique_doc_keys": 6345,
+   "answer_loss_tokens": 126606,
+   "max_repeats_one_row": 24,
+   "median_repeats_seen": 1.0,
+   "mean_passes_over_rows": 0.52
+  },
+  "3600": {
+   "examples_drawn": 28800,
+   "unique_rows": 13471,
+   "unique_doc_keys": 11948,
+   "answer_loss_tokens": 377585,
+   "max_repeats_one_row": 63,
+   "median_repeats_seen": 2.0,
+   "mean_passes_over_rows": 1.55
+  },
+  "12000": {
+   "examples_drawn": 96000,
+   "unique_rows": 17843,
+   "unique_doc_keys": 15590,
+   "answer_loss_tokens": 1251718,
+   "max_repeats_one_row": 207,
+   "median_repeats_seen": 5.0,
+   "mean_passes_over_rows": 5.17
+  },
+  "36000": {
+   "examples_drawn": 288000,
+   "unique_rows": 18570,
+   "unique_doc_keys": 16197,
+   "answer_loss_tokens": 3761277,
+   "max_repeats_one_row": 554,
+   "median_repeats_seen": 15.0,
+   "mean_passes_over_rows": 15.5
+  },
+  "120000": {
+   "examples_drawn": 960000,
+   "unique_rows": 18581,
+   "unique_doc_keys": 16208,
+   "answer_loss_tokens": 12517938,
+   "max_repeats_one_row": 1753,
+   "median_repeats_seen": 54.0,
+   "mean_passes_over_rows": 51.67
+  },
+  "360000": {
+   "examples_drawn": 2880000,
+   "unique_rows": 18581,
+   "unique_doc_keys": 16208,
+   "answer_loss_tokens": 37574034,
+   "max_repeats_one_row": 5138,
+   "median_repeats_seen": 166.0,
+   "mean_passes_over_rows": 155.0
+  },
+  "1200000": {
+   "examples_drawn": 9600000,
+   "unique_rows": 18581,
+   "unique_doc_keys": 16208,
+   "answer_loss_tokens": 125239015,
+   "max_repeats_one_row": 16874,
+   "median_repeats_seen": 562.0,
+   "mean_passes_over_rows": 516.66
+  }
+ },
+ "by_component_at_1200000": {
+  "dialogue": {
+   "rows": 4865,
+   "draws": 959894,
+   "draws_per_row": 197.3
+  },
+  "document_dialogue": {
+   "rows": 284,
+   "draws": 479773,
+   "draws_per_row": 1689.3
+  },
+  "public": {
+   "rows": 29,
+   "draws": 480596,
+   "draws_per_row": 16572.3
+  },
+  "real_qa": {
+   "rows": 13403,
+   "draws": 7679737,
+   "draws_per_row": 573.0
+  }
+ }
+}

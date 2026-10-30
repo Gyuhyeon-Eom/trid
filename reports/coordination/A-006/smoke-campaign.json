@@ -1,0 +1,45 @@
+{
+ "id": "A-006-smoke",
+ "purpose": "Resume-continuity smoke for the 1,200,000-step SFT campaign: production schedule (steps 1,200,000), 91M, two 300-step segments vs one 600-step reference; milestone evaluation path at 300 and 600.",
+ "common": {
+  "steps": 1200000,
+  "save_steps": [
+   300,
+   600
+  ],
+  "checkpoint_every": 200,
+  "segment_seconds": 72000,
+  "max_runtime": 7200,
+  "eval_max_runtime": 7200,
+  "eval_instances": [
+   "ml.g6e.4xlarge",
+   "ml.g6e.8xlarge",
+   "ml.g6e.16xlarge"
+  ],
+  "data_s3": "s3://trid-training-148761639313/corpus/eval-inputs/a003/",
+  "max_segments": 1
+ },
+ "status_s3": "s3://trid-training-148761639313/corpus/runs/sft-campaign-smoke/status.json",
+ "arms": {
+  "seg": {
+   "run": "a006-smoke-91m-seg",
+   "config": "korean-medium-91m.json",
+   "instance": "ml.g6e.16xlarge",
+   "init_s3": "s3://trid-training-148761639313/corpus/runs/pretrain/a003-1b-91m-mha/a003-1b-91m-mha/",
+   "init_step": 15259,
+   "checkpoint_s3": "s3://trid-training-148761639313/corpus/runs/sft-campaign-smoke/",
+   "session_steps": 300,
+   "max_segments": 2
+  },
+  "ref": {
+   "run": "a006-smoke-91m-ref",
+   "config": "korean-medium-91m.json",
+   "instance": "ml.g6e.16xlarge",
+   "init_s3": "s3://trid-training-148761639313/corpus/runs/pretrain/a003-1b-91m-mha/a003-1b-91m-mha/",
+   "init_step": 15259,
+   "checkpoint_s3": "s3://trid-training-148761639313/corpus/runs/sft-campaign-smoke/",
+   "session_steps": 600,
+   "max_segments": 1
+  }
+ }
+}
