@@ -154,6 +154,14 @@ class ChatBackendTests(unittest.TestCase):
         self.assertEqual(result['status'], 'model_failure')
         self.assertEqual(result['candidates'], [])
 
+    def test_qa_question_part_is_not_evidence(self):
+        text = '질문: 강의료 100만원을 줘도 되나요?\n답변: 상한액은 직급별로 40만원입니다.'
+        document = Document('d', [text], make_chunks([text], CharTokenizer()), [])
+        for generated, status in (('[D1] 100만원', 'review'), ('[D1] 40만원', 'answer')):
+            with patch('scripts.shared_demo.complete', return_value={'generated': generated}):
+                result = answer_document_chat(document, '상한은?', 'http://127.0.0.1:1', 'qwen3', 4096)
+            self.assertEqual(result['status'], status, generated)
+
 
 
 class WorkspaceTests(unittest.TestCase):

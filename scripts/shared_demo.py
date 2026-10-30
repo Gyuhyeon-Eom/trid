@@ -31,6 +31,16 @@ MAX_BODY = 2 * 1024 * 1024
 MAX_SESSIONS = 32
 # Source-first answers, one or two pairs like the value-first GRAMMAR: "[D1] 값" or "[D1] 값, [D2] 값".
 SOURCE_FIRST_ANSWER = re.compile(r'\[(D[1-9])\]\s*([^\[\],\n]+?)(?:\s*,\s*\[(D[1-9])\]\s*([^\[\],\n]+?))?\.?')
+QA_ANSWER = re.compile(r'\n답변\s*:')
+
+
+def evidence_start(text):
+    """Offset where admissible evidence begins. In a Q&A passage ("질문: … 답변: …") the asker's question is not a
+    source: values and quotes count only from the answer part on."""
+    if text.startswith('질문') and (m := QA_ANSWER.search(text)):
+        return m.end()
+    return 0
+
 
 def read_chunk(model, _presence, tok, text, question, device):
     """Adapt prompt-relative extractive spans to the document reader's chunk offsets."""
@@ -48,6 +58,8 @@ def read_chunk(model, _presence, tok, text, question, device):
         answer = result['span_text']
         if text[span[0]:span[1]] != answer:
             raise DocumentError('모델의 원문 위치 검증에 실패했습니다.')
+        if span[0] < evidence_start(text):  # copied from the asker's question in a Q&A passage
+            abstains, span, answer = True, None, '확인 불가'
     return {**result, 'answer': answer, 'abstains': abstains, 'source_character_span': span}
 
 def answer_document_chat(document, question, base, family, context, constrained=False, selected=None):
@@ -86,7 +98,7 @@ def answer_document_chat(document, question, base, family, context, constrained=
             continue
         value, index = value.strip(), int(sid[1:]) - 1
         chunk = selected[index][0] if index < len(selected) else None
-        start = chunk.text.find(value) if chunk and value else -1
+        start = chunk.text.find(value, evidence_start(chunk.text)) if chunk and value else -1
         if start < 0:
             return {**result, 'status': 'review', 'answer': '모델 출력이 원문 위치 검증을 통과하지 못해 답으로 표시하지 않습니다.'}
         candidates.append({'page': chunk.page, 'text': chunk.text, 'page_text_start': chunk.start,
@@ -157,8 +169,8 @@ def answer_document_case(document, question, base, family, context, max_tokens=2
         for text in (quote, quote.rstrip('.')):
             if len(text) < MIN_QUOTE_CHARS or text in quoted:
                 continue
-            hit = next(((i, chunk, chunk.text.find(text)) for i, (chunk, _) in enumerate(selected)
-                        if text in chunk.text), None)
+            hit = next(((i, chunk, chunk.text.find(text, evidence_start(chunk.text))) for i, (chunk, _) in enumerate(selected)
+                        if text in chunk.text[evidence_start(chunk.text):]), None)
             if hit:
                 i, chunk, start = hit
                 quoted.add(text)
