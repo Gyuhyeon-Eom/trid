@@ -1,0 +1,2893 @@
+{
+ "manifest_sha256": "0ed3cc079e8da0f9765e320091c88608186ef259c426f3319944c0921f7495e8",
+ "reserved_families": 148,
+ "corpus": [
+  {
+   "path": "/tmp/trid-corpus/inv/law-internal-overlap-input.jsonl",
+   "sha256": "2df02a622ed50f5b3821cdffb7e2ee45663266ee0592e2261ca52b097db64309"
+  }
+ ],
+ "corpus_rows_scanned": 3655,
+ "matched_corpus_rows": 1,
+ "families_with_matches": 1,
+ "match_types": {
+  "containment": 1,
+  "minhash": 1
+ },
+ "thresholds": {
+  "minhash_estimate": 0.5,
+  "ngram8_containment": 0.5,
+  "partial_review_min_shared_ngram8": 50
+ },
+ "per_family_matched_rows": {
+  "institutions:alio-rule:55096": 1
+ },
+ "matches": [
+  {
+   "corpus_id": "law-go-kr:admrul:2100000247634",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:55096": [
+     "containment",
+     "minhash"
+    ]
+   },
+   "partial_review": {
+    "institutions:alio-rule:39914": {
+     "shared_ngram8": 63,
+     "of_reserved": 8375
+    }
+   }
+  }
+ ],
+ "partial_review_rows": 227,
+ "partial_review_note": "rows sharing >= partial_min reserved word 8-grams below the containment threshold; evidence for manual review, not counted as matches or excluded automatically",
+ "partial_review": [
+  {
+   "corpus_id": "law-go-kr:admrul:2100000275812",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:28991": {
+     "shared_ngram8": 140,
+     "of_reserved": 27723
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000276690",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:22216": {
+     "shared_ngram8": 51,
+     "of_reserved": 28899
+    },
+    "institutions:alio-rule:28991": {
+     "shared_ngram8": 90,
+     "of_reserved": 23155
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000284222",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:28991": {
+     "shared_ngram8": 94,
+     "of_reserved": 23155
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000284264",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:22216": {
+     "shared_ngram8": 50,
+     "of_reserved": 28899
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000272402",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:28991": {
+     "shared_ngram8": 53,
+     "of_reserved": 26080
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000284228",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:28991": {
+     "shared_ngram8": 50,
+     "of_reserved": 22947
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000276694",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:22216": {
+     "shared_ngram8": 57,
+     "of_reserved": 28899
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000271132",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:28991": {
+     "shared_ngram8": 59,
+     "of_reserved": 25789
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000275554",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:46958": {
+     "shared_ngram8": 117,
+     "of_reserved": 8092
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000284266",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:22216": {
+     "shared_ngram8": 173,
+     "of_reserved": 21872
+    },
+    "institutions:alio-rule:28991": {
+     "shared_ngram8": 64,
+     "of_reserved": 26080
+    },
+    "institutions:alio-rule:39914": {
+     "shared_ngram8": 113,
+     "of_reserved": 8375
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000272436",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:28991": {
+     "shared_ngram8": 91,
+     "of_reserved": 25817
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000272178",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:19005": {
+     "shared_ngram8": 74,
+     "of_reserved": 3851
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000287144",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:8942": {
+     "shared_ngram8": 78,
+     "of_reserved": 3264
+    },
+    "institutions:alio-rule:50990": {
+     "shared_ngram8": 80,
+     "of_reserved": 1694
+    },
+    "institutions:alio-rule:31150": {
+     "shared_ngram8": 59,
+     "of_reserved": 2549
+    },
+    "institutions:alio-rule:32309": {
+     "shared_ngram8": 72,
+     "of_reserved": 2351
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000260984",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:54710": {
+     "shared_ngram8": 86,
+     "of_reserved": 5813
+    },
+    "institutions:alio-rule:7719": {
+     "shared_ngram8": 88,
+     "of_reserved": 8196
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000273976",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:22216": {
+     "shared_ngram8": 119,
+     "of_reserved": 28899
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000286198",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:39994": {
+     "shared_ngram8": 51,
+     "of_reserved": 4868
+    },
+    "institutions:alio-rule:28993": {
+     "shared_ngram8": 51,
+     "of_reserved": 13693
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000192866",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:44716": {
+     "shared_ngram8": 61,
+     "of_reserved": 2212
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000277288",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:31150": {
+     "shared_ngram8": 244,
+     "of_reserved": 2549
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000208683",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:40839": {
+     "shared_ngram8": 54,
+     "of_reserved": 2717
+    },
+    "institutions:alio-rule:39994": {
+     "shared_ngram8": 63,
+     "of_reserved": 5540
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000274546",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:47300": {
+     "shared_ngram8": 53,
+     "of_reserved": 2016
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000271808",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:44716": {
+     "shared_ngram8": 68,
+     "of_reserved": 2212
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000280086",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:44716": {
+     "shared_ngram8": 99,
+     "of_reserved": 2212
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000280658",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:31150": {
+     "shared_ngram8": 57,
+     "of_reserved": 2549
+    },
+    "institutions:alio-rule:50990": {
+     "shared_ngram8": 91,
+     "of_reserved": 1694
+    },
+    "institutions:alio-rule:32309": {
+     "shared_ngram8": 70,
+     "of_reserved": 2351
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000245466",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:28993": {
+     "shared_ngram8": 74,
+     "of_reserved": 13693
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000283506",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:31150": {
+     "shared_ngram8": 254,
+     "of_reserved": 2549
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000240326",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:54710": {
+     "shared_ngram8": 174,
+     "of_reserved": 5813
+    },
+    "institutions:alio-rule:3394": {
+     "shared_ngram8": 82,
+     "of_reserved": 10586
+    },
+    "institutions:alio-rule:29104": {
+     "shared_ngram8": 56,
+     "of_reserved": 5317
+    },
+    "institutions:alio-rule:7719": {
+     "shared_ngram8": 155,
+     "of_reserved": 8196
+    },
+    "institutions:alio-rule:49961": {
+     "shared_ngram8": 126,
+     "of_reserved": 1983
+    },
+    "institutions:alio-rule:38737": {
+     "shared_ngram8": 84,
+     "of_reserved": 1593
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000265788",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:31150": {
+     "shared_ngram8": 208,
+     "of_reserved": 2549
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000251948",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:31150": {
+     "shared_ngram8": 135,
+     "of_reserved": 2549
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000224792",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:40839": {
+     "shared_ngram8": 119,
+     "of_reserved": 2717
+    },
+    "institutions:alio-rule:39994": {
+     "shared_ngram8": 61,
+     "of_reserved": 5540
+    },
+    "institutions:alio-rule:28993": {
+     "shared_ngram8": 99,
+     "of_reserved": 13693
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000285870",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:47300": {
+     "shared_ngram8": 52,
+     "of_reserved": 2016
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000274204",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:54710": {
+     "shared_ngram8": 95,
+     "of_reserved": 5813
+    },
+    "institutions:alio-rule:14384": {
+     "shared_ngram8": 60,
+     "of_reserved": 6720
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000241494",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:40839": {
+     "shared_ngram8": 56,
+     "of_reserved": 2841
+    },
+    "institutions:alio-rule:39994": {
+     "shared_ngram8": 91,
+     "of_reserved": 5540
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000259962",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:40839": {
+     "shared_ngram8": 61,
+     "of_reserved": 2717
+    },
+    "institutions:alio-rule:39994": {
+     "shared_ngram8": 85,
+     "of_reserved": 5540
+    },
+    "institutions:alio-rule:28993": {
+     "shared_ngram8": 126,
+     "of_reserved": 13693
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000251736",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:7487": {
+     "shared_ngram8": 104,
+     "of_reserved": 7143
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000275580",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:40839": {
+     "shared_ngram8": 56,
+     "of_reserved": 2717
+    },
+    "institutions:alio-rule:28993": {
+     "shared_ngram8": 58,
+     "of_reserved": 13070
+    },
+    "institutions:alio-rule:39994": {
+     "shared_ngram8": 60,
+     "of_reserved": 5540
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000214576",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:39914": {
+     "shared_ngram8": 53,
+     "of_reserved": 8375
+    },
+    "institutions:alio-rule:28991": {
+     "shared_ngram8": 66,
+     "of_reserved": 23155
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000282872",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:40839": {
+     "shared_ngram8": 64,
+     "of_reserved": 2717
+    },
+    "institutions:alio-rule:39994": {
+     "shared_ngram8": 95,
+     "of_reserved": 5540
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000277096",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:44716": {
+     "shared_ngram8": 51,
+     "of_reserved": 2212
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000231390",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:28993": {
+     "shared_ngram8": 51,
+     "of_reserved": 11547
+    },
+    "institutions:alio-rule:40839": {
+     "shared_ngram8": 136,
+     "of_reserved": 2717
+    },
+    "institutions:alio-rule:39994": {
+     "shared_ngram8": 99,
+     "of_reserved": 5540
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000243680",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:7487": {
+     "shared_ngram8": 54,
+     "of_reserved": 6027
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000237608",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:44716": {
+     "shared_ngram8": 56,
+     "of_reserved": 2212
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000257496",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:28993": {
+     "shared_ngram8": 51,
+     "of_reserved": 13693
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000263884",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:28993": {
+     "shared_ngram8": 107,
+     "of_reserved": 13693
+    },
+    "institutions:alio-rule:39994": {
+     "shared_ngram8": 56,
+     "of_reserved": 3638
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000263880",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:7487": {
+     "shared_ngram8": 84,
+     "of_reserved": 7143
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000235450",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:39994": {
+     "shared_ngram8": 53,
+     "of_reserved": 5177
+    },
+    "institutions:alio-rule:28993": {
+     "shared_ngram8": 55,
+     "of_reserved": 13693
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000215577",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:40839": {
+     "shared_ngram8": 54,
+     "of_reserved": 2717
+    },
+    "institutions:alio-rule:39994": {
+     "shared_ngram8": 56,
+     "of_reserved": 3638
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000249018",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:39994": {
+     "shared_ngram8": 68,
+     "of_reserved": 5540
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000262564",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:39994": {
+     "shared_ngram8": 63,
+     "of_reserved": 5540
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000282780",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:28993": {
+     "shared_ngram8": 55,
+     "of_reserved": 11547
+    },
+    "institutions:alio-rule:40839": {
+     "shared_ngram8": 72,
+     "of_reserved": 2717
+    },
+    "institutions:alio-rule:39994": {
+     "shared_ngram8": 106,
+     "of_reserved": 5540
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000215855",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:39994": {
+     "shared_ngram8": 71,
+     "of_reserved": 5540
+    },
+    "institutions:alio-rule:28993": {
+     "shared_ngram8": 57,
+     "of_reserved": 13693
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000231642",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:40839": {
+     "shared_ngram8": 56,
+     "of_reserved": 2717
+    },
+    "institutions:alio-rule:39994": {
+     "shared_ngram8": 75,
+     "of_reserved": 5540
+    },
+    "institutions:alio-rule:28993": {
+     "shared_ngram8": 73,
+     "of_reserved": 13693
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000283596",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:4817": {
+     "shared_ngram8": 55,
+     "of_reserved": 12878
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000278990",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:40839": {
+     "shared_ngram8": 50,
+     "of_reserved": 2717
+    },
+    "institutions:alio-rule:39994": {
+     "shared_ngram8": 76,
+     "of_reserved": 5540
+    },
+    "institutions:alio-rule:28993": {
+     "shared_ngram8": 54,
+     "of_reserved": 9703
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000278978",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:7487": {
+     "shared_ngram8": 78,
+     "of_reserved": 6626
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000245168",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:40839": {
+     "shared_ngram8": 51,
+     "of_reserved": 2717
+    },
+    "institutions:alio-rule:39994": {
+     "shared_ngram8": 53,
+     "of_reserved": 5540
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000263160",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:7487": {
+     "shared_ngram8": 75,
+     "of_reserved": 6626
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000240528",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:44716": {
+     "shared_ngram8": 96,
+     "of_reserved": 2212
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000272472",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:39994": {
+     "shared_ngram8": 67,
+     "of_reserved": 5540
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000284526",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:39994": {
+     "shared_ngram8": 96,
+     "of_reserved": 5540
+    },
+    "institutions:alio-rule:40839": {
+     "shared_ngram8": 57,
+     "of_reserved": 2814
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000214382",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:28993": {
+     "shared_ngram8": 99,
+     "of_reserved": 11547
+    },
+    "institutions:alio-rule:40839": {
+     "shared_ngram8": 53,
+     "of_reserved": 2717
+    },
+    "institutions:alio-rule:39994": {
+     "shared_ngram8": 109,
+     "of_reserved": 5540
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000285166",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:40839": {
+     "shared_ngram8": 70,
+     "of_reserved": 2717
+    },
+    "institutions:alio-rule:39994": {
+     "shared_ngram8": 104,
+     "of_reserved": 5540
+    },
+    "institutions:alio-rule:28993": {
+     "shared_ngram8": 209,
+     "of_reserved": 13070
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000283990",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:28993": {
+     "shared_ngram8": 128,
+     "of_reserved": 13693
+    },
+    "institutions:alio-rule:39994": {
+     "shared_ngram8": 75,
+     "of_reserved": 5540
+    },
+    "institutions:alio-rule:40839": {
+     "shared_ngram8": 95,
+     "of_reserved": 2717
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000252224",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:7487": {
+     "shared_ngram8": 79,
+     "of_reserved": 7143
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000223978",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:40839": {
+     "shared_ngram8": 98,
+     "of_reserved": 2717
+    },
+    "institutions:alio-rule:39994": {
+     "shared_ngram8": 99,
+     "of_reserved": 5540
+    },
+    "institutions:alio-rule:28993": {
+     "shared_ngram8": 83,
+     "of_reserved": 13070
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000194619",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:44716": {
+     "shared_ngram8": 102,
+     "of_reserved": 2212
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000281872",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:28993": {
+     "shared_ngram8": 128,
+     "of_reserved": 13693
+    },
+    "institutions:alio-rule:39994": {
+     "shared_ngram8": 59,
+     "of_reserved": 5540
+    },
+    "institutions:alio-rule:40839": {
+     "shared_ngram8": 74,
+     "of_reserved": 2717
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000255254",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:7487": {
+     "shared_ngram8": 73,
+     "of_reserved": 7143
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000244362",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:39994": {
+     "shared_ngram8": 66,
+     "of_reserved": 5540
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000260556",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:40839": {
+     "shared_ngram8": 51,
+     "of_reserved": 2717
+    },
+    "institutions:alio-rule:39994": {
+     "shared_ngram8": 87,
+     "of_reserved": 5540
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000269144",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:40839": {
+     "shared_ngram8": 66,
+     "of_reserved": 2717
+    },
+    "institutions:alio-rule:39994": {
+     "shared_ngram8": 73,
+     "of_reserved": 5540
+    },
+    "institutions:alio-rule:28993": {
+     "shared_ngram8": 57,
+     "of_reserved": 13693
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000281380",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:39994": {
+     "shared_ngram8": 57,
+     "of_reserved": 3638
+    },
+    "institutions:alio-rule:40839": {
+     "shared_ngram8": 92,
+     "of_reserved": 2717
+    },
+    "institutions:alio-rule:28993": {
+     "shared_ngram8": 125,
+     "of_reserved": 13070
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000276862",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:39994": {
+     "shared_ngram8": 58,
+     "of_reserved": 5540
+    },
+    "institutions:alio-rule:28993": {
+     "shared_ngram8": 124,
+     "of_reserved": 13693
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000280500",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:31150": {
+     "shared_ngram8": 107,
+     "of_reserved": 2549
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000258646",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:44716": {
+     "shared_ngram8": 53,
+     "of_reserved": 2212
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000221910",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:39994": {
+     "shared_ngram8": 69,
+     "of_reserved": 5540
+    },
+    "institutions:alio-rule:40839": {
+     "shared_ngram8": 52,
+     "of_reserved": 2814
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000279088",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:40839": {
+     "shared_ngram8": 55,
+     "of_reserved": 2814
+    },
+    "institutions:alio-rule:39994": {
+     "shared_ngram8": 62,
+     "of_reserved": 5540
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000256664",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:40839": {
+     "shared_ngram8": 62,
+     "of_reserved": 2717
+    },
+    "institutions:alio-rule:39994": {
+     "shared_ngram8": 70,
+     "of_reserved": 4604
+    },
+    "institutions:alio-rule:28993": {
+     "shared_ngram8": 62,
+     "of_reserved": 13693
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000256160",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:7487": {
+     "shared_ngram8": 71,
+     "of_reserved": 7143
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000276508",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:40839": {
+     "shared_ngram8": 136,
+     "of_reserved": 2717
+    },
+    "institutions:alio-rule:39994": {
+     "shared_ngram8": 153,
+     "of_reserved": 5540
+    },
+    "institutions:alio-rule:28993": {
+     "shared_ngram8": 96,
+     "of_reserved": 13693
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000241704",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:39994": {
+     "shared_ngram8": 71,
+     "of_reserved": 5540
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000241254",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:7487": {
+     "shared_ngram8": 60,
+     "of_reserved": 7143
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000275020",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:44716": {
+     "shared_ngram8": 60,
+     "of_reserved": 2212
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000283020",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:54674": {
+     "shared_ngram8": 59,
+     "of_reserved": 3108
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000283066",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:44716": {
+     "shared_ngram8": 90,
+     "of_reserved": 2212
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000283072",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:39994": {
+     "shared_ngram8": 92,
+     "of_reserved": 5540
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000279878",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:54710": {
+     "shared_ngram8": 83,
+     "of_reserved": 5813
+    },
+    "institutions:alio-rule:49961": {
+     "shared_ngram8": 142,
+     "of_reserved": 1983
+    },
+    "institutions:alio-rule:38737": {
+     "shared_ngram8": 103,
+     "of_reserved": 1593
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000275386",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:32309": {
+     "shared_ngram8": 59,
+     "of_reserved": 2351
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000286706",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:8942": {
+     "shared_ngram8": 63,
+     "of_reserved": 3264
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000254078",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:54710": {
+     "shared_ngram8": 112,
+     "of_reserved": 5813
+    },
+    "institutions:alio-rule:29104": {
+     "shared_ngram8": 65,
+     "of_reserved": 5603
+    },
+    "institutions:alio-rule:7719": {
+     "shared_ngram8": 57,
+     "of_reserved": 7124
+    },
+    "institutions:alio-rule:49961": {
+     "shared_ngram8": 147,
+     "of_reserved": 1983
+    },
+    "institutions:alio-rule:38737": {
+     "shared_ngram8": 115,
+     "of_reserved": 1593
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000287166",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:29104": {
+     "shared_ngram8": 62,
+     "of_reserved": 5603
+    },
+    "institutions:alio-rule:7719": {
+     "shared_ngram8": 68,
+     "of_reserved": 8196
+    },
+    "institutions:alio-rule:49961": {
+     "shared_ngram8": 147,
+     "of_reserved": 1983
+    },
+    "institutions:alio-rule:38737": {
+     "shared_ngram8": 113,
+     "of_reserved": 1593
+    },
+    "institutions:alio-rule:54710": {
+     "shared_ngram8": 111,
+     "of_reserved": 5813
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000285428",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:29104": {
+     "shared_ngram8": 62,
+     "of_reserved": 5603
+    },
+    "institutions:alio-rule:7719": {
+     "shared_ngram8": 67,
+     "of_reserved": 8196
+    },
+    "institutions:alio-rule:49961": {
+     "shared_ngram8": 147,
+     "of_reserved": 1983
+    },
+    "institutions:alio-rule:38737": {
+     "shared_ngram8": 113,
+     "of_reserved": 1593
+    },
+    "institutions:alio-rule:54710": {
+     "shared_ngram8": 111,
+     "of_reserved": 5813
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000187980",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:38904": {
+     "shared_ngram8": 62,
+     "of_reserved": 10681
+    },
+    "institutions:alio-rule:22216": {
+     "shared_ngram8": 57,
+     "of_reserved": 28899
+    },
+    "institutions:alio-rule:28991": {
+     "shared_ngram8": 57,
+     "of_reserved": 23155
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000231070",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:7487": {
+     "shared_ngram8": 56,
+     "of_reserved": 7143
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000203099",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:32309": {
+     "shared_ngram8": 53,
+     "of_reserved": 2351
+    },
+    "institutions:alio-rule:50990": {
+     "shared_ngram8": 59,
+     "of_reserved": 1694
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000282600",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:22216": {
+     "shared_ngram8": 62,
+     "of_reserved": 21872
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000213490",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:46958": {
+     "shared_ngram8": 192,
+     "of_reserved": 8108
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000206706",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:40839": {
+     "shared_ngram8": 62,
+     "of_reserved": 2717
+    },
+    "institutions:alio-rule:39994": {
+     "shared_ngram8": 110,
+     "of_reserved": 5540
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000285674",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:44716": {
+     "shared_ngram8": 106,
+     "of_reserved": 2212
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000209763",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:39994": {
+     "shared_ngram8": 60,
+     "of_reserved": 4604
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000239706",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:54674": {
+     "shared_ngram8": 140,
+     "of_reserved": 3108
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000266228",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:34441": {
+     "shared_ngram8": 65,
+     "of_reserved": 6552
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000286854",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:22216": {
+     "shared_ngram8": 244,
+     "of_reserved": 21872
+    },
+    "institutions:alio-rule:39914": {
+     "shared_ngram8": 108,
+     "of_reserved": 6476
+    },
+    "institutions:alio-rule:33632": {
+     "shared_ngram8": 63,
+     "of_reserved": 6814
+    },
+    "institutions:alio-rule:28991": {
+     "shared_ngram8": 202,
+     "of_reserved": 23155
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000285442",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:20256": {
+     "shared_ngram8": 650,
+     "of_reserved": 6231
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000286650",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:44222": {
+     "shared_ngram8": 55,
+     "of_reserved": 1780
+    },
+    "institutions:alio-rule:7719": {
+     "shared_ngram8": 84,
+     "of_reserved": 8196
+    },
+    "institutions:alio-rule:54710": {
+     "shared_ngram8": 78,
+     "of_reserved": 5813
+    },
+    "institutions:alio-rule:49961": {
+     "shared_ngram8": 172,
+     "of_reserved": 1983
+    },
+    "institutions:alio-rule:38737": {
+     "shared_ngram8": 126,
+     "of_reserved": 1593
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000271802",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:55096": {
+     "shared_ngram8": 2363,
+     "of_reserved": 4989
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000271706",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:54674": {
+     "shared_ngram8": 181,
+     "of_reserved": 3108
+    },
+    "institutions:alio-rule:3394": {
+     "shared_ngram8": 1099,
+     "of_reserved": 11880
+    },
+    "institutions:alio-rule:38239": {
+     "shared_ngram8": 74,
+     "of_reserved": 11825
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000279002",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:20256": {
+     "shared_ngram8": 98,
+     "of_reserved": 6231
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000271712",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:34655": {
+     "shared_ngram8": 466,
+     "of_reserved": 3534
+    },
+    "institutions:alio-rule:12034": {
+     "shared_ngram8": 413,
+     "of_reserved": 1891
+    },
+    "institutions:alio-rule:26634": {
+     "shared_ngram8": 207,
+     "of_reserved": 2118
+    },
+    "institutions:alio-rule:47992": {
+     "shared_ngram8": 112,
+     "of_reserved": 2787
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000271740",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:49122": {
+     "shared_ngram8": 75,
+     "of_reserved": 5639
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000279040",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:31150": {
+     "shared_ngram8": 271,
+     "of_reserved": 2549
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000267998",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:54674": {
+     "shared_ngram8": 59,
+     "of_reserved": 3108
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000280752",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:44716": {
+     "shared_ngram8": 72,
+     "of_reserved": 2212
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000216427",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:54674": {
+     "shared_ngram8": 52,
+     "of_reserved": 3108
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000279582",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:44716": {
+     "shared_ngram8": 112,
+     "of_reserved": 2212
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000287092",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:39994": {
+     "shared_ngram8": 54,
+     "of_reserved": 5540
+    },
+    "institutions:alio-rule:28993": {
+     "shared_ngram8": 50,
+     "of_reserved": 13693
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000196821",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:54470": {
+     "shared_ngram8": 77,
+     "of_reserved": 5161
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000274420",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:31150": {
+     "shared_ngram8": 236,
+     "of_reserved": 2549
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000278816",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:7487": {
+     "shared_ngram8": 53,
+     "of_reserved": 7143
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000258228",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:7487": {
+     "shared_ngram8": 62,
+     "of_reserved": 7143
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000210716",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:54674": {
+     "shared_ngram8": 57,
+     "of_reserved": 3108
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000287228",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:44716": {
+     "shared_ngram8": 70,
+     "of_reserved": 2212
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000254206",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:7487": {
+     "shared_ngram8": 53,
+     "of_reserved": 7143
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000275030",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:44716": {
+     "shared_ngram8": 54,
+     "of_reserved": 2212
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000204337",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:28993": {
+     "shared_ngram8": 62,
+     "of_reserved": 13096
+    },
+    "institutions:alio-rule:40839": {
+     "shared_ngram8": 71,
+     "of_reserved": 2717
+    },
+    "institutions:alio-rule:39994": {
+     "shared_ngram8": 104,
+     "of_reserved": 5540
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000284898",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:39994": {
+     "shared_ngram8": 53,
+     "of_reserved": 5540
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000217249",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:31150": {
+     "shared_ngram8": 57,
+     "of_reserved": 2549
+    },
+    "institutions:alio-rule:32309": {
+     "shared_ngram8": 71,
+     "of_reserved": 2351
+    },
+    "institutions:alio-rule:50990": {
+     "shared_ngram8": 79,
+     "of_reserved": 1694
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000275200",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:7211": {
+     "shared_ngram8": 94,
+     "of_reserved": 7588
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000187729",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:31150": {
+     "shared_ngram8": 115,
+     "of_reserved": 2549
+    },
+    "institutions:alio-rule:32309": {
+     "shared_ngram8": 136,
+     "of_reserved": 2351
+    },
+    "institutions:alio-rule:50990": {
+     "shared_ngram8": 106,
+     "of_reserved": 1694
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000187730",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:31150": {
+     "shared_ngram8": 58,
+     "of_reserved": 2549
+    },
+    "institutions:alio-rule:32309": {
+     "shared_ngram8": 59,
+     "of_reserved": 2351
+    },
+    "institutions:alio-rule:50990": {
+     "shared_ngram8": 86,
+     "of_reserved": 1694
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000282818",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:22216": {
+     "shared_ngram8": 57,
+     "of_reserved": 21872
+    },
+    "institutions:alio-rule:7211": {
+     "shared_ngram8": 106,
+     "of_reserved": 7588
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2200000076848",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:54304": {
+     "shared_ngram8": 51,
+     "of_reserved": 1033
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000257908",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:35711": {
+     "shared_ngram8": 54,
+     "of_reserved": 1324
+    },
+    "institutions:alio-rule:34441": {
+     "shared_ngram8": 61,
+     "of_reserved": 6552
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000285256",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:7211": {
+     "shared_ngram8": 114,
+     "of_reserved": 7588
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2200000108693",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:39994": {
+     "shared_ngram8": 109,
+     "of_reserved": 5540
+    },
+    "institutions:alio-rule:28993": {
+     "shared_ngram8": 114,
+     "of_reserved": 9703
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000252790",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:28993": {
+     "shared_ngram8": 101,
+     "of_reserved": 13693
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000254694",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:31150": {
+     "shared_ngram8": 57,
+     "of_reserved": 2549
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000253580",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:31150": {
+     "shared_ngram8": 116,
+     "of_reserved": 2549
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000278096",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:44716": {
+     "shared_ngram8": 57,
+     "of_reserved": 2212
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000282586",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:28993": {
+     "shared_ngram8": 61,
+     "of_reserved": 13693
+    },
+    "institutions:alio-rule:39994": {
+     "shared_ngram8": 54,
+     "of_reserved": 5540
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000258806",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:7487": {
+     "shared_ngram8": 52,
+     "of_reserved": 6027
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000219586",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:34441": {
+     "shared_ngram8": 61,
+     "of_reserved": 6552
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000254728",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:54710": {
+     "shared_ngram8": 100,
+     "of_reserved": 5813
+    },
+    "institutions:alio-rule:10646": {
+     "shared_ngram8": 57,
+     "of_reserved": 2490
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000287036",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:22216": {
+     "shared_ngram8": 50,
+     "of_reserved": 21872
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000201704",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:7487": {
+     "shared_ngram8": 77,
+     "of_reserved": 7143
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000183994",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:31150": {
+     "shared_ngram8": 64,
+     "of_reserved": 2549
+    },
+    "institutions:alio-rule:32309": {
+     "shared_ngram8": 71,
+     "of_reserved": 2351
+    },
+    "institutions:alio-rule:50990": {
+     "shared_ngram8": 85,
+     "of_reserved": 1694
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000270848",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:31150": {
+     "shared_ngram8": 129,
+     "of_reserved": 2549
+    },
+    "institutions:alio-rule:7211": {
+     "shared_ngram8": 50,
+     "of_reserved": 7453
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000284432",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:39994": {
+     "shared_ngram8": 51,
+     "of_reserved": 5540
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:1108011000",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:44716": {
+     "shared_ngram8": 56,
+     "of_reserved": 2212
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:1106061000",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:4809": {
+     "shared_ngram8": 128,
+     "of_reserved": 5745
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000268790",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:31150": {
+     "shared_ngram8": 82,
+     "of_reserved": 2549
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2200000068791",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:31150": {
+     "shared_ngram8": 101,
+     "of_reserved": 2549
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000233624",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:31150": {
+     "shared_ngram8": 169,
+     "of_reserved": 2549
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000195324",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:54674": {
+     "shared_ngram8": 63,
+     "of_reserved": 3108
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000278306",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:44716": {
+     "shared_ngram8": 96,
+     "of_reserved": 2212
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000244352",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:40839": {
+     "shared_ngram8": 64,
+     "of_reserved": 2717
+    },
+    "institutions:alio-rule:39994": {
+     "shared_ngram8": 103,
+     "of_reserved": 5540
+    },
+    "institutions:alio-rule:28993": {
+     "shared_ngram8": 54,
+     "of_reserved": 13693
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000275234",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:7211": {
+     "shared_ngram8": 94,
+     "of_reserved": 7588
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000282054",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:31150": {
+     "shared_ngram8": 54,
+     "of_reserved": 2549
+    },
+    "institutions:alio-rule:32309": {
+     "shared_ngram8": 69,
+     "of_reserved": 2351
+    },
+    "institutions:alio-rule:50990": {
+     "shared_ngram8": 73,
+     "of_reserved": 1694
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000210145",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:54674": {
+     "shared_ngram8": 52,
+     "of_reserved": 3108
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000276396",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:44716": {
+     "shared_ngram8": 113,
+     "of_reserved": 2212
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000280800",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:44716": {
+     "shared_ngram8": 77,
+     "of_reserved": 2212
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000210309",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:28993": {
+     "shared_ngram8": 64,
+     "of_reserved": 11547
+    },
+    "institutions:alio-rule:40839": {
+     "shared_ngram8": 130,
+     "of_reserved": 2814
+    },
+    "institutions:alio-rule:39994": {
+     "shared_ngram8": 64,
+     "of_reserved": 5540
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000282832",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:22216": {
+     "shared_ngram8": 50,
+     "of_reserved": 21872
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000227044",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:7211": {
+     "shared_ngram8": 51,
+     "of_reserved": 7588
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000286866",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:7211": {
+     "shared_ngram8": 50,
+     "of_reserved": 7840
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000243040",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:31150": {
+     "shared_ngram8": 189,
+     "of_reserved": 2549
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000263716",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:7211": {
+     "shared_ngram8": 228,
+     "of_reserved": 7588
+    },
+    "institutions:alio-rule:46958": {
+     "shared_ngram8": 74,
+     "of_reserved": 8092
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000249464",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:7487": {
+     "shared_ngram8": 66,
+     "of_reserved": 7143
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000212180",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:54674": {
+     "shared_ngram8": 57,
+     "of_reserved": 3108
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000097449",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:7487": {
+     "shared_ngram8": 57,
+     "of_reserved": 6027
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000232482",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:32309": {
+     "shared_ngram8": 51,
+     "of_reserved": 2351
+    },
+    "institutions:alio-rule:50990": {
+     "shared_ngram8": 64,
+     "of_reserved": 1694
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000272830",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:31150": {
+     "shared_ngram8": 271,
+     "of_reserved": 2549
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000210456",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:54674": {
+     "shared_ngram8": 64,
+     "of_reserved": 3108
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000279000",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:44716": {
+     "shared_ngram8": 87,
+     "of_reserved": 2212
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000221138",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:54710": {
+     "shared_ngram8": 83,
+     "of_reserved": 5813
+    },
+    "institutions:alio-rule:49961": {
+     "shared_ngram8": 139,
+     "of_reserved": 1983
+    },
+    "institutions:alio-rule:38737": {
+     "shared_ngram8": 103,
+     "of_reserved": 1593
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000268632",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:38239": {
+     "shared_ngram8": 172,
+     "of_reserved": 11791
+    },
+    "institutions:alio-rule:3394": {
+     "shared_ngram8": 60,
+     "of_reserved": 10586
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000186960",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:22216": {
+     "shared_ngram8": 128,
+     "of_reserved": 28899
+    },
+    "institutions:alio-rule:39914": {
+     "shared_ngram8": 107,
+     "of_reserved": 8375
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000276714",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:46958": {
+     "shared_ngram8": 369,
+     "of_reserved": 8092
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000276718",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:46958": {
+     "shared_ngram8": 397,
+     "of_reserved": 8092
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000254450",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:54470": {
+     "shared_ngram8": 64,
+     "of_reserved": 5161
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000247602",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:20256": {
+     "shared_ngram8": 560,
+     "of_reserved": 6231
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000284838",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:46958": {
+     "shared_ngram8": 52,
+     "of_reserved": 8108
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000247634",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:39914": {
+     "shared_ngram8": 63,
+     "of_reserved": 8375
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000284914",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:7211": {
+     "shared_ngram8": 1421,
+     "of_reserved": 7588
+    },
+    "institutions:alio-rule:46958": {
+     "shared_ngram8": 55,
+     "of_reserved": 8108
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000284950",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:7211": {
+     "shared_ngram8": 1220,
+     "of_reserved": 7588
+    },
+    "institutions:alio-rule:46958": {
+     "shared_ngram8": 54,
+     "of_reserved": 8301
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000196488",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:54674": {
+     "shared_ngram8": 81,
+     "of_reserved": 3108
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000279692",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:46958": {
+     "shared_ngram8": 227,
+     "of_reserved": 8092
+    },
+    "institutions:alio-rule:7211": {
+     "shared_ngram8": 85,
+     "of_reserved": 7588
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000282194",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:22216": {
+     "shared_ngram8": 58,
+     "of_reserved": 21872
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000279836",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:7211": {
+     "shared_ngram8": 1724,
+     "of_reserved": 7588
+    },
+    "institutions:alio-rule:46958": {
+     "shared_ngram8": 54,
+     "of_reserved": 8301
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000275556",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:3394": {
+     "shared_ngram8": 67,
+     "of_reserved": 11880
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000281708",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:34655": {
+     "shared_ngram8": 211,
+     "of_reserved": 3534
+    },
+    "institutions:alio-rule:26634": {
+     "shared_ngram8": 88,
+     "of_reserved": 2118
+    },
+    "institutions:alio-rule:12034": {
+     "shared_ngram8": 167,
+     "of_reserved": 2002
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000281312",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:46958": {
+     "shared_ngram8": 436,
+     "of_reserved": 8092
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000234544",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:39994": {
+     "shared_ngram8": 76,
+     "of_reserved": 5540
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000276276",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:22216": {
+     "shared_ngram8": 50,
+     "of_reserved": 28899
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000283412",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:7211": {
+     "shared_ngram8": 450,
+     "of_reserved": 7588
+    },
+    "institutions:alio-rule:46958": {
+     "shared_ngram8": 70,
+     "of_reserved": 8108
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000276592",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:46958": {
+     "shared_ngram8": 398,
+     "of_reserved": 8092
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000283050",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:7211": {
+     "shared_ngram8": 1341,
+     "of_reserved": 7588
+    },
+    "institutions:alio-rule:46958": {
+     "shared_ngram8": 50,
+     "of_reserved": 8301
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000285700",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:7211": {
+     "shared_ngram8": 362,
+     "of_reserved": 7453
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000187205",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:7487": {
+     "shared_ngram8": 50,
+     "of_reserved": 6027
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000266232",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:39994": {
+     "shared_ngram8": 69,
+     "of_reserved": 5540
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000201738",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:4809": {
+     "shared_ngram8": 158,
+     "of_reserved": 5745
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000276840",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:44716": {
+     "shared_ngram8": 50,
+     "of_reserved": 2153
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000265908",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:31150": {
+     "shared_ngram8": 256,
+     "of_reserved": 2549
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000220132",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:7487": {
+     "shared_ngram8": 56,
+     "of_reserved": 7143
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000211377",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:31150": {
+     "shared_ngram8": 55,
+     "of_reserved": 2549
+    },
+    "institutions:alio-rule:32309": {
+     "shared_ngram8": 72,
+     "of_reserved": 2351
+    },
+    "institutions:alio-rule:50990": {
+     "shared_ngram8": 77,
+     "of_reserved": 1694
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000246090",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:54674": {
+     "shared_ngram8": 58,
+     "of_reserved": 3108
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000249530",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:39994": {
+     "shared_ngram8": 75,
+     "of_reserved": 5540
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000205281",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:34441": {
+     "shared_ngram8": 65,
+     "of_reserved": 6552
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000272886",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:31150": {
+     "shared_ngram8": 153,
+     "of_reserved": 2549
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000247930",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:54710": {
+     "shared_ngram8": 63,
+     "of_reserved": 5813
+    },
+    "institutions:alio-rule:49961": {
+     "shared_ngram8": 96,
+     "of_reserved": 1983
+    },
+    "institutions:alio-rule:38737": {
+     "shared_ngram8": 74,
+     "of_reserved": 1593
+    },
+    "institutions:alio-rule:29104": {
+     "shared_ngram8": 78,
+     "of_reserved": 5603
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000248886",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:31150": {
+     "shared_ngram8": 138,
+     "of_reserved": 2549
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000191817",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:31150": {
+     "shared_ngram8": 63,
+     "of_reserved": 2549
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2200000106993",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:54470": {
+     "shared_ngram8": 59,
+     "of_reserved": 5161
+    },
+    "institutions:alio-rule:55096": {
+     "shared_ngram8": 51,
+     "of_reserved": 4989
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2200000107051",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:4809": {
+     "shared_ngram8": 162,
+     "of_reserved": 5745
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000274044",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:28991": {
+     "shared_ngram8": 295,
+     "of_reserved": 23155
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000193084",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:31150": {
+     "shared_ngram8": 150,
+     "of_reserved": 2549
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000249424",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:54674": {
+     "shared_ngram8": 54,
+     "of_reserved": 3108
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:admrul:2100000250564",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:44716": {
+     "shared_ngram8": 60,
+     "of_reserved": 2212
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:expc:328203",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:22216": {
+     "shared_ngram8": 88,
+     "of_reserved": 21872
+    },
+    "institutions:alio-rule:28991": {
+     "shared_ngram8": 51,
+     "of_reserved": 23155
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:expc:334693",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:28991": {
+     "shared_ngram8": 59,
+     "of_reserved": 23155
+    },
+    "institutions:alio-rule:22216": {
+     "shared_ngram8": 51,
+     "of_reserved": 23168
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:expc:341265",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:22216": {
+     "shared_ngram8": 54,
+     "of_reserved": 28899
+    },
+    "institutions:alio-rule:38904": {
+     "shared_ngram8": 70,
+     "of_reserved": 10681
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:expc:339881",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:22216": {
+     "shared_ngram8": 70,
+     "of_reserved": 21872
+    },
+    "institutions:alio-rule:33632": {
+     "shared_ngram8": 52,
+     "of_reserved": 6908
+    },
+    "institutions:alio-rule:28991": {
+     "shared_ngram8": 78,
+     "of_reserved": 23155
+    },
+    "institutions:alio-rule:38904": {
+     "shared_ngram8": 54,
+     "of_reserved": 10681
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:expc:340585",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:22216": {
+     "shared_ngram8": 136,
+     "of_reserved": 21872
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:expc:329045",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:33636": {
+     "shared_ngram8": 54,
+     "of_reserved": 11714
+    },
+    "institutions:alio-rule:12706": {
+     "shared_ngram8": 51,
+     "of_reserved": 5403
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:expc:328227",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:28991": {
+     "shared_ngram8": 54,
+     "of_reserved": 22947
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:expc:331385",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:38904": {
+     "shared_ngram8": 190,
+     "of_reserved": 10681
+    },
+    "institutions:alio-rule:22216": {
+     "shared_ngram8": 76,
+     "of_reserved": 23168
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:expc:331247",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:28991": {
+     "shared_ngram8": 62,
+     "of_reserved": 23155
+    }
+   }
+  },
+  {
+   "corpus_id": "law-go-kr:expc:333291",
+   "kind": null,
+   "families": {
+    "institutions:alio-rule:22216": {
+     "shared_ngram8": 65,
+     "of_reserved": 21872
+    },
+    "institutions:alio-rule:38904": {
+     "shared_ngram8": 66,
+     "of_reserved": 10681
+    }
+   }
+  }
+ ]
+}

@@ -1,0 +1,92 @@
+{
+ "version": "v1",
+ "built_at": "2026-10-30T03:04:45+00:00",
+ "input": "data/law-ko-source/docs.jsonl",
+ "input_sha256": "002d8f491bc9073108d9fb4d2c7a2bd2c76e229015205d854a1b581569e9f811",
+ "code_sha256": "1cefafc9ae85188436947668f411034f0207bfa315534e19ba630084b6d3323c",
+ "korean_quality_sha256": "4d732cf102821152e6dd3ea3bf3e37f4874923b7903129967eb4ed97c11a5c97",
+ "overlap_report": "reports/coordination/B-012/overlap-internal-rules-148.json",
+ "overlap_report_sha256": "4426e725b26cab81ff9e4b7502a1a78b999133a7d706ceb0f8db8f9e317c903b",
+ "eval_files": [
+  "data/korean-rag-eval-v1/test.jsonl",
+  "data/institution-qa-frozen-01/source-docs.jsonl",
+  "data/institution-qa-frozen-01/test.jsonl",
+  "data/public-document-sft-source/annotations.jsonl",
+  "data/public-document-sft-source/documents.jsonl"
+ ],
+ "reasons": {
+  "ok": 3428,
+  "reserved_overlap_partial": 226,
+  "reserved_overlap": 1
+ },
+ "parts": {
+  "docs": {
+   "file": "docs.jsonl",
+   "sha256": "ea32e921c9068a9978b930af4fea4a8e1e6c30815af0b005b5f76515fa2d06d0",
+   "rows": 3428,
+   "characters": 27330182,
+   "by_kind": {
+    "administrative_rule": 2412,
+    "legal_interpretation": 1016
+   },
+   "by_topic": {
+    "인사": 612,
+    "복무": 313,
+    "결재·문서": 324,
+    "감사·징계": 225,
+    "계약·구매": 757,
+    "회계·지출": 380,
+    "보수·수당": 446,
+    "예산·기금": 193,
+    "여비": 92,
+    "물품·자산": 214
+   }
+  },
+  "quarantine": {
+   "file": "quarantine.jsonl",
+   "sha256": "4b0657c3bb3cbe48e75437f9852ee598c71cf6d02928c2cb0ee3738f18b5126e",
+   "rows": 227,
+   "characters": 5119704,
+   "by_kind": {
+    "administrative_rule": 217,
+    "legal_interpretation": 10
+   },
+   "by_topic": {
+    "계약·구매": 79,
+    "회계·지출": 1,
+    "인사": 67,
+    "복무": 26,
+    "결재·문서": 17,
+    "감사·징계": 28,
+    "물품·자산": 4,
+    "예산·기금": 8,
+    "보수·수당": 2
+   }
+  }
+ },
+ "quality": {
+  "ok": 2874,
+  "line_punct_ratio": 180,
+  "char_dup_ratio": 107,
+  "top_4_gram": 2,
+  "duplicated_8_n_grams": 19,
+  "list_ratio": 23,
+  "dup_line_frac": 42,
+  "duplicated_5_n_grams": 59,
+  "hangul_ratio": 12,
+  "duplicated_9_n_grams": 25,
+  "top_3_gram": 1,
+  "gopher_below_alpha_threshold": 12,
+  "latin_ratio": 10,
+  "duplicated_6_n_grams": 15,
+  "duplicated_10_n_grams": 27,
+  "duplicated_7_n_grams": 20
+ },
+ "splits": {
+  "train": 3398,
+  "valid": 15,
+  "test": 15
+ },
+ "rights": "저작권법 제7조 (법령·훈령·예규·고시·법령해석); 출처 표시: 법제처 국가법령정보센터",
+ "note": "local candidate; not uploaded; quality:<reason> is a flag (A decides); topic is a title match, not a verified classification"
+}
