@@ -22,7 +22,8 @@ from urllib.parse import urlsplit, unquote
 import numpy as np
 import torch
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from evaluate_external_chat import GRAMMAR, MAX_TOKENS, SYSTEM, complete, digest, evidence_grammar, request as llama_request
+from evaluate_external_chat import (GRAMMAR, MAX_TOKENS, QWEN3_NO_THINK, SYSTEM, complete, digest, evidence_grammar,
+                                    request as llama_request)
 from trid.case_prompts import CASE_SYSTEM
 from trid.extractive import load_reader, read as read_extractive, passage_spans
 from trid.prompts import rag_prompt
@@ -313,22 +314,34 @@ ROUTER_SYSTEM = (
     '앞선 대화 내용에 대한 질문처럼 기관 문서를 찾지 않아도 되는 경우.\n'
     '분류 예: 인사말 → 대화 / 서비스 사용법 문의 → 대화 / 문장 다듬기 요청 → 대화 / 업무 기준 금액 문의 → 검색 / '
     '징계 처분의 효력 문의 → 검색 / 앞선 업무 질문에 이어 다른 직급·사례를 묻는 말 → 검색.\n'
+    '직전 대화가 주어지면 함께 보되, 분류하는 것은 마지막 입력입니다. 직전이 일반 대화이고 마지막 입력이 그 내용을 '
+    '고르기·고치기·줄이기·덧붙이기처럼 이어 가는 말이면 대화입니다. 직전이 문서 검색이고 마지막 입력이 다른 직급·금액·'
+    '사례를 이어 묻는 말이면 검색입니다.\n'
     '답은 "검색" 또는 "대화" 한 단어만 쓰세요.')
 ROUTER_GRAMMAR = 'root ::= "검색" | "대화"'
+# General conversation (GENERAL-CHAT-001): the prompt only sets the role and the manner. Any instruction about rules
+# or institutions here made the 1.7B model send everyday talk ("커피 몇 잔", "점심 추천") to "기관 규정을 확인하세요";
+# work facts are kept out by the router and by the rule-claim check on the reply (RULE_CLAIM), not by the prompt.
 CHAT_SYSTEM = (
-    '당신은 TRID입니다. 대한민국 공공기관 직원의 업무를 돕는 실험용 AI 비서이며, Alibaba의 공개 모델 Qwen3-1.7B를 '
-    '업무 특화 학습 없이 그대로 사용합니다. 인사, 사용 안내, 일반 대화, 글 다듬기 요청에는 자연스럽고 간결한 한국어로 '
-    '답하세요. 특정 기관의 규정·금액·기한·비율·법령 조문 같은 사실은 기억으로 답하지 말고, 기관명이나 규정명을 넣어 '
-    '물으면 등록된 공개 자료(법령정보·공공데이터 FAQ·업무편람)에서 근거를 찾아 답한다고 안내하세요. 모르는 것은 '
-    '모른다고 말하세요. 실시간 정보, 인터넷 검색, 기관 내부 시스템 조회는 할 수 없습니다. 중국어·영어를 섞지 말고 '
-    '반드시 한국어로만 답하세요.')
+    '당신은 TRID입니다. 공공기관 직원과 이야기하는 한국어 AI 비서입니다. 사용자의 말에 공감하고, 앞선 대화를 이어서 '
+    '자연스럽고 구체적으로 답하세요. 대화 도중에 인사나 자기소개를 반복하지 마세요. 한국어로만 답하세요.')
+# Qwen3's recommended non-thinking sampling for conversation (greedy decoding made the 1.7B model repeat its previous
+# answer on follow-ups); classification and document answers stay greedy. Han characters are excluded by grammar
+# (sampled Qwen3 drifts into Chinese mid-reply).
+CHAT_SAMPLING = dict(temperature=0.7, top_p=0.8, top_k=20, min_p=0, presence_penalty=1.5)
+NO_HAN = r'root ::= [^\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]*'
 EXPLAIN_SYSTEM = (
     '당신은 TRID입니다. 공공기관 업무 용어·개념·일반적인 요령을 쉬운 한국어로 짧게 설명하세요. 특정 기관 규정의 금액·'
     '한도·기한·조문 번호는 말하지 말고, 어느 기관의 규정이나 자료에 따른 설명인 것처럼 기관명을 내세우지 마세요. 구체적인 '
     '기준은 기관명이나 규정명을 넣어 물으면 공개 자료에서 근거를 찾는다고 한 문장으로 안내하세요. 반드시 한국어로만 답하세요.')
-# A digit followed by a unit of rules (money, rates, periods, articles): such claims need a retrieved source, unless
-# every number in the sentence was given by the visitor in this conversation (their own schedule, budget, leave).
+# A digit followed by a unit (money, rates, periods, articles) …
 UNSOURCED_FACT = re.compile(r'\d[\d,.]*\s*(?:만\s*(?:\d[\d,.]*\s*)?)?(?:천\s*)?(?:원|%|퍼센트|일|시간|개월|년|주|조|항|호|배|명|회)')
+# … in a sentence about work rules, rates or entitlements is a rule claim that needs a retrieved source, unless every
+# number in it was given by the visitor. Everyday figures ("커피 2잔", "30분 낮잠", "11월 3일부터 휴가") are not.
+RULE_CLAIM = re.compile(r'규정|규칙|법령|법률|시행령|조례|훈령|예규|지침|고시|조문|제\s*\d+\s*조|지급|수당|여비|출장|식비|숙박비|'
+                        r'일비|운임|한도|상한|하한|기준액|단가|요율|세율|세금|과세|공제|과태료|벌금|징계|감봉|정직|견책|연가|병가|'
+                        r'공가|특별휴가|휴가\s*일수|휴직|근속|호봉|봉급|보수|급여|임금|퇴직|연금|보험료|업무추진비|예산|공무원|'
+                        r'공공기관|기관')
 # Request types the 1.7B model does not tell apart reliably (measured in reports/coordination/TRID-ANSWER-002.md):
 # markers of the request itself, never of a particular question. Visitor-given numbers + an organise/compute verb →
 # conversation; actual-spending/statistics words → structured values, not rule passages; definition words → a general
@@ -342,7 +355,8 @@ DEFINITION = re.compile(r'뜻|의미|개념|차이|정의|이란\b|란\s*(?:무�
 RECALL_VERB = (r'(?:말한|말씀드린|얘기한|알려\s*드린|알려\s*준|적은|물어본|물어봤|물었던|질문한|답한|답해\s*준|대답한|'
                r'말해\s*준|찾아\s*준|인용한|보여\s*준|근거로\s*(?:쓴|든|삼은)|뭐라고\s*(?:했|답했|말했))')
 RECALL = re.compile(rf'(?:아까|방금|앞에서|이전에|처음에|전에|마지막에)\s*(?:제가|내가|네가|니가)?\s*{RECALL_VERB}'
-                    rf'|(?:제가|내가|네가|니가)\s*(?:아까\s*|방금\s*)?(?:뭐|무엇을?|뭘|어떤\s*걸?)?\s*{RECALL_VERB}')
+                    rf'|(?:제가|내가|네가|니가)\s*(?:아까\s*|방금\s*)?(?:뭐|무엇을?|뭘|어떤\s*걸?)?\s*{RECALL_VERB}'
+                    r'|(?:아까|방금|앞에서|처음에)\s[^?.!]{0,30}?(?:다고|라고|냐고)\s*(?:했|말했|물었|그랬)')
 ASKING = re.compile(r'\?|얼마|몇|무엇|뭐|어떻게|언제|어디|누가|나요|까요|인가|습니까|는지|알려|궁금')
 # A question asking for an amount or its standard (단가·상한·기준), as opposed to how a case is handled.
 AMOUNT_ASKED = re.compile(r'얼마|금액|단가|상한|한도|지급액|기준액|몇\s*원|기준(?:은|이|을|이\s*뭐|\s*알려)')
@@ -400,30 +414,70 @@ def _messages(system, history, user):
             + [{'role': 'user', 'content': user}])
 
 
-def _classify(base, family, context, system, grammar, question):
-    r = complete(base, [{'role': 'system', 'content': system}, {'role': 'user', 'content': f'분류할 입력: {question}'}],
+def _classify(base, family, context, system, grammar, question, before=''):
+    r = complete(base, [{'role': 'system', 'content': system}, {'role': 'user', 'content': f'{before}분류할 입력: {question}'}],
                  family, 4, context, grammar)
     return (r.get('generated') or '').strip()
 
 
 def route(base, family, context, history, question, continues=None):
     """'search' or 'chat', decided by the serving model itself under a two-word grammar (no keyword rules). The input
-    is classified on its own (given a transcript, the 1.7B model continues the conversation instead of classifying).
-    Short follow-ups of a search ("그럼 감봉은?") read as chat to the model; right after a search turn, an input that
-    the previous turn's document would answer (`continues(question, doc_id)` = Workspace.continues) is a follow-up."""
-    if _classify(base, family, context, ROUTER_SYSTEM, ROUTER_GRAMMAR, question) == '검색':
-        return 'search'
+    is classified as one input — given a transcript, the 1.7B model continues the conversation instead of classifying.
+    After a conversation turn the previous user input is stated above it: without it "그 중에 하나만 골라줘", "두
+    문장으로 줄여줘" read as search (GENERAL-CHAT-001: 6 → 2 errors of 38 labelled inputs). After a search turn it is
+    not: then "출장 다니면서 체력 관리는?" or "휴가 가면 어디가 좋을까?" were pulled into search. Short follow-ups of a
+    search ("그럼 감봉은?") can read as chat to the model; an input that the previous turn's document would answer
+    (`continues(question, doc_id)`) is a follow-up."""
+    users = [h for h in history if h['role'] == 'user']
     last = next((h for h in reversed(history) if h['role'] == 'assistant'), None)
+    after_chat = users and not (last and last.get('kind') == 'search')
+    before = f"직전 사용자 입력: {users[-1]['content'][:200]}\n직전 응답 종류: 일반 대화\n" if after_chat else ''
+    if _classify(base, family, context, ROUTER_SYSTEM, ROUTER_GRAMMAR, question, before) == '검색':
+        return 'search'
     if last and last.get('kind') == 'search' and continues and continues(question, last.get('applied_id')):
         return 'search'
     return 'chat'
 
 
-def chat_reply(base, family, context, history, question, max_tokens=320, explain=False):
+def chat_complete(base, messages, family, max_tokens, context):
+    """Conversation completion: the model's native template (Qwen3 without thinking), CHAT_SAMPLING, no Han characters.
+    {'generated', 'truncated_output'}; {'skipped_context': True} when the prompt leaves no room for `max_tokens`."""
+    prompt = llama_request(base, '/apply-template', {'messages': messages, 'chat_template_kwargs': {'enable_thinking': False}})['prompt']
+    if family == 'qwen3' and not prompt.endswith(QWEN3_NO_THINK):
+        raise ValueError('Native Qwen3 no-thinking prefix was not rendered')
+    tokens = llama_request(base, '/tokenize', {'content': prompt, 'add_special': True, 'parse_special': True})['tokens']
+    if len(tokens) + max_tokens > context:
+        return {'skipped_context': True}
+    c = llama_request(base, '/completion', dict(prompt=tokens, n_predict=max_tokens, grammar=NO_HAN, cache_prompt=False,
+                                                 seed=secrets.randbelow(2 ** 31), **CHAT_SAMPLING))
+    return {'generated': c['content'].strip(), 'truncated_output': c['stop_type'] == 'limit'}
+
+
+def conversation_turns(history, recall):
+    """The earlier turns the conversation model is given. Search exchanges are left out — given "인사혁신처 기준으로요"
+    and its document note, the 1.7B model went on to invent 휴가 rules in "휴가 쓰면 어디 가면 좋을까요?" — except when
+    the question is about the conversation itself, which may be about those turns (stored as their document and
+    verified quotes only)."""
+    return history if recall else [h for h in history if h.get('kind') != 'search']
+
+
+def chat_reply(base, family, context, history, question, max_tokens=384, explain=False, first_turn=None):
     """General conversation (or, with `explain`, a general explanation citing no institution) with the model's native
-    chat template. Not grounded: a sentence stating a rule-like number is withheld unless every number in it was
-    given by the visitor in this conversation (their own facts may be repeated or organised)."""
-    r = complete(base, _messages(EXPLAIN_SYSTEM if explain else CHAT_SYSTEM, history, question), family, max_tokens, context)
+    chat template and the given earlier turns (the oldest dropped when they do not fit). Not grounded: a sentence
+    making a rule claim — a number with a unit in a sentence about rules, rates or entitlements (RULE_CLAIM) — is
+    withheld unless every number in it was given by the visitor in this conversation (their own facts may be repeated
+    or organised); everyday figures stay. On the first turn of a conversation (`first_turn`, default: no turns given)
+    the model is told there is nothing earlier, so "제 이름이 뭐라고 했죠?" after a new conversation is not answered
+    with a claimed memory."""
+    system = EXPLAIN_SYSTEM if explain else CHAT_SYSTEM
+    if (not history) if first_turn is None else first_turn:
+        system += ' 이 대화는 지금 막 시작되어 앞선 내용이 없습니다. 사용자가 앞에서 한 말을 물으면 아직 들은 적이 없다고 답하세요.'
+    turns = history[-HISTORY_TURNS:]
+    while True:
+        r = chat_complete(base, _messages(system, turns, question), family, max_tokens, context)
+        if not r.get('skipped_context') or not turns:
+            break
+        turns = turns[2:]
     output = (r.get('generated') or '').strip()
     given_text = ' '.join([question] + [h['content'] for h in history if h['role'] == 'user'])
     given, given_values = _numbers(given_text), _values(given_text)
@@ -436,15 +490,16 @@ def chat_reply(base, family, context, history, question, max_tokens=320, explain
         values = _values(pieces[i])
         own = _numbers(pieces[i]) <= given or values <= given_values
         calculated = not own and values and values <= given_values | derived
-        if UNSOURCED_FACT.search(pieces[i]) and not own and not calculated:
+        claim = UNSOURCED_FACT.search(pieces[i]) and RULE_CLAIM.search(pieces[i])
+        if claim and not own and not calculated:
             withheld += 1
         else:
             computed += bool(calculated and UNSOURCED_FACT.search(pieces[i]))
             kept.append(pieces[i] + (pieces[i + 1] if i + 1 < len(pieces) else ''))
     notes = []
     if withheld:
-        notes.append(f'근거 없이 수치·기한·조문을 말한 문장 {withheld}개를 숨겼습니다(사용자가 말한 숫자와 그 계산 결과는 숨기지 않음). '
-                     '업무 기준은 기관명이나 규정명을 넣어 질문해 주세요.')
+        notes.append(f'근거 없이 업무 기준(금액·기한·비율·조문)을 말한 문장 {withheld}개를 숨겼습니다(사용자가 말한 숫자와 그 계산 결과는 '
+                     '숨기지 않음). 업무 기준은 기관명이나 규정명을 넣어 질문해 주세요.')
     if computed:
         notes.append(f'사용자가 준 숫자를 더하거나 빼거나 곱한 값과 일치하는 문장 {computed}개를 그대로 보였습니다. 계산 결과는 직접 '
                      '확인하세요.')
@@ -457,28 +512,12 @@ def chat_reply(base, family, context, history, question, max_tokens=320, explain
                       '일반 대화 응답입니다. 문서 근거를 검색하지 않았고 검증 대상이 아닙니다.')}
 
 
-RECALLED = '[앞선 대화 기록을 그대로 보여 줌]'  # what a recall turn is stored as (the transcript again would nest)
-
-
-def recall_reply(history):
-    """A question about the conversation itself ("아까 내가 뭐 물어봤지?", "방금 답한 규정이 뭐였어?") without the
-    visitor's figures to organise: answered from this session's own stored turns, verbatim, with no model (a 1.7B model
-    retelling a transcript invents turns). Search turns were stored as their applied document and verified quotes
-    only; general-conversation answers are marked unverified; earlier recall turns are left out. Nothing outside this
-    session is read."""
-    turns = [(q['content'], a) for q, a in zip(history[::2], history[1::2])
-             if q['role'] == 'user' and a['role'] == 'assistant' and a['content'] != RECALLED]
-    base = {'status': 'chat', 'answer_mode': 'recall', 'candidates': [], 'checked_chunks': 0, 'commentary_notes': [],
-            'warnings': [], 'scope': '이 브라우저 세션의 대화 기록만 그대로 보였습니다. 모델을 실행하지 않았고 문서를 검색하지 않았습니다.'}
-    if not turns:
-        return {**base, 'answer': '이 대화에는 앞서 나눈 질문이나 답변 기록이 없습니다. 이전 세션이나 다른 사람의 대화는 볼 수 없습니다.'}
-    lines = []
-    for n, (asked, answer) in enumerate(turns, 1):
-        said = answer['content']
-        if answer.get('kind') != 'search':
-            said = f"[일반 대화 답변 · 검증 안 됨] {said[:160]}{'…' if len(said) > 160 else ''}"
-        lines.append(f'{n}. 질문: “{asked}”\n   답변: {said}')
-    return {**base, 'answer': '이 대화에서 앞서 나눈 내용입니다(기록 그대로).\n' + '\n'.join(lines)}
+def no_history_reply():
+    """A question about earlier turns when this session has none: said so without the model (which would invent a
+    conversation). With earlier turns the question is ordinary conversation over them (chat_reply)."""
+    return {'status': 'chat', 'answer_mode': 'chat', 'candidates': [], 'checked_chunks': 0, 'commentary_notes': [],
+            'warnings': [], 'answer': '이 대화에는 앞서 나눈 이야기가 아직 없어요. 이전 대화나 다른 사람의 대화는 볼 수 없습니다.',
+            'scope': '이 브라우저 세션의 대화 기록만 확인했습니다. 모델을 실행하지 않았습니다.'}
 
 
 def statistic_reply(workspace, question):
@@ -1867,26 +1906,29 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                         ws = workspace  # the shared index, or a named institution's separate snapshot index
                         inst_ws = institution_indexes(state, workspace, question, context_doc) if workspace_mode else None
                         continues = ((lambda q, d: (inst_ws or workspace).continues(q, d)) if workspace_mode else None)
+                        explain = False
                         if version.get('assistant'):
                             kind = request_type(question)
-                            if kind == 'organize' or (kind == 'recall' and history and ORGANIZE.search(question)):
-                                intent = 'chat'  # the visitor's own figures, or what they said earlier, to organise
-                            elif kind == 'recall':
-                                intent = 'chat'  # what was said in this conversation: its stored turns, verbatim
-                            elif kind == 'explain' and workspace_mode and not inst_ws:
-                                # A definition is answered from the corpus when it covers the term (견책 → 징계업무편람);
-                                # only otherwise as a general explanation citing no institution.
-                                selection = workspace.select(question, session.pinned_doc, context_doc)
-                                if selection['status'] not in ('answer', 'clarify'):
-                                    intent, selection = 'chat', None
+                            if kind in ('organize', 'recall'):
+                                # the visitor's own figures, or this conversation itself: answered from its turns
+                                intent = 'chat'
                             else:
+                                # Markers (statistic, definition) only refine a work question: the router decides
+                                # first, so "인생의 의미가 뭘까?" or "요즘 실제로 쓰는 앱" stay conversation.
                                 intent = route(version['base'], version['family'], version['context'], history, question,
                                                continues)
-                        if intent == 'chat' and kind == 'recall' and not (history and ORGANIZE.search(question)):
-                            result = recall_reply(history)
+                                if intent == 'search' and kind == 'explain' and workspace_mode and not inst_ws:
+                                    # A definition is answered from the corpus when it covers the term (견책 →
+                                    # 징계업무편람); only otherwise as a general explanation citing no institution.
+                                    selection = workspace.select(question, session.pinned_doc, context_doc)
+                                    if selection['status'] not in ('answer', 'clarify'):
+                                        intent, selection, explain = 'chat', None, True
+                        if intent == 'chat' and kind == 'recall' and not history:
+                            result = no_history_reply()
                         elif intent == 'chat':
-                            result = chat_reply(version['base'], version['family'], version['context'], history, question,
-                                                explain=kind == 'explain')
+                            result = chat_reply(version['base'], version['family'], version['context'],
+                                                conversation_turns(history, kind == 'recall'), question, explain=explain,
+                                                first_turn=not history)
                         elif workspace_mode and ((kind == 'statistic' and not (inst_ws and not inst_ws.facts
                                                                                and not COMPUTED.search(question)))
                                                  or (inst_ws and inst_ws.facts and '업무추진비' in question)):
@@ -1904,7 +1946,23 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                                 else:
                                     selection = selection or workspace.select(question, session.pinned_doc, context_doc)
                                 others = selection['others']
-                            if selection and selection['status'] != 'answer':
+                            if (version.get('assistant') and selection and selection['status'] == 'not_found'
+                                    and selection.get('reason') != 'protected' and not inst_ws and not session.pinned_doc
+                                    and not (last and last.get('kind') == 'search')
+                                    and not (selection.get('institutions') or selection.get('unknown_institutions')
+                                             or selection.get('title_matched'))
+                                    and not RULE_CLAIM.search(question)):
+                                # The router sent it to search, nothing in the corpus answers it, it does not follow a
+                                # search turn, and it names no institution, rule or rule topic: everyday talk the
+                                # router misread ("마지막 문장은 빼줘", "커피 몇 잔까지 괜찮을까?"), answered as
+                                # conversation and said so — a search failure is not a reply to it. Work questions
+                                # and follow-ups of a search ("다른 등급은?") keep the not-found reply.
+                                intent, selection, others = 'chat', None, []
+                                result = chat_reply(version['base'], version['family'], version['context'],
+                                                    conversation_turns(history, False), question, first_turn=not history)
+                                result['scope'] = ('업무 자료에서 맞는 근거를 찾지 못했고 업무 기준을 묻는 말로 보이지 않아 일반 대화로 '
+                                                   '답했습니다. ' + result['scope'])
+                            elif selection and selection['status'] != 'answer':
                                 result = workspace_reply(ws, selection)
                             else:
                                 held_out = 0
@@ -2061,9 +2119,7 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                             result.update(raw_output=None, raw_output_withheld=True)
                         if version.get('assistant'):
                             applied_doc = (result.get('workspace') or {}).get('applied')
-                            if result.get('answer_mode') == 'recall':
-                                said = RECALLED
-                            elif intent == 'chat':
+                            if intent == 'chat':
                                 said = result['answer']
                             else:
                                 # Memory keeps only what is verified, with its provenance: the document the answer was
@@ -2078,7 +2134,8 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                                     else '근거 문서를 정하지 않음(보류·되묻기·자료 없음)')
                             with state.lock:
                                 session.history += [{'role': 'user', 'content': question, 'kind': intent},
-                                                    {'role': 'assistant', 'content': said[:600], 'kind': intent,
+                                                    {'role': 'assistant', 'content': said[:1500 if intent == 'chat' else 600],
+                                                     'kind': intent,
                                                      'applied_id': applied_doc['doc_id'] if applied_doc else None}]
                                 del session.history[:-2 * HISTORY_TURNS]
                     else:

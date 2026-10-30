@@ -167,12 +167,33 @@ class ChatBackendTests(unittest.TestCase):
 
     def test_chat_reply_withholds_unsourced_rule_facts(self):
         from scripts.shared_demo import chat_reply
-        with patch('scripts.shared_demo.complete', return_value={'generated': '안녕하세요. 출장 식비는 하루 3만 원입니다.\n무엇을 도와드릴까요?'}):
+        with patch('scripts.shared_demo.chat_complete', return_value={'generated': '안녕하세요. 출장 식비는 하루 3만 원입니다.\n무엇을 도와드릴까요?'}):
             r = chat_reply('http://127.0.0.1:1', 'qwen3', 4096, [], '안녕')
         self.assertEqual(r['status'], 'chat')
         self.assertNotIn('3만', r['answer'])
         self.assertIn('무엇을 도와드릴까요?', r['answer'])
         self.assertTrue(any('1개를 숨겼습니다' in n for n in r['commentary_notes']))
+
+    def test_chat_keeps_everyday_figures_but_not_rule_claims(self):
+        from scripts.shared_demo import chat_reply
+        reply = '커피는 하루 2잔 정도가 무난해요. 점심 뒤에 20분 산책해 보세요. 공무원 출장 일비는 하루 2만5천원입니다.'
+        with patch('scripts.shared_demo.chat_complete', return_value={'generated': reply}):
+            r = chat_reply('http://127.0.0.1:1', 'qwen3', 4096, [], '어제 잠을 못 잤는데 오후 버티는 팁 있어?')
+        self.assertIn('커피는 하루 2잔 정도가 무난해요.', r['answer'])
+        self.assertIn('20분 산책', r['answer'])
+        self.assertNotIn('2만5천원', r['answer'])
+
+    def test_chat_drops_the_oldest_turns_when_the_conversation_does_not_fit(self):
+        from scripts.shared_demo import chat_reply
+        history = [{'role': r, 'content': f'{r} {i}'} for i in range(3) for r in ('user', 'assistant')]
+        sent = []
+        def complete(base, messages, *args):
+            sent.append([m['content'] for m in messages])
+            return {'skipped_context': True} if len(messages) > 4 else {'generated': '네.'}
+        with patch('scripts.shared_demo.chat_complete', side_effect=complete):
+            r = chat_reply('http://127.0.0.1:1', 'qwen3', 4096, history, '그래서?')
+        self.assertEqual(r['answer'], '네.')
+        self.assertEqual(sent[-1][1:], ['user 2', 'assistant 2', '그래서?'])  # the latest turn kept, the oldest gone
 
     def test_value_hold_passage_numbers_are_neither_quotes_nor_support(self):
         from scripts.shared_demo import PassageChunk
@@ -198,7 +219,7 @@ class ChatBackendTests(unittest.TestCase):
     def test_chat_keeps_numbers_the_visitor_gave(self):
         from scripts.shared_demo import chat_reply
         history = [{'role': 'user', 'content': '이번 달 연차가 2일 남았어요.'}, {'role': 'assistant', 'content': '알겠습니다.'}]
-        with patch('scripts.shared_demo.complete', return_value={'generated': '연차가 2일 남으셨어요. 연가는 연 21일입니다.'}):
+        with patch('scripts.shared_demo.chat_complete', return_value={'generated': '연차가 2일 남으셨어요. 연가는 연 21일입니다.'}):
             r = chat_reply('http://127.0.0.1:1', 'qwen3', 4096, history, '제 연차 며칠 남았죠?')
         self.assertIn('2일 남으셨어요', r['answer'])
         self.assertNotIn('21일', r['answer'])
@@ -207,7 +228,7 @@ class ChatBackendTests(unittest.TestCase):
         from scripts.shared_demo import chat_reply
         history = [{'role': 'user', 'content': '숙박비 8만원, 식비 2만원이에요.'}, {'role': 'assistant', 'content': '네.'}]
         reply = '합계는 10만원입니다. 하루 일비는 2만5천원입니다.'
-        with patch('scripts.shared_demo.complete', return_value={'generated': reply}):
+        with patch('scripts.shared_demo.chat_complete', return_value={'generated': reply}):
             r = chat_reply('http://127.0.0.1:1', 'qwen3', 4096, history, '둘을 더하면 얼마예요?')
         self.assertIn('합계는 10만원입니다.', r['answer'])
         self.assertNotIn('일비', r['answer'])
@@ -416,21 +437,11 @@ class AskBackAnnexTests(WorkspaceTests.__base__):
 
 
 class ConversationScopeTests(unittest.TestCase):
-    def test_recall_without_figures_reads_this_sessions_turns_only(self):
-        from scripts.shared_demo import recall_reply, request_type
-        for q in ('아까 내가 뭐 물어봤지?', '방금 답한 규정이 뭐였어?', '앞에서 뭐라고 했지?'):
+    def test_recall_markers(self):
+        from scripts.shared_demo import request_type
+        for q in ('아까 내가 뭐 물어봤지?', '방금 답한 규정이 뭐였어?', '앞에서 뭐라고 했지?', '아까 내가 어디 간다고 했지?'):
             self.assertEqual(request_type(q), 'recall', q)
         self.assertIsNone(request_type('출장 전에 신청해야 하나요?'))
-        self.assertIn('기록이 없습니다', recall_reply([])['answer'])
-        history = [{'role': 'user', 'content': '공무원 국내 출장 식비는?', 'kind': 'search'},
-                   {'role': 'assistant', 'content': '[문서 검색 답변] 근거 문서 인사혁신처 「공무원 여비 규정」, 확인된 원문 인용 없음',
-                    'kind': 'search'},
-                   {'role': 'user', 'content': '고마워', 'kind': 'chat'},
-                   {'role': 'assistant', 'content': '천만에요.', 'kind': 'chat'}]
-        answer = recall_reply(history)['answer']
-        self.assertIn('“공무원 국내 출장 식비는?”', answer)
-        self.assertIn('「공무원 여비 규정」', answer)
-        self.assertIn('[일반 대화 답변 · 검증 안 됨] 천만에요.', answer)
 
     def test_class_question_answered_from_one_institution_says_so(self):
         from types import SimpleNamespace
@@ -723,6 +734,58 @@ class ProtectedPassageApiTests(unittest.TestCase):
         self.assertNotIn('25,000', body)  # not in any field, raw model output included
         _, r, _ = self.ask('공무원 국내 출장 식비는 하루 얼마인가요?', 'case', '식비는 하루 25,000원입니다.')
         self.assertNotIn('applicability', r)
+
+
+class ConversationApiTests(unittest.TestCase):
+    """GENERAL-CHAT-001, through the real /api/ask path of the default (assistant) version: everyday talk the router
+    sends to search is not turned into a search failure; work questions keep their not-found reply; questions about
+    the conversation are answered by the model over this session's own turns only."""
+    setUp_shared = ProtectedPassageApiTests.setUp
+    close, request, visitor = SharedDemoTests.close, SharedDemoTests.request, SharedDemoTests.visitor
+    PHONE, HELD, ALL_HELD, TABLE, DOCS = (ProtectedPassageApiTests.PHONE, ProtectedPassageApiTests.HELD,
+                                          ProtectedPassageApiTests.ALL_HELD, ProtectedPassageApiTests.TABLE,
+                                          ProtectedPassageApiTests.DOCS)
+
+    def setUp(self):
+        self.setUp_shared()
+        self.state.versions['assist'] = dict(self.state.versions['case'], id='assist', assistant=True)
+
+    def say(self, visitor, question, routed='search'):
+        """(response, the texts the conversation model was given)."""
+        seen = []
+        def chat(base, messages, *args):
+            seen.append([m['content'] for m in messages])
+            return {'generated': '네, 그렇게 해 볼게요.', 'truncated_output': False}
+        with patch('scripts.shared_demo.route', return_value=routed), patch('scripts.shared_demo.chat_complete', side_effect=chat), \
+             patch('scripts.shared_demo.complete', return_value={'generated': '확인 불가', 'truncated_output': False}):
+            status, body, _ = self.request('POST', '/api/ask', {'question': question, 'scope': 'workspace', 'version': 'assist'},
+                                           visitor)
+        self.assertEqual(status, 200, body.decode())
+        return json.loads(body), seen
+
+    def test_everyday_input_routed_to_search_without_evidence_is_answered_as_conversation(self):
+        r, seen = self.say(self.visitor(), '마지막 문장은 빼 줘')
+        self.assertEqual((r['intent'], r['status'], r['answer']), ('chat', 'chat', '네, 그렇게 해 볼게요.'))
+        self.assertTrue(r['scope'].startswith('업무 자료에서 맞는 근거를 찾지 못했고'))
+        self.assertEqual(len(seen), 1)
+
+    def test_work_question_without_evidence_keeps_its_not_found_reply(self):
+        visitor = self.visitor()
+        r, seen = self.say(visitor, '국외 출장 항공권 좌석 등급은?')
+        self.assertEqual((r['intent'], r['status']), ('search', 'not_found'))
+        self.assertEqual(seen, [])
+        r, seen = self.say(visitor, '그럼 다른 건?')  # a follow-up of that search, not small talk
+        self.assertEqual((r['intent'], r['status'], seen), ('search', 'not_found', []))
+
+    def test_question_about_the_conversation_uses_this_sessions_turns_only(self):
+        first, other = self.visitor(), self.visitor()
+        self.say(first, '다음 주에 제주도로 가족 여행 가요', routed='chat')
+        r, seen = self.say(first, '아까 내가 어디 간다고 했지?')
+        self.assertEqual(r['status'], 'chat')
+        self.assertIn('다음 주에 제주도로 가족 여행 가요', seen[0])  # the model answers over the stored turn
+        r, seen = self.say(other, '아까 내가 어디 간다고 했지?')
+        self.assertEqual((r['status'], seen), ('chat', []))  # another session: nothing earlier, no model call
+        self.assertIn('앞서 나눈 이야기가 아직 없어요', r['answer'])
 
 
 class InstitutionSnapshotApiTests(unittest.TestCase):
