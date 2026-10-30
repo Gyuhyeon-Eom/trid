@@ -3,9 +3,11 @@ collection data/korea-kr-briefing-source/docs.jsonl (read only; never rewritten)
 
 Per document: NFC -> trid.korean_quality.redact (current version, sha recorded) -> exact duplicate drop within the
 source (NFC, whitespace removed) -> quarantine of development-evaluation sources (ids or exact text of documents used
-by EVAL_SOURCES / frozen QA sets) -> split by sha256("split:"+group). Rows already used by earlier trid training splits
-keep a 'prior_trid_training' flag (they are not removed; A decides). Shards are uploaded with S3 SHA-256 checksums,
-re-verified, then the manifest and <version>.done are written.
+by EVAL_SOURCES / frozen QA sets), of bodies that the collector cache shows were taken from an attachment other than
+the press release (or from attachment-like files only), and of font-garbled extractions -> split by
+sha256("split:"+group). Rows already used by earlier trid training splits keep a 'prior_trid_training' flag (they are
+not removed; A decides). Shards are uploaded with S3 SHA-256 checksums, re-verified, then the manifest and
+<version>.done are written.
 
   python scripts/build_press_clean.py --version clean-v1
 """
@@ -35,6 +37,32 @@ PRIOR_TRAINING_FILES = ('mix-v3-dry/train.jsonl', 'trid-cpt-kanana-100m/train.js
 PRESS_ID = re.compile(r'korea-kr-press-(\d+)')
 SPLITS = (('test', 50), ('valid', 100))
 SHARD_ROWS = 20000
+ITEMS = ROOT / 'data/korea-kr-briefing-source/raw/items'  # collector cache: which attachment the body came from
+# File-name cues of the press release itself vs. other attachments (B-011: A-004's five longest rows were a statistics
+# yearbook, survey results, a research report, a white-paper appendix and an arbitration award, not the releases).
+PRESS_FILE = re.compile(r'보도자료|보도 자료|조간|석간|즉시\s*보도|배포|\[\d{1,2}\.\d{1,2}|^\(?\d{2}[.-]\d{2}|보도참고')
+ATTACHMENT_FILE = re.compile(r'별첨|붙임|첨부|참고자료|부록|백서|보고서|통계|연보|Award|판정|가이드|매뉴얼|안내서|자료집')
+
+
+def body_origin(news_id):
+    """(origin, control-character ratio of the cached body) from the collector cache. origin: html_body, press_file,
+    other_attachment (a press-release file existed but another attachment was used), attachment_name (only
+    attachment-like files), unclear_name, no_cache."""
+    path = ITEMS / f'{news_id}.json'
+    if not path.exists():
+        return 'no_cache', 0.0
+    d = json.loads(path.read_text())
+    body = d.get('body') or ''
+    head = body[:200000]
+    ctrl = sum(1 for c in head if ord(c) < 32 and c not in '\n\t\r') / max(1, len(head))
+    chosen = (d.get('file') or {}).get('name') or ''
+    if d.get('body_source') in (None, 'html', 'view', 'page'):
+        return 'html_body', ctrl
+    if PRESS_FILE.search(chosen):
+        return 'press_file', ctrl
+    if any(PRESS_FILE.search(a.get('name') or '') for a in d.get('attachments') or []):
+        return 'other_attachment', ctrl
+    return ('attachment_name' if ATTACHMENT_FILE.search(chosen) else 'unclear_name'), ctrl
 
 
 def split_of(group):
@@ -84,6 +112,7 @@ def clean(args):
     d = json.loads(line)
     news_id = d['id'].rsplit('-', 1)[-1]
     text, pii = redact(unicodedata.normalize('NFC', d.get('text') or ''))
+    origin, ctrl = body_origin(news_id)
     m = re.search(r'이 자료는\s*(.+?)의\s*보도자료', d.get('attribution') or '')
     group = f'korea-kr:{news_id}'
     prov = {'institution_type': '중앙부처', 'doc_type': '보도자료', 'published_date': d.get('date')}
@@ -94,7 +123,8 @@ def clean(args):
             'date': d.get('date'), 'sha256': hashlib.sha256(text.encode()).hexdigest(), 'collected_at': built_at,
             'extractor': f"korea-kr-collector:{d.get('body_source', 'unknown')}", 'flags': ['pii_redacted'] if pii else [],
             'split': split_of(group), 'provenance': prov,
-            'meta': {'news_id': news_id, 'source_doc_sha256': d.get('sha256'), 'pii_redactions': dict(pii)}}, dedup_key(text), d
+            'meta': {'news_id': news_id, 'source_doc_sha256': d.get('sha256'), 'pii_redactions': dict(pii),
+                     'body_origin': origin, 'body_control_char_ratio': round(ctrl, 5)}}, dedup_key(text), d
 
 
 def put_verified(s3, key, body):
@@ -148,6 +178,13 @@ def main():
             if news_id in reserve_q:
                 hold.append('reserved_overlap')
                 row['meta']['reserved_overlap_evidence'] = reserve_q[news_id]
+            origin = row['meta']['body_origin']
+            if origin in ('other_attachment', 'attachment_name', 'no_cache'):  # text is not (verifiably) the release
+                hold.append(f'body_not_press_release:{origin}')
+            if row['meta']['body_control_char_ratio'] > 0.002:  # font-encoding garbage from PDF extraction
+                hold.append('garbled_extraction')
+            if origin == 'unclear_name':
+                row['flags'].append('body_file_name_unverified')
             if redacted_in_url(row['text']):  # privacy is handled (replaced); the URL itself is now damaged
                 hold.append('pii_redaction_inside_url')
             row['flags'] += [f'quarantine:{h}' for h in hold]
