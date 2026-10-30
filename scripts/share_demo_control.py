@@ -125,7 +125,7 @@ def supervise(hours):
         children.append(backend)
         secret = secret_path.read_text().strip()
         ready = False
-        for _ in range(60):
+        for _ in range(240):  # versions file may start llama.cpp servers and hash their model files
             if backend.poll() is not None:
                 raise RuntimeError('Model server failed. See .shared-demo/server.log')
             try:

@@ -7,7 +7,8 @@ import unittest
 from unittest.mock import patch
 from types import SimpleNamespace
 
-from scripts.shared_demo import make_server, State, TTL, MAX_BODY, read_chunk
+from scripts.shared_demo import make_server, State, TTL, MAX_BODY, read_chunk, answer_document_chat
+from trid.pdf_documents import Document, make_chunks
 from trid.pdf_documents import DocumentError
 from trid.prompts import rag_prompt
 from trid.extractive import passage_spans
@@ -17,8 +18,12 @@ from test_pdf_documents import CharTokenizer
 class SharedDemoTests(unittest.TestCase):
     def setUp(self):
         self.secret = 'x' * 40
-        self.state = SimpleNamespace(sessions={}, lock=threading.RLock(), work=threading.Lock(), tok=CharTokenizer(), run='test')
+        meta = dict(id='v', label='test', kind='extractive', base_model='b', license='l', version='0', status='s',
+                    evaluation='e', limits='<script>')
+        self.state = SimpleNamespace(sessions={}, lock=threading.RLock(), work=threading.Lock(), tok=CharTokenizer(),
+                                     run='test', default='v', versions={'v': meta})
         self.state.prune = lambda: State.prune(self.state)
+        self.state.public_versions = lambda: State.public_versions(self.state)
         self.server = make_server(self.state, self.secret)
         self.thread = threading.Thread(target=lambda: self.server.serve_forever(poll_interval=.01), daemon=True)
         self.thread.start()
@@ -77,6 +82,39 @@ class SharedDemoTests(unittest.TestCase):
         self.state.prune()
         self.assertFalse(self.state.sessions)
         self.assertEqual(self.request('POST', '/api/sample', {}, h)[0], 403)
+
+    def test_version_cards_are_escaped_and_unknown_version_is_rejected(self):
+        status, body, _ = self.request('GET', '/')
+        self.assertNotIn(b'<script>', body)
+        h = self.visitor()
+        loaded = json.loads(self.request('POST', '/api/sample', {}, h)[1])
+        ask = {'document_id': loaded['document_id'], 'question': '해외 식비는?', 'version': 'missing'}
+        self.assertEqual(self.request('POST', '/api/ask', ask, h)[0], 422)
+
+
+class ChatBackendTests(unittest.TestCase):
+    def ask(self, generated):
+        text = '출장 담당은 운영지원팀입니다. 식비는 하루 3만 원입니다.'
+        document = Document('d', [text], make_chunks([text], CharTokenizer()), [])
+        with patch('scripts.shared_demo.complete', return_value={'generated': generated}):
+            return answer_document_chat(document, '식비는 얼마?', 'http://127.0.0.1:1', 'qwen3', 4096), text
+
+    def test_verified_value_is_answered_with_its_exact_span(self):
+        for generated in ('3만 원 [D1]', '[D1] 3만 원', '[D1] 3만 원.'):
+            result, text = self.ask(generated)
+            self.assertEqual(result['status'], 'answer', generated)
+            start, end = result['candidates'][0]['page_character_span']
+            self.assertEqual(text[start:end], '3만 원')
+
+    def test_value_absent_from_cited_passage_is_not_an_answer(self):
+        for generated in ('5만 원 [D1]', '3만 원 [D2]', '3만 원', '[D1] 식비는 하루 3만 원이고 담당은 운영지원팀입니다, 확인'):
+            result, _ = self.ask(generated)
+            self.assertNotEqual(result['status'], 'answer', generated)
+            self.assertEqual(result['candidates'], [])
+
+    def test_abstention_and_conflict_are_not_answers(self):
+        self.assertEqual(self.ask('확인 불가')[0]['status'], 'not_found')
+        self.assertEqual(self.ask('근거 충돌')[0]['status'], 'review')
 
 
 class ExtractiveChunkTests(unittest.TestCase):

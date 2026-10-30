@@ -1,0 +1,25 @@
+{
+  "protocol": "Same as public-dialogue-assessment.json: reports/public-dialogue-01-protocol.json release_gate and heldout_required_facts, applied unchanged to stored raw answers, checked against full source text in data/public-document-sft-source/documents.jsonl.",
+  "review_method": "Assistant comparison with predeclared facts and source text; not independent human review. Borderline judgments listed separately.",
+  "model": "Qwen/Qwen3-0.6B-GGUF Q8_0, revision 23749fefcc72300e3a2ad315e1317431b06b590a, sha256 9465e63a22add5354d9bb4b99e90117043c7124007664907259bd16d043bb031, llama.cpp 8ca4060, greedy, thinking disabled, 256 output tokens",
+  "report": "reports/open-weight-baseline/public-dialogue-qwen3-0.6b-q8.json",
+  "heldout_public_qa": {
+    "correct": 4, "total": 8, "borderline": 1,
+    "passed_ids": ["korea-kr-press-156613021-1", "korea-kr-press-156613021-2", "korea-kr-press-156612807-1", "korea-kr-press-156612807-2"],
+    "failures": {
+      "korea-kr-press-156612611-1": "Rephrases the fact as a question ('250만원 상당의 서비스를 지원했나요?'); does not answer and omits that it is services, not a cash entitlement.",
+      "korea-kr-press-156612611-2": "BORDERLINE: lists all four services, but adds '매년 1인당 평균 250만원을 지원', dropping '상당의 서비스' (reads as cash support). Counted as failure under the unchanged no-unsupported-claim rule.",
+      "korea-kr-press-156612149-1": "Wrong recipient (화성시·평택시 instead of 경기도), question form, omits 재난안전특교세.",
+      "korea-kr-press-156612149-2": "Answers a location, not the use (오염수 안전 처리·추가 피해 최소화); appends the instruction text '[D1]을 인용하세요.'"
+    }
+  },
+  "user_regressions": {
+    "안녕": {"pass": false, "reason": "Responds to a greeting with an unrequested document summary."},
+    "너한테 할 수 있는 질문이 뭐야": {"pass": false, "reason": "Invents one question instead of describing what it can help with."},
+    "제작비 지원 비율과 최대 한도가 어떻게 돼?": {"pass": true, "reason": "70% and 4천만 원 [D1], no invented conditions."}
+  },
+  "termination": "All 14 answers stopped on EOS.",
+  "dialogue_probes": "'문서를 읽다가 모르는 게 있으면 물어봐도 돼?' loops the same sentence three times with a typo (문을); '어떤 일을 부탁하면 되니?' echoes the question.",
+  "counterfactual": {"pass": true, "answer": "제작비 지원 비율은 35%이며, 최대 한도는 2천만 원입니다. [D1]", "note": "Follows the substituted values (35%, 2천만 원) rather than a memorized 70%/4천만 원."},
+  "release_gate": "FAIL (heldout 4/8 < 6/8; user regressions 1/3)."
+}

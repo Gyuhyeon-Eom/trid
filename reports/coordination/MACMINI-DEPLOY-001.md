@@ -116,25 +116,22 @@ A는 장기 키를 자동으로 만들지 않았다. 맥북의 기존 자격 증
   - 승인된 캠페인 prefix만 읽기·쓰기
   - 같은 캠페인의 `sft/checkpoints/*`만 삭제(recovery 정리용)
 
-### 4.3 사용자가 직접 할 최소 설정
+### 4.3 인증 방식 (2026-10-30 갱신: 장기 키 안내 중단)
 
-1. AWS 콘솔 IAM → 사용자 생성 `trid-controller`. 콘솔 접근 없이 만든다.
-2. 인라인 정책 → JSON → `iam-policy-trid-controller.json` 내용을 붙여넣는다.
-3. 해당 사용자 → 보안 자격 증명 → 액세스 키 생성(사용 사례: CLI). 키는 저장하지 말고 다음 단계에서 바로 입력한다.
-4. 맥미니 터미널에서 직접 입력:
-   `~/trid-controller/repo/.venv/bin/aws configure --profile trid-controller`
-   (region `ap-northeast-2`, output `json`)
-5. 확인: `bash ~/trid-controller/repo/deploy/macmini-controller/preflight.sh` → 6개 모두 PASS
-6. A에게 "preflight PASS"만 알려주면 된다. 그러면 A가 다음을 진행한다.
-   - plist 등록과 `launchctl bootstrap`
-   - SSH 접속을 끊었다가 다시 접속해 확인:
-     - `launchctl print`
-     - `state.json` 갱신
-     - S3 `controller-status.json`
-     - S1 job 상태 대조
-   - 결과를 이 문서에 기록한다.
-
-- SSO(`aws configure sso`)도 쓸 수 있다. 다만 토큰이 만료되면 사람이 다시 로그인해야 해서 무인 감시에는 불리하다.
+- **이전 안내 철회:** 이 문서의 이전 판은 IAM 사용자를 만들고 장기 액세스 키를 발급하는 절차를 안내했다. 총괄 지시로 이 경로를 **중단**한다.
+- **현재 진행:** 부모가 맥미니에서 AWS CLI v2로 업데이트하고 `aws login`을 실행하는 방안에 대해 사용자 승인을 요청하고 있다.
+  - 맥미니 CLI는 현재 1.46.2다.
+  - 인증 세션은 최대 12시간이다. 영구 무인 운영은 아니다.
+  - A는 승인 전에 로그인을 실행하지 않는다. 맥북 자격 증명도 복사하지 않는다.
+- **로그인 후 할 일:**
+  - 세션의 권한도 감시 동작에 필요한 만큼으로 좁힌다. 기준은 4.1의 최소 권한 정책과 그 시뮬레이션 결과다.
+  - `AWS_PROFILE`을 로그인 프로필로 지정하고 `preflight.sh`를 돌려 6개 항목이 모두 PASS인지 확인한다.
+  - 그다음 A가 plist를 등록한다. 이어서 SSH를 끊었다가 다시 접속해 다음을 확인한다:
+    - `launchctl print`
+    - `state.json` 갱신
+    - S3 `controller-status.json`
+    - S1 job 상태 대조
+  - 세션이 만료되면 감시는 AccessDenied나 만료 오류로 멈춘다. 이 경우 job 상태는 바뀌지 않는다.
 
 ## 5. 현재 영향
 - 승인된 S1 학습은 막히지 않았다. 두 job은 job 안 평가로 끝나고, 결과는 S3에 저장된다.

@@ -18,6 +18,7 @@ function setBusy(value) {
   el('cancel-text').disabled = value;
   el('load-public').disabled = value;
   el('public-document').disabled = value;
+  el('version').disabled = value;
   el('pending').textContent = value ? 'trid > 처리 중…' : '';
   if (!value && el('paste-panel').hidden) el('command').focus();
 }
@@ -70,8 +71,8 @@ async function execute(value) {
   if (!documentId) {print('trid > 먼저 /sample, /pdf 또는 /paste로 문서를 넣어 주세요.'); return;}
   await task(async()=>{
     const started = performance.now();
-    const result = await jsonApi('/api/ask', {question:value, document_id:documentId});
-    print(`trid > ${result.answer}`, 'reply');
+    const result = await jsonApi('/api/ask', {question:value, document_id:documentId, version:el('version').value});
+    print(`trid [${result.model}] > ${result.answer}`, 'reply');
     print(`[서버 처리 ${result.elapsed_ms}ms · 왕복 ${Math.round(performance.now()-started)}ms · ${result.checked_chunks}/${result.total_chunks}개 구간 확인]`, 'muted');
     for (const candidate of result.candidates) {
       const [a,b] = candidate.prediction.source_character_span;
@@ -99,6 +100,11 @@ el('command').addEventListener('keydown', event=>{
   historyIndex = Math.max(0, Math.min(commandHistory.length, historyIndex + (event.key === 'ArrowUp' ? -1 : 1)));
   el('command').value = historyIndex === commandHistory.length ? draft : commandHistory[historyIndex];
 });
+el('version').addEventListener('change', ()=>{
+  for (const card of document.querySelectorAll('.version-card')) card.hidden = card.dataset.version !== el('version').value;
+  print(`trid > 모델 버전: ${el('version').selectedOptions[0].textContent} · 다음 질문부터 적용됩니다.`, 'muted');
+});
+el('version-form').addEventListener('submit', event=>event.preventDefault());
 el('public-form').addEventListener('submit', event=>{
   event.preventDefault();
   void task(async()=>loaded(await jsonApi('/api/sample', {source_id:el('public-document').value})));

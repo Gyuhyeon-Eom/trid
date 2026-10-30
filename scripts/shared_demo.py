@@ -7,7 +7,9 @@ import hmac
 import html
 import json
 from pathlib import Path
+import re
 import secrets
+import signal
 import subprocess
 import sys
 import threading
@@ -15,14 +17,17 @@ import time
 from urllib.parse import urlsplit, unquote
 
 import torch
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from evaluate_external_chat import GRAMMAR, MAX_TOKENS, SYSTEM, complete, digest, evidence_grammar, request as llama_request
 from trid.extractive import load_reader, read as read_extractive, passage_spans
 from trid.prompts import rag_prompt
-from trid.pdf_documents import Document, DocumentError, make_chunks, answer_document
+from trid.pdf_documents import Document, DocumentError, make_chunks, answer_document, retrieve
 
 ROOT = Path(__file__).resolve().parents[1]
 TTL = 15 * 60
 MAX_BODY = 2 * 1024 * 1024
 MAX_SESSIONS = 32
+SOURCE_FIRST_ANSWER = re.compile(r'\[(D[1-9])\]\s*([^\[\],\n]+?)\.?')
 
 def read_chunk(model, _presence, tok, text, question, device):
     """Adapt prompt-relative extractive spans to the document reader's chunk offsets."""
@@ -42,6 +47,53 @@ def read_chunk(model, _presence, tok, text, question, device):
             raise DocumentError('모델의 원문 위치 검증에 실패했습니다.')
     return {**result, 'answer': answer, 'abstains': abstains, 'source_character_span': span}
 
+def answer_document_chat(document, question, base, family, context, constrained=False):
+    """One completion over the retrieved chunks (as D1..Dn), with the evaluation's `grammar_instructed` system prompt
+    and optionally its `evidence_constrained` grammar. `value [Dn]` and source-first `[Dn] value` are accepted (the
+    evaluation's content_* reading); an answer is shown only when every value is found verbatim in the chunk it
+    cites, otherwise the reply is a non-answer and the raw output is not displayed as an answer."""
+    question = question.strip()
+    if not question:
+        raise DocumentError('질문을 입력해 주세요.')
+    selected = [(chunk, score) for chunk, score in retrieve(document, question) if '[D' not in chunk.text]
+    result = {'file': document.name, 'candidates': [], 'checked_chunks': len(selected),
+              'total_chunks': len(document.chunks), 'warnings': document.warnings, 'raw_output': None,
+              'scope': '관련도 상위 최대 6개 구간을 확인한 결과입니다. 미검색 구간까지 정보가 없다고 보장하지 않습니다.'}
+    if not selected:
+        return {**result, 'status': 'not_found', 'answer': '질문과 관련된 문서 구간을 찾지 못했습니다. 질문을 바꾸거나 추출 내용을 확인해 주세요.'}
+    prompt = rag_prompt([(f'D{i}', chunk.text) for i, (chunk, _) in enumerate(selected, 1)], question)
+    messages = [{'role': 'system', 'content': SYSTEM}, {'role': 'user', 'content': prompt}]
+    r = complete(base, messages, family, MAX_TOKENS, context, evidence_grammar(prompt) if constrained else None)
+    if r.get('skipped_context'):
+        raise DocumentError('검색된 문서 구간이 모델 문맥 한도를 넘었습니다. 질문을 더 구체적으로 입력해 주세요.')
+    output = r['generated']
+    result['raw_output'] = output
+    if output.removesuffix('.') == '확인 불가':
+        return {**result, 'status': 'not_found', 'answer': '확인한 문서 구간에서 답을 찾지 못했습니다(모델 보류).'}
+    if output.removesuffix('.') == '근거 충돌':
+        return {**result, 'status': 'review', 'answer': '모델이 근거 충돌로 판단했습니다. /source로 원문을 확인해 주세요.'}
+    match = GRAMMAR.fullmatch(output)
+    source_first = None if match else SOURCE_FIRST_ANSWER.fullmatch(output)
+    pairs = ([(match[1], match[2]), (match[3], match[4])] if match
+             else [(source_first[2], source_first[1])] if source_first else [])
+    candidates = []
+    for value, sid in pairs:
+        if value is None:
+            continue
+        value, index = value.strip(), int(sid[1:]) - 1
+        chunk = selected[index][0] if index < len(selected) else None
+        start = chunk.text.find(value) if chunk and value else -1
+        if start < 0:
+            return {**result, 'status': 'review', 'answer': '모델 출력이 원문 위치 검증을 통과하지 못해 답으로 표시하지 않습니다.'}
+        candidates.append({'page': chunk.page, 'text': chunk.text, 'page_text_start': chunk.start,
+                           'retrieval_score': round(selected[index][1], 3),
+                           'page_character_span': [chunk.start + start, chunk.start + start + len(value)],
+                           'prediction': {'answer': value, 'source': sid, 'abstains': False, 'presence': 0,
+                                          'source_character_span': [start, start + len(value)]}})
+    if not candidates:
+        return {**result, 'status': 'review', 'answer': '모델 출력이 형식 검증을 통과하지 못해 답으로 표시하지 않습니다.'}
+    return {**result, 'status': 'answer', 'candidates': candidates,
+            'answer': ', '.join(f"{c['prediction']['answer']} [{c['prediction']['source']}]" for c in candidates)}
 
 
 @dataclass
@@ -53,16 +105,77 @@ class Session:
     calls: list = field(default_factory=list)
 
 
+PUBLIC_FIELDS = ('id', 'label', 'kind', 'base_model', 'license', 'version', 'status', 'evaluation', 'limits')
+
+
 class State:
-    def __init__(self, run):
-        metadata = json.loads((Path(run) / 'training.json').read_text())
-        if metadata.get('status') != 'complete':
-            raise ValueError('학습 완료 모델만 공유할 수 있습니다.')
-        self.model, self.tok, self.device = load_reader(run, device='cpu')
+    """Serves the versions listed in a versions file. The first `extractive` entry also supplies the chunking
+    tokenizer; `llama` entries talk to a loopback llama.cpp server whose model file hash must match the file."""
+    def __init__(self, versions):
+        self.versions, self.children = {}, []
+        if not versions or versions[0]['kind'] != 'extractive':
+            raise ValueError('첫 버전은 추출 독해기여야 합니다(문서 구간 분할 토크나이저).')
+        try:
+            for meta in versions:
+                if meta['kind'] == 'extractive':
+                    metadata = json.loads((ROOT / meta['run'] / 'training.json').read_text())
+                    if metadata.get('status') != 'complete':
+                        raise ValueError('학습 완료 모델만 공유할 수 있습니다.')
+                    model, tok, device = load_reader(ROOT / meta['run'], device='cpu')
+                    self.versions[meta['id']] = dict(meta, model=model, tok=tok, device=device)
+                elif meta['kind'] == 'llama':
+                    self.versions[meta['id']] = dict(meta, **self.start_llama(meta))
+                else:
+                    raise ValueError(f"unknown version kind {meta['kind']}")
+        except BaseException:
+            self.close()
+            raise
+        self.tok = self.versions[versions[0]['id']]['tok']
+        self.default = versions[0]['id']
+        self.run = self.versions[self.default]['label']
         self.sessions = {}
         self.lock = threading.RLock()
         self.work = threading.Lock()
-        self.run = Path(run).name
+
+    def start_llama(self, meta):
+        model_file = ROOT / meta['model_file']
+        if digest(model_file) != meta['model_sha256']:
+            raise ValueError(f"{meta['id']}: model file hash mismatch")
+        port = meta['port']
+        try:
+            llama_request(f'http://127.0.0.1:{port}', '/health')
+            raise RuntimeError(f"{meta['id']}: port {port} is already serving; refusing to adopt an unmanaged server")
+        except OSError:
+            pass
+        log = open(ROOT / '.shared-demo' / f"llama-{meta['id']}.log", 'wb') if (ROOT / '.shared-demo').is_dir() else subprocess.DEVNULL
+        child = subprocess.Popen([str(ROOT / meta['llama_server']), '-m', str(model_file), '--host', '127.0.0.1', '--port', str(port),
+                                  '-c', str(meta['context']), '-np', '1', '-t', '4', '-tb', '4', '--jinja'],
+                                 stdout=log, stderr=log)
+        self.children.append(child)
+        base = f'http://127.0.0.1:{port}'
+        for _ in range(240):
+            if child.poll() is not None:
+                raise RuntimeError(f"{meta['id']}: llama-server exited")
+            try:
+                props = llama_request(base, '/props')
+                if Path(props['model_path']).resolve() == model_file.resolve():
+                    return {'base': base, 'context': props['default_generation_settings']['n_ctx']}
+                raise RuntimeError(f"{meta['id']}: another model is served on port {port}")
+            except OSError:
+                time.sleep(.5)
+        raise RuntimeError(f"{meta['id']}: llama-server readiness timeout")
+
+    def public_versions(self):
+        return [{k: v[k] for k in PUBLIC_FIELDS} for v in self.versions.values()]
+
+    def close(self):
+        for child in self.children:
+            if child.poll() is None:
+                child.terminate()
+                try:
+                    child.wait(timeout=5)
+                except subprocess.TimeoutExpired:
+                    child.kill()
 
     def prune(self):
         with self.lock:
@@ -155,6 +268,17 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
         f'<option value="{html.escape(key, quote=True)}">{html.escape(doc["date"] + " · " + doc["title"])}</option>'
         for key, doc in public_docs.items()
     )
+    version_options = ''.join(
+        f'<option value="{html.escape(v["id"], quote=True)}">{html.escape(v["label"])}</option>'
+        for v in state.public_versions()
+    )
+    version_cards = ''.join(
+        f'<pre class="muted version-card" data-version="{html.escape(v["id"], quote=True)}"'
+        f'{"" if v["id"] == state.default else " hidden"}>'
+        + html.escape(f'{v["label"]} · {v["version"]} · {v["status"]}\n기반: {v["base_model"]} · 라이선스: {v["license"]}\n'
+                      f'실측: {v["evaluation"]}\n한계: {v["limits"]}') + '</pre>'
+        for v in state.public_versions()
+    )
 
     class Handler(BaseHTTPRequestHandler):
         server_version = 'trid'
@@ -211,7 +335,7 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                 self.respond(403, {'error': '허용되지 않은 연결입니다.'}); return
             path = urlsplit(self.path).path
             if path == '/healthz':
-                self.respond(200, {'ok': True, 'model': state.run}); return
+                self.respond(200, {'ok': True, 'model': state.run, 'versions': list(state.versions)}); return
             if path == '/app.js':
                 self.respond(200, (assets / 'app.js').read_bytes(), 'text/javascript; charset=utf-8'); return
             if path != '/':
@@ -222,6 +346,8 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
             page = ((assets / 'index.html').read_text()
                     .replace('TOKEN_PLACEHOLDER', session.csrf)
                     .replace('MODEL_PLACEHOLDER', html.escape(state.run))
+                    .replace('VERSION_OPTIONS_PLACEHOLDER', version_options)
+                    .replace('VERSION_CARDS_PLACEHOLDER', version_cards)
                     .replace('PUBLIC_OPTIONS_PLACEHOLDER', public_options))
             self.respond(200, page.encode(), 'text/html; charset=utf-8', cookie=sid)
 
@@ -266,7 +392,7 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                                     f"발표일: {source['date']} · 당시 자료이며 현재 적용 여부는 확인하지 않았습니다.",
                                     f"원문: {source['source']}",
                                     source['attribution'] + ' · 공공누리 제1유형, 텍스트만 이용',
-                                    '학습 데이터로 선정된 문서입니다. 독립 성능 평가가 아니며, 새 SFT 모델은 아직 배포하지 않았습니다.',
+                                    '학습 데이터로 선정된 문서입니다. 독립 성능 평가가 아닙니다.',
                                 ]
                                 doc = Document(source['title'], [content], make_chunks([content], state.tok), warnings)
                             else:
@@ -299,12 +425,23 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
                         question = request.get('question')
                         if not isinstance(question, str) or len(question) > 500:
                             raise DocumentError('질문은 500자 이하로 입력해 주세요.')
+                        version_id = request.get('version', state.default)
+                        if not isinstance(version_id, str) or version_id not in state.versions:
+                            raise DocumentError('목록에 있는 모델 버전을 선택해 주세요.')
+                        version = state.versions[version_id]
                         started = time.monotonic()
-                        result = answer_document(session.document, question, state.model, None, state.tok, state.device,
-                                                 reader=read_chunk)
-                        if any(item['prediction']['presence'] == 2 for item in result['checked']):
-                            result.update(status='review', answer='모델이 근거 충돌로 판단한 구간이 있습니다. /source로 원문을 확인해 주세요.')
-                        result['model'] = state.run
+                        if version['kind'] == 'extractive':
+                            result = answer_document(session.document, question, version['model'], None, version['tok'],
+                                                     version['device'], reader=read_chunk)
+                            if any(item['prediction']['presence'] == 2 for item in result['checked']):
+                                result.update(status='review', answer='모델이 근거 충돌로 판단한 구간이 있습니다. /source로 원문을 확인해 주세요.')
+                        else:
+                            result = answer_document_chat(session.document, question, version['base'],
+                                                          version['family'], version['context'],
+                                                          version['decoding'] == 'evidence_constrained')
+                        result.pop('checked', None)
+                        result['model'] = version['label']
+                        result['version'] = version_id
                         result['elapsed_ms'] = round((time.monotonic() - started) * 1000)
                     else:
                         self.respond(404, {'error': '없는 기능입니다.'}); return
@@ -325,27 +462,36 @@ def make_server(state, secret, port=0, hostname='test.tridatum.co'):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--run', default=str(ROOT / 'runs/reader-factorial-01-cpt-v1-v2-v4'))
+    parser.add_argument('--versions', type=Path, default=ROOT / 'deploy/shared-demo/versions.json',
+                        help='JSON list of served versions; the first is the default and must be extractive')
     parser.add_argument('--secret-file', required=True)
     parser.add_argument('--port', type=int, default=51873)
     args = parser.parse_args()
     torch.set_num_threads(4)
-    state = State(args.run)
-    server = make_server(state, Path(args.secret_file).read_text().strip(), args.port)
-    stop = threading.Event()
-    def prune():
-        while not stop.wait(30):
-            state.prune()
-    threading.Thread(target=prune, daemon=True).start()
-    print(f'trid temporary demo ready on 127.0.0.1:{server.server_port}', flush=True)
+    def stop_signal(*_):
+        raise KeyboardInterrupt
+    signal.signal(signal.SIGTERM, stop_signal)
+    state = None
     try:
-        server.serve_forever()
+        state = State(json.loads(args.versions.read_text()))
+        server = make_server(state, Path(args.secret_file).read_text().strip(), args.port)
+        stop = threading.Event()
+        def prune():
+            while not stop.wait(30):
+                state.prune()
+        threading.Thread(target=prune, daemon=True).start()
+        print(f'trid temporary demo ready on 127.0.0.1:{server.server_port} versions={list(state.versions)}', flush=True)
+        try:
+            server.serve_forever()
+        finally:
+            stop.set()
+            server.server_close()
+            state.sessions.clear()
     except KeyboardInterrupt:
         pass
     finally:
-        stop.set()
-        server.server_close()
-        state.sessions.clear()
+        if state is not None:
+            state.close()
 
 
 if __name__ == '__main__':

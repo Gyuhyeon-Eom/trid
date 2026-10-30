@@ -1,0 +1,33 @@
+[
+  {
+    "id": "trid-v0.1-reader",
+    "label": "trid v0.1 추출 독해기",
+    "kind": "extractive",
+    "run": "runs/reader-factorial-01-cpt-v1-v2-v4",
+    "weights_sha256": "90ccb60fcb98b839e5d74f0b3cd0781f30609654e88c660c3778167e33c9317c",
+    "base_model": "자체 무작위 초기화 91M (이전 자체 모델 실험 계보)",
+    "license": "자체 학습 가중치 (비공개)",
+    "version": "v0.1 · 2026-10-29 배포판 (롤백 기준)",
+    "status": "실험판 · 품질 기준 미달",
+    "evaluation": "고정 근거를 준 기관문서 probe 20/40. 이 웹의 검색 경로 정확도가 아닙니다.",
+    "limits": "추출만 함(설명·요약·계산 불가). 보류와 오답이 남아 있음. 근거 충돌은 검토 안내로만 표시."
+  },
+  {
+    "id": "baseline-qwen3-1.7b",
+    "label": "기준선: Qwen3-1.7B 원본 (미특화, trid 아님)",
+    "kind": "llama",
+    "decoding": "grammar_instructed",
+    "family": "qwen3",
+    "llama_server": "runs/tools/llama.cpp-8ca4060/llama-server",
+    "model_file": "runs/open-weight-base/Qwen3-1.7B-Q8_0.gguf",
+    "model_sha256": "061b54daade076b5d3362dac252678d17da8c68f07560be70818cace6590cb1a",
+    "context": 4096,
+    "port": 51912,
+    "base_model": "Qwen/Qwen3-1.7B-GGUF Q8_0, revision 90862c4b9d2787eaed51d12237eafdfe7c5f6077 (Alibaba Qwen)",
+    "license": "Apache-2.0",
+    "version": "baseline-0 · 튜닝 없음 · llama.cpp 8ca4060 · greedy · 사고 모드 끔",
+    "status": "비교용 기준선 · 품질 기준 미달 · 업무 특화 전 원본",
+    "evaluation": "RAG310 개발셋(고정 근거, 같은 지시문, 원문 형식 무관 값·출처 일치): 답 있는 228문항 중 104 · 보류해야 할 82문항 중 바르게 보류 2, 75문항은 보류 대신 답을 냄 · 근거 충돌 12문항 0. 기관 probe 40문항 중 14(답 없는 10문항 보류 0). 독립 벤치마크 아님.",
+    "limits": "근거가 없어도 답하는 경향이 큼. 원문에서 위치를 확인한 값만 답으로 표시하지만, 확인된 값도 질문과 다른 자리일 수 있음. 공공기관 업무 특화 학습 전 원본임."
+  }
+]
