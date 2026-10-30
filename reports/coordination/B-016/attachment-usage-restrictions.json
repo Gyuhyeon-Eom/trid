@@ -1,0 +1,13 @@
+{
+ "reviewer": "ai:B (B-016; per supervisor review of B-015)",
+ "reviewed_at": "2026-10-30",
+ "method": "rule header dates and full text read",
+ "decisions": {
+  "law-go-kr:admrul-file:161163535": {"decision": "short_complete",
+    "usage_restriction": "time_bound_value: 2026년도 공무원보수인상률 3.5%(2026-01-01 적용). 다른 연도나 '현재' 값의 근거로 쓰지 않는다; 현재 값은 조회 대상"},
+  "law-go-kr:admrul-file:170063497": {"decision": "short_complete",
+    "usage_restriction": "future_effective_repeal: 폐지 시행 2026-12-31(수집 시점 기준 미래). 시행 전에는 원 예규가 유효하므로 현재 기준 답변의 근거로 쓰지 않는다"},
+  "law-go-kr:admrul-file:170063527": {"decision": "short_complete",
+    "usage_restriction": "future_effective_repeal: 폐지 시행 2027-01-01(수집 시점 기준 미래). 현재 기준 답변의 근거로 쓰지 않는다"}
+ }
+}

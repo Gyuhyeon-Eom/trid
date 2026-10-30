@@ -1,0 +1,48 @@
+{
+ "source": "v3",
+ "out": "v3-footnotes1",
+ "code_sha256": "2ac177f0240cd628212b32da90c11b6a644fbc2a797b596b3612624d0434fd86",
+ "parts": {
+  "docs": {
+   "sha256": "7193efd804fe88c70fce94cfa66af5d160e3c0c85b88096ef709da22e44b37e2",
+   "section:질의요지": 318,
+   "kind:other": 128,
+   "section:이유": 675,
+   "kind:reference": 574,
+   "rows": 592,
+   "rows_with_footnotes": 215,
+   "footnotes": 996,
+   "kind:definition": 220,
+   "kind:premise": 74,
+   "section:법령정비": 2,
+   "section:회답": 1
+  },
+  "quality_held": {
+   "sha256": "34e73245e5b516fa6ab42a47d651181e8bcad28fec53ca93778329c43f6453a4",
+   "rows": 86,
+   "rows_with_footnotes": 11,
+   "footnotes": 50,
+   "section:이유": 35,
+   "kind:reference": 35,
+   "section:질의요지": 14,
+   "kind:premise": 3,
+   "kind:definition": 10,
+   "kind:other": 2,
+   "section:법령정비": 1
+  },
+  "quarantine": {
+   "sha256": "8bf83364d676c9836638ccc824e2b66db01fd02d7eafa9ff0b76919e76f2ab19",
+   "section:질의요지": 9,
+   "kind:other": 3,
+   "section:이유": 31,
+   "kind:reference": 28,
+   "rows": 8,
+   "rows_with_footnotes": 8,
+   "footnotes": 40,
+   "kind:definition": 8,
+   "kind:premise": 1
+  }
+ },
+ "text_changed": false,
+ "contract": "offsets index the unchanged source text of the row with source_sha256; marker = the N) that stays in the sentence; inline = duplicated N) + footnote text + its terminating newline; removing inline joins the sentence as in the source document"
+}

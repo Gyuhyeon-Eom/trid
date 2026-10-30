@@ -144,6 +144,16 @@ def fetch(args):
 
 KORDOC = ['npx', '--yes', '--package', 'kordoc@4.24.23', '--package', 'pdfjs-dist', 'kordoc']
 
+# kordoc writes merged-cell tables as HTML (<table><tr><td rowspan=..>); the markup stays in the text (it is the table
+# structure) but is not language. Only that markup is stripped: statute text uses angle brackets itself
+# ("<개정 2026. 9. 29.>", "삭제 <2007.11.22>"), which a generic <[^>]+> pattern removed (B-016).
+TABLE_MARKUP = re.compile(r'</?(?:table|thead|tbody|tr|td|th|u|b|i|br|p|span|sup|sub)\b[^>]*>')
+
+
+def strip_table_markup(text):
+    return TABLE_MARKUP.sub(' ', text)
+
+
 
 def extract_text(path):
     """PDF/HWP/HWPX -> Markdown with kordoc 4.24.23 (tables as Markdown tables, PDF running headers/footers removed);
@@ -194,9 +204,7 @@ def extract(args):
         meta = cat[st['flSeq']]
         text, how = extract_text(ROOT / st['raw'])
         text = unicodedata.normalize('NFC', text)
-        # kordoc writes merged-cell tables as HTML (<table><tr><td rowspan=..>); the markup stays in the text (it is the
-        # table structure) but is not language, so script ratios and quality are measured on the tag-stripped text
-        plain = lambda t: re.sub(r'<[^>]+>', ' ', t)
+        plain = strip_table_markup  # script ratios and quality are measured without table markup
         hangul = script_ratios(plain(text))[0] if text.strip() else 0.0
         text, pii = redact(text)
         ok, why = assess(plain(text), t=PUBLIC_DOCS) if text.strip() else (False, 'empty')

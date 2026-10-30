@@ -1,0 +1,49 @@
+{
+ "version": "v2",
+ "code_sha256": "a5d035faad5461305924c50c29a1555ffa3acbd34bdf0a0660426ac700a6f99b",
+ "parts": {
+  "extracted": {
+   "rows": 538,
+   "characters": 954040,
+   "sha256": "5dadd18761e0a02d47e8f22bb5e9c1b43b079dbae16eec2f962b45cf15914672",
+   "table_rows": 7772,
+   "kinds": {
+    "별표": 292,
+    "서식": 246
+   },
+   "quality": {
+    "ok": 152,
+    "line_punct_ratio": 217,
+    "gopher_below_alpha_threshold": 44,
+    "top_4_gram": 23,
+    "top_3_gram": 12,
+    "dup_line_frac": 50,
+    "list_ratio": 6,
+    "duplicated_6_n_grams": 2,
+    "top_2_gram": 12,
+    "duplicated_10_n_grams": 3,
+    "char_dup_ratio": 3,
+    "hangul_ratio": 5,
+    "duplicated_7_n_grams": 2,
+    "duplicated_5_n_grams": 6,
+    "latin_ratio": 1
+   }
+  },
+  "extraction_held": {
+   "rows": 83,
+   "characters": 3570,
+   "sha256": "fdae899cd5a3f03aa7c87d2f1c2fa870fb311bfe49e5251a5c8d7427e68c5d5c",
+   "table_rows": 5,
+   "kinds": {
+    "별표": 58,
+    "서식": 25
+   },
+   "quality": {
+    "line_punct_ratio": 3,
+    "top_3_gram": 29,
+    "top_4_gram": 51
+   }
+  }
+ },
+ "note": "tables unverified (cell-level comparison not done); forms (서식) are blank templates; not approved for training; run check_reserved_overlap.py on overlap-input.jsonl"
+}

@@ -1,0 +1,538 @@
+{"id": "law-go-kr:law-byl:37957316", "result": "agree", "numbers": 24, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"일": 1}, "units_reader": {"일": 1}}
+{"id": "law-go-kr:law-byl:37957322", "result": "agree", "numbers": 23, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 12, "일": 2}, "units_reader": {"원": 1, "명": 12, "일": 2}}
+{"id": "law-go-kr:law-byl:37957360", "result": "agree", "numbers": 32, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"일": 1}, "units_reader": {"일": 1}}
+{"id": "law-go-kr:law-byl:37957366", "result": "agree", "numbers": 37, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 2, "일": 2}, "units_reader": {"원": 1, "명": 2, "일": 2}}
+{"id": "law-go-kr:law-byl:30739688", "result": "agree", "numbers": 13, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 11, "%": 2, "일": 2}, "units_reader": {"원": 1, "명": 11, "%": 2, "일": 2}}
+{"id": "law-go-kr:law-byl:31086111", "result": "agree", "numbers": 30, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 11, "일": 1}, "units_reader": {"원": 11, "일": 1}}
+{"id": "law-go-kr:law-byl:38596817", "result": "agree", "numbers": 13, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 6, "명": 10, "일": 2}, "units_reader": {"원": 6, "명": 10, "일": 2}}
+{"id": "law-go-kr:law-byl:107337089", "result": "agree", "numbers": 28, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 5, "명": 2, "일": 1}, "units_reader": {"원": 5, "명": 2, "일": 1}}
+{"id": "law-go-kr:law-byl:107337095", "result": "agree", "numbers": 17, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 6, "명": 7, "일": 5}, "units_reader": {"원": 6, "명": 7, "일": 5}}
+{"id": "law-go-kr:law-byl:107337101", "result": "agree", "numbers": 11, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 5, "명": 8, "일": 5}, "units_reader": {"원": 5, "명": 8, "일": 5}}
+{"id": "law-go-kr:law-byl:107337107", "result": "agree", "numbers": 10, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 5, "명": 8, "일": 7}, "units_reader": {"원": 5, "명": 8, "일": 7}}
+{"id": "law-go-kr:law-byl:107337113", "result": "agree", "numbers": 11, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 4, "명": 7, "일": 5}, "units_reader": {"원": 4, "명": 7, "일": 5}}
+{"id": "law-go-kr:law-byl:107337119", "result": "agree", "numbers": 11, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "명": 7, "일": 6}, "units_reader": {"원": 2, "명": 7, "일": 6}}
+{"id": "law-go-kr:law-byl:107337125", "result": "agree", "numbers": 33, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 10, "명": 14, "일": 15, "시간": 1}, "units_reader": {"원": 10, "명": 14, "일": 15, "시간": 1}}
+{"id": "law-go-kr:law-byl:112411143", "result": "agree", "numbers": 16, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "명": 17, "%": 2, "일": 4}, "units_reader": {"원": 2, "명": 17, "%": 2, "일": 4}}
+{"id": "law-go-kr:law-byl:119305869", "result": "agree", "numbers": 9, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 3, "일": 2}, "units_reader": {"원": 1, "명": 3, "일": 2}}
+{"id": "law-go-kr:law-byl:121066805", "result": "agree", "numbers": 542, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 30, "명": 1, "%": 1}, "units_reader": {"원": 30, "명": 1, "%": 1}}
+{"id": "law-go-kr:law-byl:133696983", "result": "agree", "numbers": 7, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 2}, "units_reader": {"명": 2}}
+{"id": "law-go-kr:law-byl:133696989", "result": "agree", "numbers": 15, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 1, "일": 2}, "units_reader": {"원": 1, "명": 1, "일": 2}}
+{"id": "law-go-kr:law-byl:133697001", "result": "agree", "numbers": 80, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 6, "명": 14, "일": 13}, "units_reader": {"원": 6, "명": 14, "일": 13}}
+{"id": "law-go-kr:law-byl:133697011", "result": "agree", "numbers": 99, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 8, "명": 20, "%": 1, "일": 14}, "units_reader": {"원": 8, "명": 20, "%": 1, "일": 14}}
+{"id": "law-go-kr:law-byl:133697023", "result": "agree", "numbers": 7, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "명": 13, "일": 6}, "units_reader": {"원": 2, "명": 13, "일": 6}}
+{"id": "law-go-kr:law-byl:133697029", "result": "agree", "numbers": 7, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "일": 2}, "units_reader": {"원": 2, "일": 2}}
+{"id": "law-go-kr:law-byl:133697035", "result": "agree", "numbers": 9, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 2, "일": 3}, "units_reader": {"명": 2, "일": 3}}
+{"id": "law-go-kr:law-byl:133697041", "result": "agree", "numbers": 9, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 1, "일": 2}, "units_reader": {"원": 1, "명": 1, "일": 2}}
+{"id": "law-go-kr:law-byl:133697047", "result": "agree", "numbers": 7, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 4, "일": 1}, "units_reader": {"명": 4, "일": 1}}
+{"id": "law-go-kr:law-byl:133697053", "result": "agree", "numbers": 27, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 18, "일": 2, "시간": 1}, "units_reader": {"명": 18, "일": 2, "시간": 1}}
+{"id": "law-go-kr:law-byl:133697059", "result": "agree", "numbers": 9, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 3, "일": 16}, "units_reader": {"명": 3, "일": 16}}
+{"id": "law-go-kr:law-byl:133697065", "result": "agree", "numbers": 10, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 4, "일": 11}, "units_reader": {"명": 4, "일": 11}}
+{"id": "law-go-kr:law-byl:133697071", "result": "agree", "numbers": 11, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "명": 15, "일": 9}, "units_reader": {"원": 2, "명": 15, "일": 9}}
+{"id": "law-go-kr:law-byl:133697077", "result": "agree", "numbers": 12, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"일": 30}, "units_reader": {"일": 30}}
+{"id": "law-go-kr:law-byl:133697083", "result": "agree", "numbers": 9, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 1, "개월": 1}, "units_reader": {"원": 1, "명": 1, "개월": 1}}
+{"id": "law-go-kr:law-byl:133697089", "result": "agree", "numbers": 13, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 2}, "units_reader": {"명": 2}}
+{"id": "law-go-kr:law-byl:133697095", "result": "agree", "numbers": 8, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 1, "개월": 1}, "units_reader": {"원": 1, "명": 1, "개월": 1}}
+{"id": "law-go-kr:law-byl:133697101", "result": "agree", "numbers": 10, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "명": 4, "일": 4}, "units_reader": {"원": 2, "명": 4, "일": 4}}
+{"id": "law-go-kr:law-byl:133697107", "result": "agree", "numbers": 14, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 4, "일": 1}, "units_reader": {"명": 4, "일": 1}}
+{"id": "law-go-kr:law-byl:133527289", "result": "agree", "numbers": 138, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 22, "명": 3, "일": 1}, "units_reader": {"원": 22, "명": 3, "일": 1}}
+{"id": "law-go-kr:law-byl:133527299", "result": "agree", "numbers": 37, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"%": 6, "일": 1}, "units_reader": {"%": 6, "일": 1}}
+{"id": "law-go-kr:law-byl:135338015", "result": "agree", "numbers": 33, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"백만원": 3, "원": 12, "명": 5}, "units_reader": {"백만원": 3, "원": 12, "명": 5}}
+{"id": "law-go-kr:law-byl:135338021", "result": "agree", "numbers": 39, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"천원": 3, "원": 7, "명": 14, "%": 2, "일": 6}, "units_reader": {"천원": 3, "원": 7, "명": 14, "%": 2, "일": 6}}
+{"id": "law-go-kr:law-byl:135338033", "result": "agree", "numbers": 15, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 5, "명": 2, "%": 2, "일": 5}, "units_reader": {"원": 5, "명": 2, "%": 2, "일": 5}}
+{"id": "law-go-kr:law-byl:135338041", "result": "agree", "numbers": 21, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 8, "명": 13, "일": 5}, "units_reader": {"원": 8, "명": 13, "일": 5}}
+{"id": "law-go-kr:law-byl:135338049", "result": "agree", "numbers": 96, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 17, "명": 11, "일": 15, "시간": 13}, "units_reader": {"원": 17, "명": 11, "일": 15, "시간": 13}}
+{"id": "law-go-kr:law-byl:135338059", "result": "agree", "numbers": 8, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 4, "명": 8, "일": 4}, "units_reader": {"원": 4, "명": 8, "일": 4}}
+{"id": "law-go-kr:law-byl:135338065", "result": "agree", "numbers": 6, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 5, "일": 3}, "units_reader": {"명": 5, "일": 3}}
+{"id": "law-go-kr:law-byl:135338071", "result": "agree", "numbers": 13, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 5, "명": 2, "일": 7}, "units_reader": {"원": 5, "명": 2, "일": 7}}
+{"id": "law-go-kr:law-byl:155902171", "result": "agree", "numbers": 23, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 37, "시간": 2, "호봉": 2}, "units_reader": {"원": 37, "시간": 2, "호봉": 2}}
+{"id": "law-go-kr:law-byl:155902177", "result": "agree", "numbers": 37, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 8, "일": 9}, "units_reader": {"원": 8, "일": 9}}
+{"id": "law-go-kr:law-byl:155902183", "result": "agree", "numbers": 17, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 5}, "units_reader": {"원": 5}}
+{"id": "law-go-kr:law-byl:155902189", "result": "agree", "numbers": 123, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 17, "일": 10}, "units_reader": {"원": 17, "일": 10}}
+{"id": "law-go-kr:law-byl:155902199", "result": "agree", "numbers": 25, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2}, "units_reader": {"원": 2}}
+{"id": "law-go-kr:law-byl:155902217", "result": "agree", "numbers": 7, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 12, "일": 1}, "units_reader": {"원": 12, "일": 1}}
+{"id": "law-go-kr:law-byl:161175749", "result": "agree", "numbers": 39, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 3}, "units_reader": {"원": 3}}
+{"id": "law-go-kr:law-byl:156691635", "result": "agree", "numbers": 62, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 16, "일": 1}, "units_reader": {"원": 16, "일": 1}}
+{"id": "law-go-kr:law-byl:156691643", "result": "agree", "numbers": 19, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1}, "units_reader": {"원": 1}}
+{"id": "law-go-kr:law-byl:156691649", "result": "agree", "numbers": 21, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1}, "units_reader": {"원": 1}}
+{"id": "law-go-kr:law-byl:156691655", "result": "agree", "numbers": 56, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 3, "일": 5}, "units_reader": {"원": 3, "일": 5}}
+{"id": "law-go-kr:law-byl:156691663", "result": "agree", "numbers": 83, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "일": 7}, "units_reader": {"원": 2, "일": 7}}
+{"id": "law-go-kr:law-byl:156691713", "result": "agree", "numbers": 24, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 7, "일": 2}, "units_reader": {"원": 7, "일": 2}}
+{"id": "law-go-kr:law-byl:156691719", "result": "agree", "numbers": 6, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 5, "일": 1}, "units_reader": {"원": 1, "명": 5, "일": 1}}
+{"id": "law-go-kr:law-byl:156691725", "result": "agree", "numbers": 5, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {}, "units_reader": {}}
+{"id": "law-go-kr:law-byl:156691731", "result": "agree", "numbers": 5, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {}, "units_reader": {}}
+{"id": "law-go-kr:law-byl:156691737", "result": "agree", "numbers": 20, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "일": 3}, "units_reader": {"원": 1, "일": 3}}
+{"id": "law-go-kr:law-byl:156691743", "result": "agree", "numbers": 10, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 3, "%": 1}, "units_reader": {"원": 1, "명": 3, "%": 1}}
+{"id": "law-go-kr:law-byl:156691749", "result": "agree", "numbers": 8, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "명": 1}, "units_reader": {"원": 2, "명": 1}}
+{"id": "law-go-kr:law-byl:159184295", "result": "agree", "numbers": 3, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {}, "units_reader": {}}
+{"id": "law-go-kr:law-byl:159184301", "result": "agree", "numbers": 4, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 8}, "units_reader": {"원": 8}}
+{"id": "law-go-kr:law-byl:159985669", "result": "agree", "numbers": 11, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1}, "units_reader": {"원": 1}}
+{"id": "law-go-kr:law-byl:159985675", "result": "agree", "numbers": 16, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 1}, "units_reader": {"명": 1}}
+{"id": "law-go-kr:law-byl:159983249", "result": "agree", "numbers": 18, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 6, "일": 2}, "units_reader": {"원": 6, "일": 2}}
+{"id": "law-go-kr:law-byl:159983255", "result": "agree", "numbers": 174, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 2, "일": 4}, "units_reader": {"명": 2, "일": 4}}
+{"id": "law-go-kr:law-byl:159983267", "result": "agree", "numbers": 12, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"일": 1}, "units_reader": {"일": 1}}
+{"id": "law-go-kr:law-byl:159983273", "result": "agree", "numbers": 20, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 5, "일": 1}, "units_reader": {"원": 5, "일": 1}}
+{"id": "law-go-kr:law-byl:159983279", "result": "agree", "numbers": 25, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 6, "일": 2}, "units_reader": {"원": 6, "일": 2}}
+{"id": "law-go-kr:law-byl:159983285", "result": "agree", "numbers": 13, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {}, "units_reader": {}}
+{"id": "law-go-kr:law-byl:159983291", "result": "agree", "numbers": 28, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 6, "일": 2}, "units_reader": {"원": 6, "일": 2}}
+{"id": "law-go-kr:law-byl:159983297", "result": "agree", "numbers": 16, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"일": 1}, "units_reader": {"일": 1}}
+{"id": "law-go-kr:law-byl:159983303", "result": "agree", "numbers": 28, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 6, "일": 2}, "units_reader": {"원": 6, "일": 2}}
+{"id": "law-go-kr:law-byl:159983309", "result": "agree", "numbers": 116, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"일": 1}, "units_reader": {"일": 1}}
+{"id": "law-go-kr:law-byl:160015885", "result": "agree", "numbers": 82, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 15, "일": 2}, "units_reader": {"원": 15, "일": 2}}
+{"id": "law-go-kr:law-byl:160563465", "result": "differ", "numbers": 18, "missing_in_extract": {}, "extra_in_extract": {"1": 1}, "units_extract": {"원": 2, "명": 13, "일": 9}, "units_reader": {"원": 2, "명": 13, "일": 9}}
+{"id": "law-go-kr:law-byl:160563471", "result": "agree", "numbers": 27, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 2, "개월": 1, "일": 2}, "units_reader": {"명": 2, "개월": 1, "일": 2}}
+{"id": "law-go-kr:law-byl:160563479", "result": "agree", "numbers": 4, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 2, "일": 2}, "units_reader": {"명": 2, "일": 2}}
+{"id": "law-go-kr:law-byl:160563485", "result": "differ", "numbers": 16, "missing_in_extract": {}, "extra_in_extract": {"2": 1, "3": 1, "1": 1}, "units_extract": {"명": 4, "일": 8}, "units_reader": {"명": 4, "일": 8}}
+{"id": "law-go-kr:law-byl:160563491", "result": "agree", "numbers": 18, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 4, "일": 5}, "units_reader": {"원": 1, "명": 4, "일": 5}}
+{"id": "law-go-kr:law-byl:160563497", "result": "agree", "numbers": 13, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 3, "일": 5}, "units_reader": {"명": 3, "일": 5}}
+{"id": "law-go-kr:law-byl:160563503", "result": "agree", "numbers": 7, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 4, "일": 5}, "units_reader": {"원": 1, "명": 4, "일": 5}}
+{"id": "law-go-kr:law-byl:160399155", "result": "agree", "numbers": 253, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 19, "명": 8, "개월": 42, "일": 5}, "units_reader": {"원": 19, "명": 8, "개월": 42, "일": 5}}
+{"id": "law-go-kr:law-byl:160399169", "result": "agree", "numbers": 222, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 12, "명": 8, "%": 48, "개월": 12, "일": 3}, "units_reader": {"원": 12, "명": 8, "%": 48, "개월": 12, "일": 3}}
+{"id": "law-go-kr:law-byl:160399181", "result": "agree", "numbers": 260, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 19, "명": 11, "%": 59, "개월": 12, "일": 3}, "units_reader": {"원": 19, "명": 11, "%": 59, "개월": 12, "일": 3}}
+{"id": "law-go-kr:law-byl:160399195", "result": "agree", "numbers": 14, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 3, "일": 2}, "units_reader": {"명": 3, "일": 2}}
+{"id": "law-go-kr:law-byl:160399201", "result": "agree", "numbers": 8, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 5, "일": 6}, "units_reader": {"원": 1, "명": 5, "일": 6}}
+{"id": "law-go-kr:law-byl:160399207", "result": "agree", "numbers": 16, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 3, "명": 11, "%": 1, "일": 4}, "units_reader": {"원": 3, "명": 11, "%": 1, "일": 4}}
+{"id": "law-go-kr:law-byl:160399213", "result": "agree", "numbers": 8, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 7, "일": 3}, "units_reader": {"원": 1, "명": 7, "일": 3}}
+{"id": "law-go-kr:law-byl:160399219", "result": "agree", "numbers": 13, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "명": 3, "일": 4}, "units_reader": {"원": 2, "명": 3, "일": 4}}
+{"id": "law-go-kr:law-byl:160399225", "result": "agree", "numbers": 22, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 3, "일": 5}, "units_reader": {"원": 1, "명": 3, "일": 5}}
+{"id": "law-go-kr:law-byl:160399231", "result": "agree", "numbers": 22, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 9, "명": 4, "%": 5, "일": 3}, "units_reader": {"원": 9, "명": 4, "%": 5, "일": 3}}
+{"id": "law-go-kr:law-byl:160399237", "result": "agree", "numbers": 22, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 6, "명": 5, "%": 1, "일": 2}, "units_reader": {"원": 6, "명": 5, "%": 1, "일": 2}}
+{"id": "law-go-kr:law-byl:160399243", "result": "agree", "numbers": 29, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 6, "명": 5, "%": 1, "일": 2}, "units_reader": {"원": 6, "명": 5, "%": 1, "일": 2}}
+{"id": "law-go-kr:law-byl:160399251", "result": "agree", "numbers": 8, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 4, "명": 4, "개월": 1, "일": 5}, "units_reader": {"원": 4, "명": 4, "개월": 1, "일": 5}}
+{"id": "law-go-kr:law-byl:160399257", "result": "agree", "numbers": 8, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 4, "명": 4, "개월": 1, "일": 5}, "units_reader": {"원": 4, "명": 4, "개월": 1, "일": 5}}
+{"id": "law-go-kr:law-byl:160399263", "result": "agree", "numbers": 8, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 9, "명": 4, "%": 4, "일": 3}, "units_reader": {"원": 9, "명": 4, "%": 4, "일": 3}}
+{"id": "law-go-kr:law-byl:160399269", "result": "agree", "numbers": 19, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 3, "명": 4, "일": 1}, "units_reader": {"원": 3, "명": 4, "일": 1}}
+{"id": "law-go-kr:law-byl:160399275", "result": "agree", "numbers": 13, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 2, "일": 2}, "units_reader": {"원": 1, "명": 2, "일": 2}}
+{"id": "law-go-kr:law-byl:160399281", "result": "agree", "numbers": 10, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 2, "일": 5}, "units_reader": {"명": 2, "일": 5}}
+{"id": "law-go-kr:law-byl:160403291", "result": "agree", "numbers": 3, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 7, "일": 3}, "units_reader": {"명": 7, "일": 3}}
+{"id": "law-go-kr:law-byl:160403297", "result": "agree", "numbers": 6, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 1, "일": 2}, "units_reader": {"명": 1, "일": 2}}
+{"id": "law-go-kr:law-byl:160403303", "result": "agree", "numbers": 3, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 3, "일": 3}, "units_reader": {"명": 3, "일": 3}}
+{"id": "law-go-kr:law-byl:160403309", "result": "agree", "numbers": 3, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 6, "일": 3}, "units_reader": {"명": 6, "일": 3}}
+{"id": "law-go-kr:law-byl:160403315", "result": "agree", "numbers": 6, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {}, "units_reader": {}}
+{"id": "law-go-kr:law-byl:160403321", "result": "agree", "numbers": 6, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {}, "units_reader": {}}
+{"id": "law-go-kr:law-byl:160403327", "result": "agree", "numbers": 4, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 6, "일": 3}, "units_reader": {"명": 6, "일": 3}}
+{"id": "law-go-kr:law-byl:160403333", "result": "agree", "numbers": 12, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 7, "일": 4}, "units_reader": {"명": 7, "일": 4}}
+{"id": "law-go-kr:law-byl:160403339", "result": "agree", "numbers": 12, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 7, "일": 4}, "units_reader": {"명": 7, "일": 4}}
+{"id": "law-go-kr:law-byl:160403345", "result": "agree", "numbers": 4, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 6, "일": 3}, "units_reader": {"명": 6, "일": 3}}
+{"id": "law-go-kr:law-byl:160403357", "result": "agree", "numbers": 6, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {}, "units_reader": {}}
+{"id": "law-go-kr:law-byl:160403363", "result": "agree", "numbers": 4, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 8, "명": 3, "일": 4}, "units_reader": {"원": 8, "명": 3, "일": 4}}
+{"id": "law-go-kr:law-byl:160403369", "result": "agree", "numbers": 5, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 6, "명": 5, "일": 3}, "units_reader": {"원": 6, "명": 5, "일": 3}}
+{"id": "law-go-kr:law-byl:160403375", "result": "agree", "numbers": 3, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 4, "명": 3, "일": 3}, "units_reader": {"원": 4, "명": 3, "일": 3}}
+{"id": "law-go-kr:law-byl:160403381", "result": "agree", "numbers": 5, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 6, "명": 3, "일": 8}, "units_reader": {"원": 6, "명": 3, "일": 8}}
+{"id": "law-go-kr:law-byl:160403387", "result": "agree", "numbers": 6, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 4, "명": 4, "일": 4}, "units_reader": {"원": 4, "명": 4, "일": 4}}
+{"id": "law-go-kr:law-byl:160403393", "result": "agree", "numbers": 3, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "명": 3, "일": 4}, "units_reader": {"원": 2, "명": 3, "일": 4}}
+{"id": "law-go-kr:law-byl:160403399", "result": "agree", "numbers": 4, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "명": 3, "일": 4}, "units_reader": {"원": 2, "명": 3, "일": 4}}
+{"id": "law-go-kr:law-byl:160403405", "result": "agree", "numbers": 4, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "명": 4, "일": 4}, "units_reader": {"원": 2, "명": 4, "일": 4}}
+{"id": "law-go-kr:law-byl:160403411", "result": "agree", "numbers": 3, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {}, "units_reader": {}}
+{"id": "law-go-kr:law-byl:160403417", "result": "agree", "numbers": 3, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {}, "units_reader": {}}
+{"id": "law-go-kr:law-byl:160403423", "result": "agree", "numbers": 4, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "명": 5, "일": 1}, "units_reader": {"원": 2, "명": 5, "일": 1}}
+{"id": "law-go-kr:law-byl:160403429", "result": "agree", "numbers": 5, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {}, "units_reader": {}}
+{"id": "law-go-kr:law-byl:160403435", "result": "agree", "numbers": 5, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {}, "units_reader": {}}
+{"id": "law-go-kr:law-byl:160403441", "result": "agree", "numbers": 5, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {}, "units_reader": {}}
+{"id": "law-go-kr:law-byl:160403447", "result": "agree", "numbers": 5, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {}, "units_reader": {}}
+{"id": "law-go-kr:law-byl:160403453", "result": "agree", "numbers": 3, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "일": 2}, "units_reader": {"원": 1, "일": 2}}
+{"id": "law-go-kr:law-byl:160403459", "result": "agree", "numbers": 3, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "일": 2}, "units_reader": {"원": 2, "일": 2}}
+{"id": "law-go-kr:law-byl:160403465", "result": "agree", "numbers": 3, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "일": 2}, "units_reader": {"원": 1, "일": 2}}
+{"id": "law-go-kr:law-byl:160403471", "result": "agree", "numbers": 3, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "일": 2}, "units_reader": {"원": 2, "일": 2}}
+{"id": "law-go-kr:law-byl:160403477", "result": "agree", "numbers": 3, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "일": 2}, "units_reader": {"원": 1, "일": 2}}
+{"id": "law-go-kr:law-byl:160403483", "result": "agree", "numbers": 4, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "일": 2}, "units_reader": {"원": 1, "일": 2}}
+{"id": "law-go-kr:law-byl:160403489", "result": "agree", "numbers": 3, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "일": 2}, "units_reader": {"원": 2, "일": 2}}
+{"id": "law-go-kr:law-byl:160403495", "result": "agree", "numbers": 4, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "일": 2}, "units_reader": {"원": 2, "일": 2}}
+{"id": "law-go-kr:law-byl:160403501", "result": "agree", "numbers": 4, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {}, "units_reader": {}}
+{"id": "law-go-kr:law-byl:160403507", "result": "agree", "numbers": 4, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "명": 1, "일": 1}, "units_reader": {"원": 2, "명": 1, "일": 1}}
+{"id": "law-go-kr:law-byl:160403519", "result": "agree", "numbers": 3, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "일": 1}, "units_reader": {"원": 1, "일": 1}}
+{"id": "law-go-kr:law-byl:160403525", "result": "agree", "numbers": 4, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 12, "명": 1, "일": 5}, "units_reader": {"원": 12, "명": 1, "일": 5}}
+{"id": "law-go-kr:law-byl:160403531", "result": "agree", "numbers": 5, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 10, "명": 1, "일": 4}, "units_reader": {"원": 10, "명": 1, "일": 4}}
+{"id": "law-go-kr:law-byl:160403537", "result": "agree", "numbers": 5, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 12, "명": 2, "일": 5}, "units_reader": {"원": 12, "명": 2, "일": 5}}
+{"id": "law-go-kr:law-byl:160403543", "result": "agree", "numbers": 5, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 10, "명": 1, "일": 4}, "units_reader": {"원": 10, "명": 1, "일": 4}}
+{"id": "law-go-kr:law-byl:160403549", "result": "agree", "numbers": 3, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 4, "일": 2}, "units_reader": {"원": 4, "일": 2}}
+{"id": "law-go-kr:law-byl:160403555", "result": "agree", "numbers": 4, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {}, "units_reader": {}}
+{"id": "law-go-kr:law-byl:160403561", "result": "agree", "numbers": 3, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1}, "units_reader": {"원": 1}}
+{"id": "law-go-kr:law-byl:160403567", "result": "agree", "numbers": 4, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1}, "units_reader": {"원": 1}}
+{"id": "law-go-kr:law-byl:160403573", "result": "agree", "numbers": 4, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 1, "일": 5}, "units_reader": {"명": 1, "일": 5}}
+{"id": "law-go-kr:law-byl:160403579", "result": "agree", "numbers": 5, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 1, "일": 4}, "units_reader": {"명": 1, "일": 4}}
+{"id": "law-go-kr:law-byl:160401251", "result": "differ", "numbers": 34, "missing_in_extract": {}, "extra_in_extract": {"1": 1}, "units_extract": {"원": 5, "명": 13, "일": 9}, "units_reader": {"원": 5, "명": 13, "일": 9}}
+{"id": "law-go-kr:law-byl:160401259", "result": "agree", "numbers": 113, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 4, "명": 5, "일": 4}, "units_reader": {"원": 4, "명": 5, "일": 4}}
+{"id": "law-go-kr:law-byl:160401267", "result": "agree", "numbers": 19, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 3, "일": 6}, "units_reader": {"명": 3, "일": 6}}
+{"id": "law-go-kr:law-byl:160401273", "result": "agree", "numbers": 36, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 3, "명": 8, "일": 8}, "units_reader": {"원": 3, "명": 8, "일": 8}}
+{"id": "law-go-kr:law-byl:160401281", "result": "agree", "numbers": 32, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 3, "일": 4}, "units_reader": {"명": 3, "일": 4}}
+{"id": "law-go-kr:law-byl:160401289", "result": "agree", "numbers": 62, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 10, "명": 3, "개월": 2, "일": 7}, "units_reader": {"원": 10, "명": 3, "개월": 2, "일": 7}}
+{"id": "law-go-kr:law-byl:160401297", "result": "agree", "numbers": 59, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 3, "명": 3, "개월": 2, "일": 8}, "units_reader": {"원": 3, "명": 3, "개월": 2, "일": 8}}
+{"id": "law-go-kr:law-byl:160401305", "result": "agree", "numbers": 16, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 2, "일": 1}, "units_reader": {"명": 2, "일": 1}}
+{"id": "law-go-kr:law-byl:160401311", "result": "agree", "numbers": 17, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 2, "일": 4}, "units_reader": {"원": 1, "명": 2, "일": 4}}
+{"id": "law-go-kr:law-byl:160401317", "result": "agree", "numbers": 5, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 1, "일": 1}, "units_reader": {"원": 1, "명": 1, "일": 1}}
+{"id": "law-go-kr:law-byl:160401323", "result": "agree", "numbers": 71, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 11, "명": 4, "개월": 3, "일": 6}, "units_reader": {"원": 11, "명": 4, "개월": 3, "일": 6}}
+{"id": "law-go-kr:law-byl:160401331", "result": "agree", "numbers": 56, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 3, "명": 4, "개월": 3, "일": 6}, "units_reader": {"원": 3, "명": 4, "개월": 3, "일": 6}}
+{"id": "law-go-kr:law-byl:160401339", "result": "agree", "numbers": 111, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 18, "명": 10, "일": 11}, "units_reader": {"원": 18, "명": 10, "일": 11}}
+{"id": "law-go-kr:law-byl:160401351", "result": "agree", "numbers": 16, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "명": 3, "일": 3}, "units_reader": {"원": 2, "명": 3, "일": 3}}
+{"id": "law-go-kr:law-byl:160401357", "result": "agree", "numbers": 13, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 3, "일": 2}, "units_reader": {"원": 1, "명": 3, "일": 2}}
+{"id": "law-go-kr:law-byl:160401363", "result": "agree", "numbers": 28, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 6, "일": 2}, "units_reader": {"원": 1, "명": 6, "일": 2}}
+{"id": "law-go-kr:law-byl:160401371", "result": "agree", "numbers": 74, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 9, "명": 3, "개월": 1, "일": 12}, "units_reader": {"원": 9, "명": 3, "개월": 1, "일": 12}}
+{"id": "law-go-kr:law-byl:160401379", "result": "agree", "numbers": 76, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 9, "명": 3, "개월": 1, "일": 11}, "units_reader": {"원": 9, "명": 3, "개월": 1, "일": 11}}
+{"id": "law-go-kr:law-byl:160401387", "result": "agree", "numbers": 80, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 9, "명": 3, "개월": 1, "일": 11}, "units_reader": {"원": 9, "명": 3, "개월": 1, "일": 11}}
+{"id": "law-go-kr:law-byl:160401395", "result": "agree", "numbers": 39, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 2, "일": 4}, "units_reader": {"원": 1, "명": 2, "일": 4}}
+{"id": "law-go-kr:law-byl:160401403", "result": "agree", "numbers": 28, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "명": 3, "일": 3}, "units_reader": {"원": 2, "명": 3, "일": 3}}
+{"id": "law-go-kr:law-byl:160401409", "result": "agree", "numbers": 12, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 3, "명": 1, "일": 5}, "units_reader": {"원": 3, "명": 1, "일": 5}}
+{"id": "law-go-kr:law-byl:160401415", "result": "agree", "numbers": 6, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 1, "일": 2}, "units_reader": {"명": 1, "일": 2}}
+{"id": "law-go-kr:law-byl:160401421", "result": "agree", "numbers": 24, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "명": 3, "개월": 5, "일": 4}, "units_reader": {"원": 2, "명": 3, "개월": 5, "일": 4}}
+{"id": "law-go-kr:law-byl:160401429", "result": "agree", "numbers": 17, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 5, "일": 9}, "units_reader": {"명": 5, "일": 9}}
+{"id": "law-go-kr:law-byl:160401437", "result": "agree", "numbers": 13, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 13, "일": 8}, "units_reader": {"원": 1, "명": 13, "일": 8}}
+{"id": "law-go-kr:law-byl:160401445", "result": "agree", "numbers": 4, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 1, "일": 8}, "units_reader": {"명": 1, "일": 8}}
+{"id": "law-go-kr:law-byl:160401451", "result": "agree", "numbers": 7, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 2, "일": 4}, "units_reader": {"명": 2, "일": 4}}
+{"id": "law-go-kr:law-byl:160396637", "result": "agree", "numbers": 6, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {}, "units_reader": {}}
+{"id": "law-go-kr:law-byl:160396643", "result": "agree", "numbers": 6, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 3, "명": 1}, "units_reader": {"원": 3, "명": 1}}
+{"id": "law-go-kr:law-byl:160396655", "result": "agree", "numbers": 35, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 3, "명": 2, "일": 2}, "units_reader": {"원": 3, "명": 2, "일": 2}}
+{"id": "law-go-kr:law-byl:160396661", "result": "agree", "numbers": 8, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 1, "일": 2}, "units_reader": {"명": 1, "일": 2}}
+{"id": "law-go-kr:law-byl:160396667", "result": "agree", "numbers": 17, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 3, "개월": 1, "일": 2}, "units_reader": {"원": 1, "명": 3, "개월": 1, "일": 2}}
+{"id": "law-go-kr:law-byl:160396673", "result": "agree", "numbers": 8, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 1, "일": 1}, "units_reader": {"명": 1, "일": 1}}
+{"id": "law-go-kr:law-byl:160396679", "result": "agree", "numbers": 20, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 3, "명": 7, "일": 4}, "units_reader": {"원": 3, "명": 7, "일": 4}}
+{"id": "law-go-kr:law-byl:160396691", "result": "agree", "numbers": 14, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 5, "일": 1}, "units_reader": {"명": 5, "일": 1}}
+{"id": "law-go-kr:law-byl:160396697", "result": "agree", "numbers": 30, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 9, "일": 3}, "units_reader": {"명": 9, "일": 3}}
+{"id": "law-go-kr:law-byl:160396711", "result": "agree", "numbers": 23, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 4, "일": 2}, "units_reader": {"명": 4, "일": 2}}
+{"id": "law-go-kr:law-byl:160396717", "result": "agree", "numbers": 24, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 6, "일": 4}, "units_reader": {"원": 1, "명": 6, "일": 4}}
+{"id": "law-go-kr:law-byl:160396723", "result": "agree", "numbers": 19, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "명": 9, "일": 5}, "units_reader": {"원": 2, "명": 9, "일": 5}}
+{"id": "law-go-kr:law-byl:160396753", "result": "agree", "numbers": 10, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 2, "일": 1}, "units_reader": {"명": 2, "일": 1}}
+{"id": "law-go-kr:law-byl:160396759", "result": "agree", "numbers": 10, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 1, "일": 1}, "units_reader": {"명": 1, "일": 1}}
+{"id": "law-go-kr:law-byl:160396765", "result": "agree", "numbers": 9, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 5, "일": 5}, "units_reader": {"명": 5, "일": 5}}
+{"id": "law-go-kr:law-byl:160396771", "result": "agree", "numbers": 11, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 6, "일": 1}, "units_reader": {"명": 6, "일": 1}}
+{"id": "law-go-kr:law-byl:160396777", "result": "agree", "numbers": 9, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 4, "일": 5}, "units_reader": {"명": 4, "일": 5}}
+{"id": "law-go-kr:law-byl:160396783", "result": "agree", "numbers": 12, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 7, "일": 4}, "units_reader": {"원": 1, "명": 7, "일": 4}}
+{"id": "law-go-kr:law-byl:160396789", "result": "agree", "numbers": 8, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 2, "일": 3}, "units_reader": {"명": 2, "일": 3}}
+{"id": "law-go-kr:law-byl:161135137", "result": "agree", "numbers": 49, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 43, "일": 1}, "units_reader": {"원": 43, "일": 1}}
+{"id": "law-go-kr:law-byl:161135143", "result": "agree", "numbers": 27, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 8, "호봉": 12}, "units_reader": {"원": 8, "호봉": 12}}
+{"id": "law-go-kr:law-byl:161135149", "result": "agree", "numbers": 16, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 5, "일": 1}, "units_reader": {"원": 5, "일": 1}}
+{"id": "law-go-kr:law-byl:162208889", "result": "agree", "numbers": 107, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 4, "일": 6}, "units_reader": {"원": 4, "일": 6}}
+{"id": "law-go-kr:law-byl:162208895", "result": "agree", "numbers": 84, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 11}, "units_reader": {"원": 11}}
+{"id": "law-go-kr:law-byl:162208903", "result": "agree", "numbers": 22, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {}, "units_reader": {}}
+{"id": "law-go-kr:law-byl:162216281", "result": "agree", "numbers": 7, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 1}, "units_reader": {"원": 1, "명": 1}}
+{"id": "law-go-kr:law-byl:162216287", "result": "agree", "numbers": 8, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 1, "일": 1}, "units_reader": {"원": 1, "명": 1, "일": 1}}
+{"id": "law-go-kr:law-byl:162216293", "result": "agree", "numbers": 28, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2}, "units_reader": {"원": 2}}
+{"id": "law-go-kr:law-byl:162216299", "result": "agree", "numbers": 20, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 3, "일": 1}, "units_reader": {"원": 3, "일": 1}}
+{"id": "law-go-kr:law-byl:162216311", "result": "agree", "numbers": 25, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 5, "일": 1}, "units_reader": {"원": 5, "일": 1}}
+{"id": "law-go-kr:law-byl:162216317", "result": "agree", "numbers": 33, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 5, "일": 3}, "units_reader": {"원": 5, "일": 3}}
+{"id": "law-go-kr:law-byl:162216323", "result": "agree", "numbers": 9, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "일": 1}, "units_reader": {"원": 2, "일": 1}}
+{"id": "law-go-kr:law-byl:162216329", "result": "differ", "numbers": 11, "missing_in_extract": {}, "extra_in_extract": {"1": 1, "2": 1}, "units_extract": {"원": 2}, "units_reader": {"원": 1}}
+{"id": "law-go-kr:law-byl:162773637", "result": "agree", "numbers": 47, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 10, "명": 18, "일": 2}, "units_reader": {"원": 10, "명": 18, "일": 2}}
+{"id": "law-go-kr:law-byl:162773651", "result": "agree", "numbers": 30, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1}, "units_reader": {"원": 1}}
+{"id": "law-go-kr:law-byl:162773899", "result": "agree", "numbers": 54, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 20, "일": 2, "호봉": 16}, "units_reader": {"원": 20, "일": 2, "호봉": 16}}
+{"id": "law-go-kr:law-byl:162773905", "result": "agree", "numbers": 18, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 6, "명": 1}, "units_reader": {"원": 6, "명": 1}}
+{"id": "law-go-kr:law-byl:162773913", "result": "agree", "numbers": 223, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "일": 2}, "units_reader": {"원": 1, "일": 2}}
+{"id": "law-go-kr:law-byl:162773919", "result": "agree", "numbers": 55, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 7, "일": 1, "시간": 7}, "units_reader": {"원": 7, "일": 1, "시간": 7}}
+{"id": "law-go-kr:law-byl:162773935", "result": "agree", "numbers": 7, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "일": 1}, "units_reader": {"원": 1, "일": 1}}
+{"id": "law-go-kr:law-byl:162773941", "result": "agree", "numbers": 13, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "명": 2, "일": 5}, "units_reader": {"원": 2, "명": 2, "일": 5}}
+{"id": "law-go-kr:law-byl:162773949", "result": "agree", "numbers": 16, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 5, "명": 9, "일": 1}, "units_reader": {"원": 5, "명": 9, "일": 1}}
+{"id": "law-go-kr:law-byl:162773955", "result": "agree", "numbers": 7, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1}, "units_reader": {"원": 1}}
+{"id": "law-go-kr:law-byl:162773961", "result": "agree", "numbers": 7, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1}, "units_reader": {"원": 1}}
+{"id": "law-go-kr:law-byl:162773973", "result": "agree", "numbers": 8, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 1, "일": 2}, "units_reader": {"원": 1, "명": 1, "일": 2}}
+{"id": "law-go-kr:law-byl:162773979", "result": "agree", "numbers": 7, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "명": 8, "일": 5}, "units_reader": {"원": 2, "명": 8, "일": 5}}
+{"id": "law-go-kr:law-byl:162773985", "result": "agree", "numbers": 9, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 2, "일": 2}, "units_reader": {"원": 1, "명": 2, "일": 2}}
+{"id": "law-go-kr:law-byl:162774011", "result": "agree", "numbers": 29, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 11, "명": 8}, "units_reader": {"원": 11, "명": 8}}
+{"id": "law-go-kr:law-byl:162774029", "result": "agree", "numbers": 7, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 1, "일": 1}, "units_reader": {"원": 1, "명": 1, "일": 1}}
+{"id": "law-go-kr:law-byl:162774053", "result": "agree", "numbers": 21, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 8, "명": 10, "일": 8}, "units_reader": {"원": 8, "명": 10, "일": 8}}
+{"id": "law-go-kr:law-byl:162774063", "result": "agree", "numbers": 9, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 7, "일": 2}, "units_reader": {"원": 1, "명": 7, "일": 2}}
+{"id": "law-go-kr:law-byl:162774071", "result": "agree", "numbers": 15, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "명": 1, "일": 4}, "units_reader": {"원": 2, "명": 1, "일": 4}}
+{"id": "law-go-kr:law-byl:162774083", "result": "agree", "numbers": 19, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 4, "명": 2, "일": 1}, "units_reader": {"원": 4, "명": 2, "일": 1}}
+{"id": "law-go-kr:law-byl:162774089", "result": "agree", "numbers": 9, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "명": 2, "일": 1}, "units_reader": {"원": 2, "명": 2, "일": 1}}
+{"id": "law-go-kr:law-byl:162774095", "result": "agree", "numbers": 16, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 3, "명": 4, "일": 3, "시간": 10}, "units_reader": {"원": 3, "명": 4, "일": 3, "시간": 10}}
+{"id": "law-go-kr:law-byl:162774101", "result": "agree", "numbers": 9, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 5, "명": 5, "일": 1}, "units_reader": {"원": 5, "명": 5, "일": 1}}
+{"id": "law-go-kr:law-byl:162349591", "result": "agree", "numbers": 23, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 7, "호봉": 8}, "units_reader": {"원": 7, "호봉": 8}}
+{"id": "law-go-kr:law-byl:162349597", "result": "agree", "numbers": 16, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 6, "일": 1}, "units_reader": {"원": 6, "일": 1}}
+{"id": "law-go-kr:law-byl:162349603", "result": "agree", "numbers": 6, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "호봉": 1}, "units_reader": {"원": 2, "호봉": 1}}
+{"id": "law-go-kr:law-byl:162349609", "result": "agree", "numbers": 14, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2}, "units_reader": {"원": 2}}
+{"id": "law-go-kr:law-byl:162349615", "result": "agree", "numbers": 13, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 5, "호봉": 1}, "units_reader": {"원": 5, "호봉": 1}}
+{"id": "law-go-kr:law-byl:162349741", "result": "agree", "numbers": 84, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 64, "일": 3, "호봉": 1}, "units_reader": {"원": 64, "일": 3, "호봉": 1}}
+{"id": "law-go-kr:law-byl:162905359", "result": "agree", "numbers": 28, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 9, "명": 11}, "units_reader": {"원": 9, "명": 11}}
+{"id": "law-go-kr:law-byl:162905365", "result": "agree", "numbers": 31, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "일": 1}, "units_reader": {"원": 1, "일": 1}}
+{"id": "law-go-kr:law-byl:162905373", "result": "agree", "numbers": 47, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 19, "일": 2, "호봉": 18}, "units_reader": {"원": 19, "일": 2, "호봉": 18}}
+{"id": "law-go-kr:law-byl:162905419", "result": "agree", "numbers": 16, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 5, "명": 1}, "units_reader": {"원": 5, "명": 1}}
+{"id": "law-go-kr:law-byl:162905425", "result": "agree", "numbers": 214, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "일": 3}, "units_reader": {"원": 2, "일": 3}}
+{"id": "law-go-kr:law-byl:162905431", "result": "agree", "numbers": 155, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 15, "명": 3, "일": 14, "시간": 4}, "units_reader": {"원": 15, "명": 3, "일": 14, "시간": 4}}
+{"id": "law-go-kr:law-byl:162905445", "result": "agree", "numbers": 28, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "개월": 1}, "units_reader": {"원": 1, "개월": 1}}
+{"id": "law-go-kr:law-byl:162905451", "result": "agree", "numbers": 37, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "개월": 1}, "units_reader": {"원": 1, "개월": 1}}
+{"id": "law-go-kr:law-byl:162905457", "result": "agree", "numbers": 123, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 6, "명": 3}, "units_reader": {"원": 6, "명": 3}}
+{"id": "law-go-kr:law-byl:162905465", "result": "agree", "numbers": 27, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "일": 2}, "units_reader": {"원": 1, "일": 2}}
+{"id": "law-go-kr:law-byl:162905471", "result": "agree", "numbers": 7, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2}, "units_reader": {"원": 2}}
+{"id": "law-go-kr:law-byl:162905477", "result": "agree", "numbers": 15, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "개월": 1, "일": 1}, "units_reader": {"원": 1, "개월": 1, "일": 1}}
+{"id": "law-go-kr:law-byl:162905483", "result": "agree", "numbers": 17, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 3, "명": 3}, "units_reader": {"원": 3, "명": 3}}
+{"id": "law-go-kr:law-byl:162905489", "result": "agree", "numbers": 13, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1}, "units_reader": {"원": 1}}
+{"id": "law-go-kr:law-byl:162905495", "result": "agree", "numbers": 46, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "%": 1}, "units_reader": {"원": 2, "%": 1}}
+{"id": "law-go-kr:law-byl:162905501", "result": "agree", "numbers": 5, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "일": 1}, "units_reader": {"원": 1, "일": 1}}
+{"id": "law-go-kr:law-byl:162905507", "result": "agree", "numbers": 11, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "명": 1, "일": 3}, "units_reader": {"원": 2, "명": 1, "일": 3}}
+{"id": "law-go-kr:law-byl:162905513", "result": "agree", "numbers": 18, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 7, "명": 9}, "units_reader": {"원": 7, "명": 9}}
+{"id": "law-go-kr:law-byl:162905519", "result": "agree", "numbers": 4, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1}, "units_reader": {"원": 1}}
+{"id": "law-go-kr:law-byl:162905525", "result": "agree", "numbers": 4, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1}, "units_reader": {"원": 1}}
+{"id": "law-go-kr:law-byl:162905531", "result": "agree", "numbers": 4, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 1, "일": 2}, "units_reader": {"원": 1, "명": 1, "일": 2}}
+{"id": "law-go-kr:law-byl:162905537", "result": "agree", "numbers": 4, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "명": 8, "일": 4}, "units_reader": {"원": 2, "명": 8, "일": 4}}
+{"id": "law-go-kr:law-byl:162905543", "result": "agree", "numbers": 4, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 1, "일": 1}, "units_reader": {"원": 1, "명": 1, "일": 1}}
+{"id": "law-go-kr:law-byl:162905549", "result": "agree", "numbers": 55, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 12, "명": 21, "일": 43, "호봉": 7}, "units_reader": {"원": 12, "명": 21, "일": 43, "호봉": 7}}
+{"id": "law-go-kr:law-byl:162905579", "result": "agree", "numbers": 24, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 13, "명": 11, "일": 8}, "units_reader": {"원": 13, "명": 11, "일": 8}}
+{"id": "law-go-kr:law-byl:162905587", "result": "agree", "numbers": 4, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 4, "일": 1}, "units_reader": {"원": 1, "명": 4, "일": 1}}
+{"id": "law-go-kr:law-byl:162905593", "result": "agree", "numbers": 4, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "명": 1, "일": 3}, "units_reader": {"원": 2, "명": 1, "일": 3}}
+{"id": "law-go-kr:law-byl:162905599", "result": "agree", "numbers": 4, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 1}, "units_reader": {"원": 1, "명": 1}}
+{"id": "law-go-kr:law-byl:162905605", "result": "agree", "numbers": 16, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 3, "명": 3, "일": 3, "시간": 10}, "units_reader": {"원": 3, "명": 3, "일": 3, "시간": 10}}
+{"id": "law-go-kr:law-byl:162905611", "result": "agree", "numbers": 10, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 5, "명": 4, "일": 1}, "units_reader": {"원": 5, "명": 4, "일": 1}}
+{"id": "law-go-kr:law-byl:162905617", "result": "agree", "numbers": 164, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 5, "명": 5, "%": 4, "일": 1}, "units_reader": {"원": 5, "명": 5, "%": 4, "일": 1}}
+{"id": "law-go-kr:law-byl:162905625", "result": "agree", "numbers": 67, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 8, "%": 4}, "units_reader": {"원": 1, "명": 8, "%": 4}}
+{"id": "law-go-kr:law-byl:162905631", "result": "agree", "numbers": 40, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 3, "명": 6, "일": 2, "시간": 1}, "units_reader": {"원": 3, "명": 6, "일": 2, "시간": 1}}
+{"id": "law-go-kr:law-byl:162905637", "result": "agree", "numbers": 53, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 2}, "units_reader": {"원": 1, "명": 2}}
+{"id": "law-go-kr:law-byl:162905643", "result": "agree", "numbers": 4, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 4, "명": 2, "일": 1}, "units_reader": {"원": 4, "명": 2, "일": 1}}
+{"id": "law-go-kr:law-byl:162905649", "result": "agree", "numbers": 4, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "명": 1}, "units_reader": {"원": 2, "명": 1}}
+{"id": "law-go-kr:law-byl:162905655", "result": "agree", "numbers": 4, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 1}, "units_reader": {"원": 1, "명": 1}}
+{"id": "law-go-kr:law-byl:162905661", "result": "agree", "numbers": 8, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 10, "명": 17, "일": 1}, "units_reader": {"원": 10, "명": 17, "일": 1}}
+{"id": "law-go-kr:law-byl:162905667", "result": "agree", "numbers": 4, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 2}, "units_reader": {"원": 1, "명": 2}}
+{"id": "law-go-kr:law-byl:162905673", "result": "agree", "numbers": 4, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 2}, "units_reader": {"원": 1, "명": 2}}
+{"id": "law-go-kr:law-byl:162905679", "result": "agree", "numbers": 54, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 19}, "units_reader": {"원": 19}}
+{"id": "law-go-kr:law-byl:162905687", "result": "agree", "numbers": 4, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 2, "일": 1}, "units_reader": {"원": 1, "명": 2, "일": 1}}
+{"id": "law-go-kr:law-byl:162905693", "result": "agree", "numbers": 10, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 4, "명": 2, "일": 3}, "units_reader": {"원": 4, "명": 2, "일": 3}}
+{"id": "law-go-kr:law-byl:162905699", "result": "agree", "numbers": 10, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "명": 3, "일": 1}, "units_reader": {"원": 2, "명": 3, "일": 1}}
+{"id": "law-go-kr:law-byl:163715777", "result": "agree", "numbers": 313, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 12, "명": 7, "개월": 107}, "units_reader": {"원": 12, "명": 7, "개월": 107}}
+{"id": "law-go-kr:law-byl:163715789", "result": "agree", "numbers": 158, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 7, "%": 38}, "units_reader": {"원": 1, "명": 7, "%": 38}}
+{"id": "law-go-kr:law-byl:163715799", "result": "agree", "numbers": 236, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 10, "명": 8, "%": 57}, "units_reader": {"원": 10, "명": 8, "%": 57}}
+{"id": "law-go-kr:law-byl:163715811", "result": "agree", "numbers": 9, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 3, "일": 1}, "units_reader": {"명": 3, "일": 1}}
+{"id": "law-go-kr:law-byl:163715817", "result": "agree", "numbers": 6, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 5, "일": 5}, "units_reader": {"명": 5, "일": 5}}
+{"id": "law-go-kr:law-byl:163715823", "result": "agree", "numbers": 11, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "명": 8, "일": 4}, "units_reader": {"원": 2, "명": 8, "일": 4}}
+{"id": "law-go-kr:law-byl:163715829", "result": "agree", "numbers": 6, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 7, "일": 2}, "units_reader": {"명": 7, "일": 2}}
+{"id": "law-go-kr:law-byl:163715835", "result": "agree", "numbers": 9, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 3, "일": 3}, "units_reader": {"원": 1, "명": 3, "일": 3}}
+{"id": "law-go-kr:law-byl:163715841", "result": "agree", "numbers": 18, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 3, "일": 4}, "units_reader": {"명": 3, "일": 4}}
+{"id": "law-go-kr:law-byl:163715847", "result": "agree", "numbers": 18, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 6, "명": 4, "%": 5, "일": 3}, "units_reader": {"원": 6, "명": 4, "%": 5, "일": 3}}
+{"id": "law-go-kr:law-byl:163715853", "result": "agree", "numbers": 18, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 3, "명": 5, "%": 1, "일": 2}, "units_reader": {"원": 3, "명": 5, "%": 1, "일": 2}}
+{"id": "law-go-kr:law-byl:163715859", "result": "agree", "numbers": 18, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 3, "명": 4, "%": 1, "일": 1}, "units_reader": {"원": 3, "명": 4, "%": 1, "일": 1}}
+{"id": "law-go-kr:law-byl:163715865", "result": "agree", "numbers": 6, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 3, "명": 3, "개월": 1, "일": 4}, "units_reader": {"원": 3, "명": 3, "개월": 1, "일": 4}}
+{"id": "law-go-kr:law-byl:163715871", "result": "agree", "numbers": 6, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 3, "명": 3, "개월": 1, "일": 4}, "units_reader": {"원": 3, "명": 3, "개월": 1, "일": 4}}
+{"id": "law-go-kr:law-byl:163715877", "result": "agree", "numbers": 6, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 8, "명": 3, "%": 4, "일": 2}, "units_reader": {"원": 8, "명": 3, "%": 4, "일": 2}}
+{"id": "law-go-kr:law-byl:163715883", "result": "agree", "numbers": 8, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 2, "일": 1}, "units_reader": {"원": 1, "명": 2, "일": 1}}
+{"id": "law-go-kr:law-byl:163715889", "result": "agree", "numbers": 6, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 2, "일": 4}, "units_reader": {"명": 2, "일": 4}}
+{"id": "law-go-kr:law-byl:163715895", "result": "agree", "numbers": 23, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 3, "일": 2}, "units_reader": {"원": 1, "명": 3, "일": 2}}
+{"id": "law-go-kr:law-byl:164268241", "result": "agree", "numbers": 44, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"개월": 5, "일": 3}, "units_reader": {"개월": 5, "일": 3}}
+{"id": "law-go-kr:law-byl:164683119", "result": "agree", "numbers": 34, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 2, "개월": 3, "일": 4}, "units_reader": {"명": 2, "개월": 3, "일": 4}}
+{"id": "law-go-kr:law-byl:164683125", "result": "agree", "numbers": 27, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 4, "일": 2}, "units_reader": {"원": 1, "명": 4, "일": 2}}
+{"id": "law-go-kr:law-byl:164767069", "result": "agree", "numbers": 44, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 9, "일": 2}, "units_reader": {"원": 9, "일": 2}}
+{"id": "law-go-kr:law-byl:164767087", "result": "agree", "numbers": 13, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "%": 1}, "units_reader": {"원": 2, "%": 1}}
+{"id": "law-go-kr:law-byl:164767093", "result": "agree", "numbers": 11, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 7, "명": 2}, "units_reader": {"원": 7, "명": 2}}
+{"id": "law-go-kr:law-byl:164767625", "result": "agree", "numbers": 20, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 12, "일": 2, "호봉": 1}, "units_reader": {"원": 12, "일": 2, "호봉": 1}}
+{"id": "law-go-kr:law-byl:164767631", "result": "agree", "numbers": 7, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 3, "호봉": 2}, "units_reader": {"원": 3, "호봉": 2}}
+{"id": "law-go-kr:law-byl:164767637", "result": "agree", "numbers": 14, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 3}, "units_reader": {"원": 3}}
+{"id": "law-go-kr:law-byl:164767643", "result": "agree", "numbers": 31, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 8, "호봉": 13}, "units_reader": {"원": 8, "호봉": 13}}
+{"id": "law-go-kr:law-byl:164767649", "result": "agree", "numbers": 19, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 6, "일": 1}, "units_reader": {"원": 6, "일": 1}}
+{"id": "law-go-kr:law-byl:164767655", "result": "agree", "numbers": 3, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 5}, "units_reader": {"원": 5}}
+{"id": "law-go-kr:law-byl:164767661", "result": "agree", "numbers": 140, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 132, "%": 2, "일": 7, "시간": 3, "호봉": 2}, "units_reader": {"원": 132, "%": 2, "일": 7, "시간": 3, "호봉": 2}}
+{"id": "law-go-kr:law-byl:166011537", "result": "agree", "numbers": 5, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2}, "units_reader": {"원": 2}}
+{"id": "law-go-kr:law-byl:166011543", "result": "agree", "numbers": 26, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 3}, "units_reader": {"원": 3}}
+{"id": "law-go-kr:law-byl:166011549", "result": "agree", "numbers": 13, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2}, "units_reader": {"원": 2}}
+{"id": "law-go-kr:law-byl:166011555", "result": "agree", "numbers": 17, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 3}, "units_reader": {"원": 3}}
+{"id": "law-go-kr:law-byl:166011561", "result": "agree", "numbers": 13, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "일": 3}, "units_reader": {"원": 2, "일": 3}}
+{"id": "law-go-kr:law-byl:166011569", "result": "agree", "numbers": 23, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 3, "일": 3}, "units_reader": {"원": 3, "일": 3}}
+{"id": "law-go-kr:law-byl:166011575", "result": "agree", "numbers": 34, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 4, "일": 4}, "units_reader": {"원": 4, "일": 4}}
+{"id": "law-go-kr:law-byl:166011589", "result": "differ", "numbers": 10, "missing_in_extract": {}, "extra_in_extract": {"180": 4, "1.5": 2, "2": 1, "900": 1}, "units_extract": {"원": 1, "개월": 3, "일": 8, "호봉": 3}, "units_reader": {"원": 1, "개월": 3, "일": 1}}
+{"id": "law-go-kr:law-byl:166011595", "result": "agree", "numbers": 8, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "일": 1}, "units_reader": {"원": 2, "일": 1}}
+{"id": "law-go-kr:law-byl:166182177", "result": "agree", "numbers": 0, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "명": 1, "일": 1}, "units_reader": {"원": 2, "명": 1, "일": 1}}
+{"id": "law-go-kr:law-byl:166396865", "result": "agree", "numbers": 18, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 6, "명": 1, "일": 13}, "units_reader": {"원": 6, "명": 1, "일": 13}}
+{"id": "law-go-kr:law-byl:166396885", "result": "agree", "numbers": 96, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 61, "명": 2, "일": 16}, "units_reader": {"원": 61, "명": 2, "일": 16}}
+{"id": "law-go-kr:law-byl:166397179", "result": "agree", "numbers": 32, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 11, "명": 19, "시간": 3}, "units_reader": {"원": 11, "명": 19, "시간": 3}}
+{"id": "law-go-kr:law-byl:166397203", "result": "agree", "numbers": 27, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 3, "일": 3}, "units_reader": {"원": 3, "일": 3}}
+{"id": "law-go-kr:law-byl:166397211", "result": "agree", "numbers": 30, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 8, "일": 3}, "units_reader": {"원": 8, "일": 3}}
+{"id": "law-go-kr:law-byl:166397219", "result": "agree", "numbers": 42, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 5}, "units_reader": {"원": 5}}
+{"id": "law-go-kr:law-byl:166397579", "result": "agree", "numbers": 24, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 9, "개월": 3, "일": 6, "시간": 16}, "units_reader": {"원": 9, "개월": 3, "일": 6, "시간": 16}}
+{"id": "law-go-kr:law-byl:166397587", "result": "agree", "numbers": 28, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "개월": 9, "일": 1}, "units_reader": {"원": 1, "개월": 9, "일": 1}}
+{"id": "law-go-kr:law-byl:166397593", "result": "agree", "numbers": 34, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 9, "개월": 5, "일": 3}, "units_reader": {"원": 9, "개월": 5, "일": 3}}
+{"id": "law-go-kr:law-byl:166397599", "result": "agree", "numbers": 15, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "개월": 4, "일": 4}, "units_reader": {"원": 1, "개월": 4, "일": 4}}
+{"id": "law-go-kr:law-byl:166494219", "result": "agree", "numbers": 11, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 3}, "units_reader": {"원": 3}}
+{"id": "law-go-kr:law-byl:166494225", "result": "agree", "numbers": 41, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 10, "명": 6}, "units_reader": {"원": 10, "명": 6}}
+{"id": "law-go-kr:law-byl:166494231", "result": "agree", "numbers": 42, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "명": 2}, "units_reader": {"원": 2, "명": 2}}
+{"id": "law-go-kr:law-byl:166494239", "result": "agree", "numbers": 52, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 17, "호봉": 18}, "units_reader": {"원": 17, "호봉": 18}}
+{"id": "law-go-kr:law-byl:166494245", "result": "agree", "numbers": 14, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1}, "units_reader": {"원": 1}}
+{"id": "law-go-kr:law-byl:166494257", "result": "agree", "numbers": 7, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "일": 1}, "units_reader": {"원": 1, "일": 1}}
+{"id": "law-go-kr:law-byl:166494263", "result": "agree", "numbers": 225, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 3, "일": 1}, "units_reader": {"원": 3, "일": 1}}
+{"id": "law-go-kr:law-byl:166494281", "result": "agree", "numbers": 10, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 7, "명": 3, "일": 3}, "units_reader": {"원": 7, "명": 3, "일": 3}}
+{"id": "law-go-kr:law-byl:166494287", "result": "agree", "numbers": 11, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 5, "명": 8, "일": 5}, "units_reader": {"원": 5, "명": 8, "일": 5}}
+{"id": "law-go-kr:law-byl:166494293", "result": "agree", "numbers": 10, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 4, "명": 8, "일": 5}, "units_reader": {"원": 4, "명": 8, "일": 5}}
+{"id": "law-go-kr:law-byl:166494305", "result": "agree", "numbers": 10, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 5, "명": 8, "일": 4}, "units_reader": {"원": 5, "명": 8, "일": 4}}
+{"id": "law-go-kr:law-byl:166494311", "result": "agree", "numbers": 23, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 5, "명": 7}, "units_reader": {"원": 5, "명": 7}}
+{"id": "law-go-kr:law-byl:166494323", "result": "agree", "numbers": 11, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 6, "명": 8, "일": 4}, "units_reader": {"원": 6, "명": 8, "일": 4}}
+{"id": "law-go-kr:law-byl:166494329", "result": "agree", "numbers": 11, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 5, "명": 8, "일": 5}, "units_reader": {"원": 5, "명": 8, "일": 5}}
+{"id": "law-go-kr:law-byl:166494335", "result": "agree", "numbers": 9, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 4, "명": 8, "일": 4, "시간": 1}, "units_reader": {"원": 4, "명": 8, "일": 4, "시간": 1}}
+{"id": "law-go-kr:law-byl:166494341", "result": "agree", "numbers": 17, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 3, "명": 4, "일": 3, "시간": 10}, "units_reader": {"원": 3, "명": 4, "일": 3, "시간": 10}}
+{"id": "law-go-kr:law-byl:166494347", "result": "agree", "numbers": 10, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 4, "명": 5, "일": 1}, "units_reader": {"원": 4, "명": 5, "일": 1}}
+{"id": "law-go-kr:law-byl:166494359", "result": "agree", "numbers": 14, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 6, "명": 7, "일": 9}, "units_reader": {"원": 6, "명": 7, "일": 9}}
+{"id": "law-go-kr:law-byl:166494367", "result": "agree", "numbers": 6, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 4, "일": 3}, "units_reader": {"원": 1, "명": 4, "일": 3}}
+{"id": "law-go-kr:law-byl:166494373", "result": "agree", "numbers": 7, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "명": 2, "일": 2}, "units_reader": {"원": 2, "명": 2, "일": 2}}
+{"id": "law-go-kr:law-byl:166494379", "result": "agree", "numbers": 19, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 9, "명": 4, "개월": 1, "일": 6}, "units_reader": {"원": 9, "명": 4, "개월": 1, "일": 6}}
+{"id": "law-go-kr:law-byl:167210525", "result": "agree", "numbers": 93, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 47}, "units_reader": {"명": 47}}
+{"id": "law-go-kr:law-byl:167210533", "result": "agree", "numbers": 11, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {}, "units_reader": {}}
+{"id": "law-go-kr:law-byl:167210539", "result": "agree", "numbers": 93, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 47}, "units_reader": {"명": 47}}
+{"id": "law-go-kr:law-byl:167210547", "result": "agree", "numbers": 26, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 1}, "units_reader": {"원": 1, "명": 1}}
+{"id": "law-go-kr:law-byl:167210553", "result": "agree", "numbers": 25, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"일": 2}, "units_reader": {"일": 2}}
+{"id": "law-go-kr:law-byl:167210559", "result": "agree", "numbers": 21, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {}, "units_reader": {}}
+{"id": "law-go-kr:law-byl:166991573", "result": "agree", "numbers": 5, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1}, "units_reader": {"원": 1}}
+{"id": "law-go-kr:law-byl:166991619", "result": "agree", "numbers": 11, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1}, "units_reader": {"원": 1}}
+{"id": "law-go-kr:law-byl:166991625", "result": "agree", "numbers": 5, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1}, "units_reader": {"원": 1}}
+{"id": "law-go-kr:law-byl:166991631", "result": "agree", "numbers": 24, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1}, "units_reader": {"원": 1}}
+{"id": "law-go-kr:law-byl:167589649", "result": "agree", "numbers": 98, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 15, "일": 2, "호봉": 64}, "units_reader": {"원": 15, "일": 2, "호봉": 64}}
+{"id": "law-go-kr:law-byl:167589699", "result": "agree", "numbers": 81, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 47, "일": 9, "시간": 8}, "units_reader": {"원": 47, "일": 9, "시간": 8}}
+{"id": "law-go-kr:law-byl:167589707", "result": "agree", "numbers": 116, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 42, "일": 25, "시간": 10}, "units_reader": {"원": 42, "일": 25, "시간": 10}}
+{"id": "law-go-kr:law-byl:167589715", "result": "agree", "numbers": 117, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 42, "일": 28, "시간": 10}, "units_reader": {"원": 42, "일": 28, "시간": 10}}
+{"id": "law-go-kr:law-byl:167589749", "result": "agree", "numbers": 456, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 8, "개월": 5, "일": 2, "호봉": 105}, "units_reader": {"원": 8, "개월": 5, "일": 2, "호봉": 105}}
+{"id": "law-go-kr:law-byl:167589759", "result": "agree", "numbers": 22, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 8, "일": 2}, "units_reader": {"원": 8, "일": 2}}
+{"id": "law-go-kr:law-byl:167589765", "result": "agree", "numbers": 37, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 13, "시간": 2, "호봉": 2}, "units_reader": {"원": 13, "시간": 2, "호봉": 2}}
+{"id": "law-go-kr:law-byl:167589771", "result": "agree", "numbers": 25, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 19}, "units_reader": {"원": 19}}
+{"id": "law-go-kr:law-byl:167589777", "result": "agree", "numbers": 29, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"천원": 11, "원": 28, "명": 2}, "units_reader": {"천원": 11, "원": 28, "명": 2}}
+{"id": "law-go-kr:law-byl:167589783", "result": "agree", "numbers": 109, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"천원": 10, "원": 71, "명": 6}, "units_reader": {"천원": 10, "원": 71, "명": 6}}
+{"id": "law-go-kr:law-byl:167589795", "result": "agree", "numbers": 23, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 16}, "units_reader": {"원": 16}}
+{"id": "law-go-kr:law-byl:168235871", "result": "agree", "numbers": 41, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 6}, "units_reader": {"원": 6}}
+{"id": "law-go-kr:law-byl:168235879", "result": "agree", "numbers": 24, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"일": 1}, "units_reader": {"일": 1}}
+{"id": "law-go-kr:law-byl:168235885", "result": "agree", "numbers": 27, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 1}, "units_reader": {"원": 1, "명": 1}}
+{"id": "law-go-kr:law-byl:168235893", "result": "agree", "numbers": 25, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {}, "units_reader": {}}
+{"id": "law-go-kr:law-byl:168235899", "result": "agree", "numbers": 24, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "일": 2}, "units_reader": {"원": 1, "일": 2}}
+{"id": "law-go-kr:law-byl:168526817", "result": "agree", "numbers": 400, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 43, "명": 3, "%": 27, "일": 3}, "units_reader": {"원": 43, "명": 3, "%": 27, "일": 3}}
+{"id": "law-go-kr:law-byl:168526837", "result": "agree", "numbers": 327, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 115, "명": 1, "일": 7}, "units_reader": {"원": 115, "명": 1, "일": 7}}
+{"id": "law-go-kr:law-byl:168526859", "result": "agree", "numbers": 11, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"일": 4}, "units_reader": {"일": 4}}
+{"id": "law-go-kr:law-byl:168526865", "result": "agree", "numbers": 146, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 24, "명": 6, "일": 1}, "units_reader": {"원": 24, "명": 6, "일": 1}}
+{"id": "law-go-kr:law-byl:168526875", "result": "agree", "numbers": 35, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "일": 4}, "units_reader": {"원": 1, "일": 4}}
+{"id": "law-go-kr:law-byl:168526881", "result": "agree", "numbers": 35, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "명": 5, "일": 4}, "units_reader": {"원": 2, "명": 5, "일": 4}}
+{"id": "law-go-kr:law-byl:168526887", "result": "agree", "numbers": 24, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {}, "units_reader": {}}
+{"id": "law-go-kr:law-byl:168526893", "result": "agree", "numbers": 44, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"%": 9, "일": 2}, "units_reader": {"%": 9, "일": 2}}
+{"id": "law-go-kr:law-byl:168862383", "result": "agree", "numbers": 6, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1}, "units_reader": {"원": 1}}
+{"id": "law-go-kr:law-byl:168862389", "result": "agree", "numbers": 14, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1}, "units_reader": {"원": 1}}
+{"id": "law-go-kr:law-byl:168862395", "result": "agree", "numbers": 26, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 3}, "units_reader": {"원": 3}}
+{"id": "law-go-kr:law-byl:168862401", "result": "agree", "numbers": 83, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 4, "%": 15, "일": 4}, "units_reader": {"원": 4, "%": 15, "일": 4}}
+{"id": "law-go-kr:law-byl:168862415", "result": "agree", "numbers": 38, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 7, "%": 15, "일": 10}, "units_reader": {"원": 7, "%": 15, "일": 10}}
+{"id": "law-go-kr:law-byl:168862423", "result": "agree", "numbers": 34, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 3, "명": 1, "일": 3}, "units_reader": {"원": 3, "명": 1, "일": 3}}
+{"id": "law-go-kr:law-byl:168862435", "result": "agree", "numbers": 9, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "명": 1, "일": 1}, "units_reader": {"원": 2, "명": 1, "일": 1}}
+{"id": "law-go-kr:law-byl:168706549", "result": "agree", "numbers": 21, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 4, "일": 1}, "units_reader": {"원": 4, "일": 1}}
+{"id": "law-go-kr:law-byl:168706555", "result": "agree", "numbers": 9, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 3, "일": 1}, "units_reader": {"원": 3, "일": 1}}
+{"id": "law-go-kr:law-byl:168706561", "result": "agree", "numbers": 25, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 7}, "units_reader": {"원": 1, "명": 7}}
+{"id": "law-go-kr:law-byl:168729997", "result": "agree", "numbers": 42, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 4, "일": 1}, "units_reader": {"원": 4, "일": 1}}
+{"id": "law-go-kr:law-byl:168730005", "result": "agree", "numbers": 42, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 4, "일": 1}, "units_reader": {"원": 4, "일": 1}}
+{"id": "law-go-kr:law-byl:168730013", "result": "agree", "numbers": 14, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 4, "일": 1}, "units_reader": {"원": 4, "일": 1}}
+{"id": "law-go-kr:law-byl:168730019", "result": "agree", "numbers": 96, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 4, "명": 32, "일": 9}, "units_reader": {"원": 4, "명": 32, "일": 9}}
+{"id": "law-go-kr:law-byl:169042521", "result": "agree", "numbers": 20, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"명": 3, "일": 3}, "units_reader": {"명": 3, "일": 3}}
+{"id": "law-go-kr:law-byl:169505175", "result": "agree", "numbers": 47, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 11, "%": 8, "일": 2}, "units_reader": {"원": 11, "%": 8, "일": 2}}
+{"id": "law-go-kr:law-byl:169505181", "result": "agree", "numbers": 11, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 11, "일": 1}, "units_reader": {"원": 11, "일": 1}}
+{"id": "law-go-kr:law-byl:169505187", "result": "agree", "numbers": 61, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 12, "호봉": 19}, "units_reader": {"원": 12, "호봉": 19}}
+{"id": "law-go-kr:law-byl:169505193", "result": "agree", "numbers": 19, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2}, "units_reader": {"원": 2}}
+{"id": "law-go-kr:law-byl:169505199", "result": "agree", "numbers": 15, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 12, "일": 1}, "units_reader": {"원": 12, "일": 1}}
+{"id": "law-go-kr:law-byl:169505205", "result": "agree", "numbers": 25, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "개월": 1}, "units_reader": {"원": 2, "개월": 1}}
+{"id": "law-go-kr:law-byl:169505211", "result": "agree", "numbers": 25, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 15}, "units_reader": {"원": 15}}
+{"id": "law-go-kr:law-byl:169505223", "result": "agree", "numbers": 7, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 4}, "units_reader": {"원": 4}}
+{"id": "law-go-kr:law-byl:169505229", "result": "agree", "numbers": 19, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 8, "일": 1}, "units_reader": {"원": 8, "일": 1}}
+{"id": "law-go-kr:law-byl:169505239", "result": "agree", "numbers": 383, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 233, "명": 3, "%": 2, "개월": 3, "일": 20, "시간": 1, "호봉": 1}, "units_reader": {"원": 233, "명": 3, "%": 2, "개월": 3, "일": 20, "시간": 1, "호봉": 1}}
+{"id": "law-go-kr:law-byl:169505271", "result": "agree", "numbers": 205, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 8, "%": 28, "일": 10, "시간": 9, "km": 66}, "units_reader": {"원": 8, "%": 28, "일": 10, "시간": 9, "km": 66}}
+{"id": "law-go-kr:law-byl:169505285", "result": "agree", "numbers": 37, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 8, "일": 1, "시간": 1, "호봉": 19}, "units_reader": {"원": 8, "일": 1, "시간": 1, "호봉": 19}}
+{"id": "law-go-kr:law-byl:169505291", "result": "agree", "numbers": 17, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 17, "일": 2}, "units_reader": {"원": 17, "일": 2}}
+{"id": "law-go-kr:law-byl:169505303", "result": "agree", "numbers": 107, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 63, "일": 17}, "units_reader": {"원": 63, "일": 17}}
+{"id": "law-go-kr:law-byl:169708635", "result": "agree", "numbers": 49, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 38, "일": 2, "호봉": 4}, "units_reader": {"원": 38, "일": 2, "호봉": 4}}
+{"id": "law-go-kr:law-byl:169708641", "result": "agree", "numbers": 39, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 3, "일": 9}, "units_reader": {"원": 3, "일": 9}}
+{"id": "law-go-kr:law-byl:169708647", "result": "agree", "numbers": 12, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 3}, "units_reader": {"원": 3}}
+{"id": "law-go-kr:law-byl:169708653", "result": "agree", "numbers": 110, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "일": 10}, "units_reader": {"원": 2, "일": 10}}
+{"id": "law-go-kr:law-byl:169708663", "result": "agree", "numbers": 25, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1}, "units_reader": {"원": 1}}
+{"id": "law-go-kr:law-byl:169708675", "result": "agree", "numbers": 33, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 4, "명": 2, "개월": 1, "일": 6}, "units_reader": {"원": 4, "명": 2, "개월": 1, "일": 6}}
+{"id": "law-go-kr:law-byl:169708689", "result": "agree", "numbers": 17, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 27, "일": 10}, "units_reader": {"원": 27, "일": 10}}
+{"id": "law-go-kr:law-byl:169708697", "result": "agree", "numbers": 16, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 17}, "units_reader": {"원": 17}}
+{"id": "law-go-kr:law-byl:169702917", "result": "agree", "numbers": 29, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 56, "일": 5}, "units_reader": {"원": 56, "일": 5}}
+{"id": "law-go-kr:law-byl:169702929", "result": "agree", "numbers": 339, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 9, "일": 2, "호봉": 11}, "units_reader": {"원": 9, "일": 2, "호봉": 11}}
+{"id": "law-go-kr:law-byl:169702935", "result": "agree", "numbers": 163, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "호봉": 1}, "units_reader": {"원": 2, "호봉": 1}}
+{"id": "law-go-kr:law-byl:169702941", "result": "agree", "numbers": 305, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 3, "호봉": 1}, "units_reader": {"원": 3, "호봉": 1}}
+{"id": "law-go-kr:law-byl:169702947", "result": "agree", "numbers": 110, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 5, "호봉": 4}, "units_reader": {"원": 5, "호봉": 4}}
+{"id": "law-go-kr:law-byl:169702953", "result": "agree", "numbers": 110, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 3, "호봉": 1}, "units_reader": {"원": 3, "호봉": 1}}
+{"id": "law-go-kr:law-byl:169702965", "result": "agree", "numbers": 307, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 3, "일": 1, "호봉": 1}, "units_reader": {"원": 3, "일": 1, "호봉": 1}}
+{"id": "law-go-kr:law-byl:169702983", "result": "agree", "numbers": 341, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 11, "일": 4, "호봉": 2}, "units_reader": {"원": 11, "일": 4, "호봉": 2}}
+{"id": "law-go-kr:law-byl:169702989", "result": "agree", "numbers": 89, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 12, "명": 1, "시간": 2, "호봉": 3}, "units_reader": {"원": 12, "명": 1, "시간": 2, "호봉": 3}}
+{"id": "law-go-kr:law-byl:169702995", "result": "agree", "numbers": 85, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 19, "명": 1, "호봉": 7}, "units_reader": {"원": 19, "명": 1, "호봉": 7}}
+{"id": "law-go-kr:law-byl:169703001", "result": "agree", "numbers": 249, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 20, "일": 1, "호봉": 1}, "units_reader": {"원": 20, "일": 1, "호봉": 1}}
+{"id": "law-go-kr:law-byl:169703007", "result": "agree", "numbers": 38, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "호봉": 1}, "units_reader": {"원": 2, "호봉": 1}}
+{"id": "law-go-kr:law-byl:169703013", "result": "agree", "numbers": 134, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 16, "일": 3, "호봉": 68}, "units_reader": {"원": 16, "일": 3, "호봉": 68}}
+{"id": "law-go-kr:law-byl:169703025", "result": "agree", "numbers": 42, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 14, "일": 3}, "units_reader": {"원": 14, "일": 3}}
+{"id": "law-go-kr:law-byl:169703031", "result": "agree", "numbers": 92, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 49, "일": 11, "시간": 8}, "units_reader": {"원": 49, "일": 11, "시간": 8}}
+{"id": "law-go-kr:law-byl:169703041", "result": "agree", "numbers": 105, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 41, "일": 26, "시간": 9}, "units_reader": {"원": 41, "일": 26, "시간": 9}}
+{"id": "law-go-kr:law-byl:169703059", "result": "agree", "numbers": 107, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 40, "일": 30, "시간": 9}, "units_reader": {"원": 40, "일": 30, "시간": 9}}
+{"id": "law-go-kr:law-byl:169703083", "result": "agree", "numbers": 153, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 62, "명": 1, "일": 5, "시간": 6}, "units_reader": {"원": 62, "명": 1, "일": 5, "시간": 6}}
+{"id": "law-go-kr:law-byl:169703093", "result": "agree", "numbers": 88, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 35, "일": 6}, "units_reader": {"원": 35, "일": 6}}
+{"id": "law-go-kr:law-byl:169703101", "result": "agree", "numbers": 32, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 12}, "units_reader": {"원": 12}}
+{"id": "law-go-kr:law-byl:169703107", "result": "agree", "numbers": 27, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 4, "호봉": 3}, "units_reader": {"원": 4, "호봉": 3}}
+{"id": "law-go-kr:law-byl:169703113", "result": "agree", "numbers": 8, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "명": 1, "호봉": 2}, "units_reader": {"원": 2, "명": 1, "호봉": 2}}
+{"id": "law-go-kr:law-byl:169703119", "result": "agree", "numbers": 42, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 8, "일": 2, "시간": 1, "호봉": 1}, "units_reader": {"원": 8, "일": 2, "시간": 1, "호봉": 1}}
+{"id": "law-go-kr:law-byl:169703125", "result": "agree", "numbers": 468, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 10, "개월": 5, "일": 3, "호봉": 106}, "units_reader": {"원": 10, "개월": 5, "일": 3, "호봉": 106}}
+{"id": "law-go-kr:law-byl:169703135", "result": "agree", "numbers": 18, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "호봉": 13}, "units_reader": {"원": 2, "호봉": 13}}
+{"id": "law-go-kr:law-byl:169703141", "result": "agree", "numbers": 8, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 5, "명": 1, "일": 6}, "units_reader": {"원": 5, "명": 1, "일": 6}}
+{"id": "law-go-kr:law-byl:169703147", "result": "agree", "numbers": 23, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 19, "명": 5, "시간": 2}, "units_reader": {"원": 19, "명": 5, "시간": 2}}
+{"id": "law-go-kr:law-byl:169703153", "result": "agree", "numbers": 54, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 15, "개월": 3, "일": 2, "시간": 2}, "units_reader": {"원": 15, "개월": 3, "일": 2, "시간": 2}}
+{"id": "law-go-kr:law-byl:169703159", "result": "agree", "numbers": 25, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 34}, "units_reader": {"원": 34}}
+{"id": "law-go-kr:law-byl:169703165", "result": "agree", "numbers": 11, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"천원": 1, "원": 6}, "units_reader": {"천원": 1, "원": 6}}
+{"id": "law-go-kr:law-byl:169703171", "result": "agree", "numbers": 109, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"천원": 12, "원": 73, "명": 10, "일": 2}, "units_reader": {"천원": 12, "원": 73, "명": 10, "일": 2}}
+{"id": "law-go-kr:law-byl:169703183", "result": "agree", "numbers": 54, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 10, "명": 1, "일": 3}, "units_reader": {"원": 10, "명": 1, "일": 3}}
+{"id": "law-go-kr:law-byl:169703189", "result": "agree", "numbers": 23, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 17}, "units_reader": {"원": 17}}
+{"id": "law-go-kr:law-byl:169703195", "result": "agree", "numbers": 37, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"천원": 2, "원": 4}, "units_reader": {"천원": 2, "원": 4}}
+{"id": "law-go-kr:law-byl:169703201", "result": "agree", "numbers": 26, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 8, "명": 2}, "units_reader": {"원": 8, "명": 2}}
+{"id": "law-go-kr:law-byl:169703207", "result": "agree", "numbers": 19, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"천원": 1, "원": 4}, "units_reader": {"천원": 1, "원": 4}}
+{"id": "law-go-kr:law-byl:169703213", "result": "agree", "numbers": 7, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"천원": 1, "원": 3}, "units_reader": {"천원": 1, "원": 3}}
+{"id": "law-go-kr:law-byl:169703219", "result": "agree", "numbers": 14, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"천원": 3, "원": 13, "일": 1}, "units_reader": {"천원": 3, "원": 13, "일": 1}}
+{"id": "law-go-kr:law-byl:169703225", "result": "agree", "numbers": 12, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"천원": 2, "원": 8, "호봉": 1}, "units_reader": {"천원": 2, "원": 8, "호봉": 1}}
+{"id": "law-go-kr:law-byl:169703231", "result": "agree", "numbers": 10, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2}, "units_reader": {"원": 2}}
+{"id": "law-go-kr:law-byl:169691685", "result": "agree", "numbers": 56, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 17, "%": 8, "일": 2}, "units_reader": {"원": 17, "%": 8, "일": 2}}
+{"id": "law-go-kr:law-byl:169691691", "result": "agree", "numbers": 17, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 20, "일": 1}, "units_reader": {"원": 20, "일": 1}}
+{"id": "law-go-kr:law-byl:169691697", "result": "agree", "numbers": 110, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 20, "호봉": 54}, "units_reader": {"원": 20, "호봉": 54}}
+{"id": "law-go-kr:law-byl:169692743", "result": "agree", "numbers": 20, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2}, "units_reader": {"원": 2}}
+{"id": "law-go-kr:law-byl:169692749", "result": "agree", "numbers": 16, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 17, "일": 1}, "units_reader": {"원": 17, "일": 1}}
+{"id": "law-go-kr:law-byl:169692755", "result": "agree", "numbers": 35, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "개월": 1}, "units_reader": {"원": 2, "개월": 1}}
+{"id": "law-go-kr:law-byl:169692761", "result": "agree", "numbers": 28, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 10, "명": 2, "일": 1}, "units_reader": {"원": 10, "명": 2, "일": 1}}
+{"id": "law-go-kr:law-byl:169692767", "result": "agree", "numbers": 35, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 18, "일": 1}, "units_reader": {"원": 18, "일": 1}}
+{"id": "law-go-kr:law-byl:169692775", "result": "agree", "numbers": 11, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 3, "개월": 1}, "units_reader": {"원": 3, "개월": 1}}
+{"id": "law-go-kr:law-byl:169692781", "result": "agree", "numbers": 67, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 38, "일": 2}, "units_reader": {"원": 38, "일": 2}}
+{"id": "law-go-kr:law-byl:169692789", "result": "agree", "numbers": 204, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 9, "명": 26, "%": 28, "일": 8, "시간": 9, "km": 66}, "units_reader": {"원": 9, "명": 26, "%": 28, "일": 8, "시간": 9, "km": 66}}
+{"id": "law-go-kr:law-byl:169692799", "result": "agree", "numbers": 7, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 4}, "units_reader": {"원": 4}}
+{"id": "law-go-kr:law-byl:169692805", "result": "agree", "numbers": 29, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 60, "명": 1, "일": 5}, "units_reader": {"원": 60, "명": 1, "일": 5}}
+{"id": "law-go-kr:law-byl:169692817", "result": "agree", "numbers": 23, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 7, "%": 3, "일": 2, "시간": 1, "호봉": 3}, "units_reader": {"원": 7, "%": 3, "일": 2, "시간": 1, "호봉": 3}}
+{"id": "law-go-kr:law-byl:169692823", "result": "agree", "numbers": 13, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 10}, "units_reader": {"원": 10}}
+{"id": "law-go-kr:law-byl:169692829", "result": "agree", "numbers": 1300, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 700, "명": 8, "%": 28, "개월": 7, "일": 76, "시간": 2, "호봉": 3}, "units_reader": {"원": 700, "명": 8, "%": 28, "개월": 7, "일": 76, "시간": 2, "호봉": 3}}
+{"id": "law-go-kr:law-byl:169692905", "result": "agree", "numbers": 50, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 14, "시간": 1, "호봉": 31}, "units_reader": {"원": 14, "시간": 1, "호봉": 31}}
+{"id": "law-go-kr:law-byl:169692911", "result": "agree", "numbers": 38, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 26, "일": 1}, "units_reader": {"원": 26, "일": 1}}
+{"id": "law-go-kr:law-byl:169692917", "result": "agree", "numbers": 16, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "일": 1, "시간": 3, "호봉": 1}, "units_reader": {"원": 2, "일": 1, "시간": 3, "호봉": 1}}
+{"id": "law-go-kr:law-byl:169692929", "result": "agree", "numbers": 126, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 116}, "units_reader": {"원": 116}}
+{"id": "law-go-kr:law-byl:169705581", "result": "agree", "numbers": 22, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 10, "명": 6}, "units_reader": {"원": 10, "명": 6}}
+{"id": "law-go-kr:law-byl:169705587", "result": "agree", "numbers": 11, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 9}, "units_reader": {"원": 9}}
+{"id": "law-go-kr:law-byl:169705593", "result": "agree", "numbers": 12, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 6}, "units_reader": {"원": 6}}
+{"id": "law-go-kr:law-byl:169705599", "result": "agree", "numbers": 36, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 10, "명": 3, "일": 2}, "units_reader": {"원": 10, "명": 3, "일": 2}}
+{"id": "law-go-kr:law-byl:169705607", "result": "agree", "numbers": 11, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 12}, "units_reader": {"원": 12}}
+{"id": "law-go-kr:law-byl:169705175", "result": "agree", "numbers": 13, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 6, "명": 1, "일": 11}, "units_reader": {"원": 6, "명": 1, "일": 11}}
+{"id": "law-go-kr:law-byl:169705229", "result": "agree", "numbers": 14, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "일": 1}, "units_reader": {"원": 1, "일": 1}}
+{"id": "law-go-kr:law-byl:169705241", "result": "agree", "numbers": 15, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1}, "units_reader": {"원": 1}}
+{"id": "law-go-kr:law-byl:169705247", "result": "agree", "numbers": 174, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 24, "개월": 11, "일": 8}, "units_reader": {"원": 24, "개월": 11, "일": 8}}
+{"id": "law-go-kr:law-byl:169705257", "result": "agree", "numbers": 30, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 11, "명": 18, "시간": 3}, "units_reader": {"원": 11, "명": 18, "시간": 3}}
+{"id": "law-go-kr:law-byl:169703563", "result": "agree", "numbers": 5, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2}, "units_reader": {"원": 2}}
+{"id": "law-go-kr:law-byl:169703569", "result": "agree", "numbers": 15, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "일": 6}, "units_reader": {"원": 2, "일": 6}}
+{"id": "law-go-kr:law-byl:169703575", "result": "agree", "numbers": 46, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 17, "개월": 1, "일": 29, "시간": 49}, "units_reader": {"원": 17, "개월": 1, "일": 29, "시간": 49}}
+{"id": "law-go-kr:law-byl:169694093", "result": "agree", "numbers": 16, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 5, "명": 11}, "units_reader": {"원": 5, "명": 11}}
+{"id": "law-go-kr:law-byl:169694105", "result": "agree", "numbers": 57, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 11}, "units_reader": {"원": 11}}
+{"id": "law-go-kr:law-byl:169694117", "result": "agree", "numbers": 8, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "일": 2}, "units_reader": {"원": 2, "일": 2}}
+{"id": "law-go-kr:law-byl:169699751", "result": "agree", "numbers": 13, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "일": 10}, "units_reader": {"원": 2, "일": 10}}
+{"id": "law-go-kr:law-byl:169699757", "result": "agree", "numbers": 45, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 17, "개월": 1, "일": 32, "시간": 45}, "units_reader": {"원": 17, "개월": 1, "일": 32, "시간": 45}}
+{"id": "law-go-kr:law-byl:169699765", "result": "agree", "numbers": 13, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 2, "일": 3}, "units_reader": {"원": 1, "명": 2, "일": 3}}
+{"id": "law-go-kr:law-byl:169699771", "result": "agree", "numbers": 12, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 18, "명": 5, "%": 1, "일": 4, "시간": 5}, "units_reader": {"원": 18, "명": 5, "%": 1, "일": 4, "시간": 5}}
+{"id": "law-go-kr:law-byl:169697711", "result": "agree", "numbers": 6, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1}, "units_reader": {"원": 1}}
+{"id": "law-go-kr:law-byl:169867215", "result": "agree", "numbers": 11, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 1}, "units_reader": {"원": 1, "명": 1}}
+{"id": "law-go-kr:law-byl:169867223", "result": "agree", "numbers": 10, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 1, "일": 3, "시간": 2}, "units_reader": {"원": 1, "명": 1, "일": 3, "시간": 2}}
+{"id": "law-go-kr:law-byl:169867229", "result": "agree", "numbers": 8, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 3, "명": 1, "일": 2, "시간": 5}, "units_reader": {"원": 3, "명": 1, "일": 2, "시간": 5}}
+{"id": "law-go-kr:law-byl:169867235", "result": "agree", "numbers": 41, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 2, "일": 4, "시간": 2}, "units_reader": {"원": 1, "명": 2, "일": 4, "시간": 2}}
+{"id": "law-go-kr:law-byl:169867247", "result": "agree", "numbers": 5, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 3}, "units_reader": {"원": 1, "명": 3}}
+{"id": "law-go-kr:law-byl:169867255", "result": "agree", "numbers": 9, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "명": 2, "일": 1}, "units_reader": {"원": 2, "명": 2, "일": 1}}
+{"id": "law-go-kr:law-byl:169867261", "result": "agree", "numbers": 4, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 1, "일": 2}, "units_reader": {"원": 1, "명": 1, "일": 2}}
+{"id": "law-go-kr:law-byl:169867267", "result": "agree", "numbers": 7, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 14, "일": 3, "시간": 3}, "units_reader": {"원": 1, "명": 14, "일": 3, "시간": 3}}
+{"id": "law-go-kr:law-byl:169867275", "result": "agree", "numbers": 6, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 36, "일": 3, "시간": 2}, "units_reader": {"원": 1, "명": 36, "일": 3, "시간": 2}}
+{"id": "law-go-kr:law-byl:169867283", "result": "agree", "numbers": 10, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "명": 2, "일": 2}, "units_reader": {"원": 1, "명": 2, "일": 2}}
+{"id": "law-go-kr:law-byl:169867289", "result": "agree", "numbers": 9, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 14, "명": 5, "%": 1, "일": 3, "시간": 4}, "units_reader": {"원": 14, "명": 5, "%": 1, "일": 3, "시간": 4}}
+{"id": "law-go-kr:law-byl:169867307", "result": "agree", "numbers": 4, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 3, "명": 1, "일": 4}, "units_reader": {"원": 3, "명": 1, "일": 4}}
+{"id": "law-go-kr:law-byl:169867313", "result": "agree", "numbers": 13, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 12, "명": 8, "일": 8}, "units_reader": {"원": 12, "명": 8, "일": 8}}
+{"id": "law-go-kr:law-byl:169867319", "result": "agree", "numbers": 7, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 2, "명": 1, "일": 3}, "units_reader": {"원": 2, "명": 1, "일": 3}}
+{"id": "law-go-kr:law-byl:170433615", "result": "agree", "numbers": 660, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 54, "명": 1, "일": 79}, "units_reader": {"원": 54, "명": 1, "일": 79}}
+{"id": "law-go-kr:law-byl:170434231", "result": "agree", "numbers": 43, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 4, "일": 8}, "units_reader": {"원": 4, "일": 8}}
+{"id": "law-go-kr:law-byl:170434245", "result": "agree", "numbers": 35, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 8, "명": 1, "일": 3}, "units_reader": {"원": 8, "명": 1, "일": 3}}
+{"id": "law-go-kr:law-byl:170434253", "result": "agree", "numbers": 42, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 8, "명": 1, "일": 19}, "units_reader": {"원": 8, "명": 1, "일": 19}}
+{"id": "law-go-kr:law-byl:170434261", "result": "agree", "numbers": 19, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 5, "명": 1, "일": 2}, "units_reader": {"원": 5, "명": 1, "일": 2}}
+{"id": "law-go-kr:law-byl:170434267", "result": "agree", "numbers": 23, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 5}, "units_reader": {"원": 5}}
+{"id": "law-go-kr:law-byl:170434273", "result": "agree", "numbers": 48, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "일": 12}, "units_reader": {"원": 1, "일": 12}}
+{"id": "law-go-kr:law-byl:170434281", "result": "agree", "numbers": 8, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 3}, "units_reader": {"원": 3}}
+{"id": "law-go-kr:law-byl:170434287", "result": "agree", "numbers": 27, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 3}, "units_reader": {"원": 3}}
+{"id": "law-go-kr:law-byl:170434293", "result": "agree", "numbers": 39, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 3, "명": 3, "일": 1}, "units_reader": {"원": 3, "명": 3, "일": 1}}
+{"id": "law-go-kr:law-byl:170434299", "result": "agree", "numbers": 352, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 53, "명": 1, "일": 35}, "units_reader": {"원": 53, "명": 1, "일": 35}}
+{"id": "law-go-kr:law-byl:170434325", "result": "agree", "numbers": 68, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 12, "일": 1, "호봉": 10}, "units_reader": {"원": 12, "일": 1, "호봉": 10}}
+{"id": "law-go-kr:law-byl:170434339", "result": "agree", "numbers": 44, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 1, "%": 8}, "units_reader": {"원": 1, "%": 8}}
+{"id": "law-go-kr:law-byl:170434345", "result": "agree", "numbers": 55, "missing_in_extract": {}, "extra_in_extract": {}, "units_extract": {"원": 50, "명": 1, "일": 24}, "units_reader": {"원": 50, "명": 1, "일": 24}}

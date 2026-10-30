@@ -1,0 +1,17 @@
+{
+ "reviewer": "C-014 (C session, cell-by-cell comparison with the source .hwpx hp:tbl XML; AI, not human)",
+ "reviewed_at": "2026-10-30",
+ "method": "reports/coordination/C-014.md 1절: 표 수·칸 순서·텍스트·rowSpan·colSpan 대조",
+ "decisions": {
+  "law-go-kr:admrul-file:163009611": {"decision": "hold_table_mismatch", "table_check": "c014_mismatch",
+                                      "note": "국가보훈부 당직근무 운영지침 별지서식: 표 5/5 중 일치 0 (서식 배치표의 행 수·병합 불일치), 개인정보 치환 포함"},
+  "law-go-kr:admrul-file:166503373": {"decision": "hold_table_mismatch", "table_check": "c014_mismatch",
+                                      "note": "2027년도 지방자치단체 기금운용계획 수립기준: 원본 표 79 / 추출 표 29, 중첩 표가 평탄화되어 행·열 대응이 깨짐"},
+  "law-go-kr:admrul-file:126140889": {"decision": "table_verified", "table_check": "c014_match",
+                                      "note": "목포지방해양수산청 위임전결사항: 표 10/10 일치 (3,878칸)"},
+  "law-go-kr:admrul-file:133708917": {"decision": "table_verified", "table_check": "c014_match",
+                                      "note": "경북권질병대응센터 위임전결사항: 표 5/5 일치"},
+  "law-go-kr:admrul-file:150743139": {"decision": "table_verified", "table_check": "c014_match",
+                                      "note": "중앙소방학교 당직 및 비상근무규정 별표: 표 1/1 일치"}
+ }
+}
