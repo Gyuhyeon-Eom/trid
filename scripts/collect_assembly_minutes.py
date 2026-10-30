@@ -447,6 +447,8 @@ def write_shard(s3, client, shard, results, workers, metrics, started, origin):
     for _, _, p, _ in results:
         pii.update(p or {})
     manifest = {**keys['docs'], 'quarantine': keys['quarantine'], 'origin': origin,
+                'code_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+                'korean_quality_sha256': hashlib.sha256((Path(__file__).resolve().parents[1] / 'trid/korean_quality.py').read_bytes()).hexdigest(),
                 'ids': [m['id'] for m, row, _, _ in results if row is not None],
                 'failures': {str(m['id']): err for m, _, _, err in results if err},
                 'empty_text_ids': [str(m['id']) for m, row, _, _ in results if row is not None and not row['text']],
