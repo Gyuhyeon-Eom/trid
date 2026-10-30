@@ -14,7 +14,7 @@
 | `trid-v0.1-reader` (롤백 기준) | 자체 91M 추출 독해기 `runs/reader-factorial-01-cpt-v1-v2-v4` (sha `90ccb60f…`) | 자체 | 실험판, 품질 기준 미달 |
 | `baseline-qwen3-1.7b` | 위와 같은 원본 GGUF(서버 공유), 값 형식 출력 | Apache-2.0 | 비교 기준선, 품질 기준 미달 |
 | `trid-qwen3-1.7b-pilot-sft-001` | 원본 + LoRA pilot-sft-001 (GGUF `0c78b0c2…`) | Apache-2.0 | **C-023에서 원본 대비 회귀.** 버전 확인용 |
-| `trid-qwen3-1.7b-model-repair-002` | 원본 + LoRA(B case-training-view-v1r1 34건, 같은 설정, 맥북 MPS 513초), GGUF `21715b4f…`, 학습 형식과 같은 '자료 정보' 줄로 서빙 | Apache-2.0 | **성능 향상 미확인**, C-028 blind 평가 대기. 기본값 아님 |
+| `trid-qwen3-1.7b-model-repair-002` | 원본 + LoRA(B case-training-view-v1r1 34건, 같은 설정, 맥북 MPS 513초), GGUF `21715b4f…`, 학습 형식과 같은 '자료 정보' 줄로 서빙 | Apache-2.0 | **평가 완료(C-028) · 원본 대비 회귀 · 사용 비권장.** case 결론 정확 31 → 22, EOS 종료 32/50 → 3/50, RAG310 grammar 98 → 14, evidence_constrained 과보류 128/228. 기본값 아님 |
 
 - 각 버전의 기반 모델, 라이선스, 실측, 한계는 화면의 모델 정보(접힘)에 표시한다.
 - 같은 모델 파일·실행 파일·context를 쓰는 버전은 llama-server 하나를 공유한다.

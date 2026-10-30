@@ -61,7 +61,13 @@
 ## 5. 게시 (사용자 지시: 실험 선택지로만, 기본은 원본)
 - **사이트:** Worker `d6feb400-52f9-4a2f-9b91-790a5de5f023`(21:24 KST)
 - **버전 정보:**
-  - 버전 `trid-qwen3-1.7b-model-repair-002`, 표시명 "TRID 1.7B · 수리 실험판 (성능 미확인)"
+  - 버전 `trid-qwen3-1.7b-model-repair-002`, 표시명 "TRID 1.7B · 수리 실험판 (평가 완료 · 원본 대비 회귀 · 사용 비권장)"(2026-10-31 C-028 결과 반영. 처음 게시 때는 "성능 미확인")
+  - **C-028 결과(`reports/coordination/C-028.md`):** 원본 대비 회귀다. 개선 근거는 없다.
+    - case 결론 정확: 31 → 22
+    - 256토큰 안 EOS 종료: 32/50 → 3/50
+    - RAG310 grammar_instructed: 98 → 14
+    - evidence_constrained 과보류: 128/228
+    - 모델 파일은 지우지 않는다. 기본값은 원본 그대로다. 추가 학습도 하지 않는다.
   - 포트 51918, `provenance_line: true`(학습 입력과 같은 `자료 정보:` 줄)
 - **기본값:** 원본(`trid-assistant-qwen3-1.7b`) 그대로다.
 - **실 UI 확인 (`RETRIEVAL-DECISION-001-live.json`의 `repair`):**

@@ -77,7 +77,7 @@
   },
   {
     "id": "trid-qwen3-1.7b-model-repair-002",
-    "label": "TRID 1.7B · 수리 실험판 (성능 미확인)",
+    "label": "TRID 1.7B · 수리 실험판 (평가 완료 · 원본 대비 회귀 · 사용 비권장)",
     "kind": "llama",
     "answer_mode": "case",
     "decoding": "case_system_256",
@@ -93,8 +93,8 @@
     "base_model": "Qwen/Qwen3-1.7B HF rev 70d244cc86ccca08cf5af4e1e306ecf908b1ad5e + LoRA 병합(r16) → 로컬 Q8_0 GGUF (Alibaba Qwen 원 모델 기반, 독자 기초모델 아님)",
     "license": "기반 모델 Apache-2.0 · 학습 사례는 공공 공개 자료(law.go.kr 조문·별표·해석례, 공공데이터) 기반",
     "version": "model-repair-002 · 2026-10-30 · B case-training-view-v1r1 학습 사례 34건(문장별 출처 AI 검토) × 2 epoch = 9단계, lr 2e-4(이전 실험판과 같은 설정) · 맥북 Apple GPU(MPS) 513초, 추가 AWS GPU 0 · 서빙: CASE_SYSTEM, 근거 첫머리 '자료 정보' 줄(학습 형식과 같음), greedy, 최대 256토큰, 사고 모드 끔",
-    "status": "실험판 · 성능 향상 미확인 · C 독립 평가(C028) 전 · 사용 추천 안 함",
-    "evaluation": "아직 없음. 학습 형식(문장 끝 [Dn] 출처, 256토큰 이내)을 맞춘 데이터로 다시 학습한 소규모 진단 실험이며, 데이터 부분집합·크기가 함께 바뀌어 이전 회귀의 원인을 확정하지도 않음. 배포 전 로컬 실모델 확인 4문항: 출처 번호를 내기 시작했으나 [D1] 반복·자료 정보 줄 복사·256토큰 잘림 3건, 지시 복사 판정 1건.",
+    "status": "실험판 · 평가 완료(C-028) · 원본 대비 회귀 · 사용 비권장 · 기본값 아님",
+    "evaluation": "C-028 blind 평가(매핑 공개 전 채점 봉인 d4bae1c, 같은 근거·CASE_SYSTEM·greedy·256토큰, AI 1인 채점, 진단용·독립 벤치마크 아님): case 50문항 결론 정확 원본 31 → 이 버전 22(원본만 정답 11 · 이 버전만 2, p≈0.023), 256토큰 안 EOS 종료 32/50 → 3/50, 같은 문장 반복 0 → 9. 값 계약 고정 suite RAG310 grammar_instructed content_strict 98 → 14. evidence_constrained는 19 → 56이지만 답이 있는 228문항 중 128문항을 보류(과보류, 원본 23). 개선 근거 없음 — 원본 대비 회귀(reports/coordination/C-028.md).",
     "limits": "답 표시 방식은 다른 case 버전과 같음: 검색된 원문과 글자가 일치하는 문장만 인용으로 강조하고(답인지는 원문에서 확인), 나머지 해설은 '검증 안 됨'. 근거에 없는 숫자가 든 해설 문장은 숨김. 학습 34건뿐이라 반복·잘림이 남아 있음.",
     "threads": 4
   }
