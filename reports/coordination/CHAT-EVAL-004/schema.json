@@ -1,0 +1,20 @@
+{
+ "scenario": {
+  "id": "CE4-<category>-<nn>",
+  "category": "CA 조건 추가·수정 | ED 연속 글 편집 | EL 생략형 후속 | TR 번역·답 언어 맞춤 | ME 기억 한계·세션 격리 | CD 계산·날짜 | SM 잡담·공감 | UN 불확실성·하지 않은 조회 | SW 일상↔업무 전환 | FM 형식 지시 준수",
+  "split": "public | private",
+  "turns": "사용자 발화 목록(사용자 턴 3개 이상). '<NEW_CHAT>'은 새 대화(세션 초기화) 지점",
+  "expect": "turns와 같은 길이. 턴별 기대 행동(정답 값이 있으면 값 포함)",
+  "track": "대화 내내 유지·갱신해야 할 조건·사실",
+  "severe": "항목별 심각 실패 정의. 전체 공통 G1~G4(manifest.global_severe)에 더해 적용",
+  "boundary": "억지 오답 방지를 위한 경계 처리. 전체 공통 경계(manifest.global_boundary)에 더해 적용",
+  "external": "외부 사실 의존 여부. 'none' 또는 판정 제외 범위"
+ },
+ "judgment_per_turn": {
+  "verdict": "pass | partial | fail",
+  "severe": "해당 심각 실패 코드 목록(G1~G4 또는 항목 severe 문구)",
+  "citation_axis": "업무 턴만: 근거 인용 유무(내용 정확성과 따로)",
+  "note": "근거 짧은 메모"
+ },
+ "run_record_required": ["model_sha256", "template", "sampling", "max_tokens", "mode(raw|service)", "scenario_set_sha256", "artifact_preflight(service 모드)"]
+}

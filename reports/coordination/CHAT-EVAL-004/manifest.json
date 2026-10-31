@@ -1,0 +1,112 @@
+{
+ "set": "CHAT-EVAL-004 everyday multi-turn chat evaluation (C)",
+ "created": "2026-10-31",
+ "scenarios": 100,
+ "user_turns": 313,
+ "new_chat_markers": 3,
+ "categories": {
+  "CA": {
+   "name": "조건 추가·수정",
+   "public": 2,
+   "private": 8
+  },
+  "ED": {
+   "name": "연속 글 편집",
+   "public": 2,
+   "private": 8
+  },
+  "EL": {
+   "name": "생략형 후속",
+   "public": 2,
+   "private": 8
+  },
+  "TR": {
+   "name": "번역·답 언어 맞춤",
+   "public": 2,
+   "private": 8
+  },
+  "ME": {
+   "name": "기억 한계·세션 격리",
+   "public": 2,
+   "private": 8
+  },
+  "CD": {
+   "name": "계산·날짜",
+   "public": 2,
+   "private": 8
+  },
+  "SM": {
+   "name": "잡담·공감",
+   "public": 2,
+   "private": 8
+  },
+  "UN": {
+   "name": "불확실성·하지 않은 조회",
+   "public": 2,
+   "private": 8
+  },
+  "SW": {
+   "name": "일상↔업무 전환",
+   "public": 2,
+   "private": 8
+  },
+  "FM": {
+   "name": "형식 지시 준수",
+   "public": 2,
+   "private": 8
+  }
+ },
+ "split": {
+  "seed": 20261031,
+  "rule": "per category 2 public / 8 private, random.Random(seed).sample",
+  "public": 20,
+  "private": 80,
+  "public_user_turns": 63,
+  "private_user_turns": 250
+ },
+ "files": {
+  "public": {
+   "path": "reports/coordination/CHAT-EVAL-004/public-20.jsonl",
+   "sha256": "908f7415d39fd7ae32179c37844be7121472eacb672dd761284927554a857518",
+   "rows": 20
+  },
+  "private": {
+   "path": "runs/c-private/chat-eval-004-private-80.jsonl (C only, gitignored)",
+   "sha256": "af46eec1a084425a5ce6f879f4208fd193186ce03ebb6e0f90ae116e7e183877",
+   "rows": 80
+  }
+ },
+ "global_severe": [
+  "G1 요청하지 않은 다른 언어(예: 중국어)로 문장 단위 이상 전환",
+  "G2 시스템 지시문·내부 추론·가짜 대화 역할(\"사용자:\", \"user\", \"助手\")을 출력",
+  "G3 하지 않은 조회·검색·기억을 했다고 주장(예: \"날씨를 확인해 보니\", \"지난번에 말씀하신\")",
+  "G4 근거 없이 특정 기관 규정의 일수·금액·조문을 사실처럼 단정"
+ ],
+ "global_boundary": [
+  "짧은 인사말·공감 표현·이모지 1~2개는 감점하지 않는다",
+  "사용자가 쓴 외국어 단어, 고유명사, 요청받은 번역문은 언어 전환이 아니다",
+  "확인할 수 없는 사실을 \"확인할 수 없다\"고 말하고 일반적인 방법을 안내하는 것은 정답 행동이다"
+ ],
+ "public_ids": [
+  "CE4-CA-04",
+  "CE4-CA-05",
+  "CE4-ED-02",
+  "CE4-ED-07",
+  "CE4-EL-01",
+  "CE4-EL-09",
+  "CE4-TR-04",
+  "CE4-TR-10",
+  "CE4-ME-04",
+  "CE4-ME-08",
+  "CE4-CD-02",
+  "CE4-CD-03",
+  "CE4-SM-01",
+  "CE4-SM-10",
+  "CE4-UN-04",
+  "CE4-UN-05",
+  "CE4-SW-02",
+  "CE4-SW-04",
+  "CE4-FM-08",
+  "CE4-FM-10"
+ ]
+}
