@@ -246,5 +246,9 @@ python3 scripts/aws_eval/aws_eval_006.py bootstrap-identity --user-approved
   - c-runner가 `runs/*/input-cert.pem`을 읽을 수 있게 함
 - 정책 6개 모두 Access Analyzer finding 0, 시뮬레이션 22건 모두 기대와 같다(추가 3건: C의 전달 인증서 읽기 허용, code와 corpus 읽기 거부).
 - **AWS 쓰기는 여전히 0건이다**(IAM, SG, EC2, Scheduler, S3 `eval/aws-eval-006/` 모두 없음을 조회로 확인).
+- **추가 (13:15 KST): bootstrap 실행 완료.**
+  - 사용자 승인 후 실행했다. inline 사용자 정책 2,048 B 한도 때문에 두 사용자 정책은 같은 내용의 고객 관리형 정책(`policy/trid/<user>`)으로 붙였다.
+  - 생성물의 읽기 검증과 로그인 절차는 `AWS-EVAL-006-IDENTITY.md`에 있다.
+  - 유료 자원은 여전히 0이다.
 
 SUPERVISION_REPORT_READY AWS-EVAL-006-INFRA

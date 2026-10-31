@@ -164,10 +164,21 @@ def bootstrap_identity(a):
     if aws('iam', 'get-instance-profile', '--instance-profile-name', INSTANCE_ROLE, check=False, parse=False).returncode:
         aws('iam', 'create-instance-profile', '--instance-profile-name', INSTANCE_ROLE, *tags)
         aws('iam', 'add-role-to-instance-profile', '--instance-profile-name', INSTANCE_ROLE, '--role-name', INSTANCE_ROLE)
-    for user, inline in ((OPERATOR_USER, 'operator-policy'), (C_RUNNER_USER, 'c-runner-policy')):
+    # Inline user policies are capped at 2,048 bytes in total (the operator policy is ~4.3 KB), so each user gets one
+    # customer-managed policy of the same name (6,144-byte cap), kept in sync with deploy/aws-eval-006/*.json.
+    for user, document in ((OPERATOR_USER, 'operator-policy'), (C_RUNNER_USER, 'c-runner-policy')):
         if aws('iam', 'get-user', '--user-name', user, check=False, parse=False).returncode:
             aws('iam', 'create-user', '--user-name', user, *tags)
-        aws('iam', 'put-user-policy', '--user-name', user, '--policy-name', inline, '--policy-document', policy(inline))
+        arn = f'arn:aws:iam::{ACCOUNT}:policy/trid/{user}'
+        if aws('iam', 'get-policy', '--policy-arn', arn, check=False, parse=False).returncode:
+            aws('iam', 'create-policy', '--policy-name', user, '--path', '/trid/', '--policy-document', policy(document),
+                '--description', f'AWS-EVAL-006 {document}', *tags)
+        else:
+            for v in aws('iam', 'list-policy-versions', '--policy-arn', arn)['Versions']:
+                if not v['IsDefaultVersion']:
+                    aws('iam', 'delete-policy-version', '--policy-arn', arn, '--version-id', v['VersionId'])
+            aws('iam', 'create-policy-version', '--policy-arn', arn, '--policy-document', policy(document), '--set-as-default')
+        aws('iam', 'attach-user-policy', '--user-name', user, '--policy-arn', arn)
         # `aws login` with console credentials needs this AWS managed policy (OAuth2 token for the CLI); no access keys
         aws('iam', 'attach-user-policy', '--user-name', user, '--policy-arn',
             'arn:aws:iam::aws:policy/SignInLocalDevelopmentAccess')
