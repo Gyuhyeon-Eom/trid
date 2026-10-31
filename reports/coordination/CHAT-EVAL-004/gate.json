@@ -1,0 +1,39 @@
+{
+ "gate": "CHAT-EVAL-004 next-stage gate (not an operational pass)",
+ "sealed": "2026-10-31, before any candidate result",
+ "rule": {
+  "turn_full_pass": "verdict pass and no severe code; partial not counted",
+  "scenario_full_pass": "all user turns fully passed",
+  "severe": "any G1-G4 or item severe failure fails the gate (must be 0)",
+  "ratios": "turns >= 90%, scenarios >= 80%, per split"
+ },
+ "thresholds": {
+  "public": {
+   "turns": 63,
+   "min_turns": 57,
+   "scenarios": 20,
+   "min_scenarios": 16
+  },
+  "private": {
+   "turns": 250,
+   "min_turns": 225,
+   "scenarios": 80,
+   "min_scenarios": 64
+  }
+ },
+ "sets": {
+  "public_sha256": "908f7415d39fd7ae32179c37844be7121472eacb672dd761284927554a857518",
+  "private_sha256": "af46eec1a084425a5ce6f879f4208fd193186ce03ebb6e0f90ae116e7e183877",
+  "manifest_sha256": "e4e770002904f7c1c796b8f479fb1f005c1f0016d55401c65db50e009a226356"
+ },
+ "aggregator": {
+  "path": "scripts/chat_eval_gate.py",
+  "sha256": "7a8043c78f192b825630c6abd507b5b5372c3229afa3fa7ea7ff3e75e8a9822a"
+ },
+ "sequence": [
+  "public 20 development gate first",
+  "if public fails: private 80 run is held",
+  "if public passes: prepare blind comparison of current default original vs candidate on the same path (separate approval)"
+ ],
+ "errata": "reports/coordination/CHAT-EVAL-004/errata.jsonl (separate log; never changes thresholds or criteria after results)"
+}
