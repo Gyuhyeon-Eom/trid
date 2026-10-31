@@ -29,12 +29,15 @@ def sha256(path):
 
 
 def load_run(run_dir, scenarios, set_sha):
-    manifest = json.loads((run_dir / 'manifest.json').read_text())
-    if manifest.get('status') != 'complete':
-        sys.exit(f'{run_dir}: status {manifest.get("status")!r}, not complete')
-    if manifest.get('dialogues_sha256') != set_sha:
-        sys.exit(f'{run_dir}: run used set {manifest.get("dialogues_sha256")}, not {set_sha}')
-    rows = [json.loads(l) for l in (run_dir / 'turns.jsonl').read_text().splitlines() if l.strip()]
+    # scripts/chat_blind_runner.py output (outputs.jsonl + status.json; sealed/ is never read here), else the plain
+    # scripts/base_dialogue_runner.py output (turns.jsonl + manifest.json)
+    blind = (run_dir / 'outputs.jsonl').exists()
+    status = json.loads((run_dir / ('status.json' if blind else 'manifest.json')).read_text())
+    if status.get('status') != 'complete':
+        sys.exit(f'{run_dir}: status {status.get("status")!r}, not complete')
+    if status.get('dialogues_sha256') != set_sha:
+        sys.exit(f'{run_dir}: run used set {status.get("dialogues_sha256")}, not {set_sha}')
+    rows = [json.loads(l) for l in (run_dir / ('outputs.jsonl' if blind else 'turns.jsonl')).read_text().splitlines() if l.strip()]
     got = {}
     for r in rows:
         key = (r['dialogue'], int(r['turn']))

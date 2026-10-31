@@ -5,8 +5,8 @@
 | 단계 | 상태 | 개수 / 해시 |
 |---|---|---|
 | 0. precommit | 완료 | `CHAT-BLIND-005-PRECOMMIT.json` `71f324a0…` |
-| 1. A 별칭 패키지·commitment | **대기** | — |
-| 2. preflight P / Q | 대기 | — |
+| 1. A 별칭 패키지·commitment | 완료 | commitment `bc582558…` |
+| 2. preflight P / Q | 완료 | P pass, Q pass |
 | 3. 생성 P | 대기 | 0/250 턴 |
 | 4. 생성 Q | 대기 | 0/250 턴 |
 | 5. blind pack | 대기 | — |

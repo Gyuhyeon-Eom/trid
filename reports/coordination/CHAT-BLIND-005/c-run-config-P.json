@@ -1,0 +1,20 @@
+{
+ "package": "P",
+ "model_sha256": "sealed: runs/chat-blind-005/packages/P/package.json expected_sha256 (package.json sha256 14c8dce1…8e32, per CHAT-BLIND-005-HANDOFF); chat_blind_runner refuses to start unless model.gguf matches it",
+ "template": {
+  "source": "official template of the packaged model (sealed tokenizer dir); served token ids must equal the official render or the run aborts",
+  "template_kwargs": {
+   "enable_thinking": false
+  },
+  "system_prompt_file": "reports/coordination/CHAT-CAPABILITY-006/chat-system-candidate.txt"
+ },
+ "sampling": "sealed: package P sampling (each model's previously confirmed official sampling; values listed per model in CHAT-BLIND-005-PRECOMMIT.json, assignment to P unknown to C)",
+ "max_tokens": 384,
+ "context": 4096,
+ "seed": 1,
+ "mode": "raw",
+ "scenario_set": "runs/c-private/chat-eval-004-private-80.jsonl",
+ "scenario_set_sha256": "af46eec1a084425a5ce6f879f4208fd193186ce03ebb6e0f90ae116e7e183877",
+ "shared_settings_sha256": "debbd45969a6fe88359405671ad5df0999e42bb063d45cd7b4444c8945893ec6",
+ "runner": "scripts/chat_blind_runner.py"
+}

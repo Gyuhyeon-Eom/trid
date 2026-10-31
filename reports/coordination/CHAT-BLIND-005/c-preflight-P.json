@@ -1,0 +1,11 @@
+{
+ "verdict": "pass",
+ "sets": [
+  "private",
+  "public"
+ ],
+ "scenarios": 100,
+ "user_turns": 313,
+ "old_utterances_checked": 49,
+ "problems": []
+}

@@ -86,3 +86,26 @@
 
 - **진행 상황:** `CHAT-BLIND-005-PROGRESS.md`에 개수와 단계만 적는다.
 - **비공개 원문과 답:** C만 보관한다. 개발팀에 공유하지 않는다.
+
+## 8. 생성 전 부록 (A 인계 `b6c35eb` 반영, 아직 결과 없음)
+- **매핑 commitment (A):** `bc58255820a43ad5cf5c862e9830a97b6eb0941930cd8b9033d81b28dcbe2feb`
+  - 매핑 파일: `runs/chat-blind-005/sealed-mapping.json`, nonce 256비트, A 보관
+- **패키지:**
+  - 경로: `runs/chat-blind-005/packages/{P,Q}`
+  - package.json sha: P `14c8dce1…8e32`, Q `c381396d…8867` (A 보고값)
+  - **C는 채점을 봉인하기 전까지 열지 않는다.** package.json, symlink(readlink 포함), tokenizer, `sealed/`(manifest, turns, timings, log)가 모두 해당한다.
+- **실행기:** `scripts/chat_blind_runner.py` `917eeb5a…`
+  - 이 실행기가 쓰는 `scripts/base_dialogue_runner.py` `1193146b…`는 precommit 값과 같다. A의 리팩터는 precommit 전에 이미 반영돼 있었다.
+- **공통 설정:** `CHAT-BLIND-005/shared-settings.json` `debbd459…`
+  - system sha `a8c0d301…`은 006 파일의 앞뒤 공백을 제거한 본문 기준이다. 파일 자체의 sha는 `43a16276…`이다.
+- **sampling 배정:** 두 모델의 sampling은 3절 값 그대로다. 어느 별칭이 어느 값인지는 C가 모른다.
+- **blind 도구 변경:**
+  - `chat_blind_pack.py`가 실행기 출력(`outputs.jsonl` + `status.json`)을 읽게 했다. `sealed/`는 읽지 않는다.
+  - 새 sha256 `05b0c752cd5cbfda0902f781db986e7cb5d88a12be206f54afcbb92618599a99`
+  - 검증: 기존 형식과 새 형식 모두 pack이 되고, 미완료 상태는 거부한다.
+- **preflight:**
+  - run-config: `CHAT-BLIND-005/c-run-config-{P,Q}.json`. 식별 값은 봉인된 패키지 참조로만 기록했다.
+  - `chat_eval_preflight.py` 실행 결과 P·Q 모두 **pass(exit 0)**. 결과 파일은 `c-preflight-{P,Q}.json`이고 개수만 담고 있다.
+- **채점 근거:** 채점 전에는 `outputs.jsonl`과 `status.json`만 쓴다. 채점은 응답 순서를 섞은 패킷으로 한다.
+- **실패 처리:** 실행이 실패하면 출력을 그대로 두고 원인만 알린다. 자동 재실행이나 튜닝은 하지 않는다.
+- **봉인 commit 직후:** 매핑 공개 요청을 A에게 직접 전달한다.
