@@ -45,7 +45,10 @@ PRIVATE_INPUT_SHA = 'af46eec1a084425a5ce6f879f4208fd193186ce03ebb6e0f90ae116e7e1
 C_CERT = ROOT / 'reports/coordination/AWS-EVAL-006/c-checkpoint-cert.pem'
 POLICIES = ROOT / 'deploy/aws-eval-006'
 OPERATOR_USER, C_RUNNER_USER = 'trid-aws-eval-006-operator', 'trid-aws-eval-006-c-runner'
-MAX_MINUTES = {'smoke': 60, 'full': 150}  # together 3.5 h of the 4 h GPU allowance
+MAX_MINUTES = {'smoke': 60, 'full': 150}  # OS timer per mode; --max-minutes may only lower it
+HARD_STOP_GRACE_MINUTES = 10  # the scheduler terminates at the OS limit + 10 min
+GPU_RESERVED_LIMIT_MINUTES = 230  # (60 + 10) + (150 + 10): every GPU launch of this approval, retries included
+LEDGER = ROOT / 'reports/coordination/AWS-EVAL-006-GPU-LEDGER.json'
 WAIT_INPUT_MINUTES = 30  # full mode: how long the instance waits for C to deliver the private set
 HF = 'https://huggingface.co'
 GEMMA, QWEN = ('676c35070db6dbe52f93e9c864ee0fba4eddea94b9c875d9cb10daff453fbaee',
@@ -249,7 +252,15 @@ def launch(a):
             raise SystemExit(f'paid launch refused: {gate}')
     if not C_CERT.exists():
         raise SystemExit('needs C certificate ' + str(C_CERT.relative_to(ROOT)))
-    max_minutes = a.max_minutes or MAX_MINUTES[a.mode]
+    cap = MAX_MINUTES[a.mode]
+    if a.max_minutes is not None and not 1 <= a.max_minutes <= cap:
+        raise SystemExit(f'--max-minutes must be an integer in 1..{cap} for {a.mode}')
+    max_minutes = a.max_minutes or cap
+    reserve = max_minutes + HARD_STOP_GRACE_MINUTES  # the scheduler's hard stop is the true upper bound
+    used = gpu_minutes_reserved()
+    if used + reserve > GPU_RESERVED_LIMIT_MINUTES:
+        raise SystemExit(f'refused: {used} GPU minutes already reserved + {reserve} > {GPU_RESERVED_LIMIT_MINUTES} '
+                         '(this approval); a relaunch or retry needs a new approval')
     run_id = f'aws-eval-006-{a.mode}-{dt.datetime.now(dt.timezone.utc):%Y%m%dT%H%M%SZ}'
     archive = code_archive(a.mode)
     code_sha = hashlib.sha256(archive).hexdigest()
@@ -268,21 +279,54 @@ def launch(a):
         Path('/tmp/aws-eval-006-code.tar.gz').write_bytes(archive)
         aws('s3', 'cp', '--only-show-errors', '--sse', 'AES256', '/tmp/aws-eval-006-code.tar.gz', f's3://{BUCKET}/{code_key}',
             parse=False)
+        entry = ledger_add({'attempt': f'{run_id}@{subnet}', 'run_id': run_id, 'mode': a.mode, 'max_minutes': max_minutes,
+                            'reserved_minutes': reserve, 'reserved_utc': f'{dt.datetime.now(dt.timezone.utc):%FT%TZ}',
+                            'state': 'reserved'})
         r = aws('ec2', 'run-instances', '--cli-input-json', json.dumps(spec), check=False, parse=False)
-        if r.returncode and 'InsufficientInstanceCapacity' in r.stderr:
-            continue
         if r.returncode:
+            # no instance exists, so nothing runs or bills: the reservation is released (recorded, not deleted)
+            ledger_update(entry, state=f'not launched: {r.stderr.strip()[:120]}', reserved_minutes=0)
+            if 'InsufficientInstanceCapacity' in r.stderr:
+                continue
             raise SystemExit(f'run-instances failed: {r.stderr.strip()[:600]}')
         instance = json.loads(r.stdout)['Instances'][0]
         launched = dt.datetime.now(dt.timezone.utc)
-        stop_at = launched + dt.timedelta(minutes=max_minutes + 10)
-        hard_stop(instance['InstanceId'], stop_at)
-        record.update(instance_id=instance['InstanceId'], subnet=subnet, launched_utc=f'{launched:%FT%TZ}',
+        stop_at = launched + dt.timedelta(minutes=reserve)
+        # Between run-instances returning and the schedule existing (seconds), the instance's own OS timer is the only
+        # limit; if this process dies in that gap the run still ends by the OS timer, but not by the scheduler. Not
+        # an atomic guarantee.
+        ledger_update(entry, state='launched', instance_id=instance['InstanceId'], launched_utc=f'{launched:%FT%TZ}',
                       hard_stop_utc=f'{stop_at:%FT%TZ}')
+        hard_stop(instance['InstanceId'], stop_at)
+        ledger_update(entry, state='launched; hard stop scheduled')
+        record.update(instance_id=instance['InstanceId'], subnet=subnet, launched_utc=f'{launched:%FT%TZ}',
+                      hard_stop_utc=f'{stop_at:%FT%TZ}', gpu_minutes_reserved_total=gpu_minutes_reserved())
         break
     else:
         raise SystemExit('no capacity in any offered AZ')
     print(json.dumps(record, indent=1))
+
+
+def ledger_entries():
+    return json.loads(LEDGER.read_text())['entries'] if LEDGER.exists() else []
+
+
+def gpu_minutes_reserved():
+    return sum(e['reserved_minutes'] for e in ledger_entries())
+
+
+def ledger_add(entry):
+    entries = ledger_entries() + [entry]
+    LEDGER.write_text(json.dumps({'limit_minutes': GPU_RESERVED_LIMIT_MINUTES, 'entries': entries}, indent=1) + '\n')
+    return entry['attempt']
+
+
+def ledger_update(attempt, **fields):
+    entries = ledger_entries()
+    for e in entries:
+        if e['attempt'] == attempt:
+            e.update(fields)
+    LEDGER.write_text(json.dumps({'limit_minutes': GPU_RESERVED_LIMIT_MINUTES, 'entries': entries}, indent=1) + '\n')
 
 
 def watchdog_test(a):

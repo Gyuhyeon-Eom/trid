@@ -6,8 +6,10 @@
       "Principal": {"Service": "scheduler.amazonaws.com"},
       "Action": "sts:AssumeRole",
       "Condition": {
-        "StringEquals": {"aws:SourceAccount": "148761639313"},
-        "ArnLike": {"aws:SourceArn": "arn:aws:scheduler:ap-northeast-2:148761639313:schedule/default/trid-aws-eval-006-*"}
+        "StringEquals": {
+          "aws:SourceAccount": "148761639313",
+          "aws:SourceArn": "arn:aws:scheduler:ap-northeast-2:148761639313:schedule-group/default"
+        }
       }
     }
   ]

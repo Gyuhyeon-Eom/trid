@@ -74,22 +74,32 @@ for pk in P Q; do
 done
 
 echo "$CERT_SHA  $WORK/c-cert.pem" | sha256sum -c --quiet - || fail "C certificate sha256"
+# The dialogue set reaches this host only over SSM, encrypted to a key that is generated here and never leaves RAM
+# (/run is tmpfs): SSM command history and CloudTrail then hold ciphertext only. Smoke uses the same path with the
+# public 2-turn set, so the delivery itself is tested before the private run. Never through S3.
+INBOX=/run/trid-input
+mkdir -p "$INBOX" && chmod 700 "$INBOX"
+openssl req -x509 -newkey rsa:3072 -nodes -keyout "$INBOX/key.pem" -out "$WORK/input-cert.pem" -days 2 \
+  -subj "/CN=$RUN_ID set delivery" 2>/dev/null || fail "delivery key"
+aws s3 cp --only-show-errors --sse AES256 "$WORK/input-cert.pem" "$S3/input-cert.pem" || fail "publish delivery certificate"
+FPR=$(openssl x509 -in "$WORK/input-cert.pem" -noout -fingerprint -sha256 | cut -d= -f2)
 if [ "$MODE" = smoke ]; then
-  DIALOGUES=$WORK/smoke.jsonl  # first two turns of the first public CHAT-EVAL-004 scenario
-  python3 -c "import json,sys; r=json.loads(open(sys.argv[1]).readline()); print(json.dumps({'id': r['id'], 'turns': r['turns'][:2]}, ensure_ascii=False))" \
-    "$WORK/reports/coordination/CHAT-EVAL-004/public-20.jsonl" > "$DIALOGUES" || fail "smoke set"
+  EXPECTED_SHA=$(python3 -c "import json,sys,hashlib; r=json.loads(open(sys.argv[1]).readline()); print(hashlib.sha256((json.dumps({'id': r['id'], 'turns': r['turns'][:2]}, ensure_ascii=False) + chr(10)).encode()).hexdigest())" \
+    "$WORK/reports/coordination/CHAT-EVAL-004/public-20.jsonl") || fail "smoke set sha"
 else
-  # C sends the private set straight to this host over SSM (never through S3); wait for it at the set boundary.
-  DIALOGUES=$WORK/input/private-80.jsonl
-  mkdir -p "$WORK/input" && chmod 700 "$WORK/input"
-  phase awaiting-input "C delivers the set to $DIALOGUES (sha256 $INPUT_SHA) within $WAIT_INPUT_MINUTES min"
-  for _ in $(seq 1 $((WAIT_INPUT_MINUTES * 6))); do
-    [ -f "$DIALOGUES.ready" ] && break
-    sleep 10
-  done
-  [ -f "$DIALOGUES.ready" ] || fail "no input within $WAIT_INPUT_MINUTES min"
-  echo "$INPUT_SHA  $DIALOGUES" | sha256sum -c --quiet - || fail "input sha256"
+  EXPECTED_SHA=$INPUT_SHA
 fi
+phase awaiting-input "deliver the set encrypted to $S3/input-cert.pem (sha256 fingerprint $FPR) as $INBOX/set.cms.b64 + .ready within $WAIT_INPUT_MINUTES min; expected set sha256 $EXPECTED_SHA"
+for _ in $(seq 1 $((WAIT_INPUT_MINUTES * 6))); do
+  [ -f "$INBOX/set.cms.b64.ready" ] && break
+  sleep 10
+done
+[ -f "$INBOX/set.cms.b64.ready" ] || fail "no delivery within $WAIT_INPUT_MINUTES min"
+DIALOGUES=$INBOX/set.jsonl
+base64 -d "$INBOX/set.cms.b64" > "$INBOX/set.cms" || fail "delivery base64"
+openssl cms -decrypt -binary -inform DER -in "$INBOX/set.cms" -inkey "$INBOX/key.pem" -out "$DIALOGUES" || fail "delivery decrypt"
+shred -u "$INBOX/key.pem" "$INBOX/set.cms" "$INBOX/set.cms.b64"
+echo "$EXPECTED_SHA  $DIALOGUES" | sha256sum -c --quiet - || fail "delivered set sha256"
 
 BACKEND="llama.cpp-8ca4060-cuda-sm$CUDA_ARCH-$(sha256sum "$SERVER" | cut -c1-12)"
 sha256sum "$SERVER" > "$WORK/out/llama-server.sha256"
@@ -118,6 +128,6 @@ for pk in P Q; do
     shred -u "$f"
   done
 done
-[ "$MODE" = smoke ] || shred -u "$DIALOGUES"
+shred -u "$DIALOGUES"
 phase upload
 aws s3 cp --only-show-errors --recursive --sse AES256 "$WORK/out" "$S3/results/" || fail "upload"

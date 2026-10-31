@@ -81,7 +81,12 @@
 **인스턴스 사양**
 - IMDSv2 필수(hop 1), 인바운드 0인 전용 SG, 공인 IPv4(외부 인터넷 송신용, 인바운드 없음)
 - `InstanceInitiatedShutdownBehavior=terminate`, 태그 `trid:eval=aws-eval-006`, `trid:run-id`
-- 기동 직후 `trid-aws-eval-006-<instance>` 1회 Scheduler 일정(상한 + 10분, 끝나면 일정 자동 삭제)을 만든다. **일정 생성에 실패하면 인스턴스를 즉시 종료한다.**
+- 기동 직후 `trid-aws-eval-006-<instance>` 1회 Scheduler 일정을 **default 일정 그룹**에 만든다. 시각은 상한 + 10분이고, 끝나면 일정이 자동 삭제된다. **일정 생성에 실패하면 인스턴스를 즉시 종료한다.**
+- **시간 상한 검사:** `--max-minutes`는 1..60(smoke), 1..150(full) 정수만 받는다. 0, 음수, 초과는 거부한다.
+- **GPU 예약 장부:** `AWS-EVAL-006-GPU-LEDGER.json`. 유료 기동마다 (상한 + 10분)을 예약하고, 이번 승인 전체 합계는 **최대 230분**이다((60+10) + (150+10), 4시간 안).
+  - 합계를 넘으면 재기동과 재시도를 거부한다.
+  - run-instances가 실패해 인스턴스가 없을 때만 예약을 0으로 돌리고, 그 기록은 지우지 않는다.
+- **원자성 한계:** run-instances가 성공한 뒤 Scheduler 일정이 생기기까지 수 초 동안은 **인스턴스 OS 타이머가 유일한 방어**다. 그 사이 운영 프로세스나 연결이 끊기면 Scheduler 상한은 걸리지 않고 OS 타이머만 남는다. 완전히 원자적인 자동 종료라고 주장하지 않는다.
 
 **user data `scripts/aws_eval/bootstrap.sh`**
 1. 첫 명령으로 `shutdown -h +MAX`를 건다.
@@ -91,8 +96,13 @@
 5. 자산을 받으며 sha256을 확인한다. 불일치면 중단한다.
 6. P/Q 별칭을 만든다. 모델은 package.json의 기대 sha로 찾으므로 매핑 원문이 필요 없다.
 7. 실행 방식
-   - smoke: 공개 세트 첫 시나리오의 첫 2턴
-   - full: C가 전달할 때까지 최대 30분 대기, `.ready` 표지와 세트 sha `af46eec1…`를 확인
+   - **세트 전달 (smoke·full 공통, S3 미사용)**
+     - 인스턴스가 부팅 때 RSA 키쌍을 만든다. 개인키는 RAM(`/run` tmpfs)에만 둔다.
+     - 인증서만 `runs/<run>/input-cert.pem`에 올리고, phase에 SHA-256 지문과 기대 세트 sha를 적는다.
+     - C는 `scripts/aws_eval/c_deliver_set.py`로 지문과 sha를 대조한다. 세트를 그 인증서로 CMS 암호화해 base64 조각(24,000자)으로 `AWS-RunShellScript` SendCommand를 보내고, 마지막에 `.ready`를 보낸다.
+     - 인스턴스는 복호화하고 sha를 확인한 뒤 키와 암호문을 shred한다. 최대 30분 기다린다.
+   - smoke: 공개 세트 첫 시나리오의 첫 2턴. **C가 같은 전달 경로로 보내므로, 이 경로를 비공개 실행 전에 실측한다.**
+   - full: 비공개 80, 기대 sha `af46eec1…`
 8. P, Q를 순차 실행한다(`TRID_RUNNER_REMOTE=1`, `-ngl 999`). checkpoint는 30초마다 S3에 동기화한다.
 9. 끝에 `outputs.jsonl`과 모든 `sealed/` 파일을 C 인증서로 CMS 암호화하고 평문을 shred한다. 전달된 세트도 shred한다.
 10. 업로드한다.
@@ -127,10 +137,10 @@ python3 scripts/aws_eval/aws_eval_006.py bootstrap-identity --user-approved
 | 주체·자원 | 권한 범위 |
 |---|---|
 | 역할 `trid-aws-eval-006-instance` + 인스턴스 프로필 | `AmazonSSMManagedInstanceCore` + S3 `code/*` 읽기, `runs/*` 쓰기, `runs/` 목록 |
-| 역할 `trid-aws-eval-006-scheduler` | trust는 scheduler.amazonaws.com이고, `aws:SourceAccount`와 일정 이름 접두 `aws:SourceArn`으로 제한. `ec2:TerminateInstances`는 태그가 있는 인스턴스만 |
+| 역할 `trid-aws-eval-006-scheduler` | trust는 scheduler.amazonaws.com이고, `aws:SourceAccount` = 148761639313과 `aws:SourceArn` = `arn:aws:scheduler:ap-northeast-2:148761639313:schedule-group/default`(정확 일치, StringEquals)로 제한. `ec2:TerminateInstances`는 태그가 있는 인스턴스만 |
 | SG `trid-aws-eval-006-no-ingress` | 인바운드 0 |
 | IAM 사용자 `trid-aws-eval-006-operator` (A) | **access key 없음.** `SignInLocalDevelopmentAccess`(`aws login`용) 부착. g6.2xlarge·t3.micro만, 태그·IMDSv2·암호화 볼륨·기본 VPC 조건 RunInstances. 태그 인스턴스만 종료. 두 역할만 PassRole. 이름 접두가 맞는 Scheduler 일정. S3 `code/*` 쓰기와 상태 파일만 읽기(checkpoint·출력 읽기 불가). 태그 인스턴스 SSM 세션 |
-| IAM 사용자 `trid-aws-eval-006-c-runner` (C) | **access key 없음.** `SignInLocalDevelopmentAccess` 부착. 태그 인스턴스에 `AWS-RunShellScript` SendCommand(문항 전달), 암호화 checkpoint·결과·phase 읽기, `runs/` 목록. 종료·쓰기 불가 |
+| IAM 사용자 `trid-aws-eval-006-c-runner` (C) | **access key 없음.** `SignInLocalDevelopmentAccess` 부착. 태그 인스턴스에 `AWS-RunShellScript` SendCommand(암호화된 세트 전달), 암호화 checkpoint·결과·phase·전달 인증서 읽기, `runs/` 목록. 종료·쓰기 불가 |
 
 **사용자 콘솔 작업:** 두 사용자에 콘솔 비밀번호와 MFA를 설정한다. 이후 `aws login --profile trid-aws-eval-006-operator`(A, 맥북 또는 맥미니)와 `aws login --profile trid-aws-eval-006-c-runner`(C)를 쓴다. 세션은 최대 12시간이다.
 
@@ -150,16 +160,14 @@ python3 scripts/aws_eval/aws_eval_006.py bootstrap-identity --user-approved
    - OS 타이머 인스턴스가 3분 뒤 terminated
    - scheduler 인스턴스가 6분 뒤 terminated
    - 일정 자동 삭제 확인
-3. `launch --mode smoke`로 공개 2턴을 P와 Q 모두 실행한다. 확인 항목:
+3. `launch --mode smoke`를 한다. C가 `c_deliver_set.py --smoke`로 공개 2턴을 암호화 전달하고, P와 Q 모두 실행한다. 확인 항목:
    - complete, 렌더 토큰 일치 true, 실효 설정 고정
    - GPU 메모리 최대치(`gpu.csv`), CUDA·드라이버·바이너리 sha
    - checkpoint 2개 이상이 암호화돼 S3에 올라감, C 복원 확인
    - 정상 종료와 일정 삭제
 4. 이 보고에 실측을 추가하고 C에 실행 가능을 인계한다.
 5. C가 precommit 부록을 커밋하면 `launch --mode full`을 한다.
-6. C가 c-runner로 `send-command`해 세트를 `/opt/trid/input/private-80.jsonl`과 `.ready`로 전달한다.
-   - 실제 명령 예시는 smoke 실측 뒤 인계 문서에 확정한다.
-   - 전송량이 SSM 매개변수 한도를 넘으면 조각으로 나눠 보낸다.
+6. C가 c-runner로 `c_deliver_set.py --set <비공개 파일>`을 실행해 전달한다. A는 이 명령을 비공개 파일로 실행하지 않는다.
 
 ## 8. 인계
 
@@ -187,5 +195,56 @@ python3 scripts/aws_eval/aws_eval_006.py bootstrap-identity --user-approved
 
 - **사용자:** 6절 1회 bootstrap(root IAM 쓰기)을 승인할지 결정하고, 승인하면 두 사용자의 콘솔 비밀번호와 MFA를 설정한다.
 - **A:** 승인과 로그인이 확인되면 7절 1~4를 즉시 진행한다. 그 전에는 유료 기동과 IAM 쓰기를 하지 않는다.
+
+## 11. 감독 리뷰 반영 (정정, 2026-10-31)
+
+**1. scheduler trust 결함 (실제 차단 결함, 수정)**
+- 처음 문서는 `aws:SourceArn`을 일정 이름 접두(`schedule/default/trid-aws-eval-006-*`, ArnLike)로 제한했다.
+  - AWS 공식 문서([Confused deputy prevention in EventBridge Scheduler](https://docs.aws.amazon.com/scheduler/latest/UserGuide/cross-service-confused-deputy-prevention.html))는 "Do not scope the `aws:SourceArn` statement to a specific schedule or a schedule name prefix. The ARN you specify must be a schedule group."라고 적는다.
+  - 그대로 두었으면 Scheduler가 역할을 맡지 못해 **독립 종료가 동작하지 않았을 것**이다.
+- **수정:** `aws:SourceArn` = `arn:aws:scheduler:ap-northeast-2:148761639313:schedule-group/default`(StringEquals, 정확 일치), `aws:SourceAccount` 유지. 공식 예시와 같은 형태다.
+  - 일정은 지금처럼 default 그룹에 만든다.
+  - operator의 `scheduler:CreateSchedule` 이름 접두 제한과 PassRole 제한은 그대로다.
+  - 전용 그룹은 만들지 않는다. 불필요한 추가를 피한다.
+- **정정:** Access Analyzer `validate-policy`의 finding 0은 문법 검사일 뿐이다. 서비스가 실제로 보내는 SourceArn과 일치한다는 증거가 아니다.
+  - 수정본도 finding 0이지만, **실제 AssumeRole 성공은 신원 승인 뒤 watchdog-test(7절 2)로만 확인한다.**
+
+**2. 비공개 문항 전달 경로의 로그 노출 (수정)**
+- 처음 계획은 SendCommand 매개변수로 세트를 보내는 것이었다. 평문이나 base64면 SSM 명령 기록(ListCommands·GetCommandInvocation, 계정 관리자가 볼 수 있음)과 CloudTrail `SendCommand` 이벤트에 **원문이 남는다.**
+- **수정:** 인스턴스가 부팅 때 RAM에만 개인키를 둔 키쌍을 만들고, 세트는 그 인증서로 암호화해서만 보낸다(5절 7, `c_deliver_set.py`).
+- **이제 AWS에 남는 것**
+
+  | 위치 | 남는 내용 |
+  |---|---|
+  | SSM 명령 기록, CloudTrail | 암호문 base64 조각과 명령문 |
+  | S3 `input-cert.pem` | 공개 인증서 |
+  | 인스턴스 SSM agent 로그 | 명령문(암호문). 인스턴스 종료 때 볼륨과 함께 삭제 |
+
+- **평문이 있는 곳**
+  - C의 머신
+  - 실행 중 인스턴스: RAM의 세트, runner 프로세스, 암호화 전 `out/`의 `sealed/turns.jsonl`. EBS는 암호화돼 있고 종료 때 삭제된다.
+  - 인스턴스 root·SSM 세션 권한자는 실행 중 볼 수 있다. C precommit 3절이 인정한 한계와 같다.
+- **검증 (로컬, 공개 smoke 세트와 일회용 키):**
+  - C 쪽 smoke 세트 sha가 인스턴스 기대 sha와 같다.
+  - 암호화 → 24,000자 조각 → 재조립 → 복호화 → sha 확인 성공. 명령문에 평문 없음.
+  - 200 KB 세트라면 SendCommand 13회다.
+- **C 계약 합의 필요:** C는 이 전달 방식(인스턴스 키 암호화, 조각 SendCommand, S3 미사용)과 남는 로그 범위를 확인하고 합의 여부를 회신해 달라. 합의 전에는 full을 하지 않는다.
+  - 비공개 문항 원문은 어떤 경로로도 A에게 보내지 않는다. A는 `c_deliver_set.py`를 비공개 파일로 실행하지 않는다.
+
+**3. 시간 상한 (수정, 5절)**
+- `--max-minutes` 범위를 검사한다. 확인: 0, 61(smoke), 151·−5(full)를 모두 거부했다.
+- GPU 예약 장부로 이번 승인 전체를 230분까지만 허용한다. 오프라인 확인: 70 + 160 = 230분 예약 뒤 추가 smoke 예약은 거부됐고, 기동 실패 시도는 0분으로 기록이 남았다.
+- 기동과 일정 생성 사이의 비원자성 한계를 명시했다.
+
+**4. 1회 bootstrap 범위: 변동 없음**
+- 사용자 승인이 필요한 범위는 그대로다.
+  - IAM 사용자 2개: operator, c-runner. access key 없이 `aws login`
+  - 역할 2개와 인스턴스 프로필 1개: instance, scheduler
+  - 인바운드 0 SG 1개
+- 바뀐 것은 정책 내용 2곳뿐이다.
+  - scheduler trust의 SourceArn
+  - c-runner가 `runs/*/input-cert.pem`을 읽을 수 있게 함
+- 정책 6개 모두 Access Analyzer finding 0, 시뮬레이션 22건 모두 기대와 같다(추가 3건: C의 전달 인증서 읽기 허용, code와 corpus 읽기 거부).
+- **AWS 쓰기는 여전히 0건이다**(IAM, SG, EC2, Scheduler, S3 `eval/aws-eval-006/` 모두 없음을 조회로 확인).
 
 SUPERVISION_REPORT_READY AWS-EVAL-006-INFRA

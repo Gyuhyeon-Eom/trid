@@ -21,13 +21,14 @@
       "Resource": "arn:aws:ssm:ap-northeast-2::document/AWS-RunShellScript"
     },
     {
-      "Sid": "ReadEncryptedCheckpointsAndStatus",
+      "Sid": "ReadEncryptedCheckpointsStatusAndDeliveryCert",
       "Effect": "Allow",
       "Action": "s3:GetObject",
       "Resource": [
         "arn:aws:s3:::trid-training-148761639313/eval/aws-eval-006/runs/*/checkpoints/*",
         "arn:aws:s3:::trid-training-148761639313/eval/aws-eval-006/runs/*/results/*",
-        "arn:aws:s3:::trid-training-148761639313/eval/aws-eval-006/runs/*/phase.json"
+        "arn:aws:s3:::trid-training-148761639313/eval/aws-eval-006/runs/*/phase.json",
+        "arn:aws:s3:::trid-training-148761639313/eval/aws-eval-006/runs/*/input-cert.pem"
       ]
     },
     {
