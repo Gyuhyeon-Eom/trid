@@ -74,11 +74,43 @@
   - 수정한 수집기를 A의 현재 runner checkpoint에 적용: "P-001.cms: run id None not among --run-id"(exit 2). A가 2번을 고치기 전에는 섞인 실행을 받아들이지 않는다.
 
 ## 5. 남은 일
-1. A: 1번(차단), 2번, 4번 수정
+1. A가 고칠 것 (번호는 3절 표 기준. 표 1번은 C 수집기 결함이고 이미 C가 고쳤다):
+   - 표 3번: orchestrator 기대 입력 sha를 파생본 `4134c4bb…`로 바꾼다. **full 차단 사유다.** `AWS-EVAL-006-C-TO-A.md`에서는 1번이다.
+   - 표 2번: checkpoint의 run_id, input_sha256, effective_settings_constant. C-TO-A 2번
+   - 표 4번: checkpoint 원자 쓰기와 종료 때 동기화. C-TO-A 3번
 2. 사용자: 로그인
 3. A: watchdog, smoke 기동
 4. C: smoke 전달(`c_deliver_set.py --smoke`)과 smoke checkpoint 수집
    - 수집 명령: `aws_eval_collect.py --set <smoke 세트 파일> --run-id <smoke run>`
 5. 실행 전 precommit 부록을 커밋한 뒤 full을 진행한다.
+
+## 6. 부록: A 통합 수정 뒤 재검증 도구 (감독 결과 수령 반영)
+- **번호 정정:** 5절의 A 작업 번호를 3절 표 기준으로 고쳤다. 표 1번(C 수집기, 완료)과 표 3번(orchestrator 입력 sha, full 차단)을 구분한다.
+- **도구:** `scripts/aws_eval_e2e_check.py` (C 소유, CPU, AWS 0, 모델 0)
+  - 공개 20으로 실제 부품을 끝까지 돌린다: 전달 키 → 암호화 조각 명령 실행 → 복호화 → **수정 없는 A runner `main()`**의 P/Q checkpoint를 공유 디렉터리에 → 신규 수집기로 alias별 복원 → `chat_blind_pack`
+  - 모델 생성만 005·006 공개 원시 고정 응답으로 바꾼다. 출력에도 "not a GPU or AWS success"라고 적힌다.
+  - 기본은 일회용 키쌍이라 C 개인키 없이도 누구나 실행할 수 있다.
+- **판정 항목 (하나라도 실패하면 exit 1)**
+  - 전달 매개변수에 평문 없음, 복호화 sha 일치
+  - checkpoint 임시 파일 잔여 없음
+  - P와 Q가 각 63턴 complete로 복원되고 pack 통과
+  - **다른 run 섞임은 그 run id 때문에 거부**
+  - **실효 설정 변화는 "not constant" 때문에 거부**
+  - 다른 이유로 거부되면 실패로 친다.
+- **총괄 실행 명령:** `.venv/bin/python scripts/aws_eval_e2e_check.py` (A가 run id 환경 변수를 다른 이름으로 쓰면 `--run-id-env <이름>`)
+- **현재 결과 (A 수정 전 runner):** exit 1
+  - delivery true, 임시 파일 잔여 없음 true
+  - collect P/Q false("run id None"), pack false, 섞임 거부 false, 설정 변화 거부 false
+  - 섞임과 설정 변화는 처음에 run id 누락 때문에 "거부"로 집계돼 **거짓 통과**가 났다. 거부 사유까지 확인하도록 고쳤다.
+- **도구 자체 검증:**
+  - C-TO-A 2번 요청 그대로 세 필드(`run_id`=`TRID_RUN_ID`, `input_sha256`=`dialogues_sha256`, `effective_settings_constant`)를 넣은 **임시 사본 runner**로 돌렸다. A 파일은 수정하지 않았다.
+  - 결과: 7개 항목 모두 true. P 63턴 complete, 섞임은 "run id 'e2e-run-2'"로 거부, 설정 변화는 P-011에서 "not constant"로 거부
+- **이 도구가 확인하지 않는 것:**
+  - C-TO-A 3번의 bootstrap `finish()` 종료 동기화는 셸과 AWS 동작이다. 수정 뒤 코드 판독으로 확인한다.
+  - 원자 쓰기는 runner 쪽 구현이면 임시 파일 잔여 검사로 일부만 드러난다.
+- **A 수정 인계를 받으면 할 일:**
+  1. 이 명령을 그대로 다시 돌린다.
+  2. A 통합 보고에 독립 결과를 반영한다.
+  3. 실제 AWS smoke에서 run_id, 세트 sha, 실효 설정 고정이 **실제 run 값**인지 확인한다. 누락되거나 바뀐 값은 거부를 유지한다.
 
 SUPERVISION_REPORT_READY CONTRACT-CONTINUE-007
