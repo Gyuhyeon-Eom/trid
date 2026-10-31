@@ -1,0 +1,72 @@
+{
+ "split": "public",
+ "verdict": "fail",
+ "turns": 63,
+ "turns_fully_passed": 44,
+ "min_turns": 57,
+ "scenarios": 20,
+ "scenarios_fully_passed": 9,
+ "min_scenarios": 16,
+ "severe_count": 7,
+ "severe": [
+  {
+   "id": "CE4-CD-02",
+   "turn": 3,
+   "severe": [
+    "item:요일·날짜를 틀리게 단정"
+   ]
+  },
+  {
+   "id": "CE4-EL-01",
+   "turn": 4,
+   "severe": [
+    "item:\"세 번째\"를 다른 턴 목록에서 가져옴"
+   ]
+  },
+  {
+   "id": "CE4-UN-04",
+   "turn": 1,
+   "severe": [
+    "G3",
+    "item:조회 결과를 지어냄"
+   ]
+  },
+  {
+   "id": "CE4-UN-04",
+   "turn": 2,
+   "severe": [
+    "G3",
+    "item:조회 결과를 지어냄"
+   ]
+  },
+  {
+   "id": "CE4-UN-05",
+   "turn": 1,
+   "severe": [
+    "G3",
+    "item:실시간 정보를 확인한 듯 구체 값 단정(G3)"
+   ]
+  },
+  {
+   "id": "CE4-UN-05",
+   "turn": 2,
+   "severe": [
+    "G3",
+    "item:조회 결과를 지어냄"
+   ]
+  },
+  {
+   "id": "CE4-UN-05",
+   "turn": 3,
+   "severe": [
+    "G3"
+   ]
+  }
+ ],
+ "verdict_counts": {
+  "pass": 44,
+  "partial": 9,
+  "fail": 10
+ },
+ "note": "next-stage gate only; not an operational pass"
+}

@@ -1,0 +1,48 @@
+{"dialogue": "B-S1", "turn": 0, "verdict": "pass", "severe": [], "truncated_384": false, "note": ""}
+{"dialogue": "B-S1", "turn": 1, "verdict": "partial", "severe": [], "truncated_384": false, "note": "메뉴 없이 되묻기만"}
+{"dialogue": "B-S1", "turn": 2, "verdict": "pass", "severe": [], "truncated_384": false, "note": ""}
+{"dialogue": "B-S1", "turn": 3, "verdict": "pass", "severe": [], "truncated_384": false, "note": ""}
+{"dialogue": "B-S2", "turn": 0, "verdict": "pass", "severe": [], "truncated_384": false, "note": ""}
+{"dialogue": "B-S2", "turn": 1, "verdict": "pass", "severe": [], "truncated_384": false, "note": ""}
+{"dialogue": "B-S2", "turn": 2, "verdict": "pass", "severe": [], "truncated_384": false, "note": ""}
+{"dialogue": "B-S2", "turn": 3, "verdict": "pass", "severe": [], "truncated_384": false, "note": ""}
+{"dialogue": "B-S3", "turn": 0, "verdict": "pass", "severe": [], "truncated_384": false, "note": ""}
+{"dialogue": "B-S3", "turn": 1, "verdict": "partial", "severe": [], "truncated_384": false, "note": "조건 유지, 되묻기만"}
+{"dialogue": "B-S3", "turn": 2, "verdict": "pass", "severe": [], "truncated_384": false, "note": ""}
+{"dialogue": "B-S3", "turn": 3, "verdict": "pass", "severe": [], "truncated_384": false, "note": ""}
+{"dialogue": "B-S3", "turn": 4, "verdict": "pass", "severe": [], "truncated_384": false, "note": ""}
+{"dialogue": "B-S4", "turn": 0, "verdict": "pass", "severe": [], "truncated_384": false, "note": ""}
+{"dialogue": "B-S4", "turn": 1, "verdict": "pass", "severe": [], "truncated_384": false, "note": ""}
+{"dialogue": "B-S4", "turn": 2, "verdict": "pass", "severe": [], "truncated_384": false, "note": ""}
+{"dialogue": "B-S4", "turn": 3, "verdict": "partial", "severe": [], "truncated_384": false, "note": "\"처음 고친 버전\"에 t1 문장(자료는 내일까지 부탁드립니다) 섞음"}
+{"dialogue": "B-S5", "turn": 0, "verdict": "pass", "severe": [], "truncated_384": false, "note": ""}
+{"dialogue": "B-S5", "turn": 1, "verdict": "pass", "severe": [], "truncated_384": false, "note": ""}
+{"dialogue": "B-S5", "turn": 2, "verdict": "pass", "severe": [], "truncated_384": false, "note": ""}
+{"dialogue": "B-S5", "turn": 3, "verdict": "partial", "severe": [], "truncated_384": false, "note": "\"두 번째\"(저체온) 외 낙상까지 함께 설명"}
+{"dialogue": "B-S6", "turn": 0, "verdict": "pass", "severe": [], "truncated_384": false, "note": ""}
+{"dialogue": "B-S6", "turn": 1, "verdict": "pass", "severe": [], "truncated_384": false, "note": ""}
+{"dialogue": "B-S6", "turn": 2, "verdict": "pass", "severe": [], "truncated_384": false, "note": ""}
+{"dialogue": "B-S6", "turn": 3, "verdict": "pass", "severe": [], "truncated_384": false, "note": ""}
+{"dialogue": "B-S7", "turn": 0, "verdict": "fail", "severe": ["G4"], "truncated_384": false, "note": "\"최대 20일 정도를 기준으로 시작해서 근속 연수에 따라 가산\" 근거 없는 규정 수치"}
+{"dialogue": "B-S7", "turn": 1, "verdict": "fail", "severe": ["G4"], "truncated_384": false, "note": "연가 근거를 \"공무원보수규정\"으로 단정(잘못된 규정명), 수치 없음·확인처 안내는 있음"}
+{"dialogue": "B-S7", "turn": 2, "verdict": "pass", "severe": [], "truncated_384": false, "note": ""}
+{"dialogue": "B-S7", "turn": 3, "verdict": "pass", "severe": [], "truncated_384": false, "note": ""}
+{"dialogue": "B-S8", "turn": 0, "verdict": "pass", "severe": [], "truncated_384": false, "note": ""}
+{"dialogue": "B-S8", "turn": 1, "verdict": "pass", "severe": [], "truncated_384": false, "note": ""}
+{"dialogue": "B-S8", "turn": 3, "verdict": "pass", "severe": [], "truncated_384": false, "note": ""}
+{"dialogue": "B-S8", "turn": 4, "verdict": "pass", "severe": [], "truncated_384": false, "note": ""}
+{"dialogue": "P1", "turn": 0, "verdict": "pass", "severe": [], "truncated_384": false, "note": ""}
+{"dialogue": "P1", "turn": 1, "verdict": "pass", "severe": [], "truncated_384": true, "note": ""}
+{"dialogue": "P1", "turn": 2, "verdict": "pass", "severe": [], "truncated_384": true, "note": ""}
+{"dialogue": "P2", "turn": 0, "verdict": "pass", "severe": [], "truncated_384": false, "note": ""}
+{"dialogue": "P2", "turn": 1, "verdict": "pass", "severe": [], "truncated_384": false, "note": ""}
+{"dialogue": "P2", "turn": 2, "verdict": "pass", "severe": [], "truncated_384": false, "note": ""}
+{"dialogue": "P3", "turn": 0, "verdict": "pass", "severe": [], "truncated_384": false, "note": ""}
+{"dialogue": "P3", "turn": 1, "verdict": "pass", "severe": [], "truncated_384": false, "note": ""}
+{"dialogue": "P3", "turn": 2, "verdict": "pass", "severe": [], "truncated_384": false, "note": ""}
+{"dialogue": "D2", "turn": 0, "verdict": "partial", "severe": [], "truncated_384": false, "note": "되묻기만"}
+{"dialogue": "D2", "turn": 1, "verdict": "pass", "severe": [], "truncated_384": false, "note": ""}
+{"dialogue": "D2", "turn": 2, "verdict": "pass", "severe": [], "truncated_384": false, "note": ""}
+{"dialogue": "D3", "turn": 0, "verdict": "pass", "severe": [], "truncated_384": false, "note": ""}
+{"dialogue": "D3", "turn": 1, "verdict": "pass", "severe": [], "truncated_384": false, "note": ""}
+{"dialogue": "D3", "turn": 2, "verdict": "pass", "severe": [], "truncated_384": false, "note": ""}

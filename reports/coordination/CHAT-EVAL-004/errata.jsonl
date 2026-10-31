@@ -1,0 +1,2 @@
+{"id": "CE4-EL-01", "turn": 4, "type": "ambiguous_criterion", "original": "fail + item severe (\"세 번째\"를 다른 턴 목록에서 가져옴)", "proposed": "모델이 어느 목록인지 되물었으므로 severe 제외 가능", "evidence": "3턴에 레이어링 번호 목록 존재, 모델은 2턴 3번(난방 용품) 상술", "decision": "봉인 기준대로 원판정 유지; severe 제외 시에도 관문 결과 불변(UN G3 5건)"}
+{"id": "CE4-FM-08", "turn": 3, "type": "ambiguous_criterion", "original": "fail, item severe(형식 위반) 미적용", "proposed": "시간표 미생성도 형식 위반 severe로 볼 수 있음", "evidence": "1~3턴 모두 시간표 없음", "decision": "시간표가 없어 형식 위반 대상이 없으므로 원판정 유지; 적용 시 severe 8건, 관문 결과 불변"}
