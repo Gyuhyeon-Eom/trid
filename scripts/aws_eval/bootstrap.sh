@@ -15,24 +15,39 @@ set -uo pipefail
 exec > >(tee -a /var/log/trid-eval.log) 2>&1
 umask 077
 export AWS_DEFAULT_REGION=ap-northeast-2 HOME=/root DEBIAN_FRONTEND=noninteractive
+export AWS_RETRY_MODE=standard AWS_MAX_ATTEMPTS=3  # every upload is also wall-clock bounded (timeout) below
 S3="s3://$BUCKET/$PREFIX/runs/$RUN_ID"
 WORK=/opt/trid
 shutdown -h +"$MAX_MINUTES" "trid AWS-EVAL-006 max runtime"
+# Time limits, innermost first: (1) at MAX - DEADLINE_MARGIN the job's own deadline stops the running step so the EXIT
+# trap below syncs the finished checkpoints (each upload bounded: 90 + 30 + 30 s < DEADLINE_MARGIN); (2) the OS
+# timer powers off at MAX; (3) the EventBridge Scheduler terminates at MAX + 10 min whatever this OS does.
+DEADLINE_MARGIN=300
+( sleep $((MAX_MINUTES * 60 - DEADLINE_MARGIN)); touch /tmp/trid-deadline; echo "DEADLINE reached"
+  pkill -TERM -f chat_blind_runner.py; pkill -TERM -f llama-server; pkill -TERM -f 'cmake --build'; pkill -TERM -f 'curl -fsSL'
+  kill -TERM $$ ) &  # bash runs the TERM trap (→ exit → finish) as soon as the current foreground step returns
 
 phase() {
   printf '{"run_id": "%s", "mode": "%s", "phase": "%s", "utc": "%s", "detail": "%s"}\n' \
     "$RUN_ID" "$MODE" "$1" "$(date -u +%FT%TZ)" "$(echo "${2:-}" | tr -d '"\\' | tr '\n' ' ')" > /tmp/phase.json
-  aws s3 cp --only-show-errors --sse AES256 /tmp/phase.json "$S3/phase.json" || true
+  timeout 30 aws s3 cp --only-show-errors --sse AES256 /tmp/phase.json "$S3/phase.json" || true
   echo "PHASE $1 ${2:-}"
+}
+sync_checkpoints() {  # only completed checkpoints (*.cms); partial ones are *.cms.tmp until renamed
+  [ -d "$WORK/checkpoints" ] || return 0
+  timeout "$1" aws s3 sync --only-show-errors --sse AES256 --exclude '*' --include '*.cms' "$WORK/checkpoints" "$S3/checkpoints/"
 }
 finish() {
   rc=$?
-  if [ $rc -eq 0 ]; then phase done "exit 0"; else phase failed "exit $rc"; fi
-  aws s3 cp --only-show-errors --sse AES256 /var/log/trid-eval.log "$S3/bootstrap.log" || true
+  trap - EXIT TERM
+  sync_checkpoints 90 || echo "final checkpoint sync incomplete (bounded at 90 s)"
+  if [ $rc -eq 0 ]; then phase done "exit 0"; elif [ -f /tmp/trid-deadline ]; then phase failed "deadline exit $rc"; else phase failed "exit $rc"; fi
+  timeout 30 aws s3 cp --only-show-errors --sse AES256 /var/log/trid-eval.log "$S3/bootstrap.log" || true
   sync
   shutdown -h now
 }
 trap finish EXIT
+trap 'exit 143' TERM
 fail() { echo "FAIL: $*"; exit 1; }
 fetch() {  # url path sha256
   mkdir -p "$(dirname "$2")"
@@ -42,7 +57,7 @@ fetch() {  # url path sha256
 
 phase start "$(nvidia-smi --query-gpu=name,memory.total,driver_version --format=csv,noheader)"
 mkdir -p "$WORK/out"
-aws s3 cp --only-show-errors "s3://$BUCKET/$CODE_KEY" /tmp/code.tar.gz || fail "code download"
+timeout 120 aws s3 cp --only-show-errors "s3://$BUCKET/$CODE_KEY" /tmp/code.tar.gz || fail "code download"
 echo "$CODE_SHA  /tmp/code.tar.gz" | sha256sum -c --quiet - || fail "code sha256"
 tar -xzf /tmp/code.tar.gz -C "$WORK" || fail "code extract"
 
@@ -81,7 +96,7 @@ INBOX=/run/trid-input
 mkdir -p "$INBOX" && chmod 700 "$INBOX"
 openssl req -x509 -newkey rsa:3072 -nodes -keyout "$INBOX/key.pem" -out "$WORK/input-cert.pem" -days 2 \
   -subj "/CN=$RUN_ID set delivery" 2>/dev/null || fail "delivery key"
-aws s3 cp --only-show-errors --sse AES256 "$WORK/input-cert.pem" "$S3/input-cert.pem" || fail "publish delivery certificate"
+timeout 60 aws s3 cp --only-show-errors --sse AES256 "$WORK/input-cert.pem" "$S3/input-cert.pem" || fail "publish delivery certificate"
 FPR=$(openssl x509 -in "$WORK/input-cert.pem" -noout -fingerprint -sha256 | cut -d= -f2)
 if [ "$MODE" = smoke ]; then
   EXPECTED_SHA=$(python3 -c "import json,sys,hashlib; r=json.loads(open(sys.argv[1]).readline()); print(hashlib.sha256((json.dumps({'id': r['id'], 'turns': r['turns'][:2]}, ensure_ascii=False) + chr(10)).encode()).hexdigest())" \
@@ -106,19 +121,18 @@ sha256sum "$SERVER" > "$WORK/out/llama-server.sha256"
 nvidia-smi --query-gpu=timestamp,memory.used,memory.total,utilization.gpu --format=csv,noheader -l 5 > "$WORK/out/gpu.csv" &
 GPU_SAMPLER=$!
 mkdir -p "$WORK/checkpoints"
-( while sleep 30; do aws s3 sync --only-show-errors --sse AES256 --exclude '*' --include '*.cms' \
-    "$WORK/checkpoints" "$S3/checkpoints/"; done ) &
+( while sleep 30; do sync_checkpoints 60; done ) &
 SYNCER=$!
 cd "$WORK"
 for pk in P Q; do
   phase "run-$pk"
   TRID_RUNNER_REMOTE=1 TRID_LLAMA_SERVER=$SERVER TRID_LLAMA_SERVER_ARGS="-ngl 999" TRID_BACKEND=$BACKEND \
+  TRID_RUN_ID=$RUN_ID TRID_CODE_SHA=$CODE_SHA \
     /opt/venv/bin/python scripts/chat_blind_runner.py --package "$pk" --dialogues "$DIALOGUES" --out "$WORK/out/$pk" \
     --checkpoint-dir "$WORK/checkpoints" --checkpoint-cert "$WORK/c-cert.pem" || fail "runner $pk"
 done
 kill "$GPU_SAMPLER" "$SYNCER" 2>/dev/null
-aws s3 sync --only-show-errors --sse AES256 --exclude '*' --include '*.cms' "$WORK/checkpoints" "$S3/checkpoints/" \
-  || fail "checkpoint upload"
+sync_checkpoints 120 || fail "checkpoint upload"
 
 phase encrypt "outputs and every sealed file to C certificate"
 for pk in P Q; do
@@ -130,4 +144,4 @@ for pk in P Q; do
 done
 shred -u "$DIALOGUES"
 phase upload
-aws s3 cp --only-show-errors --recursive --sse AES256 "$WORK/out" "$S3/results/" || fail "upload"
+timeout 120 aws s3 cp --only-show-errors --recursive --sse AES256 "$WORK/out" "$S3/results/" || fail "upload"

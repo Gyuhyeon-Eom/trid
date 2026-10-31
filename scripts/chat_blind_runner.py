@@ -63,25 +63,37 @@ def main():
                 'memory_before': mem, 'live_before': live, 'guard': [], 'status': 'running'}
     stops, rows = {}, []
     backend = os.environ.get('TRID_BACKEND', 'llama.cpp-8ca4060-metal')
+    run_id = os.environ.get('TRID_RUN_ID', '')
     if a.checkpoint_dir:
+        # The checkpoints bind to the run that made them (the launch's RUN_ID, never a default) and to the very file
+        # this run received, so a collector can refuse checkpoints of another run or another set.
+        if not run_id:
+            sys.exit('--checkpoint-dir needs TRID_RUN_ID (the launch run id)')
         a.checkpoint_dir.mkdir(parents=True, exist_ok=True)
 
-    def end_dialogue(name, effective, _constant):
-        """One CMS/DER checkpoint per finished dialogue for C (alias, dialogue, rows, status); encrypted from memory."""
+    def end_dialogue(name, effective, constant):
+        """One CMS/DER checkpoint per finished dialogue for C (alias, dialogue, rows, status; contract in
+        scripts/aws_eval_collect.py), encrypted from memory into a temporary name that the S3 sync does not match
+        (*.cms.tmp) and renamed when complete, so a sync never uploads a partial file."""
         if not a.checkpoint_dir:
             return
         mine = [r for r in rows if r['dialogue'] == name]
         checkpoint = {'alias': a.package, 'dialogue': name, 'rows': mine, 'status': {
             'package': a.package, 'shared_settings_sha256': sha256(SHARED), 'backend': backend,
             'render_parity_token_ids_equal': (manifest.get('render_parity_with_official') or {}).get('token_ids_equal'),
-            'effective_settings_sha256': hashlib.sha256(json.dumps(effective, sort_keys=True).encode()).hexdigest()}}
+            'effective_settings_sha256': hashlib.sha256(json.dumps(effective, sort_keys=True).encode()).hexdigest(),
+            'effective_settings_constant': constant, 'run_id': run_id, 'input_sha256': manifest['dialogues_sha256'],
+            **({'code_sha256': os.environ['TRID_CODE_SHA']} if os.environ.get('TRID_CODE_SHA') else {})}}
         index = len({r['dialogue'] for r in rows})
         target = a.checkpoint_dir / f'{a.package}-{index:03d}.cms'
-        r = subprocess.run(['openssl', 'cms', '-encrypt', '-binary', '-aes256', '-outform', 'DER', '-out', str(target),
+        partial = target.with_name(target.name + '.tmp')
+        r = subprocess.run(['openssl', 'cms', '-encrypt', '-binary', '-aes256', '-outform', 'DER', '-out', str(partial),
                             str(a.checkpoint_cert)], input=json.dumps(checkpoint, ensure_ascii=False).encode(),
                            capture_output=True)
         if r.returncode:
+            partial.unlink(missing_ok=True)
             raise SystemExit(f'checkpoint encryption failed after dialogue {index}')
+        os.replace(partial, target)
 
     with open(a.out / 'outputs.jsonl', 'w') as outputs, open(sealed / 'turns.jsonl', 'w') as full:
         def write_turn(record):

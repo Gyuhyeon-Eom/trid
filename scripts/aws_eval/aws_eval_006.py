@@ -41,7 +41,9 @@ SECURITY_GROUP = 'trid-aws-eval-006-no-ingress'
 VPC = 'vpc-0bef0e7b66432d802'  # default VPC; subnets in AZs a, c, d offer g6.2xlarge
 SUBNETS = ['subnet-025ee7d30ecf0228c', 'subnet-07a376ff8d92d3525', 'subnet-0811f3a7d5b1eb737']
 COST_REPORT = ROOT / 'reports/coordination/AWS-EVAL-006-COST.md'
-PRIVATE_INPUT_SHA = 'af46eec1a084425a5ce6f879f4208fd193186ce03ebb6e0f90ae116e7e183877'  # C's sealed set hash
+# The remote run receives only the id+turns derivative of C's private set (80 rows, 250 turns, no gold fields);
+# C's sealed original (af46eec1…, with expectations) never leaves C (AWS-EVAL-006-PRECOMMIT §3, C-TO-A §1).
+PRIVATE_INPUT_SHA = '4134c4bb66146637be00ff15a4fff78c332cda5138423ea50a646fe49265836c'
 C_CERT = ROOT / 'reports/coordination/AWS-EVAL-006/c-checkpoint-cert.pem'
 POLICIES = ROOT / 'deploy/aws-eval-006'
 OPERATOR_USER, C_RUNNER_USER = 'trid-aws-eval-006-operator', 'trid-aws-eval-006-c-runner'
