@@ -14,6 +14,29 @@
   - (a) `8ca4060` 소스에 해당 구조가 있다는 근거: B가 확인했다.
   - (b) 실제 load·생성 검증: **확인하지 않았다(A 담당).**
 
+## 확정 파일 (감독 승인 후 보완): 공식 Google QAT q4_0
+
+감독이 A의 질문에 답해 **공식 Google QAT q4_0 GGUF**를 승인했다. 아래 표가 A에게 넘기는 최종 정보다. 이로써 아래 추천 절의 ggml-org Q8_0 권장은 대체된다.
+
+| 항목 | 값 |
+|---|---|
+| **GGUF (확정)** | `google/gemma-4-E4B-it-qat-q4_0-gguf` @ `4b4a2c1d584be7264f87aac328a1bc739ce81b6c` / `gemma-4-E4B_q4_0-it.gguf` / **5,154,941,280 바이트** / sha256 `676c35070db6dbe52f93e9c864ee0fba4eddea94b9c875d9cb10daff453fbaee` |
+| 체크포인트 성격 | **QAT(양자화 인지 학습) 체크포인트다.** 일반 `google/gemma-4-E4B-it`(`ee0ef602…`)과 **다른 가중치**다. 일반 -it의 평가·카드 수치를 이 파일에 그대로 옮기지 않는다 |
+| GGUF 저장소 이력 | 2026-07-15 `8f7c779b` "Update metadata (tokenizer.chat_template) (#6)" → 2026-07-17 `4b4a2c1d` "Upload validated QAT GGUF checkpoint (280 sequence length, corrected vocabulary)". 커밋 제목은 그대로 옮겼고 뜻은 해석하지 않았다 |
+| base_model | GGUF 카드는 `google/gemma-4-E4B-it-qat-q4_0-unquantized`를 base로 적는다. **revision은 적지 않는다** |
+| base 고정 revision | **GGUF 업로드(07-17) 시점의 main:** `ddb04d7360c7d7c353532e0e797038439dd1738a` (07-15 "Update README (#4)"). **현재 main:** `476025a01dbf99361c062bbeca3d6a76bb4c4566` (07-20 "Add response_template to tokenizer_config.json (#3)") |
+| 두 base revision의 차이 | tree API로 비교했다. `model.safetensors`(15,882,477,468B, sha256 `ad8ef515194b15ab13b6f98d54d37652b691c9a2c787cdf7ed5f951f5ed2c7fa`)와 `chat_template.jinja`(git blob `fbe3b59b…`)는 **같다**. 바뀐 것은 `tokenizer_config.json`(2,742B → 3,729B)뿐이다. GGUF가 정확히 어느 base 커밋에서 만들어졌는지는 카드에 없다(미확인). [추정] 업로드 시각상 `ddb04d73` 이하다 |
+| base 체인 | unquantized 카드의 `base_model`은 `google/gemma-4-E4B-it`이다 |
+| 크기 표기 | **E4B = effective 4.5B, 임베딩 포함 총 8B**(일반 -it 카드의 Dense Models 표). 두 값을 섞어 쓰지 않는다. 비전 ~150M, 오디오 ~300M 인코더는 별도다 |
+| template | base `chat_template.jinja` sha256 `0a2c8073c878ab1da004bee933a998606537bbb62016310352c7285c3f01c5b5`(18,569B). 일반 -it 저장소의 파일과 **같다**. GGUF 안의 `tokenizer.chat_template`이 이것과 같은지는 A가 load 전에 GGUF 메타데이터로 확인해야 한다(B 미확인) |
+| thinking | template 기본값 `enable_thinking = false`. `<\|think\|>`는 true일 때만 붙는다 |
+| 라이선스 (원문) | QAT GGUF 카드 헤더 `license: apache-2.0`, `license_link: https://ai.google.dev/gemma/docs/gemma_4_license`. 본문 "**License**: Apache 2.0". 링크된 페이지 본문은 Apache License 2.0 전문이다(시작 "Apache License Version 2.0, January 2004", 끝 "END OF TERMS AND CONDITIONS"). B가 직접 받아 확인했다. 감독도 직접 확인했다고 전달받았다 |
+| 정책 연결 | QAT 카드, 일반 -it 카드, 라이선스 페이지 어디에도 Gemma Prohibited Use Policy 링크나 편입 문구가 **없다**(카드 본문 검색: "Usage and Limitations" 절과 "minimal policy violations" 평가 문장뿐이다). Gemma 3용 Gemma Terms of Use 머리말은 "For Gemma 4 terms, see the Gemma 4 license"라고 따로 안내한다. 별도 정책이 있는지는 미확인이다(gemma.ai 미조회) |
+| 라이선스 동봉 | QAT GGUF 저장소 파일은 `.gitattributes`, `README.md`, GGUF 2개뿐이다. **LICENSE·NOTICE 파일이 없다.** 배포할 때는 위 페이지의 Apache 2.0 전문, 출처(저장소 id, revision, 파일 sha256), 수정 여부 표시를 직접 동봉해야 한다 |
+| 이미지 입력용 (필요할 때만) | 같은 저장소 `gemma-4-E4B-it-mmproj.gguf` 991,552,256B sha256 `7498a37cb619e55f2fcf87eb931f56e99389ed6d432e4c5c66110694c0d65578` |
+| llama.cpp 8ca4060 | 소스에 `gemma4` 구조와 `src/models/gemma4.cpp`가 있다는 근거만 있다. **실제 load·생성 미검증(A).** GGUF 업로드(07-17)는 8ca4060(10-28)보다 앞선다 |
+| 한국어 품질 | **미확인.** 카드에 한국어 명시가 없다. A의 실행 결과로만 판단한다 |
+
 ## 후보 3개
 
 | 항목 | **① google/gemma-4-E4B-it (추천)** | ② Qwen/Qwen3.5-4B | ③ kakaocorp/kanana-2-3b-instruct |
@@ -51,9 +74,9 @@
   |---|---|
   | 원본 model id | `google/gemma-4-E4B-it` @ `ee0ef6023621cff504d758262d4e04895a5af4a2` (gated: false) |
   | 원본 가중치 (참고) | `model.safetensors` 15,992,595,884B `cfbd3d2f1cd71bd471c37fe2bf8546d5028d41e5736f64e1ca6c6b8893125503`. `tokenizer.json` 32,169,626B `cc8d3a0ce36466ccc1278bf987df5f71db1719b9ca6b4118264f45cb627bfe0f` |
-  | 권장 GGUF | `ggml-org/gemma-4-E4B-it-GGUF` @ `a69f018d7678a2b9f5e705f8903d6fb29b9b25dc` / `gemma-4-E4B-it-Q8_0.gguf` / 8,031,242,688B / sha256 `34be82b17b4942d389b9b527170c4b058027abdd32531fda063d3d97dd8ce80a` |
+  | (대체됨) 이전 권장 GGUF | `ggml-org/gemma-4-E4B-it-GGUF` @ `a69f018d7678a2b9f5e705f8903d6fb29b9b25dc` / `gemma-4-E4B-it-Q8_0.gguf` / 8,031,242,688B / sha256 `34be82b17b4942d389b9b527170c4b058027abdd32531fda063d3d97dd8ce80a`. 일반 -it 원본(`ee0ef602…`)을 변환한 파일이다. 감독 승인으로 위 확정 파일(공식 QAT)이 이것을 대체한다 |
   | 같은 저장소의 다른 파일 | `gemma-4-E4B-it-Q4_0.gguf` 4,590,807,392B `a555b900214b477d8880e7832e0b8925e139b0159640036b09fe472b6f2097f2`. `gemma-4-E4B-it-BF16.gguf` 15,053,097,408B `f0669d20ec5bd5a1a0b38707e25e441f8bc1f52d8a0ef2f0168f67fd4664f5de` |
-  | 공식 Google GGUF (대안, QAT) | `google/gemma-4-E4B-it-qat-q4_0-gguf` @ `4b4a2c1d584be7264f87aac328a1bc739ce81b6c` / `gemma-4-E4B_q4_0-it.gguf` 5,154,941,280B `676c35070db6dbe52f93e9c864ee0fba4eddea94b9c875d9cb10daff453fbaee`. QAT 가중치라 `-it` 원본과는 다른 체크포인트다 |
+  | 공식 Google GGUF (QAT, **확정**) | 맨 위 "확정 파일" 표 참조 |
   | template | GGUF에 내장된 template은 변환 때 원본 저장소에서 복사된 것이다(`convert.log` "Setting chat_template"). 원본 `chat_template.jinja` sha256은 `0a2c8073c878ab1da004bee933a998606537bbb62016310352c7285c3f01c5b5`. 내장 template과 이 파일이 같은지는 A가 load 뒤 확인한다 |
   | thinking | 기본 off. `enable_thinking`을 넘기지 않거나 false로 넘긴다. system 메시지를 쓰면 template이 system 블록을 연다(190행). `<\|think\|>`는 true일 때만 붙는다 |
   | 라이선스 동봉 | 배포한다면 Apache 2.0 사본과 원본 저장소의 고지(있다면)를 함께 넣는다. 저장소에 별도 NOTICE 파일은 없다(파일 목록 기준) |
