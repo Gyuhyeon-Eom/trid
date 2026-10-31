@@ -1,0 +1,136 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "ReadOnlyLookups",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeInstances", "ec2:DescribeImages", "ec2:DescribeSubnets", "ec2:DescribeSecurityGroups",
+        "ec2:DescribeInstanceTypeOfferings", "ec2:DescribeInstanceTypes", "ec2:DescribeVolumes",
+        "servicequotas:GetServiceQuota", "pricing:GetProducts", "sts:GetCallerIdentity",
+        "iam:GetRole", "iam:GetInstanceProfile"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ReadPublicAmiParameters",
+      "Effect": "Allow",
+      "Action": "ssm:GetParameter",
+      "Resource": [
+        "arn:aws:ssm:ap-northeast-2::parameter/aws/service/deeplearning/ami/x86_64/*",
+        "arn:aws:ssm:ap-northeast-2::parameter/aws/service/ami-amazon-linux-latest/*"
+      ]
+    },
+    {
+      "Sid": "LaunchOnlyTaggedEvalInstancesOfTheTwoTypes",
+      "Effect": "Allow",
+      "Action": "ec2:RunInstances",
+      "Resource": "arn:aws:ec2:ap-northeast-2:148761639313:instance/*",
+      "Condition": {
+        "StringEquals": {"ec2:InstanceType": ["g6.2xlarge", "t3.micro"], "aws:RequestTag/trid:eval": "aws-eval-006",
+                         "ec2:MetadataHttpTokens": "required"}
+      }
+    },
+    {
+      "Sid": "LaunchOnlyEncryptedVolumes",
+      "Effect": "Allow",
+      "Action": "ec2:RunInstances",
+      "Resource": "arn:aws:ec2:ap-northeast-2:148761639313:volume/*",
+      "Condition": {"Bool": {"ec2:Encrypted": "true"}, "StringEquals": {"aws:RequestTag/trid:eval": "aws-eval-006"}}
+    },
+    {
+      "Sid": "LaunchOnlyInTheEvalSecurityGroupAndDefaultVpc",
+      "Effect": "Allow",
+      "Action": "ec2:RunInstances",
+      "Resource": [
+        "arn:aws:ec2:ap-northeast-2:148761639313:security-group/*",
+        "arn:aws:ec2:ap-northeast-2:148761639313:subnet/*",
+        "arn:aws:ec2:ap-northeast-2:148761639313:network-interface/*"
+      ],
+      "Condition": {"StringEquals": {"ec2:Vpc": "arn:aws:ec2:ap-northeast-2:148761639313:vpc/vpc-0bef0e7b66432d802"}}
+    },
+    {
+      "Sid": "LaunchOnlyAmazonImages",
+      "Effect": "Allow",
+      "Action": "ec2:RunInstances",
+      "Resource": "arn:aws:ec2:ap-northeast-2::image/*",
+      "Condition": {"StringEquals": {"ec2:Owner": "amazon"}}
+    },
+    {
+      "Sid": "TagOnlyAtLaunch",
+      "Effect": "Allow",
+      "Action": "ec2:CreateTags",
+      "Resource": "arn:aws:ec2:ap-northeast-2:148761639313:*/*",
+      "Condition": {"StringEquals": {"ec2:CreateAction": "RunInstances"}}
+    },
+    {
+      "Sid": "TerminateOnlyEvalInstances",
+      "Effect": "Allow",
+      "Action": "ec2:TerminateInstances",
+      "Resource": "arn:aws:ec2:ap-northeast-2:148761639313:instance/*",
+      "Condition": {"StringEquals": {"aws:ResourceTag/trid:eval": "aws-eval-006"}}
+    },
+    {
+      "Sid": "PassOnlyTheTwoEvalRoles",
+      "Effect": "Allow",
+      "Action": "iam:PassRole",
+      "Resource": [
+        "arn:aws:iam::148761639313:role/trid-aws-eval-006-instance",
+        "arn:aws:iam::148761639313:role/trid-aws-eval-006-scheduler"
+      ],
+      "Condition": {"StringEquals": {"iam:PassedToService": ["ec2.amazonaws.com", "scheduler.amazonaws.com"]}}
+    },
+    {
+      "Sid": "HardStopSchedules",
+      "Effect": "Allow",
+      "Action": ["scheduler:CreateSchedule", "scheduler:GetSchedule", "scheduler:DeleteSchedule"],
+      "Resource": "arn:aws:scheduler:ap-northeast-2:148761639313:schedule/default/trid-aws-eval-006-*"
+    },
+    {
+      "Sid": "UploadRunCode",
+      "Effect": "Allow",
+      "Action": "s3:PutObject",
+      "Resource": "arn:aws:s3:::trid-training-148761639313/eval/aws-eval-006/code/*"
+    },
+    {
+      "Sid": "ReadRunStatusNotOutputs",
+      "Effect": "Allow",
+      "Action": "s3:GetObject",
+      "Resource": [
+        "arn:aws:s3:::trid-training-148761639313/eval/aws-eval-006/runs/*/phase.json",
+        "arn:aws:s3:::trid-training-148761639313/eval/aws-eval-006/runs/*/bootstrap.log",
+        "arn:aws:s3:::trid-training-148761639313/eval/aws-eval-006/runs/*/results/*/status.json",
+        "arn:aws:s3:::trid-training-148761639313/eval/aws-eval-006/runs/*/results/gpu.csv",
+        "arn:aws:s3:::trid-training-148761639313/eval/aws-eval-006/runs/*/results/cuda.txt",
+        "arn:aws:s3:::trid-training-148761639313/eval/aws-eval-006/runs/*/results/llama-server.sha256",
+        "arn:aws:s3:::trid-training-148761639313/eval/aws-eval-006/runs/*/results/llama-server-version.txt"
+      ]
+    },
+    {
+      "Sid": "ListOnlyTheEvalPrefix",
+      "Effect": "Allow",
+      "Action": "s3:ListBucket",
+      "Resource": "arn:aws:s3:::trid-training-148761639313",
+      "Condition": {"StringLike": {"s3:prefix": ["eval/aws-eval-006/*"]}}
+    },
+    {
+      "Sid": "SessionOnlyOnEvalInstances",
+      "Effect": "Allow",
+      "Action": "ssm:StartSession",
+      "Resource": "arn:aws:ec2:ap-northeast-2:148761639313:instance/*",
+      "Condition": {"StringEquals": {"ssm:resourceTag/trid:eval": "aws-eval-006"}}
+    },
+    {
+      "Sid": "WithTheDefaultShellDocument",
+      "Effect": "Allow",
+      "Action": "ssm:StartSession",
+      "Resource": "arn:aws:ssm:ap-northeast-2:148761639313:document/SSM-SessionManagerRunShell"
+    },
+    {
+      "Sid": "EndOwnSessions",
+      "Effect": "Allow",
+      "Action": "ssm:TerminateSession",
+      "Resource": "arn:aws:ssm:*:148761639313:session/${aws:userid}-*"
+    }
+  ]
+}

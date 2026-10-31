@@ -1,0 +1,24 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "ReadOnlyTheRunCode",
+      "Effect": "Allow",
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::trid-training-148761639313/eval/aws-eval-006/code/*"
+    },
+    {
+      "Sid": "WriteOnlyRunResults",
+      "Effect": "Allow",
+      "Action": "s3:PutObject",
+      "Resource": "arn:aws:s3:::trid-training-148761639313/eval/aws-eval-006/runs/*"
+    },
+    {
+      "Sid": "SyncNeedsListingOfTheRunsPrefix",
+      "Effect": "Allow",
+      "Action": "s3:ListBucket",
+      "Resource": "arn:aws:s3:::trid-training-148761639313",
+      "Condition": {"StringLike": {"s3:prefix": ["eval/aws-eval-006/runs/*"]}}
+    }
+  ]
+}

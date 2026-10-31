@@ -23,7 +23,13 @@ import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-SERVER = ROOT / 'runs/tools/llama.cpp-8ca4060-metal/llama-server'
+# Remote evaluation hosts (AWS-EVAL-006, Linux + CUDA) set TRID_RUNNER_REMOTE=1, their own llama-server build and its
+# extra arguments (e.g. full GPU offload); there is no live demo there to protect. Locally nothing changes.
+REMOTE = os.environ.get('TRID_RUNNER_REMOTE') == '1'
+SERVER = Path(os.environ.get('TRID_LLAMA_SERVER') or ROOT / 'runs/tools/llama.cpp-8ca4060-metal/llama-server')
+SERVER_EXTRA_ARGS = os.environ.get('TRID_LLAMA_SERVER_ARGS', '').split()
+LINUX_MIN_FREE_PCT = 10  # Linux has no pressure level: below 10% MemAvailable counts as a warning (level 2)
+LINUX_MIN_GPU_FREE_MIB = 512  # with the model loaded, less free VRAM than this counts as a warning as well
 DIALOGUES = ROOT / 'reports/coordination/BASE-RESUME-004/dev-dialogues-13.json'
 NEW_CONVERSATION = {'__CLEAR__', '<NEW_CHAT>'}  # dev dialogues / CHAT-EVAL-004
 SYSTEM_DEFAULT = ('당신은 TRID입니다. 공공기관 직원과 이야기하는 한국어 AI 비서입니다. 사용자의 말에 공감하고, 앞선 대화를 이어서 '
@@ -46,6 +52,18 @@ def sha256(path):
 
 
 def memory_state():
+    if sys.platform != 'darwin':
+        info = dict(line.split(':', 1) for line in Path('/proc/meminfo').read_text().splitlines() if ':' in line)
+        free = int(info['MemAvailable'].split()[0]) * 100 // int(info['MemTotal'].split()[0])
+        state = {'pressure_level': 1 if free >= LINUX_MIN_FREE_PCT else 2, 'free_pct': free}
+        gpu = subprocess.run(['nvidia-smi', '--query-gpu=memory.free,memory.total', '--format=csv,noheader,nounits'],
+                             capture_output=True, text=True)
+        if gpu.returncode == 0 and gpu.stdout.strip():
+            gpu_free, gpu_total = (int(v) for v in gpu.stdout.splitlines()[0].split(','))
+            state.update(gpu_free_mib=gpu_free, gpu_total_mib=gpu_total)
+            if gpu_free < LINUX_MIN_GPU_FREE_MIB:
+                state['pressure_level'] = 2
+        return state
     level = int(subprocess.run(['sysctl', '-n', 'kern.memorystatus_vm_pressure_level'], capture_output=True, text=True).stdout)
     out = subprocess.run(['memory_pressure'], capture_output=True, text=True).stdout
     free = next((int(l.rsplit(' ', 1)[1].rstrip('%')) for l in out.splitlines() if 'free percentage' in l), None)
@@ -53,6 +71,8 @@ def memory_state():
 
 
 def live_state():
+    if REMOTE:
+        return {'status': 'not-applicable', 'note': 'remote evaluation host; the live demo does not run here'}
     path = ROOT / '.shared-demo/state.json'
     if not path.exists():
         return {'status': None}
@@ -60,10 +80,15 @@ def live_state():
     return {k: s.get(k) for k in ('status', 'backend_pgid', 'backend_started', 'connection_status')}
 
 
+def live_ok(live):
+    """Locally the live demo must be running (a stopped demo means something else is wrong); remote hosts have none."""
+    return live.get('status') == 'running' or (REMOTE and live.get('status') == 'not-applicable')
+
+
 def start(model_file, port, context, log_path):
     log = open(log_path, 'wb')
     args = [str(SERVER), '-m', str(model_file), '--host', '127.0.0.1', '--port', str(port), '-c', str(context),
-            '-np', '1', '-t', '4', '-tb', '4', '--jinja']
+            '-np', '1', '-t', '4', '-tb', '4', '--jinja', *SERVER_EXTRA_ARGS]
     proc = subprocess.Popen(args, stdout=log, stderr=log, start_new_session=True)
     base = f'http://127.0.0.1:{port}'
     for _ in range(600):
@@ -124,7 +149,7 @@ def main():
     template_kwargs = json.loads(a.template_kwargs)
     dialogues = load_dialogues(a.dialogues)
     mem, live = memory_state(), live_state()
-    if mem['pressure_level'] != 1 or live['status'] != 'running':
+    if mem['pressure_level'] != 1 or not live_ok(live):
         sys.exit(f'not starting: memory {mem}, live service {live}')
     file_sha = sha256(a.model_file)
     if a.expected_sha256 and file_sha != a.expected_sha256:
@@ -158,10 +183,11 @@ def load_dialogues(path):
 
 
 def run(model_file, sampling, system, template_kwargs, hf_dir, dialogues, port, context, max_tokens, seed, server_log,
-        write_turn, manifest):
+        write_turn, manifest, end_dialogue=None):
     """Load one model on an isolated port, refuse to run unless the served prompt has the official render's token ids
-    (when a local official tokenizer is given), run every dialogue and pass each turn record to `write_turn`. Fills
-    `manifest` in place; the server is always stopped. Memory pressure or a stopped live service ends the run."""
+    (when a local official tokenizer is given), run every dialogue and pass each turn record to `write_turn`; after
+    each finished dialogue call `end_dialogue(name, effective_settings, settings_constant_so_far)`. Fills `manifest`
+    in place; the server is always stopped. Memory pressure or a stopped live service ends the run."""
     proc, base, props, args = start(model_file, port, context, server_log)
     try:
         template = props.get('chat_template') or ''
@@ -199,7 +225,7 @@ def run(model_file, sampling, system, template_kwargs, hf_dir, dialogues, port, 
         for name, turns in dialogues.items():
             mem, live = memory_state(), live_state()
             manifest['guard'].append({'t': time.strftime('%H:%M:%S'), 'dialogue': name, **mem, 'live': live.get('status')})
-            if mem['pressure_level'] != 1 or live.get('status') != 'running':
+            if mem['pressure_level'] != 1 or not live_ok(live):
                 manifest['status'] = f'stopped before {name}: memory {mem}, live {live}'
                 break
             history = []
@@ -226,6 +252,8 @@ def run(model_file, sampling, system, template_kwargs, hf_dir, dialogues, port, 
                             'stop_type': c.get('stop_type'), 'stopping_word': c.get('stopping_word'),
                             'timings': c.get('timings'), 'wall_seconds': round(wall, 3)})
                 history += [{'role': 'user', 'content': question}, {'role': 'assistant', 'content': text}]
+            if end_dialogue:
+                end_dialogue(name, effective, not drift)
         else:
             manifest['status'] = 'complete'
         manifest['effective_settings_constant'] = not drift

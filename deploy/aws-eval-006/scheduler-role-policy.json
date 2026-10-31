@@ -1,0 +1,12 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "TerminateOnlyEvalInstances",
+      "Effect": "Allow",
+      "Action": "ec2:TerminateInstances",
+      "Resource": "arn:aws:ec2:ap-northeast-2:148761639313:instance/*",
+      "Condition": {"StringEquals": {"aws:ResourceTag/trid:eval": "aws-eval-006"}}
+    }
+  ]
+}

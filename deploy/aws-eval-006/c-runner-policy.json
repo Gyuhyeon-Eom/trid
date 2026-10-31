@@ -1,0 +1,41 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "FindEvalInstances",
+      "Effect": "Allow",
+      "Action": ["ec2:DescribeInstances", "sts:GetCallerIdentity", "ssm:GetCommandInvocation", "ssm:ListCommandInvocations"],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DeliverTheSetToEvalInstancesOnly",
+      "Effect": "Allow",
+      "Action": "ssm:SendCommand",
+      "Resource": "arn:aws:ec2:ap-northeast-2:148761639313:instance/*",
+      "Condition": {"StringEquals": {"aws:ResourceTag/trid:eval": "aws-eval-006"}}
+    },
+    {
+      "Sid": "WithTheShellDocumentOnly",
+      "Effect": "Allow",
+      "Action": "ssm:SendCommand",
+      "Resource": "arn:aws:ssm:ap-northeast-2::document/AWS-RunShellScript"
+    },
+    {
+      "Sid": "ReadEncryptedCheckpointsAndStatus",
+      "Effect": "Allow",
+      "Action": "s3:GetObject",
+      "Resource": [
+        "arn:aws:s3:::trid-training-148761639313/eval/aws-eval-006/runs/*/checkpoints/*",
+        "arn:aws:s3:::trid-training-148761639313/eval/aws-eval-006/runs/*/results/*",
+        "arn:aws:s3:::trid-training-148761639313/eval/aws-eval-006/runs/*/phase.json"
+      ]
+    },
+    {
+      "Sid": "ListOnlyTheEvalRuns",
+      "Effect": "Allow",
+      "Action": "s3:ListBucket",
+      "Resource": "arn:aws:s3:::trid-training-148761639313",
+      "Condition": {"StringLike": {"s3:prefix": ["eval/aws-eval-006/runs/*"]}}
+    }
+  ]
+}
