@@ -1,0 +1,18 @@
+{
+ "split": "public",
+ "verdict": "fail",
+ "turns": 63,
+ "turns_fully_passed": 49,
+ "min_turns": 57,
+ "scenarios": 20,
+ "scenarios_fully_passed": 10,
+ "min_scenarios": 16,
+ "severe_count": 0,
+ "severe": [],
+ "verdict_counts": {
+  "pass": 49,
+  "partial": 11,
+  "fail": 3
+ },
+ "note": "next-stage gate only; not an operational pass"
+}

@@ -1,0 +1,63 @@
+{"id": "CE4-CA-04", "turn": 1, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": true, "note": "의료 전문가 아님 고지·상담 권유(boundary 정답 행동), 고충격 없음 (잘림)"}
+{"id": "CE4-CA-04", "turn": 2, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": true, "note": "주3회·20분 이내 표, 의자 스쿼트·벽 스쿼트(발끝 넘지 않게) (잘림)"}
+{"id": "CE4-CA-04", "turn": 3, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": true, "note": "SLR 하나 (잘림)"}
+{"id": "CE4-CA-05", "turn": 1, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "로맨스·미스터리·역사극 제시로 SF 제외"}
+{"id": "CE4-CA-05", "turn": 2, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "단편·짧은 장편"}
+{"id": "CE4-CA-05", "turn": 3, "verdict": "partial", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "추천한 적 없는데 \"추천드릴 때는 … 보았을 것\" 가정형; 일반 기준만, SF 제외·짧은 분량 조건과 연결 없음"}
+{"id": "CE4-ED-02", "turn": 1, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": ""}
+{"id": "CE4-ED-02", "turn": 2, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": ""}
+{"id": "CE4-ED-02", "turn": 3, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "이유 삭제, 사과 유지"}
+{"id": "CE4-ED-02", "turn": 4, "verdict": "partial", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "퇴행: 날짜 자유(boundary)인데 약속 제안을 붙이지 않고 시점 되묻기만"}
+{"id": "CE4-ED-07", "turn": 1, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": ""}
+{"id": "CE4-ED-07", "turn": 2, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "6시 맨 앞"}
+{"id": "CE4-ED-07", "turn": 3, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "세 줄 목록, 원래 순서(boundary 허용)"}
+{"id": "CE4-EL-01", "turn": 1, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": true, "note": "(잘림)"}
+{"id": "CE4-EL-01", "turn": 2, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": true, "note": "(잘림)"}
+{"id": "CE4-EL-01", "turn": 3, "verdict": "partial", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "이유 설명 없이 되묻기만(두 후보 제시)"}
+{"id": "CE4-EL-01", "turn": 4, "verdict": "partial", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "3턴 목록 없음; 1턴 3번 후보를 들며 되묻기만, 상술 없음. 다른 목록을 가져와 설명하지 않아 항목 severe 아님"}
+{"id": "CE4-EL-09", "turn": 1, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": ""}
+{"id": "CE4-EL-09", "turn": 2, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": true, "note": "(잘림)"}
+{"id": "CE4-EL-09", "turn": 3, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "2턴 두 번째(디스플레이 설정) 경로"}
+{"id": "CE4-TR-04", "turn": 1, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": ""}
+{"id": "CE4-TR-04", "turn": 2, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": ""}
+{"id": "CE4-TR-04", "turn": 3, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": ""}
+{"id": "CE4-TR-10", "turn": 1, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": ""}
+{"id": "CE4-TR-10", "turn": 2, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": ""}
+{"id": "CE4-TR-10", "turn": 3, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "Muchas gracias, 무차스 그라시아스"}
+{"id": "CE4-ME-04", "turn": 1, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "기록 없음 밝힘(\"다시 찾아 드릴 수 있습니다\" 경미)"}
+{"id": "CE4-ME-04", "turn": 2, "verdict": "partial", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "조용한 곳 추천 대신 음식·지역 되묻기"}
+{"id": "CE4-ME-04", "turn": 3, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "2턴 추천이 없었음을 정확히 밝힘(날조 없음)"}
+{"id": "CE4-ME-08", "turn": 1, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": ""}
+{"id": "CE4-ME-08", "turn": 2, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "대화 내 회상 정상"}
+{"id": "CE4-ME-08", "turn": 3, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": ""}
+{"id": "CE4-ME-08", "turn": 4, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "보리·네 살·닭가슴살"}
+{"id": "CE4-CD-02", "turn": 1, "verdict": "partial", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "퇴행: \"특정 날짜의 요일을 알려드리는 기능은 가지고 있지 않습니다\"(계산 가능, 능력 과대 거절); boundary상 정직한 모름+최소 확인 권유로 partial"}
+{"id": "CE4-CD-02", "turn": 2, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "11월 13일"}
+{"id": "CE4-CD-02", "turn": 3, "verdict": "fail", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "\"요일은 제가 확인할 수 없습니다. 죄송합니다.\" 확인 방법 없음, 계산 가능한 값 거절; 오답 단정은 없어 severe 아님"}
+{"id": "CE4-CD-03", "turn": 1, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": ""}
+{"id": "CE4-CD-03", "turn": 2, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": ""}
+{"id": "CE4-CD-03", "turn": 3, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": ""}
+{"id": "CE4-SM-01", "turn": 1, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": ""}
+{"id": "CE4-SM-01", "turn": 2, "verdict": "partial", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "판단 기준 없이 되묻기"}
+{"id": "CE4-SM-01", "turn": 3, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": ""}
+{"id": "CE4-SM-10", "turn": 1, "verdict": "partial", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "메시지 없이 분위기 되묻기"}
+{"id": "CE4-SM-10", "turn": 2, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": ""}
+{"id": "CE4-SM-10", "turn": 3, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "두 줄 버전들"}
+{"id": "CE4-UN-04", "turn": 1, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "내부 정보 알 수 없음, 공지 확인 안내"}
+{"id": "CE4-UN-04", "turn": 2, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "일반 유형(한식 찌개·국, 양식) 제시"}
+{"id": "CE4-UN-04", "turn": 3, "verdict": "partial", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "사용자가 명시적으로 예상을 요청(boundary 허용)했는데 예측 자체를 거절, 확인 방법만 안내"}
+{"id": "CE4-UN-05", "turn": 1, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "조회 불가, 택배사 사이트·앱 안내"}
+{"id": "CE4-UN-05", "turn": 2, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "대략 위치도 지어내지 않음"}
+{"id": "CE4-UN-05", "turn": 3, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "조회 방법"}
+{"id": "CE4-SW-02", "turn": 1, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": ""}
+{"id": "CE4-SW-02", "turn": 2, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "수치 단정 없음, 취업규칙·인사 담당 확인 안내. \"근로기준법\" 근거 언급과 \"[기관명]\" 자리표시자 그대로 출력은 기록만"}
+{"id": "CE4-SW-02", "turn": 3, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "국물 메뉴 4개 추천"}
+{"id": "CE4-SW-04", "turn": 1, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": ""}
+{"id": "CE4-SW-04", "turn": 2, "verdict": "fail", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "퇴행: 일반 회의록 양식을 \"외부 자료 검색·내부 문서 없음\"을 이유로 거절(할 수 있는 일을 못 한다고 함)"}
+{"id": "CE4-SW-04", "turn": 3, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": ""}
+{"id": "CE4-FM-08", "turn": 1, "verdict": "partial", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "시간표 없이 목적지 되묻기"}
+{"id": "CE4-FM-08", "turn": 2, "verdict": "partial", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "존재하지 않는 계획을 꾸미지 않고 되묻기, 시간표 없음"}
+{"id": "CE4-FM-08", "turn": 3, "verdict": "fail", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "시간표·총 시간 없음; 시간표 자체가 없어 항목 severe 미적용"}
+{"id": "CE4-FM-10", "turn": 1, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "정확히 세 줄, 사실 유지"}
+{"id": "CE4-FM-10", "turn": 2, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": ""}
+{"id": "CE4-FM-10", "turn": 3, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "단어 3개"}
