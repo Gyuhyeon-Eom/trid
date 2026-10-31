@@ -1420,17 +1420,32 @@ def _withhold_figures(result, why):
 POPULATION = re.compile(r'공공기관|공기업|준정부기관|(?:여러|모든|전체|각|다른)\s*기관|기관(?:들|별)')
 
 
+def rule_scope(ws, doc):
+    """B's applicability scope of a document, or of the rule it belongs to (its 별표 carry no record of their own)."""
+    return ws.applies(doc).get('scope') or next(
+        (ws.applies(d).get('scope') for d in ws.rule_names.get(ws.rule_of.get(doc), ()) if ws.applies(d).get('scope')), None)
+
+
 def population_notice(result, question, inst_ws, ws, selection):
     """A question about public institutions as a class answered from one institution's own material (its separate
     snapshot, its structured values, or its own rule): the visible answer first says whose data it is and that it does
     not represent public institutions in general (C-030 #8). One body's figures or position list is never offered as
-    the class's."""
+    the class's. The same holds for an ask-back whose options are all particular bodies' own rules or rules limited to
+    civil servants (B applies_to): none is the class's common rule, which the corpus then does not hold — said first,
+    so the list does not read as the public institutions' alternatives ("공공기관 출장비" → ministries' 공무국외출장 rules)."""
     if not POPULATION.search(question) or result.get('intent') == 'chat' or result.get('status') == 'chat':
         return
     if inst_ws is not None:
         name = next(iter(inst_ws.by_institution), None) or inst_ws.name
     elif selection and selection.get('status') == 'answer' and selection.get('scope_note') == 'specific':
         name = ws.meta[selection['applied']]['institution'] or '특정 기관'
+    elif (selection and selection.get('status') == 'clarify' and selection.get('candidates')
+          and all(c['doc_id'] in ws.specific or rule_scope(ws, c['doc_id']) in ('central_government', 'local_government')
+                  for c in selection['candidates'])):
+        result['population_scope'] = {'asked': 'public_institutions', 'common_rule_found': False}
+        result['answer'] = ('질문은 공공기관 전반에 관한 것이지만, 검색 자료에서 공공기관 공통 기준을 찾지 못했습니다. 아래 후보는 각 기관의 '
+                            '자체 규정이거나 공무원에게 적용되는 규정이며, 공공기관 전체의 기준이 아닙니다. ' + (result.get('answer') or ''))
+        return
     else:
         return
     result['population_scope'] = {'asked': 'public_institutions', 'source_institution': name}

@@ -469,6 +469,25 @@ class ConversationScopeTests(unittest.TestCase):
         population_notice(named, '한국부동산원 임원 업무추진비는?', inst, None, None)
         self.assertEqual(named['answer'], 'x')  # one named institution: no class claim to correct
 
+    def test_class_ask_back_among_own_or_civil_service_rules_says_no_common_rule(self):
+        from types import SimpleNamespace
+        from scripts.shared_demo import population_notice
+        scopes = {'law': 'central_government'}  # B applies_to sits on the rule body only
+        ws = SimpleNamespace(specific={'ministry-own'}, rule_names={'여비규정': {'law', 'law-annex'}},
+                             rule_of={'law': '여비규정', 'law-annex': '여비규정'},
+                             applies=lambda d: {'scope': scopes[d]} if d in scopes else {})
+        ask = lambda *docs: {'status': 'clarify', 'candidates': [{'doc_id': d} for d in docs]}
+        result = {'status': 'clarify', 'answer': '어느 기관 기준인지 정해 주세요.'}
+        population_notice(result, '공공기관 출장비', None, ws, ask('ministry-own', 'law-annex'))
+        self.assertTrue(result['answer'].startswith('질문은 공공기관 전반에 관한 것이지만, 검색 자료에서 공공기관 공통 기준을 찾지 못했습니다.'))
+        self.assertFalse(result['population_scope']['common_rule_found'])
+        unrecorded = {'status': 'clarify', 'answer': 'x'}  # an option whose applicability is not recorded may be common
+        population_notice(unrecorded, '공공기관 출장비', None, ws, ask('ministry-own', 'unknown-scope'))
+        self.assertEqual(unrecorded['answer'], 'x')
+        not_class = {'status': 'clarify', 'answer': 'x'}
+        population_notice(not_class, '출장비 기준', None, ws, ask('ministry-own', 'law'))
+        self.assertEqual(not_class['answer'], 'x')
+
 
 class RuleTableLinkTests(WorkspaceTests.__base__):
     """A statute body passage citing 별표 N is answered with that table of the same statute — identified by the annex id
