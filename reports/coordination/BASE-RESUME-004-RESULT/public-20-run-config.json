@@ -1,0 +1,27 @@
+{
+ "model_id": "gemma-4-E4B-it-qat-q4_0",
+ "model_artifact": "runs/base-resume-004/gemma-4-E4B_q4_0-it.gguf",
+ "model_sha256": "676c35070db6dbe52f93e9c864ee0fba4eddea94b9c875d9cb10daff453fbaee",
+ "source": "google/gemma-4-E4B-it-qat-q4_0-gguf@4b4a2c1d584be7264f87aac328a1bc739ce81b6c gemma-4-E4B_q4_0-it.gguf (QAT checkpoint; base_model google/gemma-4-E4B-it-qat-q4_0-unquantized, base rev unpinned by card; text model only, mmproj not downloaded)",
+ "template": {
+  "chat_template_sha256": "603a42db292c25278e9b23d94c7abbe77453f13e26a053c43c5c2f900b4136f7",
+  "template_kwargs": {
+   "enable_thinking": false
+  },
+  "system_prompt": "당신은 TRID입니다. 공공기관 직원과 이야기하는 한국어 AI 비서입니다. 사용자의 말에 공감하고, 앞선 대화를 이어서 자연스럽고 구체적으로 답하세요. 대화 도중에 인사나 자기소개를 반복하지 마세요. 한국어로 답하세요.",
+  "render_parity_token_ids_equal": true
+ },
+ "sampling": {
+  "temperature": 1.0,
+  "top_k": 64,
+  "top_p": 0.95,
+  "min_p": 0
+ },
+ "sampling_source": "google/gemma-4-E4B-it-qat-q4_0-unquantized@476025a0 generation_config.json (temperature 1.0, top_k 64, top_p 0.95; no min_p in HF -> min_p 0 to override the llama.cpp default 0.05)",
+ "max_tokens": 384,
+ "seed": 1,
+ "mode": "raw",
+ "scenario_set": "reports/coordination/CHAT-EVAL-004/public-20.jsonl",
+ "scenario_set_sha256": "908f7415d39fd7ae32179c37844be7121472eacb672dd761284927554a857518",
+ "same_settings_as": "reports/coordination/BASE-RESUME-004-RESULT/dev-smoke-48/manifest.json"
+}

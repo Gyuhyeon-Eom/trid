@@ -25,6 +25,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SERVER = ROOT / 'runs/tools/llama.cpp-8ca4060-metal/llama-server'
 DIALOGUES = ROOT / 'reports/coordination/BASE-RESUME-004/dev-dialogues-13.json'
+NEW_CONVERSATION = {'__CLEAR__', '<NEW_CHAT>'}  # dev dialogues / CHAT-EVAL-004
 SYSTEM_DEFAULT = ('당신은 TRID입니다. 공공기관 직원과 이야기하는 한국어 AI 비서입니다. 사용자의 말에 공감하고, 앞선 대화를 이어서 '
                   '자연스럽고 구체적으로 답하세요. 대화 도중에 인사나 자기소개를 반복하지 마세요. 한국어로 답하세요.')
 
@@ -92,7 +93,8 @@ def stop(proc):
 def official_render(hf_dir, messages, template_kwargs):
     from transformers import AutoTokenizer
     tok = AutoTokenizer.from_pretrained(hf_dir)
-    return tok.apply_chat_template(messages, tokenize=False, add_generation_prompt=True, **template_kwargs)
+    text = tok.apply_chat_template(messages, tokenize=False, add_generation_prompt=True, **template_kwargs)
+    return text, tok(text, add_special_tokens=False)['input_ids']
 
 
 def main():
@@ -106,7 +108,8 @@ def main():
     p.add_argument('--system', default=SYSTEM_DEFAULT, help="system prompt; '' for none")
     p.add_argument('--template-kwargs', default='{}', help='JSON chat_template_kwargs (e.g. {"enable_thinking": false})')
     p.add_argument('--hf-dir', help='local official tokenizer dir for a rendering parity check (no download)')
-    p.add_argument('--dialogues', type=Path, default=DIALOGUES)
+    p.add_argument('--dialogues', type=Path, default=DIALOGUES,
+                   help='{"dialogues": {name: [turns]}} JSON, or CHAT-EVAL-004 style JSONL rows with "id" and "turns"')
     p.add_argument('--out', type=Path, required=True)
     p.add_argument('--port', type=int, default=51990)
     p.add_argument('--context', type=int, default=4096)
@@ -119,7 +122,11 @@ def main():
     a.out.mkdir(parents=True, exist_ok=True)
     sampling = json.loads(a.sampling)
     template_kwargs = json.loads(a.template_kwargs)
-    dialogues = json.loads(a.dialogues.read_text())['dialogues']
+    if a.dialogues.suffix == '.jsonl':
+        rows = [json.loads(line) for line in a.dialogues.read_text().splitlines() if line.strip()]
+        dialogues = {r['id']: r['turns'] for r in rows}
+    else:
+        dialogues = json.loads(a.dialogues.read_text())['dialogues']
     mem, live = memory_state(), live_state()
     if mem['pressure_level'] != 1 or live['status'] != 'running':
         sys.exit(f'not starting: memory {mem}, live service {live}')
@@ -141,16 +148,33 @@ def main():
         manifest.update(server_args=args, build=props.get('build_info'), chat_template_sha256=hashlib.sha256(template.encode()).hexdigest(),
                         chat_template=template, server_default_params=props.get('default_generation_settings', {}).get('params'),
                         eos_token=props.get('eos_token'), bos_token=props.get('bos_token'))
+        kwargs = {'chat_template_kwargs': template_kwargs} if template_kwargs else {}
+        bos = props.get('bos_token') or ''
+
+        def serve(messages):
+            prompt = request(base, '/apply-template', {'messages': messages, **kwargs})['prompt']
+            # the server adds BOS itself only when the rendered template does not already start with it
+            tokens = request(base, '/tokenize', {'content': prompt, 'add_special': not (bos and prompt.startswith(bos)),
+                                                 'parse_special': True})['tokens']
+            return prompt, tokens
+
         sample = ([{'role': 'system', 'content': a.system}] if a.system else []) + [
             {'role': 'user', 'content': '안녕하세요'}, {'role': 'assistant', 'content': '안녕하세요.'}, {'role': 'user', 'content': '고마워요'}]
-        served = request(base, '/apply-template', {'messages': sample, **({'chat_template_kwargs': template_kwargs} if template_kwargs else {})})['prompt']
-        manifest['render_sample'] = served
+        served, served_ids = serve(sample)
+        manifest['render_sample'] = {'prompt': served, 'token_ids': served_ids}
         if a.hf_dir:
-            official = official_render(a.hf_dir, sample, template_kwargs)
-            manifest['render_parity_with_official'] = {'hf_dir': a.hf_dir, 'equal': served == official, 'official': official}
+            official, official_ids = official_render(a.hf_dir, sample, template_kwargs)
+            manifest['render_parity_with_official'] = {'hf_dir': a.hf_dir, 'text_equal': served == official,
+                                                       'token_ids_equal': served_ids == official_ids,
+                                                       'official': official, 'official_token_ids': official_ids}
+            if served_ids != official_ids:
+                # e.g. llama-server --jinja turns thinking on unless enable_thinking is passed explicitly
+                manifest['status'] = 'aborted: served prompt token ids differ from the official render'
+                raise SystemExit(manifest['status'])
         else:
             # no local official tokenizer: parity is unconfirmed, never assumed
-            manifest['render_parity_with_official'] = {'hf_dir': None, 'equal': None, 'note': 'unconfirmed: no local official tokenizer'}
+            manifest['render_parity_with_official'] = {'hf_dir': None, 'text_equal': None, 'token_ids_equal': None,
+                                                       'note': 'unconfirmed: no local official tokenizer'}
         effective, drift = None, []
         for name, turns in dialogues.items():
             mem, live = memory_state(), live_state()
@@ -160,12 +184,11 @@ def main():
                 break
             history = []
             for index, question in enumerate(turns):
-                if question == '__CLEAR__':
+                if question in NEW_CONVERSATION:
                     history = []
                     continue
                 messages = ([{'role': 'system', 'content': a.system}] if a.system else []) + history + [{'role': 'user', 'content': question}]
-                prompt = request(base, '/apply-template', {'messages': messages, **({'chat_template_kwargs': template_kwargs} if template_kwargs else {})})['prompt']
-                tokens = request(base, '/tokenize', {'content': prompt, 'add_special': True, 'parse_special': True})['tokens']
+                prompt, tokens = serve(messages)
                 started = time.monotonic()
                 c = request(base, '/completion', dict(prompt=tokens, n_predict=a.max_tokens, seed=a.seed, cache_prompt=False,
                                                       return_tokens=True, **sampling))
