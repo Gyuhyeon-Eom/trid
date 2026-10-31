@@ -6,12 +6,13 @@
 - **실제 GPU 평가는 아직 없다.** C가 쓴 AWS 자원 0, 원격 추론 0.
 - **고친 내용:** 앞 판의 "A가 user·role·profile·SG 생성 중", "B 비용 검증 대기"는 지난 상태다.
   - 둘 다 이미 끝났다: `AWS-EVAL-006-IDENTITY.md`(`0e13b57`), `AWS-EVAL-006-COST.md`(`437562c`)
-- **실행 차단 사유 (2026-10-31)**
-  1. **사용자 로그인:** 비밀번호, MFA, `aws login --profile trid-aws-eval-006-c-runner`가 남아 있다. 사용자 조치가 필요하다.
-  2. **A 계약 불일치 (`AWS-EVAL-006-C-TO-A.md`로 A에 전달)**
-     - `PRIVATE_INPUT_SHA`가 gold를 포함한 원본(`af46eec1…`)으로 잡혀 있다. 그래서 id+turns 파생본(`4134c4bb…`) 전달이 거부된다. **full이 계약상 차단돼 있다.**
-     - checkpoint에 `run_id`, `input_sha256`, `effective_settings_constant`가 없다. C 수집기가 거부한다.
-     - checkpoint 쓰기가 원자적이지 않고, 실패 때 동기화가 없다.
+- **실행 차단 사유 (갱신)**
+  1. **사용자 로그인:** 비밀번호, MFA, `aws login --profile trid-aws-eval-006-c-runner`. 남은 차단 사유다.
+  2. ~~A 계약 불일치 3건~~ → **A 수정 완료** (`CONTRACT-INTEGRATION-007`, `9ae88bf`)
+     - 기대 입력 sha가 파생본 `4134c4bb…`로 바뀌었다.
+     - checkpoint에 run_id, input_sha256, effective_settings_constant가 들어간다.
+     - `.cms.tmp`로 쓴 뒤 rename하고, 종료 때 시간 제한을 건 동기화를 한다.
+     - 확인 범위: C 독립 검증(CPU, 공개 고정 응답) PASS. 감독 `fixture_e2e.sh`도 PASS. **실제 AWS·CUDA 확인은 미완료다.**
 - **C가 완료 전까지 하지 않는 것:** 비공개 모델 상세(패키지 내용, symlink, sealed)나 매핑을 열람하지 않는다.
 
 ## CHAT-BLIND-005 로컬 종료 (사실 기록)
@@ -63,4 +64,20 @@
   4. C가 `c_deliver_set.py --smoke`로 전달하고 smoke checkpoint를 수집해 확인한다. 이것이 첫 실제 응답·checkpoint 확인이다.
   5. 실행 전 부록을 커밋하고 full을 진행한다.
 
-SUPERVISION_REPORT_READY AWS-EVAL-006-PROGRESS
+(위 차단 사유 기록 시점의 완료 표시는 `a296f97` 판에 있다. 이번 갱신은 새 AWS 응답이나 새 차단 사유가 아니라서 표시를 달지 않는다.)
+
+## A 통합 수정 뒤 C 독립 확인 (CPU 계약 검증, 실제 AWS 아님)
+- `.venv/bin/python scripts/aws_eval_e2e_check.py`(수정 없는 A runner) → exit 0, 7항목 true
+  - 전달 4,436 B·명령 2개·평문 없음·sha 일치
+  - P/Q 각 63턴 complete, pack 통과
+  - 섞인 run은 run id 때문에 거부, 설정 변화는 "not constant"로 거부
+- 회귀 테스트 `tests.test_aws_eval_collect` Ran 5 OK
+- 실행기 해시는 `AWS-EVAL-006-PRECOMMIT.md` 7절에 기록했다.
+- **자원:** AWS 사용 0, 로컬 서버·C 프로세스 0
+- **실제 AWS 체크는 미완료다:** smoke 전달, 실제 checkpoint, run_id·세트 sha·설정 고정이 실제 run 값인지, 종료·기한 동기화 실측
+- **다음 행동:**
+  1. 사용자 로그인
+  2. A smoke 기동
+  3. C `c_deliver_set.py --run-id <smoke run> --smoke`
+  4. `aws_eval_collect.py --set <smoke 세트> --run-id <smoke run>`로 복원 확인. 이것이 첫 실제 응답·checkpoint 확인이다. 그때 완료 표시를 단다.
+

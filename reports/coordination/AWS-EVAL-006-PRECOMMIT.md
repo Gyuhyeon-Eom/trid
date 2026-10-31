@@ -69,3 +69,35 @@
   - 누락이 있으면 incomplete로 기록하고, 그러면 pack이 거부한다.
   - 정상 복원 결과는 원시 출력과 같다.
 - **기존 도구 그대로:** `chat_blind_pack.py`(`282846e3…`), `chat_eval_gate.py`(`7a8043c7…`), `chat_eval_preflight.py`(`63a3cf2b…`)
+
+## 7. 부록: 실행기·계약 해시 (A 통합 수정 `9ae88bf` 뒤, 아직 AWS 실행 전)
+- **A 생산 쪽 불일치 3건 수정 완료** (CONTRACT-INTEGRATION-007)
+  1. 기대 입력 sha가 파생본 `4134c4bb…`로 바뀌었다. gold가 든 원본 `af46eec1…`은 원격으로 가지 않는다.
+  2. checkpoint에 `run_id`(launch RUN_ID, 없으면 runner 거부), `input_sha256`, `effective_settings_constant`가 들어간다.
+  3. `.cms.tmp`로 쓴 뒤 rename한다. 종료·실패·기한 때 `finish()`에서 시간 제한을 건 checkpoint 동기화를 한다. 3번은 bootstrap 셸 동작이라 코드 판독으로 확인했고, 실제 AWS 실측은 아직이다.
+- **006 실행에 쓰는 파일 sha256** (005 precommit의 runner 값과 다르다)
+
+| 파일 | sha256 |
+|---|---|
+| `scripts/base_dialogue_runner.py` | `e1a35e447565290fe49368a9b4ab0341ee3c0d6afcb2b5d1d6081772b33b7fda` |
+| `scripts/chat_blind_runner.py` | `3cb7390dcd23400d1d23f2f02d8dfaf286f9090bcabc6c30397bfcdfca7c1b4b` |
+| `scripts/aws_eval/aws_eval_006.py` | `aafcc211c42ce46e131c3f46166a66187966e7cf21ff2547dd2d31eda2fadbc8` |
+| `scripts/aws_eval/bootstrap.sh` | `26056456a20b9b3d7c4dbd68b7b992500501a8cdc6bb2e05c016182cbc5ed6b4` |
+| `scripts/aws_eval/c_deliver_set.py` | `ab67ac2a219af376378706a5571a21c26f17e1d7dacd0d4b6370a0476d48f6f6` |
+| `scripts/aws_eval_collect.py` (C) | `1d887a9f32b999df573f5a7ffd68326bd4aeddc25f6c3d4df298dd5ae1909ae3` |
+| `scripts/chat_blind_pack.py` (C) | `282846e3eac698cf581d417d9fa43b5919804c5a2c584aed60fbd71a8218cc69` |
+| `scripts/aws_eval_e2e_check.py` (C 검증 도구) | `57841098dcfb7f7c9af94e56f978679ba9716cff135a36b82583da35f73f9c5a` |
+
+- **005 runner 대비 바뀐 점** (diff 판독)
+  - 원격 환경 변수(`TRID_RUNNER_REMOTE`, 서버 경로, `-ngl 999`, 백엔드 이름)
+  - Linux 메모리·GPU guard. 실서비스 확인은 해당 없음으로 처리한다.
+  - 대화 끝 checkpoint hook
+  - **생성 요청은 바뀌지 않았다:** messages 구성, `/completion` 인자, sampling, seed, max_tokens, 렌더 토큰 일치 확인이 같다.
+- **C 독립 확인 (CPU, 공개 고정 응답, GPU·AWS 성공 아님)**
+  - `.venv/bin/python scripts/aws_eval_e2e_check.py` → exit 0, 7항목 모두 true
+    - P/Q 각 63턴 complete와 pack 통과
+    - 다른 run은 run id 때문에 거부
+    - 설정 변화는 P-011에서 "not constant"로 거부
+  - `.venv/bin/python -m unittest tests.test_aws_eval_collect` → Ran 5 OK
+  - 감독이 직접 돌린 `bash scripts/aws_eval/fixture_e2e.sh`도 PASS(28.31초)로 보고됐다.
+- **아직 아닌 것:** 실제 CUDA 실행, 모델 성능, 종료 실측(기한·실패 때 동기화), 실제 S3 경로. 로그인 뒤 smoke에서 확인한다.
