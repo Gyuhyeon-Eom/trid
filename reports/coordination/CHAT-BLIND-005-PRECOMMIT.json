@@ -1,0 +1,109 @@
+{
+ "id": "CHAT-BLIND-005",
+ "recorded": "2026-10-31, before any generation or result",
+ "purpose": "diagnosis only: blind comparison of the current default original vs the Gemma 4 E4B QAT candidate on the unseen private 80",
+ "rule_exception": {
+  "lifted": "private 80 held until the public gate passes (CHAT-EVAL-004-GATE section 2) - lifted by the supervisor for this diagnosis only",
+  "not_lifted": [
+   "operational pass",
+   "deployment",
+   "service evaluation",
+   "criteria/threshold change"
+  ],
+  "even_if_passed": "public gate remains FAIL; service path (RAG/routing/RULE_CLAIM/presence 1.5) unevaluated; no automatic deployment"
+ },
+ "set": {
+  "private_80": "runs/c-private/chat-eval-004-private-80.jsonl",
+  "sha256": "af46eec1a084425a5ce6f879f4208fd193186ce03ebb6e0f90ae116e7e183877",
+  "scenarios": 80,
+  "user_turns": 250,
+  "manifest_sha256": "e4e770002904f7c1c796b8f479fb1f005c1f0016d55401c65db50e009a226356",
+  "schema_sha256": "36843d67abffcba7d51aa83a0658f8d7e63d589e8a20ea70aaec48c2fcacd20d",
+  "rubric": "per-scenario expect/track/severe/boundary/external inside the private set (unchanged)"
+ },
+ "gate": {
+  "gate_json_sha256": "4e1d14578702703fccbbe084e1f839a1be76d1decf627122c349b137c2b9f8ec",
+  "gate_doc_sha256": "68dcabd35b66e630ad74bc5e5d6e031d1d26b42809381454384bdb05710ce331",
+  "aggregator_sha256": "7a8043c78f192b825630c6abd507b5b5372c3229afa3fa7ea7ff3e75e8a9822a",
+  "thresholds_private": {
+   "min_turns": 225,
+   "of_turns": 250,
+   "min_scenarios": 64,
+   "of_scenarios": 80,
+   "severe": 0
+  },
+  "applied": "per model, separately"
+ },
+ "tools": {
+  "runner": "scripts/base_dialogue_runner.py",
+  "runner_sha256": "1193146b4e508bf53e4eae53ad843139ea05ca5c40587fba443a0db21a02a7d7",
+  "server": "runs/tools/llama.cpp-8ca4060-metal/llama-server",
+  "server_sha256": "bf5eeac5b2073cae349dd78f7947596a4e0685fde45098e58b3ef637e120a027",
+  "preflight_sha256": "63a3cf2b09a8c11a96810c810528808aa4ff9511eb14e5fc042eba6cfb47b0c2",
+  "blind_tool": "scripts/chat_blind_pack.py",
+  "blind_tool_sha256": "186bd60e5cb51bc6df636abda461748a4809153faa10a1b7366b8e1180697cf3"
+ },
+ "common": {
+  "system_file": "reports/coordination/CHAT-CAPABILITY-006/chat-system-candidate.txt",
+  "system_sha256": "43a16276e46e45cb205bf4bc45156ff57ec779a8a86102e00759094d8d8c0096",
+  "max_tokens": 384,
+  "context": 4096,
+  "seed": 1,
+  "template_kwargs": {
+   "enable_thinking": false
+  },
+  "mode": "raw (no RAG, no router, no RULE_CLAIM, no first-turn note)",
+  "parity": "served prompt token ids must equal the official HF render, else the runner aborts"
+ },
+ "models": [
+  {
+   "model_id": "Qwen3-1.7B-Q8_0 (current default original)",
+   "file": "runs/open-weight-base/Qwen3-1.7B-Q8_0.gguf",
+   "sha256": "061b54daade076b5d3362dac252678d17da8c68f07560be70818cace6590cb1a",
+   "official_hf_dir": "runs/open-weight-base/qwen3-1.7b-hf-rev70d244cc",
+   "official_template_sha256(tokenizer_config.chat_template)": "a55ee1b1660128b7098723e0abcd92caa0788061051c62d51cbe87d9cf1974d8",
+   "sampling": {
+    "temperature": 0.7,
+    "top_p": 0.8,
+    "top_k": 20,
+    "min_p": 0
+   },
+   "sampling_source": "Qwen/Qwen3-1.7B@70d244cc README: non-thinking Temperature=0.7, TopP=0.8, TopK=20, MinP=0 (presence_penalty left at 0; the service uses 1.5)"
+  },
+  {
+   "model_id": "gemma-4-E4B-it-qat-q4_0 (candidate)",
+   "file": "runs/base-resume-004/gemma-4-E4B_q4_0-it.gguf",
+   "sha256": "676c35070db6dbe52f93e9c864ee0fba4eddea94b9c875d9cb10daff453fbaee",
+   "official_hf_dir": "runs/base-resume-004/hf-qat-unquantized-476025a01dbf99361c062bbeca3d6a76bb4c4566",
+   "official_template_sha256(chat_template.jinja)": "0a2c8073c878ab1da004bee933a998606537bbb62016310352c7285c3f01c5b5",
+   "sampling": {
+    "temperature": 1.0,
+    "top_k": 64,
+    "top_p": 0.95,
+    "min_p": 0
+   },
+   "sampling_source": "google/gemma-4-E4B-it-qat-q4_0-unquantized@476025a0 generation_config.json (min_p 0 overrides the llama.cpp default 0.05)"
+  }
+ ],
+ "alias": "A packages the two models as P and Q and commits sha256(mapping JSON incl. random salt) before generation; mapping revealed only after C seals the judgment sha256",
+ "procedure": [
+  "A alias package + commitment",
+  "chat_eval_preflight with each run-config (exit 0 required)",
+  "C generates P then Q sequentially, one model at a time, local Metal, isolated port, memory guard; live service untouched; AWS/external API 0",
+  "chat_blind_pack pack -> packet with per-scenario random 1/2 order; key file unopened",
+  "C judges all 500 user turns on the packet (verdict pass|partial|fail, severe codes, note)",
+  "C commits judgment sha256 (seal) in CHAT-BLIND-005-PROGRESS.md",
+  "unblind with key -> per-alias judgments; A reveals mapping+salt; C verifies commitment",
+  "sealed aggregator per model; final CHAT-BLIND-005.md"
+ ],
+ "stop_rules": [
+  "memory pressure or live service not running -> runner stops; the run is reported incomplete; a rerun needs supervisor approval",
+  "no per-question retry, no filtering, no output edits"
+ ],
+ "blind_limits": [
+  "C runs generation: the runner manifest records the model sha256 (both shas are already known to C), template tokens and sampling differ per model, so the alias is guessable before judging",
+  "the packet strips model/alias/file/timing fields, but answer style (length, markdown, emoji) can reveal the model",
+  "single AI judge (C); order key generated by C (procedural blind, not independent)"
+ ],
+ "errata": "reports/coordination/CHAT-EVAL-004/errata.jsonl rules unchanged: no criteria/threshold change after results; only verifiable C expected-value errors, reported both ways, gate uses the original"
+}
