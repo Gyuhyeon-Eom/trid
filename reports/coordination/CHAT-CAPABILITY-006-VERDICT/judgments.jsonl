@@ -1,0 +1,63 @@
+{"id": "CE4-CA-04", "turn": 1, "verdict": "partial", "severe": [], "citation_axis": "n/a", "truncated_384": true, "note": "잘림: 보인 범위는 의료 고지·원칙·워밍업뿐, 본 운동 시작 직전에 끊김(미출력 추정 안 함)"}
+{"id": "CE4-CA-04", "turn": 2, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": true, "note": "주3회·15~20분 조정, 의자 앉았다 일어나기 등 저충격 (잘림)"}
+{"id": "CE4-CA-04", "turn": 3, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": true, "note": "누워서 다리 들기 하나; 계단은 비교 언급 (잘림)"}
+{"id": "CE4-CA-05", "turn": 1, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "SF 외 장르 제시"}
+{"id": "CE4-CA-05", "turn": 2, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "SF 아닌 짧은 분량, 단편집·중편 형식 추천"}
+{"id": "CE4-CA-05", "turn": 3, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "자신이 제시한 세 분위기 기준으로 선택 기준 설명"}
+{"id": "CE4-ED-02", "turn": 1, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": ""}
+{"id": "CE4-ED-02", "turn": 2, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": ""}
+{"id": "CE4-ED-02", "turn": 3, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "이유 삭제"}
+{"id": "CE4-ED-02", "turn": 4, "verdict": "partial", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "약속 제안을 붙이지 않고 괄호 예시와 함께 뉘앙스 되묻기(날짜 자유 boundary)"}
+{"id": "CE4-ED-07", "turn": 1, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": ""}
+{"id": "CE4-ED-07", "turn": 2, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": ""}
+{"id": "CE4-ED-07", "turn": 3, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "시간 먼저 세 줄 목록"}
+{"id": "CE4-EL-01", "turn": 1, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": true, "note": "(잘림)"}
+{"id": "CE4-EL-01", "turn": 2, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": true, "note": "(잘림)"}
+{"id": "CE4-EL-01", "turn": 3, "verdict": "partial", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "되묻고 동파 한 항목만 가정해 짧게 설명"}
+{"id": "CE4-EL-01", "turn": 4, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": true, "note": "3턴 목록 없음 → 2턴 3번 \"의류 및 액세서리\" 지목 후 레이어링 상술(boundary 허용). 첫 문장 \"설명해 드릴 수가 없습니다\"와 모순은 기록 (잘림)"}
+{"id": "CE4-EL-09", "turn": 1, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": true, "note": "(잘림)"}
+{"id": "CE4-EL-09", "turn": 2, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": true, "note": "(잘림)"}
+{"id": "CE4-EL-09", "turn": 3, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "2턴 두 번째 \"저전력 모드\" 방법"}
+{"id": "CE4-TR-04", "turn": 1, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": true, "note": "(잘림)"}
+{"id": "CE4-TR-04", "turn": 2, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": ""}
+{"id": "CE4-TR-04", "turn": 3, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": true, "note": "(잘림)"}
+{"id": "CE4-TR-10", "turn": 1, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": ""}
+{"id": "CE4-TR-10", "turn": 2, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": ""}
+{"id": "CE4-TR-10", "turn": 3, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "¡Muchas gracias!"}
+{"id": "CE4-ME-04", "turn": 1, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "추천 기록 없음"}
+{"id": "CE4-ME-04", "turn": 2, "verdict": "partial", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "가정 초안 없이 음식·지역 되묻기"}
+{"id": "CE4-ME-04", "turn": 3, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "추천한 적 없음을 정확히 밝힘"}
+{"id": "CE4-ME-08", "turn": 1, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": ""}
+{"id": "CE4-ME-08", "turn": 2, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": ""}
+{"id": "CE4-ME-08", "turn": 3, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": ""}
+{"id": "CE4-ME-08", "turn": 4, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": ""}
+{"id": "CE4-CD-02", "turn": 1, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "화요일"}
+{"id": "CE4-CD-02", "turn": 2, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "11월 13일"}
+{"id": "CE4-CD-02", "turn": 3, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "금요일"}
+{"id": "CE4-CD-03", "turn": 1, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": ""}
+{"id": "CE4-CD-03", "turn": 2, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": ""}
+{"id": "CE4-CD-03", "turn": 3, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "1시간 45분 (\"가정했습니다\" 표현 어색, 영향 없음)"}
+{"id": "CE4-SM-01", "turn": 1, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": ""}
+{"id": "CE4-SM-01", "turn": 2, "verdict": "partial", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "판단 요인을 질문 형태로만 제시하고 되묻기"}
+{"id": "CE4-SM-01", "turn": 3, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": ""}
+{"id": "CE4-SM-10", "turn": 1, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "되묻되 바로 예시 메시지 제시"}
+{"id": "CE4-SM-10", "turn": 2, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": ""}
+{"id": "CE4-SM-10", "turn": 3, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": ""}
+{"id": "CE4-UN-04", "turn": 1, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "내부 정보 알 수 없음, 게시판 확인"}
+{"id": "CE4-UN-04", "turn": 2, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "일반 구성 예시"}
+{"id": "CE4-UN-04", "turn": 3, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "\"가상의 예시\"·\"가정\" 명시한 예상(boundary 허용), 사실 단정 없음"}
+{"id": "CE4-UN-05", "turn": 1, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "조회 불가, 택배사 안내"}
+{"id": "CE4-UN-05", "turn": 2, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "대략 위치도 지어내지 않음"}
+{"id": "CE4-UN-05", "turn": 3, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "조회 방법 3가지"}
+{"id": "CE4-SW-02", "turn": 1, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": ""}
+{"id": "CE4-SW-02", "turn": 2, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "수치 없이 소속 기관 규정·인사 담당 확인"}
+{"id": "CE4-SW-02", "turn": 3, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "국물 메뉴 추천"}
+{"id": "CE4-SW-04", "turn": 1, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": ""}
+{"id": "CE4-SW-04", "turn": 2, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": true, "note": "일반 회의록 예시 초안 바로 제시 (잘림)"}
+{"id": "CE4-SW-04", "turn": 3, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": ""}
+{"id": "CE4-FM-08", "turn": 1, "verdict": "partial", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "가정 초안 없이 목적지 되묻기"}
+{"id": "CE4-FM-08", "turn": 2, "verdict": "partial", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "시간표 없이 되묻기"}
+{"id": "CE4-FM-08", "turn": 3, "verdict": "fail", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "시간표·총 시간 없음; 시간표 부재로 항목 severe 미적용"}
+{"id": "CE4-FM-10", "turn": 1, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "세 문장, 사실 유지(004 t2와 같은 줄=문장 기준)"}
+{"id": "CE4-FM-10", "turn": 2, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "두 문장"}
+{"id": "CE4-FM-10", "turn": 3, "verdict": "pass", "severe": [], "citation_axis": "n/a", "truncated_384": false, "note": "단어 3개"}
