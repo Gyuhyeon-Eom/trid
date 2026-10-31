@@ -122,11 +122,7 @@ def main():
     a.out.mkdir(parents=True, exist_ok=True)
     sampling = json.loads(a.sampling)
     template_kwargs = json.loads(a.template_kwargs)
-    if a.dialogues.suffix == '.jsonl':
-        rows = [json.loads(line) for line in a.dialogues.read_text().splitlines() if line.strip()]
-        dialogues = {r['id']: r['turns'] for r in rows}
-    else:
-        dialogues = json.loads(a.dialogues.read_text())['dialogues']
+    dialogues = load_dialogues(a.dialogues)
     mem, live = memory_state(), live_state()
     if mem['pressure_level'] != 1 or live['status'] != 'running':
         sys.exit(f'not starting: memory {mem}, live service {live}')
@@ -141,8 +137,32 @@ def main():
         'dialogues_file': str(a.dialogues), 'dialogues_sha256': sha256(a.dialogues),
         'started': time.strftime('%Y-%m-%d %H:%M:%S %Z'), 'memory_before': mem, 'live_before': live,
         'guard': [], 'status': 'running'}
-    proc, base, props, args = start(a.model_file, a.port, a.context, a.out / 'llama-server.log')
-    turns_file = open(a.out / 'turns.jsonl', 'w')
+    with open(a.out / 'turns.jsonl', 'w') as turns_file:
+        def write_turn(record):
+            turns_file.write(json.dumps(record, ensure_ascii=False) + '\n')
+            turns_file.flush()
+        try:
+            run(a.model_file, sampling, a.system, template_kwargs, a.hf_dir, dialogues, a.port, a.context, a.max_tokens,
+                a.seed, a.out / 'llama-server.log', write_turn, manifest)
+        finally:
+            (a.out / 'manifest.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=1))
+    print(json.dumps({k: manifest[k] for k in ('model_id', 'model_sha256', 'status', 'memory_after', 'live_after')}, ensure_ascii=False))
+
+
+def load_dialogues(path):
+    """{"dialogues": {name: [turns]}} JSON, or CHAT-EVAL-004 style JSONL rows with "id" and "turns"."""
+    if path.suffix == '.jsonl':
+        rows = [json.loads(line) for line in path.read_text().splitlines() if line.strip()]
+        return {r['id']: r['turns'] for r in rows}
+    return json.loads(path.read_text())['dialogues']
+
+
+def run(model_file, sampling, system, template_kwargs, hf_dir, dialogues, port, context, max_tokens, seed, server_log,
+        write_turn, manifest):
+    """Load one model on an isolated port, refuse to run unless the served prompt has the official render's token ids
+    (when a local official tokenizer is given), run every dialogue and pass each turn record to `write_turn`. Fills
+    `manifest` in place; the server is always stopped. Memory pressure or a stopped live service ends the run."""
+    proc, base, props, args = start(model_file, port, context, server_log)
     try:
         template = props.get('chat_template') or ''
         manifest.update(server_args=args, build=props.get('build_info'), chat_template_sha256=hashlib.sha256(template.encode()).hexdigest(),
@@ -158,13 +178,13 @@ def main():
                                                  'parse_special': True})['tokens']
             return prompt, tokens
 
-        sample = ([{'role': 'system', 'content': a.system}] if a.system else []) + [
+        sample = ([{'role': 'system', 'content': system}] if system else []) + [
             {'role': 'user', 'content': '안녕하세요'}, {'role': 'assistant', 'content': '안녕하세요.'}, {'role': 'user', 'content': '고마워요'}]
         served, served_ids = serve(sample)
         manifest['render_sample'] = {'prompt': served, 'token_ids': served_ids}
-        if a.hf_dir:
-            official, official_ids = official_render(a.hf_dir, sample, template_kwargs)
-            manifest['render_parity_with_official'] = {'hf_dir': a.hf_dir, 'text_equal': served == official,
+        if hf_dir:
+            official, official_ids = official_render(hf_dir, sample, template_kwargs)
+            manifest['render_parity_with_official'] = {'hf_dir': str(hf_dir), 'text_equal': served == official,
                                                        'token_ids_equal': served_ids == official_ids,
                                                        'official': official, 'official_token_ids': official_ids}
             if served_ids != official_ids:
@@ -187,10 +207,10 @@ def main():
                 if question in NEW_CONVERSATION:
                     history = []
                     continue
-                messages = ([{'role': 'system', 'content': a.system}] if a.system else []) + history + [{'role': 'user', 'content': question}]
+                messages = ([{'role': 'system', 'content': system}] if system else []) + history + [{'role': 'user', 'content': question}]
                 prompt, tokens = serve(messages)
                 started = time.monotonic()
-                c = request(base, '/completion', dict(prompt=tokens, n_predict=a.max_tokens, seed=a.seed, cache_prompt=False,
+                c = request(base, '/completion', dict(prompt=tokens, n_predict=max_tokens, seed=seed, cache_prompt=False,
                                                       return_tokens=True, **sampling))
                 wall = time.monotonic() - started
                 settings = {k: v for k, v in (c.get('generation_settings') or {}).items() if k not in ('n_predict', 'seed')}
@@ -201,11 +221,10 @@ def main():
                                   'changed': {k: [effective.get(k), settings.get(k)] for k in set(effective) | set(settings)
                                               if effective.get(k) != settings.get(k)}})
                 text = c['content'].strip()
-                turns_file.write(json.dumps({'dialogue': name, 'turn': index, 'question': question, 'prompt': prompt,
-                                             'prompt_token_ids': tokens, 'output': text, 'output_token_ids': c.get('tokens'),
-                                             'stop_type': c.get('stop_type'), 'stopping_word': c.get('stopping_word'),
-                                             'timings': c.get('timings'), 'wall_seconds': round(wall, 3)}, ensure_ascii=False) + '\n')
-                turns_file.flush()
+                write_turn({'dialogue': name, 'turn': index, 'question': question, 'prompt': prompt,
+                            'prompt_token_ids': tokens, 'output': text, 'output_token_ids': c.get('tokens'),
+                            'stop_type': c.get('stop_type'), 'stopping_word': c.get('stopping_word'),
+                            'timings': c.get('timings'), 'wall_seconds': round(wall, 3)})
                 history += [{'role': 'user', 'content': question}, {'role': 'assistant', 'content': text}]
         else:
             manifest['status'] = 'complete'
@@ -213,11 +232,9 @@ def main():
         manifest['effective_settings_drift'] = drift
         manifest['effective_generation_settings'] = effective
     finally:
-        turns_file.close()
         stop(proc)
         manifest.update(finished=time.strftime('%Y-%m-%d %H:%M:%S %Z'), memory_after=memory_state(), live_after=live_state())
-        (a.out / 'manifest.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=1))
-    print(json.dumps({k: manifest[k] for k in ('model_id', 'model_sha256', 'status', 'memory_after', 'live_after')}, ensure_ascii=False))
+    return manifest
 
 
 if __name__ == '__main__':

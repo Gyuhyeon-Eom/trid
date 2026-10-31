@@ -1,0 +1,15 @@
+{
+ "note": "settings identical for both packages (non-identifying); each package also carries its own previously confirmed sampling, read only by scripts/chat_blind_runner.py",
+ "system_prompt_file": "reports/coordination/CHAT-CAPABILITY-006/chat-system-candidate.txt",
+ "system_prompt_sha256": "a8c0d301fd8b48127504b7ce43c5da917d01831970a5bd76eb83ee7c189dd92d",
+ "template_kwargs": {
+  "enable_thinking": false
+ },
+ "max_tokens": 384,
+ "context": 4096,
+ "seed": 1,
+ "port": 51990,
+ "mode": "raw",
+ "runtime": "runs/tools/llama.cpp-8ca4060-metal/llama-server (-c 4096 -np 1 -t 4 -tb 4 --jinja)",
+ "render_parity": "served prompt token ids must equal the official tokenizer render, else the run aborts"
+}
